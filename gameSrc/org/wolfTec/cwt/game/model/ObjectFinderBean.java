@@ -24,4 +24,8 @@ public class ObjectFinderBean {
   public int findUnit(Unit unit) {
     return -1; // TODO
   }
+
+  public int findTile(Tile unit) {
+    return -1; // TODO
+  }
 }

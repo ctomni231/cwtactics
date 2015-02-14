@@ -1,18 +1,32 @@
 package org.wolfTec.cwt.game.statemachine;
 
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
+import org.wolfTec.cwt.game.model.GameRoundBean;
+import org.wolfTec.cwt.game.model.Tile;
+import org.wolfTec.cwt.game.renderer.ScreenManagerBean;
+import org.wolfTec.cwt.game.renderer.layers.UserInterfaceLayerBean;
+import org.wolfTec.cwt.utility.Logger;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.cwt.utility.beans.InjectedByFactory;
+import org.wolfTec.cwt.utility.container.CircularBuffer;
 
 @Bean
 public class StateDataBean {
 
   @InjectedByFactory
   private Logger log;
+
   @Injected
   private ScreenManagerBean screen;
+
   @Injected
   private GameRoundBean gameround;
+
   @Injected
   private UserInterfaceLayerBean uiLayer;
+
   @Injected
   private StateMachineBean stateMachine;
 
@@ -20,19 +34,19 @@ public class StateDataBean {
    * Position object with rich information about the selected position by an
    * action and some relations.
    */
-  public final Position source;
+  public final Tile source;
 
   /**
    * Position object with rich information about the selected position by an
    * action and some relations.
    */
-  public final Position target;
+  public final Tile target;
 
   /**
    * Position object with rich information about the selected position by an
    * action and some relations.
    */
-  public final Position targetSelection;
+  public final Tile targetSelection;
 
   /**
    * X coordinate of the cursor.
@@ -58,18 +72,12 @@ public class StateDataBean {
 
   public boolean inMultiStep;
 
-  public CircularBuffer<MoveCode> movePath = new CircularBuffer<MoveCode>(Constants.MAX_MOVE_LENGTH);
+  public CircularBuffer<MoveCode> movePath = new CircularBuffer<MoveCode>(
+      EngineGlobals.MAX_MOVE_LENGTH);
 
   public boolean preventMovePathGeneration;
 
-  public Integer focusMode = Constants.INACTIVE_ID;
-
-  @PostInitialization
-  public void init(BeanFactory engine) {
-    this.source = new Position();
-    this.target = new Position();
-    this.targetSelection = new Position();
-  }
+  public Integer focusMode = EngineGlobals.INACTIVE_ID;
 
   /**
    *

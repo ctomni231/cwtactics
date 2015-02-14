@@ -5,6 +5,7 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.types.MoveType;
+import org.wolfTec.cwt.utility.JsUtil;
 import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.Injected;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
@@ -32,7 +33,7 @@ public class MoveLogic {
   private int uid = EngineGlobals.INACTIVE_ID;
   private int x = EngineGlobals.INACTIVE_ID;
   private int y = EngineGlobals.INACTIVE_ID;
-  
+
   @InjectedByFactory
   private CircularBuffer<MoveCode> moveBuffer;
 
@@ -73,7 +74,9 @@ public class MoveLogic {
     Tile tile = gameround.getMap().getTile(x, y);
 
     // grab costs from property or if not given from tile
-    tile = (tile.property != null) ? tile.property : tile;
+    // TODO
+    boolean blocks = JsUtil.evalJs("(tile.property != null) ? "
+        + "tile.property.type.blocksVision : tile.type.blocksVision");
     if (tile.type.blocksVision) {
       return EngineGlobals.INACTIVE_ID;
     } else {

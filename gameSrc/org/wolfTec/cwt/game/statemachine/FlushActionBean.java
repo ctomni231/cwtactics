@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game.statemachine;
 
-import org.wolfTec.cwt.game.gamelogic.GameLogicBean;
+import org.wolfTec.cwt.game.gamelogic.TransferLogic;
 import org.wolfTec.cwt.game.model.Menu;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Unit;
@@ -30,9 +30,11 @@ public class FlushActionBean {
   private StateDataBean stateData;
 
   @Injected
-  private GameLogicBean logic;
+  private TransferLogic transfer;
+  
   @Injected
   private GameRoundBean gameround;
+  
   @Injected
   private StateMachineBean stateMachine;
 
@@ -85,7 +87,7 @@ public class FlushActionBean {
         break;
 
       case TRANSFER_MONEY:
-        logic.transferMoney(gameround.getPlayer(p1), gameround.getPlayer(p2), p3);
+        transfer.transferMoney(gameround.getPlayer(p1), gameround.getPlayer(p2), p3);
         break;
     }
   }

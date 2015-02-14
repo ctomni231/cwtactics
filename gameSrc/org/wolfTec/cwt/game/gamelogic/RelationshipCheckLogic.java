@@ -1,14 +1,21 @@
 package org.wolfTec.cwt.game.gamelogic;
 
+import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.PlayerObject;
-import org.wolfTec.cwt.game.model.Position;
+import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 
 /**
  *
  */
-public interface RelationshipCheckLogic extends BaseLogic {
+@Bean
+public class RelationshipCheckLogic {
+
+  @Injected
+  private GameRoundBean gameround;
 
   public enum RelationshipCheckMode {
 
@@ -27,7 +34,6 @@ public interface RelationshipCheckLogic extends BaseLogic {
      * Indicates a wish to check property owner.
      */
     CHECK_PROPERTY
-
   }
 
   /**
@@ -41,8 +47,8 @@ public interface RelationshipCheckLogic extends BaseLogic {
    * @param checkRight
    * @returns {number}
    */
-  default Relationship getRelationShipTo(Position left, Position right,
-      RelationshipCheckMode checkLeft, RelationshipCheckMode checkRight) {
+  public Relationship getRelationShipTo(Tile left, Tile right, RelationshipCheckMode checkLeft,
+      RelationshipCheckMode checkRight) {
     Object oL = null;
     Object oR = null;
 
@@ -75,7 +81,7 @@ public interface RelationshipCheckLogic extends BaseLogic {
    * @param objectB
    * @returns {*}
    */
-  default Relationship getRelationship(Object objectA, Object objectB) {
+  public Relationship getRelationship(Object objectA, Object objectB) {
 
     // one object is null
     if (objectA == null || objectB == null) {
@@ -112,7 +118,7 @@ public interface RelationshipCheckLogic extends BaseLogic {
 
   /**
    * Returns true if there is at least one unit with a given relationship to
-   * player in one of the neighbours of a given position (x,y). If not, false
+   * player in one of the neighbors of a given position (x,y). If not, false
    * will be returned.
    *
    * @param player
@@ -121,13 +127,13 @@ public interface RelationshipCheckLogic extends BaseLogic {
    * @param relationship
    * @returns {boolean}
    */
-  default boolean hasUnitNeighbourWithRelationship(Player player, int x, int y,
+  public boolean hasUnitNeighbourWithRelationship(Player player, int x, int y,
       Relationship relationship) {
     Unit unit = null;
 
     // WEST
     if (x > 0) {
-      unit = getGameRound().getMap().getTile(x - 1, y).unit;
+      unit = gameround.getMap().getTile(x - 1, y).unit;
       if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
         return true;
       }
@@ -135,23 +141,23 @@ public interface RelationshipCheckLogic extends BaseLogic {
 
     // NORTH
     if (y > 0) {
-      unit = getGameRound().getMap().getTile(x, y - 1).unit;
+      unit = gameround.getMap().getTile(x, y - 1).unit;
       if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
         return true;
       }
     }
 
     // EAST
-    if (x < getGameRound().getMapWidth() - 1) {
-      unit = getGameRound().getMap().getTile(x + 1, y).unit;
+    if (x < gameround.getMapWidth() - 1) {
+      unit = gameround.getMap().getTile(x + 1, y).unit;
       if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
         return true;
       }
     }
 
     // SOUTH
-    if (y < getGameRound().getMapHeight() - 1) {
-      unit = getGameRound().getMap().getTile(x, y + 1).unit;
+    if (y < gameround.getMapHeight() - 1) {
+      unit = gameround.getMap().getTile(x, y + 1).unit;
       if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
         return true;
       }
