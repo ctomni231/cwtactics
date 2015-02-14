@@ -118,6 +118,8 @@ public class StateMachineBean {
    */
   public void changeState(String stateId) {
     if (activeState != null) {
+      log.info("leaving step "+activeState.getId());
+      
       activeState.exit();
     }
     setState(stateId, true);
@@ -125,6 +127,7 @@ public class StateMachineBean {
 
   public void setState(String stateId, boolean fireEvent) {
     activeState = states.$get(stateId);
+    log.info("enter step "+activeState.getId());
 
     if (fireEvent) {
       activeState.enter();

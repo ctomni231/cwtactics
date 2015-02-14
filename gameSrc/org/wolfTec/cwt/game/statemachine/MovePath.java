@@ -2,12 +2,17 @@ package org.wolfTec.cwt.game.statemachine;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
+import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.InjectedByFactory;
+import org.wolfTec.cwt.utility.container.CircularBuffer;
+import org.wolfTec.cwt.utility.container.MoveableMatrix;
 
-public class MovePath {
+@Bean public class MovePath {
 
-  private Array<MoveCode> path;
+  @InjectedByFactory private CircularBuffer<MoveCode> path;
 
   /**
    * Little helper array object for `model.move_fillMoveMap`. This will be used
@@ -22,16 +27,15 @@ public class MovePath {
   private Array<Integer> checkHelper;
 
   public MovePath() {
-    path = JSCollections.$array();
     helper = JSCollections.$array();
 
-    checkHelper = JSCollections.$array(Constants.INACTIVE_ID, Constants.INACTIVE_ID,
-        Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID, Constants.INACTIVE_ID,
-        Constants.INACTIVE_ID, Constants.INACTIVE_ID);
+    checkHelper = JSCollections.$array(EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID,
+        EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID,
+        EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID);
   }
 
   public boolean willBeTrapped() {
-    return false;
+    return false; // TODO
   }
 
   /**

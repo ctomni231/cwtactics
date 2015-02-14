@@ -1,11 +1,9 @@
 package org.wolfTec.cwt.game.statemachine;
 
 import org.stjs.javascript.annotation.Template;
-import org.wolfTec.cwt.utility.beans.Bean;
 import org.wolfTec.cwt.utility.beans.InjectedByFactory;
 import org.wolfTec.cwt.utility.container.CircularBuffer;
 
-@Bean
 public class ActionMenu {
 
   private int selectedIndex;

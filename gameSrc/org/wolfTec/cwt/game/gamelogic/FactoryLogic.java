@@ -2,16 +2,44 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.GameConfigBean;
+import org.wolfTec.cwt.game.model.GameRoundBean;
+import org.wolfTec.cwt.game.model.ObjectFinderBean;
 import org.wolfTec.cwt.game.model.Property;
+import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
+import org.wolfTec.cwt.game.model.types.UnitType;
+import org.wolfTec.cwt.game.statemachine.ActionMenu;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.cwt.utility.container.ImmutableArray;
 
-public interface FactoryLogic extends CaptureLogic, BaseLogic {
+@Bean
+public class FactoryLogic {
+
+  @Injected
+  private GameRoundBean gameround;
+
+  @Injected
+  private CaptureLogic capture;
+
+  @Injected
+  private GameConfigBean config;
+
+  @Injected
+  private LifecycleLogic lifecycle;
+
+  @Injected
+  private ObjectFinderBean finder;
+
+  @Injected
+  private ObjectTypesBean types;
 
   /**
    * Returns **true** when the given **property** is a factory, else **false**.
    *
    * @return
    */
-  default boolean isFactory(Property prop) {
+  public boolean isFactory(Property prop) {
     return (prop.type.builds != JSGlobal.undefined);
   }
 
@@ -21,8 +49,8 @@ public interface FactoryLogic extends CaptureLogic, BaseLogic {
    * 
    * @return
    */
-  default boolean canProduce(Property prop) {
-    if (isNeutral(prop)) return false;
+  public boolean canProduce(Property prop) {
+    if (capture.isNeutral(prop)) return false;
 
     if (!isFactory(prop)) {
       return false;
@@ -34,7 +62,7 @@ public interface FactoryLogic extends CaptureLogic, BaseLogic {
     }
 
     // check unit limit and left slots
-    int unitLimit = getGameConfig().getConfigValue("unitLimit");
+    int unitLimit = config.getConfigValue("unitLimit");
     if (prop.owner.numberOfUnits >= unitLimit
         || prop.owner.numberOfUnits >= EngineGlobals.MAX_UNITS) {
       return false;
@@ -43,4 +71,54 @@ public interface FactoryLogic extends CaptureLogic, BaseLogic {
     return true;
   }
 
+  /**
+   * Constructs a unit with **type** in a **factory** for the owner of the
+   * factory. The owner must have at least one of his unit slots free to do
+   * this.
+   * 
+   * @param factory
+   * @param type
+   */
+  public void buildUnit(Property factory, UnitType type) {
+    factory.owner.manpower--;
+    factory.owner.gold -= type.cost;
+
+    if (factory.owner.gold < 0 || factory.owner.manpower < 0) {
+      throw new IllegalStateException("building unit produces an illegal game state");
+    }
+
+    int posMark = finder.findProperty(factory);
+    lifecycle.createUnit(finder.getX(posMark), finder.getY(posMark), factory.owner, type);
+  }
+
+  /**
+   * Generates the build menu for a **factory** and puts the build able unit
+   * type ID's into a **menu**. If **markDisabled** is enabled then the function
+   * will add types that temporary aren't produce able (e.g. due lack of money)
+   * but marked as disabled.
+   * 
+   * @param factory
+   * @param menu
+   * @param markDisabled
+   */
+  public void generateBuildMenu(Property factory, ActionMenu menu, boolean markDisabled) {
+    ImmutableArray<UnitType> unitTypes = types.getUnitTypes();
+    ImmutableArray<String> bList = factory.type.builds;
+    int availableGold = factory.owner.gold;
+
+    for (int i = 0, e = unitTypes.$length(); i < e; i++) {
+      UnitType type = unitTypes.$get(i);
+
+      if (bList.indexOf(type.movetype) == -1) {
+        continue;
+      }
+
+      // Is the type blocked ?
+      // if (type.blocked) return false; TODO
+
+      if (type.cost <= availableGold || markDisabled) {
+        menu.addEntry(type.ID, (type.cost <= availableGold));
+      }
+    }
+  }
 }

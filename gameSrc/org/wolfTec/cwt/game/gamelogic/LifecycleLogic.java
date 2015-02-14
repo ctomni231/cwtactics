@@ -1,22 +1,28 @@
 package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
-import org.wolfTec.cwt.game.Constants;
+import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.cwt.game.model.types.UnitType;
 import org.wolfTec.cwt.game.utility.AssertUtilyBean;
+import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.cwt.utility.beans.Injected;
 
-public interface LifecycleLogic extends BaseLogic, FogLogic {
+@Bean public class LifecycleLogic {
+  
+  @Injected private FogLogic fog;
+  @Injected private GameRoundBean gameround;
 
   /**
    * 
    * @param player
    * @return
    */
-  default boolean isInactivePlayer(Player player) {
-    return player.team != Constants.INACTIVE_ID;
+  public boolean isInactivePlayer(Player player) {
+    return player.team != EngineGlobals.INACTIVE_ID;
   }
 
   /**
@@ -26,15 +32,12 @@ public interface LifecycleLogic extends BaseLogic, FogLogic {
    * 
    * @param player
    */
-  default void deactivatePlayer(Player player) {
-    player.team = Constants.INACTIVE_ID;
+  public void deactivatePlayer(Player player) {
+    player.team = EngineGlobals.INACTIVE_ID;
     
-    // drop units
-    if (constants.DEBUG) assert(player instanceof model.Player);
-
-    for (var i = 0, e = model.units.length; i < e; i++) {
+    for (var i = 0, e = gameround.units.length; i < e; i++) {
         var unit = model.units[i];
-        if (unit.owner === player) {
+        if (unit.owner == player) {
             // TODO
         }
     }
@@ -42,7 +45,7 @@ public interface LifecycleLogic extends BaseLogic, FogLogic {
     // drop properties
     for (var i = 0, e = model.properties.length; i < e; i++) {
         var prop = model.properties[i];
-        if (prop.owner === player) {
+        if (prop.owner == player) {
             prop.makeNeutral();
 
             // TODO: change type when the property is a changing type property
@@ -50,7 +53,7 @@ public interface LifecycleLogic extends BaseLogic, FogLogic {
         }
     }
 
-    player.deactivate();
+    deactivatePlayer(player);
 
     // when no opposite teams are found then the game has ended
     if (!model.areEnemyTeamsLeft()) {
@@ -63,14 +66,14 @@ public interface LifecycleLogic extends BaseLogic, FogLogic {
    * @param player
    * @param teamNumber
    */
-  default void activatePlayer(Player player, int teamNumber) {
+  public void activatePlayer(Player player, int teamNumber) {
     player.team = teamNumber;
   }
 
   /**
    * @return {boolean}
    */
-  default boolean isInactiveUnit(Unit unit) {
+  public boolean isInactiveUnit(Unit unit) {
     return unit.getOwner() == null;
   }
 
@@ -80,7 +83,7 @@ public interface LifecycleLogic extends BaseLogic, FogLogic {
    * @param damage
    * @param minRest
    */
-  default void damageUnit(Unit unit, int damage, int minRest) {
+  public void damageUnit(Unit unit, int damage, int minRest) {
     if (damage == 0) return;
 
     unit.setHp(unit.getHp() - damage);
@@ -94,7 +97,7 @@ public interface LifecycleLogic extends BaseLogic, FogLogic {
    * @param health
    * @param diffAsGold
    */
-  default void healUnit(Unit unit, int health, boolean diffAsGold) {
+  public void healUnit(Unit unit, int health, boolean diffAsGold) {
     if (health == 0) return;
 
     unit.setHp(unit.getHp() + health);
@@ -112,7 +115,7 @@ public interface LifecycleLogic extends BaseLogic, FogLogic {
     }
   }
 
-  default void createUnit(int x, int y, Player player, UnitType type) {
+  public void createUnit(int x, int y, Player player, UnitType type) {
     Tile tile = getGameRound().getMap().getTile(x, y);
     Unit unit = getInactiveUnit();
 
@@ -126,7 +129,7 @@ public interface LifecycleLogic extends BaseLogic, FogLogic {
     addUnitVision(x, y, player);
   }
 
-  default void destroyUnit(int x, int y, boolean silent) {
+  public void destroyUnit(int x, int y, boolean silent) {
     Tile tile = getGameRound().getMap().getTile(x, y);
     removeUnitVision(x, y, tile.unit.getOwner());
 
@@ -145,7 +148,66 @@ public interface LifecycleLogic extends BaseLogic, FogLogic {
     }
   }
 
-  default boolean hasFreeUnitSlot(Player player) {
-    return player.numberOfUnits < Constants.MAX_UNITS;
+  public boolean hasFreeUnitSlot(Player player) {
+    return player.numberOfUnits < EngineGlobals.MAX_UNITS;
   }
+  
+  var cfgAutoSupply = require("../config").getConfig("autoSupplyAtTurnStart");
+  var cfgDayLimit = require("../config").getConfig("round_dayLimit");
+
+
+  var statemachine = require("../statemachine");
+
+  function checkForRepairTargets(x, y, tile) {
+
+      // check repair via property
+      if (tile.unit.hp < 99) actions.localAction("healUnit", x, y);
+
+      // give funds
+      exports.raiseFunds(tile.property);
+  }
+
+  function checkForSupplyTargets(x, y, tile) {
+
+      // check neighbours
+      if (supply.isSupplier(tile.unit)) {
+          if (supply.canRefillObjectAt(tile.unit, x + 1, y)) actions.localAction("refillSupply", x + 1, y);
+          if (supply.canRefillObjectAt(tile.unit, x - 1, y)) actions.localAction("refillSupply", x - 1, y);
+          if (supply.canRefillObjectAt(tile.unit, x, y + 1)) actions.localAction("refillSupply", x, y + 1);
+          if (supply.canRefillObjectAt(tile.unit, x, y - 1)) actions.localAction("refillSupply", x, y - 1);
+      }
+
+      // drain fuel
+      supply.drainFuel(tile.unit);
+  }
+
+  exports.startsTurn = function(player) {
+
+      // Sets the new turn owner and also the client, if necessary
+      if (player.clientControlled) {
+          model.lastClientPlayer = player;
+      }
+
+      // *************************** Update Fog ****************************
+
+      // the active client can see what his and all allied objects can see
+      var clTid = model.lastClientPlayer.team;
+      var i, e;
+      for (i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
+          var cPlayer = model.players[i];
+
+          cPlayer.turnOwnerVisible = false;
+          cPlayer.clientVisible = false;
+
+          // player isn't registered
+          if (cPlayer.team == EngineGlobals.INACTIVE_ID) continue;
+
+          if (cPlayer.team == clTid) {
+              cPlayer.clientVisible = true;
+          }
+          if (cPlayer.team == player.team) {
+              cPlayer.turnOwnerVisible = true;
+          }
+      }
+  };
 }

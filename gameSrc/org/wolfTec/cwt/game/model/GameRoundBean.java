@@ -410,4 +410,5 @@ public class GameRoundBean {
   public void setWeather(WeatherType weather) {
     this.weather = weather;
   }
+  
 }
