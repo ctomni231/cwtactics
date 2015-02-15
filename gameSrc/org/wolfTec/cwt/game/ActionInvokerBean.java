@@ -1,11 +1,10 @@
-package org.wolfTec.cwt.game.states;
+package org.wolfTec.cwt.game;
 
 import static org.stjs.javascript.JSObjectAdapter.$js;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;

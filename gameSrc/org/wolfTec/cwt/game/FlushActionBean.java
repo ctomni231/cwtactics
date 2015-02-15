@@ -1,10 +1,11 @@
-package org.wolfTec.cwt.game.states;
+package org.wolfTec.cwt.game;
 
 import org.wolfTec.cwt.game.gamelogic.TransferLogic;
 import org.wolfTec.cwt.game.gfx.UnitLayerBean;
 import org.wolfTec.cwt.game.model.Menu;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.game.states.StateDataBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;

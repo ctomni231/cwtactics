@@ -178,38 +178,4 @@ public abstract class EngineGlobals {
   public static final String STORAGE_PARAMETER_APPLICATION_CONFIG = "cwt_app_config";
   // END OF - TODO - BIND THAT 3 CONFIGS TOGETHER ?
 
-  // ====================== STATE NAMES ======================
-
-  public static final String STATE_ERROR = "ERROR";
-  public static final String STATE_PORTRAIT = "PORTRAIT";
-  public static final String STATE_CHECK_CACHE = "CHECK_CACHE";
-  public static final String STATE_GRAB_ASSETS = "GRAB_ASSETS";
-  public static final String STATE_LOAD_ASSETS = "LOAD_ASSETS";
-  public static final String STATE_VALIDATE_ASSETS = "VALIDATE_ASSETS";
-  public static final String STATE_START_SCREEN = "START_SCREEN";
-  public static final String STATE_MAIN_MENU = "MAIN_MENU";
-  public static final String STATE_GAMEROUND_PARAMETER_SETUP = "GAMEROUND_PARAMETER_SETUP";
-  public static final String STATE_GAMEROUND_PLAYER_SETUP = "GAMEROUND_PLAYER_SETUP";
-  public static final String STATE_GAMEROUND_SKIRMISH_MAP_SELECT = "GAMEROUND_SKIRMISH_MAP_SELECT";
-  public static final String STATE_CONFIRM_WIPEOUT = "CONFIRM_WIPEOUT";
-  public static final String STATE_OPTIONS = "OPTIONS";
-  public static final String STATE_OPTIONS_REMAP_INPUT = "OPTIONS_REMAP_INPUT";
-  public static final String STATE_GAMEROUND_ENTER = "GAMEROUND_ENTER";
-  public static final String STATE_GAMEROUND_EXIT = "GAMEROUND_EXIT";
-  public static final String STATE_FLUSH_ACTIONS = "FLUSH_ACTIONS";
-  public static final String STATE_IDLE = "IDLE";
-  public static final String STATE_MULTISTEP = "MULTISTEP";
-  public static final String STATE_GAMEROUND_MENU = "MENU";
-  public static final String STATE_GAMEROUND_SUB_MENU = "SUB_MENU";
-  public static final String STATE_GAMEROUND_MOVEPATH = "MOVEPATH";
-  public static final String STATE_GAMEROUND_SELECT_TARGET = "SELECT_TARGET";
-  public static final String STATE_GAMEROUND_SHOW_ATTACK_RANGE = "SHOW_ATTACK_RANGE";
-  public static final String STATE_ANIMATION_CAPTURE = "ANIM_CAPTURE";
-  public static final String STATE_ANIMATION_CHANGE_WEATHER = "ANIM_CHANGE_WEATHER";
-  public static final String STATE_ANIMATION_EXPLOSION_GROUND = "ANIM_EXPLOSION_GROUND";
-  public static final String STATE_ANIMATION_UNIT_MOVE = "ANIM_UNIT_MOVE";
-  public static final String STATE_ANIMATION_NEXT_TURN = "ANIM_NEXT_TURN";
-  public static final String STATE_ANIMATION_BALLISTIC_FIRE = "ANIM_BALLISTIC_FIRE";
-  public static final String STATE_ANIMATION_LASER_FIRE = "ANIM_LASER_FIRE";
-  public static final String STATE_ANIMATION_TRAPPED = "ANIM_TRAPPED";
 }
