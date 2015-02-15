@@ -10,13 +10,10 @@ import org.wolfTec.wolfTecEngine.log.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 
 @Bean
-public class ErrorState extends State {
-
-  @Override
-  public String getId() {
-    return EngineGlobals.STATE_ERROR;
-  }
-
+public class ErrorState implements State {
+  
+  // TODO use button group
+  
   @InjectedByFactory
   private Logger log;
 
