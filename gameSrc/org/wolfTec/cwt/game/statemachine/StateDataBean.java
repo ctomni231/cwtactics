@@ -4,12 +4,12 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
-import org.wolfTec.cwt.game.renderer.ScreenManagerBean;
-import org.wolfTec.cwt.game.renderer.layers.UserInterfaceLayerBean;
+import org.wolfTec.cwt.game.renderer.UserInterfaceLayerBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.gfx.ScreenManagerBean;
 import org.wolfTec.wolfTecEngine.log.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
 

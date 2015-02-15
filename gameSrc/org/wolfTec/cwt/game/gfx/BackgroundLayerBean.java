@@ -1,13 +1,13 @@
-package org.wolfTec.cwt.game.renderer.layers;
+package org.wolfTec.cwt.game.gfx;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.renderer.ScreenLayer;
-import org.wolfTec.cwt.game.renderer.Sprite;
 import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.gfx.Camera;
+import org.wolfTec.wolfTecEngine.gfx.Sprite;
 
 @Bean
-public class BackgroundLayerBean extends ScreenLayer {
+public class BackgroundLayerBean extends Camera {
 
   @Override
   public int getZIndex() {

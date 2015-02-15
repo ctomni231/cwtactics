@@ -1,4 +1,4 @@
-package net.wolfTec.game;
+package net.wolfTec.cwtactics;
 
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.gherkin.FactsBase;

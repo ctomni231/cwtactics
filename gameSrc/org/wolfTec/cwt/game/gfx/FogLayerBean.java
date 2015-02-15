@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.renderer.layers;
+package org.wolfTec.cwt.game.gfx;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
@@ -7,14 +7,14 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
-import org.wolfTec.cwt.game.renderer.ScreenLayer;
-import org.wolfTec.cwt.game.renderer.SpriteIndexBean;
-import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.gfx.Camera;
+import org.wolfTec.wolfTecEngine.gfx.SpriteIndexBean;
+import org.wolfTec.wolfTecEngine.gfx.SpriteManagerBean;
 
 @Bean
-public class FogLayerBean extends ScreenLayer {
+public class FogLayerBean extends Camera {
 
   @Injected
   private SpriteManagerBean sprites;

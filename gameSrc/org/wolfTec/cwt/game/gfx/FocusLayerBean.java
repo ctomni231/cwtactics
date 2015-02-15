@@ -1,20 +1,20 @@
-package org.wolfTec.cwt.game.renderer.layers;
+package org.wolfTec.cwt.game.gfx;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.model.Direction;
-import org.wolfTec.cwt.game.renderer.AnimatedLayer;
-import org.wolfTec.cwt.game.renderer.ScreenLayer;
-import org.wolfTec.cwt.game.renderer.Sprite;
-import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.PostInitialization;
+import org.wolfTec.wolfTecEngine.gfx.AnimatedLayer;
+import org.wolfTec.wolfTecEngine.gfx.Direction;
+import org.wolfTec.wolfTecEngine.gfx.Camera;
+import org.wolfTec.wolfTecEngine.gfx.Sprite;
+import org.wolfTec.wolfTecEngine.gfx.SpriteManagerBean;
 
 @Bean
-public class FocusLayerBean extends ScreenLayer implements AnimatedLayer {
+public class FocusLayerBean extends Camera implements AnimatedLayer {
 
   private SpriteManagerBean sprites;
   private Canvas temporaryCanvas;
@@ -96,14 +96,14 @@ public class FocusLayerBean extends ScreenLayer implements AnimatedLayer {
     int tch;
 
     Sprite sprite = sprites.getSprite("FOCUS");
-    Element spriteImg = sprite.getImage(net.wolfTec.gameWorkflowData.focusMode);
+    Element spriteImg = sprite.getImage(net.wolfTec.cwtactics.gameWorkflowData.focusMode);
 
     int oy = y;
     int ye;
     for (int xe = x + w; x < xe; x++) {
       for (y = oy, ye = y + h; y < ye; y++) {
 
-        if (net.wolfTec.gameWorkflowData.selection.getValue(x, y) >= 0) {
+        if (net.wolfTec.cwtactics.gameWorkflowData.selection.getValue(x, y) >= 0) {
 
           // render all phases
           int n = 0;

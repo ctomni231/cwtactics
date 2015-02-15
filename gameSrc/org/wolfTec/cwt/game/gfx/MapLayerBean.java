@@ -1,21 +1,21 @@
-package org.wolfTec.cwt.game.renderer.layers;
+package org.wolfTec.cwt.game.gfx;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.model.Direction;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
-import org.wolfTec.cwt.game.renderer.AnimatedLayer;
-import org.wolfTec.cwt.game.renderer.ScreenLayer;
-import org.wolfTec.cwt.game.renderer.SpriteIndexBean;
-import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.gfx.AnimatedLayer;
+import org.wolfTec.wolfTecEngine.gfx.Direction;
+import org.wolfTec.wolfTecEngine.gfx.Camera;
+import org.wolfTec.wolfTecEngine.gfx.SpriteIndexBean;
+import org.wolfTec.wolfTecEngine.gfx.SpriteManagerBean;
 
 @Bean
-public class MapLayerBean extends ScreenLayer implements AnimatedLayer {
+public class MapLayerBean extends Camera implements AnimatedLayer {
 
   @Injected
   private SpriteManagerBean sprites;

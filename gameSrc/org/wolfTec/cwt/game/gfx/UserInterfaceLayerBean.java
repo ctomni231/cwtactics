@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.renderer.layers;
+package org.wolfTec.cwt.game.gfx;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
@@ -6,13 +6,13 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.renderer.ScreenLayer;
-import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.gfx.Camera;
+import org.wolfTec.wolfTecEngine.gfx.SpriteManagerBean;
 
 @Bean
-public class UserInterfaceLayerBean extends ScreenLayer {
+public class UserInterfaceLayerBean extends Camera {
 
   @Injected
   private SpriteManagerBean sprites;

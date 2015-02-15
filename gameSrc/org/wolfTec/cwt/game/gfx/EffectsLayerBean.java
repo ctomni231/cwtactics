@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.renderer.layers;
+package org.wolfTec.cwt.game.gfx;
 
 import net.wolfTec.wtEngine.Constants;
 import net.wolfTec.wtEngine.log.Logger;

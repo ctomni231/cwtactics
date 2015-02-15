@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.renderer.layers;
+package org.wolfTec.cwt.game.gfx;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
@@ -6,21 +6,21 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.model.Direction;
 import org.wolfTec.cwt.game.model.GameMapBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
-import org.wolfTec.cwt.game.renderer.AnimatedLayer;
-import org.wolfTec.cwt.game.renderer.ScreenLayer;
-import org.wolfTec.cwt.game.renderer.Sprite;
-import org.wolfTec.cwt.game.renderer.SpriteIndexBean;
-import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.gfx.AnimatedLayer;
+import org.wolfTec.wolfTecEngine.gfx.Direction;
+import org.wolfTec.wolfTecEngine.gfx.Camera;
+import org.wolfTec.wolfTecEngine.gfx.Sprite;
+import org.wolfTec.wolfTecEngine.gfx.SpriteIndexBean;
+import org.wolfTec.wolfTecEngine.gfx.SpriteManagerBean;
 
 @Bean
-public class UnitLayerBean extends ScreenLayer implements AnimatedLayer {
+public class UnitLayerBean extends Camera implements AnimatedLayer {
 
   @Injected
   private SpriteManagerBean sprites;

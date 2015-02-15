@@ -2,7 +2,7 @@ package org.wolfTec.cwt.game.statemachine.menu;
 
 import org.stjs.javascript.JSGlobal;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.renderer.layers.UserInterfaceLayerBean;
+import org.wolfTec.cwt.game.gfx.UserInterfaceLayerBean;
 import org.wolfTec.wolfTecEngine.audio.AudioBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;

@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.renderer;
+package org.wolfTec.cwt.game.gfx;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
