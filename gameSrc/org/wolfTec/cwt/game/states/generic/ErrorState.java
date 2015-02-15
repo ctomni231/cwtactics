@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.states;
+package org.wolfTec.cwt.game.states.generic;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;

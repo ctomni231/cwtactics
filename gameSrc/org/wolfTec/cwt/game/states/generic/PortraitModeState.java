@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.states;
+package org.wolfTec.cwt.game.states.generic;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
@@ -9,12 +9,7 @@ import org.wolfTec.wolfTecEngine.input.InputData;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 
 @Bean
-public class PortraitMode extends State {
-
-  @Override
-  public String getId() {
-    return EngineGlobals.STATE_PORTRAIT;
-  }
+public class PortraitModeState implements State {
 
   @Injected
   private UserInterfaceLayerBean ui;
