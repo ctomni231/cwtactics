@@ -9,12 +9,13 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.input.InputData;
 import org.wolfTec.wolfTecEngine.localization.LocalizationBean;
 import org.wolfTec.wolfTecEngine.persistence.StorageBean;
+import org.wolfTec.wolfTecEngine.statemachine.MenuState;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 import org.wolfTec.wolfTecEngine.util.BrowserHelperBean;
 import org.wolfTec.wolfTecEngine.util.ConvertUtility;
 
 @Bean
-public class StartScreenState extends State {
+public class StartScreenState extends MenuState {
 
   @Override
   public String getId() {

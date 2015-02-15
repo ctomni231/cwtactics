@@ -5,7 +5,7 @@ import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 
 @Bean
-public class MenuState extends State {
+public class ActionmenuState extends State {
 
   @Override
   public String getId() {

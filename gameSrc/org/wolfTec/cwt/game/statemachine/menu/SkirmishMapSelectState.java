@@ -1,9 +1,9 @@
 package org.wolfTec.cwt.game.statemachine.menu;
 
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.wolfTecEngine.statemachine.State;
+import org.wolfTec.wolfTecEngine.statemachine.MenuState;
 
-public class SkirmishMapSelectState extends State {
+public class SkirmishMapSelectState extends MenuState {
 
   @Override
   public String getId() {
