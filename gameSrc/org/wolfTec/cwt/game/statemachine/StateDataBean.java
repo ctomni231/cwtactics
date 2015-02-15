@@ -11,6 +11,7 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
 import org.wolfTec.wolfTecEngine.log.Logger;
+import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
 
 @Bean
 public class StateDataBean {
