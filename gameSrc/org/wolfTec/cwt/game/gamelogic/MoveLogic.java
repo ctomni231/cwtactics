@@ -5,11 +5,11 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.types.MoveType;
-import org.wolfTec.cwt.utility.JsUtil;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
-import org.wolfTec.cwt.utility.beans.InjectedByFactory;
-import org.wolfTec.cwt.utility.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.util.JsUtil;
 
 import static org.stjs.javascript.JSObjectAdapter.$js;
 

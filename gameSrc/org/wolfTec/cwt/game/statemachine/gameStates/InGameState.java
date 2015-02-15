@@ -4,7 +4,7 @@ import org.wolfTec.cwt.game.gamelogic.MoveCode;
 import org.wolfTec.cwt.game.renderer.AnimationManagerBean;
 import org.wolfTec.cwt.game.statemachine.State;
 import org.wolfTec.cwt.game.statemachine.StateDataBean;
-import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.Injected;
 
 /**
  * An inGame state is a state which is considered to be used in an active game

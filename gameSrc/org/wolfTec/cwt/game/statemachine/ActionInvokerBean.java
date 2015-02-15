@@ -6,14 +6,14 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.network.NetworkMessage;
-import org.wolfTec.cwt.game.network.NetworkBean;
-import org.wolfTec.cwt.utility.Logger;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
-import org.wolfTec.cwt.utility.beans.InjectedByFactory;
-import org.wolfTec.cwt.utility.beans.PostInitialization;
-import org.wolfTec.cwt.utility.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.PostInitialization;
+import org.wolfTec.wolfTecEngine.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.log.Logger;
+import org.wolfTec.wolfTecEngine.network.NetworkBean;
+import org.wolfTec.wolfTecEngine.network.NetworkMessage;
 
 @Bean
 public class ActionInvokerBean {

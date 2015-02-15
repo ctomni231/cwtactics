@@ -6,23 +6,21 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.cwt.game.assets.AssetItem;
-import org.wolfTec.cwt.game.assets.AssetLoader;
-import org.wolfTec.cwt.game.assets.AssetType;
-import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.utility.AssertUtilyBean;
-import org.wolfTec.cwt.game.utility.BrowserHelperBean;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
-import org.wolfTec.cwt.utility.beans.PostInitialization;
+import org.wolfTec.wolfTecEngine.assets.AssetItem;
+import org.wolfTec.wolfTecEngine.assets.AssetLoader;
+import org.wolfTec.wolfTecEngine.assets.AssetType;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.PostInitialization;
+import org.wolfTec.wolfTecEngine.persistence.StorageBean;
+import org.wolfTec.wolfTecEngine.util.BrowserHelperBean;
 
 @Bean
 public class SpriteManagerBean implements AssetLoader {
 
   @Injected
   private BrowserHelperBean browserUtil;
-  @Injected
-  private AssertUtilyBean assertUtil;
 
   /** */
   private Map<String, Sprite> sprites;
@@ -71,7 +69,7 @@ public class SpriteManagerBean implements AssetLoader {
    * @return Sprite for the given key
    */
   public Sprite getSprite(String spriteKey) {
-    assertUtil.hasProperty(sprites, spriteKey);
+    // TODO CHECK
     return sprites.$get(spriteKey);
   }
 

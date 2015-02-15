@@ -5,7 +5,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.RegExp;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.input.InputData;
+import org.wolfTec.wolfTecEngine.input.InputData;
 
 public class UiButtonGroup {
 

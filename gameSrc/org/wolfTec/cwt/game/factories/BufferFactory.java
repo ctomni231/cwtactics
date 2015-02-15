@@ -1,10 +1,10 @@
 package org.wolfTec.cwt.game.factories;
 
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.utility.JsUtil;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.FactoryBean;
-import org.wolfTec.cwt.utility.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.FactoryBean;
+import org.wolfTec.wolfTecEngine.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.util.JsUtil;
 
 @Bean
 public class BufferFactory implements FactoryBean<CircularBuffer<?>> {

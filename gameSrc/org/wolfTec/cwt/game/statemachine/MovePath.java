@@ -5,10 +5,10 @@ import org.stjs.javascript.JSCollections;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
 import org.wolfTec.cwt.game.model.Unit;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.InjectedByFactory;
-import org.wolfTec.cwt.utility.container.CircularBuffer;
-import org.wolfTec.cwt.utility.container.MoveableMatrix;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.container.MoveableMatrix;
 
 @Bean public class MovePath {
 

@@ -3,9 +3,9 @@ package org.wolfTec.cwt.game.renderer;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolfTec.cwt.game.assets.ConnectedTile;
 import org.wolfTec.cwt.game.model.GameMapBean;
 import org.wolfTec.cwt.game.model.Tile;
+import org.wolfTec.wolfTecEngine.assets.ConnectedTile;
 
 public class TileVariantCalculator {
 

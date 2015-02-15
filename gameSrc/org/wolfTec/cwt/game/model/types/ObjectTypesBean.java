@@ -6,20 +6,20 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.assets.AssetItem;
-import org.wolfTec.cwt.game.assets.AssetLoader;
-import org.wolfTec.cwt.game.assets.AssetType;
 import org.wolfTec.cwt.game.model.Modification;
-import org.wolfTec.cwt.game.persistence.StorageBean;
-import org.wolfTec.cwt.game.persistence.StorageEntry;
-import org.wolfTec.cwt.game.utility.BrowserHelperBean;
-import org.wolfTec.cwt.game.utility.ExternalRequestOptions;
-import org.wolfTec.cwt.utility.Logger;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
-import org.wolfTec.cwt.utility.beans.InjectedByFactory;
-import org.wolfTec.cwt.utility.beans.PostInitialization;
-import org.wolfTec.cwt.utility.container.ImmutableArray;
+import org.wolfTec.wolfTecEngine.assets.AssetItem;
+import org.wolfTec.wolfTecEngine.assets.AssetLoader;
+import org.wolfTec.wolfTecEngine.assets.AssetType;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.PostInitialization;
+import org.wolfTec.wolfTecEngine.container.ImmutableArray;
+import org.wolfTec.wolfTecEngine.log.Logger;
+import org.wolfTec.wolfTecEngine.persistence.StorageBean;
+import org.wolfTec.wolfTecEngine.persistence.StorageEntry;
+import org.wolfTec.wolfTecEngine.util.BrowserHelperBean;
+import org.wolfTec.wolfTecEngine.util.ExternalRequestOptions;
 
 @Bean
 public class ObjectTypesBean implements AssetLoader {

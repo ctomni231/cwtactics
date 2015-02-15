@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.wolfTec</groupId>
+	<groupId>org.wolfTec</groupId>
 	<artifactId>cwtactics</artifactId>
 	<version>0.3.799-b1-SNAPSHOT</version>
 

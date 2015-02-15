@@ -5,12 +5,12 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.cwt.game.input.InputBean;
-import org.wolfTec.cwt.game.input.InputData;
-import org.wolfTec.cwt.utility.Logger;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
-import org.wolfTec.cwt.utility.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.input.InputBean;
+import org.wolfTec.wolfTecEngine.input.InputData;
+import org.wolfTec.wolfTecEngine.log.Logger;
 
 @Bean
 public class StateMachineBean {

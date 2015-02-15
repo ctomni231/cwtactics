@@ -4,10 +4,10 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.renderer.layers.UserInterfaceLayerBean;
 import org.wolfTec.cwt.game.statemachine.State;
-import org.wolfTec.cwt.utility.Logger;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
-import org.wolfTec.cwt.utility.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.log.Logger;
 
 @Bean
 public class ErrorState extends State {

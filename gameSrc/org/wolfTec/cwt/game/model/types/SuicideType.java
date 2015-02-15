@@ -3,8 +3,8 @@ package org.wolfTec.cwt.game.model.types;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.utility.validation.IntValue;
-import org.wolfTec.cwt.utility.validation.StringValue;
+import org.wolfTec.wolfTecEngine.validation.IntValue;
+import org.wolfTec.wolfTecEngine.validation.StringValue;
 
 public class SuicideType {
 

@@ -1,12 +1,22 @@
 package org.wolfTec.cwt.game.gamelogic;
 
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.GameConfigBean;
+import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.cwt.game.model.types.AttackType;
-import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.container.MoveableMatrix;
 
 @Bean
 public class BattleLogic {
+
+  @Injected
+  private GameRoundBean gameround;
+
+  @Injected
+  private GameConfigBean config;
 
   // var fillRangeDoAttackRange = {
   // unit: null,
@@ -125,10 +135,10 @@ public class BattleLogic {
   }
 
   /**
-   * Returns `true` when the game is in the peace phase.
+   * @return true when the game is in the peace phase, else false
    */
   public boolean inPeacePhase() {
-    return (getGameRound().getDay() < getGameConfig().getConfigValue("daysOfPeace"));
+    return (gameround.getDay() < config.getConfigValue("daysOfPeace"));
   }
 
   public enum MarkTargetsMode {
@@ -168,7 +178,7 @@ public class BattleLogic {
    * @param selection
    * @param markRangeInSelection
    */
-  public void calculateTargets(Unit unit, int x, int y, Object selection, boolean markRangeInSelection) {
+  public void calculateTargets(Unit unit, int x, int y, MoveableMatrix selection, boolean markRangeInSelection) {
     var markInData = (typeof selection != "undefined");
     var teamId = unit.owner.team;
     var attackSheet = unit.type.attack;

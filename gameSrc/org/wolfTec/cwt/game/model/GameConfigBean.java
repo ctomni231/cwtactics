@@ -5,13 +5,13 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.persistence.StorageBean;
-import org.wolfTec.cwt.game.persistence.StorageEntry;
-import org.wolfTec.cwt.utility.Logger;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
-import org.wolfTec.cwt.utility.beans.InjectedByFactory;
-import org.wolfTec.cwt.utility.beans.PostInitialization;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.PostInitialization;
+import org.wolfTec.wolfTecEngine.log.Logger;
+import org.wolfTec.wolfTecEngine.persistence.StorageBean;
+import org.wolfTec.wolfTecEngine.persistence.StorageEntry;
 
 @Bean
 public class GameConfigBean {

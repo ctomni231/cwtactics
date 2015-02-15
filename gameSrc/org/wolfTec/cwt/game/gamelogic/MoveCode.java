@@ -11,16 +11,17 @@ public enum MoveCode {
    * @return integer code for a given move code
    */
   public static int toInt(MoveCode code) {
-    if (code == LEFT)
+    if (code == LEFT) {
       return 0;
-    else if (code == RIGHT)
+    } else if (code == RIGHT) {
       return 1;
-    else if (code == UP)
+    } else if (code == UP) {
       return 2;
-    else if (code == DOWN)
+    } else if (code == DOWN) {
       return 3;
-    else
+    } else {
       return EngineGlobals.INACTIVE_ID;
+    }
   }
 
   /**
@@ -30,15 +31,16 @@ public enum MoveCode {
    *         valid move code value
    */
   public static MoveCode fromInt(int id) {
-    if (id == 0)
+    if (id == 0) {
       return LEFT;
-    else if (id == 1)
+    } else if (id == 1) {
       return RIGHT;
-    else if (id == 2)
+    } else if (id == 2) {
       return UP;
-    else if (id == 3)
+    } else if (id == 3) {
       return DOWN;
-    else
+    } else {
       return null;
+    }
   }
 }

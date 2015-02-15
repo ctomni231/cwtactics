@@ -2,10 +2,10 @@ package org.wolfTec.cwt.game.model.types;
 
 import org.stjs.javascript.Map;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.utility.container.ImmutableArray;
-import org.wolfTec.cwt.utility.validation.IntValue;
-import org.wolfTec.cwt.utility.validation.StringKey;
-import org.wolfTec.cwt.utility.validation.StringValue;
+import org.wolfTec.wolfTecEngine.container.ImmutableArray;
+import org.wolfTec.wolfTecEngine.validation.IntValue;
+import org.wolfTec.wolfTecEngine.validation.StringKey;
+import org.wolfTec.wolfTecEngine.validation.StringValue;
 
 public class PropertyType extends ObjectType {
 

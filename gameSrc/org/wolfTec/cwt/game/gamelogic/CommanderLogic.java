@@ -4,8 +4,8 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.CoPowerLevel;
 import org.wolfTec.cwt.game.model.GameConfigBean;
 import org.wolfTec.cwt.game.model.Player;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
 
 @Bean
 public class CommanderLogic {

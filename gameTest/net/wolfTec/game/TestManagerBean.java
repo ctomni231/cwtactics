@@ -1,9 +1,9 @@
 package net.wolfTec.game;
 
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.gherkin.FactsBase;
-import org.wolfTec.cwt.utility.gherkin.Parser;
-import org.wolfTec.cwt.utility.gherkin.TestRunner;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.gherkin.FactsBase;
+import org.wolfTec.wolfTecEngine.gherkin.Parser;
+import org.wolfTec.wolfTecEngine.gherkin.TestRunner;
 
 @Bean public class TestManagerBean {
 

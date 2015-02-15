@@ -5,8 +5,8 @@ import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.PlayerObject;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
 
 /**
  *

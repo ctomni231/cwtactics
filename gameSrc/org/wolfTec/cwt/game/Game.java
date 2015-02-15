@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game;
 
-import org.wolfTec.cwt.utility.beans.BeanFactory;
+import org.wolfTec.wolfTecEngine.beans.BeanFactory;
 
 public abstract class Game {
 

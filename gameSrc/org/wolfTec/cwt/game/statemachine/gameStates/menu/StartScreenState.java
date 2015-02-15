@@ -2,16 +2,16 @@ package org.wolfTec.cwt.game.statemachine.gameStates.menu;
 
 import org.stjs.javascript.JSGlobal;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.audio.AudioBean;
-import org.wolfTec.cwt.game.input.InputData;
-import org.wolfTec.cwt.game.localization.LocalizationBean;
-import org.wolfTec.cwt.game.persistence.StorageBean;
 import org.wolfTec.cwt.game.renderer.layers.UserInterfaceLayerBean;
 import org.wolfTec.cwt.game.statemachine.State;
-import org.wolfTec.cwt.game.utility.BrowserHelperBean;
-import org.wolfTec.cwt.utility.ConvertUtility;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.wolfTecEngine.audio.AudioBean;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.input.InputData;
+import org.wolfTec.wolfTecEngine.localization.LocalizationBean;
+import org.wolfTec.wolfTecEngine.persistence.StorageBean;
+import org.wolfTec.wolfTecEngine.util.BrowserHelperBean;
+import org.wolfTec.wolfTecEngine.util.ConvertUtility;
 
 @Bean
 public class StartScreenState extends State {

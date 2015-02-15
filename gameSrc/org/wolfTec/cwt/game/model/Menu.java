@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game.model;
 
 import org.stjs.javascript.annotation.Template;
-import org.wolfTec.cwt.utility.beans.InjectedByFactory;
-import org.wolfTec.cwt.utility.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.container.CircularBuffer;
 
 public class Menu {
 

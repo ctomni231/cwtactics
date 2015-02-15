@@ -10,8 +10,8 @@ import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
 import org.wolfTec.cwt.game.model.types.UnitType;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
 
 @Bean
 public class LifecycleLogic {

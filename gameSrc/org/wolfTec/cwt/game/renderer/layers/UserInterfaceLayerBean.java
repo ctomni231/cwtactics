@@ -8,8 +8,8 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.renderer.ScreenLayer;
 import org.wolfTec.cwt.game.renderer.SpriteManagerBean;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
 
 @Bean
 public class UserInterfaceLayerBean extends ScreenLayer {

@@ -2,7 +2,7 @@ package org.wolfTec.cwt.game.statemachine.gameStates.animation;
 
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.statemachine.gameStates.AnimationState;
-import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Bean;
 
 @Bean
 public class UnitMoveAnimationState extends AnimationState {

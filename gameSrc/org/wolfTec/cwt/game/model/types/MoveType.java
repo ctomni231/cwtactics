@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game.model.types;
 
 import org.stjs.javascript.Map;
-import org.wolfTec.cwt.utility.validation.IntValue;
-import org.wolfTec.cwt.utility.validation.StringKey;
+import org.wolfTec.wolfTecEngine.validation.IntValue;
+import org.wolfTec.wolfTecEngine.validation.StringKey;
 
 public class MoveType extends ObjectType {
 

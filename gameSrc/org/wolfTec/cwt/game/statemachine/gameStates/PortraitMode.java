@@ -2,11 +2,11 @@ package org.wolfTec.cwt.game.statemachine.gameStates;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.input.InputData;
 import org.wolfTec.cwt.game.renderer.layers.UserInterfaceLayerBean;
 import org.wolfTec.cwt.game.statemachine.State;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.input.InputData;
 
 @Bean
 public class PortraitMode extends State {

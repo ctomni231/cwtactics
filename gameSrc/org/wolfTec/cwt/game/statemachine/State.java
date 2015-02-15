@@ -1,15 +1,17 @@
 package org.wolfTec.cwt.game.statemachine;
 
-import org.wolfTec.cwt.game.input.InputBackendType;
-import org.wolfTec.cwt.game.input.InputData;
-import org.wolfTec.cwt.utility.Logger;
-import org.wolfTec.cwt.utility.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.input.InputBackendType;
+import org.wolfTec.wolfTecEngine.input.InputData;
+import org.wolfTec.wolfTecEngine.log.Logger;
 
 public abstract class State {
 
   public abstract String getId();
+
+  @InjectedByFactory
+  protected Logger log;
   
-  @InjectedByFactory protected Logger log;
   protected StateMachineBean statemachine;
 
   public boolean isAnimationState() {

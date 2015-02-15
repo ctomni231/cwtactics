@@ -1,9 +1,9 @@
 package org.wolfTec.cwt.game.ai;
 
 import org.wolfTec.cwt.game.model.Player;
-import org.wolfTec.cwt.utility.Logger;
-import org.wolfTec.cwt.utility.beans.Bean;
-import org.wolfTec.cwt.utility.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.log.Logger;
 
 @Bean
 public class ArtificialInteligenceBean {

@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game.renderer;
 
-import org.wolfTec.cwt.utility.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Bean;
 
 @Bean
 public class SpriteIndexBean {
