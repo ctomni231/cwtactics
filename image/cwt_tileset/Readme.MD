@@ -157,11 +157,11 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *FRST* = Forest
 * [x] *MNTN* = Mountain
 * [x] *RIVR* = River
-* [ ] *ROAD* = Road
+* [x] *ROAD* = Road
 * [x] *BRDG* = Bridge
 * [x] *REEF* = Reef
 * [ ] *WTLD* = Wasteland
-* [ ] *RUIN* = Ruins
+* [x] *RUIN* = Ruins
 * [ ] *SHOA* = Shoals
 * [ ] *SEAS* = Seas
 * [x] *METR* = Meteor
