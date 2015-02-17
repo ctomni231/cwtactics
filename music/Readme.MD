@@ -40,9 +40,7 @@ All original custom music made for Custom Wars Beta 27 is listed and credited wi
 - Yukio - Inhale by Freelance_Fox
 - Zandra - Jazzy Dunes by x0_000
 
-## Original Custom CO Music (Unnamed Author)
-
-- Adam - Adam's Theme by (???)
-- Mary - Mary's Theme by (???)
-- Roboandy - Roboandy's Theme by (???)
-- Sanjuro - Sanjuro's Theme by (???)
+- Adam - Unitary by x0_000
+- Mary - Assualt by x0_000
+- Roboandy - Airport Infinitum by x0_000
+- Sanjuro - Heart of Gold by x0_000
