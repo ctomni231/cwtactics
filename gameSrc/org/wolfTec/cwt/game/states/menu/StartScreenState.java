@@ -22,6 +22,9 @@ public class StartScreenState implements MenuState {
   @Injected
   private UserInterfaceLayerBean ui;
 
+  @Injected
+  private ConvertUtility converter;
+
   private int timeLeft;
   private int maxTooltips;
   private String activeAdvice;
@@ -29,7 +32,7 @@ public class StartScreenState implements MenuState {
   @Override
   public void enter() {
     timeLeft = 0;
-    maxTooltips = ConvertUtility.strToInt(localization.solveKey("TOOLTIPS"));
+    maxTooltips = converter.strToInt(localization.solveKey("TOOLTIPS"));
 
     // TODO random background
   }
@@ -51,17 +54,17 @@ public class StartScreenState implements MenuState {
   @Override
   public void update(int delta, InputData input) {
     evalInput(input);
-    
+
     timeLeft--;
     if (timeLeft < 0) {
       // TODO set activeAdvice
-      int randomIndex = ConvertUtility.floatToInt((float) Math.random() * maxTooltips) + 1;
+      int randomIndex = converter.floatToInt((float) Math.random() * maxTooltips) + 1;
       activeAdvice = localization.solveKey("TOOLTIPS_" + randomIndex);
 
       timeLeft = EngineGlobals.START_SCREEN_TOOLTIP_TIME;
     }
   }
-  
+
   @Override
   public void render(int delta) {
   }

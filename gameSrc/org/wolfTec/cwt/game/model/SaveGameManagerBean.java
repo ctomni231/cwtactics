@@ -6,7 +6,7 @@ import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.log.Logger;
-import org.wolfTec.wolfTecEngine.persistence.StorageBean;
+import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
 
 @Bean
 public class SaveGameManagerBean {
@@ -14,7 +14,7 @@ public class SaveGameManagerBean {
   @InjectedByFactory
   private Logger log;
   @Injected
-  private StorageBean storage;
+  private VirtualFilesystem storage;
 
   /**
    * Loads a save game and initializes a new game round.
@@ -24,7 +24,7 @@ public class SaveGameManagerBean {
    * @param callback
    */
   public void loadSave(String name, Callback0 callback) {
-    storage.get(EngineGlobals.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, (entry) -> {
+    storage.readFile(EngineGlobals.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, (entry) -> {
       // TODO
       // initMap(entry.value, true, callback);
       });
@@ -38,7 +38,7 @@ public class SaveGameManagerBean {
    * @param callback
    */
   public void saveGame(String name, Callback0 callback) {
-    storage.set(EngineGlobals.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, null, (data, error) -> {
+    storage.writeFile(EngineGlobals.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, null, (data, error) -> {
       if (error != null) {
         log.error("SavingGameError");
       } else {

@@ -32,10 +32,10 @@ public class TransferLogic {
    * @param player
    */
   public void transferUnitToPlayer(Unit unit, Player player) {
-    Player origPlayer = unit.getOwner();
+    Player origPlayer = unit.owner;
 
     origPlayer.numberOfUnits--;
-    unit.setOwner(player);
+    unit.owner = player;
     player.numberOfUnits++;
 
     if (origPlayer.team != player.team) {

@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game.gamelogic;
 
+import org.stjs.javascript.JSGlobal;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.GameRoundBean;
-import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.cwt.game.model.types.MoveType;
 import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
@@ -23,7 +23,7 @@ public class TransportLogic {
    * @return true if the unit with id tid is a transporter, else false.
    */
   public boolean isTransportUnit(Unit unit) {
-    return (unit.getType().maxloads > 0);
+    return (unit.type.maxloads > 0);
   }
 
   /**
@@ -33,7 +33,7 @@ public class TransportLogic {
    */
   public boolean hasLoads(Unit unit) {
     for (int i = 0, e = EngineGlobals.MAX_UNITS; i < e; i++) {
-      if (unit == gameround.getUnit(i).getLoadedIn()) return true;
+      if (unit == gameround.getUnit(i).loadedIn) return true;
     }
     return false;
   }
@@ -49,7 +49,7 @@ public class TransportLogic {
    * @return {boolean}
    */
   public boolean canLoadUnit(Unit transporter, Unit load) {
-    return (transporter.getType().canload.indexOf(load.getType().movetype) != -1);
+    return (transporter.type.canload.indexOf(load.type.movetype) != -1);
   }
 
   /**
@@ -60,13 +60,13 @@ public class TransportLogic {
    */
   public void loadUnit(Unit transporter, Unit load) {
     if (load == transporter) {
-      throw new IllegalArgumentException("SameUnit");
+      JSGlobal.stjs.exception("SameUnit");
     }
-    if (load.getLoadedIn() != null) {
-      throw new IllegalArgumentException("AlreadyLoaded");
+    if (load.loadedIn != null) {
+      JSGlobal.stjs.exception("AlreadyLoaded");
     }
 
-    load.setLoadedIn(transporter);
+    load.loadedIn = transporter;
   }
 
   /**
@@ -76,11 +76,11 @@ public class TransportLogic {
    * @param {Unit} load
    */
   public void unloadUnit(Unit transporter, Unit load) {
-    if (load.getLoadedIn() != transporter) {
-      throw new IllegalArgumentException("NotLoadedInTransporter");
+    if (load.loadedIn != transporter) {
+      JSGlobal.stjs.exception("NotLoadedInTransporter");
     }
 
-    load.setLoadedIn(null);
+    load.loadedIn = null;
   }
 
   /**
@@ -94,15 +94,14 @@ public class TransportLogic {
    * @return {boolean}
    */
   public boolean canUnloadSomethingAt(Unit transporter, int x, int y) {
-    Player pid = transporter.getOwner();
     Unit unit;
 
     // TODO if (constants.DEBUG) assert(isTransportUnit(transporter));
     for (int i = 0, e = EngineGlobals.MAX_UNITS; i < e; i++) {
 
       unit = gameround.getUnit(i);
-      if (unit.getLoadedIn() == transporter) {
-        MoveType moveType = types.getMoveType(unit.getType().movetype);
+      if (unit.loadedIn == transporter) {
+        MoveType moveType = types.getMoveType(unit.type.movetype);
 
         if (move.canTypeMoveTo(moveType, x - 1, y)) return true;
         if (move.canTypeMoveTo(moveType, x + 1, y)) return true;

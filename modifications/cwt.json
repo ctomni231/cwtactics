@@ -1,9 +1,5 @@
 {
 
-  "name": "Custom Wars: Tactics",
-
-  "version": "0.1",
-
   "maps": {
     "Minus Hills": "maps/minus-hills-v1.json",
     "Outpost Plus": "maps/outpost-plus-v1.json",

@@ -6,35 +6,26 @@ import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.types.MoveType;
 import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
-import org.wolfTec.wolfTecEngine.util.JsUtil;
-
-import static org.stjs.javascript.JSObjectAdapter.$js;
+import org.wolfTec.wolfTecEngine.pathfinding.PathFinderHandler;
+import org.wolfTec.wolfTecEngine.util.JsExec;
 
 @Bean
 public class MoveLogic {
 
   @Injected
   private GameRoundBean gameround;
-
-  private Object aStar = $js("window.astar");
-  private Object Graph = $js("window.Graph");
-
-  // var searchPath = function (grid, start, end) {
-  // aStar.search(grid.nodes, start, end);
-  // }
-  //
-  // var createDataGrid = function (data) {
-  // return new Graph(data);
-  // }
+  
+  @Injected
+  private PathFinderHandler pathfinder;
 
   private int uid = EngineGlobals.INACTIVE_ID;
   private int x = EngineGlobals.INACTIVE_ID;
   private int y = EngineGlobals.INACTIVE_ID;
 
-  @InjectedByFactory
+  @Created("{size=$options.maxMoveLength}")
   private CircularBuffer<MoveCode> moveBuffer;
 
   /**
@@ -75,7 +66,7 @@ public class MoveLogic {
 
     // grab costs from property or if not given from tile
     // TODO
-    boolean blocks = JsUtil.evalJs("(tile.property != null) ? "
+    boolean blocks = JsExec.injectJS("(tile.property != null) ? "
         + "tile.property.type.blocksVision : tile.type.blocksVision");
     if (tile.type.blocksVision) {
       return EngineGlobals.INACTIVE_ID;

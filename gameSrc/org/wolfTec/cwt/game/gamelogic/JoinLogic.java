@@ -4,6 +4,7 @@ import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.util.JsUtil;
 
 @Bean
 public class JoinLogic {
@@ -28,12 +29,12 @@ public class JoinLogic {
    * @returns {boolean}
    */
   public boolean canJoin(Unit source, Unit target) {
-    if (source.getType() != target.getType()) {
+    if (source.type != target.type) {
       return false;
     }
 
     // don't increase HP to more then 10
-    if (target.getHp() >= 90) {
+    if (target.hp >= 90) {
       return false;
     }
 
@@ -56,27 +57,28 @@ public class JoinLogic {
    */
   public void join(Unit source, int x, int y) {
     if (!gameround.isValidPosition(x, y)) {
-      throw new Error("IllegalArgumentType(s)");
+      JsUtil.raiseError("IllegalArgumentType(s)");
     }
 
-    Unit target = gameround.getMap().getTile(x, y).unit;
-    if (source.getType() != target.getType()) {
-      throw new Error("IncompatibleJoinTypes");
+    Unit target = gameround.getTile(x, y).unit;
+    
+    if (source.type != target.type) {
+      JsUtil.raiseError("IncompatibleJoinTypes");
     }
 
     // health points
-    lifecycle.healUnit(target, Unit.pointsToHealth(Unit.healthToPoints(source.getHp())), true);
+    lifecycle.healUnit(target, Unit.pointsToHealth(Unit.healthToPoints(source.hp)), true);
 
     // ammo
-    target.setAmmo(source.getAmmo());
-    if (target.getAmmo() > target.getType().ammo) {
-      target.setAmmo(target.getType().ammo);
+    target.ammo = source.ammo;
+    if (target.ammo > target.type.ammo) {
+      target.ammo = target.type.ammo;
     }
 
     // fuel
-    target.setFuel(source.getFuel());
-    if (target.getFuel() > target.getType().fuel) {
-      target.setFuel(target.getType().fuel);
+    target.fuel = source.fuel;
+    if (target.fuel > target.type.fuel) {
+      target.fuel = target.type.fuel;
     }
 
     // TODO experience points

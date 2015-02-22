@@ -8,7 +8,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.Modification;
 import org.wolfTec.wolfTecEngine.assets.AssetItem;
-import org.wolfTec.wolfTecEngine.assets.AssetLoader;
+import org.wolfTec.wolfTecEngine.assets.GameDataGrabber;
 import org.wolfTec.wolfTecEngine.assets.AssetType;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
@@ -16,20 +16,20 @@ import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.beans.PostInitialization;
 import org.wolfTec.wolfTecEngine.container.ImmutableArray;
 import org.wolfTec.wolfTecEngine.log.Logger;
-import org.wolfTec.wolfTecEngine.persistence.StorageBean;
-import org.wolfTec.wolfTecEngine.persistence.StorageEntry;
-import org.wolfTec.wolfTecEngine.util.BrowserHelperBean;
-import org.wolfTec.wolfTecEngine.util.ExternalRequestOptions;
+import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
+import org.wolfTec.wolfTecEngine.persistence.FileDescriptor;
+import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolfTec.wolfTecEngine.util.XmlHttpReqOptions;
 
 @Bean
-public class ObjectTypesBean implements AssetLoader {
+public class ObjectTypesBean implements GameDataGrabber {
 
   @InjectedByFactory
   private Logger log;
   @Injected
-  private BrowserHelperBean browserUtil;
+  private BrowserUtil browserUtil;
   @Injected
-  private StorageBean storage;
+  private VirtualFilesystem storage;
 
   private TypeDatabase<ArmyType> armyTypes;
   private TypeDatabase<MoveType> moveTypes;
@@ -76,39 +76,39 @@ public class ObjectTypesBean implements AssetLoader {
     registerSheet(UnitType.class, laserUnit);
   }
 
-  @Override
-  public void loadAsset(StorageBean storage, AssetItem item, Callback0 callback) {
-    if (item.type == AssetType.MODIFICATION) {
-      storage.get(item.name, (StorageEntry<Modification> entry) -> {
-        this.modification = entry.value;
-      });
-    }
-  }
-
-  @Override
-  public void grabAsset(StorageBean storage, AssetItem item, Callback0 callback) {
-    if (item.type == AssetType.MODIFICATION) {
-      ExternalRequestOptions data = new ExternalRequestOptions();
-
-      data.json = true;
-      data.path = EngineGlobals.DEFAULT_MOD_PATH;
-
-      data.success = (mod) -> {
-        storage.set(item.name, mod, (storageEntry, error) -> {
-          if (error != null) {
-            log.error("SavingModificationException");
-
-          } else {
-            callback.$invoke();
-          }
-        });
-      };
-
-      data.error = (error) -> log.error("ModificationLoadException");
-
-      browserUtil.doHttpRequest(data);
-    }
-  }
+//  @Override
+//  public void loadAsset(VirtualFilesystem storage, AssetItem item, Callback0 callback) {
+//    if (item.type == AssetType.MODIFICATION) {
+//      storage.readFile(item.name, (FileDescriptor<Modification> entry) -> {
+//        this.modification = entry.value;
+//      });
+//    }
+//  }
+//
+//  @Override
+//  public void grabAsset(VirtualFilesystem storage, AssetItem item, Callback0 callback) {
+//    if (item.type == AssetType.MODIFICATION) {
+//      XmlHttpReqOptions data = new XmlHttpReqOptions();
+//
+//      data.json = true;
+//      data.path = EngineGlobals.DEFAULT_MOD_PATH;
+//
+//      data.success = (mod) -> {
+//        storage.writeFile(item.name, mod, (storageEntry, error) -> {
+//          if (error != null) {
+//            log.error("SavingModificationException");
+//
+//          } else {
+//            callback.$invoke();
+//          }
+//        });
+//      };
+//
+//      data.error = (error) -> log.error("ModificationLoadException");
+//
+//      browserUtil.doHttpRequest(data);
+//    }
+//  } TODO
 
   public <T extends ObjectType> void registerSheet(Class<T> type, ObjectType sheet) {
     log.error("not implemented yet"); // TODO
@@ -190,5 +190,11 @@ public class ObjectTypesBean implements AssetLoader {
    */
   public Modification getModificationData() {
     return modification;
+  }
+
+  @Override
+  public void loadAsset(AssetItem item, Callback0 callback) {
+    // TODO Auto-generated method stub
+    
   }
 }

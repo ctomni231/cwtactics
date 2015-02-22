@@ -1,11 +1,12 @@
 package org.wolfTec.cwt.game;
 
+// TODO rename to game globals
 public abstract class EngineGlobals {
 
   /**
    * Current version of the running CustomWars: Tactics.
    */
-  public static final String VERSION = "0.3.799-b1";
+  public static final String VERSION = "0.37.99-b1";
 
   /**
    * Symbol of inactive items.
@@ -165,17 +166,28 @@ public abstract class EngineGlobals {
   */
   public static final String NO_MOVE = "NO_MOVE";
 
-  // ====================== STORAGE PARAMETER NAMES ======================
-
-  public static final String STORAGE_PARAMETER_CACHED_CONTENT = "cwt_gameContent_cached";
-  public static final String STORAGE_PARAMETER_MAP_PREFIX = "cwt_map_";
-  public static final String STORAGE_PARAMETER_IMAGE_PREFIX = "cwt_image_";
-  public static final String STORAGE_PARAMETER_SAVEGAME_PREFIX = "cwt_savegame_";
-
-  // TODO - BIND THAT 3 CONFIGS TOGETHER ?
-  public static final String STORAGE_PARAMETER_INPUT_MAPPING = "cwt_input_mapping";
-  public static final String STORAGE_PARAMETER_AUDIO_VOLUME = "cwt_aduio_volume";
-  public static final String STORAGE_PARAMETER_APPLICATION_CONFIG = "cwt_app_config";
-  // END OF - TODO - BIND THAT 3 CONFIGS TOGETHER ?
+  public static final int LAYER_BG = 0;
+  public static final int LAYER_BG_FRAMES = 1;
+  public static final int LAYER_BG_FRAMETIME = 0;
+  
+  public static final int LAYER_MAP = 1;
+  public static final int LAYER_MAP_FRAMES = 8;
+  public static final int LAYER_MAP_FRAMETIME = 64;
+  
+  public static final int LAYER_UNIT = 2;
+  public static final int LAYER_UNIT_FRAMES = 4;
+  public static final int LAYER_UNIT_FRAMETIME = 160;
+  
+  public static final int LAYER_FOG = 3;
+  public static final int LAYER_FOG_FRAMES = 1;
+  public static final int LAYER_FOG_FRAMETIME = 0;
+  
+  public static final int LAYER_FOCUS = 4;
+  public static final int LAYER_FOCUS_FRAMES = 7;
+  public static final int LAYER_FOCUS_FRAMETIME = 64;
+  
+  public static final int LAYER_UI = 5;
+  public static final int LAYER_UI_FRAMES = 1;
+  public static final int LAYER_UI_FRAMETIME = 0;
 
 }

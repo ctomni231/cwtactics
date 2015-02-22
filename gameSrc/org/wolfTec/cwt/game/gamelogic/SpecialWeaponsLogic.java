@@ -2,7 +2,6 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.Game;
 import org.wolfTec.cwt.game.model.GameMapBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Property;
@@ -18,8 +17,10 @@ public class SpecialWeaponsLogic {
 
   @Injected
   private GameRoundBean gameround;
+  
   @Injected
   private ObjectTypesBean types;
+  
   @Injected
   private LifecycleLogic lifecycle;
 
@@ -30,7 +31,7 @@ public class SpecialWeaponsLogic {
    * @return
    */
   public boolean isLaser(Unit unit) {
-    return (unit.getType().ID == EngineGlobals.LASER_UNIT_INV);
+    return (unit.type.ID == EngineGlobals.LASER_UNIT_INV);
   }
 
   /**
@@ -40,7 +41,7 @@ public class SpecialWeaponsLogic {
    * @return
    */
   public boolean isCannonUnit(Unit unit) {
-    return (unit.getType().ID == EngineGlobals.CANNON_UNIT_INV);
+    return (unit.type.ID == EngineGlobals.CANNON_UNIT_INV);
   }
 
   /**
@@ -72,14 +73,14 @@ public class SpecialWeaponsLogic {
         for (y = 0, ye = gameround.getMapHeight(); y < ye; y++) {
           if (oy != y) {
             Unit unit = map.getTile(x, y).unit;
-            if (unit != null && unit.getOwner().team != savedTeam) {
+            if (unit != null && unit.owner.team != savedTeam) {
               lifecycle.damageUnit(unit, damage, 9);
             }
           }
         }
       } else {
         Unit unit = map.getTile(x, y).unit;
-        if (unit != null && unit.getOwner().team != savedTeam) {
+        if (unit != null && unit.owner.team != savedTeam) {
           lifecycle.damageUnit(unit, damage, 9);
         }
       }
@@ -87,7 +88,7 @@ public class SpecialWeaponsLogic {
   }
 
   public boolean canBeFiredBy(Property property, Unit unit) {
-    return property.type.rocketsilo.fireable.indexOf(unit.getType().ID) > -1;
+    return property.type.rocketsilo.fireable.indexOf(unit.type.ID) > -1;
   }
 
   public boolean canBeFiredTo(Property property, int x, int y) {
@@ -126,7 +127,7 @@ public class SpecialWeaponsLogic {
    * @returns {boolean}
    */
   public boolean canSelfDestruct(Unit unit) {
-    return unit.getType().suicide != null;
+    return unit.type.suicide != null;
   }
 
   /**
@@ -137,7 +138,7 @@ public class SpecialWeaponsLogic {
    * @returns {number}
    */
   public int getExplosionDamage(Unit unit) {
-    return Unit.pointsToHealth(unit.getType().suicide.damage);
+    return Unit.pointsToHealth(unit.type.suicide.damage);
   }
 
   private boolean doDamage(int x, int y, int range, Tile tile, Object damage) {

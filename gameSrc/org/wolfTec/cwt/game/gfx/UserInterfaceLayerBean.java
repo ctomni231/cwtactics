@@ -2,78 +2,87 @@ package org.wolfTec.cwt.game.gfx;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.stjs.javascript.dom.Canvas;
-import org.stjs.javascript.dom.Element;
-import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.states.StateDataBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.gfx.Camera;
-import org.wolfTec.wolfTecEngine.gfx.SpriteManagerBean;
+import org.wolfTec.wolfTecEngine.gfx.GraphicLayer;
+import org.wolfTec.wolfTecEngine.gfx.ScreenManagerBean;
+import org.wolfTec.wolfTecEngine.gfx.Sprite;
+import org.wolfTec.wolfTecEngine.gfx.SpriteManager;
 
+/**
+ * All user interface stuff will be rendered into this layer. It's the top front
+ * layer of the game screen.
+ */
 @Bean
-public class UserInterfaceLayerBean extends Camera {
+public class UserInterfaceLayerBean extends GraphicLayer {
 
   @Injected
-  private SpriteManagerBean sprites;
+  private SpriteManager sprites;
+
+  @Injected
+  private ScreenManagerBean screen;
+
+  @Injected
+  private StateDataBean stateData;
 
   @Override
-  public int getZIndex() {
-    return 6;
+  public int getIndex() {
+    return EngineGlobals.LAYER_UI;
   }
 
   @Override
-  public String getLayerCanvasId() {
-    return "canvas_layer_UI";
+  public int getNumberOfFrames() {
+    return EngineGlobals.LAYER_UI_FRAMES;
+  }
+
+  @Override
+  public int getFrameTime() {
+    return EngineGlobals.LAYER_UI_FRAMETIME;
   }
 
   /**
    * Renders the cursor to the UI layer.
    */
   public void eraseCursor() {
-    Element cursorImg = sprites.getSprite("CURSOR").getImage(0);
-    CanvasRenderingContext2D ctx = getContext(EngineGlobals.INACTIVE_ID);
+    int x = (stateData.cursorX - screen.offsetX) * EngineGlobals.TILE_BASE;
+    int y = (stateData.cursorY - screen.offsetY) * EngineGlobals.TILE_BASE;
     int h = JSGlobal.parseInt(EngineGlobals.TILE_BASE / 2, 10);
-    x = (x - screenOffsetX) * EngineGlobals.TILE_BASE;
-    y = (y - screenOffsetY) * EngineGlobals.TILE_BASE;
 
-    // render cursor at new position
-    ctx.drawImage(cursorImg, x - h, y - h);
-    ctx.drawImage(cursorImg, x + h + h, y + h + h);
-    ctx.drawImage(cursorImg, x + h + h, y - h);
-    ctx.drawImage(cursorImg, x - h, y + h + h);
+    loadStateIntoDrawCanvas(0);
+    clearDrawCanvasAt(x - h, y - h, 3 * h, 3 * h);
+    saveDrawCanvasAsState(0);
   }
 
   /**
    * Renders the cursor to the UI layer.
    */
   public void renderCursor() {
-    Element cursorImg = sprites.getSprite("CURSOR").getImage(0);
-    CanvasRenderingContext2D ctx = getContext(EngineGlobals.INACTIVE_ID);
+    int x = (stateData.cursorX - screen.offsetX) * EngineGlobals.TILE_BASE;
+    int y = (stateData.cursorY - screen.offsetY) * EngineGlobals.TILE_BASE;
+    Sprite cursor = sprites.getSprite("CURSOR");
     int h = JSGlobal.parseInt(EngineGlobals.TILE_BASE / 2, 10);
-    x = (x - screenOffsetX) * EngineGlobals.TILE_BASE;
-    y = (y - screenOffsetY) * EngineGlobals.TILE_BASE;
 
-    // render cursor at new position
-    ctx.drawImage(cursorImg, x - h, y - h);
-    ctx.drawImage(cursorImg, x + h + h, y + h + h);
-    ctx.drawImage(cursorImg, x + h + h, y - h);
-    ctx.drawImage(cursorImg, x - h, y + h + h);
+    loadStateIntoDrawCanvas(0);
+    cursor.drawSprite(0, ctx, x - h, y - h);
+    cursor.drawSprite(0, ctx, x + h + h, y + h + h);
+    cursor.drawSprite(0, ctx, x + h + h, y - h);
+    cursor.drawSprite(0, ctx, x - h, y + h + h);
+    saveDrawCanvasAsState(0);
   }
 
   /**
    * Shows the native browser cursor.
    */
   public void showNativeCursor() {
-    Canvas canvas = getLayer(EngineGlobals.INACTIVE_ID);
-    JSObjectAdapter.$js("canvas.style.cursor = ''");
+    JSObjectAdapter.$js("this.cv.style.cursor = ''");
   }
 
   /**
    * Hides the native browser cursor.
    */
   public void hideNativeCursor() {
-    Canvas canvas = getLayer(EngineGlobals.INACTIVE_ID);
-    JSObjectAdapter.$js("canvas.style.cursor = 'none'");
+    JSObjectAdapter.$js("this.cv.style.cursor = 'none'");
   }
 }

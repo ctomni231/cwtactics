@@ -6,20 +6,20 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.beans.PostInitialization;
 import org.wolfTec.wolfTecEngine.log.Logger;
-import org.wolfTec.wolfTecEngine.persistence.StorageBean;
-import org.wolfTec.wolfTecEngine.persistence.StorageEntry;
+import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
+import org.wolfTec.wolfTecEngine.persistence.FileDescriptor;
 
 @Bean
 public class GameConfigBean {
 
-  @InjectedByFactory
+  @Created("{name=$beanName}")
   private Logger log;
-  @Injected
-  private StorageBean storage;
+
+  private VirtualFilesystem storage;
 
   private Map<String, Config> configs;
   private Array<String> configNames;
@@ -80,8 +80,8 @@ public class GameConfigBean {
   }
 
   public void loadConfiguration(Callback0 callback) {
-    storage.get(EngineGlobals.STORAGE_PARAMETER_APPLICATION_CONFIG, (
-        StorageEntry<Map<String, Integer>> entry) -> {
+    storage.readFile(EngineGlobals.STORAGE_PARAMETER_APPLICATION_CONFIG, (
+        FileDescriptor<Map<String, Integer>> entry) -> {
       if (entry.value != null) {
         getConfig("fastClickMode").setValue(entry.value.$get("fastClickMode"));
         getConfig("forceTouch").setValue(entry.value.$get("forceTouch"));
@@ -96,7 +96,7 @@ public class GameConfigBean {
     appConfigs.$put("forceTouch", getConfigValue("forceTouch"));
     appConfigs.$put("animatedTiles", getConfigValue("animatedTiles"));
 
-    storage.set(EngineGlobals.STORAGE_PARAMETER_APPLICATION_CONFIG, appConfigs,
+    storage.writeFile(EngineGlobals.STORAGE_PARAMETER_APPLICATION_CONFIG, appConfigs,
         (savedData, err) -> {
           if (err != null) {
             log.error("SavingApplicationConfigError");

@@ -131,6 +131,10 @@ public class GameRoundBean {
   public int getMapHeight() {
     return mapHeight;
   }
+  
+  public Tile getTile(int x, int y) {
+    return getMap().getTile(x,y);
+  }
 
   /**
    * Returns an inactive **unit object** or **null** if every slot in the unit
@@ -140,7 +144,7 @@ public class GameRoundBean {
    */
   public Unit getInactiveUnit() {
     for (int i = 0, e = units.$length(); i < e; i++) {
-      if (units.$get(i).getOwner() == null) {
+      if (units.$get(i).owner == null) {
         return units.$get(i);
       }
     }
@@ -349,7 +353,7 @@ public class GameRoundBean {
         Tile tile = map.getTile(x, y);
 
         if (needsUnit) {
-          if (tile.unit == null || (wantedOwner != null && tile.unit.getOwner() != wantedOwner)) {
+          if (tile.unit == null || (wantedOwner != null && tile.unit.owner != wantedOwner)) {
             continue;
           }
         }

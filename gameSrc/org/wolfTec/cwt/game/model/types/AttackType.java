@@ -2,8 +2,8 @@ package org.wolfTec.cwt.game.model.types;
 
 import org.stjs.javascript.Map;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.wolfTecEngine.validation.IntValue;
-import org.wolfTec.wolfTecEngine.validation.StringKey;
+import org.wolfTec.wolfTecEngine.data.IntValue;
+import org.wolfTec.wolfTecEngine.data.StringKey;
 
 public class AttackType {
 

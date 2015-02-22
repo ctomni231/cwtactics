@@ -1,29 +1,37 @@
 package org.wolfTec.cwt.game.gfx;
 
-import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.gfx.Camera;
+import org.wolfTec.wolfTecEngine.gfx.GraphicLayer;
 import org.wolfTec.wolfTecEngine.gfx.Sprite;
 
+/**
+ * Background layer contains the background image of the screen. It's visible in
+ * the menu and on maps which are smaller than the screen.
+ */
 @Bean
-public class BackgroundLayerBean extends Camera {
+public class BackgroundLayerBean extends GraphicLayer {
 
   @Override
-  public int getZIndex() {
-    return 0;
+  public int getIndex() {
+    return EngineGlobals.LAYER_BG;
   }
 
   @Override
-  public String getLayerCanvasId() {
-    return "canvas_layer_Background";
+  public int getNumberOfFrames() {
+    return EngineGlobals.LAYER_BG_FRAMES;
   }
 
-  public void setBackground(Sprite bg) {
-    CanvasRenderingContext2D ctx = getContext(EngineGlobals.INACTIVE_ID);
+  @Override
+  public int getFrameTime() {
+    return EngineGlobals.LAYER_BG_FRAMETIME;
+  }
 
-    ctx.fillStyle = "gray";
-    ctx.fillRect(0, 0, cv.width, cv.height);
+  public void renderBackgroundImage(Sprite bg) {
+    clearDrawCanvas();
+    
+    // TODO stretch while protecting aspect ratio
+    bg.drawStrechedSprite(0, ctx, 0, 0, cv.width, cv.height); 
   }
 
 }

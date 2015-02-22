@@ -1,24 +1,18 @@
 package org.wolfTec.cwt.game.gfx;
 
-import net.wolfTec.wtEngine.Constants;
-import net.wolfTec.wtEngine.log.Logger;
-import net.wolfTec.wtEngine.model.WeatherType;
-import net.wolfTec.wtEngine.renderer.AnimatedLayer;
-import net.wolfTec.wtEngine.renderer.Layer;
-import net.wolfTec.wtEngine.renderer.ScreenLayer;
-
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Date;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.utility.Bean;
-import org.wolfTec.utility.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Created;
+import org.wolfTec.wolfTecEngine.log.Logger;
 
 @Bean
 public class EffectsLayerBean extends ScreenLayer implements AnimatedLayer {
 
-  @InjectedByFactory
+  @Created("{name=$beanName}")
   private Logger log;
 
   private int time;

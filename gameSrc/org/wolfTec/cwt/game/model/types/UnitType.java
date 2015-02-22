@@ -2,34 +2,45 @@ package org.wolfTec.cwt.game.model.types;
 
 import org.stjs.javascript.Array;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.wolfTecEngine.validation.IntValue;
-import org.wolfTec.wolfTecEngine.validation.StringValue;
+import org.wolfTec.wolfTecEngine.data.IntValue;
+import org.wolfTec.wolfTecEngine.data.StringValue;
 
 public class UnitType extends ObjectType {
 
-  @IntValue(min = -1, max = 99999, not = { 0 })
+  @IntValue(min = -1, max = 99999, not = 0)
   public int cost = -1;
+
   @IntValue(min = 0, max = EngineGlobals.MAX_SELECTION_RANGE)
   public int range = 1;
+
   @IntValue(min = 1, max = EngineGlobals.MAX_SELECTION_RANGE)
   public int vision = 1;
+
   @IntValue(min = 0, max = 99)
   public int fuel = 0;
+
   @IntValue(min = 0, max = 99)
   public int ammo = 0;
+
   @StringValue(minLength = 4, maxLength = 4)
   public String movetype;
+
   @IntValue(min = 0, max = 99)
   public int dailyFuelDrain = 0;
-  @IntValue(min = 0, max = 99, not = { 1 })
+
+  @IntValue(min = 0, max = 99, not = 1)
   public int dailyFuelDrainHidden = 0;
-  @IntValue(min = -1, max = 5, not = { 0 })
+
+  @IntValue(min = -1, max = 5, not = 0)
   public int maxloads = EngineGlobals.INACTIVE_ID;
+
   @StringValue(minLength = 4, maxLength = 4)
   public Array<String> canload;
+
   @StringValue(minLength = 4, maxLength = 4)
   public Array<String> supply;
-  @IntValue(min = -1, max = 999, not = { 0 })
+
+  @IntValue(min = -1, max = 999, not = 0)
   public int captures = EngineGlobals.INACTIVE_ID;
 
   public boolean stealth;

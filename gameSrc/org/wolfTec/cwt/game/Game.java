@@ -1,21 +1,29 @@
 package org.wolfTec.cwt.game;
 
-import org.wolfTec.wolfTecEngine.beans.BeanFactory;
+import org.stjs.javascript.JSGlobal;
+import org.wolfTec.wolfTecEngine.Engine;
+import org.wolfTec.wolfTecEngine.EngineOptions;
 
 public abstract class Game {
 
   public String getVersion() {
-    return EngineGlobals.VERSION;
+    String text = "";
+    text += "CustomWars: Tactics " + EngineGlobals.VERSION + " ";
+    text += "running on the WolfTecEngine engine " + Engine.VERSION;
+    return text;
   }
 
-  public static BeanFactory engine;
+  private static Engine engine;
 
-  public static void main(String[] args) {
+  public static void start() {
+    if (engine != null) {
+      JSGlobal.stjs.exception("AlreadyInitialized");
+    }
 
-    // create engine
-    engine = new BeanFactory("cwt");
-
-    // start
+    // TODO
+    EngineOptions options = null;
+    
+    engine = new Engine(options);
   }
 
 }

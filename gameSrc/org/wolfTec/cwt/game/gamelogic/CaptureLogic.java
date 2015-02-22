@@ -34,14 +34,14 @@ public class CaptureLogic {
    * @return
    */
   public boolean canCapture(Unit source) {
-    return source.getType().captures > 0;
+    return source.type.captures > 0;
   }
 
   /**
    * @returns {boolean}
    */
   public boolean isCapturing(Unit unit) {
-    if (unit.getLoadedIn() != null) {
+    if (unit.loadedIn != null) {
       return false;
     }
 
@@ -68,7 +68,7 @@ public class CaptureLogic {
   public boolean captureProperty(Property property, Unit unit) {
     property.points -= EngineGlobals.CAPTURE_PER_STEP;
     if (property.points <= 0) {
-      property.owner = unit.getOwner();
+      property.owner = unit.owner;
       property.points = EngineGlobals.CAPTURE_POINTS;
       // TODO: if max points are static then the configurable points from the
       // property sheets can be removed

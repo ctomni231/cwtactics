@@ -14,18 +14,16 @@ import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.gfx.AnimatedLayer;
 import org.wolfTec.wolfTecEngine.gfx.Direction;
-import org.wolfTec.wolfTecEngine.gfx.Camera;
+import org.wolfTec.wolfTecEngine.gfx.GraphicLayer;
 import org.wolfTec.wolfTecEngine.gfx.Sprite;
-import org.wolfTec.wolfTecEngine.gfx.SpriteIndexBean;
-import org.wolfTec.wolfTecEngine.gfx.SpriteManagerBean;
+import org.wolfTec.wolfTecEngine.gfx.SpriteManager;
 
 @Bean
-public class UnitLayerBean extends Camera implements AnimatedLayer {
+public class UnitLayerBean extends GraphicLayer implements AnimatedLayer {
 
   @Injected
-  private SpriteManagerBean sprites;
-  @Injected
-  private SpriteIndexBean spriteIndexes;
+  private SpriteManager sprites;
+
   @Injected
   private GameRoundBean gameround;
 

@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game.model.types;
 
-import org.wolfTec.wolfTecEngine.validation.IntValue;
+import org.wolfTec.wolfTecEngine.data.IntValue;
 
 public class CoType extends ObjectType {
 

@@ -1,9 +1,9 @@
 package net.wolfTec.cwtactics;
 
 import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.gherkin.FactsBase;
-import org.wolfTec.wolfTecEngine.gherkin.Parser;
-import org.wolfTec.wolfTecEngine.gherkin.TestRunner;
+import org.wolfTec.wolfTecEngine.test.FactsBase;
+import org.wolfTec.wolfTecEngine.test.Parser;
+import org.wolfTec.wolfTecEngine.test.TestRunner;
 
 @Bean public class TestManagerBean {
 

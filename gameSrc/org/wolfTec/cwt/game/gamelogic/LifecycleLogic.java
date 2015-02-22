@@ -18,19 +18,19 @@ public class LifecycleLogic {
 
   @Injected
   private FogLogic fog;
-  
+
   @Injected
   private CaptureLogic capture;
-  
+
   @Injected
   private SupplyLogic supply;
-  
+
   @Injected
   private ObjectTypesBean types;
-  
+
   @Injected
   private GameConfigBean config;
-  
+
   @Injected
   private GameRoundBean gameround;
 
@@ -55,7 +55,7 @@ public class LifecycleLogic {
 
     for (int i = 0, e = gameround.getMaxAmountOfUnits(); i < e; i++) {
       Unit unit = gameround.getUnit(i);
-      if (unit.getOwner() == player) {
+      if (unit.owner == player) {
         // TODO
       }
     }
@@ -92,7 +92,7 @@ public class LifecycleLogic {
    * @return {boolean}
    */
   public boolean isInactiveUnit(Unit unit) {
-    return unit.getOwner() == null;
+    return unit.owner == null;
   }
 
   /**
@@ -104,8 +104,8 @@ public class LifecycleLogic {
   public void damageUnit(Unit unit, int damage, int minRest) {
     if (damage == 0) return;
 
-    unit.setHp(unit.getHp() - damage);
-    if (unit.getHp() < minRest) unit.setHp(minRest);
+    unit.hp = unit.hp - damage;
+    if (unit.hp < minRest) unit.hp = minRest;
   }
 
   /**
@@ -118,18 +118,18 @@ public class LifecycleLogic {
   public void healUnit(Unit unit, int health, boolean diffAsGold) {
     if (health == 0) return;
 
-    unit.setHp(unit.getHp() + health);
-    if (unit.getHp() > 99) {
+    unit.hp = unit.hp + health;
+    if (unit.hp > 99) {
 
       // pay difference of the result health and 100 as
       // gold ( in relation to the unit cost ) to the
       // unit owners gold depot
       if (diffAsGold == true) {
-        int diff = unit.getHp() - 99;
-        unit.getOwner().gold += JSGlobal.parseInt((unit.getType().cost * diff) / 100, 10);
+        int diff = unit.hp - 99;
+        unit.owner.gold += JSGlobal.parseInt((unit.type.cost * diff) / 100, 10);
       }
 
-      unit.setHp(99);
+      unit.hp = 99;
     }
   }
 
@@ -138,7 +138,7 @@ public class LifecycleLogic {
     Unit unit = gameround.getInactiveUnit();
 
     // set references
-    unit.setOwner(player);
+    unit.owner = player;
     tile.unit = unit;
     player.numberOfUnits++;
 
@@ -149,15 +149,15 @@ public class LifecycleLogic {
 
   public void destroyUnit(int x, int y, boolean silent) {
     Tile tile = gameround.getMap().getTile(x, y);
-    fog.removeUnitVision(x, y, tile.unit.getOwner());
+    fog.removeUnitVision(x, y, tile.unit.owner);
 
     // TODO check loads
 
     // remove references
-    Player owner = tile.unit.getOwner();
+    Player owner = tile.unit.owner;
     owner.numberOfUnits--;
 
-    tile.unit.setOwner(null);
+    tile.unit.owner = null;
     tile.unit = null;
 
     // end game when the player does not have any unit left

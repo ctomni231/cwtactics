@@ -9,17 +9,15 @@ import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.gfx.Camera;
-import org.wolfTec.wolfTecEngine.gfx.SpriteIndexBean;
-import org.wolfTec.wolfTecEngine.gfx.SpriteManagerBean;
+import org.wolfTec.wolfTecEngine.gfx.GraphicLayer;
+import org.wolfTec.wolfTecEngine.gfx.SpriteManager;
 
 @Bean
-public class FogLayerBean extends Camera {
+public class FogLayerBean extends GraphicLayer {
 
   @Injected
-  private SpriteManagerBean sprites;
-  @Injected
-  private SpriteIndexBean spriteIndexes;
+  private SpriteManager sprites;
+  
   @Injected
   private GameRoundBean gameround;
 

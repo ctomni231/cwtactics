@@ -2,16 +2,16 @@ package org.wolfTec.cwt.game.ai;
 
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.log.Logger;
 
 @Bean
 public class ArtificialInteligenceBean {
 
-  @InjectedByFactory
+  @Created("{name=$beanName}")
   private Logger log;
 
-  /*
+  /* TODO
    * 
    * var tree = new behaviorTree.BehaviorTree( behaviorTree.Selector([
    * 

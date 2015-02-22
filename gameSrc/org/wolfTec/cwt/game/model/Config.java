@@ -1,5 +1,6 @@
 package org.wolfTec.cwt.game.model;
 
+import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Template;
 import org.wolfTec.cwt.game.EngineGlobals;
 
@@ -39,7 +40,7 @@ public class Config {
 
     // check steps
     if ((value - this.min) % this.step != 0)
-      throw new IllegalArgumentException("StepCriteriaBrokenException");
+      JSGlobal.stjs.exception("StepCriteriaBrokenException");
     this.value = value;
   }
 

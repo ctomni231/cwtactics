@@ -2,12 +2,12 @@ package org.wolfTec.cwt.game.states;
 
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
+import org.wolfTec.cwt.game.gfx.UserInterfaceLayerBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
-import org.wolfTec.cwt.game.renderer.UserInterfaceLayerBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
 import org.wolfTec.wolfTecEngine.gfx.ScreenManagerBean;
 import org.wolfTec.wolfTecEngine.log.Logger;
@@ -16,7 +16,7 @@ import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
 @Bean
 public class StateDataBean {
 
-  @InjectedByFactory
+  @Created("{name=$beanName}")
   private Logger log;
 
   @Injected

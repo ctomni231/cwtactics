@@ -9,14 +9,14 @@ import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.PostInitialization;
 import org.wolfTec.wolfTecEngine.gfx.AnimatedLayer;
 import org.wolfTec.wolfTecEngine.gfx.Direction;
-import org.wolfTec.wolfTecEngine.gfx.Camera;
+import org.wolfTec.wolfTecEngine.gfx.GraphicLayer;
 import org.wolfTec.wolfTecEngine.gfx.Sprite;
-import org.wolfTec.wolfTecEngine.gfx.SpriteManagerBean;
+import org.wolfTec.wolfTecEngine.gfx.SpriteManager;
 
 @Bean
-public class FocusLayerBean extends Camera implements AnimatedLayer {
+public class FocusLayerBean extends GraphicLayer implements AnimatedLayer {
 
-  private SpriteManagerBean sprites;
+  private SpriteManager sprites;
   private Canvas temporaryCanvas;
 
   @Override

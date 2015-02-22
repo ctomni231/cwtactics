@@ -5,13 +5,15 @@ import org.stjs.javascript.JSCollections;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
 import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
 import org.wolfTec.wolfTecEngine.container.MoveableMatrix;
 
-@Bean public class MovePath {
+@Bean
+public class MovePath {
 
-  @InjectedByFactory private CircularBuffer<MoveCode> path;
+  @Created("{name=$beanName}")
+  private CircularBuffer<MoveCode> path;
 
   /**
    * Little helper array object for `model.move_fillMoveMap`. This will be used

@@ -1,26 +1,23 @@
 package org.wolfTec.cwt.game.model;
 
-import org.stjs.javascript.annotation.Template;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.beans.Created;
+import org.wolfTec.wolfTecEngine.beans.PostInitialization;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
 
 public class Menu {
 
-  private int selectedIndex;
-  private int size;
+  public int selectedIndex;
+  public int size;
 
-  @InjectedByFactory
+  @Created("{size=$options.menuSize}")
   private CircularBuffer<MenuEntry> entries;
 
-  public Menu() {
-    this.selectedIndex = 0; // TODO do it different
-    for (int i = 0; i < 50; i++) {
+  @PostInitialization
+  public void init() {
+    this.selectedIndex = 0;
+    for (int i = 0; i < entries.getSize(); i++) {
       entries.push(new MenuEntry());
     }
-  }
-
-  public int getSelectedIndex() {
-    return this.selectedIndex;
   }
 
   public String getSelectedContent() {
@@ -29,11 +26,6 @@ public class Menu {
 
   public String getContentAt(int index) {
     return this.entries.get(index).getContent();
-  }
-
-  @Template("toProperty")
-  public int getSize() {
-    return size;
   }
 
   public boolean isSelectedEntryEnabled() {

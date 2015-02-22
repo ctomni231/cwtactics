@@ -9,19 +9,22 @@ import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.log.Logger;
 
 @Bean
 public class GameRoundSetupBean {
 
-  @InjectedByFactory
+  @Created("{name=$beanName}")
   public Logger log;
+  
   @Injected
   private ObjectTypesBean typeDb;
+  
   @Injected
   private GameRoundBean gameround;
+  
   @Injected
   private LifecycleLogic lifecycle;
 

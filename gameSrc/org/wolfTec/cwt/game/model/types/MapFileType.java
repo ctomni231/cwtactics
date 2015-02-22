@@ -1,7 +1,7 @@
 package org.wolfTec.cwt.game.model.types;
 
-import org.wolfTec.wolfTecEngine.validation.IntValue;
-import org.wolfTec.wolfTecEngine.validation.StringValue;
+import org.wolfTec.wolfTecEngine.data.IntValue;
+import org.wolfTec.wolfTecEngine.data.StringValue;
 
 public class MapFileType {
 

@@ -25,7 +25,7 @@ public class SupplyLogic {
    * @param {Unit} unit
    */
   public boolean isSupplier(Unit unit) {
-    return unit.getType().supply != JSGlobal.undefined;
+    return unit.type.supply != JSGlobal.undefined;
   }
 
   /**
@@ -34,15 +34,15 @@ public class SupplyLogic {
    * @param {Unit} unit
    */
   public void drainFuel(Unit unit) {
-    int v = unit.getType().dailyFuelDrain;
+    int v = unit.type.dailyFuelDrain;
     if (v != EngineGlobals.INACTIVE_ID) {
 
       // hidden units may drain more fuel
-      if (unit.isHidden() && unit.getType().dailyFuelDrainHidden != EngineGlobals.INACTIVE_ID) {
-        v = unit.getType().dailyFuelDrainHidden;
+      if (unit.hidden && unit.type.dailyFuelDrainHidden != EngineGlobals.INACTIVE_ID) {
+        v = unit.type.dailyFuelDrainHidden;
       }
 
-      unit.setFuel(unit.getFuel() - v);
+      unit.fuel = unit.fuel - v;
     }
   }
 
@@ -52,8 +52,8 @@ public class SupplyLogic {
    * @return {boolean}
    */
   public boolean hasLowAmmo(Unit unit) {
-    int cAmmo = unit.getAmmo();
-    return (cAmmo != 0 && cAmmo <= (unit.getType().ammo * 0.25));
+    int cAmmo = unit.ammo;
+    return (cAmmo != 0 && cAmmo <= (unit.type.ammo * 0.25));
   }
 
   /**
@@ -62,7 +62,7 @@ public class SupplyLogic {
    * @return {boolean}
    */
   public boolean hasLowFuel(Unit unit) {
-    return (unit.getFuel() <= (unit.getType().fuel * 0.25));
+    return (unit.fuel <= (unit.type.fuel * 0.25));
   }
 
   /**
@@ -98,8 +98,7 @@ public class SupplyLogic {
    */
   public boolean canRefillObjectAt(Unit supplier, int x, int y) {
     Unit target = gameround.getMap().getTile(x, y).unit;
-    return (gameround.isValidPosition(x, y) && target != null && target.getOwner() == supplier
-        .getOwner());
+    return (gameround.isValidPosition(x, y) && target != null && target.owner == supplier.owner);
   }
 
   /**
@@ -118,8 +117,8 @@ public class SupplyLogic {
    * @param {Unit} unit
    */
   public void refillSupplies(Unit unit) {
-    unit.setAmmo(unit.getType().ammo);
-    unit.setFuel(unit.getType().fuel);
+    unit.ammo = unit.type.ammo;
+    unit.fuel = unit.type.fuel;
   }
 
   /**
@@ -152,9 +151,9 @@ public class SupplyLogic {
     Unit unit = tile.unit;
 
     Map<String, Integer> repairs = prop.type.repairs;
-    int amount = repairs.$get(unit.getType().getMoveType().ID);
+    int amount = repairs.$get(unit.type.getMoveType().ID);
     if (amount == 0) {
-      amount = repairs.$get(unit.getType().ID);
+      amount = repairs.$get(unit.type.ID);
     }
 
     lifecycle.healUnit(unit, amount, true);
