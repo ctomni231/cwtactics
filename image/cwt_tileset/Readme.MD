@@ -163,7 +163,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *WTLD* = Wasteland
 * [x] *RUIN* = Ruins
 * [ ] *SHOA* = Shoals
-* [ ] *SEAS* = Seas
+* [x] *SEAS* = Seas
 * [x] *METR* = Meteor
 * [ ] *PLZM* = Plasma
 * [ ] *PLZP* = Plazma Pipe
