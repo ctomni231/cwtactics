@@ -4,17 +4,18 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gfx.UserInterfaceLayerBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.log.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.State;
+import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
 
 @Bean
 public class ErrorState implements State {
   
   // TODO use button group
   
-  @InjectedByFactory
+  @Created("{name=$beanName}")
   private Logger log;
 
   @Injected
@@ -37,17 +38,17 @@ public class ErrorState implements State {
   }
 
   @Override
-  public void keyLeft() {
+  public void keyLeft(StateMachineBean stm) {
     if (selectedAction > 0) selectedAction--;
   }
 
   @Override
-  public void keyRight() {
+  public void keyRight(StateMachineBean stm) {
     if (selectedAction < 2) selectedAction++;
   }
 
   @Override
-  public void keyAction() {
+  public void keyAction(StateMachineBean stm) {
     switch (selectedAction) {
 
     /* Restart */
@@ -70,8 +71,6 @@ public class ErrorState implements State {
   @Override
   public void render(int delta) {
     if (!rendered) {
-      CanvasRenderingContext2D ctxUI = ui.getContext(EngineGlobals.INACTIVE_ID);
-
       rendered = true;
     }
   }

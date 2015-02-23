@@ -109,7 +109,7 @@ public class SpecialWeaponsLogic {
   public void fireSilo(int x, int y, int tx, int ty) {
     // TODO move get logic into gameround -> map will be composite element of
     // game round
-    Property silo = gameround.getMap().getTile(x, y).property;
+    Property silo = gameround.getTile(x, y).property;
 
     PropertyType type = silo.type;
     silo.type = types.getPropertyType(type.changesTo);
@@ -168,7 +168,7 @@ public class SpecialWeaponsLogic {
       throw new Error("IllegalArgumentType(s)");
     }
 
-    Tile tile = gameround.getMap().getTile(x, y);
+    Tile tile = gameround.getTile(x, y);
     if (!canSelfDestruct(tile.unit) || range < 1 || damage < 1) {
       throw new Error("IllegalArgumentType(s)");
     }

@@ -1,12 +1,11 @@
 package org.wolfTec.cwt.game.states.generic;
 
-import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gfx.UserInterfaceLayerBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.input.InputData;
 import org.wolfTec.wolfTecEngine.statemachine.State;
+import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
 
 @Bean
 public class PortraitModeState implements State {
@@ -23,23 +22,19 @@ public class PortraitModeState implements State {
   }
 
   @Override
-  public void update(int delta, InputData input) {
+  public void update(StateMachineBean stm, int delta, InputData input) {
     boolean isLandscape = false;
 
     // go back to the last state when the device is back in landscape mode
     // --> don't fire enter event when changing back to the last state
     if (isLandscape) {
-      statemachine.setState(this.lastStateId, false);
+      stm.setState(this.lastStateId, false);
     }
   }
 
   @Override
   public void render(int delta) {
     if (!rendered) {
-      CanvasRenderingContext2D ctxUI = ui.getContext(EngineGlobals.INACTIVE_ID);
-
-      ui.clear(EngineGlobals.INACTIVE_ID);
-
       rendered = true;
     }
   }

@@ -12,26 +12,27 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.types.WeatherType;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.functions.Function5;
+import org.wolfTec.wolfTecEngine.util.ConvertUtility;
 
 @Bean
 public class GameRoundBean {
 
   private GameMapBean map;
-  private int gameTimeLimit;
-  private int gameTimeElapsed;
-  private int turnTimeLimit;
-  private int turnTimeElapsed;
+  public int gameTimeLimit;
+  public int gameTimeElapsed;
+  public int turnTimeLimit;
+  public int turnTimeElapsed;
   public Player lastClientPlayer;
-  private Player turnOwner;
-  private WeatherType weather;
-  private int weatherLeftDays;
-  private GameMode gameMode;
-  private Array<Unit> units;
-  private Array<Property> properties;
-  private Array<Player> players;
-  private int day = 0;
-  private int mapWidth;
-  private int mapHeight;
+  public Player turnOwner;
+  public WeatherType weather;
+  public int weatherLeftDays;
+  public GameMode gameMode;
+  public Array<Unit> units;
+  public Array<Property> properties;
+  public Array<Player> players;
+  public int day = 0;
+  public int mapWidth;
+  public int mapHeight;
 
   public GameRoundBean() {
     map = new GameMapBean(EngineGlobals.MAX_MAP_WIDTH, EngineGlobals.MAX_MAP_HEIGHT);
@@ -62,78 +63,8 @@ public class GameRoundBean {
 
   }
 
-  @Template("toProperty")
-  public GameMapBean getMap() {
-    return map;
-  }
-
-  @Template("toProperty")
-  public int getGameTimeLimit() {
-    return gameTimeLimit;
-  }
-
-  @Template("toProperty")
-  public int getGameTimeElapsed() {
-    return gameTimeElapsed;
-  }
-
-  @Template("toProperty")
-  public int getTurnTimeLimit() {
-    return turnTimeLimit;
-  }
-
-  @Template("toProperty")
-  public int getTurnTimeElapsed() {
-    return turnTimeElapsed;
-  }
-
-  @Template("toProperty")
-  public Player getLastClientPlayer() {
-    return lastClientPlayer;
-  }
-
-  @Template("toProperty")
-  public Player getTurnOwner() {
-    return turnOwner;
-  }
-
-  @Template("toProperty")
-  public WeatherType getWeather() {
-    return weather;
-  }
-
-  @Template("toProperty")
-  public int getWeatherLeftDays() {
-    return weatherLeftDays;
-  }
-
-  @Template("toProperty")
-  public GameMode getGameMode() {
-    return gameMode;
-  }
-
-  @Template("toProperty")
-  public void setGameMode(GameMode gameMode) {
-    this.gameMode = gameMode;
-  }
-
-  @Template("toProperty")
-  public int getDay() {
-    return day;
-  }
-
-  @Template("toProperty")
-  public int getMapWidth() {
-    return mapWidth;
-  }
-
-  @Template("toProperty")
-  public int getMapHeight() {
-    return mapHeight;
-  }
-  
   public Tile getTile(int x, int y) {
-    return getMap().getTile(x,y);
+    return map.getTile(x, y);
   }
 
   /**
@@ -173,8 +104,8 @@ public class GameRoundBean {
     if (id < 0 || id >= units.$length()) throw new Error("InvalidUnitIdException");
     return units.$get(id);
   }
-  
-  public int getMaxAmountOfUnits () {
+
+  public int getMaxAmountOfUnits() {
     return units.$length();
   }
 
@@ -186,7 +117,7 @@ public class GameRoundBean {
     if (id < 0 || id >= properties.$length()) throw new Error("InvalidPropertyIdException");
     return properties.$get(id);
   }
-  
+
   public int getMaxAmountOfProperties() {
     return properties.$length();
   }
@@ -307,6 +238,12 @@ public class GameRoundBean {
     }
 
     throw new Error("UnknownGameObject");
+  }
+
+  public int getDistance(int sx, int sy, int tx, int ty) {
+    int dx = ConvertUtility.absInt(sx - tx);
+    int dy = ConvertUtility.absInt(sy - ty);
+    return dx + dy;
   }
 
   /**

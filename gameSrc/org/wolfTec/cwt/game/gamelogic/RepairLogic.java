@@ -24,7 +24,7 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
    * @return
    */
   public boolean canPropertyRepairAt(int x, int y) {
-    Tile tile = gameround.getMap().getTile(x, y);
+    Tile tile = gameround.getTile(x, y);
     Unit unit = tile.unit;
     Property prop = tile.property;
     

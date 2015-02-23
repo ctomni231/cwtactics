@@ -19,7 +19,7 @@ import org.wolfTec.wolfTecEngine.gfx.Sprite;
 import org.wolfTec.wolfTecEngine.gfx.SpriteManager;
 
 @Bean
-public class UnitLayerBean extends GraphicLayer implements AnimatedLayer {
+public class UnitLayerBean extends GraphicLayer {
 
   @Injected
   private SpriteManager sprites;
@@ -28,24 +28,23 @@ public class UnitLayerBean extends GraphicLayer implements AnimatedLayer {
   private GameRoundBean gameround;
 
   private Canvas temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
+  public int hiddenUnitId;
 
   @Override
-  public int getZIndex() {
-    return 3;
+  public int getIndex() {
+    return EngineGlobals.LAYER_UNIT;
   }
 
   @Override
-  public int getSubStates() {
-    return 3;
+  public int getNumberOfFrames() {
+    return EngineGlobals.LAYER_UNIT_FRAMES;
   }
 
   @Override
-  public String getLayerCanvasId() {
-    return "canvas_layer_Unit";
+  public int getFrameTime() {
+    return EngineGlobals.LAYER_UNIT_FRAMETIME;
   }
-
-  private int hiddenUnitId;
-
+  
   /** */
   public void setHiddenUnitId(int unitId) {
     hiddenUnitId = unitId;
@@ -116,7 +115,7 @@ public class UnitLayerBean extends GraphicLayer implements AnimatedLayer {
 
     for (int xe = x + w; x < xe; x++) {
       for (int y = oy, ye = y + h; y < ye; y++) {
-        Tile tile = gameround.getMap().getTile(x, y);
+        Tile tile = gameround.getTile(x, y);
         if (tile.visionClient == 0) {
           continue;
         }

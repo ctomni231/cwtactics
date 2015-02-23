@@ -133,7 +133,7 @@ public class RelationshipCheckLogic {
 
     // WEST
     if (x > 0) {
-      unit = gameround.getMap().getTile(x - 1, y).unit;
+      unit = gameround.getTile(x - 1, y).unit;
       if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
         return true;
       }
@@ -141,7 +141,7 @@ public class RelationshipCheckLogic {
 
     // NORTH
     if (y > 0) {
-      unit = gameround.getMap().getTile(x, y - 1).unit;
+      unit = gameround.getTile(x, y - 1).unit;
       if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
         return true;
       }
@@ -149,7 +149,7 @@ public class RelationshipCheckLogic {
 
     // EAST
     if (x < gameround.getMapWidth() - 1) {
-      unit = gameround.getMap().getTile(x + 1, y).unit;
+      unit = gameround.getTile(x + 1, y).unit;
       if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
         return true;
       }
@@ -157,7 +157,7 @@ public class RelationshipCheckLogic {
 
     // SOUTH
     if (y < gameround.getMapHeight() - 1) {
-      unit = gameround.getMap().getTile(x, y + 1).unit;
+      unit = gameround.getTile(x, y + 1).unit;
       if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
         return true;
       }

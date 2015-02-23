@@ -62,7 +62,7 @@ public class MoveLogic {
    */
   public int getMoveCosts(MoveType movetype, int x, int y) {
     int v;
-    Tile tile = gameround.getMap().getTile(x, y);
+    Tile tile = gameround.getTile(x, y);
 
     // grab costs from property or if not given from tile
     // TODO
@@ -102,7 +102,7 @@ public class MoveLogic {
     }
 
     // check some other rules like fog and units
-    Tile tile = gameround.getMap().getTile(x, y);
+    Tile tile = gameround.getTile(x, y);
     return (tile.visionTurnOwner == 0 || tile.unit == null);
   }
 }

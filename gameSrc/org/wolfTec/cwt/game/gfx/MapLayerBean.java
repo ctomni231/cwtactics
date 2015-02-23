@@ -14,7 +14,7 @@ import org.wolfTec.wolfTecEngine.gfx.GraphicLayer;
 import org.wolfTec.wolfTecEngine.gfx.SpriteManager;
 
 @Bean
-public class MapLayerBean extends GraphicLayer implements AnimatedLayer {
+public class MapLayerBean extends GraphicLayer {
 
   @Injected
   private SpriteManager sprites;
@@ -23,13 +23,18 @@ public class MapLayerBean extends GraphicLayer implements AnimatedLayer {
   private GameRoundBean gameround;
 
   @Override
-  public int getSubStates() {
-    return 8;
+  public int getIndex() {
+    return EngineGlobals.LAYER_MAP;
   }
 
   @Override
-  public String getLayerCanvasId() {
-    return "canvas_layer_Map";
+  public int getNumberOfFrames() {
+    return EngineGlobals.LAYER_MAP_FRAMES;
+  }
+
+  @Override
+  public int getFrameTime() {
+    return EngineGlobals.LAYER_MAP_FRAMETIME;
   }
 
   @Override
@@ -122,7 +127,7 @@ public class MapLayerBean extends GraphicLayer implements AnimatedLayer {
 
     for (int xe = x + w; x < xe; x++) {
       for (int y = oy, ye = y + h; y < ye; y++) {
-        tile = gameround.getMap().getTile(x, y);
+        tile = gameround.getTile(x, y);
         sprite = sprites.getSprite(tile.type.ID).getImage(tile.variant * spriteIndexes.TILE_STATES);
 
         // grab property status before loop (calculate it one instead of eight

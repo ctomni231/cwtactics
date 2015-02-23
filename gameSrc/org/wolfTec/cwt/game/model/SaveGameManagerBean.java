@@ -3,16 +3,17 @@ package org.wolfTec.cwt.game.model;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.log.Logger;
 import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
 
 @Bean
 public class SaveGameManagerBean {
 
-  @InjectedByFactory
+  @Created("{name=$beanName}")
   private Logger log;
+
   @Injected
   private VirtualFilesystem storage;
 
@@ -38,13 +39,14 @@ public class SaveGameManagerBean {
    * @param callback
    */
   public void saveGame(String name, Callback0 callback) {
-    storage.writeFile(EngineGlobals.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, null, (data, error) -> {
-      if (error != null) {
-        log.error("SavingGameError");
-      } else {
-        callback.$invoke();
-      }
-    });
+    storage.writeFile(EngineGlobals.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, null,
+        (data, error) -> {
+          if (error != null) {
+            log.error("SavingGameError");
+          } else {
+            callback.$invoke();
+          }
+        });
 
     // TODO
     // var saveData = {};

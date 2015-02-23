@@ -97,7 +97,7 @@ public class SupplyLogic {
    *         position (**x**,**y**), else **false**.
    */
   public boolean canRefillObjectAt(Unit supplier, int x, int y) {
-    Unit target = gameround.getMap().getTile(x, y).unit;
+    Unit target = gameround.getTile(x, y).unit;
     return (gameround.isValidPosition(x, y) && target != null && target.owner == supplier.owner);
   }
 
@@ -108,7 +108,7 @@ public class SupplyLogic {
    * @param {number} y
    */
   public void refillSuppliesByPosition(int x, int y) {
-    refillSupplies(gameround.getMap().getTile(x, y).unit);
+    refillSupplies(gameround.getTile(x, y).unit);
   }
 
   /**
@@ -146,7 +146,7 @@ public class SupplyLogic {
    * @param y
    */
   public void propertyRepairsAt(int x, int y) {
-    Tile tile = gameround.getMap().getTile(x, y);
+    Tile tile = gameround.getTile(x, y);
     Property prop = tile.property;
     Unit unit = tile.unit;
 

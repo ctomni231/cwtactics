@@ -12,6 +12,7 @@ import org.wolfTec.wolfTecEngine.beans.PostInitialization;
 import org.wolfTec.wolfTecEngine.log.Logger;
 import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
 import org.wolfTec.wolfTecEngine.persistence.FileDescriptor;
+import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystemFolder;
 
 @Bean
 public class GameConfigBean {
@@ -19,7 +20,8 @@ public class GameConfigBean {
   @Created("{name=$beanName}")
   private Logger log;
 
-  private VirtualFilesystem storage;
+  @Created("{folder=/config}")
+  private VirtualFilesystemFolder fs;
 
   private Map<String, Config> configs;
   private Array<String> configNames;

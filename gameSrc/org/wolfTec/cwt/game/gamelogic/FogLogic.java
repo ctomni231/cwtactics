@@ -10,11 +10,12 @@ import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Injected;
 
-@Bean public class FogLogic {
+@Bean
+public class FogLogic {
 
   @Injected
   private GameRoundBean gameround;
-  
+
   @Injected
   private GameConfigBean config;
 
@@ -32,12 +33,12 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
     if (!clientVisible && !turnOwnerVisible) return;
 
     if (range == 0) {
-      if (clientVisible) gameround.getMap().getTile(x, y).visionClient += value;
-      if (turnOwnerVisible) gameround.getMap().getTile(x, y).visionTurnOwner += value;
+      if (clientVisible) gameround.getTile(x, y).visionClient += value;
+      if (turnOwnerVisible) gameround.getTile(x, y).visionTurnOwner += value;
 
     } else {
-      int mW = gameround.getMapWidth();
-      int mH = gameround.getMapHeight();
+      int mW = gameround.mapWidth;
+      int mH = gameround.mapHeight;
       int lX;
       int hX;
       int lY = y - range;
@@ -55,11 +56,11 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
         for (; lX <= hX; lX++) {
 
           // does the tile block vision ?
-          if (gameround.getMap().getTile(lX, lY).type.blocksVision
-              && gameround.getMap().getDistance(x, y, lX, lY) > 1) continue;
+          if (gameround.getTile(lX, lY).type.blocksVision
+              && gameround.getDistance(x, y, lX, lY) > 1) continue;
 
-          if (clientVisible) gameround.getMap().getTile(lX, lY).visionClient += value;
-          if (turnOwnerVisible) gameround.getMap().getTile(lX, lY).visionTurnOwner += value;
+          if (clientVisible) gameround.getTile(lX, lY).visionClient += value;
+          if (turnOwnerVisible) gameround.getTile(lX, lY).visionTurnOwner += value;
         }
       }
     }
@@ -68,8 +69,8 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
   public void fullRecalculation() {
     int x;
     int y;
-    int xe = gameround.getMapWidth();
-    int ye = gameround.getMapHeight();
+    int xe = gameround.mapWidth;
+    int ye = gameround.mapHeight;
     boolean fogEnabled = (config.getConfig("fogEnabled").getValue() == 1);
 
     // 1. reset fog maps
@@ -77,11 +78,11 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
       for (y = 0; y < ye; y++) {
 
         if (!fogEnabled) { // TODO
-          gameround.getMap().getTile(x, y).visionTurnOwner = 1;
-          gameround.getMap().getTile(x, y).visionClient = 1;
+          gameround.getTile(x, y).visionTurnOwner = 1;
+          gameround.getTile(x, y).visionClient = 1;
         } else {
-          gameround.getMap().getTile(x, y).visionTurnOwner = 0;
-          gameround.getMap().getTile(x, y).visionClient = 0;
+          gameround.getTile(x, y).visionTurnOwner = 0;
+          gameround.getTile(x, y).visionClient = 0;
         }
       }
     }
@@ -95,14 +96,14 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
 
       for (x = 0; x < xe; x++) {
         for (y = 0; y < ye; y++) {
-          tile = gameround.getMap().getTile(x, y);
+          tile = gameround.getTile(x, y);
 
           unit = tile.unit;
           if (unit != null) {
-            vision = unit.getType().vision;
+            vision = unit.type.vision;
             if (vision < 0) vision = 0;
 
-            modifyVision(x, y, unit.getOwner(), vision, 1);
+            modifyVision(x, y, unit.owner, vision, 1);
           }
 
           property = tile.property;
@@ -122,14 +123,14 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
   }
 
   public void removeUnitVision(int x, int y, Player owner) {
-    Unit unit = gameround.getMap().getTile(x, y).unit;
-    if (owner == null) owner = unit.getOwner();
+    Unit unit = gameround.getTile(x, y).unit;
+    if (owner == null) owner = unit.owner;
 
-    removeVision(x, y, owner, unit.getType().vision);
+    removeVision(x, y, owner, unit.type.vision);
   }
 
   public void removePropertyVision(int x, int y, Player owner) {
-    Property prop = gameround.getMap().getTile(x, y).property;
+    Property prop = gameround.getTile(x, y).property;
     if (owner == null) owner = prop.owner;
 
     removeVision(x, y, owner, prop.type.vision);
@@ -140,14 +141,14 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
   }
 
   public void addUnitVision(int x, int y, Player owner) {
-    Unit unit = gameround.getMap().getTile(x, y).unit;
-    if (owner == null) owner = unit.getOwner();
+    Unit unit = gameround.getTile(x, y).unit;
+    if (owner == null) owner = unit.owner;
 
-    addVision(x, y, owner, unit.getType().vision);
+    addVision(x, y, owner, unit.type.vision);
   }
 
   public void addPropertyVision(int x, int y, Player owner) {
-    Property prop = gameround.getMap().getTile(x, y).property;
+    Property prop = gameround.getTile(x, y).property;
     if (owner == null) owner = prop.owner;
 
     addVision(x, y, owner, prop.type.vision);

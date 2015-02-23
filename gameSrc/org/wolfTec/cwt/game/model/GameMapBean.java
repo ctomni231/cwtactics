@@ -10,7 +10,7 @@ public class GameMapBean {
   public int width;
   public int height;
   
-  public Map(int maxSizeX, int maxSizeY) {
+  public GameMapBean(int maxSizeX, int maxSizeY) {
     this.setSize(maxSizeX, maxSizeY);
 
     mapData = JSCollections.$array();

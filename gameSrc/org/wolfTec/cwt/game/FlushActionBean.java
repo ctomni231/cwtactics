@@ -7,8 +7,8 @@ import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.cwt.game.states.StateDataBean;
 import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
 import org.wolfTec.wolfTecEngine.log.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
 
@@ -25,7 +25,7 @@ public class FlushActionBean {
   public final String TRANSFER_PROPERTY = "transferProperty";
   public final String TRANSFER_UNIT = "transferUnit";
 
-  @InjectedByFactory
+  @Created("{name=$beanName}")
   private Logger log;
 
   @Injected
@@ -50,8 +50,8 @@ public class FlushActionBean {
   public void initMenuByUnitClick(Menu menu) {
     Unit unit = null; // TODO
 
-    if (unit.getType().stealth) { // TODO S,T NONE - SAME
-      menu.addEntry(unit.isHidden() ? UNHIDE : HIDE, true);
+    if (unit.type.stealth) { // TODO S,T NONE - SAME
+      menu.addEntry(unit.hidden ? UNHIDE : HIDE, true);
     }
 
     menu.addEntry(WAIT, true); // TODO S,T NONE - SAME
@@ -70,7 +70,7 @@ public class FlushActionBean {
 
       case WAIT:
         // TODO full re-render.. maybe a little bit to much huh ?
-        gameround.getUnit(p1).setCanAct(false);
+        gameround.getUnit(p1).canAct = false;
         unitLayer.onFullScreenRender();
         break;
 
@@ -81,11 +81,11 @@ public class FlushActionBean {
         break;
 
       case HIDE:
-        gameround.getUnit(p1).setHidden(true);
+        gameround.getUnit(p1).hidden = true;
         break;
 
       case UNHIDE:
-        gameround.getUnit(p1).setHidden(false);
+        gameround.getUnit(p1).hidden = false;
         break;
 
       case TRANSFER_MONEY:

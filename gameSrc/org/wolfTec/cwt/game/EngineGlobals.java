@@ -169,23 +169,23 @@ public abstract class EngineGlobals {
   public static final int LAYER_BG = 0;
   public static final int LAYER_BG_FRAMES = 1;
   public static final int LAYER_BG_FRAMETIME = 0;
-  
+
   public static final int LAYER_MAP = 1;
   public static final int LAYER_MAP_FRAMES = 8;
   public static final int LAYER_MAP_FRAMETIME = 64;
-  
+
   public static final int LAYER_UNIT = 2;
   public static final int LAYER_UNIT_FRAMES = 4;
   public static final int LAYER_UNIT_FRAMETIME = 160;
-  
+
   public static final int LAYER_FOG = 3;
   public static final int LAYER_FOG_FRAMES = 1;
   public static final int LAYER_FOG_FRAMETIME = 0;
-  
+
   public static final int LAYER_FOCUS = 4;
   public static final int LAYER_FOCUS_FRAMES = 7;
   public static final int LAYER_FOCUS_FRAMETIME = 64;
-  
+
   public static final int LAYER_UI = 5;
   public static final int LAYER_UI_FRAMES = 1;
   public static final int LAYER_UI_FRAMETIME = 0;

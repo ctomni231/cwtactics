@@ -84,7 +84,7 @@ public class FogLayerBean extends GraphicLayer {
         int distance;
 
         if (circle) {
-          distance = gameround.getMap().getDistance(x, y, cx, cy);
+          distance = gameround.getDistance(x, y, cx, cy);
           if (!gameround.getMap().isValidPosition(x, y) || distance > range) {
             continue;
           }

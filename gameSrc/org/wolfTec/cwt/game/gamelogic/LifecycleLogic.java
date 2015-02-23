@@ -134,7 +134,7 @@ public class LifecycleLogic {
   }
 
   public void createUnit(int x, int y, Player player, UnitType type) {
-    Tile tile = gameround.getMap().getTile(x, y);
+    Tile tile = gameround.getTile(x, y);
     Unit unit = gameround.getInactiveUnit();
 
     // set references
@@ -148,7 +148,7 @@ public class LifecycleLogic {
   }
 
   public void destroyUnit(int x, int y, boolean silent) {
-    Tile tile = gameround.getMap().getTile(x, y);
+    Tile tile = gameround.getTile(x, y);
     fog.removeUnitVision(x, y, tile.unit.owner);
 
     // TODO check loads

@@ -8,6 +8,7 @@ import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.input.InputData;
 import org.wolfTec.wolfTecEngine.localization.LocalizationBean;
 import org.wolfTec.wolfTecEngine.statemachine.MenuState;
+import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
 import org.wolfTec.wolfTecEngine.util.ConvertUtility;
 
 @Bean
@@ -22,9 +23,6 @@ public class StartScreenState implements MenuState {
   @Injected
   private UserInterfaceLayerBean ui;
 
-  @Injected
-  private ConvertUtility converter;
-
   private int timeLeft;
   private int maxTooltips;
   private String activeAdvice;
@@ -32,7 +30,7 @@ public class StartScreenState implements MenuState {
   @Override
   public void enter() {
     timeLeft = 0;
-    maxTooltips = converter.strToInt(localization.solveKey("TOOLTIPS"));
+    maxTooltips = ConvertUtility.strToInt(localization.solveKey("TOOLTIPS"));
 
     // TODO random background
   }
@@ -47,18 +45,18 @@ public class StartScreenState implements MenuState {
   }
 
   @Override
-  public void keyAction() {
-    changeState(MainMenuState.class);
+  public void keyAction(StateMachineBean stm) {
+    stm.changeToStateClass(MainMenuState.class);
   }
 
   @Override
-  public void update(int delta, InputData input) {
-    evalInput(input);
+  public void update(StateMachineBean stm, int delta, InputData input) {
+    evalInput(stm, input);
 
     timeLeft--;
     if (timeLeft < 0) {
       // TODO set activeAdvice
-      int randomIndex = converter.floatToInt((float) Math.random() * maxTooltips) + 1;
+      int randomIndex = ConvertUtility.floatToInt((float) Math.random() * maxTooltips) + 1;
       activeAdvice = localization.solveKey("TOOLTIPS_" + randomIndex);
 
       timeLeft = EngineGlobals.START_SCREEN_TOOLTIP_TIME;
