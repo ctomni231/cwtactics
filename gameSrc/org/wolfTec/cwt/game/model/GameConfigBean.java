@@ -5,32 +5,33 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.model.types.GameConfigType;
+import org.wolfTec.wolfTecEngine.assets.GameLoadHandler;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.beans.PostInitialization;
 import org.wolfTec.wolfTecEngine.log.Logger;
-import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
 import org.wolfTec.wolfTecEngine.persistence.FileDescriptor;
-import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystemFolder;
+import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
 
 @Bean
-public class GameConfigBean {
+public class GameConfigBean implements GameLoadHandler {
 
   @Created("{name=$beanName}")
   private Logger log;
 
   @Created("{folder=/config}")
-  private VirtualFilesystemFolder fs;
+  private VirtualFilesystem fs;
 
+  @Created
   private Map<String, Config> configs;
+  
+  @Created
   private Array<String> configNames;
 
   @PostInitialization
-  public void init() {
-    configs = JSCollections.$map();
-    configNames = JSCollections.$array();
-
+  public void init() { // TODO convert to data object
+    
     // game logic
     createConfig("fogEnabled", new Config(0, 1, 1, 1), true);
     createConfig("daysOfPeace", new Config(0, 50, 0, 1), true);
@@ -81,31 +82,39 @@ public class GameConfigBean {
     }
   }
 
-  public void loadConfiguration(Callback0 callback) {
-    storage.readFile(EngineGlobals.STORAGE_PARAMETER_APPLICATION_CONFIG, (
-        FileDescriptor<Map<String, Integer>> entry) -> {
-      if (entry.value != null) {
-        getConfig("fastClickMode").setValue(entry.value.$get("fastClickMode"));
-        getConfig("forceTouch").setValue(entry.value.$get("forceTouch"));
-        getConfig("animatedTiles").setValue(entry.value.$get("animatedTiles"));
+  @Override
+  public void onLoadingGamedata(Callback0 cb) {
+    fs.readFile("user_data.json", (FileDescriptor<GameConfigType> entry) -> {
+      GameConfigType config = entry.value;
+
+      if (config != null) {
+        log.info("Found user data... going to load it");
+
+        getConfig("fastClickMode").setValue(config.fastClickMode ? 1 : 0);
+        getConfig("forceTouch").setValue(config.forceTouch ? 1 : 0);
+        getConfig("animatedTiles").setValue(config.animatedTiles ? 1 : 0);
+
+      } else {
+        log.info("No user data found... going use default data");
       }
+
+      cb.$invoke();
     });
   }
 
+  // TODO via interface ?
   public void saveConfiguration(Callback0 callback) {
-    Map<String, Integer> appConfigs = JSCollections.$map();
-    appConfigs.$put("fastClickMode", getConfigValue("fastClickMode"));
-    appConfigs.$put("forceTouch", getConfigValue("forceTouch"));
-    appConfigs.$put("animatedTiles", getConfigValue("animatedTiles"));
+    GameConfigType config = new GameConfigType();
+    config.forceTouch = (getConfigValue("forceTouch") == 1);
+    config.fastClickMode = (getConfigValue("fastClickMode") == 1);
+    config.animatedTiles = (getConfigValue("animatedTiles") == 1);
 
-    storage.writeFile(EngineGlobals.STORAGE_PARAMETER_APPLICATION_CONFIG, appConfigs,
-        (savedData, err) -> {
-          if (err != null) {
-            log.error("SavingApplicationConfigError");
-
-          } else {
-            callback.$invoke();
-          }
-        });
+    fs.writeFile("user_data.json", config, (data, err) -> {
+      if (err != null) {
+        log.warn("Could not write game configuration file");
+      } 
+      
+      callback.$invoke();
+    });
   }
 }

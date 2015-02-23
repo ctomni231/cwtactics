@@ -128,7 +128,7 @@ public class MapLayerBean extends GraphicLayer {
     for (int xe = x + w; x < xe; x++) {
       for (int y = oy, ye = y + h; y < ye; y++) {
         tile = gameround.getTile(x, y);
-        sprite = sprites.getSprite(tile.type.ID).getImage(tile.variant * spriteIndexes.TILE_STATES);
+        sprite = sprites.getSprite(tile.type.ID).getImage(tile.variant * SpriteIndexBean.TILE_STATES);
 
         // grab property status before loop (calculate it one instead of eight
         // times)
@@ -138,23 +138,23 @@ public class MapLayerBean extends GraphicLayer {
           if (tile.property.owner != null) {
             switch (tile.property.owner.id) {
               case 0:
-                state = spriteIndexes.PROPERTY_RED;
+                state = SpriteIndexBean.PROPERTY_RED;
                 break;
 
               case 1:
-                state = spriteIndexes.PROPERTY_BLUE;
+                state = SpriteIndexBean.PROPERTY_BLUE;
                 break;
 
               case 2:
-                state = spriteIndexes.PROPERTY_GREEN;
+                state = SpriteIndexBean.PROPERTY_GREEN;
                 break;
 
               case 3:
-                state = spriteIndexes.PROPERTY_YELLOW;
+                state = SpriteIndexBean.PROPERTY_YELLOW;
                 break;
             }
           } else {
-            state = spriteIndexes.PROPERTY_NEUTRAL;
+            state = SpriteIndexBean.PROPERTY_NEUTRAL;
           }
 
           propSprite = sprites.getSprite(tile.property.type.ID).getImage(state);

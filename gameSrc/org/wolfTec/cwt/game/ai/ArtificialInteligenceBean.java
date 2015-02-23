@@ -1,8 +1,12 @@
 package org.wolfTec.cwt.game.ai;
 
+import org.stjs.javascript.JSCollections;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Created;
+import org.wolfTec.wolfTecEngine.beans.PostInitialization;
+import org.wolfTec.wolfTecEngine.decision.DecisionTree;
+import org.wolfTec.wolfTecEngine.decision.Sequence;
 import org.wolfTec.wolfTecEngine.log.Logger;
 
 @Bean
@@ -10,6 +14,21 @@ public class ArtificialInteligenceBean {
 
   @Created("{name=$beanName}")
   private Logger log;
+  
+  private DecisionTree tree;
+  
+  @PostInitialization
+  public void createTree() {
+    tree = new DecisionTree(
+        new Sequence(JSCollections.$array(
+            new SampleHello(log),
+            new SampleHello(log),
+            new SampleHello(log),
+            new SampleHello(log),
+            new SampleHello(log)
+        ))
+    );
+  }
 
   /* TODO
    * 
@@ -122,7 +141,7 @@ public class ArtificialInteligenceBean {
    * Makes a step for the AI state machine. The AI will do things here.
    */
   public void doTick() {
-    log.error("NotImplementedException");
+    tree.iterate();
   }
 
   /**

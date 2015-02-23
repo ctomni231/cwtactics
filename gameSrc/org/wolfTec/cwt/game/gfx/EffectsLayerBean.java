@@ -7,10 +7,11 @@ import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Created;
+import org.wolfTec.wolfTecEngine.gfx.GraphicLayer;
 import org.wolfTec.wolfTecEngine.log.Logger;
 
 @Bean
-public class EffectsLayerBean extends ScreenLayer implements AnimatedLayer {
+public class EffectsLayerBean extends GraphicLayer {
 
   @Created("{name=$beanName}")
   private Logger log;
@@ -23,13 +24,21 @@ public class EffectsLayerBean extends ScreenLayer implements AnimatedLayer {
   private Array<Integer> posy;
 
   @Override
-  public int getZIndex() {
-    return 5;
+  public int getIndex() {
+    // TODO Auto-generated method stub
+    return 0;
   }
 
   @Override
-  public int getSubStates() {
-    return 1;
+  public int getNumberOfFrames() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public int getFrameTime() {
+    // TODO Auto-generated method stub
+    return 0;
   }
 
   @Override
@@ -83,9 +92,7 @@ public class EffectsLayerBean extends ScreenLayer implements AnimatedLayer {
       raindropCtx.moveTo(0, 0);
       raindropCtx.lineTo(4, 10);
       raindropCtx.stroke();
-
-
-  }
+  }  
 
   public void setWeatherType(WeatherType weather) {
     time = 0;

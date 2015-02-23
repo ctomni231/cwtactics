@@ -1,7 +1,9 @@
 package org.wolfTec.cwt.game.model;
 
+import org.stjs.javascript.Array;
+import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.beans.Injected;
@@ -14,8 +16,11 @@ public class SaveGameManagerBean {
   @Created("{name=$beanName}")
   private Logger log;
 
-  @Injected
+  @Created("{folder=/saves}")
   private VirtualFilesystem storage;
+  
+  @Injected
+  private Array<SaveGameHandler<Object>> handlers;
 
   /**
    * Loads a save game and initializes a new game round.
@@ -25,10 +30,15 @@ public class SaveGameManagerBean {
    * @param callback
    */
   public void loadSave(String name, Callback0 callback) {
-    storage.readFile(EngineGlobals.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, (entry) -> {
-      // TODO
-      // initMap(entry.value, true, callback);
-      });
+    storage.readFile(name, (data) -> {
+      Object savegame = data.value;
+      for (int i = 0; i < handlers.$length(); i++) {
+        Object handlerData = null; // TODO
+        handlers.$get(i).onLoadGame(handlerData);
+      }
+      
+      callback.$invoke();
+    });
   }
 
   /**
@@ -39,96 +49,102 @@ public class SaveGameManagerBean {
    * @param callback
    */
   public void saveGame(String name, Callback0 callback) {
-    storage.writeFile(EngineGlobals.STORAGE_PARAMETER_SAVEGAME_PREFIX + name, null,
-        (data, error) -> {
-          if (error != null) {
-            log.error("SavingGameError");
-          } else {
-            callback.$invoke();
-          }
-        });
-
-    // TODO
-    // var saveData = {};
-    //
-    // saveData.mpw = model.mapWidth;
-    // saveData.mph = model.mapHeight;
-    // saveData.map = [];
-    // saveData.prps = [];
-    // saveData.units = [];
-    //
-    // // generates ID map
-    // var mostIdsMap = {};
-    // var mostIdsMapCurIndex = 0;
-    // for (var x = 0, xe = model.mapWidth; x < xe; x++) {
-    //
-    // saveData.map[x] = [];
-    // for (var y = 0, ye = model.mapHeight; y < ye; y++) {
-    // var type = model.mapData[x][y].type.ID;
-    //
-    // // create number for type
-    // if (!mostIdsMap.hasOwnProperty(type)) {
-    // mostIdsMap[type] = mostIdsMapCurIndex;
-    // mostIdsMapCurIndex++;
-    // }
-    //
-    // saveData.map[x][y] = mostIdsMap[type];
-    //
-    // // saveGameConfig property
-    // var prop = model.mapData[x][y].property;
-    // if (prop) {
-    // saveData.prps.push([
-    // model.properties.indexOf(prop),
-    // x,
-    // y,
-    // prop.type.ID,
-    // prop.capturePoints,
-    // prop.owner.id
-    // ]);
-    // }
-    //
-    // // saveGameConfig unit
-    // var unit = model.mapData[x][y].unit;
-    // if (unit) {
-    // saveData.units.push([
-    // model.units.indexOf(unit),
-    // unit.type.ID,
-    // x,
-    // y,
-    // unit.hp,
-    // unit.ammo,
-    // unit.fuel,
-    // unit.loadedIn,
-    // unit.owner.id,
-    // unit.canAct,
-    // unit.hidden
-    // ]);
-    // }
-    // }
-    // }
-    //
-    // // generate type map
-    // saveData.typeMap = [];
-    // var typeKeys = Object.keys(mostIdsMap);
-    // for (var i = 0, e = typeKeys.length; i < e; i++) {
-    // saveData.typeMap[mostIdsMap[typeKeys[i]]] = typeKeys[i];
-    // }
-    //
-    // saveData.wth = model.weather.ID;
-    // saveData.day = model.day;
-    // saveData.trOw = model.turnOwner.id;
-    // saveData.gmTm = model.gameTimeElapsed;
-    // saveData.tnTm = model.turnTimeElapsed;
-    //
-    // saveData.cfg = {};
-    // for (var i = 0, e = config.gameConfigNames.length; i < e; i++) {
-    // var key = config.gameConfigNames[i];
-    // saveData.cfg[key] = config.Config.getValue(key);
-    // }
-    //
-    // storage.set("SAVE_"+name, JSON.stringify(saveData), cb);
+    Map<String, Object> savegame = JSCollections.$map();
+    for (int i = 0; i < handlers.$length(); i++) {
+      Object handlerData = handlers.$get(i).onSaveGame();
+      // TODO
+    }
+    
+    storage.writeFile(name, savegame, (data, err) -> {
+      if (err != null) {
+        log.warn("Could not save game data");
+      }
+      
+      callback.$invoke();
+    });
   }
 
+
+  // TODO
+  // var saveData = {};
+  //
+  // saveData.mpw = model.mapWidth;
+  // saveData.mph = model.mapHeight;
+  // saveData.map = [];
+  // saveData.prps = [];
+  // saveData.units = [];
+  //
+  // // generates ID map
+  // var mostIdsMap = {};
+  // var mostIdsMapCurIndex = 0;
+  // for (var x = 0, xe = model.mapWidth; x < xe; x++) {
+  //
+  // saveData.map[x] = [];
+  // for (var y = 0, ye = model.mapHeight; y < ye; y++) {
+  // var type = model.mapData[x][y].type.ID;
+  //
+  // // create number for type
+  // if (!mostIdsMap.hasOwnProperty(type)) {
+  // mostIdsMap[type] = mostIdsMapCurIndex;
+  // mostIdsMapCurIndex++;
+  // }
+  //
+  // saveData.map[x][y] = mostIdsMap[type];
+  //
+  // // saveGameConfig property
+  // var prop = model.mapData[x][y].property;
+  // if (prop) {
+  // saveData.prps.push([
+  // model.properties.indexOf(prop),
+  // x,
+  // y,
+  // prop.type.ID,
+  // prop.capturePoints,
+  // prop.owner.id
+  // ]);
+  // }
+  //
+  // // saveGameConfig unit
+  // var unit = model.mapData[x][y].unit;
+  // if (unit) {
+  // saveData.units.push([
+  // model.units.indexOf(unit),
+  // unit.type.ID,
+  // x,
+  // y,
+  // unit.hp,
+  // unit.ammo,
+  // unit.fuel,
+  // unit.loadedIn,
+  // unit.owner.id,
+  // unit.canAct,
+  // unit.hidden
+  // ]);
+  // }
+  // }
+  // }
+  //
+  // // generate type map
+  // saveData.typeMap = [];
+  // var typeKeys = Object.keys(mostIdsMap);
+  // for (var i = 0, e = typeKeys.length; i < e; i++) {
+  // saveData.typeMap[mostIdsMap[typeKeys[i]]] = typeKeys[i];
+  // }
+  //
+  // saveData.wth = model.weather.ID;
+  // saveData.day = model.day;
+  // saveData.trOw = model.turnOwner.id;
+  // saveData.gmTm = model.gameTimeElapsed;
+  // saveData.tnTm = model.turnTimeElapsed;
+  //
+  // saveData.cfg = {};
+  // for (var i = 0, e = config.gameConfigNames.length; i < e; i++) {
+  // var key = config.gameConfigNames[i];
+  // saveData.cfg[key] = config.Config.getValue(key);
+  // }
+  //
+  // storage.set("SAVE_"+name, JSON.stringify(saveData), cb);
+  
   // public void initMap (Object gameData, boolean isSave, Callback0 callback) {
   // var property;
   // var unit;

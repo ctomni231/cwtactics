@@ -140,7 +140,7 @@ public class StateDataBean {
       return;
     }
 
-    uiLayer.eraseCursor(cursorX, cursorY);
+    uiLayer.eraseCursor();
 
     cursorX = x;
     cursorY = y;

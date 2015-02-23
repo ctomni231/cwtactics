@@ -6,7 +6,7 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.wolfTecEngine.assets.LoadingHandler;
+import org.wolfTec.wolfTecEngine.assets.GameLoadHandler;
 import org.wolfTec.wolfTecEngine.beans.Bean;
 import org.wolfTec.wolfTecEngine.beans.Created;
 import org.wolfTec.wolfTecEngine.log.Logger;
@@ -16,7 +16,7 @@ import org.wolfTec.wolfTecEngine.util.BrowserUtil;
 
 // @TODO make loading better ? Spring 39 f. 
 @Bean
-public class ObjectTypesBean implements LoadingHandler {
+public class ObjectTypesBean implements GameLoadHandler {
 
   @Created("{name=$beanName}")
   private Logger log;

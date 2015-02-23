@@ -89,10 +89,10 @@ public class GameRoundSetupBean {
       // ---------------------------------------------------------
 
       case GAME_TYPE:
-        GameMode gameMode = gameround.getGameMode();
+        GameMode gameMode = gameround.gameMode;
         gameMode = gameMode == GameMode.ADVANCE_WARS_1 ? GameMode.ADVANCE_WARS_1
             : GameMode.ADVANCE_WARS_2;
-        gameround.setGameMode(gameMode);
+        gameround.gameMode = gameMode;
         break;
 
       // ---------------------------------------------------------
@@ -188,7 +188,7 @@ public class GameRoundSetupBean {
     }
 
     // update model
-    int turnOwnerTeam = gameround.getTurnOwner().team;
+    int turnOwnerTeam = gameround.turnOwner.team;
     for (int i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
       Player player = gameround.getPlayer(i);
 
