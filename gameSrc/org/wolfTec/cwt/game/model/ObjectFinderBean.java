@@ -1,7 +1,7 @@
 package org.wolfTec.cwt.game.model;
 
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
 
 @Bean
 public class ObjectFinderBean {

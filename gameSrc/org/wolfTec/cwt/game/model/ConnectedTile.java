@@ -87,6 +87,6 @@ public class ConnectedTile {
       return Integer.parseInt(cConn.$get(0).toString());
     }
 
-    return Globals.INACTIVE_ID;
+    return -1;
   }
 }

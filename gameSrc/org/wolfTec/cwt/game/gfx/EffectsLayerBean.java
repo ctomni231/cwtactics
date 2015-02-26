@@ -5,10 +5,10 @@ import org.stjs.javascript.Date;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.gfx.GraphicLayer;
-import org.wolfTec.wolfTecEngine.log.Logger;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Created;
+import org.wolfTec.wolfTecEngine.gfx.model.GraphicLayer;
+import org.wolfTec.wolfTecEngine.logging.model.Logger;
 
 @Bean
 public class EffectsLayerBean extends GraphicLayer {

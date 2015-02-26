@@ -6,8 +6,8 @@ import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.cwt.game.model.types.MoveType;
 import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
 
 @Bean
 public class TransportLogic {

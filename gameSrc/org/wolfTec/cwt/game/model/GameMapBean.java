@@ -2,7 +2,7 @@ package org.wolfTec.cwt.game.model;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
 
 public class GameMapBean {
 

@@ -2,23 +2,23 @@ package org.wolfTec.cwt.game.states.menu;
 
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gfx.UserInterfaceLayerBean;
-import org.wolfTec.wolfTecEngine.audio.AudioBean;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.input.InputData;
-import org.wolfTec.wolfTecEngine.localization.LocalizationBean;
-import org.wolfTec.wolfTecEngine.statemachine.MenuState;
-import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
+import org.wolfTec.wolfTecEngine.audio.model.Audio;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.wolfTecEngine.input.model.InputData;
+import org.wolfTec.wolfTecEngine.localization.model.Localization;
+import org.wolfTec.wolfTecEngine.statemachine.beans.StateMachineBean;
+import org.wolfTec.wolfTecEngine.statemachine.model.MenuState;
 import org.wolfTec.wolfTecEngine.util.ConvertUtility;
 
 @Bean
 public class StartScreenState implements MenuState {
 
   @Injected
-  private AudioBean audio;
+  private Audio audio;
 
   @Injected
-  private LocalizationBean localization;
+  private Localization localization;
 
   @Injected
   private UserInterfaceLayerBean ui;

@@ -10,7 +10,7 @@ import org.stjs.javascript.functions.Function1;
 import org.stjs.javascript.functions.Function4;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.types.WeatherType;
-import org.wolfTec.wolfTecEngine.beans.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
 import org.wolfTec.wolfTecEngine.functions.Function5;
 import org.wolfTec.wolfTecEngine.util.ConvertUtility;
 

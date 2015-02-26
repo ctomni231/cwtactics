@@ -6,12 +6,12 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.wolfTecEngine.assets.GameLoadHandler;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.log.Logger;
-import org.wolfTec.wolfTecEngine.persistence.FileDescriptor;
-import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
+import org.wolfTec.cwt.game.GameLoadHandler;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Created;
+import org.wolfTec.wolfTecEngine.logging.model.Logger;
+import org.wolfTec.wolfTecEngine.persistence.model.FileDescriptor;
+import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystem;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
 
 // @TODO make loading better ? Spring 39 f. 

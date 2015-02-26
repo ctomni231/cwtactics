@@ -2,8 +2,8 @@ package org.wolfTec.cwt.game.model.types;
 
 import org.stjs.javascript.Array;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.wolfTecEngine.data.IntValue;
-import org.wolfTec.wolfTecEngine.data.StringValue;
+import org.wolfTec.wolfTecEngine.validation.annotations.IntValue;
+import org.wolfTec.wolfTecEngine.validation.annotations.StringValue;
 
 public class UnitType extends ObjectType {
 

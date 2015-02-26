@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game.model;
 
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.PostInitialization;
-import org.wolfTec.wolfTecEngine.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.beans.annotations.Created;
+import org.wolfTec.wolfTecEngine.beans.annotations.Init;
+import org.wolfTec.wolfTecEngine.container.model.CircularBuffer;
 
 public class Menu {
 
@@ -12,7 +12,7 @@ public class Menu {
   @Created("{size=$options.menuSize}")
   private CircularBuffer<MenuEntry> entries;
 
-  @PostInitialization
+  @Init
   public void init() {
     this.selectedIndex = 0;
     for (int i = 0; i < entries.getSize(); i++) {

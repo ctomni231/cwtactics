@@ -8,10 +8,10 @@ import org.wolfTec.cwt.game.model.GameMode;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.log.Logger;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Created;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.wolfTecEngine.logging.model.Logger;
 
 @Bean
 public class GameRoundSetupBean {

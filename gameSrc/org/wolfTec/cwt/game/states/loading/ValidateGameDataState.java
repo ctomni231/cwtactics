@@ -1,13 +1,13 @@
 package org.wolfTec.cwt.game.states.loading;
 
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.input.InputData;
-import org.wolfTec.wolfTecEngine.log.Logger;
-import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
-import org.wolfTec.wolfTecEngine.statemachine.State;
-import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Created;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.wolfTecEngine.input.model.InputData;
+import org.wolfTec.wolfTecEngine.logging.model.Logger;
+import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystem;
+import org.wolfTec.wolfTecEngine.statemachine.beans.StateMachineBean;
+import org.wolfTec.wolfTecEngine.statemachine.model.State;
 
 @Bean
 public class ValidateGameDataState implements State {

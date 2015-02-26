@@ -3,11 +3,11 @@ package org.wolfTec.cwt.game.model;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.cwt.game.model.types.MapFileType;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.log.Logger;
-import org.wolfTec.wolfTecEngine.persistence.FileDescriptor;
-import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystemFolder;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Created;
+import org.wolfTec.wolfTecEngine.logging.model.Logger;
+import org.wolfTec.wolfTecEngine.persistence.model.FileDescriptor;
+import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystemFolder;
 
 @Bean
 public class MapManagerBean {

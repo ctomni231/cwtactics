@@ -4,7 +4,7 @@ import org.wolfTec.cwt.game.model.ObjectFinderBean;
 import org.wolfTec.cwt.game.model.Player;
 import org.wolfTec.cwt.game.model.Property;
 import org.wolfTec.cwt.game.model.Unit;
-import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
 
 public class TransferLogic {
 

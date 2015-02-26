@@ -1,12 +1,12 @@
 package org.wolfTec.cwt.game.states.loading;
 
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.input.InputData;
-import org.wolfTec.wolfTecEngine.persistence.FileDescriptor;
-import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
-import org.wolfTec.wolfTecEngine.statemachine.State;
-import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.wolfTecEngine.input.model.InputData;
+import org.wolfTec.wolfTecEngine.persistence.model.FileDescriptor;
+import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystem;
+import org.wolfTec.wolfTecEngine.statemachine.beans.StateMachineBean;
+import org.wolfTec.wolfTecEngine.statemachine.model.State;
 
 @Bean
 public class CheckCacheState implements State {

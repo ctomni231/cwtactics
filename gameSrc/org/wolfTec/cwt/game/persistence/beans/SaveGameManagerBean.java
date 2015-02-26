@@ -1,24 +1,30 @@
-package org.wolfTec.cwt.game.model;
+package org.wolfTec.cwt.game.persistence.beans;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.log.Logger;
-import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
+import org.wolfTec.cwt.game.persistence.model.SaveGameHandler;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Created;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.wolfTecEngine.logging.model.Logger;
+import org.wolfTec.wolfTecEngine.persistence.annotations.FolderPath;
+import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystem;
 
+/**
+ * Save game handler, used to load and save game files.
+ */
 @Bean
 public class SaveGameManagerBean {
 
-  @Created("{name=$beanName}")
+  @Created
   private Logger log;
 
-  @Created("{folder=/saves}")
+  @Created
+  @FolderPath("/saves")
   private VirtualFilesystem storage;
-  
+
   @Injected
   private Array<SaveGameHandler<Object>> handlers;
 
@@ -36,7 +42,7 @@ public class SaveGameManagerBean {
         Object handlerData = null; // TODO
         handlers.$get(i).onLoadGame(handlerData);
       }
-      
+
       callback.$invoke();
     });
   }
@@ -54,16 +60,15 @@ public class SaveGameManagerBean {
       Object handlerData = handlers.$get(i).onSaveGame();
       // TODO
     }
-    
+
     storage.writeFile(name, savegame, (data, err) -> {
       if (err != null) {
         log.warn("Could not save game data");
       }
-      
+
       callback.$invoke();
     });
   }
-
 
   // TODO
   // var saveData = {};
@@ -144,7 +149,7 @@ public class SaveGameManagerBean {
   // }
   //
   // storage.set("SAVE_"+name, JSON.stringify(saveData), cb);
-  
+
   // public void initMap (Object gameData, boolean isSave, Callback0 callback) {
   // var property;
   // var unit;

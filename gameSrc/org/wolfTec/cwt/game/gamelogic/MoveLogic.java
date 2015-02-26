@@ -5,11 +5,11 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Tile;
 import org.wolfTec.cwt.game.model.types.MoveType;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.container.CircularBuffer;
-import org.wolfTec.wolfTecEngine.pathfinding.PathFinderHandler;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Created;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.wolfTecEngine.container.model.CircularBuffer;
+import org.wolfTec.wolfTecEngine.pathfinding.model.PathFinder;
 import org.wolfTec.wolfTecEngine.util.JsExec;
 
 @Bean
@@ -19,7 +19,7 @@ public class MoveLogic {
   private GameRoundBean gameround;
   
   @Injected
-  private PathFinderHandler pathfinder;
+  private PathFinder pathfinder;
 
   private int uid = EngineGlobals.INACTIVE_ID;
   private int x = EngineGlobals.INACTIVE_ID;

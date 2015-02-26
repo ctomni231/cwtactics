@@ -5,14 +5,14 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.EngineGlobals;
+import org.wolfTec.cwt.game.GameLoadHandler;
 import org.wolfTec.cwt.game.model.types.GameConfigType;
-import org.wolfTec.wolfTecEngine.assets.GameLoadHandler;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.PostInitialization;
-import org.wolfTec.wolfTecEngine.log.Logger;
-import org.wolfTec.wolfTecEngine.persistence.FileDescriptor;
-import org.wolfTec.wolfTecEngine.persistence.VirtualFilesystem;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Created;
+import org.wolfTec.wolfTecEngine.beans.annotations.Init;
+import org.wolfTec.wolfTecEngine.logging.model.Logger;
+import org.wolfTec.wolfTecEngine.persistence.model.FileDescriptor;
+import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystem;
 
 @Bean
 public class GameConfigBean implements GameLoadHandler {
@@ -29,7 +29,7 @@ public class GameConfigBean implements GameLoadHandler {
   @Created
   private Array<String> configNames;
 
-  @PostInitialization
+  @Init
   public void init() { // TODO convert to data object
     
     // game logic

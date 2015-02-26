@@ -3,12 +3,12 @@ package org.wolfTec.cwt.game.states.generic;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gfx.UserInterfaceLayerBean;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.log.Logger;
-import org.wolfTec.wolfTecEngine.statemachine.State;
-import org.wolfTec.wolfTecEngine.statemachine.StateMachineBean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Created;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.wolfTecEngine.logging.model.Logger;
+import org.wolfTec.wolfTecEngine.statemachine.beans.StateMachineBean;
+import org.wolfTec.wolfTecEngine.statemachine.model.State;
 
 @Bean
 public class ErrorState implements State {

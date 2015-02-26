@@ -5,12 +5,12 @@ import static org.stjs.javascript.JSObjectAdapter.$js;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.InjectedByFactory;
-import org.wolfTec.wolfTecEngine.beans.PostInitialization;
-import org.wolfTec.wolfTecEngine.container.CircularBuffer;
-import org.wolfTec.wolfTecEngine.log.Logger;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Init;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.wolfTecEngine.beans.annotations.InjectedByFactory;
+import org.wolfTec.wolfTecEngine.container.model.CircularBuffer;
+import org.wolfTec.wolfTecEngine.logging.model.Logger;
 import org.wolfTec.wolfTecEngine.network.NetworkBean;
 import org.wolfTec.wolfTecEngine.network.NetworkMessage;
 

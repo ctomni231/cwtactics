@@ -5,31 +5,29 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.wolfTecEngine.beans.Bean;
-import org.wolfTec.wolfTecEngine.beans.PostInitialization;
-import org.wolfTec.wolfTecEngine.gfx.AnimatedLayer;
-import org.wolfTec.wolfTecEngine.gfx.Direction;
-import org.wolfTec.wolfTecEngine.gfx.GraphicLayer;
-import org.wolfTec.wolfTecEngine.gfx.Sprite;
-import org.wolfTec.wolfTecEngine.gfx.SpriteManager;
+import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
+import org.wolfTec.wolfTecEngine.beans.annotations.Init;
+import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.wolfTecEngine.gfx.annotations.LayerFrameTime;
+import org.wolfTec.wolfTecEngine.gfx.annotations.LayerFrames;
+import org.wolfTec.wolfTecEngine.gfx.annotations.LayerIndex;
+import org.wolfTec.wolfTecEngine.gfx.beans.SpriteManager;
+import org.wolfTec.wolfTecEngine.gfx.model.Direction;
+import org.wolfTec.wolfTecEngine.gfx.model.GraphicLayer;
+import org.wolfTec.wolfTecEngine.gfx.model.Sprite;
 
 @Bean
-public class FocusLayerBean extends GraphicLayer implements AnimatedLayer {
+@LayerIndex(EngineGlobals.LAYER_FOCUS)
+@LayerFrames(EngineGlobals.LAYER_FOCUS_FRAMES)
+@LayerFrameTime(EngineGlobals.LAYER_FOCUS_FRAMETIME)
+public class FocusLayerBean extends GraphicLayer {
 
+  @Injected
   private SpriteManager sprites;
+  
   private Canvas temporaryCanvas;
 
-  @Override
-  public int getSubStates() {
-    return 7;
-  }
-
-  @Override
-  public String getLayerCanvasId() {
-    return "canvas_layer_Focus";
-  }
-
-  @PostInitialization
+  @Init
   public void init() {
     temporaryCanvas = (Canvas) Global.window.document.createElement("canvas");
   }
@@ -131,10 +129,5 @@ public class FocusLayerBean extends GraphicLayer implements AnimatedLayer {
         }
       }
     }
-  }
-
-  @Override
-  public int getZIndex() {
-    return 4;
   }
 }

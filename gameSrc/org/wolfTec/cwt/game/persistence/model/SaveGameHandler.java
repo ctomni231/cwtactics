@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.model;
+package org.wolfTec.cwt.game.persistence.model;
 
 public interface SaveGameHandler<T> {
 
