@@ -1,7 +1,7 @@
 Feature: Wait-Action
   As a gamer
   I want to send my units into the wait mode
-  So I can move them without having to do an action at the target place
+  So I can move them without having to do an action
 
   Scenario: ...
     Given an empty tile
