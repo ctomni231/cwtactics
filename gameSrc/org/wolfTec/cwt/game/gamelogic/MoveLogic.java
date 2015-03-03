@@ -2,17 +2,18 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.model.GameRoundBean;
-import org.wolfTec.cwt.game.model.Tile;
-import org.wolfTec.cwt.game.model.types.MoveType;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Created;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
-import org.wolfTec.wolfTecEngine.container.model.CircularBuffer;
-import org.wolfTec.wolfTecEngine.pathfinding.model.PathFinder;
+import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
+import org.wolfTec.cwt.game.gamemodel.model.MoveType;
+import org.wolfTec.cwt.game.gamemodel.model.Tile;
+import org.wolfTec.wolfTecEngine.beans.CreatedType;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.container.CircularBuffer;
+import org.wolfTec.wolfTecEngine.container.ContainerSize;
+import org.wolfTec.wolfTecEngine.pathfinding.PathFinder;
 import org.wolfTec.wolfTecEngine.util.JsExec;
 
-@Bean
+@ManagedComponent
 public class MoveLogic {
 
   @Injected
@@ -25,7 +26,8 @@ public class MoveLogic {
   private int x = EngineGlobals.INACTIVE_ID;
   private int y = EngineGlobals.INACTIVE_ID;
 
-  @Created("{size=$options.maxMoveLength}")
+  @CreatedType("{size=$options.maxMoveLength}")
+  @ContainerSize(0)
   private CircularBuffer<MoveCode> moveBuffer;
 
   /**

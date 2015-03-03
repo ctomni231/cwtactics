@@ -1,30 +1,30 @@
 package org.wolfTec.cwt.game.states.loading;
 
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Created;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
-import org.wolfTec.wolfTecEngine.input.model.InputData;
-import org.wolfTec.wolfTecEngine.logging.model.Logger;
-import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystem;
-import org.wolfTec.wolfTecEngine.statemachine.beans.StateMachineBean;
-import org.wolfTec.wolfTecEngine.statemachine.model.State;
+import org.wolfTec.wolfTecEngine.beans.CreatedType;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.input.InputManager;
+import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolfTec.wolfTecEngine.statemachine.State;
+import org.wolfTec.wolfTecEngine.statemachine.StateManager;
+import org.wolfTec.wolfTecEngine.vfs.Vfs;
 
-@Bean
+@ManagedComponent
 public class ValidateGameDataState implements State {
 
-  @Created("{name=$beanName}")
+  @CreatedType
   private Logger log;
 
   @Injected
-  private VirtualFilesystem storage;
+  private Vfs storage;
 
   @Override
-  public void enter() {
+  public void enter(StateManager stm) {
     log.info("Validating game data");
   }
 
   @Override
-  public void update(StateMachineBean stm, int delta, InputData input) {
+  public void update(StateManager stm, InputManager input, int delta) {
   }
 
 }

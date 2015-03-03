@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game.gamelogic;
 
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.model.Property;
-import org.wolfTec.cwt.game.model.Unit;
+import org.wolfTec.cwt.game.gamemodel.model.Property;
+import org.wolfTec.cwt.game.gamemodel.model.Unit;
 
 public class CaptureLogic {
 

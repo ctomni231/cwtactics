@@ -2,15 +2,15 @@ package org.wolfTec.cwt.game.states;
 
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
-import org.wolfTec.cwt.game.gfx.UserInterfaceLayerBean;
-import org.wolfTec.cwt.game.model.GameRoundBean;
-import org.wolfTec.cwt.game.model.Tile;
+import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
+import org.wolfTec.cwt.game.gamemodel.model.Tile;
+import org.wolfTec.cwt.game.renderer.beans.UserInterfaceLayerBean;
+import org.wolfTec.wolfTecEngine.beans.Created;
+import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Created;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
-import org.wolfTec.wolfTecEngine.container.model.CircularBuffer;
+import org.wolfTec.wolfTecEngine.container.CircularBuffer;
 import org.wolfTec.wolfTecEngine.gfx.beans.ScreenManagerBean;
-import org.wolfTec.wolfTecEngine.logging.model.Logger;
+import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.beans.StateMachineBean;
 
 @Bean
@@ -170,11 +170,6 @@ public class StateDataBean {
   public Action selectedAction;
 
   public Object selectedSubEntry;
-
-  /**
-   * Game menu.
-   */
-  public final StateDataMenu menu = new StateDataMenu(this);
 
   public void nextStep() {
     movePath.clear();

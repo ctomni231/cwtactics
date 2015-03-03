@@ -1,13 +1,13 @@
 package org.wolfTec.cwt.game.states.generic;
 
-import org.wolfTec.cwt.game.gfx.UserInterfaceLayerBean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
-import org.wolfTec.wolfTecEngine.input.model.InputData;
-import org.wolfTec.wolfTecEngine.statemachine.beans.StateMachineBean;
-import org.wolfTec.wolfTecEngine.statemachine.model.State;
+import org.wolfTec.cwt.game.renderer.beans.UserInterfaceLayerBean;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.input.InputManager;
+import org.wolfTec.wolfTecEngine.statemachine.State;
+import org.wolfTec.wolfTecEngine.statemachine.StateManager;
 
-@Bean
+@ManagedComponent
 public class PortraitModeState implements State {
 
   @Injected
@@ -17,12 +17,12 @@ public class PortraitModeState implements State {
   private boolean rendered;
 
   @Override
-  public void enter() {
+  public void enter(StateManager stm) {
     lastStateId = null;
   }
 
   @Override
-  public void update(StateMachineBean stm, int delta, InputData input) {
+  public void update(StateManager stm, InputManager input, int delta) {
     boolean isLandscape = false;
 
     // go back to the last state when the device is back in landscape mode

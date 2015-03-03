@@ -1,36 +1,34 @@
 package org.wolfTec.cwt.game.states.loading;
 
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Created;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
-import org.wolfTec.wolfTecEngine.input.model.InputData;
-import org.wolfTec.wolfTecEngine.logging.model.Logger;
-import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystem;
-import org.wolfTec.wolfTecEngine.statemachine.beans.StateMachineBean;
-import org.wolfTec.wolfTecEngine.statemachine.model.State;
+import org.wolfTec.cwt.game.persistence.beans.GameLoadingManager;
+import org.wolfTec.wolfTecEngine.beans.CreatedType;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.beans.ThisSafe;
+import org.wolfTec.wolfTecEngine.input.InputManager;
+import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolfTec.wolfTecEngine.statemachine.State;
+import org.wolfTec.wolfTecEngine.statemachine.StateManager;
 
-@Bean
+@ManagedComponent
 public class LoadAssetsState implements State {
 
-  @Created("{name=$beanName}")
+  @CreatedType
   private Logger log;
 
   @Injected
-  private VirtualFilesystem storage;
-
-  private boolean completed;
+  private GameLoadingManager loader;
 
   @Override
-  public void enter() {
-    log.info("loading game data from cache");
-  }
-
-  @Override
-  public void update(StateMachineBean stm, int delta, InputData input) {
-
-    if (completed) {
+  public void enter(StateManager stm) {
+    loader.start(filePath -> {
+      showFileToCopy(filePath);
+    }, () -> {
       stm.changeToStateClass(ValidateGameDataState.class);
-    }
+    });
   }
 
+  private void showFileToCopy(String filePath) {
+    // TODO render file name
+  }
 }

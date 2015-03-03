@@ -5,9 +5,9 @@ import org.wolfTec.cwt.game.model.GameConfigBean;
 import org.wolfTec.cwt.game.model.GameRoundBean;
 import org.wolfTec.cwt.game.model.Unit;
 import org.wolfTec.cwt.game.model.types.AttackType;
+import org.wolfTec.wolfTecEngine.beans.Injected;
 import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
-import org.wolfTec.wolfTecEngine.container.model.MoveableMatrix;
+import org.wolfTec.wolfTecEngine.container.MoveableMatrix;
 
 @Bean
 public class BattleLogic {

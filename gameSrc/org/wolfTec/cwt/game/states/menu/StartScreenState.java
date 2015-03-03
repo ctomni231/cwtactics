@@ -1,21 +1,22 @@
 package org.wolfTec.cwt.game.states.menu;
 
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.gfx.UserInterfaceLayerBean;
-import org.wolfTec.wolfTecEngine.audio.model.Audio;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
-import org.wolfTec.wolfTecEngine.input.model.InputData;
-import org.wolfTec.wolfTecEngine.localization.model.Localization;
-import org.wolfTec.wolfTecEngine.statemachine.beans.StateMachineBean;
-import org.wolfTec.wolfTecEngine.statemachine.model.MenuState;
+import org.wolfTec.cwt.game.action.model.InputAction;
+import org.wolfTec.cwt.game.renderer.beans.UserInterfaceLayerBean;
+import org.wolfTec.wolfTecEngine.audio.AudioManager;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.input.InputManager;
+import org.wolfTec.wolfTecEngine.localization.Localization;
+import org.wolfTec.wolfTecEngine.statemachine.MenuState;
+import org.wolfTec.wolfTecEngine.statemachine.StateManager;
 import org.wolfTec.wolfTecEngine.util.ConvertUtility;
 
-@Bean
+@ManagedComponent
 public class StartScreenState implements MenuState {
 
   @Injected
-  private Audio audio;
+  private AudioManager audio;
 
   @Injected
   private Localization localization;
@@ -28,7 +29,7 @@ public class StartScreenState implements MenuState {
   private String activeAdvice;
 
   @Override
-  public void enter() {
+  public void enter(StateManager stm) {
     timeLeft = 0;
     maxTooltips = ConvertUtility.strToInt(localization.solveKey("TOOLTIPS"));
 
@@ -36,7 +37,7 @@ public class StartScreenState implements MenuState {
   }
 
   @Override
-  public void exit() {
+  public void exit(StateManager stm) {
 
     // grab ability to play sounds from an iOS device by playing an empty sound
     // in an user interaction event (exit will be invoked here after the user
@@ -45,13 +46,11 @@ public class StartScreenState implements MenuState {
   }
 
   @Override
-  public void keyAction(StateMachineBean stm) {
-    stm.changeToStateClass(MainMenuState.class);
-  }
-
-  @Override
-  public void update(StateMachineBean stm, int delta, InputData input) {
-    evalInput(stm, input);
+  public void update(StateManager stm, InputManager input, int delta) {
+    if (input.isActionPressed(InputAction.A) || input.isActionPressed(InputAction.B)) {
+      stm.changeToStateClass(MainMenuState.class);
+      return;
+    }
 
     timeLeft--;
     if (timeLeft < 0) {

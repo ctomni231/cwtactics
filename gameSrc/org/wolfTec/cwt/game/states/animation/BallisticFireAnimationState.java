@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game.states.animation;
 
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.statemachine.model.AnimationState;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.statemachine.AnimationState;
 
-@Bean
+@ManagedComponent
 public class BallisticFireAnimationState implements AnimationState {
 }

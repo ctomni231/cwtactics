@@ -1,19 +1,20 @@
 package net.wolfTec.cwtactics;
 
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.usertest.beans.TestRunner;
-import org.wolfTec.wolfTecEngine.usertest.model.FactsBase;
-import org.wolfTec.wolfTecEngine.usertest.model.Parser;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.test.TestManager;
+import org.wolfTec.wolfTecEngine.test.gherkin.FactsBase;
+import org.wolfTec.wolfTecEngine.test.gherkin.GherkinTestManager;
+import org.wolfTec.wolfTecEngine.test.gherkin.Parser;
 
-@Bean public class TestManagerBean {
+@ManagedComponent public class TestManagerBean {
 
   private FactsBase facts;
-  private TestRunner runner;
+  private TestManager runner;
   private Parser parser;
   
   public TestManagerBean () {
     facts = new FactsBase();
-    runner = new TestRunner();
+    runner = new GherkinTestManager();
     parser = new Parser();
   }
 }

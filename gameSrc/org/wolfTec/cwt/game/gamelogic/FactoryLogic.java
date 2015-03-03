@@ -3,17 +3,17 @@ package org.wolfTec.cwt.game.gamelogic;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.model.Menu;
-import org.wolfTec.cwt.game.model.GameConfigBean;
-import org.wolfTec.cwt.game.model.GameRoundBean;
-import org.wolfTec.cwt.game.model.ObjectFinderBean;
-import org.wolfTec.cwt.game.model.Property;
-import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
-import org.wolfTec.cwt.game.model.types.UnitType;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.cwt.game.gamemodel.bean.GameConfigBean;
+import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
+import org.wolfTec.cwt.game.gamemodel.bean.ObjectFinderBean;
+import org.wolfTec.cwt.game.gamemodel.bean.ObjectTypesBean;
+import org.wolfTec.cwt.game.gamemodel.model.Property;
+import org.wolfTec.cwt.game.gamemodel.model.UnitType;
+import org.wolfTec.cwt.game.states.ActionMenu;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
 
-@Bean
+@ManagedComponent
 public class FactoryLogic {
 
   @Injected
@@ -101,7 +101,7 @@ public class FactoryLogic {
    * @param menu
    * @param markDisabled
    */
-  public void generateBuildMenu(Property factory, Menu menu, boolean markDisabled) {
+  public void generateBuildMenu(Property factory, ActionMenu menu, boolean markDisabled) {
     Array<UnitType> unitTypes = types.getUnitTypes();
     Array<String> bList = factory.type.builds;
     int availableGold = factory.owner.gold;

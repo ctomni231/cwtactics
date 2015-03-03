@@ -1,16 +1,16 @@
 package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.Array;
-import org.wolfTec.cwt.game.model.GameConfigBean;
-import org.wolfTec.cwt.game.model.GameRoundBean;
-import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
-import org.wolfTec.cwt.game.model.types.WeatherType;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.cwt.game.gamemodel.bean.GameConfigBean;
+import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
+import org.wolfTec.cwt.game.gamemodel.bean.ObjectTypesBean;
+import org.wolfTec.cwt.game.gamemodel.model.WeatherType;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.container.ContainerUtil;
 import org.wolfTec.wolfTecEngine.util.ConvertUtility;
-import org.wolfTec.wolfTecEngine.util.ListUtil;
 
-@Bean
+@ManagedComponent
 public class WeatherLogic {
 
   @Injected
@@ -44,7 +44,7 @@ public class WeatherLogic {
     // Search a random weather if the last weather was `null` or the public
     // weather type
     if (gameround.weather != null && gameround.weather == getpublicWeather()) {
-      newTp = ListUtil.selectRandom(types.getWeathers(), gameround.weather);
+      newTp = ContainerUtil.selectRandom(types.getWeathers(), gameround.weather);
 
     } else {
       // Take public weather and calculate a random amount of days

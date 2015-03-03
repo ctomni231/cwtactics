@@ -5,25 +5,25 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.persistence.model.SaveGameHandler;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Created;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
-import org.wolfTec.wolfTecEngine.logging.model.Logger;
+import org.wolfTec.wolfTecEngine.beans.CreatedType;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.persistence.annotations.FolderPath;
-import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystem;
+import org.wolfTec.wolfTecEngine.vfs.Vfs;
 
 /**
  * Save game handler, used to load and save game files.
  */
-@Bean
+@ManagedComponent
 public class SaveGameManagerBean {
 
-  @Created
+  @CreatedType
   private Logger log;
 
-  @Created
+  @CreatedType
   @FolderPath("/saves")
-  private VirtualFilesystem storage;
+  private Vfs storage;
 
   @Injected
   private Array<SaveGameHandler<Object>> handlers;

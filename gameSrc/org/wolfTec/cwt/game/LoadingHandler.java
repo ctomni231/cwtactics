@@ -11,7 +11,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
-import org.wolfTec.cwt.game.model.Config;
+import org.wolfTec.cwt.game.gamemodel.model.Config;
 
 public class LoadingHandler {
 
@@ -41,7 +41,7 @@ public class LoadingHandler {
 
     Debug.logInfo(LOG_MARKER, "Start loading game data");
 
-    VirtualFilesystem.readFile(PARAM_HAS_CACHE, new Callback1<Object>() {
+    Vfs.readFile(PARAM_HAS_CACHE, new Callback1<Object>() {
       @Override
       public void $invoke(Object o) {
         hasDownloadedAssets = (o != null && (Boolean) o == true);
@@ -51,7 +51,7 @@ public class LoadingHandler {
           @Override
           public void $invoke() {
             Debug.logInfo(LOG_MARKER, "finished loading game data");
-            VirtualFilesystem.writeFile(PARAM_HAS_CACHE, true, callback);
+            Vfs.writeFile(PARAM_HAS_CACHE, true, callback);
           }
         });
       }
@@ -96,7 +96,7 @@ public class LoadingHandler {
         if (dataTransfer.wantResetData()) {
           Debug.logInfo(LOG_MARKER, "wipe out cached data");
 
-          VirtualFilesystem.deleteEverything(new Callback0() {
+          Vfs.deleteEverything(new Callback0() {
             @Override
             public void $invoke() {
               Global.window.document.location.reload();

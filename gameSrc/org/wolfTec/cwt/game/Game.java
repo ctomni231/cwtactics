@@ -9,7 +9,7 @@ public abstract class Game {
   public String getVersion() {
     String text = "";
     text += "CustomWars: Tactics " + EngineGlobals.VERSION + " ";
-    text += "running on the WolfTecEngine engine " + Engine.VERSION;
+    text += "running on the WolfTec engine " + Engine.VERSION;
     return text;
   }
 

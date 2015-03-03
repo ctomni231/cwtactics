@@ -2,17 +2,17 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.stjs.javascript.JSGlobal;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.model.GameMapBean;
-import org.wolfTec.cwt.game.model.GameRoundBean;
-import org.wolfTec.cwt.game.model.Property;
-import org.wolfTec.cwt.game.model.Tile;
-import org.wolfTec.cwt.game.model.Unit;
-import org.wolfTec.cwt.game.model.types.ObjectTypesBean;
-import org.wolfTec.cwt.game.model.types.PropertyType;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.beans.annotations.Injected;
+import org.wolfTec.cwt.game.gamemodel.bean.GameMapBean;
+import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
+import org.wolfTec.cwt.game.gamemodel.bean.ObjectTypesBean;
+import org.wolfTec.cwt.game.gamemodel.model.Property;
+import org.wolfTec.cwt.game.gamemodel.model.PropertyType;
+import org.wolfTec.cwt.game.gamemodel.model.Tile;
+import org.wolfTec.cwt.game.gamemodel.model.Unit;
+import org.wolfTec.wolfTecEngine.beans.Injected;
+import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
 
-@Bean
+@ManagedComponent
 public class SpecialWeaponsLogic {
 
   @Injected
