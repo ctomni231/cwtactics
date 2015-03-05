@@ -5,12 +5,12 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.persistence.model.SaveGameHandler;
-import org.wolfTec.wolfTecEngine.beans.CreatedType;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.managed.Injected;
+import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.vfs.Vfs;
+import org.wolfTec.wolfTecEngine.components.CreatedType;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.persistence.annotations.FolderPath;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
 
 /**
  * Save game handler, used to load and save game files.

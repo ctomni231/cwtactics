@@ -10,9 +10,9 @@ import org.wolfTec.cwt.game.gamemodel.bean.ObjectTypesBean;
 import org.wolfTec.cwt.game.gamemodel.model.GameMap;
 import org.wolfTec.cwt.game.gamemodel.model.GameMode;
 import org.wolfTec.cwt.game.gamemodel.model.Player;
-import org.wolfTec.wolfTecEngine.beans.CreatedType;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.managed.Injected;
+import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.CreatedType;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 
 @ManagedComponent

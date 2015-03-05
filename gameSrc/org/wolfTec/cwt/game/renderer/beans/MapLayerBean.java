@@ -7,12 +7,12 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.model.Tile;
 import org.wolfTec.cwt.game.renderer.model.SpriteIndexes;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.managed.Injected;
+import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.renderer.layer.GraphicLayer;
+import org.wolfTec.renderer.sprite.SpriteManager;
 import org.wolfTec.wolfTecEngine.renderer.AnimatedLayer;
 import org.wolfTec.wolfTecEngine.renderer.Direction;
-import org.wolfTec.wolfTecEngine.renderer.GraphicLayer;
-import org.wolfTec.wolfTecEngine.renderer.SpriteManager;
 
 @ManagedComponent
 public class MapLayerBean extends GraphicLayer {

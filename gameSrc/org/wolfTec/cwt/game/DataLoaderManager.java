@@ -5,15 +5,14 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.wolfTecEngine.EngineOptions;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.managed.ManagerOptions;
+import org.wolfTec.managed.Injected;
+import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.vfs.ReadOnlyHtmlVfs;
+import org.wolfTec.vfs.Vfs;
+import org.wolfTec.vfs.VfsEntityDescriptor;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
-import org.wolfTec.wolfTecEngine.vfs.VfsEntityDescriptor;
-import org.wolfTec.wolfTecEngine.vfs.ReadOnlyHtmlVfs;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
 
 @ManagedComponent
 public class DataLoaderManager {
@@ -40,7 +39,7 @@ public class DataLoaderManager {
   private Vfs localFs;
 
   @Injected
-  private EngineOptions options;
+  private ManagerOptions options;
   
   @Injected("key=$beanName")
   private Map<String, DataConverter<?>> converters;
@@ -63,7 +62,7 @@ public class DataLoaderManager {
     Array<Callback1<Callback0>> loaders = JSCollections.$array();
 
     // remoteFs cannot access instance variables here (because of ST-JS)
-    EngineOptions options = this.options;
+    ManagerOptions options = this.options;
 
     // remote files will be loaded with the HTML file system
     ReadOnlyHtmlVfs remoteFs = new ReadOnlyHtmlVfs() {

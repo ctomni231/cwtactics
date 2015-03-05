@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game;
 
 import org.stjs.javascript.JSGlobal;
+import org.wolfTec.managed.ManagerOptions;
 import org.wolfTec.wolfTecEngine.Engine;
-import org.wolfTec.wolfTecEngine.EngineOptions;
 
 public abstract class Game {
 
@@ -21,7 +21,7 @@ public abstract class Game {
     }
 
     // TODO
-    EngineOptions options = null;
+    ManagerOptions options = null;
     
     engine = new Engine(options);
   }

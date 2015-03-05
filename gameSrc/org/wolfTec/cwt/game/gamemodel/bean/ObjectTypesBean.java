@@ -14,13 +14,13 @@ import org.wolfTec.cwt.game.gamemodel.model.PropertyType;
 import org.wolfTec.cwt.game.gamemodel.model.TileType;
 import org.wolfTec.cwt.game.gamemodel.model.UnitType;
 import org.wolfTec.cwt.game.gamemodel.model.WeatherType;
-import org.wolfTec.wolfTecEngine.beans.CreatedType;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.vfs.Vfs;
+import org.wolfTec.vfs.VfsEntityDescriptor;
+import org.wolfTec.wolfTecEngine.components.CreatedType;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.persistence.annotations.FolderPath;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
-import org.wolfTec.wolfTecEngine.vfs.VfsEntityDescriptor;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
 
 @ManagedComponent
 public class ObjectTypesBean {

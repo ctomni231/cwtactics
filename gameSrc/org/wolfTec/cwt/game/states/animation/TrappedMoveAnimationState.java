@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game.states.animation;
 
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.managed.ManagedComponent;
 import org.wolfTec.wolfTecEngine.statemachine.AnimationState;
 
 @ManagedComponent

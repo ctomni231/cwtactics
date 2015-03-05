@@ -8,13 +8,13 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.GameLoadHandler;
 import org.wolfTec.cwt.game.gamemodel.model.Config;
 import org.wolfTec.cwt.game.gamemodel.model.GameConfigType;
-import org.wolfTec.wolfTecEngine.beans.CreatedType;
-import org.wolfTec.wolfTecEngine.beans.PostConstruct;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.vfs.Vfs;
+import org.wolfTec.vfs.VfsEntityDescriptor;
+import org.wolfTec.wolfTecEngine.components.CreatedType;
+import org.wolfTec.wolfTecEngine.components.PostConstruct;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.persistence.annotations.FolderPath;
-import org.wolfTec.wolfTecEngine.vfs.VfsEntityDescriptor;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
 
 @ManagedComponent
 public class GameConfigBean implements GameLoadHandler {

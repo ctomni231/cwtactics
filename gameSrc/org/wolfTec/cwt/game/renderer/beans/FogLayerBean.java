@@ -7,10 +7,10 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
 import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.model.Tile;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
-import org.wolfTec.wolfTecEngine.renderer.GraphicLayer;
-import org.wolfTec.wolfTecEngine.renderer.SpriteManager;
+import org.wolfTec.managed.Injected;
+import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.renderer.layer.GraphicLayer;
+import org.wolfTec.renderer.sprite.SpriteManager;
 
 @ManagedComponent
 public class FogLayerBean extends GraphicLayer {

@@ -10,13 +10,13 @@ import org.wolfTec.cwt.game.gamemodel.bean.GameMapBean;
 import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.model.Tile;
 import org.wolfTec.cwt.game.gamemodel.model.Unit;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.managed.Injected;
+import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.renderer.layer.GraphicLayer;
+import org.wolfTec.renderer.sprite.Sprite;
+import org.wolfTec.renderer.sprite.SpriteManager;
 import org.wolfTec.wolfTecEngine.renderer.AnimatedLayer;
 import org.wolfTec.wolfTecEngine.renderer.Direction;
-import org.wolfTec.wolfTecEngine.renderer.GraphicLayer;
-import org.wolfTec.wolfTecEngine.renderer.Sprite;
-import org.wolfTec.wolfTecEngine.renderer.SpriteManager;
 
 @ManagedComponent
 public class UnitLayerBean extends GraphicLayer {
