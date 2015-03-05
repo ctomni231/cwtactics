@@ -2,8 +2,8 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.model.Unit;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.util.JsUtil;
 
 @ManagedComponent

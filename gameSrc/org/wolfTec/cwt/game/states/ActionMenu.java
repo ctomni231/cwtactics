@@ -1,9 +1,9 @@
 package org.wolfTec.cwt.game.states;
 
 import org.wolfTec.cwt.game.gamemodel.model.MenuEntry;
-import org.wolfTec.wolfTecEngine.beans.CreatedType;
-import org.wolfTec.wolfTecEngine.beans.PostConstruct;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.CreatedType;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.PostConstruct;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
 import org.wolfTec.wolfTecEngine.container.ContainerSize;
 

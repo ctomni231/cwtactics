@@ -1,68 +1,116 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.wolfTec</groupId>
-	<artifactId>cwtactics</artifactId>
-	<version>0.3.799-b1-SNAPSHOT</version>
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>org.wolfTec</groupId>
+ <artifactId>cwtactics</artifactId>
+ <version>0.3.799-b1-SNAPSHOT</version>
 
-	<properties>
-		<stjs.version>3.1.3</stjs.version>
-	</properties>
+ <properties>
+  <stjs.version>3.1.3</stjs.version>
+ </properties>
 
-	<build>
-		<sourceDirectory>gameSrc</sourceDirectory>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>1.8</source>
-						<target>1.8</target>
-					</configuration>
-				</plugin>
+ <build>
+  <sourceDirectory>engineSrc/</sourceDirectory>
+  <pluginManagement>
+   <plugins>
+    <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-compiler-plugin</artifactId>
+     <configuration>
+      <source>1.8</source>
+      <target>1.8</target>
+     </configuration>
+    </plugin>
 
-				<plugin>
-					<groupId>org.st-js</groupId>
-					<artifactId>maven-plugin</artifactId>
-					<version>${stjs.version}</version>
-					<executions>
-						<execution>
-							<id>main</id>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-						</execution>
-						<!-- if you use the JUnit runner -->
-						<execution>
-							<id>test</id>
-							<goals>
-								<goal>generate-test</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<includes>
-							<include>engineSrc/**/*.java</include>
-						</includes>
-						<pack>true</pack>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
+    <plugin>
+     <groupId>org.st-js</groupId>
+     <artifactId>stjs-maven-plugin</artifactId>
+     <version>${stjs.version}</version>
+     <executions>
+      <execution>
+       <id>main</id>
+       <goals>
+        <goal>generate</goal>
+       </goals>
+      </execution>
+     </executions>
+     <configuration>
+      <includes>
+       <include>**/*.java</include>
+      </includes>
+      <pack>true</pack>
+      <annotations>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.st-js.bridge</groupId>
-			<artifactId>html</artifactId>
-			<version>5.0.bv2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.st-js</groupId>
-			<artifactId>server</artifactId>
-			<version>${stjs.version}</version>
-		</dependency>
-	</dependencies>
+       <annotation>ValidateKey</annotation>
+       <annotation>StringValue</annotation>
+       <annotation>StringKey</annotation>
+       <annotation>IntValue</annotation>
+       <annotation>ComplexValue</annotation>
+       <annotation>BooleanValue</annotation>
+
+       <annotation>LayerData</annotation>
+
+       <annotation>Bean</annotation>
+       <annotation>Created</annotation>
+       <annotation>Factory</annotation>
+       <annotation>Injected</annotation>
+       <annotation>PostInitialization</annotation>
+       <annotation>ThisAccessSafe</annotation>
+      </annotations>
+     </configuration>
+    </plugin>
+
+    <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-antrun-plugin</artifactId>
+     <version>1.7</version>
+     <executions>
+      <execution>
+       <id>default-cli</id>
+       <phase>compile</phase>
+       <goals>
+        <goal>run</goal>
+       </goals>
+       <configuration>
+        <target>
+
+         <copy file="${project.build.outputDirectory}/stjs.js"
+          todir="${basedir}/dest" overwrite="true" />
+
+         <copy file="${project.build.outputDirectory}/wolfTecEngine.js"
+          todir="${basedir}/dest" overwrite="true" />
+        </target>
+       </configuration>
+      </execution>
+     </executions>
+    </plugin>
+
+   </plugins>
+  </pluginManagement>
+ </build>
+
+ <dependencies>
+  <dependency>
+   <groupId>org.st-js.bridge</groupId>
+   <artifactId>html</artifactId>
+   <version>5.0.bv2</version>
+  </dependency>
+  <dependency>
+   <groupId>org.st-js</groupId>
+   <artifactId>server</artifactId>
+   <version>${stjs.version}</version>
+  </dependency>
+  <dependency>
+   <groupId>org.st-js</groupId>
+   <artifactId>shared</artifactId>
+   <version>${stjs.version}</version>
+  </dependency>
+  <dependency>
+   <groupId>org.st-js</groupId>
+   <artifactId>test-helper</artifactId>
+   <version>${stjs.version}</version>
+   <scope>test</scope>
+  </dependency>
+ </dependencies>
 </project>

@@ -1,6 +1,6 @@
 package net.wolfTec.cwtactics;
 
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.test.TestManager;
 import org.wolfTec.wolfTecEngine.test.gherkin.FactsBase;
 import org.wolfTec.wolfTecEngine.test.gherkin.GherkinTestManager;

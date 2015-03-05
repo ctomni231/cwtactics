@@ -1,7 +1,7 @@
 package org.wolfTec.cwt.game.renderer.beans;
 
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.wolfTecEngine.beans.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.renderer.GraphicLayer;
 import org.wolfTec.wolfTecEngine.renderer.LayerFrameTime;
 import org.wolfTec.wolfTecEngine.renderer.LayerFrames;
