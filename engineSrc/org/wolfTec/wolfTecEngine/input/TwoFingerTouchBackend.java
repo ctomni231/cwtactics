@@ -6,12 +6,13 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.wolfTecEngine.components.ComponentManager;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.logging.LogManager;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 
-@ManagedComponent(whenQualifier="touch_input=WOLFTEC")
+@ManagedComponent
 public class TwoFingerTouchBackend implements InputBackend, ManagedComponentInitialization {
 
+  @ManagedConstruction
   private Logger log;
 
   private Callback1<Object> touchStartHandler;
@@ -34,8 +35,6 @@ public class TwoFingerTouchBackend implements InputBackend, ManagedComponentInit
   
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
-    
     touchStartHandler = (event) -> {
       $js("event.preventDefault()");
 

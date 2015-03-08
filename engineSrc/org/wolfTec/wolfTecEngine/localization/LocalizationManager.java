@@ -3,28 +3,24 @@ package org.wolfTec.wolfTecEngine.localization;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.vfs.DecoratedVfs;
-import org.wolfTec.vfs.Vfs;
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.JsExec;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.logging.LogManager;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolfTec.wolfTecEngine.vfs.Vfs;
+
 /**
  * 
  */
-@ManagedComponent(whenQualifier = "i18n=WOLFEC")
-public class LocalizationManager implements Localization, ManagedComponentInitialization {
+@ManagedComponent
+public class LocalizationManager implements Localization {
 
+  @ManagedConstruction
   private Logger p_log;
+  
+  @Injected
   private Vfs p_vfs;
-
-  @Override
-  public void onComponentConstruction(ComponentManager manager) {
-    p_log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
-    p_vfs = new DecoratedVfs(manager.getComponentByClass(Vfs.class), "/lang", null);
-  }
 
   /**
    * The current active language.
@@ -46,7 +42,7 @@ public class LocalizationManager implements Localization, ManagedComponentInitia
 
   @Override
   public void selectLanguage(String language, Callback0 cb) {
-    p_vfs.readFile("lang_" + language, entry -> {
+    p_vfs.readFile("lang/lang_" + language, entry -> {
       if (entry.value != null) {
         this.language = (Map<String, String>) entry.value;
         cb.$invoke();

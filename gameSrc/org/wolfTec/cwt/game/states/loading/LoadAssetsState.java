@@ -1,11 +1,9 @@
 package org.wolfTec.cwt.game.states.loading;
 
 import org.wolfTec.cwt.game.persistence.beans.GameLoadingManager;
-import org.wolfTec.wolfTecEngine.components.CreatedType;
 import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ThisSafe;
-import org.wolfTec.wolfTecEngine.input.InputManager;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;
@@ -13,7 +11,7 @@ import org.wolfTec.wolfTecEngine.statemachine.StateManager;
 @ManagedComponent
 public class LoadAssetsState implements State {
 
-  @CreatedType
+  @ManagedConstruction
   private Logger log;
 
   @Injected

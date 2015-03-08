@@ -1,14 +1,18 @@
-package org.wolfTec.cwt.game.action.serializer;
+package org.wolfTec.wolfTecEngine.vfs;
 
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.vfs.Serializer;
 import org.wolfTec.wolfTecEngine.components.JsExec;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 
-public class ActionItemSerializer implements Serializer {
+/**
+ * Simple object serializer which uses JSON to convert objects to strings and
+ * strings to objects.
+ */
+@ManagedComponent
+public class JsonFileSerializer implements Serializer {
 
   @Override
   public void deserialize(String data, Callback1<Object> cb) {
-    // TODO validate
     cb.$invoke(JsExec.injectJS("JSON.parse(data)"));
   }
 

@@ -1,6 +1,5 @@
 package org.wolfTec.wolfTecEngine.components;
 
-
 public interface ManagedComponentInitialization {
 
   /**

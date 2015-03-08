@@ -1,7 +1,7 @@
 package org.wolfTec.wolfTecEngine.test.gherkin;
 
 import org.stjs.javascript.Array;
-import org.stjs.javascript.JSCollections;
+import org.wolfTec.wolfTecEngine.container.ContainerUtil;
 
 public class Feature {
 
@@ -10,6 +10,6 @@ public class Feature {
   public Array<Screnario> scenarios;
 
   public Feature() {
-    scenarios = JSCollections.$array();
+    scenarios = ContainerUtil.createArray();
   }
 }

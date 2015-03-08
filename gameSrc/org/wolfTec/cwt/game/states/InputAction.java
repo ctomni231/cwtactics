@@ -1,4 +1,4 @@
-package org.wolfTec.cwt.game.action.model;
+package org.wolfTec.cwt.game.states;
 
 public abstract class InputAction {
 

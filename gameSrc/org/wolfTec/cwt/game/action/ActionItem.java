@@ -1,5 +1,6 @@
-package org.wolfTec.cwt.game.action.model;
+package org.wolfTec.cwt.game.action;
 
+import org.wolfTec.wolfTecEngine.validation.DataObject;
 import org.wolfTec.wolfTecEngine.validation.IntValue;
 import org.wolfTec.wolfTecEngine.validation.StringValue;
 
@@ -7,6 +8,7 @@ import org.wolfTec.wolfTecEngine.validation.StringValue;
  * Action entry. Used to handle actions in a asynchronous way plus sending and
  * receiving them via a network interface.
  */
+@DataObject
 public class ActionItem {
 
   @IntValue

@@ -1,4 +1,4 @@
-package org.wolfTec.vfs;
+package org.wolfTec.wolfTecEngine.vfs;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;

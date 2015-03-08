@@ -4,23 +4,28 @@ import org.stjs.javascript.Date;
 import org.stjs.javascript.dom.Form;
 import org.stjs.javascript.dom.Input;
 import org.wolfTec.cwt.game.renderer.beans.UserInterfaceLayerBean;
-import org.wolfTec.wolfTecEngine.components.CreatedType;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
 import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolfTec.wolfTecEngine.renderer.gui.UiContainer;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
 
 @ManagedComponent
-public class ErrorState implements State {
+public class ErrorState implements State, ManagedComponentInitialization {
 
   // TODO by config
   public static final String ERROR_FORM_URL = "http://battle.customwars.com/report/index.php";
 
   // TODO use button group
 
-  @CreatedType
+  private UiContainer p_container;
+  
+  @ManagedConstruction
   private Logger log;
 
   @Injected
@@ -30,6 +35,12 @@ public class ErrorState implements State {
   private boolean rendered;
 
   private int selectedAction;
+  
+  @Override
+  public void onComponentConstruction(ComponentManager manager) {
+    p_container = new UiContainer();
+    
+  }
 
   public void setErrorMessage(String message) {
     this.errorMessage = message;
@@ -40,6 +51,17 @@ public class ErrorState implements State {
     rendered = false;
     errorMessage = "";
     selectedAction = 0;
+   
+    String pressedAction = null;
+    
+    if(pressedAction == "SEND") {
+      sendErrorReport();
+    }
+  }
+  
+  @Override
+  public void render(int delta) {
+    p_container.draw(ui);
   }
 
   private void sendErrorReport() {
@@ -57,6 +79,7 @@ public class ErrorState implements State {
     form.target = ERROR_FORM_URL;
     form.appendChild(inputTitle);
     form.appendChild(inputMsg);
+    
     form.submit();
   }
 }

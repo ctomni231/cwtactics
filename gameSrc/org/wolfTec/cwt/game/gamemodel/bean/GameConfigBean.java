@@ -1,40 +1,38 @@
 package org.wolfTec.cwt.game.gamemodel.bean;
 
 import org.stjs.javascript.Array;
-import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.cwt.game.GameLoadHandler;
 import org.wolfTec.cwt.game.gamemodel.model.Config;
 import org.wolfTec.cwt.game.gamemodel.model.GameConfigType;
-import org.wolfTec.vfs.Vfs;
-import org.wolfTec.vfs.VfsEntityDescriptor;
-import org.wolfTec.wolfTecEngine.components.CreatedType;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.PostConstruct;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.persistence.annotations.FolderPath;
+import org.wolfTec.wolfTecEngine.vfs.Vfs;
+import org.wolfTec.wolfTecEngine.vfs.VfsEntityDescriptor;
 
 @ManagedComponent
-public class GameConfigBean implements GameLoadHandler {
+public class GameConfigBean implements ManagedComponentInitialization {
 
-  @CreatedType
+  @ManagedConstruction
   private Logger log;
 
-  @CreatedType
-  @FolderPath("/config")
+  @ManagedConstruction
   private Vfs fs;
 
-  @CreatedType
+  @ManagedConstruction
   private Map<String, Config> configs;
   
-  @CreatedType
+  @ManagedConstruction
   private Array<String> configNames;
 
-  @PostConstruct
-  public void init() { // TODO convert to data object
-    
+  @Override
+  public void onComponentConstruction(ComponentManager manager) {
+    fs.selectDirectory("/config");
+
     // game logic
     createConfig("fogEnabled", new Config(0, 1, 1, 1), true);
     createConfig("daysOfPeace", new Config(0, 50, 0, 1), true);
@@ -85,8 +83,7 @@ public class GameConfigBean implements GameLoadHandler {
     }
   }
 
-  @Override
-  public void onLoadingGamedata(Callback0 cb) {
+  public void loadData(Callback0 cb) {
     fs.readFile("user_data.json", (VfsEntityDescriptor<GameConfigType> entry) -> {
       GameConfigType config = entry.value;
 
@@ -105,8 +102,7 @@ public class GameConfigBean implements GameLoadHandler {
     });
   }
 
-  // TODO via interface ?
-  public void saveConfiguration(Callback0 callback) {
+  public void saveData(Callback0 callback) {
     GameConfigType config = new GameConfigType();
     config.forceTouch = (getConfigValue("forceTouch") == 1);
     config.fastClickMode = (getConfigValue("fastClickMode") == 1);

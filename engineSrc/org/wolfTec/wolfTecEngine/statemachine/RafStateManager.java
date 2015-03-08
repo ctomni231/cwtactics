@@ -9,9 +9,9 @@ import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.JsUtil;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.components.PerformanceUtil;
 import org.wolfTec.wolfTecEngine.input.InputManager;
-import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.network.NetworkBackend;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
@@ -22,6 +22,7 @@ import org.wolfTec.wolfTecEngine.util.BrowserUtil;
 @ManagedComponent(whenQualifier = "stm=WOLFTEC")
 public class RafStateManager implements ManagedComponentInitialization, StateManager {
 
+  @ManagedConstruction
   private Logger log;
 
   @Injected
@@ -58,8 +59,6 @@ public class RafStateManager implements ManagedComponentInitialization, StateMan
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
-
     gameloop = () -> {
 
       // update timer

@@ -1,7 +1,9 @@
 package org.wolfTec.cwt.game;
 
+import org.wolfTec.wolfTecEngine.components.ManagerOptions;
+
 // TODO rename to game globals
-public abstract class EngineGlobals {
+public abstract class EngineGlobals extends ManagerOptions {
 
   /**
    * Current version of the running CustomWars: Tactics.

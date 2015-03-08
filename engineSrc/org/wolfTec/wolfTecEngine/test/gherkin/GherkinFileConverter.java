@@ -1,16 +1,23 @@
 package org.wolfTec.wolfTecEngine.test.gherkin;
 
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.vfs.Serializer;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolfTec.wolfTecEngine.vfs.Serializer;
 
-public class GherkinFileConverter implements Serializer {
+@ManagedComponent
+public class GherkinFileConverter implements Serializer, ManagedComponentInitialization {
 
+  @ManagedConstruction
   private Logger p_log;
+  
   private Parser p_parser;
   
-  public GherkinFileConverter(Logger log) {
-    p_log = log;
+  @Override
+  public void onComponentConstruction(ComponentManager manager) {
     p_parser = new Parser();
   }
   

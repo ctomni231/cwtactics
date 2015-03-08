@@ -1,4 +1,4 @@
-package org.wolfTec.vfs;
+package org.wolfTec.wolfTecEngine.vfs;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
@@ -19,12 +19,12 @@ public interface Vfs {
    *          full path of the directory
    * @param callback
    */
-  public void deleteDirectory(String path, Callback0 callback);
+  void deleteDirectory(String path, Callback0 callback);
 
   /**
    * Deletes all files from the file system.
    */
-  public void deleteEverything(Callback0 callback);
+  void deleteEverything(Callback0 callback);
 
   /**
    * Deletes a file.
@@ -32,7 +32,7 @@ public interface Vfs {
    * @param path
    * @param callback
    */
-  public void deleteFile(String path, Callback0 callback);
+  void deleteFile(String path, Callback0 callback);
 
   /**
    * Lists all files from a directory.
@@ -55,19 +55,49 @@ public interface Vfs {
   /**
    * 
    * @param path
+   * @param serializer
+   * @param callback
+   */
+  default <T> void readConvertedFile(String path, Serializer serializer, Callback1<VfsEntityDescriptor<T>> callback) {
+    readFile(path, (fileDesc) -> {
+      serializer.deserialize(fileDesc.value+"", (convertedData) -> {
+        fileDesc.value = convertedData;
+        callback.$invoke((VfsEntityDescriptor<T>) fileDesc);
+      });
+    });
+  }
+
+  /**
+   * 
+   * @param path
    * @param callback
    */
   default <T> void readFiles(Callback1<Array<VfsEntityDescriptor<T>>> callback) {
+    readConvertedFiles(null, callback);
+  }
 
+  /**
+   * 
+   * @param serializer
+   * @param callback
+   */
+  default <T> void readConvertedFiles(Serializer serializer, Callback1<Array<VfsEntityDescriptor<T>>> callback) {
     Array<VfsEntityDescriptor<T>> files = ContainerUtil.createArray();
     Array<Callback1<Callback0>> fileLoaders = ContainerUtil.createArray();
     
     Callback1<String> pushFileLoader = (file) -> {
       fileLoaders.push((next) -> {
-        readFile(file, (fileDesc) -> {
+        
+        Callback1<VfsEntityDescriptor<T>> readFileCb = (fileDesc) -> {
           files.push((VfsEntityDescriptor<T>) fileDesc);
           next.$invoke();
-        });
+        };
+
+        if (serializer != null) {
+          readConvertedFile(file, serializer, readFileCb);
+        } else {
+          readFile(file, readFileCb);
+        }
       });
     };
 
@@ -105,6 +135,30 @@ public interface Vfs {
     });
   }
 
+  default <T> void forEachConvertedFile(Serializer serializer, Callback2<VfsEntityDescriptor<T>, Callback0> fileCb, Callback0 cb) {
+    Callback1<Array<VfsEntityDescriptor<T>>> filesCb = (fileDescs) -> {
+
+      Array<Callback1<Callback0>> iterations = ContainerUtil.createArray();
+      Callback1<VfsEntityDescriptor<T>> pushFile = (file) -> {
+        iterations.push((next) -> {
+          fileCb.$invoke(file, next);
+        });
+      };
+
+      for (int i = 0; i < fileDescs.$length(); i++) {
+        pushFile.$invoke((VfsEntityDescriptor<T>) fileDescs.$get(i));
+      }
+
+      BrowserUtil.executeSeries(iterations, cb);
+    };
+    
+    if (serializer != null) {
+      readConvertedFiles(serializer, filesCb);
+    } else {
+      readFiles(filesCb);
+    }
+  }
+
   /**
    * Writes a file to the file system.
    * 
@@ -113,6 +167,20 @@ public interface Vfs {
    * @param callback
    */
   <T> void writeFile(String path, T value, Callback2<Object, Object> callback);
+  
+  /**
+   * 
+   * @param path
+   * @param value
+   * @param serializer
+   * @param callback
+   */
+  default <T> void writeConvertedFile(String path, T value, Serializer serializer,
+      Callback2<Object, Object> callback) {
+    serializer.serialize(value, (serializedValue) -> {
+      writeFile(path, serializedValue, callback);
+    });
+  }
 
   /**
    * 

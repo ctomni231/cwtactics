@@ -1,25 +1,24 @@
-package org.wolfTec.vfs;
+package org.wolfTec.wolfTecEngine.vfs;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolfTec.wolfTecEngine.components.ComponentManager;
-import org.wolfTec.wolfTecEngine.components.JsExec;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.container.ContainerUtil;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolfTec.wolfTecEngine.components.JsExec;
 
 /**
  * This is the default local file system of the WolfTec engine. Every file will
  * be handled by Mozillas localForage. In general this means that it uses your
  * browsers IndexedDB technology to persist everything.
  */
-@ManagedComponent(whenQualifier = "vfs=WOLFTEC")
+@ManagedComponent
 public class LocalForageVfs implements Vfs, ManagedComponentInitialization {
 
   /**
@@ -53,12 +52,12 @@ public class LocalForageVfs implements Vfs, ManagedComponentInitialization {
 
   @Override
   public void deleteEverything(Callback0 callback) {
-    JSObjectAdapter.$js("localForage.clear(callback)");
+    JsExec.injectJS("localForage.clear(callback)");
   }
 
   @Override
   public void deleteFile(String path, Callback0 callback) {
-    JSObjectAdapter.$js("localForage.removeItem(key, callback)");
+    JsExec.injectJS("localForage.removeItem(key, callback)");
   }
 
   @Override
@@ -87,12 +86,12 @@ public class LocalForageVfs implements Vfs, ManagedComponentInitialization {
     config.$put("name", "CWT_DATABASE");
     config.$put("size", (1 == 2 ? IOS7_WEBSQL_BUGFIX_SIZE : DEFAULT_DB_SIZE * 1024 * 1024));
 
-    JSObjectAdapter.$js("localForage.config(config)");
+    JsExec.injectJS("localForage.config(config)");
   }
 
   @Override
   public <T> void readFile(String path, Callback1<VfsEntityDescriptor<T>> callback) {
-    JSObjectAdapter.$js("localForage.getItem(key, callback)");
+    JsExec.injectJS("localForage.getItem(key, callback)");
   }
 
   @Override
@@ -104,13 +103,13 @@ public class LocalForageVfs implements Vfs, ManagedComponentInitialization {
       // question for more storage invokes an error => we don't want to
       // need to reload then
       if (error != null) {
-        JSObjectAdapter.$js("localForage.setItem(key, value, callback)");
+        JsExec.injectJS("localForage.setItem(key, value, callback)");
       } else {
         callback.$invoke(result, null);
       }
     };
 
-    JSObjectAdapter.$js("localForage.setItem(key, value, safeCb)");
+    JsExec.injectJS("localForage.setItem(key, value, safeCb)");
   }
 
 }

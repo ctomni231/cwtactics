@@ -5,12 +5,10 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.model.MoveType;
 import org.wolfTec.cwt.game.gamemodel.model.Tile;
-import org.wolfTec.wolfTecEngine.components.CreatedType;
 import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.JsExec;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
-import org.wolfTec.wolfTecEngine.container.ContainerSize;
 import org.wolfTec.wolfTecEngine.pathfinding.PathFinder;
 
 @ManagedComponent

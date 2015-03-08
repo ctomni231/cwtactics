@@ -8,7 +8,7 @@ import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.JsExec;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.logging.LogManager;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 
 @ManagedComponent(whenQualifier="keyboard_input=WOLFTEC")
@@ -18,14 +18,14 @@ public class KeyboardBackend implements InputBackend, ManagedComponentInitializa
 
   @Injected
   private InputManager input;
+  
+  @ManagedConstruction 
+  private Logger p_log;
 
   private boolean p_enabled;
-  private Logger p_log;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    p_log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
-
     Function1<Integer, String> getInputType = (keycode) -> {
       switch (keycode) { // TODO make generic
 

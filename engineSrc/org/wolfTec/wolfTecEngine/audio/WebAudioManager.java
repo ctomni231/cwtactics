@@ -5,23 +5,25 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.vfs.DecoratedVfs;
-import org.wolfTec.vfs.Vfs;
-import org.wolfTec.vfs.VfsEntityDescriptor;
 import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.JsExec;
 import org.wolfTec.wolfTecEngine.components.JsUtil;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.logging.LogManager;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolfTec.wolfTecEngine.vfs.Vfs;
+import org.wolfTec.wolfTecEngine.vfs.VfsEntityDescriptor;
 
-@ManagedComponent(whenQualifier = "audio=WOLFTEC_WEBAUDIO")
+@ManagedComponent
 public class WebAudioManager implements AudioManager, ManagedComponentInitialization {
 
+  @ManagedConstruction
   private Logger log;
-  private Vfs sfx;
-  private Vfs music;
+  
+  @Injected
+  private Vfs vfs;
 
   private int apiStatus;
 
@@ -55,8 +57,6 @@ public class WebAudioManager implements AudioManager, ManagedComponentInitializa
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
-
     try {
       log.info("Initialize..");
 
@@ -72,11 +72,6 @@ public class WebAudioManager implements AudioManager, ManagedComponentInitializa
         JsUtil.raiseError("No usable WebAudio context found");
       }
       this.context = context;
-
-      Vfs vfs = manager.getComponentByClass(Vfs.class);
-      AudioFileSerializer serializer = new AudioFileSerializer(log, context);
-      sfx = new DecoratedVfs(vfs, "/sounds", serializer);
-      music = new DecoratedVfs(vfs, "/music", serializer);
 
       musicPlayCallback = (entry) -> {
         musicConnector = playSoundOnGainNode(musicNode, buffer, true);
@@ -169,7 +164,7 @@ public class WebAudioManager implements AudioManager, ManagedComponentInitializa
     // set meta data
     musicInLoadProcess = true;
     musicID = key;
-    sfx.readFile(key, p_musicLoadCallback);
+    vfs.readFile("music/"+key, p_musicLoadCallback);
 
     return true;
   }

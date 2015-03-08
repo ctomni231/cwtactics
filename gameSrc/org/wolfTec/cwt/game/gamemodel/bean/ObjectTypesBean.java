@@ -14,47 +14,21 @@ import org.wolfTec.cwt.game.gamemodel.model.PropertyType;
 import org.wolfTec.cwt.game.gamemodel.model.TileType;
 import org.wolfTec.cwt.game.gamemodel.model.UnitType;
 import org.wolfTec.cwt.game.gamemodel.model.WeatherType;
-import org.wolfTec.vfs.Vfs;
-import org.wolfTec.vfs.VfsEntityDescriptor;
-import org.wolfTec.wolfTecEngine.components.CreatedType;
+import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.persistence.annotations.FolderPath;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolfTec.wolfTecEngine.vfs.Vfs;
 
 @ManagedComponent
 public class ObjectTypesBean {
 
-  @CreatedType
+  @ManagedConstruction
   private Logger log;
 
-  @CreatedType
-  @FolderPath("/types/army")
-  private Vfs armyFs;
-
-  @CreatedType
-  @FolderPath("/types/movetype")
-  private Vfs movetypeFs;
-
-  @CreatedType
-  @FolderPath("/types/unit")
-  private Vfs unitFs;
-
-  @CreatedType
-  @FolderPath("/types/tile")
-  private Vfs tileFs;
-
-  @CreatedType
-  @FolderPath("/types/property")
-  private Vfs propertyFs;
-
-  @CreatedType
-  @FolderPath("/types/weather")
-  private Vfs weatherFs;
-
-  @CreatedType
-  @FolderPath("/types/commander")
-  private Vfs commanderFs;
+  @Injected
+  private Vfs fs;
 
   private Map<String, ArmyType> armyTypes;
   private Array<ArmyType> armyTypeList;
@@ -133,7 +107,6 @@ public class ObjectTypesBean {
     return weatherTypeList;
   }
 
-  @SuppressWarnings("unchecked")
   private <T extends ObjectType> Callback1<Callback0> loadAll(Vfs fs,
       Map<String, T> typeMap, Array<T> typelist) {
 
@@ -149,9 +122,9 @@ public class ObjectTypesBean {
     };
   }
 
-  public void loadObjectTypes(Callback0 cb) {
+  public void loadData(Callback0 cb) {
     Array<Callback1<Callback0>> steps = JSCollections.$array();
-
+    
     steps.push(loadAll(armyFs, armyTypes, armyTypeList));
     steps.push(loadAll(movetypeFs, moveTypes, movetypesList));
     steps.push(loadAll(tileFs, tileTypes, tileTypeList));

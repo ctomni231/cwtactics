@@ -8,14 +8,15 @@ import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.JsUtil;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.components.ManagerOptions;
 import org.wolfTec.wolfTecEngine.components.ReflectionUtil;
-import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 
 @ManagedComponent(whenQualifier="validation=WOLFTEC")
 public class ValidationManager implements ManagedComponentInitialization {
   
+  @ManagedConstruction
   private Logger log;
   
   private Map<String, Function1<Object, Boolean>> validationAnnotations;
@@ -26,7 +27,6 @@ public class ValidationManager implements ManagedComponentInitialization {
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
     ManagerOptions options = manager.getComponentByClass(ManagerOptions.class);
 
     Array<Class<?>> dataClasses = ReflectionUtil.getAnnotatedClasses(options.namespace, DataObject.class);
@@ -42,7 +42,7 @@ public class ValidationManager implements ManagedComponentInitialization {
     });
 
     validationAnnotations.$put(ReflectionUtil.getSimpleName(DataObjectValue.class), (value) -> {
-      if (value == null || !hasValidData(value)) {
+      if (value == null || !hasValidData(value, ReflectionUtil.getClass(value))) {
         return false;
       }
       return true;
@@ -54,7 +54,7 @@ public class ValidationManager implements ManagedComponentInitialization {
    * @param dataObject
    * @return true, when the data object contains valid data, else false
    */
-  public boolean hasValidData(Object dataObject) {
+  public boolean hasValidData(Object dataObject, Class<?> dataClass) {
     Class<?> clazz = ReflectionUtil.getClass(dataObject);
     String clazzName = ReflectionUtil.getSimpleName(clazz);
 

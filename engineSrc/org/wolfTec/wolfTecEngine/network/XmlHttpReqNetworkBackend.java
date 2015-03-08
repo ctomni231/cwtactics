@@ -1,13 +1,14 @@
 package org.wolfTec.wolfTecEngine.network;
 
 import org.stjs.javascript.functions.Callback2;
-import org.wolfTec.vfs.JsonFileSerializer;
 import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.logging.LogManager;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolfTec.wolfTecEngine.vfs.JsonFileSerializer;
 
 /**
  * Simple HTTP backend with allows networking over a simple polling algorithm.
@@ -16,15 +17,16 @@ import org.wolfTec.wolfTecEngine.util.BrowserUtil;
 public class XmlHttpReqNetworkBackend extends NetworkBackend implements
     ManagedComponentInitialization {
 
+  @ManagedConstruction
   private Logger log;
+ 
+  @Injected
   private JsonFileSerializer jsonSerializer;
+  
   private Callback2<Object, String> p_serverResponseCb;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
-    jsonSerializer = new JsonFileSerializer();
-
     p_serverResponseCb = (Object resp, String err) -> {
       if (err != null) {
         log.error("Could not send game message => " + err);

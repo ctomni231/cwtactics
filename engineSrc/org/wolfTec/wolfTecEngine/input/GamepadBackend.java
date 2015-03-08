@@ -7,12 +7,12 @@ import org.wolfTec.wolfTecEngine.components.ComponentManager;
 import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.container.ContainerUtil;
-import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.GameloopHandler;
 
-@ManagedComponent(whenQualifier="gamepad_input=WOLFTEC")
+@ManagedComponent
 public class GamepadBackend implements InputBackend, ManagedComponentInitialization,
     GameloopHandler {
 
@@ -26,7 +26,9 @@ public class GamepadBackend implements InputBackend, ManagedComponentInitializat
   @Injected
   private InputManager input;
 
+  @ManagedConstruction
   private Logger p_log;
+  
   private Array<Integer> p_prevTimestamps;
   private boolean p_vendorAPI;
   private boolean p_enabled;
@@ -35,7 +37,6 @@ public class GamepadBackend implements InputBackend, ManagedComponentInitializat
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    p_log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
     p_vendorAPI = $js("(navigator.getGamepads === undefined)");
 
     p_pressed = ContainerUtil.createArray();

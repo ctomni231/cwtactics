@@ -2,23 +2,24 @@ package org.wolfTec.cwt.game.ai;
 
 import org.stjs.javascript.JSCollections;
 import org.wolfTec.cwt.game.gamemodel.model.Player;
-import org.wolfTec.wolfTecEngine.components.CreatedType;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.PostConstruct;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.decision.DecisionTree;
 import org.wolfTec.wolfTecEngine.decision.Sequence;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 
 @ManagedComponent
-public class ArtificialInteligenceBean {
+public class ArtificialInteligenceBean implements ManagedComponentInitialization {
 
-  @CreatedType
+  @ManagedConstruction
   private Logger log;
   
   private DecisionTree tree;
   
-  @PostConstruct
-  public void createTree() {
+  @Override
+  public void onComponentConstruction(ComponentManager manager) {
     tree = new DecisionTree(
         new Sequence(JSCollections.$array(
             new SampleHello(log),

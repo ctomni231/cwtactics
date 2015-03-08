@@ -8,22 +8,22 @@ import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.JsExec;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.logging.LogManager;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 
-@ManagedComponent(whenQualifier="mouse_input=WOLFTEC")
+@ManagedComponent
 public class MouseBackend implements InputBackend, ManagedComponentInitialization {
 
   @Injected
   private InputManager p_input;
 
+  @ManagedConstruction
   private Logger p_log;
+  
   private boolean p_enabled;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    p_log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
-
     Function2<DOMEvent, Boolean, Boolean> clickHandler = (event, pressed) -> {
       if (!p_enabled) {
         return false;

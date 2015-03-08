@@ -1,25 +1,24 @@
-package org.wolfTec.cwt.game.action.beans;
+package org.wolfTec.cwt.game.action;
 
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.cwt.game.action.model.ActionItem;
-import org.wolfTec.cwt.game.action.serializer.ActionItemSerializer;
 import org.wolfTec.cwt.game.gamelogic.TransferLogic;
 import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.model.Unit;
 import org.wolfTec.cwt.game.renderer.beans.UnitLayerBean;
 import org.wolfTec.cwt.game.states.ActionMenu;
 import org.wolfTec.cwt.game.states.StateDataBean;
-import org.wolfTec.wolfTecEngine.components.CreatedType;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
 import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.PostConstruct;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.ActionQueueHandler;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;
 
 @ManagedComponent
-public class ActionManager implements ActionQueueHandler<ActionItem> {
+public class ActionManager implements ActionQueueHandler<ActionItem>, ManagedComponentInitialization {
 
   public final String WAIT = "wait";
   public final String HIDE = "hideUnit";
@@ -31,7 +30,7 @@ public class ActionManager implements ActionQueueHandler<ActionItem> {
   public final String TRANSFER_PROPERTY = "transferProperty";
   public final String TRANSFER_UNIT = "transferUnit";
 
-  @CreatedType
+  @ManagedConstruction
   private Logger log;
 
   @Injected
@@ -50,15 +49,15 @@ public class ActionManager implements ActionQueueHandler<ActionItem> {
   private UnitLayerBean unitLayer;
   
   @Injected
-  private ActionItemSerializer actionSerializer;
+  private ActionConverter actionSerializer;
   
-  @CreatedType
+  @ManagedConstruction
   private CircularBuffer<ActionItem> actionItems; 
   
   private Callback1<Object> deserializeActionCb;
   
-  @PostConstruct
-  private void init () {
+  @Override
+  public void onComponentConstruction(ComponentManager manager) {
     deserializeActionCb = (data) -> { // TODO generic type in serializer
       actionItems.push((ActionItem) data); 
     };
