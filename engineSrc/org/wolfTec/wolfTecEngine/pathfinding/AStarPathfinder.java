@@ -3,11 +3,11 @@ package org.wolfTec.wolfTecEngine.pathfinding;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.STJSBridge;
-import org.wolfTec.managed.ManagedComponent;
-import org.wolfTec.renderer.screen.DirectionUtil;
+import org.wolfTec.wolfTecEngine.components.JsExec;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.container.MoveableMatrix;
-import org.wolfTec.renderer.screen.DirectionUtil.Direction;
-import org.wolfTec.wolfTecEngine.util.JsExec;
+import org.wolfTec.wolfTecEngine.renderer.screen.DirectionUtil;
+import org.wolfTec.wolfTecEngine.renderer.screen.DirectionUtil.Direction;
 
 /**
  * Path finder which implements the A* algorithm.

@@ -4,7 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.RegExp;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.wolfTecEngine.util.JsUtil;
+import org.wolfTec.wolfTecEngine.components.JsUtil;
 
 public class FactsBase {
 

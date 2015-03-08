@@ -1,7 +1,7 @@
 package org.wolfTec.cwt.game.gamemodel.model;
 
 import org.stjs.javascript.annotation.SyntheticType;
-import org.wolfTec.validation.BooleanValue;
+import org.wolfTec.wolfTecEngine.validation.BooleanValue;
 
 @SyntheticType
 public class GameConfigType {

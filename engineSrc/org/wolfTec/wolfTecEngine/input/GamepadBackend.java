@@ -3,10 +3,10 @@ package org.wolfTec.wolfTecEngine.input;
 import static org.stjs.javascript.JSObjectAdapter.$js;
 
 import org.stjs.javascript.Array;
-import org.wolfTec.managed.ComponentManager;
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
-import org.wolfTec.managed.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.container.ContainerUtil;
 import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;

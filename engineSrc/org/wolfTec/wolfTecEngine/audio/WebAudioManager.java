@@ -5,16 +5,16 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.managed.ComponentManager;
-import org.wolfTec.managed.ManagedComponent;
-import org.wolfTec.managed.ManagedComponentInitialization;
 import org.wolfTec.vfs.DecoratedVfs;
 import org.wolfTec.vfs.Vfs;
 import org.wolfTec.vfs.VfsEntityDescriptor;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.JsExec;
+import org.wolfTec.wolfTecEngine.components.JsUtil;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.util.JsExec;
-import org.wolfTec.wolfTecEngine.util.JsUtil;
 
 @ManagedComponent(whenQualifier = "audio=WOLFTEC_WEBAUDIO")
 public class WebAudioManager implements AudioManager, ManagedComponentInitialization {

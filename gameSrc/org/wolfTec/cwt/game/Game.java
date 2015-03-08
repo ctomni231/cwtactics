@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game;
 
 import org.stjs.javascript.JSGlobal;
-import org.wolfTec.managed.ManagerOptions;
 import org.wolfTec.wolfTecEngine.Engine;
+import org.wolfTec.wolfTecEngine.components.ManagerOptions;
 
 public abstract class Game {
 

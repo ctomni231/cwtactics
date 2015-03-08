@@ -2,8 +2,8 @@ package org.wolfTec.wolfTecEngine.test.gherkin;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
+import org.wolfTec.wolfTecEngine.components.JsUtil;
 import org.wolfTec.wolfTecEngine.container.ContainerUtil;
-import org.wolfTec.wolfTecEngine.util.JsUtil;
 
 public class Parser {
   

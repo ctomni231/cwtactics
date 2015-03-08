@@ -2,9 +2,9 @@ package org.wolfTec.wolfTecEngine.audio;
 
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.vfs.Serializer;
+import org.wolfTec.wolfTecEngine.components.JsExec;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
-import org.wolfTec.wolfTecEngine.util.JsExec;
 
 /**
  * Simple serialize utility to stringify audio files to base64. This introduces

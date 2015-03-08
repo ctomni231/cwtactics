@@ -2,7 +2,7 @@ package org.wolfTec.cwt.game.action.serializer;
 
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.vfs.Serializer;
-import org.wolfTec.wolfTecEngine.util.JsExec;
+import org.wolfTec.wolfTecEngine.components.JsExec;
 
 public class ActionItemSerializer implements Serializer {
 

@@ -6,8 +6,8 @@ import org.stjs.javascript.Map;
 import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.model.ConnectedTile;
 import org.wolfTec.cwt.game.gamemodel.model.Tile;
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 
 @ManagedComponent
 public class TileVariantCalculator {

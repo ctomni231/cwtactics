@@ -5,12 +5,12 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.managed.ManagerOptions;
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
 import org.wolfTec.vfs.ReadOnlyHtmlVfs;
 import org.wolfTec.vfs.Vfs;
 import org.wolfTec.vfs.VfsEntityDescriptor;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagerOptions;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
 

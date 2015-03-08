@@ -4,8 +4,8 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
+import org.wolfTec.wolfTecEngine.components.JsUtil;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
-import org.wolfTec.wolfTecEngine.util.JsUtil;
 
 /**
  * The html file system will be used to grab the game data from a remote source.

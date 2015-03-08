@@ -1,11 +1,11 @@
 package org.wolfTec.wolfTecEngine.input;
 
 import org.stjs.javascript.Map;
-import org.wolfTec.managed.ComponentManager;
-import org.wolfTec.managed.ManagedComponent;
-import org.wolfTec.managed.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.JsUtil;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.container.ContainerUtil;
-import org.wolfTec.wolfTecEngine.util.JsUtil;
 
 @ManagedComponent(whenQualifier="input=WOLFTEC")
 public class LiveInputManager implements InputManager, ManagedComponentInitialization {

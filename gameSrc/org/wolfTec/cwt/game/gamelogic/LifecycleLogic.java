@@ -10,8 +10,8 @@ import org.wolfTec.cwt.game.gamemodel.model.Property;
 import org.wolfTec.cwt.game.gamemodel.model.Tile;
 import org.wolfTec.cwt.game.gamemodel.model.Unit;
 import org.wolfTec.cwt.game.gamemodel.model.UnitType;
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 
 @ManagedComponent
 public class LifecycleLogic {

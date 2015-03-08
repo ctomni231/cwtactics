@@ -1,6 +1,6 @@
 package org.wolfTec.wolfTecEngine.network;
 
-import org.wolfTec.managed.Injected;
+import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.statemachine.ActionQueueHandler;
 
 /**

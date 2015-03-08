@@ -1,9 +1,9 @@
 package org.wolfTec.cwt.game.states.loading;
 
 import org.wolfTec.cwt.game.persistence.beans.GameLoadingManager;
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.CreatedType;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ThisSafe;
 import org.wolfTec.wolfTecEngine.input.InputManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;

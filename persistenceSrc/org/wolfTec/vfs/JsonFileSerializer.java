@@ -1,7 +1,7 @@
 package org.wolfTec.vfs;
 
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.wolfTecEngine.util.JsExec;
+import org.wolfTec.wolfTecEngine.components.JsExec;
 
 /**
  * Simple object serializer which uses JSON to convert objects to strings and

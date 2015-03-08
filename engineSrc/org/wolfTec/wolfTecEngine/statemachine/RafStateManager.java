@@ -4,17 +4,17 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.Date;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.managed.ComponentManager;
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
-import org.wolfTec.managed.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.JsUtil;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.PerformanceUtil;
 import org.wolfTec.wolfTecEngine.input.InputManager;
 import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.network.NetworkBackend;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
-import org.wolfTec.wolfTecEngine.util.JsUtil;
-import org.wolfTec.wolfTecEngine.util.PerformanceUtil;
 
 /**
  * The state machine is the central controller of the WolfTec engine.

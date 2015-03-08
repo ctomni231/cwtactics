@@ -8,7 +8,7 @@ import org.stjs.javascript.Math;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
-import org.wolfTec.wolfTecEngine.util.ReflectionUtil;
+import org.wolfTec.wolfTecEngine.components.ReflectionUtil;
 
 public abstract class ContainerUtil {
 

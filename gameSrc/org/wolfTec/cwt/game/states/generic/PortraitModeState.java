@@ -1,8 +1,8 @@
 package org.wolfTec.cwt.game.states.generic;
 
 import org.wolfTec.cwt.game.renderer.beans.UserInterfaceLayerBean;
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.input.InputManager;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;

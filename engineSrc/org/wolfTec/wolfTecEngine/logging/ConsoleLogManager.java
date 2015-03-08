@@ -1,7 +1,7 @@
 package org.wolfTec.wolfTecEngine.logging;
 
-import org.wolfTec.managed.ManagedComponent;
-import org.wolfTec.wolfTecEngine.util.ReflectionUtil;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ReflectionUtil;
 
 @ManagedComponent(whenQualifier="log=CONSOLE")
 public class ConsoleLogManager implements LogManager {

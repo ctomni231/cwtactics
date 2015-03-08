@@ -3,13 +3,13 @@ package org.wolfTec.wolfTecEngine.input;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
 import org.stjs.javascript.functions.Function2;
-import org.wolfTec.managed.ComponentManager;
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
-import org.wolfTec.managed.ManagedComponentInitialization;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.JsExec;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.util.JsExec;
 
 @ManagedComponent(whenQualifier="mouse_input=WOLFTEC")
 public class MouseBackend implements InputBackend, ManagedComponentInitialization {

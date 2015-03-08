@@ -10,8 +10,8 @@ import org.wolfTec.cwt.game.gamemodel.bean.ObjectTypesBean;
 import org.wolfTec.cwt.game.gamemodel.model.Property;
 import org.wolfTec.cwt.game.gamemodel.model.UnitType;
 import org.wolfTec.cwt.game.states.ActionMenu;
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 
 @ManagedComponent
 public class FactoryLogic {

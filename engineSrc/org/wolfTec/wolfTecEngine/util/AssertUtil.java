@@ -1,6 +1,7 @@
 package org.wolfTec.wolfTecEngine.util;
 
 import org.stjs.javascript.JSGlobal;
+import org.wolfTec.wolfTecEngine.components.JsExec;
 
 /**
  * 

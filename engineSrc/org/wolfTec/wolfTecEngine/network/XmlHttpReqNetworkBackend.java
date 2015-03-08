@@ -1,10 +1,10 @@
 package org.wolfTec.wolfTecEngine.network;
 
 import org.stjs.javascript.functions.Callback2;
-import org.wolfTec.managed.ComponentManager;
-import org.wolfTec.managed.ManagedComponent;
-import org.wolfTec.managed.ManagedComponentInitialization;
 import org.wolfTec.vfs.JsonFileSerializer;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;

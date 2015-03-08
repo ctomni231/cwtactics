@@ -3,9 +3,9 @@ package org.wolfTec.cwt.game.gamemodel.model;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.validation.IntValue;
-import org.wolfTec.validation.StringKey;
-import org.wolfTec.validation.StringValue;
+import org.wolfTec.wolfTecEngine.validation.IntValue;
+import org.wolfTec.wolfTecEngine.validation.StringKey;
+import org.wolfTec.wolfTecEngine.validation.StringValue;
 
 public class PropertyType extends ObjectType {
 

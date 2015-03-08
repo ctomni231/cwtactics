@@ -1,7 +1,7 @@
 package org.wolfTec.wolfTecEngine;
 
-import org.wolfTec.managed.ComponentManager;
-import org.wolfTec.managed.ManagerOptions;
+import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolfTec.wolfTecEngine.components.ManagerOptions;
 
 public class Engine {
 

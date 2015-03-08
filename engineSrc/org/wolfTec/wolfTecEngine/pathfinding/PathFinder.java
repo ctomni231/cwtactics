@@ -2,7 +2,7 @@ package org.wolfTec.wolfTecEngine.pathfinding;
 
 import org.stjs.javascript.Array;
 import org.wolfTec.wolfTecEngine.container.MoveableMatrix;
-import org.wolfTec.renderer.screen.DirectionUtil.Direction;
+import org.wolfTec.wolfTecEngine.renderer.screen.DirectionUtil.Direction;
 
 public interface PathFinder {
 

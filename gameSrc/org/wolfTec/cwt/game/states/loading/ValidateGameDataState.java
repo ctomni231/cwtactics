@@ -1,9 +1,9 @@
 package org.wolfTec.cwt.game.states.loading;
 
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
 import org.wolfTec.vfs.Vfs;
 import org.wolfTec.wolfTecEngine.components.CreatedType;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.input.InputManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.State;

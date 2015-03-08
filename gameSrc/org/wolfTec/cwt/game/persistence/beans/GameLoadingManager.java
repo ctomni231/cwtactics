@@ -2,11 +2,11 @@ package org.wolfTec.cwt.game.persistence.beans;
 
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.managed.ManagerOptions;
-import org.wolfTec.managed.Injected;
-import org.wolfTec.managed.ManagedComponent;
 import org.wolfTec.vfs.ReadOnlyHtmlVfs;
 import org.wolfTec.vfs.Vfs;
+import org.wolfTec.wolfTecEngine.components.Injected;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.components.ManagerOptions;
 import org.wolfTec.wolfTecEngine.localization.Localization;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 

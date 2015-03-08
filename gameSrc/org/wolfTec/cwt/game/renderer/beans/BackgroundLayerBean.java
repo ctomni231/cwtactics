@@ -1,12 +1,12 @@
 package org.wolfTec.cwt.game.renderer.beans;
 
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.managed.ManagedComponent;
-import org.wolfTec.renderer.layer.GraphicLayer;
-import org.wolfTec.renderer.layer.LayerFrameTime;
-import org.wolfTec.renderer.layer.LayerFrames;
-import org.wolfTec.renderer.layer.LayerIndex;
-import org.wolfTec.renderer.sprite.Sprite;
+import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolfTec.wolfTecEngine.renderer.layer.GraphicLayer;
+import org.wolfTec.wolfTecEngine.renderer.layer.LayerFrameTime;
+import org.wolfTec.wolfTecEngine.renderer.layer.LayerFrames;
+import org.wolfTec.wolfTecEngine.renderer.layer.LayerIndex;
+import org.wolfTec.wolfTecEngine.renderer.sprite.Sprite;
 
 /**
  * Background layer contains the background image of the screen. It's visible in
