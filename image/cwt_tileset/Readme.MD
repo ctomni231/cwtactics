@@ -73,6 +73,16 @@ List of pretty much every sprite you'd ever need for reference.
 
 * [ ] *SRNR* = Shuttle-Piperunner
 
+## Unit Types - CO Specific (secv90)[http://secv90.tumblr.com/tagged/advance-wars]
+
+* [ ] *ACYC* - Anti-Tank Cycle (CO Grimm)
+* [ ] *CHAP* - Chaperon (CO Javier)
+* [ ] *INTK* - Intel Truck (CO Sonja)
+* [ ] *SMUG* - Smuggler (CO Hachi)
+* [ ] *PTNK* - Prism Tank (CO Von Bolt)
+* [ ] *LGTK* - Logistic Truck (CO Sasha)
+* [ ] *RTNK* - Repair Tank (CO Andy)
+
 ***
 
 # Custom Wars Tactics - Clear(C) Tileset
@@ -162,7 +172,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *REEF* = Reef
 * [ ] *WTLD* = Wasteland
 * [x] *RUIN* = Ruins
-* [ ] *SHOA* = Shoals
+* [x] *SHOA* = Shoals
 * [x] *SEAS* = Seas
 * [x] *METR* = Meteor
 * [ ] *PLZM* = Plasma
