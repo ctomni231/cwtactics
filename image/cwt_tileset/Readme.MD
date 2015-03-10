@@ -73,7 +73,7 @@ List of pretty much every sprite you'd ever need for reference.
 
 * [ ] *SRNR* = Shuttle-Piperunner
 
-## Unit Types - CO Specific (secv90)[http://secv90.tumblr.com/tagged/advance-wars]
+## Unit Types - [secv90 CO Specific](http://secv90.tumblr.com/tagged/advance-wars)
 
 * [ ] *ACYC* - Anti-Tank Cycle (CO Grimm)
 * [ ] *CHAP* - Chaperon (CO Javier)
