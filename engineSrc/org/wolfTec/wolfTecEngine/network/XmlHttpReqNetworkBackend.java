@@ -8,12 +8,11 @@ import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
-import org.wolfTec.wolfTecEngine.vfs.JsonFileSerializer;
 
 /**
  * Simple HTTP backend with allows networking over a simple polling algorithm.
  */
-@ManagedComponent(whenQualifier="network=WOLFTEC_XMLHTTP")
+@ManagedComponent
 public class XmlHttpReqNetworkBackend extends NetworkBackend implements
     ManagedComponentInitialization {
 

@@ -17,10 +17,13 @@ import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 public class LocalizationManager implements Localization {
 
   @ManagedConstruction
-  private Logger p_log;
-  
+  private Logger log;
+
   @Injected
-  private VirtualFilesystemManager p_vfs;
+  private VirtualFilesystemManager vfs;
+
+  @Injected
+  private LanguageFileConverter converter;
 
   /**
    * The current active language.
@@ -42,12 +45,14 @@ public class LocalizationManager implements Localization {
 
   @Override
   public void selectLanguage(String language, Callback0 cb) {
-    p_vfs.readFile("lang/lang_" + language, entry -> {
-      if (entry.value != null) {
-        this.language = (Map<String, String>) entry.value;
+    vfs.readKey("lang/lang_" + language, converter, (err, langFile) -> {
+      if (langFile.value != null) {
+        this.language = langFile.value;
         cb.$invoke();
+
+      } else {
+        log.error("Could not load language from file system");
       }
-      p_log.error("Could not load language from file system");
     });
   }
 

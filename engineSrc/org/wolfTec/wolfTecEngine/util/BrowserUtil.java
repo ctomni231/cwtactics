@@ -39,7 +39,7 @@ public abstract class BrowserUtil {
    * @param imageData
    * @return
    */
-  public static Element convertArrayBufferToBase64(Object data) {
+  public static String convertArrayBufferToBase64(Object data) {
     return JsExec.injectJS("Base64Helper.encodeBuffer(data)");
   }
 

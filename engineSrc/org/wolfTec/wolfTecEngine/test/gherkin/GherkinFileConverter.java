@@ -9,7 +9,7 @@ import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.vfs.Serializer;
 
 @ManagedComponent
-public class GherkinFileConverter implements Serializer, ManagedComponentInitialization {
+public class GherkinFileConverter implements Serializer<Feature>, ManagedComponentInitialization {
 
   @ManagedConstruction
   private Logger p_log;
@@ -22,12 +22,12 @@ public class GherkinFileConverter implements Serializer, ManagedComponentInitial
   }
   
   @Override
-  public void deserialize(String data, Callback1<Object> cb) {
+  public void deserialize(String data, Callback1<Feature> cb) {
     cb.$invoke(p_parser.parseContent(data));
   }
 
   @Override
-  public void serialize(Object data, Callback1<Object> cb) {
+  public void serialize(Feature data, Callback1<String> cb) {
     p_log.error("UnsupportedOperationException");
   }
 

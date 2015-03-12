@@ -12,11 +12,13 @@ import org.wolfTec.wolfTecEngine.components.JsUtil;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
+import org.wolfTec.wolfTecEngine.components.ComponentScore;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 import org.wolfTec.wolfTecEngine.vfs.VfsEntity;
 
 @ManagedComponent
+@ComponentScore(2)
 public class WebAudioManager implements AudioManager, ManagedComponentInitialization {
 
   @ManagedConstruction
@@ -24,6 +26,9 @@ public class WebAudioManager implements AudioManager, ManagedComponentInitializa
   
   @Injected
   private VirtualFilesystemManager vfs;
+  
+  @Injected
+  private AudioFileSerializer audioConverter;
 
   private int apiStatus;
 
@@ -164,7 +169,9 @@ public class WebAudioManager implements AudioManager, ManagedComponentInitializa
     // set meta data
     musicInLoadProcess = true;
     musicID = key;
-    vfs.readFile("music/"+key, p_musicLoadCallback);
+    vfs.readKey("music/"+key, audioConverter, (err, data) -> {
+      p_musicLoadCallback.$invoke(data);
+    });
 
     return true;
   }

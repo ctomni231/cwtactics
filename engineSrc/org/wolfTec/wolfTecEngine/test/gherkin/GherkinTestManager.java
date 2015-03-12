@@ -27,27 +27,23 @@ public class GherkinTestManager implements ManagedComponentInitialization, TestM
   @Injected
   private VirtualFilesystemManager vfs;
 
+  @Injected
+  private GherkinFileConverter converter;
+
   private FactsBase facts;
 
   private Array<Feature> features;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    GherkinFileConverter converter = manager.getComponentByClass(GherkinFileConverter.class);
-    
-    // TODO some query feature 
-    vfs.readConvertedFiles(converter, (Array<VfsEntity<Feature>> files) -> {
-      for (int i = 0; i < files.$length(); i++) {
-        VfsEntity<Feature> file = files.$get(i);
-        if(file.key.startsWith("/test/features")) {
-          features.push(file.value);
-        }
+    log.info("Loading tests..");
+    vfs.readKeys("/test/features/\\w*", converter, (err, featureEntities) -> {
+      for (int i = 0; i < featureEntities.$length(); i++) {
+        VfsEntity<Feature> feature = featureEntities.$get(i);
+        features.push(feature.value);
       }
-
-      log.info("Loading features to test (Completed)");
-      // cb.$invoke();
-      // TODO
-      });
+      log.info("..loaded");
+    });
   }
 
   @Override

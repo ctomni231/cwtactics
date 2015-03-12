@@ -12,7 +12,7 @@ import org.wolfTec.wolfTecEngine.renderer.screen.DirectionUtil.Direction;
 /**
  * Path finder which implements the A* algorithm.
  */
-@ManagedComponent(whenQualifier="pathfinder=WOLFTEC")
+@ManagedComponent
 public class AStarPathfinder implements PathFinder {
 
   @STJSBridge
