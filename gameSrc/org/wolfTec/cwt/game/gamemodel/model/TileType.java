@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game.gamemodel.model;
 
-import org.wolfTec.wolfTecEngine.validation.IntValue;
+import org.wolftec.validation.IntValue;
 
 public class TileType extends ObjectType {
   @IntValue(min = 0)

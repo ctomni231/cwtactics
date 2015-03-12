@@ -1,11 +1,11 @@
 package org.wolfTec.cwt.game.action;
 
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.wolfTecEngine.validation.ValidationManager;
 import org.wolfTec.wolfTecEngine.vfs.JsonFileSerializer;
-import org.wolfTec.wolfTecEngine.vfs.Serializer;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.persistence.Serializer;
+import org.wolftec.validation.ValidationManager;
 
 @ManagedComponent
 public class ActionConverter implements Serializer {

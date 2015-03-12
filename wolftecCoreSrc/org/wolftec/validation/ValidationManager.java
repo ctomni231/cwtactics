@@ -1,4 +1,4 @@
-package org.wolfTec.wolfTecEngine.validation;
+package org.wolftec.validation;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;

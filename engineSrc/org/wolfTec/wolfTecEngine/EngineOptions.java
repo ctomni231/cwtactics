@@ -2,12 +2,12 @@ package org.wolfTec.wolfTecEngine;
 
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.SyntheticType;
-import org.wolfTec.wolfTecEngine.validation.BooleanValue;
-import org.wolfTec.wolfTecEngine.validation.DataObject;
-import org.wolfTec.wolfTecEngine.validation.FloatValue;
-import org.wolfTec.wolfTecEngine.validation.IntValue;
-import org.wolfTec.wolfTecEngine.validation.StringKey;
-import org.wolfTec.wolfTecEngine.validation.StringValue;
+import org.wolftec.validation.BooleanValue;
+import org.wolftec.validation.DataObject;
+import org.wolftec.validation.FloatValue;
+import org.wolftec.validation.IntValue;
+import org.wolftec.validation.StringKey;
+import org.wolftec.validation.StringValue;
 
 /**
  * The engine options controls the behavior of the wolfTec engine. It's possible

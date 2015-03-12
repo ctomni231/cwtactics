@@ -4,11 +4,11 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.JsExec;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.persistence.VirtualFilesystemManager;
 
 /**
  * 

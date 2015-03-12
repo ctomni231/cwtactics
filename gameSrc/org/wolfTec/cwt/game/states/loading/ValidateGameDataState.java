@@ -4,10 +4,10 @@ import org.wolfTec.wolfTecEngine.input.InputManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;
-import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.persistence.VirtualFilesystemManager;
 
 @ManagedComponent
 public class ValidateGameDataState implements State {

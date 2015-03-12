@@ -1,4 +1,4 @@
-package org.wolfTec.wolfTecEngine.vfs;
+package org.wolftec.persistence;
 
 import org.stjs.javascript.functions.Callback1;
 

@@ -1,4 +1,4 @@
-package org.wolfTec.wolfTecEngine.validation;
+package org.wolftec.validation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

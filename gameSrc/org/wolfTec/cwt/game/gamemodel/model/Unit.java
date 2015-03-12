@@ -1,7 +1,7 @@
 package org.wolfTec.cwt.game.gamemodel.model;
 
-import org.wolfTec.wolfTecEngine.validation.IntValue;
 import org.wolftec.core.ConvertUtility;
+import org.wolftec.validation.IntValue;
 
 public class Unit {
 

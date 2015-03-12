@@ -1,7 +1,7 @@
 package org.wolfTec.wolfTecEngine.renderer;
 
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.wolfTecEngine.vfs.Serializer;
+import org.wolftec.persistence.Serializer;
 
 /**
  * 

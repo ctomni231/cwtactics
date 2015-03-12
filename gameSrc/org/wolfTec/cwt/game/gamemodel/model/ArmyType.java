@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game.gamemodel.model;
 
-import org.wolfTec.wolfTecEngine.validation.StringValue;
+import org.wolftec.validation.StringValue;
 
 public class ArmyType extends ObjectType {
 

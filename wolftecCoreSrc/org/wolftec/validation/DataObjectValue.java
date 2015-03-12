@@ -1,4 +1,4 @@
-package org.wolfTec.wolfTecEngine.validation;
+package org.wolftec.validation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,13 +9,6 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface IntValue {
-  
-  int max() default 0;
-
-  int min() default 0;
-
-  int not() default 0;
-
-  int defaultValue() default 0;
+public @interface DataObjectValue {
+  boolean nullable() default false;
 }

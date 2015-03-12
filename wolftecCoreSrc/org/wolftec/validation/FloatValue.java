@@ -1,4 +1,4 @@
-package org.wolfTec.wolfTecEngine.validation;
+package org.wolftec.validation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,14 +9,11 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface StringKey {
+public @interface FloatValue {
   
-  
-  int minLength() default 0;
+  float max() default 0;
 
-  int maxLength() default Integer.MAX_VALUE;
+  float min() default 0;
 
-  String not() default "";
-  
-  boolean uppercase () default false;
+  float defaultValue() default 0;
 }
