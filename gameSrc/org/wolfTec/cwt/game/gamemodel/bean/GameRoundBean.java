@@ -17,7 +17,7 @@ import org.wolfTec.cwt.game.gamemodel.model.Tile;
 import org.wolfTec.cwt.game.gamemodel.model.Unit;
 import org.wolfTec.cwt.game.gamemodel.model.WeatherType;
 import org.wolfTec.wolfTecEngine.functions.Function5;
-import org.wolfTec.wolfTecEngine.util.ConvertUtility;
+import org.wolftec.core.ConvertUtility;
 import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent

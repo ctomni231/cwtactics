@@ -3,10 +3,10 @@ package org.wolfTec.wolfTecEngine.renderer;
 import org.stjs.javascript.Map;
 import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.util.JsUtil;
 import org.wolfTec.wolfTecEngine.vfs.DecoratedVfs;
 import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 import org.wolftec.core.ComponentManager;
+import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 

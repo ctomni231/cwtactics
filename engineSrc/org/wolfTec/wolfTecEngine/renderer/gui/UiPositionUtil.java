@@ -1,6 +1,6 @@
 package org.wolfTec.wolfTecEngine.renderer.gui;
 
-import org.wolfTec.wolfTecEngine.util.ConvertUtility;
+import org.wolftec.core.ConvertUtility;
 import org.wolftec.core.JsUtil;
 
 /**

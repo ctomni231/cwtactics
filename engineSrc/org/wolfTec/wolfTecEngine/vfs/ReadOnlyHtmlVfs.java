@@ -4,7 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolfTec.wolfTecEngine.container.ContainerUtil;
-import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.JsUtil;
 
 /**

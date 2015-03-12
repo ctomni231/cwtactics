@@ -7,7 +7,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.wolfTecEngine.input.InputManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.network.NetworkBackend;
-import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.JsUtil;

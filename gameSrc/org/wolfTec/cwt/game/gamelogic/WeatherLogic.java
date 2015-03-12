@@ -6,7 +6,7 @@ import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.bean.ObjectTypesBean;
 import org.wolfTec.cwt.game.gamemodel.model.WeatherType;
 import org.wolfTec.wolfTecEngine.container.ContainerUtil;
-import org.wolfTec.wolfTecEngine.util.ConvertUtility;
+import org.wolftec.core.ConvertUtility;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 

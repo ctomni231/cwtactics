@@ -8,7 +8,7 @@ import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.renderer.gui.UiContainer;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;
-import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;

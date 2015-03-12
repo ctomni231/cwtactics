@@ -9,7 +9,7 @@ import org.wolfTec.vfs.ReadOnlyHtmlVfs;
 import org.wolfTec.vfs.Vfs;
 import org.wolfTec.vfs.VfsEntityDescriptor;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagerOptions;

@@ -8,7 +8,7 @@ import org.wolfTec.wolfTecEngine.input.InputManager;
 import org.wolfTec.wolfTecEngine.localization.Localization;
 import org.wolfTec.wolfTecEngine.statemachine.MenuState;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;
-import org.wolfTec.wolfTecEngine.util.ConvertUtility;
+import org.wolftec.core.ConvertUtility;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 

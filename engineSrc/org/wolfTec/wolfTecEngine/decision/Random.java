@@ -1,7 +1,7 @@
 package org.wolfTec.wolfTecEngine.decision;
 
 import org.stjs.javascript.Array;
-import org.wolfTec.wolfTecEngine.util.ConvertUtility;
+import org.wolftec.core.ConvertUtility;
 
 public class Random implements Node {
 

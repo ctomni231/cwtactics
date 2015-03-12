@@ -1,6 +1,5 @@
-package org.wolfTec.wolfTecEngine.util;
+package org.wolftec.core;
 
-import org.wolftec.core.JsExec;
 
 /**
  * Utility class to convert types and units.
