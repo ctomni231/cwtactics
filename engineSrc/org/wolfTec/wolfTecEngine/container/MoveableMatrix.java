@@ -6,7 +6,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Callback4;
-import org.wolfTec.wolfTecEngine.components.JsUtil;
+import org.wolftec.core.JsUtil;
 
 public class MoveableMatrix {
 

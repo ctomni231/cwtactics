@@ -2,13 +2,13 @@ package org.wolfTec.cwt.game.ai;
 
 import org.stjs.javascript.JSCollections;
 import org.wolfTec.cwt.game.gamemodel.model.Player;
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.decision.DecisionTree;
 import org.wolfTec.wolfTecEngine.decision.Sequence;
 import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.core.ManagedConstruction;
 
 @ManagedComponent
 public class ArtificialInteligenceBean implements ManagedComponentInitialization {

@@ -4,13 +4,13 @@ import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.renderer.beans.UserInterfaceLayerBean;
 import org.wolfTec.cwt.game.states.InputAction;
 import org.wolfTec.wolfTecEngine.audio.AudioManager;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.input.InputManager;
 import org.wolfTec.wolfTecEngine.localization.Localization;
 import org.wolfTec.wolfTecEngine.statemachine.MenuState;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;
 import org.wolfTec.wolfTecEngine.util.ConvertUtility;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent
 public class StartScreenState implements MenuState {

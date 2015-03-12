@@ -4,11 +4,11 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.wolfTecEngine.EngineOptions;
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.container.ContainerUtil;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
 
 /**
  * Screen manager.

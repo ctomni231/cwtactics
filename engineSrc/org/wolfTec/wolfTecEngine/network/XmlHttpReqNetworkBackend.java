@@ -1,13 +1,13 @@
 package org.wolfTec.wolfTecEngine.network;
 
 import org.stjs.javascript.functions.Callback2;
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.core.ManagedConstruction;
 
 /**
  * Simple HTTP backend with allows networking over a simple polling algorithm.

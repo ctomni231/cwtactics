@@ -5,11 +5,11 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.cwt.game.gamemodel.model.MapFileType;
 import org.wolfTec.vfs.VfsEntityDescriptor;
 import org.wolfTec.wolfTecEngine.components.CreatedType;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.persistence.annotations.FolderPath;
 import org.wolfTec.wolfTecEngine.persistence.annotations.UseSerializer;
 import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystemFolder;
+import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent
 public class MapManagerBean {

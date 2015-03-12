@@ -1,7 +1,7 @@
 package org.wolfTec.wolfTecEngine.logging;
 
-import org.wolfTec.wolfTecEngine.components.JsExec;
-import org.wolfTec.wolfTecEngine.components.JsUtil;
+import org.wolftec.core.JsExec;
+import org.wolftec.core.JsUtil;
 
 /**
  * Simple <code>window.console</code> logger.

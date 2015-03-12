@@ -7,7 +7,7 @@ import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
-import org.wolfTec.wolfTecEngine.components.JsExec;
+import org.wolftec.core.JsExec;
 
 /**
  * Utility class which contains a lot of browser environment related functions.

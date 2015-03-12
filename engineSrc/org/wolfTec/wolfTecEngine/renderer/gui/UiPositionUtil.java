@@ -1,7 +1,7 @@
 package org.wolfTec.wolfTecEngine.renderer.gui;
 
-import org.wolfTec.wolfTecEngine.components.JsUtil;
 import org.wolfTec.wolfTecEngine.util.ConvertUtility;
+import org.wolftec.core.JsUtil;
 
 /**
  * Utility class to handle the size and positions of {@link UiElement} objects.

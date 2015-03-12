@@ -6,13 +6,13 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.gamemodel.model.Config;
 import org.wolfTec.cwt.game.gamemodel.model.GameConfigType;
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 import org.wolfTec.wolfTecEngine.vfs.VfsEntity;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.core.ManagedConstruction;
 
 @ManagedComponent
 public class GameConfigBean implements ManagedComponentInitialization {

@@ -5,8 +5,6 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolfTec.cwt.game.EngineGlobals;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.PostConstruct;
 import org.wolfTec.wolfTecEngine.renderer.Direction;
 import org.wolfTec.wolfTecEngine.renderer.layer.GraphicLayer;
@@ -15,6 +13,8 @@ import org.wolfTec.wolfTecEngine.renderer.layer.LayerFrames;
 import org.wolfTec.wolfTecEngine.renderer.layer.LayerIndex;
 import org.wolfTec.wolfTecEngine.renderer.sprite.Sprite;
 import org.wolfTec.wolfTecEngine.renderer.sprite.SpriteManager;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent
 @LayerIndex(EngineGlobals.LAYER_FOCUS)

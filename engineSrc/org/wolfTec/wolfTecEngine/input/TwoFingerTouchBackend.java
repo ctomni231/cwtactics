@@ -3,11 +3,11 @@ package org.wolfTec.wolfTecEngine.input;
 import static org.stjs.javascript.JSObjectAdapter.$js;
 
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.core.ManagedConstruction;
 
 @ManagedComponent
 public class TwoFingerTouchBackend implements InputBackend, ManagedComponentInitialization {

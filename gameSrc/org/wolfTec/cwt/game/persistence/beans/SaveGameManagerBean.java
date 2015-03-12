@@ -7,10 +7,10 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.cwt.game.persistence.model.SaveGameHandler;
 import org.wolfTec.vfs.Vfs;
 import org.wolfTec.wolfTecEngine.components.CreatedType;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.persistence.annotations.FolderPath;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
 
 /**
  * Save game handler, used to load and save game files.

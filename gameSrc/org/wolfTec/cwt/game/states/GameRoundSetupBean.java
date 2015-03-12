@@ -11,9 +11,9 @@ import org.wolfTec.cwt.game.gamemodel.model.GameMap;
 import org.wolfTec.cwt.game.gamemodel.model.GameMode;
 import org.wolfTec.cwt.game.gamemodel.model.Player;
 import org.wolfTec.wolfTecEngine.components.CreatedType;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent
 public class GameRoundSetupBean {

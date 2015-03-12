@@ -5,9 +5,9 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Callback3;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.container.ContainerUtil;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
 
 /**
  * A virtual file system that will be used by WolfTec to store game data files.

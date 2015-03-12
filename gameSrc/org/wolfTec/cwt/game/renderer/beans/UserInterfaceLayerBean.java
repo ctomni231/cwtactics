@@ -4,12 +4,12 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolfTec.cwt.game.EngineGlobals;
 import org.wolfTec.cwt.game.states.StateDataBean;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.renderer.layer.GraphicLayer;
 import org.wolfTec.wolfTecEngine.renderer.screen.ScreenManager;
 import org.wolfTec.wolfTecEngine.renderer.sprite.Sprite;
 import org.wolfTec.wolfTecEngine.renderer.sprite.SpriteManager;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
 
 /**
  * All user interface stuff will be rendered into this layer. It's the top front

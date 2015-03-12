@@ -1,11 +1,11 @@
 package org.wolfTec.wolfTecEngine.audio;
 
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
-import org.wolfTec.wolfTecEngine.components.ComponentScore;
 import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.ComponentScore;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.core.ManagedConstruction;
 
 /**
  * Fallback manager to prevent breaking components that using the audio

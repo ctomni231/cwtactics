@@ -1,9 +1,9 @@
 package org.wolfTec.wolfTecEngine.logging;
 
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedContructionFactory;
-import org.wolfTec.wolfTecEngine.components.ManagerOptions;
-import org.wolfTec.wolfTecEngine.components.ReflectionUtil;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedContructionFactory;
+import org.wolftec.core.ManagerOptions;
+import org.wolftec.core.ReflectionUtil;
 
 @ManagedComponent
 public class ConsoleLogManager implements ManagedContructionFactory {

@@ -1,7 +1,7 @@
 package org.wolfTec.wolfTecEngine.network;
 
-import org.wolfTec.wolfTecEngine.components.Injected;
 import org.wolfTec.wolfTecEngine.statemachine.ActionQueueHandler;
+import org.wolftec.core.Injected;
 
 /**
  * Network beans allows to communicate with other game instances over a server.

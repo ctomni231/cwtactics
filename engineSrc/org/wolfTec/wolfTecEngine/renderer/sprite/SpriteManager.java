@@ -3,12 +3,12 @@ package org.wolfTec.wolfTecEngine.renderer.sprite;
 import org.stjs.javascript.Map;
 import org.wolfTec.vfs.DecoratedVfs;
 import org.wolfTec.vfs.Vfs;
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
-import org.wolfTec.wolfTecEngine.components.JsUtil;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.JsUtil;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
 
 @ManagedComponent
 public class SpriteManager implements ManagedComponentInitialization {

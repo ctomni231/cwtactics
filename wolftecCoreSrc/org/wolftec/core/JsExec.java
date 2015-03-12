@@ -1,4 +1,4 @@
-package org.wolfTec.wolfTecEngine.components;
+package org.wolftec.core;
 
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.annotation.Template;

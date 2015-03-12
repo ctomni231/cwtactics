@@ -1,4 +1,4 @@
-package org.wolfTec.wolfTecEngine.components;
+package org.wolftec.core;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ManagedComponent {
-  String whenQualifier() default "";
+public @interface ComponentScore {
+  int value();
 }

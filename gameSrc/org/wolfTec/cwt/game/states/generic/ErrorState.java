@@ -4,16 +4,16 @@ import org.stjs.javascript.Date;
 import org.stjs.javascript.dom.Form;
 import org.stjs.javascript.dom.Input;
 import org.wolfTec.cwt.game.renderer.beans.UserInterfaceLayerBean;
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.renderer.gui.UiContainer;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.core.ManagedConstruction;
 
 @ManagedComponent
 public class ErrorState implements State, ManagedComponentInitialization {

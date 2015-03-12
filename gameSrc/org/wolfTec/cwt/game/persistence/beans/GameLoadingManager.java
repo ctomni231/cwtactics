@@ -4,11 +4,11 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.vfs.ReadOnlyHtmlVfs;
 import org.wolfTec.vfs.Vfs;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagerOptions;
 import org.wolfTec.wolfTecEngine.localization.Localization;
 import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagerOptions;
 
 /**
  * This manager is used to load the game data. We use a pretty dumb but simple

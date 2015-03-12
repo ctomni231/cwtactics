@@ -4,8 +4,8 @@ import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.model.Property;
 import org.wolfTec.cwt.game.gamemodel.model.Tile;
 import org.wolfTec.cwt.game.gamemodel.model.Unit;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent public class RepairLogic {
 

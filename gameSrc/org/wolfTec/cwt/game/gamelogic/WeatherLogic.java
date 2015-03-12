@@ -5,10 +5,10 @@ import org.wolfTec.cwt.game.gamemodel.bean.GameConfigBean;
 import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.bean.ObjectTypesBean;
 import org.wolfTec.cwt.game.gamemodel.model.WeatherType;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.container.ContainerUtil;
 import org.wolfTec.wolfTecEngine.util.ConvertUtility;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent
 public class WeatherLogic {

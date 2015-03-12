@@ -1,6 +1,6 @@
 package org.wolfTec.cwt.game;
 
-import org.wolfTec.wolfTecEngine.components.ManagerOptions;
+import org.wolftec.core.ManagerOptions;
 
 // TODO rename to game globals
 public abstract class EngineGlobals extends ManagerOptions {

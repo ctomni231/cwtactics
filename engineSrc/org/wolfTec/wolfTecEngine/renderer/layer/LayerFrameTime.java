@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
+import org.wolftec.core.ComponentManager;
 
 /**
  * This annotation marks a class as bean and it will be instantiated by the

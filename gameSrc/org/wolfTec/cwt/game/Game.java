@@ -2,7 +2,7 @@ package org.wolfTec.cwt.game;
 
 import org.stjs.javascript.JSGlobal;
 import org.wolfTec.wolfTecEngine.Engine;
-import org.wolfTec.wolfTecEngine.components.ManagerOptions;
+import org.wolftec.core.ManagerOptions;
 
 public abstract class Game {
 

@@ -1,4 +1,4 @@
-package org.wolfTec.wolfTecEngine.components;
+package org.wolftec.core;
 
 import java.lang.annotation.Annotation;
 

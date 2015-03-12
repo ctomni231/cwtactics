@@ -7,15 +7,15 @@ import org.wolfTec.cwt.game.gamemodel.model.Unit;
 import org.wolfTec.cwt.game.renderer.beans.UnitLayerBean;
 import org.wolfTec.cwt.game.states.ActionMenu;
 import org.wolfTec.cwt.game.states.StateDataBean;
-import org.wolfTec.wolfTecEngine.components.ComponentManager;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
-import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
-import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.ActionQueueHandler;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.core.ManagedConstruction;
 
 @ManagedComponent
 public class ActionManager implements ActionQueueHandler<ActionItem>, ManagedComponentInitialization {

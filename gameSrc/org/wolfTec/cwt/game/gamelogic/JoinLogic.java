@@ -2,9 +2,9 @@ package org.wolfTec.cwt.game.gamelogic;
 
 import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
 import org.wolfTec.cwt.game.gamemodel.model.Unit;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.JsUtil;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
+import org.wolftec.core.Injected;
+import org.wolftec.core.JsUtil;
+import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent
 public class JoinLogic {

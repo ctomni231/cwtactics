@@ -4,9 +4,9 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.wolfTecEngine.components.Internal;
 import org.wolfTec.wolfTecEngine.renderer.screen.DirectionUtil.Direction;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolftec.core.Internal;
 
 public abstract class GraphicLayer {
 

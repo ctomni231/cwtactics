@@ -5,13 +5,13 @@ import static org.stjs.javascript.JSObjectAdapter.$js;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolfTec.wolfTecEngine.components.Injected;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.PostConstruct;
 import org.wolfTec.wolfTecEngine.container.CircularBuffer;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.network.NetworkBean;
 import org.wolfTec.wolfTecEngine.network.NetworkMessage;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent
 public class ActionInvokerBean {

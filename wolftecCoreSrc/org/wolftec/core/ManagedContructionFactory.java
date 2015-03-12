@@ -1,4 +1,4 @@
-package org.wolfTec.wolfTecEngine.components;
+package org.wolftec.core;
 
 public interface ManagedContructionFactory {
 

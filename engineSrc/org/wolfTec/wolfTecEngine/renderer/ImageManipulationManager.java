@@ -5,8 +5,8 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Image;
 import org.stjs.javascript.dom.canvas.CanvasImageData;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
+import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent
 public class ImageManipulationManager {
