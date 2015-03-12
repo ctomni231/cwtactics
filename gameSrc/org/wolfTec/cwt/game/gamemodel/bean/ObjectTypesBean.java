@@ -19,7 +19,7 @@ import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.util.BrowserUtil;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
+import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 
 @ManagedComponent
 public class ObjectTypesBean {
@@ -28,7 +28,7 @@ public class ObjectTypesBean {
   private Logger log;
 
   @Injected
-  private Vfs fs;
+  private VirtualFilesystemManager fs;
 
   private Map<String, ArmyType> armyTypes;
   private Array<ArmyType> armyTypeList;
@@ -107,7 +107,7 @@ public class ObjectTypesBean {
     return weatherTypeList;
   }
 
-  private <T extends ObjectType> Callback1<Callback0> loadAll(Vfs fs,
+  private <T extends ObjectType> Callback1<Callback0> loadAll(VirtualFilesystemManager fs,
       Map<String, T> typeMap, Array<T> typelist) {
 
     return (cb) -> {

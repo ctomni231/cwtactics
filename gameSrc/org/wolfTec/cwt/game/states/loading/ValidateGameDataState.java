@@ -7,7 +7,7 @@ import org.wolfTec.wolfTecEngine.input.InputManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.statemachine.State;
 import org.wolfTec.wolfTecEngine.statemachine.StateManager;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
+import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 
 @ManagedComponent
 public class ValidateGameDataState implements State {
@@ -16,7 +16,7 @@ public class ValidateGameDataState implements State {
   private Logger log;
 
   @Injected
-  private Vfs storage;
+  private VirtualFilesystemManager storage;
 
   @Override
   public void enter(StateManager stm) {

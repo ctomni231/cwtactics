@@ -36,7 +36,7 @@ public class DataLoaderManager {
   }
 
   @Injected
-  private Vfs localFs;
+  private VirtualFilesystemManager localFs;
 
   @Injected
   private ManagerOptions options;
@@ -46,7 +46,7 @@ public class DataLoaderManager {
 
   private boolean completed;
 
-  private void addRemoteToLocalCopyHandler(Vfs remoteFs,
+  private void addRemoteToLocalCopyHandler(VirtualFilesystemManager remoteFs,
       Array<Callback1<Callback0>> loaders, String filePath) {
 
     loaders.push((cb) -> {

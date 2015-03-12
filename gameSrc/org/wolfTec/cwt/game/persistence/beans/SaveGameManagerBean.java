@@ -23,7 +23,7 @@ public class SaveGameManagerBean {
 
   @CreatedType
   @FolderPath("/saves")
-  private Vfs storage;
+  private VirtualFilesystemManager storage;
 
   @Injected
   private Array<SaveGameHandler<Object>> handlers;

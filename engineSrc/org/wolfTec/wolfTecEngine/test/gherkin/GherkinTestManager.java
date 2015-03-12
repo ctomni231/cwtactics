@@ -8,8 +8,8 @@ import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.test.TestManager;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
-import org.wolfTec.wolfTecEngine.vfs.VfsEntityDescriptor;
+import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
+import org.wolfTec.wolfTecEngine.vfs.VfsEntity;
 
 /**
  * Simple test runner to run all gherkin tests from the
@@ -25,7 +25,7 @@ public class GherkinTestManager implements ManagedComponentInitialization, TestM
   private Logger log;
 
   @Injected
-  private Vfs vfs;
+  private VirtualFilesystemManager vfs;
 
   private FactsBase facts;
 
@@ -36,9 +36,9 @@ public class GherkinTestManager implements ManagedComponentInitialization, TestM
     GherkinFileConverter converter = manager.getComponentByClass(GherkinFileConverter.class);
     
     // TODO some query feature 
-    vfs.readConvertedFiles(converter, (Array<VfsEntityDescriptor<Feature>> files) -> {
+    vfs.readConvertedFiles(converter, (Array<VfsEntity<Feature>> files) -> {
       for (int i = 0; i < files.$length(); i++) {
-        VfsEntityDescriptor<Feature> file = files.$get(i);
+        VfsEntity<Feature> file = files.$get(i);
         if(file.key.startsWith("/test/features")) {
           features.push(file.value);
         }

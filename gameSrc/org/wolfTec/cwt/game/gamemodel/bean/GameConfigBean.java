@@ -11,8 +11,8 @@ import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
-import org.wolfTec.wolfTecEngine.vfs.VfsEntityDescriptor;
+import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
+import org.wolfTec.wolfTecEngine.vfs.VfsEntity;
 
 @ManagedComponent
 public class GameConfigBean implements ManagedComponentInitialization {
@@ -21,7 +21,7 @@ public class GameConfigBean implements ManagedComponentInitialization {
   private Logger log;
 
   @ManagedConstruction
-  private Vfs fs;
+  private VirtualFilesystemManager fs;
 
   @ManagedConstruction
   private Map<String, Config> configs;
@@ -84,7 +84,7 @@ public class GameConfigBean implements ManagedComponentInitialization {
   }
 
   public void loadData(Callback0 cb) {
-    fs.readFile("user_data.json", (VfsEntityDescriptor<GameConfigType> entry) -> {
+    fs.readFile("user_data.json", (VfsEntity<GameConfigType> entry) -> {
       GameConfigType config = entry.value;
 
       if (config != null) {

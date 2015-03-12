@@ -3,7 +3,7 @@ package org.wolfTec.wolfTecEngine.vfs;
 import org.stjs.javascript.annotation.SyntheticType;
 
 @SyntheticType
-public class VfsEntityDescriptor<T> {
+public class VfsEntity<T> {
   
   /**
    * Path of the entity.

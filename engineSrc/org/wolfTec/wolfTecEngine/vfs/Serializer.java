@@ -7,7 +7,7 @@ import org.stjs.javascript.functions.Callback1;
  * strings to objects. It's commonly used in virtual file system objects which
  * converts automatically file contents to objects.
  */
-public interface Serializer {
+public interface Serializer<T> {
 
   /**
    * Converts a string to a data object.
@@ -16,7 +16,7 @@ public interface Serializer {
    * @param cb 
    *          called with the result data object as first parameter
    */
-  void deserialize(String data, Callback1<Object> cb);
+  void deserialize(String data, Callback1<T> cb);
 
   /**
    * Converts a data object to a string.
@@ -25,5 +25,5 @@ public interface Serializer {
    * @param cb
    *          called with the result string as first parameter
    */
-  void serialize(Object data, Callback1<Object> cb);
+  void serialize(T data, Callback1<String> cb);
 }

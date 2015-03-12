@@ -112,5 +112,12 @@
    <version>${stjs.version}</version>
    <scope>test</scope>
   </dependency>
+  <dependency>
+   <groupId>com.sun</groupId>
+   <artifactId>tools</artifactId>
+   <version>1.7</version>
+   <scope>system</scope>
+   <systemPath>C:\Program Files\Java\jdk1.8.0_40\lib/tools.jar</systemPath>
+  </dependency>
  </dependencies>
 </project>

@@ -13,8 +13,8 @@ import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedComponentInitialization;
 import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
-import org.wolfTec.wolfTecEngine.vfs.VfsEntityDescriptor;
+import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
+import org.wolfTec.wolfTecEngine.vfs.VfsEntity;
 
 @ManagedComponent
 public class WebAudioManager implements AudioManager, ManagedComponentInitialization {
@@ -23,7 +23,7 @@ public class WebAudioManager implements AudioManager, ManagedComponentInitializa
   private Logger log;
   
   @Injected
-  private Vfs vfs;
+  private VirtualFilesystemManager vfs;
 
   private int apiStatus;
 
@@ -53,7 +53,7 @@ public class WebAudioManager implements AudioManager, ManagedComponentInitializa
 
   private Callback1<Object> musicPlayCallback;
 
-  private Callback1<VfsEntityDescriptor<Object>> p_musicLoadCallback;
+  private Callback1<VfsEntity<Object>> p_musicLoadCallback;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {

@@ -29,7 +29,7 @@ public class GameLoadingManager {
   private ManagerOptions options;
 
   @Injected
-  private Vfs localFs;
+  private VirtualFilesystemManager localFs;
 
   @Injected
   private Localization i18n;

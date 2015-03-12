@@ -41,7 +41,7 @@ public class LoadingHandler {
 
     Debug.logInfo(LOG_MARKER, "Start loading game data");
 
-    Vfs.readFile(PARAM_HAS_CACHE, new Callback1<Object>() {
+    VirtualFilesystemManager.readFile(PARAM_HAS_CACHE, new Callback1<Object>() {
       @Override
       public void $invoke(Object o) {
         hasDownloadedAssets = (o != null && (Boolean) o == true);
@@ -51,7 +51,7 @@ public class LoadingHandler {
           @Override
           public void $invoke() {
             Debug.logInfo(LOG_MARKER, "finished loading game data");
-            Vfs.writeFile(PARAM_HAS_CACHE, true, callback);
+            VirtualFilesystemManager.writeFile(PARAM_HAS_CACHE, true, callback);
           }
         });
       }
@@ -96,7 +96,7 @@ public class LoadingHandler {
         if (dataTransfer.wantResetData()) {
           Debug.logInfo(LOG_MARKER, "wipe out cached data");
 
-          Vfs.deleteEverything(new Callback0() {
+          VirtualFilesystemManager.deleteEverything(new Callback0() {
             @Override
             public void $invoke() {
               Global.window.document.location.reload();

@@ -8,7 +8,7 @@ import org.wolfTec.wolfTecEngine.components.JsExec;
 import org.wolfTec.wolfTecEngine.components.ManagedComponent;
 import org.wolfTec.wolfTecEngine.components.ManagedConstruction;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
+import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 
 /**
  * 
@@ -20,7 +20,7 @@ public class LocalizationManager implements Localization {
   private Logger p_log;
   
   @Injected
-  private Vfs p_vfs;
+  private VirtualFilesystemManager p_vfs;
 
   /**
    * The current active language.

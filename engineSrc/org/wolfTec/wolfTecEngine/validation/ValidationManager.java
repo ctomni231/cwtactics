@@ -13,7 +13,7 @@ import org.wolfTec.wolfTecEngine.components.ManagerOptions;
 import org.wolfTec.wolfTecEngine.components.ReflectionUtil;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 
-@ManagedComponent(whenQualifier="validation=WOLFTEC")
+@ManagedComponent
 public class ValidationManager implements ManagedComponentInitialization {
   
   @ManagedConstruction

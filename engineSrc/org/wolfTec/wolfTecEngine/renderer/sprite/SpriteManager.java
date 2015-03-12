@@ -20,8 +20,8 @@ public class SpriteManager implements ManagedComponentInitialization {
   public void onComponentConstruction(ComponentManager manager) {
     p_log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
 
-    Vfs vfs;
-    vfs = manager.getComponentByClass(Vfs.class);
+    VirtualFilesystemManager vfs;
+    vfs = manager.getComponentByClass(VirtualFilesystemManager.class);
     vfs = new DecoratedVfs(vfs, "/sprites", new SpriteConverter());
     
     // TODO load

@@ -8,7 +8,7 @@ import org.wolfTec.wolfTecEngine.logging.LogManager;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.util.JsUtil;
 import org.wolfTec.wolfTecEngine.vfs.DecoratedVfs;
-import org.wolfTec.wolfTecEngine.vfs.Vfs;
+import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 
 @ManagedComponent
 public class SpriteManager implements ManagedComponentInitialization {
@@ -20,8 +20,8 @@ public class SpriteManager implements ManagedComponentInitialization {
   public void onComponentConstruction(ComponentManager manager) {
     p_log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
 
-    Vfs vfs;
-    vfs = manager.getComponentByClass(Vfs.class);
+    VirtualFilesystemManager vfs;
+    vfs = manager.getComponentByClass(VirtualFilesystemManager.class);
     vfs = new DecoratedVfs(vfs, "/sprites", new SpriteConverter());
     
     // TODO load
