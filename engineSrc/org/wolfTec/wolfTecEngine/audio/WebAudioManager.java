@@ -6,8 +6,6 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
-import org.wolfTec.wolfTecEngine.vfs.VfsEntity;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.ComponentScore;
 import org.wolftec.core.Injected;
@@ -16,6 +14,8 @@ import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.persistence.VfsEntity;
+import org.wolftec.persistence.VirtualFilesystemManager;
 
 @ManagedComponent
 @ComponentScore(2)

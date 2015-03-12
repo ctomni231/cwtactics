@@ -2,8 +2,8 @@ package org.wolfTec.wolfTecEngine.localization;
 
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.wolfTecEngine.vfs.Serializer;
 import org.wolftec.core.JsExec;
+import org.wolftec.persistence.Serializer;
 
 public class LanguageFileConverter implements Serializer<Map<String, String>> {
 

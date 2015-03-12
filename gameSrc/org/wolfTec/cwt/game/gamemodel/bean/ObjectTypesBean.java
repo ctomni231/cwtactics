@@ -15,11 +15,11 @@ import org.wolfTec.cwt.game.gamemodel.model.TileType;
 import org.wolfTec.cwt.game.gamemodel.model.UnitType;
 import org.wolfTec.cwt.game.gamemodel.model.WeatherType;
 import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
 import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.persistence.VirtualFilesystemManager;
 
 @ManagedComponent
 public class ObjectTypesBean {

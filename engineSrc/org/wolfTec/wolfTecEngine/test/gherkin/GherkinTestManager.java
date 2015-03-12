@@ -3,13 +3,13 @@ package org.wolfTec.wolfTecEngine.test.gherkin;
 import org.stjs.javascript.Array;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolfTec.wolfTecEngine.test.TestManager;
-import org.wolfTec.wolfTecEngine.vfs.VirtualFilesystemManager;
-import org.wolfTec.wolfTecEngine.vfs.VfsEntity;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.persistence.VfsEntity;
+import org.wolftec.persistence.VirtualFilesystemManager;
 
 /**
  * Simple test runner to run all gherkin tests from the

@@ -9,9 +9,9 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
-import org.wolfTec.wolfTecEngine.vfs.VfsEntity;
 import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.ReflectionUtil;
+import org.wolftec.persistence.VfsEntity;
 
 public abstract class ContainerUtil {
 
