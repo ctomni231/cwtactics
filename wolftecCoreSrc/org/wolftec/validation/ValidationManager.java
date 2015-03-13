@@ -5,13 +5,14 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Function1;
 import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolftec.core.ComponentManager;
-import org.wolftec.core.Injected;
 import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.core.ManagerOptions;
 import org.wolftec.core.ReflectionUtil;
+import org.wolftec.validation.annotation.DataObjectValue;
+import org.wolftec.validation.annotation.StringValue;
 
 @ManagedComponent
 public class ValidationManager implements ManagedComponentInitialization {
@@ -42,7 +43,7 @@ public class ValidationManager implements ManagedComponentInitialization {
     });
 
     validationAnnotations.$put(ReflectionUtil.getSimpleName(DataObjectValue.class), (value) -> {
-      if (value == null || !hasValidData(value, ReflectionUtil.getClass(value))) {
+      if (value == null || !validate(value, ReflectionUtil.getClass(value))) {
         return false;
       }
       return true;
@@ -54,7 +55,7 @@ public class ValidationManager implements ManagedComponentInitialization {
    * @param dataObject
    * @return true, when the data object contains valid data, else false
    */
-  public boolean hasValidData(Object dataObject, Class<?> dataClass) {
+  public boolean validate(Object dataObject, Class<?> dataClass) {
     Class<?> clazz = ReflectionUtil.getClass(dataObject);
     String clazzName = ReflectionUtil.getSimpleName(clazz);
 
