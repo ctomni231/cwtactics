@@ -4,11 +4,11 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.SyntheticType;
 import org.wolftec.validation.DataObject;
-import org.wolftec.validation.annotation.FloatValue;
-import org.wolftec.validation.annotation.IntValue;
-import org.wolftec.validation.annotation.StringKey;
-import org.wolftec.validation.annotation.StringValue;
 import org.wolftec.validation.validators.BooleanValue;
+import org.wolftec.validation.validators.FloatValue;
+import org.wolftec.validation.validators.IntValue;
+import org.wolftec.validation.validators.StringKey;
+import org.wolftec.validation.validators.StringValue;
 
 /**
  * The engine options controls the behavior of the wolfTec engine. It's possible

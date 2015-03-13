@@ -1,11 +1,11 @@
 package net.temp.cwt.game.ai;
 
 import net.temp.cwt.game.gamemodel.model.Player;
+import net.temp.wolfTecEngine.decision.DecisionTree;
+import net.temp.wolfTecEngine.decision.Sequence;
+import net.temp.wolfTecEngine.logging.Logger;
 
 import org.stjs.javascript.JSCollections;
-import org.wolfTec.wolfTecEngine.decision.DecisionTree;
-import org.wolfTec.wolfTecEngine.decision.Sequence;
-import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;

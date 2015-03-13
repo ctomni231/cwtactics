@@ -1,11 +1,12 @@
 package net.temp.cwt.game.persistence.beans;
 
+import net.temp.wolfTecEngine.localization.Localization;
+import net.temp.wolfTecEngine.logging.Logger;
+
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.vfs.ReadOnlyHtmlVfs;
 import org.wolfTec.vfs.Vfs;
-import org.wolfTec.wolfTecEngine.localization.Localization;
-import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagerOptions;

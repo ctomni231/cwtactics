@@ -3,8 +3,8 @@ package net.temp.cwt.game.gamemodel.model;
 import net.temp.EngineGlobals;
 
 import org.stjs.javascript.Map;
-import org.wolftec.validation.annotation.IntValue;
-import org.wolftec.validation.annotation.StringKey;
+import org.wolftec.validation.validators.IntValue;
+import org.wolftec.validation.validators.StringKey;
 
 public class AttackType {
 

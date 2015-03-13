@@ -4,9 +4,9 @@ import net.temp.EngineGlobals;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
-import org.wolftec.validation.annotation.IntValue;
-import org.wolftec.validation.annotation.StringKey;
-import org.wolftec.validation.annotation.StringValue;
+import org.wolftec.validation.validators.IntValue;
+import org.wolftec.validation.validators.StringKey;
+import org.wolftec.validation.validators.StringValue;
 
 public class PropertyType extends ObjectType {
 

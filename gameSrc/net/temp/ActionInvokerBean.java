@@ -1,15 +1,15 @@
 package net.temp;
 
 import static org.stjs.javascript.JSObjectAdapter.$js;
+import net.temp.wolfTecEngine.components.PostConstruct;
+import net.temp.wolfTecEngine.container.CircularBuffer;
+import net.temp.wolfTecEngine.logging.Logger;
+import net.temp.wolfTecEngine.network.NetworkBean;
+import net.temp.wolfTecEngine.network.NetworkMessage;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolfTec.wolfTecEngine.components.PostConstruct;
-import org.wolfTec.wolfTecEngine.container.CircularBuffer;
-import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.network.NetworkBean;
-import org.wolfTec.wolfTecEngine.network.NetworkMessage;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 

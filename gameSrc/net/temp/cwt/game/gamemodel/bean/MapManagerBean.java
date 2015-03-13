@@ -1,15 +1,15 @@
 package net.temp.cwt.game.gamemodel.bean;
 
 import net.temp.cwt.game.gamemodel.model.MapFileType;
+import net.temp.wolfTecEngine.components.CreatedType;
+import net.temp.wolfTecEngine.logging.Logger;
+import net.temp.wolfTecEngine.persistence.annotations.FolderPath;
+import net.temp.wolfTecEngine.persistence.annotations.UseSerializer;
+import net.temp.wolfTecEngine.persistence.model.VirtualFilesystemFolder;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.vfs.VfsEntityDescriptor;
-import org.wolfTec.wolfTecEngine.components.CreatedType;
-import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.persistence.annotations.FolderPath;
-import org.wolfTec.wolfTecEngine.persistence.annotations.UseSerializer;
-import org.wolfTec.wolfTecEngine.persistence.model.VirtualFilesystemFolder;
 import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent

@@ -20,5 +20,5 @@ public interface AnnotatedValidator<T extends Annotation> {
    * @param metaData
    * @return
    */
-  boolean validate(Object value, String name, T metaData);
+  boolean validate(ValidationManager manager, Object value, String name, T metaData);
 }

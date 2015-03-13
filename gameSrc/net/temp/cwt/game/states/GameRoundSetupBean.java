@@ -8,11 +8,11 @@ import net.temp.cwt.game.gamemodel.bean.ObjectTypesBean;
 import net.temp.cwt.game.gamemodel.model.GameMap;
 import net.temp.cwt.game.gamemodel.model.GameMode;
 import net.temp.cwt.game.gamemodel.model.Player;
+import net.temp.wolfTecEngine.components.CreatedType;
+import net.temp.wolfTecEngine.logging.Logger;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolfTec.wolfTecEngine.components.CreatedType;
-import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 

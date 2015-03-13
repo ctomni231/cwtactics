@@ -1,6 +1,6 @@
 package net.temp.cwt.game.states.menu;
 
-import org.wolfTec.wolfTecEngine.statemachine.MenuState;
+import net.temp.wolfTecEngine.statemachine.MenuState;
 
 public class OptionsSetMappingState implements MenuState {
 

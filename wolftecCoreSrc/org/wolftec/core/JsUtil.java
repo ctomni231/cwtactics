@@ -24,9 +24,13 @@ public abstract class JsUtil {
   public static boolean isTruly(Object object) {
     return JsExec.injectJS("object == true");
   }
-  
+
   public static boolean isString(Object object) {
     return JSGlobal.typeof(object) == "string";
+  }
+
+  public static boolean notUndef(Object object) {
+    return JSGlobal.undefined != object;
   }
 
   /**
@@ -42,6 +46,10 @@ public abstract class JsUtil {
 
     JSGlobal.stjs.exception("object seems not to be a bean");
     return null;
+  }
+  
+  public static Array<String> getObjectKeys(Object value) {
+    return JsExec.injectJS("Object.keys(value)");
   }
   
   /**

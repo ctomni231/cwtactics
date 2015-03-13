@@ -3,11 +3,11 @@ package net.temp.cwt.game.gamemodel.bean;
 import net.temp.EngineGlobals;
 import net.temp.cwt.game.gamemodel.model.Config;
 import net.temp.cwt.game.gamemodel.model.GameConfigType;
+import net.temp.wolfTecEngine.logging.Logger;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;

@@ -5,17 +5,17 @@ import net.temp.cwt.game.gamemodel.bean.GameMapBean;
 import net.temp.cwt.game.gamemodel.bean.GameRoundBean;
 import net.temp.cwt.game.gamemodel.model.Tile;
 import net.temp.cwt.game.gamemodel.model.Unit;
+import net.temp.wolfTecEngine.renderer.AnimatedLayer;
+import net.temp.wolfTecEngine.renderer.Direction;
+import net.temp.wolfTecEngine.renderer.layer.GraphicLayer;
+import net.temp.wolfTecEngine.renderer.sprite.Sprite;
+import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.wolfTecEngine.renderer.AnimatedLayer;
-import org.wolfTec.wolfTecEngine.renderer.Direction;
-import org.wolfTec.wolfTecEngine.renderer.layer.GraphicLayer;
-import org.wolfTec.wolfTecEngine.renderer.sprite.Sprite;
-import org.wolfTec.wolfTecEngine.renderer.sprite.SpriteManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 

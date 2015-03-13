@@ -1,7 +1,8 @@
 package net.temp.cwt.game.states.menu;
 
-import org.wolfTec.wolfTecEngine.statemachine.MenuState;
-import org.wolfTec.wolfTecEngine.statemachine.StateManager;
+import net.temp.wolfTecEngine.statemachine.MenuState;
+import net.temp.wolfTecEngine.statemachine.StateManager;
+
 import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent

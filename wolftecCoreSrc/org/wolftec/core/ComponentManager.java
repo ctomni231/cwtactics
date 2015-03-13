@@ -1,10 +1,11 @@
 package org.wolftec.core;
 
+import net.temp.wolfTecEngine.container.ContainerUtil;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.wolfTec.wolfTecEngine.container.ContainerUtil;
 
 /**
  * The bean factory is the central part of the WolfTecEngine. It controls the

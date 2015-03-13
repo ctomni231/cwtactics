@@ -1,10 +1,10 @@
 package net.temp.cwt.game.states.loading;
 
 import net.temp.cwt.game.persistence.beans.GameLoadingManager;
+import net.temp.wolfTecEngine.logging.Logger;
+import net.temp.wolfTecEngine.statemachine.State;
+import net.temp.wolfTecEngine.statemachine.StateManager;
 
-import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.statemachine.State;
-import org.wolfTec.wolfTecEngine.statemachine.StateManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;

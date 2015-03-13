@@ -1,9 +1,10 @@
 package org.wolftec.validation;
 
+import net.temp.wolfTecEngine.logging.Logger;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Function1;
-import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
@@ -11,8 +12,8 @@ import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.core.ManagerOptions;
 import org.wolftec.core.ReflectionUtil;
-import org.wolftec.validation.annotation.DataObjectValue;
-import org.wolftec.validation.annotation.StringValue;
+import org.wolftec.validation.validators.DataObjectValue;
+import org.wolftec.validation.validators.StringValue;
 
 @ManagedComponent
 public class ValidationManager implements ManagedComponentInitialization {

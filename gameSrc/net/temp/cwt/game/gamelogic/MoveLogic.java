@@ -4,10 +4,10 @@ import net.temp.EngineGlobals;
 import net.temp.cwt.game.gamemodel.bean.GameRoundBean;
 import net.temp.cwt.game.gamemodel.model.MoveType;
 import net.temp.cwt.game.gamemodel.model.Tile;
+import net.temp.wolfTecEngine.container.CircularBuffer;
+import net.temp.wolfTecEngine.pathfinding.PathFinder;
 
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolfTec.wolfTecEngine.container.CircularBuffer;
-import org.wolfTec.wolfTecEngine.pathfinding.PathFinder;
 import org.wolftec.core.Injected;
 import org.wolftec.core.JsExec;
 import org.wolftec.core.ManagedComponent;

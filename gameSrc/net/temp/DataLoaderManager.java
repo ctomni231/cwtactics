@@ -1,5 +1,7 @@
 package net.temp;
 
+import net.temp.wolfTecEngine.logging.Logger;
+
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
@@ -8,7 +10,6 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.vfs.ReadOnlyHtmlVfs;
 import org.wolfTec.vfs.Vfs;
 import org.wolfTec.vfs.VfsEntityDescriptor;
-import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;

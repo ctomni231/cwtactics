@@ -2,13 +2,13 @@ package net.temp.cwt.game.renderer.beans;
 
 import net.temp.EngineGlobals;
 import net.temp.cwt.game.states.StateDataBean;
+import net.temp.wolfTecEngine.renderer.layer.GraphicLayer;
+import net.temp.wolfTecEngine.renderer.screen.ScreenManager;
+import net.temp.wolfTecEngine.renderer.sprite.Sprite;
+import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolfTec.wolfTecEngine.renderer.layer.GraphicLayer;
-import org.wolfTec.wolfTecEngine.renderer.screen.ScreenManager;
-import org.wolfTec.wolfTecEngine.renderer.sprite.Sprite;
-import org.wolfTec.wolfTecEngine.renderer.sprite.SpriteManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 

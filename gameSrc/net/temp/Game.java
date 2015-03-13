@@ -1,7 +1,8 @@
 package net.temp;
 
+import net.temp.wolfTecEngine.Engine;
+
 import org.stjs.javascript.JSGlobal;
-import org.wolfTec.wolfTecEngine.Engine;
 import org.wolftec.core.ManagerOptions;
 
 public abstract class Game {

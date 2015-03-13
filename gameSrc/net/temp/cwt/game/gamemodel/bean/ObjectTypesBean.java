@@ -9,13 +9,13 @@ import net.temp.cwt.game.gamemodel.model.PropertyType;
 import net.temp.cwt.game.gamemodel.model.TileType;
 import net.temp.cwt.game.gamemodel.model.UnitType;
 import net.temp.cwt.game.gamemodel.model.WeatherType;
+import net.temp.wolfTecEngine.logging.Logger;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.wolfTecEngine.logging.Logger;
 import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;

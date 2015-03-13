@@ -1,20 +1,18 @@
 package org.wolftec.validation.validators;
 
-import java.lang.annotation.Annotation;
-
-import org.stjs.javascript.Map;
 import org.wolftec.core.JsExec;
 import org.wolftec.validation.AnnotatedValidator;
+import org.wolftec.validation.ValidationManager;
 
-public class BooleanValidator implements AnnotatedValidator {
+public class BooleanValidator implements AnnotatedValidator<BooleanValue> {
 
   @Override
-  public Class<? extends Annotation> getAnnoationClass() {
+  public Class<BooleanValue> getAnnoationClass() {
     return BooleanValue.class;
   }
 
   @Override
-  public boolean validate(Object value, String name, Map<String, Object> metaData) {
+  public boolean validate(ValidationManager manager, Object value, String name, BooleanValue metaData) {
     return JsExec.injectJS("typeof value === 'boolean'");
   }
 

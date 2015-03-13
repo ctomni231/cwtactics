@@ -1,12 +1,12 @@
 package net.temp.cwt.game.renderer.beans;
 
 import net.temp.EngineGlobals;
+import net.temp.wolfTecEngine.renderer.layer.GraphicLayer;
+import net.temp.wolfTecEngine.renderer.layer.LayerFrameTime;
+import net.temp.wolfTecEngine.renderer.layer.LayerFrames;
+import net.temp.wolfTecEngine.renderer.layer.LayerIndex;
+import net.temp.wolfTecEngine.renderer.sprite.Sprite;
 
-import org.wolfTec.wolfTecEngine.renderer.layer.GraphicLayer;
-import org.wolfTec.wolfTecEngine.renderer.layer.LayerFrameTime;
-import org.wolfTec.wolfTecEngine.renderer.layer.LayerFrames;
-import org.wolfTec.wolfTecEngine.renderer.layer.LayerIndex;
-import org.wolfTec.wolfTecEngine.renderer.sprite.Sprite;
 import org.wolftec.core.ManagedComponent;
 
 /**

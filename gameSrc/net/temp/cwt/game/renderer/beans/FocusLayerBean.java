@@ -1,19 +1,19 @@
 package net.temp.cwt.game.renderer.beans;
 
 import net.temp.EngineGlobals;
+import net.temp.wolfTecEngine.components.PostConstruct;
+import net.temp.wolfTecEngine.renderer.Direction;
+import net.temp.wolfTecEngine.renderer.layer.GraphicLayer;
+import net.temp.wolfTecEngine.renderer.layer.LayerFrameTime;
+import net.temp.wolfTecEngine.renderer.layer.LayerFrames;
+import net.temp.wolfTecEngine.renderer.layer.LayerIndex;
+import net.temp.wolfTecEngine.renderer.sprite.Sprite;
+import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.wolfTecEngine.components.PostConstruct;
-import org.wolfTec.wolfTecEngine.renderer.Direction;
-import org.wolfTec.wolfTecEngine.renderer.layer.GraphicLayer;
-import org.wolfTec.wolfTecEngine.renderer.layer.LayerFrameTime;
-import org.wolfTec.wolfTecEngine.renderer.layer.LayerFrames;
-import org.wolfTec.wolfTecEngine.renderer.layer.LayerIndex;
-import org.wolfTec.wolfTecEngine.renderer.sprite.Sprite;
-import org.wolfTec.wolfTecEngine.renderer.sprite.SpriteManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 
@@ -95,14 +95,14 @@ public class FocusLayerBean extends GraphicLayer {
     int tch;
 
     Sprite sprite = sprites.getSprite("FOCUS");
-    Element spriteImg = sprite.getImage(net.wolfTec.cwtactics.gameWorkflowData.focusMode);
+    Element spriteImg = sprite.getImage(net.temp.cwtactics.gameWorkflowData.focusMode);
 
     int oy = y;
     int ye;
     for (int xe = x + w; x < xe; x++) {
       for (y = oy, ye = y + h; y < ye; y++) {
 
-        if (net.wolfTec.cwtactics.gameWorkflowData.selection.getValue(x, y) >= 0) {
+        if (net.temp.cwtactics.gameWorkflowData.selection.getValue(x, y) >= 0) {
 
           // render all phases
           int n = 0;

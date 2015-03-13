@@ -1,8 +1,8 @@
 package net.temp.cwt.game.action;
 
 import org.wolftec.validation.DataObject;
-import org.wolftec.validation.annotation.IntValue;
-import org.wolftec.validation.annotation.StringValue;
+import org.wolftec.validation.validators.IntValue;
+import org.wolftec.validation.validators.StringValue;
 
 /**
  * Action entry. Used to handle actions in a asynchronous way plus sending and
