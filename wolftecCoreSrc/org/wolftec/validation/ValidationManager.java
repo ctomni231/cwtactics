@@ -1,54 +1,35 @@
 package org.wolftec.validation;
 
+import net.temp.wolfTecEngine.container.ContainerUtil;
 import net.temp.wolfTecEngine.logging.Logger;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
-import org.stjs.javascript.functions.Function1;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
-import org.wolftec.core.ManagerOptions;
 import org.wolftec.core.ReflectionUtil;
-import org.wolftec.validation.validators.DataObjectValue;
-import org.wolftec.validation.validators.StringValue;
 
 @ManagedComponent
 public class ValidationManager implements ManagedComponentInitialization {
-  
+
   @ManagedConstruction
   private Logger log;
-  
-  private Map<String, Function1<Object, Boolean>> validationAnnotations;
 
-  private Map<String, // class
-              Map<String, // properties
-                 Map<String, Object>>> classValidated;
+  private Map<String, AnnotatedValidator<?>> validators;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    ManagerOptions options = manager.getComponentByClass(ManagerOptions.class);
+    validators = ContainerUtil.createMap();
+    Array<AnnotatedValidator> validatorList = manager
+        .getComponentsByClass(AnnotatedValidator.class);
 
-    Array<Class<?>> dataClasses = ReflectionUtil.getAnnotatedClasses(options.namespace, DataObject.class);
-    
-    // TODO 1. get field annotations 
-    // 2. save them as map
-
-    validationAnnotations.$put(ReflectionUtil.getSimpleName(StringValue.class), (value) -> {
-      if (!JsUtil.isString(value)) {
-        return false;
-      }
-      return true;
-    });
-
-    validationAnnotations.$put(ReflectionUtil.getSimpleName(DataObjectValue.class), (value) -> {
-      if (value == null || !validate(value, ReflectionUtil.getClass(value))) {
-        return false;
-      }
-      return true;
-    });
+    for (int i = 0; i < validatorList.$length(); i++) {
+      AnnotatedValidator<?> validator = validatorList.$get(i);
+      validators.$put(ReflectionUtil.getSimpleName(validator.getAnnoationClass()), validator);
+    }
   }
 
   /**
@@ -57,31 +38,20 @@ public class ValidationManager implements ManagedComponentInitialization {
    * @return true, when the data object contains valid data, else false
    */
   public boolean validate(Object dataObject, Class<?> dataClass) {
-    Class<?> clazz = ReflectionUtil.getClass(dataObject);
-    String clazzName = ReflectionUtil.getSimpleName(clazz);
-
-    if (!JsUtil.hasProperty(classValidated, clazzName)) {
-      log.error("the class of the given object is not registered as data object");
-      return false;
-    }
-
-    Map<String, Map<String, Object>> properties = classValidated.$get(clazzName);
-    Array<String> propertyNames = ReflectionUtil.objectKeys(properties);
-    
+    Array<String> propertyNames = ReflectionUtil.objectKeys(dataObject);
     for (int i = 0; i < propertyNames.$length(); i++) {
-      
+
       String propertyName = propertyNames.$get(i);
       Object propertyValue = JsUtil.getPropertyValue(dataObject, propertyName);
-      
-      Map<String, Object> validationData = properties.$get(clazzName);
-      Array<String> annoations = ReflectionUtil.objectKeys(validationData);
-      
+      Array<?> annoations = ReflectionUtil.getPropertyAnnotations(dataClass, propertyName);
+
       for (int j = 0; j < annoations.$length(); j++) {
+        Object annotation = annoations.$get(j);
+        String annotationName = ReflectionUtil.getSimpleName(ReflectionUtil.getClass(annotation));
         
-        String annotation = annoations.$get(j);
-        
-        if (JsUtil.hasProperty(validationAnnotations, annotation)) {
-          validationAnnotations.$get(annotation).$invoke(propertyValue);
+        if (JsUtil.hasProperty(validators, annotationName)) {
+          validators.$get(annotationName).validateGeneric(this, propertyValue, propertyName,
+              annotation);
         }
       }
     }

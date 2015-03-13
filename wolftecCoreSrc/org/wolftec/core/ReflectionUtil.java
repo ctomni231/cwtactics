@@ -21,9 +21,20 @@ public abstract class ReflectionUtil {
   public static <T> T getClassInstance(Class<T> clazz) {
     return JsExec.injectJS("new clazz()");
   }
-  
-  public static void getMethodAnnotations (Class<?> clazz, String methodName) {
+
+  public static Array<Class<?>> getMethodAnnotations (Class<?> clazz, String methodName) {
     // JSGlobal.stjs.getMemberAnnotation(clazz, methodName, null);
+    return null;
+  }
+
+  public static Array<Class<?>> getPropertyAnnotations (Class<?> clazz, String propertyName) {
+    // JSGlobal.stjs.getMemberAnnotation(clazz, methodName, null);
+    return null;
+  }
+
+  public static Array<Class<?>> getClaaAnnotations (Class<?> clazz) {
+    // JSGlobal.stjs.getMemberAnnotation(clazz, methodName, null);
+    return null;
   }
 
   public static String getPropertyTypeAsName (Object object, String property) {
