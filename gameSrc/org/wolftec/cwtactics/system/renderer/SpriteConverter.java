@@ -6,10 +6,10 @@ import org.wolftec.persistence.Serializer;
 /**
  * 
  */
-public class SpriteConverter implements Serializer {
+public class SpriteConverter implements Serializer<Sprite> {
   
   @Override
-  public void deserialize(String data, Callback1<Object> cb) {
+  public void deserialize(String data, Callback1<Sprite> cb) {
     // TODO Auto-generated method stub
     // Array<String> spriteDataArray =
     // JSObjectAdapter.$js("JSON.parse(spriteData)");
@@ -22,7 +22,7 @@ public class SpriteConverter implements Serializer {
   }
 
   @Override
-  public void serialize(Object data, Callback1<Object> cb) {
+  public void serialize(Sprite data, Callback1<String> cb) {
     // TODO Auto-generated method stub
 
     // Array<String> data = JSCollections.$array();
@@ -32,5 +32,4 @@ public class SpriteConverter implements Serializer {
     // TODO
     // return JSObjectAdapter.$js("JSON.stringify(data)");
   }
-
 }

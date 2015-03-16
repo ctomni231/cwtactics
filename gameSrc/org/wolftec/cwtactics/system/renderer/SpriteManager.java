@@ -1,25 +1,24 @@
 package org.wolftec.cwtactics.system.renderer;
 
-import net.temp.wolfTecEngine.logging.LogManager;
-import net.temp.wolfTecEngine.vfs.DecoratedVfs;
-
 import org.stjs.javascript.Map;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.core.ManagedConstruction;
 import org.wolftec.log.Logger;
 import org.wolftec.persistence.VirtualFilesystemManager;
 
 @ManagedComponent
 public class SpriteManager implements ManagedComponentInitialization {
 
+  @ManagedConstruction
   private Logger p_log;
+  
   private Map<String, Sprite> p_sprites;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    p_log = manager.getComponentByClass(LogManager.class).createByClass(getClass());
 
     VirtualFilesystemManager vfs;
     vfs = manager.getComponentByClass(VirtualFilesystemManager.class);

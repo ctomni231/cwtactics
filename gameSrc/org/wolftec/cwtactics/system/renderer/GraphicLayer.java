@@ -6,6 +6,7 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.Internal;
+import org.wolftec.cwtactics.system.renderer.DirectionUtil.Direction;
 
 public abstract class GraphicLayer {
 
