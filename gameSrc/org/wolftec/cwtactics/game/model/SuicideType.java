@@ -2,9 +2,11 @@ package org.wolftec.cwtactics.game.model;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.validation.DataObject;
 import org.wolftec.validation.validators.IntValue;
 import org.wolftec.validation.validators.StringValue;
 
+@DataObject
 public class SuicideType {
 
   @IntValue(min = 0, max = 10)

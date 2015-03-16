@@ -3,10 +3,12 @@ package org.wolftec.cwtactics.game.model;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.validation.DataObject;
 import org.wolftec.validation.validators.IntValue;
 import org.wolftec.validation.validators.StringKey;
 import org.wolftec.validation.validators.StringValue;
 
+@DataObject
 public class PropertyType extends ObjectType {
 
   @IntValue(min = 0, max = 6)
