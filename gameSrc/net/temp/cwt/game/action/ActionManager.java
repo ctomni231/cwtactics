@@ -6,17 +6,17 @@ import net.temp.cwt.game.gamemodel.model.Unit;
 import net.temp.cwt.game.renderer.beans.UnitLayerBean;
 import net.temp.cwt.game.states.ActionMenu;
 import net.temp.cwt.game.states.StateDataBean;
-import net.temp.wolfTecEngine.container.CircularBuffer;
-import net.temp.wolfTecEngine.logging.Logger;
-import net.temp.wolfTecEngine.statemachine.ActionQueueHandler;
-import net.temp.wolfTecEngine.statemachine.StateManager;
 
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.container.CircularBuffer;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.cwtactics.system.state.ActionQueueHandler;
+import org.wolftec.cwtactics.system.state.StateManager;
+import org.wolftec.log.Logger;
 
 @ManagedComponent
 public class ActionManager implements ActionQueueHandler<ActionItem>, ManagedComponentInitialization {

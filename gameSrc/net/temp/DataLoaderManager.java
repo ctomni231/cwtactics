@@ -1,7 +1,5 @@
 package net.temp;
 
-import net.temp.wolfTecEngine.logging.Logger;
-
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
@@ -14,6 +12,7 @@ import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagerOptions;
+import org.wolftec.log.Logger;
 
 @ManagedComponent
 public class DataLoaderManager {

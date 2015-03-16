@@ -2,7 +2,6 @@ package net.temp.cwt.game.gamemodel.bean;
 
 import net.temp.cwt.game.gamemodel.model.MapFileType;
 import net.temp.wolfTecEngine.components.CreatedType;
-import net.temp.wolfTecEngine.logging.Logger;
 import net.temp.wolfTecEngine.persistence.annotations.FolderPath;
 import net.temp.wolfTecEngine.persistence.annotations.UseSerializer;
 import net.temp.wolfTecEngine.persistence.model.VirtualFilesystemFolder;
@@ -11,6 +10,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
 import org.wolfTec.vfs.VfsEntityDescriptor;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.log.Logger;
 
 @ManagedComponent
 public class MapManagerBean {

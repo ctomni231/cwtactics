@@ -2,16 +2,16 @@ package net.temp;
 
 import static org.stjs.javascript.JSObjectAdapter.$js;
 import net.temp.wolfTecEngine.components.PostConstruct;
-import net.temp.wolfTecEngine.container.CircularBuffer;
-import net.temp.wolfTecEngine.logging.Logger;
 import net.temp.wolfTecEngine.network.NetworkBean;
 import net.temp.wolfTecEngine.network.NetworkMessage;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
+import org.wolftec.container.CircularBuffer;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.log.Logger;
 
 @ManagedComponent
 public class ActionInvokerBean {

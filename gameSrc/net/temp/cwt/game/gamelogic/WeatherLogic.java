@@ -4,9 +4,9 @@ import net.temp.cwt.game.gamemodel.bean.GameConfigBean;
 import net.temp.cwt.game.gamemodel.bean.GameRoundBean;
 import net.temp.cwt.game.gamemodel.bean.ObjectTypesBean;
 import net.temp.cwt.game.gamemodel.model.WeatherType;
-import net.temp.wolfTecEngine.container.ContainerUtil;
 
 import org.stjs.javascript.Array;
+import org.wolftec.container.ContainerUtil;
 import org.wolftec.core.ConvertUtility;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;

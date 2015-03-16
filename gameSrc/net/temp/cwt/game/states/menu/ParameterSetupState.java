@@ -1,6 +1,6 @@
 package net.temp.cwt.game.states.menu;
 
-import net.temp.wolfTecEngine.statemachine.MenuState;
+import org.wolftec.cwtactics.system.state.MenuState;
 
 public class ParameterSetupState implements MenuState {
 

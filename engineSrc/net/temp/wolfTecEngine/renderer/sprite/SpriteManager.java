@@ -1,7 +1,6 @@
 package net.temp.wolfTecEngine.renderer.sprite;
 
 import net.temp.wolfTecEngine.logging.LogManager;
-import net.temp.wolfTecEngine.logging.Logger;
 
 import org.stjs.javascript.Map;
 import org.wolfTec.vfs.DecoratedVfs;
@@ -10,6 +9,7 @@ import org.wolftec.core.ComponentManager;
 import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.log.Logger;
 
 @ManagedComponent
 public class SpriteManager implements ManagedComponentInitialization {

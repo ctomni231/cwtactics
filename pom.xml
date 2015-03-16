@@ -10,8 +10,17 @@
   <stjs.version>3.1.3</stjs.version>
  </properties>
 
+ <profiles>
+  <profile>
+   <id>wolftec_core</id>
+   <properties>
+    <src.folder>wolftecCoreSrc/</src.folder>
+   </properties>
+  </profile>
+ </profiles>
+
  <build>
-  <sourceDirectory>engineSrc/</sourceDirectory>
+  <sourceDirectory>${src.folder}</sourceDirectory>
   <pluginManagement>
    <plugins>
     <plugin>
@@ -39,6 +48,8 @@
       <includes>
        <include>**/*.java</include>
       </includes>
+      
+      
       <pack>true</pack>
       <annotations>
 
@@ -115,9 +126,9 @@
   <dependency>
    <groupId>com.sun</groupId>
    <artifactId>tools</artifactId>
-   <version>1.7</version>
+   <version>1.8</version>
    <scope>system</scope>
-   <systemPath>C:\Program Files\Java\jdk1.8.0_40\lib/tools.jar</systemPath>
+   <systemPath>C:\Program Files\Java\jdk1.8.0_40\lib\tools.jar</systemPath>
   </dependency>
  </dependencies>
 </project>

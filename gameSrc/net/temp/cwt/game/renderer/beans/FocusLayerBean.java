@@ -95,14 +95,14 @@ public class FocusLayerBean extends GraphicLayer {
     int tch;
 
     Sprite sprite = sprites.getSprite("FOCUS");
-    Element spriteImg = sprite.getImage(net.temp.cwtactics.gameWorkflowData.focusMode);
+    Element spriteImg = sprite.getImage(org.wolftec.cwtactics.test.gameWorkflowData.focusMode);
 
     int oy = y;
     int ye;
     for (int xe = x + w; x < xe; x++) {
       for (y = oy, ye = y + h; y < ye; y++) {
 
-        if (net.temp.cwtactics.gameWorkflowData.selection.getValue(x, y) >= 0) {
+        if (org.wolftec.cwtactics.test.gameWorkflowData.selection.getValue(x, y) >= 0) {
 
           // render all phases
           int n = 0;

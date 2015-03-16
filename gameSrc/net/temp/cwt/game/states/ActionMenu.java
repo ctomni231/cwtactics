@@ -3,9 +3,9 @@ package net.temp.cwt.game.states;
 import net.temp.cwt.game.gamemodel.model.MenuEntry;
 import net.temp.wolfTecEngine.components.CreatedType;
 import net.temp.wolfTecEngine.components.PostConstruct;
-import net.temp.wolfTecEngine.container.CircularBuffer;
-import net.temp.wolfTecEngine.container.ContainerSize;
 
+import org.wolftec.container.CircularBuffer;
+import org.wolftec.container.ContainerSize;
 import org.wolftec.core.ManagedComponent;
 
 @ManagedComponent

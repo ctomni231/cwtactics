@@ -1,7 +1,8 @@
 package net.temp.cwt.game.ai;
 
+import org.wolftec.log.Logger;
+
 import net.temp.wolfTecEngine.decision.Action;
-import net.temp.wolfTecEngine.logging.Logger;
 
 public class SampleHello implements Action {
   

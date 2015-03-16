@@ -1,7 +1,5 @@
 package net.temp.wolfTecEngine.audio;
 
-import net.temp.wolfTecEngine.logging.Logger;
-
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
@@ -15,6 +13,7 @@ import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.log.Logger;
 import org.wolftec.persistence.VfsEntity;
 import org.wolftec.persistence.VirtualFilesystemManager;
 

@@ -1,7 +1,5 @@
 package net.temp.wolfTecEngine.audio;
 
-import net.temp.wolfTecEngine.logging.Logger;
-
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.ComponentManager;
@@ -10,6 +8,7 @@ import org.wolftec.core.JsExec;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.log.Logger;
 import org.wolftec.persistence.Serializer;
 
 /**

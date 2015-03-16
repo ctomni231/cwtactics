@@ -61,8 +61,8 @@ public abstract class JsUtil {
     return JsExec.injectJS("new clazz()");
   }
   
-  public static void raiseError(String msg, Object... args) {
-    JSGlobal.stjs.exception(msg); // TODO args
+  public static void raiseError(Object... arguments) {
+    JSGlobal.stjs.exception(arguments[0]); // TODO args
   }
   
   public static Array<String> splitString(String str, String splitter) {

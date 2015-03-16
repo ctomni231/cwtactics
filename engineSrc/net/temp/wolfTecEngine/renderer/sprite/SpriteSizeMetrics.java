@@ -1,8 +1,7 @@
 package net.temp.wolfTecEngine.renderer.sprite;
 
-import net.temp.wolfTecEngine.container.ContainerUtil;
-
 import org.stjs.javascript.Map;
+import org.wolftec.container.ContainerUtil;
 
 /**
  * 

@@ -1,7 +1,6 @@
 package net.temp.wolfTecEngine.renderer;
 
 import net.temp.wolfTecEngine.logging.LogManager;
-import net.temp.wolfTecEngine.logging.Logger;
 import net.temp.wolfTecEngine.vfs.DecoratedVfs;
 
 import org.stjs.javascript.Map;
@@ -9,6 +8,7 @@ import org.wolftec.core.ComponentManager;
 import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.log.Logger;
 import org.wolftec.persistence.VirtualFilesystemManager;
 
 @ManagedComponent

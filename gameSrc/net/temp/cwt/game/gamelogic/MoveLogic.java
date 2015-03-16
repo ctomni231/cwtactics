@@ -4,13 +4,13 @@ import net.temp.EngineGlobals;
 import net.temp.cwt.game.gamemodel.bean.GameRoundBean;
 import net.temp.cwt.game.gamemodel.model.MoveType;
 import net.temp.cwt.game.gamemodel.model.Tile;
-import net.temp.wolfTecEngine.container.CircularBuffer;
-import net.temp.wolfTecEngine.pathfinding.PathFinder;
 
 import org.stjs.javascript.JSObjectAdapter;
+import org.wolftec.container.CircularBuffer;
 import org.wolftec.core.Injected;
 import org.wolftec.core.JsExec;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.cwtactics.system.pathfinding.PathFinder;
 
 @ManagedComponent
 public class MoveLogic {

@@ -8,7 +8,6 @@ import net.temp.cwt.game.gamemodel.model.Property;
 import net.temp.cwt.game.gamemodel.model.Tile;
 import net.temp.cwt.game.gamemodel.model.Unit;
 import net.temp.cwt.game.gamemodel.model.WeatherType;
-import net.temp.wolfTecEngine.functions.Function5;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -20,6 +19,7 @@ import org.stjs.javascript.functions.Function1;
 import org.stjs.javascript.functions.Function4;
 import org.wolftec.core.ConvertUtility;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.cwtactics.system.fnc.Function5;
 
 @ManagedComponent
 public class GameRoundBean {

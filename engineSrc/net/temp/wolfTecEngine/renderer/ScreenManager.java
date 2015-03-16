@@ -1,11 +1,11 @@
 package net.temp.wolfTecEngine.renderer;
 
 import net.temp.wolfTecEngine.EngineOptions;
-import net.temp.wolfTecEngine.container.ContainerUtil;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.wolftec.container.ContainerUtil;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;

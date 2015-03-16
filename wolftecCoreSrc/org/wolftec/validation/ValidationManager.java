@@ -1,16 +1,15 @@
 package org.wolftec.validation;
 
-import net.temp.wolfTecEngine.container.ContainerUtil;
-import net.temp.wolfTecEngine.logging.Logger;
-
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
+import org.wolftec.container.ContainerUtil;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.core.ReflectionUtil;
+import org.wolftec.log.Logger;
 
 @ManagedComponent
 public class ValidationManager implements ManagedComponentInitialization {

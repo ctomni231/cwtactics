@@ -2,7 +2,6 @@ package net.temp.cwt.game.persistence.beans;
 
 import net.temp.cwt.game.persistence.model.SaveGameHandler;
 import net.temp.wolfTecEngine.components.CreatedType;
-import net.temp.wolfTecEngine.logging.Logger;
 import net.temp.wolfTecEngine.persistence.annotations.FolderPath;
 
 import org.stjs.javascript.Array;
@@ -12,6 +11,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolfTec.vfs.Vfs;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.log.Logger;
 
 /**
  * Save game handler, used to load and save game files.

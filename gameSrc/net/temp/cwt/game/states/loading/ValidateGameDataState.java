@@ -1,13 +1,12 @@
 package net.temp.cwt.game.states.loading;
 
-import net.temp.wolfTecEngine.input.InputManager;
-import net.temp.wolfTecEngine.logging.Logger;
-import net.temp.wolfTecEngine.statemachine.State;
-import net.temp.wolfTecEngine.statemachine.StateManager;
-
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.cwtactics.system.input.InputManager;
+import org.wolftec.cwtactics.system.state.State;
+import org.wolftec.cwtactics.system.state.StateManager;
+import org.wolftec.log.Logger;
 import org.wolftec.persistence.VirtualFilesystemManager;
 
 @ManagedComponent

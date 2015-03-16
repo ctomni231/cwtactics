@@ -1,10 +1,7 @@
 package net.temp.cwt.game.states.generic;
 
 import net.temp.cwt.game.renderer.beans.UserInterfaceLayerBean;
-import net.temp.wolfTecEngine.logging.Logger;
 import net.temp.wolfTecEngine.renderer.gui.UiContainer;
-import net.temp.wolfTecEngine.statemachine.State;
-import net.temp.wolfTecEngine.statemachine.StateManager;
 
 import org.stjs.javascript.Date;
 import org.stjs.javascript.dom.Form;
@@ -15,6 +12,9 @@ import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.cwtactics.system.state.State;
+import org.wolftec.cwtactics.system.state.StateManager;
+import org.wolftec.log.Logger;
 
 @ManagedComponent
 public class ErrorState implements State, ManagedComponentInitialization {

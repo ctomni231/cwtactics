@@ -9,7 +9,6 @@ import net.temp.cwt.game.gamemodel.model.PropertyType;
 import net.temp.cwt.game.gamemodel.model.TileType;
 import net.temp.cwt.game.gamemodel.model.UnitType;
 import net.temp.cwt.game.gamemodel.model.WeatherType;
-import net.temp.wolfTecEngine.logging.Logger;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -20,6 +19,7 @@ import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.log.Logger;
 import org.wolftec.persistence.VirtualFilesystemManager;
 
 @ManagedComponent
