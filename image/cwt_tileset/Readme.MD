@@ -82,6 +82,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *PTNK* - Prism Tank (CO Von Bolt)
 * [ ] *LGTK* - Logistic Truck (CO Sasha)
 * [ ] *RTNK* - Repair Tank (CO Andy)
+* [ ] *COMM* - Commando (CO Sami)
 
 ***
 
