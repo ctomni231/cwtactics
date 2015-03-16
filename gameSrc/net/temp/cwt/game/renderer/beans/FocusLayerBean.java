@@ -3,10 +3,6 @@ package net.temp.cwt.game.renderer.beans;
 import net.temp.EngineGlobals;
 import net.temp.wolfTecEngine.components.PostConstruct;
 import net.temp.wolfTecEngine.renderer.Direction;
-import net.temp.wolfTecEngine.renderer.layer.GraphicLayer;
-import net.temp.wolfTecEngine.renderer.layer.LayerFrameTime;
-import net.temp.wolfTecEngine.renderer.layer.LayerFrames;
-import net.temp.wolfTecEngine.renderer.layer.LayerIndex;
 import net.temp.wolfTecEngine.renderer.sprite.Sprite;
 import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
 
@@ -16,6 +12,10 @@ import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.cwtactics.system.renderer.GraphicLayer;
+import org.wolftec.cwtactics.system.renderer.LayerFrameTime;
+import org.wolftec.cwtactics.system.renderer.LayerFrames;
+import org.wolftec.cwtactics.system.renderer.LayerIndex;
 
 @ManagedComponent
 @LayerIndex(EngineGlobals.LAYER_FOCUS)

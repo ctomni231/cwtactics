@@ -1,14 +1,14 @@
 package net.temp.cwt.game.ai;
 
 import net.temp.cwt.game.gamemodel.model.Player;
-import net.temp.wolfTecEngine.decision.DecisionTree;
-import net.temp.wolfTecEngine.decision.Sequence;
 
 import org.stjs.javascript.JSCollections;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.cwtactics.system.decision.DecisionTree;
+import org.wolftec.cwtactics.system.decision.Sequence;
 import org.wolftec.log.Logger;
 
 @ManagedComponent

@@ -3,11 +3,11 @@ package net.temp.cwt.game.states.menu;
 import net.temp.EngineGlobals;
 import net.temp.cwt.game.renderer.beans.UserInterfaceLayerBean;
 import net.temp.cwt.game.states.InputAction;
-import net.temp.wolfTecEngine.audio.AudioManager;
 
 import org.wolftec.core.ConvertUtility;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.cwtactics.system.audio.AudioManager;
 import org.wolftec.cwtactics.system.input.InputManager;
 import org.wolftec.cwtactics.system.localization.Localization;
 import org.wolftec.cwtactics.system.state.MenuState;

@@ -7,7 +7,6 @@ import net.temp.cwt.game.gamemodel.model.Tile;
 import net.temp.cwt.game.gamemodel.model.Unit;
 import net.temp.wolfTecEngine.renderer.AnimatedLayer;
 import net.temp.wolfTecEngine.renderer.Direction;
-import net.temp.wolfTecEngine.renderer.layer.GraphicLayer;
 import net.temp.wolfTecEngine.renderer.sprite.Sprite;
 import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
 
@@ -18,6 +17,7 @@ import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.cwtactics.system.renderer.GraphicLayer;
 
 @ManagedComponent
 public class UnitLayerBean extends GraphicLayer {

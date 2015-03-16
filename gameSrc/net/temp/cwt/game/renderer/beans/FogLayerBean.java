@@ -4,7 +4,6 @@ import net.temp.EngineGlobals;
 import net.temp.cwt.game.gamelogic.MoveCode;
 import net.temp.cwt.game.gamemodel.bean.GameRoundBean;
 import net.temp.cwt.game.gamemodel.model.Tile;
-import net.temp.wolfTecEngine.renderer.layer.GraphicLayer;
 import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
 
 import org.stjs.javascript.Global;
@@ -12,6 +11,7 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.cwtactics.system.renderer.GraphicLayer;
 
 @ManagedComponent
 public class FogLayerBean extends GraphicLayer {

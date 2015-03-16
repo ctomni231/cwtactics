@@ -1,9 +1,8 @@
 package org.wolftec.cwtactics.system.pathfinding;
 
-import net.temp.wolfTecEngine.renderer.screen.DirectionUtil.Direction;
-
 import org.stjs.javascript.Array;
 import org.wolftec.container.MoveableMatrix;
+import org.wolftec.cwtactics.system.renderer.DirectionUtil.Direction;
 
 public interface PathFinder {
 

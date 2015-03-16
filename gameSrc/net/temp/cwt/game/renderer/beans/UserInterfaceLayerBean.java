@@ -2,8 +2,6 @@ package net.temp.cwt.game.renderer.beans;
 
 import net.temp.EngineGlobals;
 import net.temp.cwt.game.states.StateDataBean;
-import net.temp.wolfTecEngine.renderer.layer.GraphicLayer;
-import net.temp.wolfTecEngine.renderer.screen.ScreenManager;
 import net.temp.wolfTecEngine.renderer.sprite.Sprite;
 import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
 
@@ -11,6 +9,8 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.cwtactics.system.renderer.GraphicLayer;
+import org.wolftec.cwtactics.system.renderer.ScreenManager;
 
 /**
  * All user interface stuff will be rendered into this layer. It's the top front

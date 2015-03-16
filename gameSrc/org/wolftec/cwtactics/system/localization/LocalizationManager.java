@@ -8,13 +8,14 @@ import org.wolftec.core.JsExec;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.log.Logger;
+import org.wolftec.persistence.JsonConverter;
 import org.wolftec.persistence.VirtualFilesystemManager;
 
 /**
  * 
  */
 @ManagedComponent
-public class LocalizationManager implements Localization {
+public class LocalizationManager {
 
   @ManagedConstruction
   private Logger log;
@@ -23,14 +24,13 @@ public class LocalizationManager implements Localization {
   private VirtualFilesystemManager vfs;
 
   @Injected
-  private LanguageFileConverter converter;
+  private JsonConverter converter;
 
   /**
    * The current active language.
    */
   private Map<String, String> language;
 
-  @Override
   public void autoSelectLanguage(Callback0 cb) {
     selectLanguage(getBrowserLanguage(), cb);
   }
@@ -43,7 +43,9 @@ public class LocalizationManager implements Localization {
     return JsExec.injectJS("navigator.language || navigator.userLanguage");
   }
 
-  @Override
+  /**
+   * Selects a language by it's key.
+   */
   public void selectLanguage(String language, Callback0 cb) {
     vfs.readKey("lang/lang_" + language, converter, (err, langFile) -> {
       if (langFile.value != null) {
@@ -56,7 +58,9 @@ public class LocalizationManager implements Localization {
     });
   }
 
-  @Override
+  /**
+   * Returns the localized string of a given identifier.
+   */
   public String solveKey(String key) {
     String str = language.$get(key);
     return str != JSGlobal.undefined ? str : key;

@@ -1,14 +1,13 @@
 package org.wolftec.cwtactics.system.pathfinding;
 
-import net.temp.wolfTecEngine.renderer.screen.DirectionUtil;
-import net.temp.wolfTecEngine.renderer.screen.DirectionUtil.Direction;
-
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.wolftec.container.MoveableMatrix;
 import org.wolftec.core.JsExec;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.cwtactics.system.renderer.DirectionUtil;
+import org.wolftec.cwtactics.system.renderer.DirectionUtil.Direction;
 
 /**
  * Path finder which implements the A* algorithm.
