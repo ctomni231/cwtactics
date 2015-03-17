@@ -2,12 +2,7 @@ package org.wolftec.cwtactics.game.model;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.annotation.Template;
-import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback3;
-import org.stjs.javascript.functions.Callback4;
-import org.stjs.javascript.functions.Function1;
-import org.stjs.javascript.functions.Function4;
 import org.wolftec.core.ConvertUtility;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
@@ -251,25 +246,15 @@ public class GameRoundBean {
    * @param cbThis
    * @param arg
    */
-  public void searchProperty(Property property, TileInRange dataBlock, Callback1<TileInRange> cb) {
+  public void searchProperty(Property property, Callback3<Integer, Integer, Tile> cb) {
     for (int x = 0, xe = mapWidth; x < xe; x++) {
       for (int y = 0, ye = mapHeight; y < ye; y++) {
         Tile tile = map.getTile(x, y);
         if (tile.property == property) {
-          dataBlock.x = x;
-          dataBlock.y = y;
-          dataBlock.tile = tile;
-          dataBlock.range = EngineGlobals.INACTIVE_ID;
-
-          cb.$invoke(dataBlock);
+          cb.$invoke(x, y, tile);
         }
       }
     }
-
-    dataBlock.x = 0;
-    dataBlock.y = 0;
-    dataBlock.tile = null;
-    dataBlock.range = 0;
   }
 
   /**

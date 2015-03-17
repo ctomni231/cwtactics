@@ -2,20 +2,34 @@ package org.wolftec.cwtactics.game.model;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolfTec.cwt.game.gamelogic.MoveCode;
-import org.wolfTec.cwt.game.gamemodel.model.Tile;
-import org.wolfTec.cwt.game.gamemodel.model.Unit;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.container.CircularBuffer;
-import org.wolfTec.wolfTecEngine.container.MoveableMatrix;
+import org.wolftec.container.CircularBuffer;
+import org.wolftec.container.ContainerUtil;
+import org.wolftec.container.MoveableMatrix;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.Injected;
+import org.wolftec.core.JsUtil;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.game.logic.MoveCode;
+import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
+import org.wolftec.cwtactics.system.pathfinding.PathFinder;
+import org.wolftec.log.Logger;
 
-@Bean
-public class MovePath {
+@ManagedComponent
+public class MovePath implements ManagedComponentInitialization {
 
-  @Created
-  private CircularBuffer<MoveCode> path;
+  @ManagedConstruction
+  private Logger LOG;
+
+  @Injected
+  private PathFinder pathfinder;
+
+  @Injected
+  private GameRoundBean gameround;
+
+  private CircularBuffer<Direction> path;
 
   /**
    * Little helper array object for `model.move_fillMoveMap`. This will be used
@@ -29,10 +43,13 @@ public class MovePath {
 
   private Array<Integer> checkHelper;
 
-  public MovePath() {
-    helper = JSCollections.$array();
+  @Override
+  public void onComponentConstruction(ComponentManager manager) {
+    path = new CircularBuffer<Direction>(EngineGlobals.MAX_MOVE_LENGTH);
+    helper = ContainerUtil.createArray();
+    checkHelper = ContainerUtil.createArray();
 
-    checkHelper = JSCollections.$array(EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID,
+    checkHelper.push(EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID,
         EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID,
         EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID);
   }
@@ -53,64 +70,48 @@ public class MovePath {
    * @param selection
    */
   public void generatePath(int stx, int sty, int tx, int ty, MoveableMatrix selection) {
-    MoveCode dir;
-    var cNode;
-    int dsx = stx - selection.getCenterX();
-    int dsy = sty - selection.getCenterY();
-    int dtx = tx - selection.getCenterX();
-    int dty = ty - selection.getCenterY();
-    int cx = stx;
-    int cy = sty;
+    Array<Direction> dirPath = pathfinder.findPath(selection, stx, sty, tx, ty);
 
-    // generate path by the a-star library
-    var dataGrid = astar.createDataGrid(selection.getData());
-    var start = dataGrid.nodes[dsx][dsy];
-    var end = dataGrid.nodes[dtx][dty];
-    var path = astar.search(dataGrid, start, end);
-
-    // extract data from generated path map and fill the movePath object
-    movePath.clear();
-    for (var i = 0, e = path.length; i < e; i++) {
-      cNode = path[i];
-
-      // add code to move path
-      movePath.push(exports.codeFromAtoB(cx, cy, cNode.x, cNode.y));
-
-      // update current position
-      cx = cNode.x;
-      cy = cNode.y;
+    path.clear();
+    for (int i = 0; i < path.getSize(); i++) {
+      path.push(dirPath.$get(i));
     }
   }
 
   /**
-   * Compares a given move **code** with a **movePath**. When the new code is
-   * the exact opposite direction of the last command in the path then **true**
-   * will be return else **false**.
+   * Compares a given move code with the movePath.
    * 
    * @param code
-   * @return
+   * @return When the new code is the exact opposite direction of the last
+   *         command in the path then true will be return else false
    */
-  public boolean isGoBackCommand(MoveCode code) {
-    MoveCode lastCode = path.$get(path.$length() - 1);
-    MoveCode goBackCode;
+  public boolean isGoBackCommand(Direction code) {
+    if (path.getSize() == 0) return false;
+
+    Direction lastCode = path.get(path.getSize() - 1);
+    Direction goBackCode = null;
 
     // get go back code
     switch (code) {
+
       case UP:
-        goBackCode = MoveCode.DOWN;
+        goBackCode = Direction.DOWN;
         break;
+
       case DOWN:
-        goBackCode = MoveCode.UP;
+        goBackCode = Direction.UP;
         break;
+
       case LEFT:
-        goBackCode = MoveCode.RIGHT;
+        goBackCode = Direction.RIGHT;
         break;
+
       case RIGHT:
-        goBackCode = MoveCode.LEFT;
+        goBackCode = Direction.LEFT;
         break;
+
       default:
-        // TODO
-        throw new Error();
+        JsUtil.raiseError("unknown move code");
     }
 
     return (lastCode == goBackCode);
@@ -127,14 +128,13 @@ public class MovePath {
    * @param sx
    * @param sy
    */
-  public void addCode(MoveCode code, Object selection, int sx, int sy) {
-    // drop last move code when the new command realizes a move back schema
-    if (path.$length() > 0 && isGoBackCommand(code, path)) {
+  public boolean addCode(Direction code, MoveableMatrix selection, int sx, int sy) {
+    if (isGoBackCommand(code)) {
       path.popLast();
       return true;
     }
 
-    Tile source = model.mapData[sx][sy];
+    Tile source = gameround.getTile(sx, sy);
     Unit unit = source.unit;
     int points = unit.type.range;
     int fuelLeft = unit.fuel;
@@ -152,8 +152,8 @@ public class MovePath {
     int cx = sx;
     int cy = sy;
     int fuelUsed = 0;
-    for (int i = 0, e = path.$length(); i < e; i++) {
-      switch (path.$get(i)) {
+    for (int i = 0, e = path.getSize(); i < e; i++) {
+      switch (path.get(i)) {
 
         case UP:
         case LEFT:
@@ -172,7 +172,7 @@ public class MovePath {
 
     // if to much fuel would be needed then decline
     if (fuelUsed > points) {
-      movePath.popLast();
+      path.popLast();
       return false;
     } else {
       return true;
@@ -190,10 +190,10 @@ public class MovePath {
    * @param y
    * @param unit
    */
-  public void fillMoveMap (PositionData source, Object selection, int x, int y, Unit unit) {
+  public void fillMoveMap (PositionData source, MoveableMatrix selection, int x, int y, Unit unit) {
     // TODO: source and x,y,unit is kinda double definition of the same things
     var cost;
-    var checker;
+    Array<Integer> checker;
     var map = model.mapData;
 
     // grab object data from **source** position if no explicit position and unit data is given
@@ -203,7 +203,7 @@ public class MovePath {
 
     if (constants.DEBUG) assert(model.isValidPosition(x, y));
 
-    var toBeChecked;
+    Array<Integer> toBeChecked;
     var releaseHelper = false;
     if (fillMoveMapHelper !== null) {
 
@@ -213,10 +213,10 @@ public class MovePath {
 
         // reset some stuff
         for (var n = 0, ne = toBeChecked.length; n < ne; n++) {
-            toBeChecked[n] = Constants.INACTIVE_ID;
+            toBeChecked[n] = EngineGlobals.INACTIVE_ID;
         }
         for (var n = 0, ne = checker.length; n < ne; n++) {
-            checker[n] = Constants.INACTIVE_ID;
+            checker[n] = EngineGlobals.INACTIVE_ID;
         }
 
         // remove cache objects from the move logic object
@@ -226,19 +226,20 @@ public class MovePath {
         releaseHelper = true;
 
     } else {
-        console.warn("cannot use move cache variables");
+        LOG.warn("cannot use move cache variables => creating temporary ones as fallback");
 
         // use a new arrays because cache objects aren't available
-        toBeChecked = [];
-        checker = JSCollections.$array(
-            Constants.INACTIVE_ID,
-            Constants.INACTIVE_ID,
-            Constants.INACTIVE_ID,
-            Constants.INACTIVE_ID,
-            Constants.INACTIVE_ID,
-            Constants.INACTIVE_ID,
-            Constants.INACTIVE_ID,
-            Constants.INACTIVE_ID
+        toBeChecked = ContainerUtil.createArray();
+        checker = ContainerUtil.createArray();
+        checker.push(
+            EngineGlobals.INACTIVE_ID,
+            EngineGlobals.INACTIVE_ID,
+            EngineGlobals.INACTIVE_ID,
+            EngineGlobals.INACTIVE_ID,
+            EngineGlobals.INACTIVE_ID,
+            EngineGlobals.INACTIVE_ID,
+            EngineGlobals.INACTIVE_ID,
+            EngineGlobals.INACTIVE_ID
         );
     }
 
@@ -252,13 +253,13 @@ public class MovePath {
     }
 
     // add start tile to the map
-    selection.setCenter(x, y, Constants.INACTIVE_ID);
+    selection.setCenter(x, y, EngineGlobals.INACTIVE_ID);
     selection.setValue(x, y, range);
 
     // fill map ( one structure is X;Y;LEFT_POINTS )
-    toBeChecked[0] = x;
-    toBeChecked[1] = y;
-    toBeChecked[2] = range;
+    toBeChecked.$set(0, x);
+    toBeChecked.$set(1, y);
+    toBeChecked.$set(2, range);
 
     while (true) {
         var cHigh = -1;

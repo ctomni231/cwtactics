@@ -11,6 +11,7 @@ import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.log.Logger;
+import org.wolftec.persistence.DataTypeConverter;
 import org.wolftec.persistence.VirtualFilesystemManager;
 
 @ManagedComponent
@@ -99,11 +100,15 @@ public class ObjectTypesBean {
     return weatherTypeList;
   }
 
-  private <T extends ObjectType> Callback1<Callback0> loadAll(VirtualFilesystemManager fs,
-      Map<String, T> typeMap, Array<T> typelist) {
+  private <T extends ObjectType> Callback1<Callback0> loadAll(String path,
+      DataTypeConverter<T> conv, Map<String, T> typeMap, Array<T> typelist) {
 
     return (cb) -> {
-      fs.readFiles((Array<VfsEntityDescriptor<T>> files) -> {
+      fs.readKeys(path + "/*", conv, (err, files) -> {
+        if (err != null) {
+
+        }
+
         for (int i = 0; i < files.$length(); i++) {
           T type = files.$get(i).value;
           typeMap.$put(type.ID, type);
@@ -116,14 +121,27 @@ public class ObjectTypesBean {
 
   public void loadData(Callback0 cb) {
     Array<Callback1<Callback0>> steps = JSCollections.$array();
-    
-    steps.push(loadAll(armyFs, armyTypes, armyTypeList));
-    steps.push(loadAll(movetypeFs, moveTypes, movetypesList));
-    steps.push(loadAll(tileFs, tileTypes, tileTypeList));
-    steps.push(loadAll(propertyFs, propertyTypes, propertyTypeList));
-    steps.push(loadAll(unitFs, unitTypes, unitTypeList));
-    steps.push(loadAll(weatherFs, weatherTypes, weatherTypeList));
-    steps.push(loadAll(commanderFs, commanderTypes, commanderTypeList));
+
+    steps.push(loadAll("/types/army/", new DataTypeConverter<ArmyType>(ArmyType.class), armyTypes,
+        armyTypeList));
+
+    steps.push(loadAll("/types/movetype/", new DataTypeConverter<MoveType>(MoveType.class),
+        moveTypes, movetypesList));
+
+    steps.push(loadAll("/types/tile/", new DataTypeConverter<TileType>(TileType.class), tileTypes,
+        tileTypeList));
+
+    steps.push(loadAll("/types/property/", new DataTypeConverter<PropertyType>(PropertyType.class),
+        propertyTypes, propertyTypeList));
+
+    steps.push(loadAll("/types/unit/", new DataTypeConverter<UnitType>(UnitType.class), unitTypes,
+        unitTypeList));
+
+    steps.push(loadAll("/types/weather/", new DataTypeConverter<WeatherType>(WeatherType.class),
+        weatherTypes, weatherTypeList));
+
+    steps.push(loadAll("/types/co/", new DataTypeConverter<CoType>(CoType.class), commanderTypes,
+        commanderTypeList));
 
     BrowserUtil.executeSeries(steps, () -> {
 

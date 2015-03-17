@@ -1,9 +1,5 @@
 package org.wolftec.cwtactics;
 
-import net.wolfTec.bridges.Globals;
-import net.wolfTec.system.StorageBean;
-import net.wolfTec.utility.Debug;
-
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
@@ -12,6 +8,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwtactics.game.model.Config;
+import org.wolftec.persistence.VirtualFilesystemManager;
 
 public class LoadingHandler {
 

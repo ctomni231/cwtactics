@@ -5,7 +5,7 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.model.StateDataBean;
+import org.wolftec.cwtactics.game.state.StateDataBean;
 import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
 import org.wolftec.cwtactics.system.layergfx.ScreenManager;
 import org.wolftec.cwtactics.system.layergfx.Sprite;

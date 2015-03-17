@@ -1,24 +1,21 @@
 package org.wolftec.cwtactics.game.model;
 
-import net.temp.wolfTecEngine.components.CreatedType;
-import net.temp.wolfTecEngine.components.PostConstruct;
-
 import org.wolftec.container.CircularBuffer;
-import org.wolftec.container.ContainerSize;
+import org.wolftec.core.ComponentManager;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.cwtactics.EngineGlobals;
 
 @ManagedComponent
-public class ActionMenu {
+public class ActionMenu implements ManagedComponentInitialization {
 
+  private CircularBuffer<MenuEntry> entries;
   public int selectedIndex;
   public int size;
 
-  @CreatedType // TODO ("{size=$options.menuSize}")
-  @ContainerSize(20)
-  private CircularBuffer<MenuEntry> entries;
-
-  @PostConstruct
-  public void init() {
+  @Override
+  public void onComponentConstruction(ComponentManager manager) {
+    entries = new CircularBuffer<MenuEntry>(EngineGlobals.MENU_ELEMENTS_MAX);
     this.selectedIndex = 0;
     for (int i = 0; i < entries.getSize(); i++) {
       entries.push(new MenuEntry());

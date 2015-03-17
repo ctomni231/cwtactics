@@ -6,20 +6,23 @@ import org.wolftec.core.Injected;
 import org.wolftec.core.JsUtil;
 import org.wolftec.validation.ValidationManager;
 
-public abstract class DataTypeConverter<T> implements Serializer<T> {
+public class DataTypeConverter<T> implements Serializer<T> {
 
-  @Injected
+  // TODO data class by constructor
+  private Class<?> dataClass;
   private JsonConverter json;
+
+  public DataTypeConverter(Class<T> clazz) {
+    dataClass = clazz;
+  }
 
   @Injected
   private ValidationManager validation;
 
-  public abstract Class<?> getDataTypeClass();
-
   @Override
   public void deserialize(String data, Callback1<T> cb) {
     json.deserialize(data, (mapData) -> {
-      if (validation.validate(mapData, getDataTypeClass())) {
+      if (validation.validate(mapData, dataClass)) {
         cb.$invoke((T) cb);
 
       } else {
@@ -31,7 +34,7 @@ public abstract class DataTypeConverter<T> implements Serializer<T> {
 
   @Override
   public void serialize(T data, Callback1<String> cb) {
-    if (validation.validate(data, getDataTypeClass())) {
+    if (validation.validate(data, dataClass)) {
       json.serialize(((Map<String, Object>) ((Object) data)), cb);
 
     } else {

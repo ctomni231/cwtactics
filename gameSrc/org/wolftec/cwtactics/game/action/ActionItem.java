@@ -1,5 +1,6 @@
 package org.wolftec.cwtactics.game.action;
 
+import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.validation.DataObject;
 import org.wolftec.validation.validators.IntValue;
 import org.wolftec.validation.validators.StringValue;
@@ -12,23 +13,33 @@ import org.wolftec.validation.validators.StringValue;
 public class ActionItem {
 
   @IntValue
-  private int actionId;
+  public int actionId;
 
   @IntValue
-  private int p1;
+  public int p1;
 
   @IntValue
-  private int p2;
+  public int p2;
 
   @IntValue
-  private int p3;
+  public int p3;
 
   @IntValue
-  private int p4;
+  public int p4;
 
   @IntValue
-  private int p5;
+  public int p5;
 
   @StringValue
-  private String pStr;
+  public String pStr;
+
+  public void reset() {
+    actionId = EngineGlobals.INACTIVE_ID;
+    p1 = EngineGlobals.INACTIVE_ID;
+    p2 = EngineGlobals.INACTIVE_ID;
+    p3 = EngineGlobals.INACTIVE_ID;
+    p4 = EngineGlobals.INACTIVE_ID;
+    p5 = EngineGlobals.INACTIVE_ID;
+    pStr = null;
+  }
 }

@@ -1,16 +1,11 @@
 package org.wolftec.cwtactics;
 
-import net.wolfTec.wtEngine.gamelogic.MoveCode;
-import net.wolfTec.wtEngine.model.Unit;
-import net.wolfTec.wtEngine.statemachine.StateDataMenu;
-
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.utility.CircularBuffer;
 
 public class RendererBean {
 

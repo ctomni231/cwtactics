@@ -10,29 +10,24 @@ import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.game.logic.TransferLogic;
 import org.wolftec.cwtactics.game.model.ActionMenu;
 import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.StateDataBean;
 import org.wolftec.cwtactics.game.model.Unit;
 import org.wolftec.cwtactics.game.renderer.UnitLayerBean;
+import org.wolftec.cwtactics.game.state.StateDataBean;
+import org.wolftec.cwtactics.system.network.NetworkBackend;
 import org.wolftec.cwtactics.system.state.ActionQueueHandler;
 import org.wolftec.cwtactics.system.state.StateManager;
 import org.wolftec.log.Logger;
+import org.wolftec.persistence.DataTypeConverter;
 
 @ManagedComponent
 public class ActionManager implements ActionQueueHandler<ActionItem>,
     ManagedComponentInitialization {
 
-  public final String WAIT = "wait";
-  public final String HIDE = "hideUnit";
-  public final String UNHIDE = "unhideUnit";
-  public final String UNLOAD_UNIT = "unloadUnit";
-  public final String LOAD_UNIT = "loadUnit";
-  public final String TO_OPTIONS = "options";
-  public final String TRANSFER_MONEY = "transferMoney";
-  public final String TRANSFER_PROPERTY = "transferProperty";
-  public final String TRANSFER_UNIT = "transferUnit";
-
   @ManagedConstruction
-  private Logger log;
+  private Logger LOG;
+
+  @Injected
+  private NetworkBackend network;
 
   @Injected
   private StateDataBean stateData;
@@ -49,19 +44,26 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
   @Injected
   private UnitLayerBean unitLayer;
 
-  @Injected
-  private ActionConverter actionSerializer;
+  private DataTypeConverter<ActionItem> actionConv;
 
-  @ManagedConstruction
   private CircularBuffer<ActionItem> actionItems;
+  private CircularBuffer<ActionItem> actionBuffer;
 
   private Callback1<ActionItem> deserializeActionCb;
+  private Callback1<String> sendNetworkMessage;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
+    actionConv = new DataTypeConverter(ActionItem.class);
+
+    actionItems = new CircularBuffer<ActionItem>(200); // TODO
+    actionBuffer = new CircularBuffer<ActionItem>(200); // TODO
+
     deserializeActionCb = (data) -> {
       actionItems.push(data);
     };
+
+    sendNetworkMessage = (data) -> network.sendMessage(data);
   }
 
   public void initMenuByMapClick(ActionMenu menu) {
@@ -72,10 +74,10 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
     Unit unit = null; // TODO
 
     if (unit.type.stealth) { // TODO S,T NONE - SAME
-      menu.addEntry(unit.hidden ? UNHIDE : HIDE, true);
+      menu.addEntry(unit.hidden ? ActionConstants.UNHIDE : ActionConstants.HIDE, true);
     }
 
-    menu.addEntry(WAIT, true); // TODO S,T NONE - SAME
+    menu.addEntry(ActionConstants.WAIT, true); // TODO S,T NONE - SAME
   }
 
   public void initMenuByPropertyClick(ActionMenu menu) {
@@ -83,33 +85,34 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
   }
 
   public boolean hasSubMenu(String key) {
-    return false;
+    return false; // TODO
   }
 
-  public void invokeAction(String key, int p1, int p2, int p3, int p4, int p5) {
+  public void invokeAction(int actionKey, int p1, int p2, int p3, int p4, int p5) {
+    String key = null;
     switch (key) {
 
-      case WAIT:
+      case ActionConstants.WAIT:
         // TODO full re-render.. maybe a little bit to much huh ?
         gameround.getUnit(p1).canAct = false;
         unitLayer.onFullScreenRender();
         break;
 
-      case TO_OPTIONS:
+      case ActionConstants.TO_OPTIONS:
         // TODO magic string
         stateData.fromIngameToOptions = true;
         stateMachine.changeState("MENU_OPTIONS");
         break;
 
-      case HIDE:
+      case ActionConstants.HIDE:
         gameround.getUnit(p1).hidden = true;
         break;
 
-      case UNHIDE:
+      case ActionConstants.UNHIDE:
         gameround.getUnit(p1).hidden = false;
         break;
 
-      case TRANSFER_MONEY:
+      case ActionConstants.TRANSFER_MONEY:
         transfer.transferMoney(gameround.getPlayer(p1), gameround.getPlayer(p2), p3);
         break;
     }
@@ -117,31 +120,52 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
 
   @Override
   public void queueRemoteAction(String message) {
-    actionSerializer.deserialize(message, this.deserializeActionCb);
+    actionConv.deserialize(message, this.deserializeActionCb);
+  }
+
+  private void queueActionIntoBuffer(ActionItem message, boolean immediate) {
+    ActionItem actionData = actionBuffer.popLast();
+
+    if (network.isConnected()) {
+      actionConv.serialize(actionData, sendNetworkMessage);
+    }
+
+    LOG.info("append action " + actionData + (immediate ? " and calling it immediately" : ""));
+
+    if (immediate) {
+      actionItems.pushInFront(actionData);
+    } else {
+      actionItems.push(actionData);
+    }
   }
 
   @Override
   public void queueAction(ActionItem message) {
-    // TODO Auto-generated method stub
-
+    queueActionIntoBuffer(message, false);
   }
 
   @Override
   public void queueImmediateAction(ActionItem message) {
-    // TODO Auto-generated method stub
-
+    queueActionIntoBuffer(message, true);
   }
 
   @Override
   public boolean hasQueuedActions() {
-    // TODO Auto-generated method stub
-    return false;
+    return !actionItems.isEmpty();
   }
 
   @Override
   public void invokeNextAction() {
-    // TODO Auto-generated method stub
+    ActionItem data = actionItems.popFirst();
+    if (data == null) {
+      LOG.error("NullPointerException");
+    }
 
+    invokeAction(data.actionId, data.p1, data.p2, data.p3, data.p4, data.p5);
+
+    // cache used object
+    data.reset();
+    actionBuffer.push(data);
   }
 
   // public boolean checkRelation(Action.SourceToTarget checkMode,

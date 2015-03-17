@@ -1,26 +1,29 @@
-package org.wolftec.cwtactics.game.model;
+package org.wolftec.cwtactics.game.state;
 
-import org.wolfTec.cwt.game.gamelogic.MoveCode;
-import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;
-import org.wolfTec.cwt.game.gamemodel.model.Tile;
-import org.wolfTec.cwt.game.renderer.beans.UserInterfaceLayerBean;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.container.CircularBuffer;
-import org.wolfTec.wolfTecEngine.gfx.beans.ScreenManagerBean;
-import org.wolfTec.wolfTecEngine.logging.Logger;
-import org.wolfTec.wolfTecEngine.statemachine.beans.StateMachineBean;
+import org.wolftec.container.CircularBuffer;
+import org.wolftec.core.ComponentManager;
+import org.wolftec.core.Injected;
+import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedComponentInitialization;
+import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.game.logic.MoveCode;
+import org.wolftec.cwtactics.game.model.ActionMenu;
+import org.wolftec.cwtactics.game.model.GameRoundBean;
+import org.wolftec.cwtactics.game.model.Tile;
+import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
+import org.wolftec.cwtactics.system.layergfx.ScreenManager;
+import org.wolftec.cwtactics.system.state.StateManager;
+import org.wolftec.log.Logger;
 
-@Bean
-public class StateDataBean {
+@ManagedComponent
+public class StateDataBean implements ManagedComponentInitialization {
 
-  @Created
+  @ManagedConstruction
   private Logger log;
 
   @Injected
-  private ScreenManagerBean screen;
+  private ScreenManager screen;
 
   @Injected
   private GameRoundBean gameround;
@@ -29,7 +32,10 @@ public class StateDataBean {
   private UserInterfaceLayerBean uiLayer;
 
   @Injected
-  private StateMachineBean stateMachine;
+  private StateManager stateMachine;
+
+  @Injected
+  private ActionMenu menu;
 
   /**
    * Position object with rich information about the selected position by an
@@ -73,12 +79,16 @@ public class StateDataBean {
 
   public boolean inMultiStep;
 
-  public CircularBuffer<MoveCode> movePath = new CircularBuffer<MoveCode>(
-      EngineGlobals.MAX_MOVE_LENGTH);
+  public CircularBuffer<MoveCode> movePath;
 
   public boolean preventMovePathGeneration;
 
   public Integer focusMode = EngineGlobals.INACTIVE_ID;
+
+  @Override
+  public void onComponentConstruction(ComponentManager manager) {
+    movePath = new CircularBuffer<MoveCode>(EngineGlobals.MAX_MOVE_LENGTH);
+  }
 
   /**
    *
@@ -118,8 +128,6 @@ public class StateDataBean {
     setCursorPosition(x, y, false);
   }
 
-  ;
-
   /**
    * Moves the cursor to a given position. The view will be moved as well with
    * this function to make sure that the cursor is on the visible view.
@@ -133,8 +141,8 @@ public class StateDataBean {
     // change illegal positions to prevent out of bounds
     if (x < 0) x = 0;
     if (y < 0) y = 0;
-    if (x >= gameround.getMapWidth()) x = gameround.getMapWidth() - 1;
-    if (y >= gameround.getMapHeight()) y = gameround.getMapHeight() - 1;
+    if (x >= gameround.mapWidth) x = gameround.mapWidth - 1;
+    if (y >= gameround.mapHeight) y = gameround.mapHeight - 1;
 
     if (x == cursorX && y == cursorY) {
       return;
@@ -167,9 +175,9 @@ public class StateDataBean {
 
   public final StateDataSelection selection = new StateDataSelection();
 
-  public Action selectedAction;
+  public String selectedAction;
 
-  public Object selectedSubEntry;
+  public String selectedSubEntry;
 
   public void nextStep() {
     movePath.clear();
