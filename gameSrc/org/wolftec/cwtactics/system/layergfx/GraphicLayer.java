@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.system.renderer;
+package org.wolftec.cwtactics.system.layergfx;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -6,7 +6,7 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.Internal;
-import org.wolftec.cwtactics.system.renderer.DirectionUtil.Direction;
+import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
 
 public abstract class GraphicLayer {
 
@@ -18,21 +18,18 @@ public abstract class GraphicLayer {
    * 
    * @return
    */
-  @Deprecated
   public abstract int getIndex();
 
   /**
    * 
    * @return the amount of frames in the graphic layer
    */
-  @Deprecated
   public abstract int getNumberOfFrames();
 
   /**
    * 
    * @return time in ms per frame (should be a multiple of 16ms)
    */
-  @Deprecated
   public abstract int getFrameTime();
 
   /**
@@ -53,7 +50,7 @@ public abstract class GraphicLayer {
     for (int i = 0; i < getNumberOfFrames(); i++) {
       this.imageData.push(BrowserUtil.createDomElement("canvas"));
     }
-    
+
     this.clearAll();
   }
 

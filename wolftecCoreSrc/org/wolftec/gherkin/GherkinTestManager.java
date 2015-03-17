@@ -3,7 +3,6 @@ package org.wolftec.gherkin;
 import org.stjs.javascript.Array;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.log.Logger;
 import org.wolftec.persistence.VfsEntity;
@@ -13,7 +12,6 @@ import org.wolftec.persistence.VirtualFilesystemManager;
  * Simple test runner to run all gherkin tests from the
  * <code>/test/features</code> folder
  */
-@ManagedComponent
 public class GherkinTestManager {
 
   public static final String VALUE_PASSED = "PASSED";

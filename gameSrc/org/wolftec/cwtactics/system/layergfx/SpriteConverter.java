@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.system.renderer;
+package org.wolftec.cwtactics.system.layergfx;
 
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.persistence.Serializer;

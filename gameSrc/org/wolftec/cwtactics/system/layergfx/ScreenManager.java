@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.system.renderer;
+package org.wolftec.cwtactics.system.layergfx;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.dom.Canvas;
@@ -9,13 +9,13 @@ import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagerOptions;
-import org.wolftec.cwtactics.system.renderer.DirectionUtil.Direction;
+import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
 
 /**
  * Screen manager.
  */
 @ManagedComponent
-public class ScreenManager implements ManagedComponentInitialization, Screen {
+public class ScreenManager implements ManagedComponentInitialization {
 
   public int MENU_ENTRY_HEIGHT;
   public int MENU_ENTRY_WIDTH;
@@ -45,7 +45,6 @@ public class ScreenManager implements ManagedComponentInitialization, Screen {
     layerTime = ContainerUtil.createArray();
   }
 
-  @Override
   public void resetAnimations() {
     for (int i = 0; i < layers.$length(); i++) {
       layerStates.$set(i, 0);
@@ -53,7 +52,6 @@ public class ScreenManager implements ManagedComponentInitialization, Screen {
     }
   }
 
-  @Override
   public void update(int delta) {
     for (int i = 0; i < layers.$length(); i++) {
 
@@ -71,21 +69,18 @@ public class ScreenManager implements ManagedComponentInitialization, Screen {
     }
   }
 
-  @Override
   public void draw() {
     for (int i = 0; i < layers.$length(); i++) {
       ctx.drawImage(layers.$get(i).getImage(layerStates.$get(i)), 0, 0);
     }
   }
 
-  @Override
   public void setCameraPosition(int x, int y) {
     for (int i = 0; i < layers.$length(); i++) {
       layers.$get(i).onSetScreenPosition(x, y, -1, -1);
     }
   }
 
-  @Override
   public void shiftCameraPosition(Direction direction, int amount) {
     for (int i = 0; i < layers.$length(); i++) {
       layers.$get(i).onScreenShift(direction, i, i, amount, i);

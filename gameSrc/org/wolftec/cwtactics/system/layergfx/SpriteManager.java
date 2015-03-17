@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.system.renderer;
+package org.wolftec.cwtactics.system.layergfx;
 
 import org.stjs.javascript.Map;
 import org.wolftec.core.ComponentManager;
@@ -26,6 +26,8 @@ public class SpriteManager implements ManagedComponentInitialization {
     
     // TODO load
   }
+  
+  public void load
 
   /**
    * 

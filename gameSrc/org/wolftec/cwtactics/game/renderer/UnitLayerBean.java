@@ -17,7 +17,7 @@ import org.wolftec.cwtactics.game.model.GameMapBean;
 import org.wolftec.cwtactics.game.model.GameRoundBean;
 import org.wolftec.cwtactics.game.model.Tile;
 import org.wolftec.cwtactics.game.model.Unit;
-import org.wolftec.cwtactics.system.renderer.GraphicLayer;
+import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
 
 @ManagedComponent
 public class UnitLayerBean extends GraphicLayer {

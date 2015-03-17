@@ -2,13 +2,11 @@ package org.wolftec.gherkin;
 
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.core.ComponentManager;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.log.Logger;
 import org.wolftec.persistence.Serializer;
 
-@ManagedComponent
 public class GherkinFileConverter implements Serializer<Feature>, ManagedComponentInitialization {
 
   @ManagedConstruction

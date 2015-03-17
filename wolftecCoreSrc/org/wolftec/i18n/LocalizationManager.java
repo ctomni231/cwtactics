@@ -1,11 +1,10 @@
-package org.wolftec.cwtactics.system.localization;
+package org.wolftec.i18n;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.core.Injected;
 import org.wolftec.core.JsExec;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.log.Logger;
 import org.wolftec.persistence.JsonConverter;
@@ -14,7 +13,6 @@ import org.wolftec.persistence.VirtualFilesystemManager;
 /**
  * 
  */
-@ManagedComponent
 public class LocalizationManager {
 
   @ManagedConstruction

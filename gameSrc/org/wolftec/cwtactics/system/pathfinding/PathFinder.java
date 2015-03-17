@@ -6,8 +6,8 @@ import org.stjs.javascript.annotation.STJSBridge;
 import org.wolftec.container.MoveableMatrix;
 import org.wolftec.core.JsExec;
 import org.wolftec.core.ManagedComponent;
-import org.wolftec.cwtactics.system.renderer.DirectionUtil;
-import org.wolftec.cwtactics.system.renderer.DirectionUtil.Direction;
+import org.wolftec.cwtactics.system.layergfx.DirectionUtil;
+import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
 
 @ManagedComponent
 public class PathFinder {

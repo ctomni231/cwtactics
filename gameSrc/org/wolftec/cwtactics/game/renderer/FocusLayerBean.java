@@ -12,7 +12,7 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.system.renderer.GraphicLayer;
+import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
 import org.wolftec.cwtactics.system.renderer.LayerFrameTime;
 import org.wolftec.cwtactics.system.renderer.LayerFrames;
 import org.wolftec.cwtactics.system.renderer.LayerIndex;

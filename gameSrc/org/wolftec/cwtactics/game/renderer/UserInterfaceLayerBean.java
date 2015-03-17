@@ -9,8 +9,8 @@ import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.state.StateDataBean;
-import org.wolftec.cwtactics.system.renderer.GraphicLayer;
-import org.wolftec.cwtactics.system.renderer.ScreenManager;
+import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
+import org.wolftec.cwtactics.system.layergfx.ScreenManager;
 
 /**
  * All user interface stuff will be rendered into this layer. It's the top front
