@@ -11,7 +11,7 @@ import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.logic.MoveCode;
 import org.wolftec.cwtactics.game.model.GameRoundBean;
 import org.wolftec.cwtactics.game.model.Tile;
-import org.wolftec.cwtactics.system.renderer.GraphicLayer;
+import org.wolftec.layca.GraphicLayer;
 
 @ManagedComponent
 public class FogLayerBean extends GraphicLayer {

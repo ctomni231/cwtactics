@@ -12,7 +12,7 @@ import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.model.GameRoundBean;
 import org.wolftec.cwtactics.game.model.Tile;
-import org.wolftec.cwtactics.system.renderer.GraphicLayer;
+import org.wolftec.layca.GraphicLayer;
 
 @ManagedComponent
 public class MapLayerBean extends GraphicLayer {

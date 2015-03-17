@@ -4,10 +4,10 @@ import net.temp.wolfTecEngine.renderer.sprite.Sprite;
 
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.system.renderer.GraphicLayer;
 import org.wolftec.cwtactics.system.renderer.LayerFrameTime;
 import org.wolftec.cwtactics.system.renderer.LayerFrames;
 import org.wolftec.cwtactics.system.renderer.LayerIndex;
+import org.wolftec.layca.GraphicLayer;
 
 /**
  * Background layer contains the background image of the screen. It's visible in

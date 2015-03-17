@@ -8,6 +8,7 @@ import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.log.Logger;
+import org.wolftec.persistence.JsonConverter;
 
 /**
  * Simple HTTP backend with allows networking over a simple polling algorithm.
@@ -20,7 +21,7 @@ public class XmlHttpReqNetworkBackend extends NetworkBackend implements
   private Logger log;
  
   @Injected
-  private JsonFileSerializer jsonSerializer;
+  private JsonConverter converter;
   
   private Callback2<Object, String> p_serverResponseCb;
 

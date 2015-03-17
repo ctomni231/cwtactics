@@ -4,6 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
+import org.stjs.javascript.functions.Callback1;
 import org.wolftec.container.ContainerUtil;
 
 /**
@@ -14,15 +15,31 @@ import org.wolftec.container.ContainerUtil;
 public class ComponentManager {
 
   private Map<String, Object> components;
+  private ManagerOptions options;
+  public Callback1<ComponentManager> onPreInit;
+  public Callback1<ComponentManager> onPostInit;
 
   public ComponentManager(ManagerOptions options) {
     components = ContainerUtil.createMap();
+    this.options = options;
+    this.onPreInit = null;
+    this.onPostInit = null;
+  }
 
+  public void initialize() {
+    if (onPreInit != null) {
+      onPreInit.$invoke(this);
+    }
+    
     createComponents(options);
     solveDependencies(options);
     invokeConstructionEvent();
+    
+    if (onPostInit != null) {
+      onPostInit.$invoke(this);
+    }
   }
-
+  
   /**
    * 
    * @param clazz

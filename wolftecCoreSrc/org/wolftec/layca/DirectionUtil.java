@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.system.renderer;
+package org.wolftec.layca;
 
 public abstract class DirectionUtil {
 

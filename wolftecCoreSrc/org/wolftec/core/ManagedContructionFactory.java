@@ -1,6 +1,8 @@
 package org.wolftec.core;
 
-public interface ManagedContructionFactory {
+public interface ManagedContructionFactory<T> {
 
-  <T> Object create(T component, Class<T> clazz, String property, ManagerOptions options);
+  Class<T> factoryForClass();
+
+  Object create(T component, Class<T> clazz, String property, ManagerOptions options);
 }
