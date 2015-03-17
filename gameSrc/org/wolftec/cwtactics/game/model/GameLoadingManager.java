@@ -1,14 +1,16 @@
-package org.wolftec.cwtactics.game.persistence;
+package org.wolftec.cwtactics.game.model;
 
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolfTec.vfs.ReadOnlyHtmlVfs;
-import org.wolfTec.vfs.Vfs;
+import org.wolftec.container.ContainerUtil;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedConstruction;
 import org.wolftec.core.ManagerOptions;
-import org.wolftec.cwtactics.system.localization.Localization;
+import org.wolftec.i18n.LocalizationManager;
 import org.wolftec.log.Logger;
+import org.wolftec.persistence.ReadOnlyHtmlVfs;
+import org.wolftec.persistence.VirtualFilesystemManager;
 
 /**
  * This manager is used to load the game data. We use a pretty dumb but simple
@@ -22,7 +24,7 @@ import org.wolftec.log.Logger;
 @ManagedComponent
 public class GameLoadingManager {
 
-  @Injected
+  @ManagedConstruction
   private Logger log;
 
   @Injected
@@ -32,14 +34,13 @@ public class GameLoadingManager {
   private VirtualFilesystemManager localFs;
 
   @Injected
-  private Localization i18n;
+  private LocalizationManager i18n;
 
   public void start(Callback1<String> fileCopyListener, Callback0 cb) {
     log.info("Start loading game data");
     localFs.isEmpty(isEmpty -> {
 
-      // first start ?
-      // we need to copy the files into the local file system
+      // first start ? -> we need to copy the files into the local file system
         if (isEmpty) {
           copyFs(fileCopyListener, () -> {
             loadData(cb);
@@ -66,20 +67,23 @@ public class GameLoadingManager {
       }
     };
 
-    remoteFs.forEachFile((fileDesc, next) -> {
-      log.info("Copy file " + fileDesc.key);
-      
-      fileCopyListener.$invoke(fileDesc.key);
-      localFs.writeFile(fileDesc.key, fileDesc.value, (data, err) -> {
-        if (err != null) {
-          log.error("Could not copy file " + fileDesc.key + " into local filesystem");
-        }
-        next.$invoke();
-      });
+    remoteFs.keyList(null, (entryList) -> {
+      ContainerUtil.forEachElementInListAsync(entryList, (entry, next) -> {
+        remoteFs.readKey(entry, (errR, data) -> {
+          log.info("Copy file " + data.key);
+          fileCopyListener.$invoke(data.key);
+          localFs.writeKey(data.key, null, data.value, (errL) -> {
+            if (errL != null) {
+              log.error("Could not copy file " + data.key + " into local filesystem");
+            }
+            next.$invoke();
+          });
+        });
 
-    }, () -> {
-      log.info("Successfully copied data from remote vfs into local vsf");
-      cb.$invoke();
+      }, () -> {
+        log.info("Successfully copied data from remote vfs into local vsf");
+        cb.$invoke();
+      });
     });
   }
 

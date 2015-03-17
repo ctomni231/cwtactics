@@ -20,4 +20,6 @@ public interface VfsBackend {
   void purgeKey(String path, Callback1<String> cb);
 
   void purgeKeys(String pathRegEx, Callback1<String> cb);
+
+  void keyList(String pathRegEx, Callback1<Array<String>> callback);
 }

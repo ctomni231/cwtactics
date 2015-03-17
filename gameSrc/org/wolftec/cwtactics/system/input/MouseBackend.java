@@ -15,11 +15,11 @@ import org.wolftec.log.Logger;
 public class MouseBackend implements InputBackend, ManagedComponentInitialization {
 
   @Injected
-  private InputManager p_input;
+  private LiveInputManager p_input;
 
   @ManagedConstruction
   private Logger p_log;
-  
+
   private boolean p_enabled;
 
   @Override
@@ -28,7 +28,7 @@ public class MouseBackend implements InputBackend, ManagedComponentInitializatio
       if (!p_enabled) {
         return false;
       }
-      
+
       if (event == null) {
         event = JsExec.injectJS("window.event");
       }
@@ -52,7 +52,7 @@ public class MouseBackend implements InputBackend, ManagedComponentInitializatio
           p_input.keyReleased(key);
         }
         return true;
-        
+
       } else {
         return false;
       }
@@ -70,7 +70,7 @@ public class MouseBackend implements InputBackend, ManagedComponentInitializatio
       if (!p_enabled) {
         return false;
       }
-      
+
       if (event == null) {
         event = JsExec.injectJS("window.event");
       }

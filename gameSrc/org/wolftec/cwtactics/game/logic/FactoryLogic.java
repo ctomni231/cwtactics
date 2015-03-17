@@ -5,13 +5,13 @@ import org.stjs.javascript.JSGlobal;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.game.model.ActionMenu;
 import org.wolftec.cwtactics.game.model.GameConfigBean;
 import org.wolftec.cwtactics.game.model.GameRoundBean;
 import org.wolftec.cwtactics.game.model.ObjectFinderBean;
 import org.wolftec.cwtactics.game.model.ObjectTypesBean;
 import org.wolftec.cwtactics.game.model.Property;
 import org.wolftec.cwtactics.game.model.UnitType;
-import org.wolftec.cwtactics.game.state.ActionMenu;
 
 @ManagedComponent
 public class FactoryLogic {

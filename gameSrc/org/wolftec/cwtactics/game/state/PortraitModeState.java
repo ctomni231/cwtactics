@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.game.state;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
-import org.wolftec.cwtactics.system.input.InputManager;
+import org.wolftec.cwtactics.system.input.LiveInputManager;
 import org.wolftec.cwtactics.system.state.State;
 import org.wolftec.cwtactics.system.state.StateManager;
 
@@ -22,7 +22,7 @@ public class PortraitModeState implements State {
   }
 
   @Override
-  public void update(StateManager stm, InputManager input, int delta) {
+  public void update(StateManager stm, LiveInputManager input, int delta) {
     boolean isLandscape = false;
 
     // go back to the last state when the device is back in landscape mode

@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.game.state;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
-import org.wolftec.cwtactics.system.input.InputManager;
+import org.wolftec.cwtactics.system.input.LiveInputManager;
 import org.wolftec.cwtactics.system.state.State;
 import org.wolftec.cwtactics.system.state.StateManager;
 import org.wolftec.log.Logger;
@@ -24,7 +24,7 @@ public class ValidateGameDataState implements State {
   }
 
   @Override
-  public void update(StateManager stm, InputManager input, int delta) {
+  public void update(StateManager stm, LiveInputManager input, int delta) {
   }
 
 }

@@ -1,10 +1,10 @@
 package org.wolftec.cwtactics.game.model;
 
-import org.stjs.javascript.annotation.SyntheticType;
+import org.wolftec.validation.DataObject;
 import org.wolftec.validation.validators.BooleanValue;
 
-@SyntheticType
-public class GameConfigType {
+@DataObject
+public class GameAppConfigData {
 
   @BooleanValue(defaultValue = false)
   public boolean fastClickMode;

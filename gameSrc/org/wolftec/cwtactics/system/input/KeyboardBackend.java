@@ -11,15 +11,15 @@ import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.log.Logger;
 
-@ManagedComponent(whenQualifier="keyboard_input=WOLFTEC")
+@ManagedComponent(whenQualifier = "keyboard_input=WOLFTEC")
 public class KeyboardBackend implements InputBackend, ManagedComponentInitialization {
 
   public final int CONSOLE_TOGGLE_KEY = 192;
 
   @Injected
-  private InputManager input;
-  
-  @ManagedConstruction 
+  private LiveInputManager input;
+
+  @ManagedConstruction
   private Logger p_log;
 
   private boolean p_enabled;
@@ -45,7 +45,7 @@ public class KeyboardBackend implements InputBackend, ManagedComponentInitializa
         default:
           break;
       }
-      
+
       p_log.error("Cannot convert keycode " + keycode + " to an known input type");
       return null;
     };

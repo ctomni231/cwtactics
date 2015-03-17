@@ -57,7 +57,7 @@ public class VirtualFilesystemManager {
 
   public <T> void forEachKey(String pathRegEx, Serializer<T> ser,
       Callback3<String, VfsEntity<T>, Callback0> fileCb, Callback0 cb) {
-    
+
     readKeys(pathRegEx, ser, (err, typedDataList) -> {
       ContainerUtil.forEachElementInListAsync(typedDataList, (entry, next) -> {
         fileCb.$invoke(null, entry, next); // TODO err
@@ -79,6 +79,10 @@ public class VirtualFilesystemManager {
 
   public void purgeKeys(String pathRegEx, Callback1<String> cb) {
     backend.purgeKeys(pathRegEx, cb);
+  }
+
+  public void keyList(String pathRegEx, Callback1<Array<String>> callback) {
+    backend.keyList(pathRegEx, callback);
   }
 
   /**

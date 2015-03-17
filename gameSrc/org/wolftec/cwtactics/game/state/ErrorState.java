@@ -10,7 +10,7 @@ import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
-import org.wolftec.cwtactics.system.renderer.UiContainer;
+import org.wolftec.cwtactics.system.gui.UiContainer;
 import org.wolftec.cwtactics.system.state.State;
 import org.wolftec.cwtactics.system.state.StateManager;
 import org.wolftec.log.Logger;
@@ -24,7 +24,7 @@ public class ErrorState implements State, ManagedComponentInitialization {
   // TODO use button group
 
   private UiContainer p_container;
-  
+
   @ManagedConstruction
   private Logger log;
 
@@ -35,11 +35,11 @@ public class ErrorState implements State, ManagedComponentInitialization {
   private boolean rendered;
 
   private int selectedAction;
-  
+
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    p_container = new UiContainer();
-    
+    p_container = new UiContainer(null);
+
   }
 
   public void setErrorMessage(String message) {
@@ -51,14 +51,14 @@ public class ErrorState implements State, ManagedComponentInitialization {
     rendered = false;
     errorMessage = "";
     selectedAction = 0;
-   
+
     String pressedAction = null;
-    
-    if(pressedAction == "SEND") {
+
+    if (pressedAction == "SEND") {
       sendErrorReport();
     }
   }
-  
+
   @Override
   public void render(int delta) {
     p_container.draw(ui);
@@ -79,7 +79,7 @@ public class ErrorState implements State, ManagedComponentInitialization {
     form.target = ERROR_FORM_URL;
     form.appendChild(inputTitle);
     form.appendChild(inputMsg);
-    
+
     form.submit();
   }
 }

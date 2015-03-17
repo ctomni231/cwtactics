@@ -6,10 +6,10 @@ import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
 import org.wolftec.cwtactics.system.audio.AudioManager;
-import org.wolftec.cwtactics.system.input.InputManager;
-import org.wolftec.cwtactics.system.localization.Localization;
+import org.wolftec.cwtactics.system.input.LiveInputManager;
 import org.wolftec.cwtactics.system.state.MenuState;
 import org.wolftec.cwtactics.system.state.StateManager;
+import org.wolftec.i18n.LocalizationManager;
 
 @ManagedComponent
 public class StartScreenState implements MenuState {
@@ -18,7 +18,7 @@ public class StartScreenState implements MenuState {
   private AudioManager audio;
 
   @Injected
-  private Localization localization;
+  private LocalizationManager localization;
 
   @Injected
   private UserInterfaceLayerBean ui;
@@ -45,7 +45,7 @@ public class StartScreenState implements MenuState {
   }
 
   @Override
-  public void update(StateManager stm, InputManager input, int delta) {
+  public void update(StateManager stm, LiveInputManager input, int delta) {
     if (input.isActionPressed(InputAction.A) || input.isActionPressed(InputAction.B)) {
       stm.changeToStateClass(MainMenuState.class);
       return;

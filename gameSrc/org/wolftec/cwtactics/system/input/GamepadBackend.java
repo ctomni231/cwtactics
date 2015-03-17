@@ -22,13 +22,13 @@ public class GamepadBackend implements InputBackend, ManagedComponentInitializat
   public static final int INDEX_RIGHT = 3;
   public static final int INDEX_UP = 4;
   public static final int INDEX_DOWN = 5;
-  
+
   @Injected
-  private InputManager input;
+  private LiveInputManager input;
 
   @ManagedConstruction
   private Logger p_log;
-  
+
   private Array<Integer> p_prevTimestamps;
   private boolean p_vendorAPI;
   private boolean p_enabled;
@@ -56,9 +56,9 @@ public class GamepadBackend implements InputBackend, ManagedComponentInitializat
           // as multiple engine clicks
           boolean sameSlot = $js("p_prevTimestamps[i] == gamePad.timestamp");
           if (!sameSlot) {
-            
+
             p_prevTimestamps.$set(i, $js("gamePad.timestamp"));
-            
+
             Array<Integer> buttons = $js("gamePad.buttons");
             Array<Integer> axes = $js("gamePad.axes");
 
@@ -73,8 +73,8 @@ public class GamepadBackend implements InputBackend, ManagedComponentInitializat
       }
     }
   }
-  
-  private void checkButton (boolean pressed, int buttonIndex, String key) {
+
+  private void checkButton(boolean pressed, int buttonIndex, String key) {
     if (pressed) {
       if (!p_pressed.$get(buttonIndex)) {
         input.keyPressed(key);

@@ -7,7 +7,6 @@ import org.wolftec.core.Injected;
 import org.wolftec.core.JsExec;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.log.Logger;
-import org.wolftec.persistence.JsonConverter;
 import org.wolftec.persistence.VirtualFilesystemManager;
 
 /**
@@ -22,7 +21,7 @@ public class LocalizationManager {
   private VirtualFilesystemManager vfs;
 
   @Injected
-  private JsonConverter converter;
+  private LanguageFileConverter converter;
 
   /**
    * The current active language.

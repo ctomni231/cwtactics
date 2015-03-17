@@ -1,16 +1,15 @@
-package org.wolftec.cwtactics.game.persistence;
-
-import net.temp.wolfTecEngine.components.CreatedType;
-import net.temp.wolfTecEngine.persistence.annotations.FolderPath;
+package org.wolftec.cwtactics.system.savegame;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolfTec.vfs.Vfs;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedConstruction;
 import org.wolftec.log.Logger;
+import org.wolftec.persistence.JsonConverter;
+import org.wolftec.persistence.VirtualFilesystemManager;
 
 /**
  * Save game handler, used to load and save game files.
@@ -18,15 +17,17 @@ import org.wolftec.log.Logger;
 @ManagedComponent
 public class SaveGameManagerBean {
 
-  @CreatedType
+  @ManagedConstruction
   private Logger log;
 
-  @CreatedType
-  @FolderPath("/saves")
+  @Injected
+  private JsonConverter converter;
+
+  @Injected
   private VirtualFilesystemManager storage;
 
   @Injected
-  private Array<SaveGameHandler<Object>> handlers;
+  private Array<SaveGameHandler> handlers;
 
   /**
    * Loads a save game and initializes a new game round.
@@ -36,8 +37,8 @@ public class SaveGameManagerBean {
    * @param callback
    */
   public void loadSave(String name, Callback0 callback) {
-    storage.readFile(name, (data) -> {
-      Object savegame = data.value;
+    storage.readKey(name, converter, (err, data) -> {
+      Map<String, Object> savegame = data.value;
       for (int i = 0; i < handlers.$length(); i++) {
         Object handlerData = null; // TODO
         handlers.$get(i).onLoadGame(handlerData);
@@ -61,7 +62,7 @@ public class SaveGameManagerBean {
       // TODO
     }
 
-    storage.writeFile(name, savegame, (data, err) -> {
+    storage.writeKey(name, converter, savegame, (err) -> {
       if (err != null) {
         log.warn("Could not save game data");
       }

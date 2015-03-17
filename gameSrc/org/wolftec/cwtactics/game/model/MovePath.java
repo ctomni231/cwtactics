@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.state;
+package org.wolftec.cwtactics.game.model;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

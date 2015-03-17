@@ -1,11 +1,10 @@
 package org.wolftec.cwtactics.game.state;
 
-import net.temp.wolfTecEngine.components.CreatedType;
-
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
+import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.logic.ChangeMode;
 import org.wolftec.cwtactics.game.logic.LifecycleLogic;
@@ -19,15 +18,15 @@ import org.wolftec.log.Logger;
 @ManagedComponent
 public class GameRoundSetupBean {
 
-  @CreatedType("{name=$beanName}")
+  @ManagedConstruction
   public Logger log;
-  
+
   @Injected
   private ObjectTypesBean typeDb;
-  
+
   @Injected
   private GameRoundBean gameround;
-  
+
   @Injected
   private LifecycleLogic lifecycle;
 

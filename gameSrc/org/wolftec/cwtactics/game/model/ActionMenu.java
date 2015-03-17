@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.state;
+package org.wolftec.cwtactics.game.model;
 
 import net.temp.wolfTecEngine.components.CreatedType;
 import net.temp.wolfTecEngine.components.PostConstruct;
@@ -6,7 +6,6 @@ import net.temp.wolfTecEngine.components.PostConstruct;
 import org.wolftec.container.CircularBuffer;
 import org.wolftec.container.ContainerSize;
 import org.wolftec.core.ManagedComponent;
-import org.wolftec.cwtactics.game.model.MenuEntry;
 
 @ManagedComponent
 public class ActionMenu {

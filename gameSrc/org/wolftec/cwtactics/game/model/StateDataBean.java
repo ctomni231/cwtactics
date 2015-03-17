@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.state;
+package org.wolftec.cwtactics.game.model;
 
 import org.wolfTec.cwt.game.gamelogic.MoveCode;
 import org.wolfTec.cwt.game.gamemodel.bean.GameRoundBean;

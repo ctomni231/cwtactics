@@ -4,12 +4,12 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.core.ComponentManager;
+import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.log.Logger;
-import org.wolftec.persistence.VfsEntity;
 import org.wolftec.persistence.VirtualFilesystemManager;
 
 @ManagedComponent
@@ -18,18 +18,20 @@ public class GameConfigBean implements ManagedComponentInitialization {
   @ManagedConstruction
   private Logger log;
 
-  @ManagedConstruction
+  @Injected
+  private GameAppConfigConverter converter;
+
+  @Injected
   private VirtualFilesystemManager fs;
 
   @ManagedConstruction
   private Map<String, Config> configs;
-  
+
   @ManagedConstruction
   private Array<String> configNames;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    fs.selectDirectory("/config");
 
     // game logic
     createConfig("fogEnabled", new Config(0, 1, 1, 1), true);
@@ -81,9 +83,14 @@ public class GameConfigBean implements ManagedComponentInitialization {
     }
   }
 
+  /**
+   * Loads the game configuration.
+   * 
+   * @param cb
+   */
   public void loadData(Callback0 cb) {
-    fs.readFile("user_data.json", (VfsEntity<GameConfigType> entry) -> {
-      GameConfigType config = entry.value;
+    fs.readKey("config/user_data.json", converter, (err, entry) -> {
+      GameAppConfigData config = entry.value;
 
       if (config != null) {
         log.info("Found user data... going to load it");
@@ -100,17 +107,22 @@ public class GameConfigBean implements ManagedComponentInitialization {
     });
   }
 
+  /**
+   * Saves the game configuration.
+   * 
+   * @param callback
+   */
   public void saveData(Callback0 callback) {
-    GameConfigType config = new GameConfigType();
+    GameAppConfigData config = new GameAppConfigData();
     config.forceTouch = (getConfigValue("forceTouch") == 1);
     config.fastClickMode = (getConfigValue("fastClickMode") == 1);
     config.animatedTiles = (getConfigValue("animatedTiles") == 1);
 
-    fs.writeFile("user_data.json", config, (data, err) -> {
+    fs.writeKey("config/user_data.json", converter, config, (err) -> {
       if (err != null) {
         log.warn("Could not write game configuration file");
-      } 
-      
+      }
+
       callback.$invoke();
     });
   }

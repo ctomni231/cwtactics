@@ -5,13 +5,11 @@ import org.stjs.javascript.Map;
 import org.wolftec.container.ContainerUtil;
 import org.wolftec.core.ComponentManager;
 import org.wolftec.core.JsUtil;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.core.ReflectionUtil;
 import org.wolftec.log.Logger;
 
-@ManagedComponent
 public class ValidationManager implements ManagedComponentInitialization {
 
   @ManagedConstruction
@@ -47,7 +45,7 @@ public class ValidationManager implements ManagedComponentInitialization {
       for (int j = 0; j < annoations.$length(); j++) {
         Object annotation = annoations.$get(j);
         String annotationName = ReflectionUtil.getSimpleName(ReflectionUtil.getClass(annotation));
-        
+
         if (JsUtil.hasProperty(validators, annotationName)) {
           validators.$get(annotationName).validateGeneric(this, propertyValue, propertyName,
               annotation);

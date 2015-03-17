@@ -8,17 +8,18 @@ import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.game.logic.TransferLogic;
+import org.wolftec.cwtactics.game.model.ActionMenu;
 import org.wolftec.cwtactics.game.model.GameRoundBean;
+import org.wolftec.cwtactics.game.model.StateDataBean;
 import org.wolftec.cwtactics.game.model.Unit;
 import org.wolftec.cwtactics.game.renderer.UnitLayerBean;
-import org.wolftec.cwtactics.game.state.ActionMenu;
-import org.wolftec.cwtactics.game.state.StateDataBean;
 import org.wolftec.cwtactics.system.state.ActionQueueHandler;
 import org.wolftec.cwtactics.system.state.StateManager;
 import org.wolftec.log.Logger;
 
 @ManagedComponent
-public class ActionManager implements ActionQueueHandler<ActionItem>, ManagedComponentInitialization {
+public class ActionManager implements ActionQueueHandler<ActionItem>,
+    ManagedComponentInitialization {
 
   public final String WAIT = "wait";
   public final String HIDE = "hideUnit";
@@ -38,28 +39,28 @@ public class ActionManager implements ActionQueueHandler<ActionItem>, ManagedCom
 
   @Injected
   private TransferLogic transfer;
-  
+
   @Injected
   private GameRoundBean gameround;
-  
+
   @Injected
   private StateManager stateMachine;
 
   @Injected
   private UnitLayerBean unitLayer;
-  
+
   @Injected
   private ActionConverter actionSerializer;
-  
+
   @ManagedConstruction
-  private CircularBuffer<ActionItem> actionItems; 
-  
-  private Callback1<Object> deserializeActionCb;
-  
+  private CircularBuffer<ActionItem> actionItems;
+
+  private Callback1<ActionItem> deserializeActionCb;
+
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    deserializeActionCb = (data) -> { // TODO generic type in serializer
-      actionItems.push((ActionItem) data); 
+    deserializeActionCb = (data) -> {
+      actionItems.push(data);
     };
   }
 
@@ -122,13 +123,13 @@ public class ActionManager implements ActionQueueHandler<ActionItem>, ManagedCom
   @Override
   public void queueAction(ActionItem message) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
   public void queueImmediateAction(ActionItem message) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
@@ -140,7 +141,7 @@ public class ActionManager implements ActionQueueHandler<ActionItem>, ManagedCom
   @Override
   public void invokeNextAction() {
     // TODO Auto-generated method stub
-    
+
   }
 
   // public boolean checkRelation(Action.SourceToTarget checkMode,
