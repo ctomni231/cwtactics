@@ -42,24 +42,24 @@ public class LocalForageVfs implements VfsBackend, ManagedComponentInitializatio
     JsExec.injectJS("localForage.config(config)");
   }
 
-  private void keyList(String pathReg, Callback1<Array<String>> callback) {
-    
-    @SuppressWarnings("unused")
-    Callback1<Array<String>> fileCb = (fileList) -> {
+  @Override
+  public void keyList(String pathRegEx, Callback1<Array<String>> callback) {
+
+    @SuppressWarnings("unused") Callback1<Array<String>> fileCb = (fileList) -> {
       Array<String> resultFileList = ContainerUtil.createArray();
 
       // search all file which are a sub entry of path
       // remove the path from the fill file path
       for (int i = 0; i < fileList.$length(); i++) {
         String file = fileList.$get(i);
-        if (file.matches(pathReg)) {
+        if (file.matches(pathRegEx)) {
           resultFileList.push(file);
         }
       }
 
       callback.$invoke(resultFileList);
     };
-    
+
     JsExec.injectJS("localForage.keys(fileCb)");
   }
 
@@ -83,10 +83,9 @@ public class LocalForageVfs implements VfsBackend, ManagedComponentInitializatio
 
   @Override
   public void writeKey(String path, String value, Callback1<String> cb) {
-    
-    @SuppressWarnings("unused")
-    Callback2<String, VfsEntity<String>> safeCb = (error, result) -> {
-      
+
+    @SuppressWarnings("unused") Callback2<String, VfsEntity<String>> safeCb = (error, result) -> {
+
       // try a second time when fail at the first time because on ios the
       // question for more storage invokes an error => we don't want to
       // need to reload then
@@ -103,7 +102,7 @@ public class LocalForageVfs implements VfsBackend, ManagedComponentInitializatio
   @Override
   public void hasKeys(String pathRegEx, Callback2<String, Boolean> cb) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override
@@ -115,7 +114,7 @@ public class LocalForageVfs implements VfsBackend, ManagedComponentInitializatio
   public void purgeKeys(String pathRegEx, Callback1<String> cb) {
     if (pathRegEx == "") {
       JsExec.injectJS("localForage.clear(cb)");
-      
+
     } else {
       keyList(pathRegEx, (keyList) -> {
         ContainerUtil.forEachElementInListAsync(keyList, (key, next) -> {

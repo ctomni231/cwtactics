@@ -18,7 +18,8 @@ public abstract class ReadOnlyHtmlVfs implements VfsBackend {
   public abstract String getRemotePath();
 
   private String getTypeForFile(String path) {
-    String end = JsUtil.splitString(path, ".").pop();;
+    String end = JsUtil.splitString(path, ".").pop();
+    ;
     switch (end) {
 
       case "ogg":
@@ -31,8 +32,14 @@ public abstract class ReadOnlyHtmlVfs implements VfsBackend {
         return null;
     }
   }
-  
-  private void keyList(Callback1<Array<String>> callback) {
+
+  @Override
+  public void keyList(String pathRegEx, Callback1<Array<String>> callback) {
+    if (pathRegEx != null && pathRegEx.length() > 0) {
+      JsUtil.raiseError("UnsupportedOperationException");
+      callback.$invoke(null);
+    }
+
     String file = getRemotePath() + "__fs_content__.txt";
     BrowserUtil.doXmlHttpRequest(file, null, (data, err) -> {
       callback.$invoke(JsUtil.splitString(((String) data), "\n"));
@@ -44,32 +51,32 @@ public abstract class ReadOnlyHtmlVfs implements VfsBackend {
     String type = getTypeForFile(path);
     BrowserUtil.doXmlHttpRequest(path, type, (data, err) -> {
       VfsEntity<String> entry = new VfsEntity<String>();
-      
+
       entry.key = path;
       if (err == null) {
         if (type == "arraybuffer") {
           data = BrowserUtil.convertArrayBufferToBase64(data);
         }
         entry.value = (String) data;
-        
+
       }
-      
+
       cb.$invoke(err, entry);
     });
   }
 
   @Override
   public void readKeys(String pathRegEx, Callback2<String, Array<VfsEntity<String>>> cb) {
-    keyList(fileList -> {
+    keyList(null, fileList -> {
       Array<String> maskedFileList = ContainerUtil.createArray();
       Array<VfsEntity<String>> entities = ContainerUtil.createArray();
       for (int i = 0; i < fileList.$length(); i++) {
         String file = fileList.$get(i);
-        
+
         if (file.matches(pathRegEx)) {
           maskedFileList.push(file);
         }
-        
+
         ContainerUtil.forEachElementInListAsync(maskedFileList, (el, next) -> {
           readKey(el, (err, entity) -> {
             entities.push(entity);
@@ -82,7 +89,7 @@ public abstract class ReadOnlyHtmlVfs implements VfsBackend {
 
   @Override
   public void hasKeys(String pathRegEx, Callback2<String, Boolean> cb) {
-    keyList(fileList -> {
+    keyList(null, fileList -> {
       cb.$invoke(null, fileList != null && fileList.$length() > 0);
     });
   }

@@ -12,7 +12,7 @@ import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.core.PerformanceUtil;
-import org.wolftec.cwtactics.system.input.InputManager;
+import org.wolftec.cwtactics.system.input.LiveInputManager;
 import org.wolftec.cwtactics.system.network.NetworkBackend;
 import org.wolftec.log.Logger;
 
@@ -26,7 +26,7 @@ public class StateManager implements ManagedComponentInitialization {
   private Logger log;
 
   @Injected
-  private InputManager input;
+  private LiveInputManager input;
 
   @Injected
   private NetworkBackend network;
