@@ -1,9 +1,6 @@
 package org.wolftec.cwtactics.game.renderer;
 
-import net.temp.wolfTecEngine.components.PostConstruct;
-import net.temp.wolfTecEngine.renderer.Direction;
-import net.temp.wolfTecEngine.renderer.sprite.Sprite;
-import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
+import javax.annotation.PostConstruct;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
@@ -12,10 +9,10 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
 import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
-import org.wolftec.cwtactics.system.renderer.LayerFrameTime;
-import org.wolftec.cwtactics.system.renderer.LayerFrames;
-import org.wolftec.cwtactics.system.renderer.LayerIndex;
+import org.wolftec.cwtactics.system.layergfx.Sprite;
+import org.wolftec.cwtactics.system.layergfx.SpriteManager;
 
 @ManagedComponent
 @LayerIndex(EngineGlobals.LAYER_FOCUS)
@@ -25,7 +22,7 @@ public class FocusLayerBean extends GraphicLayer {
 
   @Injected
   private SpriteManager sprites;
-  
+
   private Canvas temporaryCanvas;
 
   @PostConstruct

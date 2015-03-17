@@ -1,9 +1,5 @@
 package org.wolftec.cwtactics.game.renderer;
 
-import net.temp.wolfTecEngine.renderer.AnimatedLayer;
-import net.temp.wolfTecEngine.renderer.Direction;
-import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
-
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
@@ -12,7 +8,9 @@ import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.model.GameRoundBean;
 import org.wolftec.cwtactics.game.model.Tile;
+import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
 import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
+import org.wolftec.cwtactics.system.layergfx.SpriteManager;
 
 @ManagedComponent
 public class MapLayerBean extends GraphicLayer {

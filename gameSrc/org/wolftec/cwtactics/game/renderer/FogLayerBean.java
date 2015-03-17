@@ -1,7 +1,5 @@
 package org.wolftec.cwtactics.game.renderer;
 
-import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
-
 import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
@@ -12,13 +10,14 @@ import org.wolftec.cwtactics.game.logic.MoveCode;
 import org.wolftec.cwtactics.game.model.GameRoundBean;
 import org.wolftec.cwtactics.game.model.Tile;
 import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
+import org.wolftec.cwtactics.system.layergfx.SpriteManager;
 
 @ManagedComponent
 public class FogLayerBean extends GraphicLayer {
 
   @Injected
   private SpriteManager sprites;
-  
+
   @Injected
   private GameRoundBean gameround;
 

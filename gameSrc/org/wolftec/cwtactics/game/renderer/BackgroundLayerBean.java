@@ -1,22 +1,15 @@
 package org.wolftec.cwtactics.game.renderer;
 
-import net.temp.wolfTecEngine.renderer.sprite.Sprite;
-
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
-import org.wolftec.cwtactics.system.renderer.LayerFrameTime;
-import org.wolftec.cwtactics.system.renderer.LayerFrames;
-import org.wolftec.cwtactics.system.renderer.LayerIndex;
+import org.wolftec.cwtactics.system.layergfx.Sprite;
 
 /**
  * Background layer contains the background image of the screen. It's visible in
  * the menu and on maps which are smaller than the screen.
  */
 @ManagedComponent
-@LayerIndex(EngineGlobals.LAYER_BG)
-@LayerFrames(EngineGlobals.LAYER_BG_FRAMES)
-@LayerFrameTime(EngineGlobals.LAYER_BG_FRAMETIME)
 public class BackgroundLayerBean extends GraphicLayer {
 
   @Override

@@ -1,8 +1,5 @@
 package org.wolftec.cwtactics.game.renderer;
 
-import net.temp.wolfTecEngine.renderer.sprite.Sprite;
-import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
-
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.core.Injected;
@@ -11,6 +8,8 @@ import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.state.StateDataBean;
 import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
 import org.wolftec.cwtactics.system.layergfx.ScreenManager;
+import org.wolftec.cwtactics.system.layergfx.Sprite;
+import org.wolftec.cwtactics.system.layergfx.SpriteManager;
 
 /**
  * All user interface stuff will be rendered into this layer. It's the top front

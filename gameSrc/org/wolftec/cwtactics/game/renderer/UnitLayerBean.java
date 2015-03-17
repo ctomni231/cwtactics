@@ -1,10 +1,5 @@
 package org.wolftec.cwtactics.game.renderer;
 
-import net.temp.wolfTecEngine.renderer.AnimatedLayer;
-import net.temp.wolfTecEngine.renderer.Direction;
-import net.temp.wolfTecEngine.renderer.sprite.Sprite;
-import net.temp.wolfTecEngine.renderer.sprite.SpriteManager;
-
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Canvas;
@@ -13,11 +8,13 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.model.GameMapBean;
 import org.wolftec.cwtactics.game.model.GameRoundBean;
 import org.wolftec.cwtactics.game.model.Tile;
 import org.wolftec.cwtactics.game.model.Unit;
+import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
 import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
+import org.wolftec.cwtactics.system.layergfx.Sprite;
+import org.wolftec.cwtactics.system.layergfx.SpriteManager;
 
 @ManagedComponent
 public class UnitLayerBean extends GraphicLayer {
@@ -45,7 +42,7 @@ public class UnitLayerBean extends GraphicLayer {
   public int getFrameTime() {
     return EngineGlobals.LAYER_UNIT_FRAMETIME;
   }
-  
+
   /** */
   public void setHiddenUnitId(int unitId) {
     hiddenUnitId = unitId;
