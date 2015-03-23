@@ -4,9 +4,9 @@ import org.stjs.javascript.JSGlobal;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.game.ai.ObjectTypesBean;
 import org.wolftec.cwtactics.game.model.GameRoundBean;
 import org.wolftec.cwtactics.game.model.MoveType;
-import org.wolftec.cwtactics.game.model.ObjectTypesBean;
 import org.wolftec.cwtactics.game.model.Unit;
 
 @ManagedComponent

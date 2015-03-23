@@ -3,8 +3,8 @@ package org.wolftec.cwtactics.game.logic;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.game.ai.GameConfigBean;
 import org.wolftec.cwtactics.game.model.CoPowerLevel;
-import org.wolftec.cwtactics.game.model.GameConfigBean;
 import org.wolftec.cwtactics.game.model.Player;
 
 @ManagedComponent

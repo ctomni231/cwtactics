@@ -11,7 +11,6 @@ import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
 import org.wolftec.core.BrowserUtil;
 import org.wolftec.core.ReflectionUtil;
-import org.wolftec.persistence.VfsEntity;
 
 public abstract class ContainerUtil {
 
@@ -71,25 +70,25 @@ public abstract class ContainerUtil {
    * @param map
    * @param cb
    */
-  public static <T> void forEachElementInMap (Map<String, T> map, Callback2<String, T> cb) {
+  public static <T> void forEachElementInMap(Map<String, T> map, Callback2<String, T> cb) {
     Array<String> keys = ReflectionUtil.objectKeys(map);
     for (int i = 0; i < keys.$length(); i++) {
       String key = keys.$get(i);
       cb.$invoke(key, map.$get(key));
     }
   }
-  
+
   /**
    * 
    * @param map
    * @param cb
    * @return
    */
-  public static <T> T filterFirstMapEntry (Map<String, T> map, Function2<String, T, Boolean> cb) {
+  public static <T> T filterFirstMapEntry(Map<String, T> map, Function2<String, T, Boolean> cb) {
     Array<String> keys = ReflectionUtil.objectKeys(map);
     for (int i = 0; i < keys.$length(); i++) {
       String key = keys.$get(i);
-      if (cb.$invoke(key, map.$get(key)) != null){
+      if (cb.$invoke(key, map.$get(key)) != null) {
         return map.$get(key);
       }
     }
@@ -101,7 +100,7 @@ public abstract class ContainerUtil {
    * @param map
    * @param cb
    */
-  public static <T> void forEachElementInList (Array<T> list, Callback1<T> cb) {
+  public static <T> void forEachElementInList(Array<T> list, Callback1<T> cb) {
     for (int i = 0; i < list.$length(); i++) {
       cb.$invoke(list.$get(i));
     }
@@ -112,20 +111,21 @@ public abstract class ContainerUtil {
    * @param map
    * @param cb
    */
-  public static <T> void forEachElementInListAsync (Array<T> list, Callback2<T, Callback0> cb, Callback0 finalCb) {
-    
+  public static <T> void forEachElementInListAsync(Array<T> list, Callback2<T, Callback0> cb,
+      Callback0 finalCb) {
+
     Array<Callback1<Callback0>> steps = ContainerUtil.createArray();
-    
+
     Callback1<T> addStep = (value) -> {
       steps.push(next -> {
         cb.$invoke(value, next);
       });
     };
-    
+
     for (int i = 0; i < list.$length(); i++) {
       addStep.$invoke(list.$get(i));
     }
-    
+
     BrowserUtil.executeSeries(steps, finalCb);
   }
 }

@@ -1,7 +1,6 @@
 package org.wolftec.cwtactics.game.logic;
 
 import org.wolftec.core.Injected;
-import org.wolftec.cwtactics.game.model.ObjectFinderBean;
 import org.wolftec.cwtactics.game.model.Player;
 import org.wolftec.cwtactics.game.model.Property;
 import org.wolftec.cwtactics.game.model.Unit;
