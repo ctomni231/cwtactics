@@ -4,7 +4,7 @@ import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
 import org.wolftec.cwtactics.game.domain.model.Player;
-import org.wolftec.cwtactics.game.domain.model.PlayerObject;
+import org.wolftec.cwtactics.game.domain.model.PlayerOwnedObject;
 import org.wolftec.cwtactics.game.domain.model.Tile;
 import org.wolftec.cwtactics.game.domain.model.Unit;
 
@@ -12,12 +12,12 @@ import org.wolftec.cwtactics.game.domain.model.Unit;
  *
  */
 @ManagedComponent
-public class RelationshipCheckLogic {
+public class RelationshipCheck {
 
   @Injected
   private GameManager gameround;
 
-  public enum RelationshipCheckMode {
+  public enum CheckMode {
 
     /**
      * Indicates a wish to check in the hierarchical way. First try to extract
@@ -47,22 +47,23 @@ public class RelationshipCheckLogic {
    * @param checkRight
    * @returns {number}
    */
-  public Relationship getRelationShipTo(Tile left, Tile right, RelationshipCheckMode checkLeft,
-      RelationshipCheckMode checkRight) {
-    Object oL = null;
-    Object oR = null;
+  public Relationship getRelationShipTo(Tile left, Tile right, CheckMode checkLeft,
+      CheckMode checkRight) {
 
-    if (checkLeft != RelationshipCheckMode.CHECK_PROPERTY) {
+    PlayerOwnedObject oL = null;
+    PlayerOwnedObject oR = null;
+
+    if (checkLeft != CheckMode.CHECK_PROPERTY) {
       oL = left.unit;
     }
-    if (checkRight != RelationshipCheckMode.CHECK_PROPERTY) {
+    if (checkRight != CheckMode.CHECK_PROPERTY) {
       oR = right.unit;
     }
 
-    if (oL == null && checkLeft != RelationshipCheckMode.CHECK_UNIT) {
+    if (oL == null && checkLeft != CheckMode.CHECK_UNIT) {
       oL = left.property;
     }
-    if (oR == null && checkRight != RelationshipCheckMode.CHECK_UNIT) {
+    if (oR == null && checkRight != CheckMode.CHECK_UNIT) {
       oR = right.property;
     }
 
@@ -70,7 +71,7 @@ public class RelationshipCheckLogic {
       return Relationship.RELATION_NONE;
     }
 
-    return getRelationship(oL, oR);
+    return getRelationshipOfObjects(oL, oR);
   }
 
   /**
@@ -81,7 +82,7 @@ public class RelationshipCheckLogic {
    * @param objectB
    * @returns {*}
    */
-  public Relationship getRelationship(Object objectA, Object objectB) {
+  public Relationship getRelationshipOfObjects(PlayerOwnedObject objectA, PlayerOwnedObject objectB) {
 
     // one object is null
     if (objectA == null || objectB == null) {
@@ -93,10 +94,21 @@ public class RelationshipCheckLogic {
       return Relationship.RELATION_SAME_THING;
     }
 
-    Player playerA = (objectA instanceof Player) ? (Player) objectA : ((PlayerObject) objectA)
-        .getOwner();
-    Player playerB = (objectB instanceof Player) ? (Player) objectB : ((PlayerObject) objectB)
-        .getOwner();
+    return getRelationshipOfPlayers(gameround.getOwnerOfObject(objectA),
+        gameround.getOwnerOfObject(objectB));
+  }
+
+  public Relationship getRelationshipOfPlayers(Player playerA, Player playerB) {
+
+    // one object is null
+    if (playerA == null || playerB == null) {
+      return Relationship.RELATION_NONE;
+    }
+
+    // same object
+    if (playerA == playerB) {
+      return Relationship.RELATION_SAME_THING;
+    }
 
     // one of the owners is inactive or not set (e.g. neutral properties)
     if (playerA == null || playerB == null || playerA.team == -1 || playerB.team == -1) {
@@ -134,7 +146,7 @@ public class RelationshipCheckLogic {
     // WEST
     if (x > 0) {
       unit = gameround.getTile(x - 1, y).unit;
-      if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
+      if (unit != null && getRelationshipOfPlayers(player, unit.owner) == relationship) {
         return true;
       }
     }
@@ -142,23 +154,23 @@ public class RelationshipCheckLogic {
     // NORTH
     if (y > 0) {
       unit = gameround.getTile(x, y - 1).unit;
-      if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
+      if (unit != null && getRelationshipOfPlayers(player, unit.owner) == relationship) {
         return true;
       }
     }
 
     // EAST
-    if (x < gameround.getMapWidth() - 1) {
+    if (x < gameround.mapWidth - 1) {
       unit = gameround.getTile(x + 1, y).unit;
-      if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
+      if (unit != null && getRelationshipOfPlayers(player, unit.owner) == relationship) {
         return true;
       }
     }
 
     // SOUTH
-    if (y < gameround.getMapHeight() - 1) {
+    if (y < gameround.mapHeight - 1) {
       unit = gameround.getTile(x, y + 1).unit;
-      if (unit != null && getRelationship(player, unit.getOwner()) == relationship) {
+      if (unit != null && getRelationshipOfPlayers(player, unit.owner) == relationship) {
         return true;
       }
     }

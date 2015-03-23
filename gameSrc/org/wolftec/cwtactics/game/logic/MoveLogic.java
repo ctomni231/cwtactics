@@ -11,17 +11,17 @@ import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.domain.data.MoveType;
 import org.wolftec.cwtactics.game.domain.managers.MovePathCache;
-import org.wolftec.cwtactics.game.domain.model.GameRoundBean;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
 import org.wolftec.cwtactics.game.domain.model.Tile;
+import org.wolftec.cwtactics.game.domain.types.MoveType;
 import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
 
 @ManagedComponent
 public class MoveLogic implements ManagedComponentInitialization {
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   /**
    * Little helper array object for `model.move_fillMoveMap`. This will be used

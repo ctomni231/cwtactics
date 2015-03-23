@@ -14,8 +14,10 @@ public class TransportLogic {
 
   @Injected
   private GameManager gameround;
+
   @Injected
   private TypeManager types;
+
   @Injected
   private MoveLogic move;
 
@@ -33,7 +35,7 @@ public class TransportLogic {
    */
   public boolean hasLoads(Unit unit) {
     for (int i = 0, e = EngineGlobals.MAX_UNITS; i < e; i++) {
-      if (unit == gameround.getUnit(i).loadedIn) return true;
+      if (unit == gameround.units.$get(i).loadedIn) return true;
     }
     return false;
   }
@@ -99,7 +101,7 @@ public class TransportLogic {
     // TODO if (constants.DEBUG) assert(isTransportUnit(transporter));
     for (int i = 0, e = EngineGlobals.MAX_UNITS; i < e; i++) {
 
-      unit = gameround.getUnit(i);
+      unit = gameround.units.$get(i);
       if (unit.loadedIn == transporter) {
         MoveType moveType = types.getMoveType(unit.type.movetype);
 

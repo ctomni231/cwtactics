@@ -1,22 +1,22 @@
 package org.wolftec.cwtactics.game.logic;
 
-import org.wolfTec.cwt.game.model.GameConfigBean;
-import org.wolfTec.cwt.game.model.GameRoundBean;
-import org.wolfTec.cwt.game.model.Unit;
-import org.wolfTec.cwt.game.model.types.AttackType;
-import org.wolfTec.wolfTecEngine.beans.Injected;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.container.MoveableMatrix;
+import org.wolftec.core.Injected;
+import org.wolftec.core.JsUtil;
+import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Unit;
+import org.wolftec.cwtactics.game.domain.types.AttackType;
 
-@Bean
+@ManagedComponent
 public class BattleLogic {
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   @Injected
-  private GameConfigBean config;
+  private GameConfigManager config;
 
   // var fillRangeDoAttackRange = {
   // unit: null,
@@ -46,7 +46,7 @@ public class BattleLogic {
    * @return
    */
   public boolean hasMainWeapon(Unit unit) {
-    AttackType attack = unit.getType().attack;
+    AttackType attack = unit.type.attack;
     return (attack != null && attack.mainWeapon != null);
   }
 
@@ -56,7 +56,7 @@ public class BattleLogic {
    * @return
    */
   public boolean hasSecondaryWeapon(Unit unit) {
-    AttackType attack = unit.getType().attack;
+    AttackType attack = unit.type.attack;
     return (attack != null && attack.secondaryWeapon != null);
   }
 
@@ -98,10 +98,10 @@ public class BattleLogic {
    * @return
    */
   public boolean canUseMainWeapon(Unit attacker, Unit defender) {
-    AttackType attack = attacker.getType().attack;
-    if (attack.mainWeapon != null && attacker.getAmmo() > 0) {
-      Integer value = attack.mainWeapon.$get(defender.getType().ID);
-      if (value != null && value > 0) {
+    AttackType attack = attacker.type.attack;
+    if (attack.mainWeapon != null && attacker.ammo > 0) {
+      Integer value = attack.mainWeapon.$get(defender.type.ID);
+      if (JsUtil.notUndef(value) && value > 0) {
         return true;
       }
     }
@@ -125,7 +125,7 @@ public class BattleLogic {
       return BattleType.NONE;
     }
 
-    int min = unit.getType().attack.minrange;
+    int min = unit.type.attack.minrange;
     if (min == 1) {
       return BattleType.DIRECT;
 
@@ -138,7 +138,7 @@ public class BattleLogic {
    * @return true when the game is in the peace phase, else false
    */
   public boolean inPeacePhase() {
-    return (gameround.getDay() < config.getConfigValue("daysOfPeace"));
+    return (gameround.day < config.getConfigValue("daysOfPeace"));
   }
 
   public enum MarkTargetsMode {

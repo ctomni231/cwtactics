@@ -125,17 +125,24 @@ public class GameManager implements ManagedComponentInitialization {
    * @param obj
    */
   public boolean isTurnOwnerObject(PlayerOwnedObject obj) {
+    return isTurnOwner(getOwnerOfObject(obj));
+  }
+
+  /**
+   * @param obj
+   */
+  public Player getOwnerOfObject(PlayerOwnedObject obj) {
     Player player = ReflectionUtil.getProperty(obj, "owner");
 
     if (player == null) {
-      return false;
+      return null;
 
     } else if (!(player instanceof Player)) {
       JsUtil.raiseError("does not found the owner object in an player owned object");
-      return false;
+      return null;
 
     } else {
-      return isTurnOwner(player);
+      return player;
     }
   }
 
