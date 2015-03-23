@@ -83,6 +83,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *LGTK* - Logistic Truck (CO Sasha)
 * [ ] *RTNK* - Repair Tank (CO Andy)
 * [ ] *COMM* - Commando (CO Sami)
+* [ ] *THNT* - Tank Hunter (CO Jess)
 
 ***
 
