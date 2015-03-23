@@ -5,22 +5,22 @@ import org.wolftec.container.ContainerUtil;
 import org.wolftec.core.ConvertUtility;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
-import org.wolftec.cwtactics.game.ai.GameConfigBean;
-import org.wolftec.cwtactics.game.ai.ObjectTypesBean;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.WeatherType;
+import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
+import org.wolftec.cwtactics.game.domain.managers.TypeManager;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.types.WeatherType;
 
 @ManagedComponent
 public class WeatherLogic {
 
   @Injected
-  private ObjectTypesBean types;
+  private TypeManager types;
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   @Injected
-  private GameConfigBean config;
+  private GameConfigManager config;
 
   @Injected
   private FogLogic fog;

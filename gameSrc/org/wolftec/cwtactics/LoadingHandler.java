@@ -7,7 +7,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
-import org.wolftec.cwtactics.game.model.Config;
+import org.wolftec.cwtactics.game.domain.config.Config;
 import org.wolftec.persistence.VirtualFilesystemManager;
 
 public class LoadingHandler {

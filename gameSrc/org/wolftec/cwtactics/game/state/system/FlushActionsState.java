@@ -5,6 +5,9 @@ import org.wolftec.cwtactics.system.input.LiveInputManager;
 import org.wolftec.cwtactics.system.state.InGameState;
 import org.wolftec.cwtactics.system.state.StateManager;
 
+/**
+ * 
+ */
 @ManagedComponent
 public class FlushActionsState implements InGameState {
 

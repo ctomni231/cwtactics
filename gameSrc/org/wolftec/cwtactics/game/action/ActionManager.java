@@ -7,10 +7,10 @@ import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
+import org.wolftec.cwtactics.game.domain.menu.ActionMenu;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Unit;
 import org.wolftec.cwtactics.game.logic.TransferLogic;
-import org.wolftec.cwtactics.game.model.ActionMenu;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Unit;
 import org.wolftec.cwtactics.game.renderer.UnitLayerBean;
 import org.wolftec.cwtactics.game.state.StateDataBean;
 import org.wolftec.cwtactics.system.network.NetworkBackend;
@@ -36,7 +36,7 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
   private TransferLogic transfer;
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   @Injected
   private StateManager stateMachine;

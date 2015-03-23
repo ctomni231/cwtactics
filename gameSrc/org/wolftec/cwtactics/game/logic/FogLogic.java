@@ -3,21 +3,21 @@ package org.wolftec.cwtactics.game.logic;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.ai.GameConfigBean;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Player;
-import org.wolftec.cwtactics.game.model.Property;
-import org.wolftec.cwtactics.game.model.Tile;
-import org.wolftec.cwtactics.game.model.Unit;
+import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Player;
+import org.wolftec.cwtactics.game.domain.model.Property;
+import org.wolftec.cwtactics.game.domain.model.Tile;
+import org.wolftec.cwtactics.game.domain.model.Unit;
 
 @ManagedComponent
 public class FogLogic {
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   @Injected
-  private GameConfigBean config;
+  private GameConfigManager config;
 
   public void modifyVision(int x, int y, Player owner, int range, int value) {
 

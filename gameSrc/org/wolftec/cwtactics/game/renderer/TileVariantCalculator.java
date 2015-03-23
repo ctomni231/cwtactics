@@ -5,9 +5,9 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
-import org.wolftec.cwtactics.game.model.ConnectedTile;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Tile;
+import org.wolftec.cwtactics.game.domain.model.ConnectedTile;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Tile;
 
 @ManagedComponent
 public class TileVariantCalculator {
@@ -15,7 +15,7 @@ public class TileVariantCalculator {
   private Map<String, ConnectedTile> types;
 
   @Injected
-  private GameRoundBean map;
+  private GameManager map;
 
   public TileVariantCalculator() {
     this.types = JSCollections.$map();

@@ -3,8 +3,8 @@ package org.wolftec.cwtactics.game.logic;
 import org.wolftec.core.Injected;
 import org.wolftec.core.JsUtil;
 import org.wolftec.core.ManagedComponent;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Unit;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Unit;
 
 @ManagedComponent
 public class JoinLogic {
@@ -16,7 +16,7 @@ public class JoinLogic {
   private LifecycleLogic lifecycle;
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   /**
    * Returns **true** if two units can join each other, else **false**. In

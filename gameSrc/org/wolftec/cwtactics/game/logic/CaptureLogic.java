@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.logic;
 
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.model.Property;
-import org.wolftec.cwtactics.game.model.Unit;
+import org.wolftec.cwtactics.game.domain.model.Property;
+import org.wolftec.cwtactics.game.domain.model.Unit;
 
 public class CaptureLogic {
 

@@ -4,18 +4,18 @@ import org.stjs.javascript.JSGlobal;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.ai.ObjectTypesBean;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.MoveType;
-import org.wolftec.cwtactics.game.model.Unit;
+import org.wolftec.cwtactics.game.domain.managers.TypeManager;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Unit;
+import org.wolftec.cwtactics.game.domain.types.MoveType;
 
 @ManagedComponent
 public class TransportLogic {
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
   @Injected
-  private ObjectTypesBean types;
+  private TypeManager types;
   @Injected
   private MoveLogic move;
 

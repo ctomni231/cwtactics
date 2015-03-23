@@ -5,24 +5,24 @@ import org.stjs.javascript.JSGlobal;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.ai.GameConfigBean;
-import org.wolftec.cwtactics.game.ai.ObjectTypesBean;
-import org.wolftec.cwtactics.game.model.ActionMenu;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Property;
-import org.wolftec.cwtactics.game.model.UnitType;
+import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
+import org.wolftec.cwtactics.game.domain.managers.TypeManager;
+import org.wolftec.cwtactics.game.domain.menu.ActionMenu;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Property;
+import org.wolftec.cwtactics.game.domain.types.UnitType;
 
 @ManagedComponent
 public class FactoryLogic {
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   @Injected
   private CaptureLogic capture;
 
   @Injected
-  private GameConfigBean config;
+  private GameConfigManager config;
 
   @Injected
   private LifecycleLogic lifecycle;
@@ -31,7 +31,7 @@ public class FactoryLogic {
   private ObjectFinderBean finder;
 
   @Injected
-  private ObjectTypesBean types;
+  private TypeManager types;
 
   /**
    * Returns **true** when the given **property** is a factory, else **false**.

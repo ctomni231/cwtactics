@@ -4,14 +4,14 @@ import org.stjs.javascript.JSGlobal;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.ai.GameConfigBean;
-import org.wolftec.cwtactics.game.ai.ObjectTypesBean;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Player;
-import org.wolftec.cwtactics.game.model.Property;
-import org.wolftec.cwtactics.game.model.Tile;
-import org.wolftec.cwtactics.game.model.Unit;
-import org.wolftec.cwtactics.game.model.UnitType;
+import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
+import org.wolftec.cwtactics.game.domain.managers.TypeManager;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Player;
+import org.wolftec.cwtactics.game.domain.model.Property;
+import org.wolftec.cwtactics.game.domain.model.Tile;
+import org.wolftec.cwtactics.game.domain.model.Unit;
+import org.wolftec.cwtactics.game.domain.types.UnitType;
 
 @ManagedComponent
 public class LifecycleLogic {
@@ -26,13 +26,13 @@ public class LifecycleLogic {
   private SupplyLogic supply;
 
   @Injected
-  private ObjectTypesBean types;
+  private TypeManager types;
 
   @Injected
-  private GameConfigBean config;
+  private GameConfigManager config;
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   /**
    * 

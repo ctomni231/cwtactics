@@ -6,13 +6,13 @@ import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.ai.ObjectTypesBean;
+import org.wolftec.cwtactics.game.domain.managers.TypeManager;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.GameMode;
+import org.wolftec.cwtactics.game.domain.model.Player;
+import org.wolftec.cwtactics.game.domain.types.MapFileType;
 import org.wolftec.cwtactics.game.logic.ChangeMode;
 import org.wolftec.cwtactics.game.logic.LifecycleLogic;
-import org.wolftec.cwtactics.game.model.GameMap;
-import org.wolftec.cwtactics.game.model.GameMode;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Player;
 import org.wolftec.log.Logger;
 
 @ManagedComponent
@@ -22,15 +22,15 @@ public class GameRoundSetupBean {
   public Logger log;
 
   @Injected
-  private ObjectTypesBean typeDb;
+  private TypeManager typeDb;
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   @Injected
   private LifecycleLogic lifecycle;
 
-  private GameMap map = null;
+  public MapFileType map = null;
 
   /**
    * Data holder to remember selected commanders.
@@ -46,14 +46,6 @@ public class GameRoundSetupBean {
    * Data holder to remember selected team settings.
    */
   public Array<Integer> team = JSCollections.$array();
-
-  public void selectMap(GameMap sMap) {
-    this.map = sMap;
-  }
-
-  public GameMap getSelectedMap() {
-    return map;
-  }
 
   /**
    * Changes a configuration parameter.
@@ -159,7 +151,7 @@ public class GameRoundSetupBean {
     for (int i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
       co.$set(i, null);
 
-      if (i < map.player) {
+      if (i < map.maxPlayers) {
         type.$set(i, i == 0 ? 0 : 1);
         team.$set(i, i);
 

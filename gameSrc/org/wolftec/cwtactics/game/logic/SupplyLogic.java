@@ -5,10 +5,10 @@ import org.stjs.javascript.Map;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Property;
-import org.wolftec.cwtactics.game.model.Tile;
-import org.wolftec.cwtactics.game.model.Unit;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Property;
+import org.wolftec.cwtactics.game.domain.model.Tile;
+import org.wolftec.cwtactics.game.domain.model.Unit;
 
 @ManagedComponent
 public class SupplyLogic {
@@ -17,7 +17,7 @@ public class SupplyLogic {
   private LifecycleLogic lifecycle;
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   /**
    * @return **true** if a given **unit** is a supplier, else **false**.

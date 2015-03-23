@@ -5,7 +5,7 @@ import org.wolftec.core.ComponentManager;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
-import org.wolftec.cwtactics.game.model.Player;
+import org.wolftec.cwtactics.game.domain.model.Player;
 import org.wolftec.cwtactics.system.decision.DecisionTree;
 import org.wolftec.cwtactics.system.decision.Sequence;
 import org.wolftec.log.Logger;

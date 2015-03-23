@@ -6,8 +6,8 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Tile;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Tile;
 import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
 import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
 import org.wolftec.cwtactics.system.layergfx.SpriteManager;
@@ -19,7 +19,7 @@ public class MapLayerBean extends GraphicLayer {
   private SpriteManager sprites;
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   @Override
   public int getIndex() {

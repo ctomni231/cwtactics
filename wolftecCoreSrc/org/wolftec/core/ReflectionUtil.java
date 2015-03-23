@@ -66,4 +66,8 @@ public abstract class ReflectionUtil {
   public static void setProperty(Object object, String property, Object value) {
     JsExec.injectJS("object[property] = value");
   }
+
+  public static <T> T getProperty(Object object, String property) {
+    return JsExec.injectJS("object[property]");
+  }
 }

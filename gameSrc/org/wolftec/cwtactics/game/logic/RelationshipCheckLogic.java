@@ -2,11 +2,11 @@ package org.wolftec.cwtactics.game.logic;
 
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Player;
-import org.wolftec.cwtactics.game.model.PlayerObject;
-import org.wolftec.cwtactics.game.model.Tile;
-import org.wolftec.cwtactics.game.model.Unit;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Player;
+import org.wolftec.cwtactics.game.domain.model.PlayerObject;
+import org.wolftec.cwtactics.game.domain.model.Tile;
+import org.wolftec.cwtactics.game.domain.model.Unit;
 
 /**
  *
@@ -15,7 +15,7 @@ import org.wolftec.cwtactics.game.model.Unit;
 public class RelationshipCheckLogic {
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   public enum RelationshipCheckMode {
 

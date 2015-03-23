@@ -4,22 +4,22 @@ import org.stjs.javascript.JSGlobal;
 import org.wolftec.core.Injected;
 import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.ai.ObjectTypesBean;
-import org.wolftec.cwtactics.game.model.GameMapBean;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Property;
-import org.wolftec.cwtactics.game.model.PropertyType;
-import org.wolftec.cwtactics.game.model.Tile;
-import org.wolftec.cwtactics.game.model.Unit;
+import org.wolftec.cwtactics.game.domain.managers.TypeManager;
+import org.wolftec.cwtactics.game.domain.model.Map;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Property;
+import org.wolftec.cwtactics.game.domain.model.Tile;
+import org.wolftec.cwtactics.game.domain.model.Unit;
+import org.wolftec.cwtactics.game.domain.types.PropertyType;
 
 @ManagedComponent
 public class SpecialWeaponsLogic {
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
   
   @Injected
-  private ObjectTypesBean types;
+  private TypeManager types;
   
   @Injected
   private LifecycleLogic lifecycle;
@@ -56,7 +56,7 @@ public class SpecialWeaponsLogic {
   }
 
   public void fireLaser(int x, int y) {
-    GameMapBean map = gameround.getMap();
+    Map map = gameround.getMap();
     Property prop = map.getTile(x, y).property;
 
     int xe, ye;
