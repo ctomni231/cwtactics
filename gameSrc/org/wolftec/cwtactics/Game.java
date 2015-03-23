@@ -20,6 +20,10 @@ public abstract class Game {
     ManagerOptions options = null;
 
     engine = new ComponentManager(options);
+
+    engine.onPostInit = (manager) -> {
+      // TODO manually init wCore and wPlay components
+    };
   }
 
   /**

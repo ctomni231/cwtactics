@@ -4,77 +4,7 @@ package org.wolftec.cwtactics;
 import org.stjs.javascript.functions.Callback0;
 
 public class ImageTransfer {
-/**
- *
- * @param type
- * @param path
- * @param imgType
- * @param callback
- */
-public void transferImageFromStorage (String type, String path, Object imgType, Callback0 callback) {
-    storage.get(type, function (obj) {
-        if (obj.value) {
-            // is in the cache
-            image.sprites[type] = this.jSONtoColoredSprite_(obj.value);
-            callback();
-
-        } else {
-            // not in the cache
-            var img = new Image();
-            img.src = path;
-
-            img.onload = function () {
-                var sprite;
-
-                switch (imgType) {
-                    case image.TYPE_UNIT:
-                        sprite = cwt.Image.createUnitSprites();
-                        break;
-
-                    case image.TYPE_PROPERTY:
-                        sprite = cwt.Image.createPropertySprites();
-                        break;
-
-                    case image.TYPE_TILE:
-                        sprite = cwt.Image.createTileSprites();
-                        break;
-                }
-
-                // saveGameConfig image in the cache
-                exports.transferImagesToStorage(type, sprite, callback);
-            };
-
-            // failed to loadGameConfig the image data
-            img.onerror = function () {
-                require("../error").raiseError("could not loadGameConfig image for " + type + " at location " + path, "");
-            };
-        }
-    });
-}
-
-/**
- *
- * @param callback
- */
-public void transferAllImagesToStorage (Callback0 callback) {
-    if (constants.DEBUG) console.log("persist all images in the cache");
-
-    var stuff = [];
-
-    Object.keys(image.sprites).forEach(function (key) {
-        stuff.push(function (next) {
-            storage.set(IMAGE_KEY + key, image.Sprite.toJSON(image.sprites[key]), function () {
-                next();
-            });
-        });
-    });
-
-    async.sequence(stuff, function () {
-        if (constants.DEBUG) console.log("completed image persist process");
-        callback();
-    });
-}
-
+  
 /**
  *
  * @param callback

@@ -7,10 +7,10 @@ import org.wolftec.core.ManagedComponent;
 import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.game.domain.menu.ActionMenu;
+import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Tile;
 import org.wolftec.cwtactics.game.logic.MoveCode;
-import org.wolftec.cwtactics.game.model.ActionMenu;
-import org.wolftec.cwtactics.game.model.GameRoundBean;
-import org.wolftec.cwtactics.game.model.Tile;
 import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
 import org.wolftec.cwtactics.system.layergfx.ScreenManager;
 import org.wolftec.cwtactics.system.state.StateManager;
@@ -26,7 +26,7 @@ public class StateDataBean implements ManagedComponentInitialization {
   private ScreenManager screen;
 
   @Injected
-  private GameRoundBean gameround;
+  private GameManager gameround;
 
   @Injected
   private UserInterfaceLayerBean uiLayer;
@@ -160,8 +160,8 @@ public class StateDataBean implements ManagedComponentInitialization {
     MoveCode moveCode = null;
     if (x <= 3) moveCode = MoveCode.RIGHT;
     if (y <= 3) moveCode = MoveCode.DOWN;
-    if (x >= Constants.SCREEN_WIDTH - 3) moveCode = MoveCode.LEFT;
-    if (y >= Constants.SCREEN_HEIGHT - 3) moveCode = MoveCode.UP;
+    if (x >= screen.width - 3) moveCode = MoveCode.LEFT;
+    if (y >= screen.height - 3) moveCode = MoveCode.UP;
 
     // do possible screen shift
     if (moveCode != null) {

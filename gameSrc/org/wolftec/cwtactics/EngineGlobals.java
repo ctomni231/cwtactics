@@ -168,6 +168,10 @@ public abstract class EngineGlobals extends ManagerOptions {
   */
   public static final String NO_MOVE = "NO_MOVE";
 
+  public static final String PARAM_RESET_DATA = "forceResetData";
+
+  public static final String CONFIRM_NOT_SUPPORTED_BROWSER_MESSAGE = "Your web browser isn't supported... run game anyway?";
+
   public static final int LAYER_BG = 0;
   public static final int LAYER_BG_FRAMES = 1;
   public static final int LAYER_BG_FRAMETIME = 0;

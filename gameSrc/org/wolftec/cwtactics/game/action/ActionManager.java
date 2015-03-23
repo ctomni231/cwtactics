@@ -94,7 +94,7 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
 
       case ActionConstants.WAIT:
         // TODO full re-render.. maybe a little bit to much huh ?
-        gameround.getUnit(p1).canAct = false;
+        gameround.units.$get(p1).canAct = false;
         unitLayer.onFullScreenRender();
         break;
 
@@ -105,15 +105,15 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
         break;
 
       case ActionConstants.HIDE:
-        gameround.getUnit(p1).hidden = true;
+        gameround.units.$get(p1).hidden = true;
         break;
 
       case ActionConstants.UNHIDE:
-        gameround.getUnit(p1).hidden = false;
+        gameround.units.$get(p1).hidden = false;
         break;
 
       case ActionConstants.TRANSFER_MONEY:
-        transfer.transferMoney(gameround.getPlayer(p1), gameround.getPlayer(p2), p3);
+        transfer.transferMoney(gameround.players.$get(p1), gameround.players.$get(p2), p3);
         break;
     }
   }

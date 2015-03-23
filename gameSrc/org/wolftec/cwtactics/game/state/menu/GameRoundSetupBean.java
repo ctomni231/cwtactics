@@ -184,7 +184,7 @@ public class GameRoundSetupBean {
     // update model
     int turnOwnerTeam = gameround.turnOwner.team;
     for (int i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
-      Player player = gameround.getPlayer(i);
+      Player player = gameround.players.$get(i);
 
       if (type.$get(i) >= 0) {
 

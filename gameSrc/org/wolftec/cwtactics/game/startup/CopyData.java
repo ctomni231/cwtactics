@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.domain.managers;
+package org.wolftec.cwtactics.game.startup;
 
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
@@ -13,13 +13,13 @@ import org.wolftec.persistence.ReadOnlyHtmlVfs;
 import org.wolftec.persistence.VirtualFilesystemManager;
 
 /**
- * The {@link CopyDataManager} will be registered as the most important
+ * The {@link CopyData} will be registered as the most important
  * {@link GameLoadingHandler}. This must be done to make sure that we can copy
  * the remote file system as first game loading action if the local file system
  * is empty.
  */
 @ManagedComponent
-public class CopyDataManager implements GameLoadingHandler {
+public class CopyData implements GameLoadingHandler {
 
   @ManagedConstruction
   private Logger log;
@@ -77,7 +77,7 @@ public class CopyDataManager implements GameLoadingHandler {
   @Override
   public int getLoadPriority() {
     // make sure that the copy job will be called as first handler
-    return 99999999;
+    return 99;
   }
 
 }

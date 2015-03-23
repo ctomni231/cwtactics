@@ -84,19 +84,6 @@ public class GameManager implements ManagedComponentInitialization {
     return null;
   }
 
-  /**
-   * 
-   * @param id
-   * @return
-   */
-  public Player getPlayer(int id) {
-    if (id < 0 || id >= players.$length()) {
-      throw new Error("InvalidPlayerIdException");
-    }
-
-    return players.$get(id);
-  }
-
   public int getMaxAmountOfUnits() {
     return units.$length();
   }

@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.system.input;
+package org.wolftec.cwtactics.game.state;
 
 public abstract class InputAction {
 

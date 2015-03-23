@@ -54,7 +54,7 @@ public class LifecycleLogic {
     player.team = EngineGlobals.INACTIVE_ID;
 
     for (int i = 0, e = gameround.getMaxAmountOfUnits(); i < e; i++) {
-      Unit unit = gameround.getUnit(i);
+      Unit unit = gameround.units.$get(i);
       if (unit.owner == player) {
         // TODO
       }
@@ -62,7 +62,7 @@ public class LifecycleLogic {
 
     // drop properties
     for (int i = 0, e = gameround.getMaxAmountOfProperties(); i < e; i++) {
-      Property prop = gameround.getProperty(i);
+      Property prop = gameround.properties.$get(i);
       if (prop.owner == player) {
         capture.makeNeutral(prop);
 
@@ -211,7 +211,7 @@ public class LifecycleLogic {
     // the active client can see what his and all allied objects can see
     int clTid = gameround.lastClientPlayer.team;
     for (int i = 0, e = EngineGlobals.MAX_PLAYER; i < e; i++) {
-      Player cPlayer = gameround.getPlayer(i);
+      Player cPlayer = gameround.players.$get(i);
 
       cPlayer.turnOwnerVisible = false;
       cPlayer.clientVisible = false;
