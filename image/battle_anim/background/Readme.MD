@@ -81,7 +81,7 @@
 * [x] *APRT* = Airport
 * [x] *PORT* = Seaport
 * [x] *CMTR* = Communication-Tower
-* [ ] *SILO* = Missile Silo
+* [x] *SILO* = Missile Silo
 * [ ] *PLTF* = Missile Silo Platform
 * [x] *RDAR* = Radar
 * [x] *TAPT* = Temporary Airport
