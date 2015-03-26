@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.domain.types;
 
-import org.wolftec.validation.validators.StringValue;
+import org.wolftec.wCore.validation.validators.StringValue;
 
 public abstract class ObjectType {
 

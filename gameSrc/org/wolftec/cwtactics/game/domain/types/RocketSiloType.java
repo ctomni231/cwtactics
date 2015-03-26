@@ -1,9 +1,9 @@
 package org.wolftec.cwtactics.game.domain.types;
 
 import org.stjs.javascript.Array;
-import org.wolftec.validation.DataObject;
-import org.wolftec.validation.validators.IntValue;
-import org.wolftec.validation.validators.StringValue;
+import org.wolftec.wCore.validation.DataObject;
+import org.wolftec.wCore.validation.validators.IntValue;
+import org.wolftec.wCore.validation.validators.StringValue;
 
 @DataObject
 public class RocketSiloType {

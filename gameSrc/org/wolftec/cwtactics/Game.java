@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics;
 
-import org.wolftec.core.ComponentManager;
-import org.wolftec.core.JsUtil;
-import org.wolftec.core.ManagerOptions;
+import org.wolftec.wCore.core.ComponentManager;
+import org.wolftec.wCore.core.JsUtil;
+import org.wolftec.wCore.core.ManagerOptions;
 
 public abstract class Game {
 

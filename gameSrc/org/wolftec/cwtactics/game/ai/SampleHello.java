@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.ai;
 
-import org.wolftec.cwtactics.system.decision.Action;
-import org.wolftec.log.Logger;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wPlay.decision.Action;
 
 public class SampleHello implements Action {
   

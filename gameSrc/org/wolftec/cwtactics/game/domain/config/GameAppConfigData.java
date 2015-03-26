@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.domain.config;
 
-import org.wolftec.validation.DataObject;
-import org.wolftec.validation.validators.BooleanValue;
+import org.wolftec.wCore.validation.DataObject;
+import org.wolftec.wCore.validation.validators.BooleanValue;
 
 @DataObject
 public class GameAppConfigData {

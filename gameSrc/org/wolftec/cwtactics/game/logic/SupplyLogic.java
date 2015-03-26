@@ -2,13 +2,13 @@ package org.wolftec.cwtactics.game.logic;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
 import org.wolftec.cwtactics.game.domain.model.Property;
 import org.wolftec.cwtactics.game.domain.model.Tile;
 import org.wolftec.cwtactics.game.domain.model.Unit;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
 
 @ManagedComponent
 public class SupplyLogic {

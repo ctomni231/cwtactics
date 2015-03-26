@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.state.menu;
 
-import org.wolftec.cwtactics.system.state.MenuState;
+import org.wolftec.wPlay.state.MenuState;
 
 public class PlayerSetupState implements MenuState {
 

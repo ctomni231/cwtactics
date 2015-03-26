@@ -1,9 +1,9 @@
 package org.wolftec.cwtactics.game.state.system;
 
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.cwtactics.system.input.LiveInputManager;
-import org.wolftec.cwtactics.system.state.InGameState;
-import org.wolftec.cwtactics.system.state.StateManager;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wPlay.input.LiveInputManager;
+import org.wolftec.wPlay.state.InGameState;
+import org.wolftec.wPlay.state.StateManager;
 
 /**
  * 

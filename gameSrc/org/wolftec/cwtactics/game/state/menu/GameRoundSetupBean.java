@@ -2,9 +2,6 @@ package org.wolftec.cwtactics.game.state.menu;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.managers.TypeManager;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
@@ -13,7 +10,10 @@ import org.wolftec.cwtactics.game.domain.model.Player;
 import org.wolftec.cwtactics.game.domain.types.MapFileType;
 import org.wolftec.cwtactics.game.logic.ChangeMode;
 import org.wolftec.cwtactics.game.logic.LifecycleLogic;
-import org.wolftec.log.Logger;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
 
 @ManagedComponent
 public class GameRoundSetupBean {

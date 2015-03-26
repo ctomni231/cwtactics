@@ -2,17 +2,17 @@ package org.wolftec.cwtactics.game.domain.types;
 
 import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.validation.DataObject;
-import org.wolftec.validation.validators.IntValue;
-import org.wolftec.validation.validators.StringKey;
+import org.wolftec.wCore.validation.DataObject;
+import org.wolftec.wCore.validation.validators.IntValue;
+import org.wolftec.wCore.validation.validators.StringKey;
 
 @DataObject
 public class AttackType {
 
-  @IntValue(min = 1, max = EngineGlobals.MAX_SELECTION_RANGE)
+  @IntValue(min = 1, max = EngineGlobals.MAX_SELECTION_RANGE, defaultValue = 1)
   public Integer minrange;
-  
-  @IntValue(min = 2, max = EngineGlobals.MAX_SELECTION_RANGE)
+
+  @IntValue(min = 2, max = EngineGlobals.MAX_SELECTION_RANGE, defaultValue = 1)
   public Integer maxrange;
 
   @StringKey(minLength = 4, maxLength = 4)

@@ -1,13 +1,13 @@
 package org.wolftec.cwtactics.game.state.system;
 
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedConstruction;
-import org.wolftec.cwtactics.system.loading.ElementLoadedListener;
-import org.wolftec.cwtactics.system.loading.GameLoadingManager;
-import org.wolftec.cwtactics.system.state.State;
-import org.wolftec.cwtactics.system.state.StateManager;
-import org.wolftec.log.Logger;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wPlay.loading.ElementLoadedListener;
+import org.wolftec.wPlay.loading.GameLoadingManager;
+import org.wolftec.wPlay.state.State;
+import org.wolftec.wPlay.state.StateManager;
 
 @ManagedComponent
 public class LoadAssetsState implements State, ElementLoadedListener {

@@ -1,11 +1,11 @@
 package org.wolftec.cwtactics.game.logic;
 
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
 import org.wolftec.cwtactics.game.domain.model.CoPowerLevel;
 import org.wolftec.cwtactics.game.domain.model.Player;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
 
 @ManagedComponent
 public class CommanderLogic {
@@ -95,5 +95,12 @@ public class CommanderLogic {
    */
   public void deactivatePower(Player player) {
     player.activePower = CoPowerLevel.OFF;
+  }
+
+  public void modifyStarPower(Player player, int power) {
+    player.power += power;
+    if (player.power < 0) {
+      player.power = 0;
+    }
   }
 }

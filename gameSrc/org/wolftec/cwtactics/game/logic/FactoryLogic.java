@@ -2,8 +2,6 @@ package org.wolftec.cwtactics.game.logic;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
 import org.wolftec.cwtactics.game.domain.managers.TypeManager;
@@ -11,6 +9,8 @@ import org.wolftec.cwtactics.game.domain.menu.ActionMenu;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
 import org.wolftec.cwtactics.game.domain.model.Property;
 import org.wolftec.cwtactics.game.domain.types.UnitType;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
 
 @ManagedComponent
 public class FactoryLogic {

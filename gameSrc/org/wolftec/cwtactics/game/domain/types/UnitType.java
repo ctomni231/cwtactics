@@ -2,11 +2,11 @@ package org.wolftec.cwtactics.game.domain.types;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.validation.DataObject;
-import org.wolftec.validation.validators.BooleanValue;
-import org.wolftec.validation.validators.DataObjectValue;
-import org.wolftec.validation.validators.IntValue;
-import org.wolftec.validation.validators.StringValue;
+import org.wolftec.wCore.validation.DataObject;
+import org.wolftec.wCore.validation.validators.BooleanValue;
+import org.wolftec.wCore.validation.validators.DataObjectValue;
+import org.wolftec.wCore.validation.validators.IntValue;
+import org.wolftec.wCore.validation.validators.StringValue;
 
 @DataObject
 public class UnitType extends ObjectType {

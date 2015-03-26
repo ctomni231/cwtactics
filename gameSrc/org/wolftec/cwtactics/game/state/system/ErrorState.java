@@ -3,17 +3,17 @@ package org.wolftec.cwtactics.game.state.system;
 import org.stjs.javascript.Date;
 import org.stjs.javascript.dom.Form;
 import org.stjs.javascript.dom.Input;
-import org.wolftec.core.BrowserUtil;
-import org.wolftec.core.ComponentManager;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedComponentInitialization;
-import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
-import org.wolftec.cwtactics.system.gui.UiContainer;
-import org.wolftec.cwtactics.system.state.State;
-import org.wolftec.cwtactics.system.state.StateManager;
-import org.wolftec.log.Logger;
+import org.wolftec.wCore.core.BrowserUtil;
+import org.wolftec.wCore.core.ComponentManager;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedComponentInitialization;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wPlay.gui.UiContainer;
+import org.wolftec.wPlay.state.State;
+import org.wolftec.wPlay.state.StateManager;
 
 @ManagedComponent
 public class ErrorState implements State, ManagedComponentInitialization {

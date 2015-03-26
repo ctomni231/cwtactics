@@ -1,11 +1,11 @@
 package org.wolftec.cwtactics.game.state.system;
 
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
-import org.wolftec.cwtactics.system.input.LiveInputManager;
-import org.wolftec.cwtactics.system.state.State;
-import org.wolftec.cwtactics.system.state.StateManager;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wPlay.input.LiveInputManager;
+import org.wolftec.wPlay.state.State;
+import org.wolftec.wPlay.state.StateManager;
 
 @ManagedComponent
 public class PortraitModeState implements State {

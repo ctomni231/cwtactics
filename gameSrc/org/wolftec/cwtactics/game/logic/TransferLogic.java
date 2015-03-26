@@ -1,9 +1,9 @@
 package org.wolftec.cwtactics.game.logic;
 
-import org.wolftec.core.Injected;
 import org.wolftec.cwtactics.game.domain.model.Player;
 import org.wolftec.cwtactics.game.domain.model.Property;
 import org.wolftec.cwtactics.game.domain.model.Unit;
+import org.wolftec.wCore.core.Injected;
 
 public class TransferLogic {
 

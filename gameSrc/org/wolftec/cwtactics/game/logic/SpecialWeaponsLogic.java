@@ -1,26 +1,25 @@
 package org.wolftec.cwtactics.game.logic;
 
 import org.stjs.javascript.JSGlobal;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.managers.TypeManager;
-import org.wolftec.cwtactics.game.domain.model.Map;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
 import org.wolftec.cwtactics.game.domain.model.Property;
 import org.wolftec.cwtactics.game.domain.model.Tile;
 import org.wolftec.cwtactics.game.domain.model.Unit;
 import org.wolftec.cwtactics.game.domain.types.PropertyType;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
 
 @ManagedComponent
 public class SpecialWeaponsLogic {
 
   @Injected
   private GameManager gameround;
-  
+
   @Injected
   private TypeManager types;
-  
+
   @Injected
   private LifecycleLogic lifecycle;
 
@@ -56,8 +55,7 @@ public class SpecialWeaponsLogic {
   }
 
   public void fireLaser(int x, int y) {
-    Map map = gameround.getMap();
-    Property prop = map.getTile(x, y).property;
+    Property prop = gameround.getTile(x, y).property;
 
     int xe, ye;
     int ox = x;
@@ -66,20 +64,20 @@ public class SpecialWeaponsLogic {
     int damage = Unit.pointsToHealth(prop.type.laser.damage);
 
     // every tile on the cross ( same y or x coordinate ) will be damaged
-    for (x = 0, xe = gameround.getMapWidth(); x < xe; x++) {
+    for (x = 0, xe = gameround.mapWidth; x < xe; x++) {
       boolean doIt = false;
 
       if (x == ox) {
-        for (y = 0, ye = gameround.getMapHeight(); y < ye; y++) {
+        for (y = 0, ye = gameround.mapHeight; y < ye; y++) {
           if (oy != y) {
-            Unit unit = map.getTile(x, y).unit;
+            Unit unit = gameround.getTile(x, y).unit;
             if (unit != null && unit.owner.team != savedTeam) {
               lifecycle.damageUnit(unit, damage, 9);
             }
           }
         }
       } else {
-        Unit unit = map.getTile(x, y).unit;
+        Unit unit = gameround.getTile(x, y).unit;
         if (unit != null && unit.owner.team != savedTeam) {
           lifecycle.damageUnit(unit, damage, 9);
         }
@@ -174,7 +172,7 @@ public class SpecialWeaponsLogic {
     }
 
     // TODO use command from attack here
-    lifecycle.destroyUnit(x, y, false);
+    lifecycle.destroyUnit(tile.unit, false);
 
     gameround.doInRange(x, y, range, this::doDamage, damage);
   }

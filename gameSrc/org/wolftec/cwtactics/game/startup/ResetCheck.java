@@ -3,14 +3,14 @@ package org.wolftec.cwtactics.game.startup;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.core.BrowserUtil;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.system.loading.GameLoadingHandler;
-import org.wolftec.log.Logger;
-import org.wolftec.persistence.VirtualFilesystemManager;
+import org.wolftec.wCore.core.BrowserUtil;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wCore.persistence.VirtualFilesystemManager;
+import org.wolftec.wPlay.loading.GameLoadingHandler;
 
 @ManagedComponent
 public class ResetCheck implements GameLoadingHandler {
@@ -26,7 +26,7 @@ public class ResetCheck implements GameLoadingHandler {
     if (BrowserUtil.getUrlParameter(EngineGlobals.PARAM_RESET_DATA) == "1") {
       fs.purgeKeys("", (err) -> {
         if (err != null) {
-          LOG.error("FailtedToPurgeStorage");
+          LOG.error("FailedToPurgeStorage");
 
         } else {
           Global.window.document.location.reload();

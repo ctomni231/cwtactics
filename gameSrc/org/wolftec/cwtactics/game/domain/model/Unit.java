@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.domain.model;
 
-import org.wolftec.core.ConvertUtility;
 import org.wolftec.cwtactics.game.domain.types.UnitType;
-import org.wolftec.validation.validators.IntValue;
+import org.wolftec.wCore.core.ConvertUtility;
+import org.wolftec.wCore.validation.validators.IntValue;
 
 public class Unit implements PlayerOwnedObject {
 

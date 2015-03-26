@@ -1,8 +1,6 @@
 package org.wolftec.cwtactics.game.logic;
 
 import org.stjs.javascript.JSGlobal;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
 import org.wolftec.cwtactics.game.domain.managers.TypeManager;
@@ -12,9 +10,15 @@ import org.wolftec.cwtactics.game.domain.model.Property;
 import org.wolftec.cwtactics.game.domain.model.Tile;
 import org.wolftec.cwtactics.game.domain.model.Unit;
 import org.wolftec.cwtactics.game.domain.types.UnitType;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.JsUtil;
+import org.wolftec.wCore.core.ManagedComponent;
 
 @ManagedComponent
 public class LifecycleLogic {
+
+  @Injected
+  private ObjectFinderBean objectfinder;
 
   @Injected
   private FogLogic fog;
@@ -97,15 +101,21 @@ public class LifecycleLogic {
 
   /**
    * Damages a unit.
-   *
+   * 
+   * @param unit
    * @param damage
    * @param minRest
    */
   public void damageUnit(Unit unit, int damage, int minRest) {
     if (damage == 0) return;
 
+    if (minRest < 0) {
+      JsUtil.raiseError("IllegalArgument: minRest");
+    }
+
     unit.hp = unit.hp - damage;
     if (unit.hp < minRest) unit.hp = minRest;
+    if (unit.hp < 0) unit.hp = 0;
   }
 
   /**
@@ -147,7 +157,11 @@ public class LifecycleLogic {
     fog.addUnitVision(x, y, player);
   }
 
-  public void destroyUnit(int x, int y, boolean silent) {
+  public void destroyUnit(Unit unit, boolean silent) {
+    int unitPos = objectfinder.findUnit(unit);
+    int x = objectfinder.getX(unitPos);
+    int y = objectfinder.getY(unitPos);
+
     Tile tile = gameround.getTile(x, y);
     fog.removeUnitVision(x, y, tile.unit.owner);
 

@@ -3,14 +3,14 @@ package org.wolftec.cwtactics.game.renderer;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
 import org.wolftec.cwtactics.game.domain.model.Tile;
 import org.wolftec.cwtactics.game.logic.MoveCode;
-import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
-import org.wolftec.cwtactics.system.layergfx.SpriteManager;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wPlay.layergfx.GraphicLayer;
+import org.wolftec.wPlay.layergfx.SpriteManager;
 
 @ManagedComponent
 public class FogLayerBean extends GraphicLayer {

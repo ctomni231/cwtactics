@@ -5,10 +5,6 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.core.BrowserUtil;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.types.ArmyType;
 import org.wolftec.cwtactics.game.domain.types.CoType;
@@ -18,9 +14,13 @@ import org.wolftec.cwtactics.game.domain.types.PropertyType;
 import org.wolftec.cwtactics.game.domain.types.TileType;
 import org.wolftec.cwtactics.game.domain.types.UnitType;
 import org.wolftec.cwtactics.game.domain.types.WeatherType;
-import org.wolftec.log.Logger;
-import org.wolftec.persistence.DataTypeConverter;
-import org.wolftec.persistence.VirtualFilesystemManager;
+import org.wolftec.wCore.core.BrowserUtil;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wCore.persistence.DataTypeConverter;
+import org.wolftec.wCore.persistence.VirtualFilesystemManager;
 
 @ManagedComponent
 public class TypeManager {

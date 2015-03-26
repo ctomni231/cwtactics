@@ -2,14 +2,14 @@ package org.wolftec.cwtactics.game.renderer;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.state.StateDataBean;
-import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
-import org.wolftec.cwtactics.system.layergfx.ScreenManager;
-import org.wolftec.cwtactics.system.layergfx.Sprite;
-import org.wolftec.cwtactics.system.layergfx.SpriteManager;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wPlay.layergfx.GraphicLayer;
+import org.wolftec.wPlay.layergfx.ScreenManager;
+import org.wolftec.wPlay.layergfx.Sprite;
+import org.wolftec.wPlay.layergfx.SpriteManager;
 
 /**
  * All user interface stuff will be rendered into this layer. It's the top front

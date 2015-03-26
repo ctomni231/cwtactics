@@ -1,10 +1,10 @@
 package org.wolftec.cwtactics.game.logic;
 
-import org.wolftec.core.Injected;
-import org.wolftec.core.JsUtil;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
 import org.wolftec.cwtactics.game.domain.model.Unit;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.JsUtil;
+import org.wolftec.wCore.core.ManagedComponent;
 
 @ManagedComponent
 public class JoinLogic {
@@ -19,10 +19,10 @@ public class JoinLogic {
   private GameManager gameround;
 
   /**
-   * Returns **true** if two units can join each other, else **false**. In
-   * general both **source** and **target** has to be units of the same type and
-   * the target must have 9 or less health points. Transporters cannot join each
-   * other when they contain loaded units.
+   * Returns true if two units can join each other, else false. In general both
+   * source and target has to be units of the same type and the target must have
+   * 9 or less health points. Transporters cannot join each other when they
+   * contain loaded units.
    *
    * @param source
    * @param target
@@ -61,7 +61,7 @@ public class JoinLogic {
     }
 
     Unit target = gameround.getTile(x, y).unit;
-    
+
     if (source.type != target.type) {
       JsUtil.raiseError("IncompatibleJoinTypes");
     }
@@ -84,6 +84,6 @@ public class JoinLogic {
     // TODO experience points
 
     // TODO use correct action here
-    lifecycle.destroyUnit(x, y, true);
+    lifecycle.destroyUnit(source, true);
   }
 }

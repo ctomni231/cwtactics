@@ -1,9 +1,9 @@
 package org.wolftec.cwtactics.game.renderer;
 
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
-import org.wolftec.cwtactics.system.layergfx.Sprite;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wPlay.layergfx.GraphicLayer;
+import org.wolftec.wPlay.layergfx.Sprite;
 
 /**
  * Background layer contains the background image of the screen. It's visible in

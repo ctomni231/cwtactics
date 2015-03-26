@@ -1,11 +1,11 @@
 package org.wolftec.cwtactics.game.domain.managers;
 
-import org.wolftec.container.CircularBuffer;
-import org.wolftec.core.ComponentManager;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
+import org.wolftec.wCore.container.CircularBuffer;
+import org.wolftec.wCore.core.ComponentManager;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedComponentInitialization;
+import org.wolftec.wPlay.layergfx.DirectionUtil.Direction;
 
 @ManagedComponent
 public class MovePathCache implements ManagedComponentInitialization {

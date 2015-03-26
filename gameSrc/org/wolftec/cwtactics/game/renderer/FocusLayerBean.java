@@ -6,13 +6,13 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
-import org.wolftec.cwtactics.system.layergfx.GraphicLayer;
-import org.wolftec.cwtactics.system.layergfx.Sprite;
-import org.wolftec.cwtactics.system.layergfx.SpriteManager;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wPlay.layergfx.GraphicLayer;
+import org.wolftec.wPlay.layergfx.Sprite;
+import org.wolftec.wPlay.layergfx.SpriteManager;
+import org.wolftec.wPlay.layergfx.DirectionUtil.Direction;
 
 @ManagedComponent
 @LayerIndex(EngineGlobals.LAYER_FOCUS)
@@ -92,14 +92,14 @@ public class FocusLayerBean extends GraphicLayer {
     int tch;
 
     Sprite sprite = sprites.getSprite("FOCUS");
-    Element spriteImg = sprite.getImage(org.wolftec.cwtactics.test.gameWorkflowData.focusMode);
+    Element spriteImg = sprite.getImage(org.wolftec.wCore.gameWorkflowData.focusMode);
 
     int oy = y;
     int ye;
     for (int xe = x + w; x < xe; x++) {
       for (y = oy, ye = y + h; y < ye; y++) {
 
-        if (org.wolftec.cwtactics.test.gameWorkflowData.selection.getValue(x, y) >= 0) {
+        if (org.wolftec.wCore.gameWorkflowData.selection.getValue(x, y) >= 0) {
 
           // render all phases
           int n = 0;

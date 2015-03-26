@@ -3,15 +3,15 @@ package org.wolftec.cwtactics.game.domain.model;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback3;
-import org.wolftec.core.ComponentManager;
-import org.wolftec.core.ConvertUtility;
-import org.wolftec.core.JsUtil;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedComponentInitialization;
-import org.wolftec.core.ReflectionUtil;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.types.WeatherType;
-import org.wolftec.cwtactics.system.fnc.Function5;
+import org.wolftec.wCore.core.ComponentManager;
+import org.wolftec.wCore.core.ConvertUtility;
+import org.wolftec.wCore.core.JsUtil;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedComponentInitialization;
+import org.wolftec.wCore.core.ReflectionUtil;
+import org.wolftec.wPlay.fnc.Function5;
 
 @ManagedComponent
 public class GameManager implements ManagedComponentInitialization {

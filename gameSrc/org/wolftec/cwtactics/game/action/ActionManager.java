@@ -1,23 +1,23 @@
 package org.wolftec.cwtactics.game.action;
 
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.container.CircularBuffer;
-import org.wolftec.core.ComponentManager;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedComponentInitialization;
-import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.game.domain.menu.ActionMenu;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
 import org.wolftec.cwtactics.game.domain.model.Unit;
 import org.wolftec.cwtactics.game.logic.TransferLogic;
 import org.wolftec.cwtactics.game.renderer.UnitLayerBean;
 import org.wolftec.cwtactics.game.state.StateDataBean;
-import org.wolftec.cwtactics.system.network.NetworkBackend;
-import org.wolftec.cwtactics.system.state.ActionQueueHandler;
-import org.wolftec.cwtactics.system.state.StateManager;
-import org.wolftec.log.Logger;
-import org.wolftec.persistence.DataTypeConverter;
+import org.wolftec.wCore.container.CircularBuffer;
+import org.wolftec.wCore.core.ComponentManager;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedComponentInitialization;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wCore.persistence.DataTypeConverter;
+import org.wolftec.wPlay.network.NetworkBackend;
+import org.wolftec.wPlay.state.ActionQueueHandler;
+import org.wolftec.wPlay.state.StateManager;
 
 @ManagedComponent
 public class ActionManager implements ActionQueueHandler<ActionItem>,
@@ -91,12 +91,6 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
   public void invokeAction(int actionKey, int p1, int p2, int p3, int p4, int p5) {
     String key = null;
     switch (key) {
-
-      case ActionConstants.WAIT:
-        // TODO full re-render.. maybe a little bit to much huh ?
-        gameround.units.$get(p1).canAct = false;
-        unitLayer.onFullScreenRender();
-        break;
 
       case ActionConstants.TO_OPTIONS:
         // TODO magic string

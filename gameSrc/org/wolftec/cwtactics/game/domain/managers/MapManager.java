@@ -2,16 +2,16 @@ package org.wolftec.cwtactics.game.domain.managers;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.core.ComponentManager;
-import org.wolftec.core.Injected;
-import org.wolftec.core.JsUtil;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedComponentInitialization;
-import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.game.domain.types.MapFileType;
-import org.wolftec.log.Logger;
-import org.wolftec.persistence.DataTypeConverter;
-import org.wolftec.persistence.VirtualFilesystemManager;
+import org.wolftec.wCore.core.ComponentManager;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.JsUtil;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedComponentInitialization;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wCore.persistence.DataTypeConverter;
+import org.wolftec.wCore.persistence.VirtualFilesystemManager;
 
 @ManagedComponent
 public class MapManager implements ManagedComponentInitialization {

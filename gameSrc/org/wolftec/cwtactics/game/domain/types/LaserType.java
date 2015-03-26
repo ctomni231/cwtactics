@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.domain.types;
 
-import org.wolftec.validation.DataObject;
-import org.wolftec.validation.validators.IntValue;
+import org.wolftec.wCore.validation.DataObject;
+import org.wolftec.wCore.validation.validators.IntValue;
 
 @DataObject
 public class LaserType {

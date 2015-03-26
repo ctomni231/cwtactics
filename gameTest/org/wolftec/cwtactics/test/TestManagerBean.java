@@ -1,10 +1,10 @@
 package org.wolftec.cwtactics.test;
 
-import org.wolftec.core.ComponentManager;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedComponentInitialization;
-import org.wolftec.gherkin.GherkinTestManager;
+import org.wolftec.wCore.core.ComponentManager;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedComponentInitialization;
+import org.wolftec.wCore.gherkin.GherkinTestManager;
 
 @ManagedComponent
 public class TestManagerBean implements ManagedComponentInitialization{

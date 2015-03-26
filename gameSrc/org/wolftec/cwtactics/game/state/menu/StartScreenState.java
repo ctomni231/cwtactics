@@ -1,16 +1,16 @@
 package org.wolftec.cwtactics.game.state.menu;
 
-import org.wolftec.core.ConvertUtility;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
 import org.wolftec.cwtactics.game.state.InputAction;
-import org.wolftec.cwtactics.system.audio.AudioManager;
-import org.wolftec.cwtactics.system.input.LiveInputManager;
-import org.wolftec.cwtactics.system.state.MenuState;
-import org.wolftec.cwtactics.system.state.StateManager;
-import org.wolftec.i18n.LocalizationManager;
+import org.wolftec.wCore.core.ConvertUtility;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.i18n.LocalizationManager;
+import org.wolftec.wPlay.audio.AudioManager;
+import org.wolftec.wPlay.input.LiveInputManager;
+import org.wolftec.wPlay.state.MenuState;
+import org.wolftec.wPlay.state.StateManager;
 
 @ManagedComponent
 public class StartScreenState implements MenuState {

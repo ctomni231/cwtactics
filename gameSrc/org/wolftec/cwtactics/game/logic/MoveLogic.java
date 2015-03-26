@@ -2,38 +2,45 @@ package org.wolftec.cwtactics.game.logic;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.container.ContainerUtil;
-import org.wolftec.container.MoveableMatrix;
-import org.wolftec.core.ComponentManager;
-import org.wolftec.core.Injected;
-import org.wolftec.core.JsExec;
-import org.wolftec.core.JsUtil;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedComponentInitialization;
 import org.wolftec.cwtactics.EngineGlobals;
-import org.wolftec.cwtactics.game.domain.managers.MovePathCache;
+import org.wolftec.cwtactics.game.domain.managers.TypeManager;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
+import org.wolftec.cwtactics.game.domain.model.Player;
 import org.wolftec.cwtactics.game.domain.model.Tile;
+import org.wolftec.cwtactics.game.domain.model.Unit;
 import org.wolftec.cwtactics.game.domain.types.MoveType;
-import org.wolftec.cwtactics.system.layergfx.DirectionUtil.Direction;
+import org.wolftec.cwtactics.game.domain.types.UnitType;
+import org.wolftec.wCore.container.CircularBuffer;
+import org.wolftec.wCore.container.ContainerUtil;
+import org.wolftec.wCore.container.MoveableMatrix;
+import org.wolftec.wCore.core.ComponentManager;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.JsExec;
+import org.wolftec.wCore.core.JsUtil;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedComponentInitialization;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wPlay.layergfx.DirectionUtil.Direction;
+import org.wolftec.wPlay.pathfinding.PathFinder;
 
 @ManagedComponent
 public class MoveLogic implements ManagedComponentInitialization {
 
+  @ManagedConstruction
+  private Logger LOG;
+
   @Injected
   private GameManager gameround;
 
-  /**
-   * Little helper array object for `model.move_fillMoveMap`. This will be used
-   * only by one process. If the helper is not available then a temporary object
-   * will be created in `model.move_fillMoveMap`. If the engine is used without
-   * client hacking then this situation never happen and the
-   * `model.move_fillMoveMap` will use this helper to prevent unnecessary array
-   * creation.
-   */
-  private Array<Integer> helper;
+  @Injected
+  private PathFinder pathfinder;
 
-  private Array<Integer> checkHelper;
+  @Injected
+  private FogLogic fog;
+
+  @Injected
+  private TypeManager types;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
@@ -129,49 +136,56 @@ public class MoveLogic implements ManagedComponentInitialization {
 
   /**
    * 
-   * @param source
-   * @param target
-   * @return
+   * @param sx
+   *          start position x
+   * @param sy
+   *          start position y
+   * @param path
+   *          path that will be checked and manipulated (when a block is given)
+   * @return true, when the path is blocked, else false
    */
-  public boolean trapCheck (Tile source, Tile target) {
-    var cBx;
-    var cBy;
-    var map = model.mapData;
-    var cx = source.x;
-    var cy = source.y;
-    var teamId = source.unit.owner.team;
-    for (var i = 0, e = movePath.size; i < e; i++) {
-        switch (movePath.) {
-            case exports.MOVE_CODES_DOWN:
-                cy++;
-                break;
+  public boolean stopPathWhenMoveTrapIsGiven(int sx, int sy, CircularBuffer<Direction> path) {
+    int cBx;
+    int cBy;
+    int cx = sx;
+    int cy = sy;
 
-            case exports.MOVE_CODES_UP:
-                cy--;
-                break;
+    Unit mover = gameround.getTile(sx, sy).unit;
+    if (mover == null) {
+      JsUtil.raiseError("MissingUnit");
+    }
 
-            case exports.MOVE_CODES_LEFT:
-                cx--;
-                break;
+    int teamId = mover.owner.team;
+    for (int i = 0, e = path.getSize(); i < e; i++) {
+      switch (path.get(i)) {
+        case DOWN:
+          cy++;
+          break;
 
-            case exports.MOVE_CODES_RIGHT:
-                cx++;
-                break;
-        }
+        case UP:
+          cy--;
+          break;
 
-        var unit = map[cx][cy].unit;
-        if (!unit) {
+        case LEFT:
+          cx--;
+          break;
 
-            // no unit there? then it's a valid position
-            cBx = cx;
-            cBy = cy;
+        case RIGHT:
+          cx++;
+          break;
+      }
 
-        } else if (teamId != unit.owner.team) {
-            target.set(cBx, cBy); // TODO: ? this looks ugly here...
-            movePath.data[i] = Constants.INACTIVE_ID;
+      Unit unit = gameround.getTile(cx, cy).unit;
+      if (unit == null) {
+        cBx = cx;
+        cBy = cy;
 
-            return true;
-        }
+        // allow moving through own and allied units, enemy units invokes a move
+        // block
+      } else if (teamId != unit.owner.team) {
+        path.set(i, null);
+        return true;
+      }
     }
 
     return false;
@@ -187,14 +201,23 @@ public class MoveLogic implements ManagedComponentInitialization {
    * @param tx
    * @param ty
    * @param selection
+   * @param path
+   *          (optional)
+   * @return
    */
-  public void generatePath(int stx, int sty, int tx, int ty, MoveableMatrix selection) {
-    Array<Direction> dirPath = pathfinder.findPath(selection, stx, sty, tx, ty);
+  public CircularBuffer<Direction> generatePath(int stx, int sty, int tx, int ty,
+      MoveableMatrix selection, CircularBuffer<Direction> path) {
 
-    path.clear();
-    for (int i = 0; i < path.getSize(); i++) {
+    Array<Direction> dirPath = pathfinder.findPath(selection, stx, sty, tx, ty);
+    if (path == null) {
+      path = new CircularBuffer<Direction>(EngineGlobals.MAX_SELECTION_RANGE);
+    }
+
+    for (int i = 0; i < dirPath.$length(); i++) {
       path.push(dirPath.$get(i));
     }
+
+    return path;
   }
 
   /**
@@ -204,8 +227,10 @@ public class MoveLogic implements ManagedComponentInitialization {
    * @return When the new code is the exact opposite direction of the last
    *         command in the path then true will be return else false
    */
-  public boolean isGoBackCommand(Direction code) {
-    if (path.getSize() == 0) return false;
+  public boolean isGoBackCommand(Direction code, CircularBuffer<Direction> path) {
+    if (path.getSize() == 0) {
+      return false;
+    }
 
     Direction lastCode = path.get(path.getSize() - 1);
     Direction goBackCode = null;
@@ -247,8 +272,10 @@ public class MoveLogic implements ManagedComponentInitialization {
    * @param sx
    * @param sy
    */
-  public boolean addCode(Direction code, MoveableMatrix selection, int sx, int sy) {
-    if (isGoBackCommand(code)) {
+  public boolean addCode(Direction code, CircularBuffer<Direction> path, MoveableMatrix selection,
+      int sx, int sy) {
+
+    if (isGoBackCommand(code, path)) {
       path.popLast();
       return true;
     }
@@ -299,6 +326,18 @@ public class MoveLogic implements ManagedComponentInitialization {
   }
 
   /**
+   * Little helper array object for `model.move_fillMoveMap`. This will be used
+   * only by one process. If the helper is not available then a temporary object
+   * will be created in `model.move_fillMoveMap`. If the engine is used without
+   * client hacking then this situation never happen and the
+   * `model.move_fillMoveMap` will use this helper to prevent unnecessary array
+   * creation.
+   */
+  private Array<Integer> helper;
+
+  private Array<Integer> checkHelper;
+
+  /**
    * Fills a **selection** map for move able tiles. If no explicit start
    * position (**x**,**y**) and moving **unit** is given, then the **source**
    * position object will be used to extract data.
@@ -309,66 +348,57 @@ public class MoveLogic implements ManagedComponentInitialization {
    * @param y
    * @param unit
    */
-  public void fillMoveMap (PositionData source, MoveableMatrix selection, int x, int y, Unit unit) {
-    // TODO: source and x,y,unit is kinda double definition of the same things
-    var cost;
+  public void fillMoveMap(int x, int y, Unit unit, MoveableMatrix selection) {
+
+    // TODO XXX remove complexity // may a circular buffer helps
+
+    int cost;
     Array<Integer> checker;
-    var map = model.mapData;
 
-    // grab object data from **source** position if no explicit position and unit data is given
-    if (typeof x !== "number") x = source.x;
-    if (typeof y !== "number") y = source.y;
-    if (!unit) unit = source.unit;
-
-    if (constants.DEBUG) assert(model.isValidPosition(x, y));
-
-    Array<Integer> toBeChecked;
-    var releaseHelper = false;
-    if (fillMoveMapHelper !== null) {
-
-        // use the cached array
-        toBeChecked = fillMoveMapHelper;
-        checker = checkArray;
-
-        // reset some stuff
-        for (var n = 0, ne = toBeChecked.length; n < ne; n++) {
-            toBeChecked[n] = EngineGlobals.INACTIVE_ID;
-        }
-        for (var n = 0, ne = checker.length; n < ne; n++) {
-            checker[n] = EngineGlobals.INACTIVE_ID;
-        }
-
-        // remove cache objects from the move logic object
-        fillMoveMapHelper = null;
-        checkArray = null;
-
-        releaseHelper = true;
-
-    } else {
-        LOG.warn("cannot use move cache variables => creating temporary ones as fallback");
-
-        // use a new arrays because cache objects aren't available
-        toBeChecked = ContainerUtil.createArray();
-        checker = ContainerUtil.createArray();
-        checker.push(
-            EngineGlobals.INACTIVE_ID,
-            EngineGlobals.INACTIVE_ID,
-            EngineGlobals.INACTIVE_ID,
-            EngineGlobals.INACTIVE_ID,
-            EngineGlobals.INACTIVE_ID,
-            EngineGlobals.INACTIVE_ID,
-            EngineGlobals.INACTIVE_ID,
-            EngineGlobals.INACTIVE_ID
-        );
+    if (!gameround.isValidPosition(x, y)) {
+      JsUtil.raiseError("IllegalPosition");
     }
 
-    var mType = sheets.movetypes.sheets[unit.type.movetype];
-    var range = unit.type.range;
-    var player = unit.owner;
+    Array<Integer> toBeChecked;
+    boolean releaseHelper = false;
+    if (helper != null) {
+
+      // use the cached array
+      toBeChecked = this.helper;
+      checker = this.checkHelper;
+
+      // reset some stuff
+      for (int n = 0, ne = toBeChecked.$length(); n < ne; n++) {
+        toBeChecked.$set(n, EngineGlobals.INACTIVE_ID);
+      }
+      for (int n = 0, ne = checker.$length(); n < ne; n++) {
+        checker.$set(n, EngineGlobals.INACTIVE_ID);
+      }
+
+      // remove cache objects from the move logic object
+      this.helper = null;
+      this.checkHelper = null;
+
+      releaseHelper = true;
+
+    } else {
+      LOG.warn("cannot use move cache variables => creating temporary ones as fallback");
+
+      // use a new arrays because cache objects aren't available
+      toBeChecked = ContainerUtil.createArray();
+      checker = ContainerUtil.createArray();
+      checker.push(EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID,
+          EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID,
+          EngineGlobals.INACTIVE_ID, EngineGlobals.INACTIVE_ID);
+    }
+
+    MoveType mType = types.getMoveType(unit.type.movetype);
+    int range = unit.type.range;
+    Player player = unit.owner;
 
     // decrease range if not enough fuel is available
     if (unit.fuel < range) {
-        range = unit.fuel;
+      range = unit.fuel;
     }
 
     // add start tile to the map
@@ -381,113 +411,115 @@ public class MoveLogic implements ManagedComponentInitialization {
     toBeChecked.$set(2, range);
 
     while (true) {
-        var cHigh = -1;
-        var cHighIndex = -1;
+      int cHigh = -1;
+      int cHighIndex = -1;
 
-        for (var i = 0, e = toBeChecked.length; i < e; i += 3) {
-            var leftPoints = toBeChecked[i + 2];
+      for (int i = 0, e = toBeChecked.$length(); i < e; i += 3) {
+        int leftPoints = toBeChecked.$get(i + 2);
 
-            if (leftPoints != undefined && leftPoints != Constants.INACTIVE_ID_ID) {
-                if (cHigh == -1 || leftPoints > cHigh) {
-                    cHigh = leftPoints;
-                    cHighIndex = i;
-                }
+        if (leftPoints != EngineGlobals.INACTIVE_ID) {
+          if (cHigh == -1 || leftPoints > cHigh) {
+            cHigh = leftPoints;
+            cHighIndex = i;
+          }
+        }
+      }
+      if (cHighIndex == -1) break;
+
+      int cx = toBeChecked.$get(cHighIndex);
+      int cy = toBeChecked.$get(cHighIndex + 1);
+      int cp = toBeChecked.$get(cHighIndex + 2);
+
+      // clear
+      toBeChecked.$set(cHighIndex, EngineGlobals.INACTIVE_ID);
+      toBeChecked.$set(cHighIndex + 1, EngineGlobals.INACTIVE_ID);
+      toBeChecked.$set(cHighIndex + 2, EngineGlobals.INACTIVE_ID);
+
+      // set neighbors for check_
+      if (cx > 0) {
+        checker.$set(0, cx - 1);
+        checker.$set(1, cy);
+      } else {
+        checker.$set(0, -1);
+        checker.$set(1, -1);
+      }
+      if (cx < gameround.mapWidth - 1) {
+        checker.$set(2, cx + 1);
+        checker.$set(3, cy);
+      } else {
+        checker.$set(2, -1);
+        checker.$set(3, -1);
+      }
+      if (cy > 0) {
+        checker.$set(4, cx);
+        checker.$set(5, cy - 1);
+      } else {
+        checker.$set(4, -1);
+        checker.$set(5, -1);
+      }
+      if (cy < gameround.mapHeight - 1) {
+        checker.$set(6, cx);
+        checker.$set(7, cy + 1);
+      } else {
+        checker.$set(6, -1);
+        checker.$set(7, -1);
+      }
+
+      // check_ the given neighbors for move
+      for (int n = 0; n < 8; n += 2) {
+        if (checker.$get(n) == -1) {
+          continue;
+        }
+
+        int tx = checker.$get(n);
+        int ty = checker.$get(n + 1);
+
+        cost = getMoveCosts(mType, tx, ty);
+        if (cost != -1) {
+
+          Tile cTile = gameround.getTile(tx, ty);
+          Unit cUnit = cTile.unit;
+
+          if (cUnit != null && cTile.visionTurnOwner > 0 && !cUnit.hidden
+              && cUnit.owner.team != player.team) {
+            continue;
+          }
+
+          int rest = cp - cost;
+          if (rest >= 0 && rest > selection.getValue(tx, ty)) {
+
+            // add possible move to the `selection` map
+            selection.setValue(tx, ty, rest);
+
+            // add this tile to the checker
+            for (int i = 0, e = toBeChecked.$length(); i <= e; i += 3) {
+              if (toBeChecked.$get(i) == EngineGlobals.INACTIVE_ID || i == e) {
+                toBeChecked.$set(i, tx);
+                toBeChecked.$set(i + 1, ty);
+                toBeChecked.$set(i + 2, rest);
+                break;
+              }
             }
+          }
         }
-        if (cHighIndex == -1) break;
-
-        var cx = toBeChecked[cHighIndex];
-        var cy = toBeChecked[cHighIndex + 1];
-        var cp = toBeChecked[cHighIndex + 2];
-
-        // clear
-        toBeChecked[cHighIndex] = Constants.INACTIVE_ID;
-        toBeChecked[cHighIndex + 1] = Constants.INACTIVE_ID;
-        toBeChecked[cHighIndex + 2] = Constants.INACTIVE_ID;
-
-        // set neighbors for check_
-        if (cx > 0) {
-            checker[0] = cx - 1;
-            checker[1] = cy;
-        } else {
-            checker[0] = -1;
-            checker[1] = -1;
-        }
-        if (cx < model.mapWidth - 1) {
-            checker[2] = cx + 1;
-            checker[3] = cy;
-        } else {
-            checker[2] = -1;
-            checker[3] = -1;
-        }
-        if (cy > 0) {
-            checker[4] = cx;
-            checker[5] = cy - 1;
-        } else {
-            checker[4] = -1;
-            checker[5] = -1;
-        }
-        if (cy < model.mapHeight - 1) {
-            checker[6] = cx;
-            checker[7] = cy + 1;
-        } else {
-            checker[6] = -1;
-            checker[7] = -1;
-        }
-
-        // check_ the given neighbors for move
-        for (var n = 0; n < 8; n += 2) {
-            if (checker[n] == -1) {
-                continue;
-            }
-
-            var tx = checker[n];
-            var ty = checker[n + 1];
-
-            cost = exports.getMoveCosts(mType, tx, ty);
-            if (cost != -1) {
-
-                var cTile = map[tx][ty];
-                var cUnit = cTile.unit;
-
-                if (cUnit !== null && cTile.visionTurnOwner > 0 && !cUnit.hidden && cUnit.owner.team !== player.team) {
-                    continue;
-                }
-
-                var rest = cp - cost;
-                if (rest >= 0 && rest > selection.getValue(tx, ty)) {
-
-                    // add possible move to the `selection` map
-                    selection.setValue(tx, ty, rest);
-
-                    // add this tile to the checker
-                    for (var i = 0, e = toBeChecked.length; i <= e; i += 3) {
-                        if (toBeChecked[i] == Constants.INACTIVE_ID_ID || i == e) {
-                            toBeChecked[i] = tx;
-                            toBeChecked[i + 1] = ty;
-                            toBeChecked[i + 2] = rest;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+      }
     }
 
     // release helper if you grabbed it
     if (releaseHelper) {
-        fillMoveMapHelper = toBeChecked;
-        checkArray = checker;
+      this.helper = toBeChecked;
+      this.checkHelper = checker;
     }
 
     // convert left points back to absolute costs
-    for (var x = 0, xe = model.mapWidth; x < xe; x++) {
-        for (var y = 0, ye = model.mapHeight; y < ye; y++) {
-            if (selection.getValue(x, y) !== Constants.INACTIVE_ID) {
-                cost = exports.getMoveCosts(mType, x, y);
-                selection.setValue(x, y, cost);
-            }
+    int xe, ye;
+    for (x = 0, xe = gameround.mapWidth; x < xe; x++) {
+      for (y = 0, ye = gameround.mapHeight; y < ye; y++) {
+        if (selection.getValue(x, y) != EngineGlobals.INACTIVE_ID) {
+          cost = getMoveCosts(mType, x, y);
+          selection.setValue(x, y, cost);
         }
+      }
     }
   }
 
@@ -496,33 +528,33 @@ public class MoveLogic implements ManagedComponentInitialization {
    * @param unit
    * @param x
    * @param y
+   * @param path
    * @param noFuelConsumption
    * @param preventRemoveOldPos
    * @param preventSetNewPos
    */
-  public void move(Unit unit, int x, int y, boolean noFuelConsumption, boolean preventRemoveOldPos,
-      boolean preventSetNewPos) {
-    var map = model.mapData;
-    var team = unit.owner.team;
+  public void move(Unit unit, int x, int y, CircularBuffer<Direction> path,
+      boolean noFuelConsumption, boolean preventRemoveOldPos, boolean preventSetNewPos) {
+
+    int team = unit.owner.team;
 
     // the unit must not be on a tile (e.g. loads), that is the reason why we
     // need a valid x,y position here as parameters
-    var cX = x;
-    var cY = y;
+    int cX = x;
+    int cY = y;
 
     // do not set the new position if the position is already occupied
     // the action logic must take care of this situation
     if (preventRemoveOldPos != true) {
       fog.removeUnitVision(x, y, unit.owner);
+      gameround.getTile(x, y).unit = null;
 
-      model.mapData[x][y].unit = null;
-
-      if (constants.DEBUG) console.log("remove unit from position (" + x + "," + y + ")");
+      LOG.info("remove unit from position (" + x + "," + y + ")");
     }
 
-    var uType = unit.type;
-    var mType = sheets.movetypes.sheets[uType.movetype];
-    var fuelUsed = 0;
+    UnitType uType = unit.type;
+    MoveType mType = types.getMoveType(uType.movetype);
+    int fuelUsed = 0;
 
     // check_ move way by iterate through all move codes and build the path
     //
@@ -531,33 +563,29 @@ public class MoveLogic implements ManagedComponentInitialization {
     // 3. accumulate fuel consumption ( except `noFuelConsumption` is `true` )
     //
 
-    var trapped = false;
-    var lastX = -1;
-    var lastY = -1;
-    var lastFuel = 0;
-    var lastIndex = 0;
-    for (var i = 0, e = movePath.size; i < e; i++) {
+    boolean trapped = false;
+    int lastX = -1;
+    int lastY = -1;
+    int lastFuel = 0;
+    int lastIndex = 0;
+    for (int i = 0, e = path.getSize(); i < e; i++) {
 
       // set current position by current move code
-      switch (path.$get(index)) {
+      switch (path.get(i)) {
 
         case UP:
-          if (constants.DEBUG) assert (cY > 0);
           cY--;
           break;
 
         case RIGHT:
-          if (constants.DEBUG) assert (cX < model.mapWidth - 1);
           cX++;
           break;
 
         case DOWN:
-          if (constants.DEBUG) assert (cY < model.mapHeight - 1);
           cY++;
           break;
 
         case LEFT:
-          if (constants.DEBUG) assert (cX > 0);
           cX--;
           break;
       }
@@ -566,14 +594,14 @@ public class MoveLogic implements ManagedComponentInitialization {
       // if `noFuelConsumption` is not `true` some actions like unloading does
       // not consume fuel
       if (noFuelConsumption != true) {
-        fuelUsed += exports.getMoveCosts(mType, cX, cY);
+        fuelUsed += getMoveCosts(mType, cX, cY);
       }
 
-      var tileUnit = map[cX][cY].unit;
+      Unit tileUnit = gameround.getTile(cX, cY).unit;
 
       // movable when tile is empty or the last tile in the way while
       // the unit on the tile belongs to the movers owner
-      if (!tileUnit || (tileUnit.owner == unit.owner && i == e - 1)) {
+      if (tileUnit == null || (tileUnit.owner == unit.owner && i == e - 1)) {
         lastX = cX;
         lastY = cY;
         lastFuel = fuelUsed;
@@ -581,7 +609,7 @@ public class MoveLogic implements ManagedComponentInitialization {
 
         // enemy unit
       } else if (tileUnit.owner.team != team) {
-        movePath.clear(lastIndex + 1);
+        path.clearFromIndex(lastIndex + 1);
         trapped = true;
         break;
       }
@@ -590,17 +618,18 @@ public class MoveLogic implements ManagedComponentInitialization {
     // consume fuel except when no fuel consumption is on
     if (noFuelConsumption != true) {
       unit.fuel -= lastFuel;
-      if (constants.DEBUG) assert (unit.fuel >= 0);
+      if (unit.fuel < 0) {
+        JsUtil.raiseError("IllegalGameState: unit fuel fell below zero");
+      }
     }
 
     // sometimes we prevent to set the unit at the target position because it
-    // moves
-    // into a thing at a target position (like a transporter)
+    // moves into a thing at a target position (like a transporter)
     if (preventSetNewPos != true) {
-      model.mapData[lastX][lastY].unit = unit;
+      gameround.getTile(lastX, lastY).unit = unit;
       fog.addUnitVision(lastX, lastY, unit.owner);
 
-      if (constants.DEBUG) console.log("set unit to position (" + lastX + "," + lastY + ")");
+      LOG.info("set unit to position (" + lastX + "," + lastY + ")");
     }
   }
 }

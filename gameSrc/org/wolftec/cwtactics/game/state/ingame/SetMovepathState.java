@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.state.ingame;
 
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.cwtactics.system.state.InGameState;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wPlay.state.InGameState;
 
 @ManagedComponent
 public class SetMovepathState implements InGameState {

@@ -1,14 +1,14 @@
 package org.wolftec.cwtactics.game.ai;
 
 import org.stjs.javascript.JSCollections;
-import org.wolftec.core.ComponentManager;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedComponentInitialization;
-import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.game.domain.model.Player;
-import org.wolftec.cwtactics.system.decision.DecisionTree;
-import org.wolftec.cwtactics.system.decision.Sequence;
-import org.wolftec.log.Logger;
+import org.wolftec.wCore.core.ComponentManager;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedComponentInitialization;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wPlay.decision.DecisionTree;
+import org.wolftec.wPlay.decision.Sequence;
 
 @ManagedComponent
 public class ArtificialInteligenceBean implements ManagedComponentInitialization {

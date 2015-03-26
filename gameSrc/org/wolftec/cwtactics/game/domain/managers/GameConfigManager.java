@@ -3,17 +3,17 @@ package org.wolftec.cwtactics.game.domain.managers;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.core.ComponentManager;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
-import org.wolftec.core.ManagedComponentInitialization;
-import org.wolftec.core.ManagedConstruction;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.config.Config;
 import org.wolftec.cwtactics.game.domain.config.GameAppConfigData;
-import org.wolftec.log.Logger;
-import org.wolftec.persistence.DataTypeConverter;
-import org.wolftec.persistence.VirtualFilesystemManager;
+import org.wolftec.wCore.core.ComponentManager;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedComponentInitialization;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wCore.persistence.DataTypeConverter;
+import org.wolftec.wCore.persistence.VirtualFilesystemManager;
 
 @ManagedComponent
 public class GameConfigManager implements ManagedComponentInitialization {

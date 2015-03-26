@@ -3,10 +3,10 @@ package org.wolftec.cwtactics.game.domain.model;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.types.ArmyType;
 import org.wolftec.cwtactics.game.domain.types.CoType;
-import org.wolftec.validation.DataObject;
-import org.wolftec.validation.validators.BooleanValue;
-import org.wolftec.validation.validators.IntValue;
-import org.wolftec.validation.validators.StringValue;
+import org.wolftec.wCore.validation.DataObject;
+import org.wolftec.wCore.validation.validators.BooleanValue;
+import org.wolftec.wCore.validation.validators.IntValue;
+import org.wolftec.wCore.validation.validators.StringValue;
 
 @DataObject
 public class Player {

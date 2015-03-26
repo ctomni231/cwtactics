@@ -1,14 +1,14 @@
 package org.wolftec.cwtactics.game.logic;
 
 import org.stjs.javascript.Array;
-import org.wolftec.container.ContainerUtil;
-import org.wolftec.core.ConvertUtility;
-import org.wolftec.core.Injected;
-import org.wolftec.core.ManagedComponent;
 import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
 import org.wolftec.cwtactics.game.domain.managers.TypeManager;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
 import org.wolftec.cwtactics.game.domain.types.WeatherType;
+import org.wolftec.wCore.container.ContainerUtil;
+import org.wolftec.wCore.core.ConvertUtility;
+import org.wolftec.wCore.core.Injected;
+import org.wolftec.wCore.core.ManagedComponent;
 
 @ManagedComponent
 public class WeatherLogic {

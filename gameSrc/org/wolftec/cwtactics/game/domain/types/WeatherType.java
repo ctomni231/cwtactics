@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.domain.types;
 
-import org.wolftec.validation.DataObject;
+import org.wolftec.wCore.validation.DataObject;
 
 @DataObject
 public class WeatherType extends ObjectType {

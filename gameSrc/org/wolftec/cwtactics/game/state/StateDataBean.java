@@ -79,15 +79,11 @@ public class StateDataBean implements ManagedComponentInitialization {
 
   public boolean inMultiStep;
 
-  public CircularBuffer<MoveCode> movePath;
-
-  public boolean preventMovePathGeneration;
-
   public Integer focusMode = EngineGlobals.INACTIVE_ID;
 
   @Override
   public void onComponentConstruction(ComponentManager manager) {
-    movePath = new CircularBuffer<MoveCode>(EngineGlobals.MAX_MOVE_LENGTH);
+    log.info("Initializing..");
   }
 
   /**
