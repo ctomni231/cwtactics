@@ -190,12 +190,12 @@ List of pretty much every sprite you'd ever need for reference.
 
 ## Property Types
 
-* [ ] *HQTR* = Headquarters [All Factions]
-* [ ] *CITY* = City
-* [ ] *BASE* = Factory
-* [ ] *APRT* = Airport
+* [x] *HQTR* = Headquarters [All Factions]
+* [x] *CITY* = City
+* [x] *BASE* = Factory
+* [x] *APRT* = Airport
 * [ ] *PORT* = Seaport
-* [ ] *CMTR* = Communication-Tower
+* [x] *CMTR* = Communication-Tower
 * [ ] *SILO* = Missile Silo
 * [ ] *PLTF* = Missile Silo Platform
 * [ ] *RDAR* = Radar
