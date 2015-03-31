@@ -12,11 +12,10 @@ import org.wolftec.wPlay.audio.AudioManager;
 import org.wolftec.wPlay.gui.UiContainer;
 import org.wolftec.wPlay.input.LiveInputManager;
 import org.wolftec.wPlay.state.MenuState;
-import org.wolftec.wPlay.state.OptionsBuilderFactory;
 import org.wolftec.wPlay.state.StateManager;
 
 @ManagedComponent
-public class StartScreenState implements MenuState {
+public class StartScreenState extends MenuState {
 
   @Injected
   private AudioManager audio;
