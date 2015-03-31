@@ -17,7 +17,7 @@
 * [ ] *PLZM* = Plasma
 * [ ] *PLZP* = Plazma Pipe
 * [ ] *PZPS* = Plazma Pipeseam
-* [ ] *PIPE* = Pipe
+* [x] *PIPE* = Pipe
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
