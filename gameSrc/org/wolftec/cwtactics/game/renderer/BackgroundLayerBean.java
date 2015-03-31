@@ -27,16 +27,15 @@ public class BackgroundLayerBean extends GraphicLayer {
     return EngineGlobals.LAYER_BG_FRAMETIME;
   }
 
-  /**
-   * Renders a background image.
-   * 
-   * @param bg
-   */
-  public void renderBackgroundImage(Sprite bg) {
+  public void renderRandomBackground() {
+    // TODO
+  }
+
+  public void renderBackground(Sprite image) {
     clearDrawCanvas();
 
     // TODO stretch while protecting aspect ratio
-    bg.drawStrechedSprite(0, ctx, 0, 0, cv.width, cv.height);
+    image.drawStrechedSpriteByIndex(0, ctx, 0, 0, cv.width, cv.height);
   }
 
 }

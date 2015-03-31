@@ -6,21 +6,26 @@ import org.wolftec.wPlay.layergfx.GraphicLayer;
 
 public class UiContainer extends UiElement {
 
-  private Array<UiElement> _elements;
+  private Array<UiElement> elements;
 
-  public UiContainer(UiElement parent) {
-    super(parent);
-    _elements = ContainerUtil.createArray();
+  public UiContainer() {
+    elements = ContainerUtil.createArray();
   }
 
-  public void appendChild(UiElement element, int top, int left, int right, int bottom) {
-    _elements.push(element);
+  public UiContainer appendChild(UiElement element) {
+    elements.push(element);
+    return this;
+  }
+
+  public UiContainer appendChilds(UiElement... arguments) {
+    elements.push(arguments);
+    return this;
   }
 
   @Override
   public void draw(GraphicLayer layer) {
-    for (int i = 0; i < _elements.$length(); i++) {
-      _elements.$get(i).draw(layer);
+    for (int i = 0; i < elements.$length(); i++) {
+      elements.$get(i).draw(layer);
     }
   }
 }

@@ -9,7 +9,7 @@ public abstract class Game {
   private static ComponentManager engine;
 
   /**
-   * 
+   *
    */
   public static void start() {
     if (engine != null) {
@@ -27,7 +27,7 @@ public abstract class Game {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public static String getVersion() {

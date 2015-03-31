@@ -40,7 +40,9 @@ public class ScreenManager implements ManagedComponentInitialization {
     MENU_ENTRY_HEIGHT = 2 * options.tileSize;
     MENU_ENTRY_WIDTH = 10 * options.tileSize;
 
-    layers = ContainerUtil.createArray();
+    layers = manager.getComponentsByClass(GraphicLayer.class);
+    // TODO sort
+
     layerStates = ContainerUtil.createArray();
     layerTime = ContainerUtil.createArray();
   }
@@ -57,6 +59,8 @@ public class ScreenManager implements ManagedComponentInitialization {
 
       layerTime.$set(i, layerTime.$get(i) + delta);
       if (layerTime.$get(i) <= 0) {
+        // next frame of a layer
+
         layerTime.$set(i, layers.$get(i).getFrameTime());
 
         layerStates.$set(i, layerStates.$get(i));
@@ -70,6 +74,9 @@ public class ScreenManager implements ManagedComponentInitialization {
   }
 
   public void draw() {
+    // TODO this may cause a performance impact
+    // TODO maybe cache layers up to a given level ?
+    ctx.clearRect(0, 0, cv.width, cv.height);
     for (int i = 0; i < layers.$length(); i++) {
       ctx.drawImage(layers.$get(i).getImage(layerStates.$get(i)), 0, 0);
     }

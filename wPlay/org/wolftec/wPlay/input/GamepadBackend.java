@@ -10,11 +10,9 @@ import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wCore.core.ManagedComponentInitialization;
 import org.wolftec.wCore.core.ManagedConstruction;
 import org.wolftec.wCore.log.Logger;
-import org.wolftec.wPlay.state.GameloopHandler;
 
 @ManagedComponent
-public class GamepadBackend implements InputBackend, ManagedComponentInitialization,
-    GameloopHandler {
+public class GamepadBackend implements InputBackend, ManagedComponentInitialization {
 
   public static final int INDEX_A = 0;
   public static final int INDEX_B = 1;
@@ -43,7 +41,6 @@ public class GamepadBackend implements InputBackend, ManagedComponentInitializat
     ContainerUtil.fillArray(p_pressed, false, 6);
   }
 
-  @Override
   public void update(int delta) {
     if (p_enabled) {
 

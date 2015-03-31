@@ -1,12 +1,6 @@
 package org.wolftec.cwtactics.game.action;
 
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwtactics.game.domain.menu.ActionMenu;
-import org.wolftec.cwtactics.game.domain.model.GameManager;
-import org.wolftec.cwtactics.game.domain.model.Unit;
-import org.wolftec.cwtactics.game.logic.TransferLogic;
-import org.wolftec.cwtactics.game.renderer.UnitLayerBean;
-import org.wolftec.cwtactics.game.state.StateDataBean;
 import org.wolftec.wCore.container.CircularBuffer;
 import org.wolftec.wCore.core.ComponentManager;
 import org.wolftec.wCore.core.Injected;
@@ -17,7 +11,6 @@ import org.wolftec.wCore.log.Logger;
 import org.wolftec.wCore.persistence.DataTypeConverter;
 import org.wolftec.wPlay.network.NetworkBackend;
 import org.wolftec.wPlay.state.ActionQueueHandler;
-import org.wolftec.wPlay.state.StateManager;
 
 @ManagedComponent
 public class ActionManager implements ActionQueueHandler<ActionItem>,
@@ -28,21 +21,6 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
 
   @Injected
   private NetworkBackend network;
-
-  @Injected
-  private StateDataBean stateData;
-
-  @Injected
-  private TransferLogic transfer;
-
-  @Injected
-  private GameManager gameround;
-
-  @Injected
-  private StateManager stateMachine;
-
-  @Injected
-  private UnitLayerBean unitLayer;
 
   private DataTypeConverter<ActionItem> actionConv;
 
@@ -64,52 +42,6 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
     };
 
     sendNetworkMessage = (data) -> network.sendMessage(data);
-  }
-
-  public void initMenuByMapClick(ActionMenu menu) {
-
-  }
-
-  public void initMenuByUnitClick(ActionMenu menu) {
-    Unit unit = null; // TODO
-
-    if (unit.type.stealth) { // TODO S,T NONE - SAME
-      menu.addEntry(unit.hidden ? ActionConstants.UNHIDE : ActionConstants.HIDE, true);
-    }
-
-    menu.addEntry(ActionConstants.WAIT, true); // TODO S,T NONE - SAME
-  }
-
-  public void initMenuByPropertyClick(ActionMenu menu) {
-
-  }
-
-  public boolean hasSubMenu(String key) {
-    return false; // TODO
-  }
-
-  public void invokeAction(int actionKey, int p1, int p2, int p3, int p4, int p5) {
-    String key = null;
-    switch (key) {
-
-      case ActionConstants.TO_OPTIONS:
-        // TODO magic string
-        stateData.fromIngameToOptions = true;
-        stateMachine.changeState("MENU_OPTIONS");
-        break;
-
-      case ActionConstants.HIDE:
-        gameround.units.$get(p1).hidden = true;
-        break;
-
-      case ActionConstants.UNHIDE:
-        gameround.units.$get(p1).hidden = false;
-        break;
-
-      case ActionConstants.TRANSFER_MONEY:
-        transfer.transferMoney(gameround.players.$get(p1), gameround.players.$get(p2), p3);
-        break;
-    }
   }
 
   @Override
@@ -154,8 +86,8 @@ public class ActionManager implements ActionQueueHandler<ActionItem>,
     if (data == null) {
       LOG.error("NullPointerException");
     }
-
-    invokeAction(data.actionId, data.p1, data.p2, data.p3, data.p4, data.p5);
+    // TODO
+    // invokeAction(data.actionId, data.p1, data.p2, data.p3, data.p4, data.p5);
 
     // cache used object
     data.reset();

@@ -1,6 +1,5 @@
 package org.wolftec.wPlay.state;
 
-import org.stjs.javascript.Array;
 import org.stjs.javascript.Date;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
@@ -13,8 +12,6 @@ import org.wolftec.wCore.core.ManagedComponentInitialization;
 import org.wolftec.wCore.core.ManagedConstruction;
 import org.wolftec.wCore.core.PerformanceUtil;
 import org.wolftec.wCore.log.Logger;
-import org.wolftec.wPlay.input.LiveInputManager;
-import org.wolftec.wPlay.network.NetworkBackend;
 
 /**
  * The state machine is the central controller of the WolfTec engine.
@@ -26,16 +23,7 @@ public class StateManager implements ManagedComponentInitialization {
   private Logger log;
 
   @Injected
-  private LiveInputManager input;
-
-  @Injected
-  private NetworkBackend network;
-
-  @Injected
-  private ActionQueueHandler<?> action;
-
-  @Injected
-  private Array<GameloopHandler> loopHandlers;
+  private GameloopHandlerBak loop;
 
   @Injected
   private Map<String, State> states;
@@ -66,7 +54,7 @@ public class StateManager implements ManagedComponentInitialization {
       int delta = newTimestamp - timestamp;
       timestamp = newTimestamp;
 
-      update(delta);
+      loop.update(this, delta);
 
       // acquire next frame
       if (stopLoop) {
@@ -133,29 +121,5 @@ public class StateManager implements ManagedComponentInitialization {
    */
   public void stopGameloop() {
     stopLoop = true;
-  }
-
-  /**
-   * Central update method that invokes the active state and calls the action
-   * invoker to evaluate buffered commands. Furthermore it grabs the user input
-   * from the input system to forward them to the update method of the active
-   * state.
-   *
-   * @param delta
-   */
-  private void update(int delta) {
-    if (!activeState.isAnimationState()) {
-      if (action.hasQueuedActions()) {
-        action.invokeNextAction();
-        return;
-      }
-
-      for (int i = 0; i < loopHandlers.$length(); i++) {
-        loopHandlers.$get(delta);
-      }
-    }
-
-    activeState.update(this, input, delta);
-    activeState.render(delta);
   }
 }

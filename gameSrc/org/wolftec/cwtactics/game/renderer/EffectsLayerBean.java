@@ -5,15 +5,16 @@ import org.stjs.javascript.Date;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolfTec.wolfTecEngine.beans.Created;
-import org.wolfTec.wolfTecEngine.beans.annotations.Bean;
-import org.wolfTec.wolfTecEngine.gfx.model.GraphicLayer;
-import org.wolfTec.wolfTecEngine.logging.Logger;
+import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wCore.core.ManagedConstruction;
+import org.wolftec.wCore.log.Logger;
+import org.wolftec.wPlay.layergfx.GraphicLayer;
 
-@Bean
+@ManagedComponent
 public class EffectsLayerBean extends GraphicLayer {
 
-  @Created("{name=$beanName}")
+  @ManagedConstruction
   private Logger log;
 
   private int time;
@@ -25,25 +26,17 @@ public class EffectsLayerBean extends GraphicLayer {
 
   @Override
   public int getIndex() {
-    // TODO Auto-generated method stub
-    return 0;
+    return EngineGlobals.LAYER_FOCUS;
   }
 
   @Override
   public int getNumberOfFrames() {
-    // TODO Auto-generated method stub
-    return 0;
+    return EngineGlobals.LAYER_FOCUS_FRAMES;
   }
 
   @Override
   public int getFrameTime() {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  public String getLayerCanvasId() {
-    return "canvas_layer_Effects";
+    return EngineGlobals.LAYER_FOCUS_FRAMETIME;
   }
 
   /*
@@ -92,7 +85,7 @@ public class EffectsLayerBean extends GraphicLayer {
       raindropCtx.moveTo(0, 0);
       raindropCtx.lineTo(4, 10);
       raindropCtx.stroke();
-  }  
+  }
 
   public void setWeatherType(WeatherType weather) {
     time = 0;

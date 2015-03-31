@@ -65,10 +65,11 @@ public class UserInterfaceLayerBean extends GraphicLayer {
     int h = JSGlobal.parseInt(EngineGlobals.TILE_BASE / 2, 10);
 
     loadStateIntoDrawCanvas(0);
-    cursor.drawSprite(0, ctx, x - h, y - h);
-    cursor.drawSprite(0, ctx, x + h + h, y + h + h);
-    cursor.drawSprite(0, ctx, x + h + h, y - h);
-    cursor.drawSprite(0, ctx, x - h, y + h + h);
+    int index = cursor.size.tileIndex.$get("IDLE");
+    cursor.drawSpriteByIndex(index, ctx, x - h, y - h);
+    cursor.drawSpriteByIndex(index, ctx, x + h + h, y + h + h);
+    cursor.drawSpriteByIndex(index, ctx, x + h + h, y - h);
+    cursor.drawSpriteByIndex(index, ctx, x - h, y + h + h);
     saveDrawCanvasAsState(0);
   }
 

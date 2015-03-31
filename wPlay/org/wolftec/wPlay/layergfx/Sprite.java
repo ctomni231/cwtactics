@@ -9,8 +9,8 @@ import org.wolftec.wCore.core.ConvertUtility;
  */
 public class Sprite {
 
-  private Canvas graphic;
-  private SpriteSizeMetrics size;
+  public Canvas graphic;
+  public SpriteSizeMetrics size;
 
   /**
    * 
@@ -34,9 +34,25 @@ public class Sprite {
    */
   public void drawSprite(String id, CanvasRenderingContext2D ctx, int tx, int ty) {
     int sx = ConvertUtility.floatToInt(size.tileIndex.$get(id) % size.tileWidth);
-    int sy = 0; 
-    
-    // TODO support of table like sprite sheets 
+    int sy = 0;
+
+    // TODO support of table like sprite sheets
+
+    ctx.drawImage(graphic, sx * size.tileWidth, sy * size.tileHeight, tx, ty);
+  }
+
+  /**
+   * 
+   * @param index
+   * @param ctx
+   * @param tx
+   * @param ty
+   */
+  public void drawSpriteByIndex(int index, CanvasRenderingContext2D ctx, int tx, int ty) {
+    int sx = ConvertUtility.floatToInt(index % size.tileWidth);
+    int sy = 0;
+
+    // TODO support of table like sprite sheets
 
     ctx.drawImage(graphic, sx * size.tileWidth, sy * size.tileHeight, tx, ty);
   }
@@ -52,10 +68,29 @@ public class Sprite {
       int width, int height) {
 
     int sx = ConvertUtility.floatToInt(size.tileIndex.$get(id) % size.tileWidth);
-    int sy = 0; 
-    
+    int sy = 0;
+
     // TODO support of table like sprite sheets
-    
+
+    ctx.drawImage(graphic, sx * size.tileWidth, sy * size.tileHeight, size.tileWidth,
+        size.tileHeight, tx, ty, width, height);
+  }
+
+  /**
+   * 
+   * @param index
+   * @param ctx
+   * @param tx
+   * @param ty
+   */
+  public void drawStrechedSpriteByIndex(int index, CanvasRenderingContext2D ctx, int tx, int ty,
+      int width, int height) {
+
+    int sx = ConvertUtility.floatToInt(index % size.tileWidth);
+    int sy = 0;
+
+    // TODO support of table like sprite sheets
+
     ctx.drawImage(graphic, sx * size.tileWidth, sy * size.tileHeight, size.tileWidth,
         size.tileHeight, tx, ty, width, height);
   }

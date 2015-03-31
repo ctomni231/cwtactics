@@ -4,8 +4,11 @@ import org.wolftec.wPlay.input.LiveInputManager;
 
 public interface State {
 
-  default boolean isAnimationState() {
-    return false; // TODO maybe without that -> inheritance solution possible ?
+  default boolean immediate() {
+    return false;
+  }
+
+  default void init(StateManager stm) {
   }
 
   default void exit(StateManager stm) {
@@ -15,7 +18,6 @@ public interface State {
   }
 
   default void update(StateManager stm, LiveInputManager input, int delta) {
-
   }
 
   default void render(int delta) {

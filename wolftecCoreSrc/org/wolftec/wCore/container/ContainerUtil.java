@@ -47,6 +47,14 @@ public abstract class ContainerUtil {
 
   /**
    * 
+   * @return
+   */
+  public static <T> Array<T> createFilledArray(T... args) {
+    return JSCollections.$array(args);
+  }
+
+  /**
+   * 
    * @param array
    * @param value
    * @param amount
@@ -111,8 +119,7 @@ public abstract class ContainerUtil {
    * @param map
    * @param cb
    */
-  public static <T> void forEachElementInListAsync(Array<T> list, Callback2<T, Callback0> cb,
-      Callback0 finalCb) {
+  public static <T> void forEachElementInListAsync(Array<T> list, Callback2<T, Callback0> cb, Callback0 finalCb) {
 
     Array<Callback1<Callback0>> steps = ContainerUtil.createArray();
 
