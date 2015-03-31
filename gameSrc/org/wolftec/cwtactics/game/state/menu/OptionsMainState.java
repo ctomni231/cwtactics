@@ -32,7 +32,7 @@ public class OptionsMainState implements MenuState {
   public void createLayout(StateManager stm, UiInputHandler input, UiContainer root) {
     UiContainer menu = MenuUtil.createContainer(root, null, "20% 20% 80% 80%");
 
-    // ---------------------- SFX ----------------------
+    // ----------------------- SFX -----------------------
     MenuUtil.createActionButton(menu, input, buttonRenderer, null, "0 0 20% 10%", () -> {
       updateVolume(sfx, -5);
     });
@@ -41,7 +41,7 @@ public class OptionsMainState implements MenuState {
       updateVolume(sfx, 5);
     });
 
-    // ---------------------- MUSIC ----------------------
+    // ----------------------- MUSIC -----------------------
     MenuUtil.createActionButton(menu, input, buttonRenderer, null, "0 10% 20% 10%", () -> {
       updateVolume(music, -5);
     });
