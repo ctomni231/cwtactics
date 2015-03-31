@@ -2,6 +2,7 @@ package org.wolftec.cwtactics.game.state.menu;
 
 import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
 import org.wolftec.cwtactics.game.renderer.GuiButtonRenderer;
+import org.wolftec.cwtactics.game.renderer.GuiCheckboxRenderer;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wPlay.audio.AudioChannel;
 import org.wolftec.wPlay.audio.AudioManager;
@@ -16,6 +17,9 @@ public class OptionsMainState implements MenuState {
 
   @Injected
   private GuiButtonRenderer buttonRenderer;
+
+  @Injected
+  private GuiCheckboxRenderer checkboxRenderer;
 
   @Injected
   private AudioManager audio;
@@ -47,7 +51,15 @@ public class OptionsMainState implements MenuState {
     music = MenuUtil.createActionButton(menu, input, buttonRenderer, null, "22% 10% 56% 10%", null);
     MenuUtil.createActionButton(menu, input, buttonRenderer, null, "80% 10% 20% 10%", () -> updateVolume(music, 5));
 
-    MenuUtil.createActionButton(menu, input, buttonRenderer, "menu.back", "0 0 50% 10%", () -> {
+    MenuUtil.createActionButton(menu, input, checkboxRenderer, "options.animatedTiles", "0 25% 100% 10%", () -> enabledAnimatedTiles = !enabledAnimatedTiles);
+    MenuUtil.createActionButton(menu, input, checkboxRenderer, "options.forceTouch", "0 35% 100% 10%", () -> enabledForceTouch = !enabledForceTouch);
+
+    MenuUtil.createTransitionButton(menu, input, buttonRenderer, "options.remap.keyboard", "0 55% 50% 10%", OptionsSetMappingState.class);
+    MenuUtil.createTransitionButton(menu, input, buttonRenderer, "options.remap.gamepad", "50% 55% 50% 10%", OptionsSetMappingState.class);
+
+    MenuUtil.createTransitionButton(menu, input, buttonRenderer, "options.wipeout", "0 75% 100% 10%", ConfirmWipeoutState.class);
+
+    MenuUtil.createActionButton(menu, input, buttonRenderer, "menu.back", "0 90% 50% 10%", () -> {
       cfgMgr.getConfig("animatedTiles").setValue(enabledAnimatedTiles ? 1 : 0);
       cfgMgr.getConfig("forceTouch").setValue(enabledForceTouch ? 1 : 0);
       cfgMgr.saveData(() -> stm.changeToStateClass(MainMenuState.class));
