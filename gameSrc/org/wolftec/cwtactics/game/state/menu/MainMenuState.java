@@ -15,16 +15,13 @@ public class MainMenuState implements MenuState {
   @Injected
   private GuiButtonRenderer buttonRenderer;
 
-  @Injected
-  private MenuUtil menuHlp;
-
   @Override
   public void createLayout(StateManager stm, UiInputHandler input, UiContainer root) {
-    UiContainer menu = menuHlp.createContainer(root, "20% 20% 80% 80%");
-    menuHlp.createTransitionButton(menu, input, "main.versus", "0 0 100% 25%", SkirmishMapSelectState.class);
-    menuHlp.createTransitionButton(menu, input, "main.test.rain", "0 25% 100% 25%", null);
-    menuHlp.createTransitionButton(menu, input, "main.test.weather", "0 50% 100% 25%", null);
-    menuHlp.createTransitionButton(menu, input, "main.options", "0 75% 100% 25%", OptionsMainState.class);
-    menuHlp.registerMenuHandler(stm, input, StartScreenState.class);
+    UiContainer menu = MenuUtil.createContainer(root, null, "20% 20% 80% 80%");
+    MenuUtil.createTransitionButton(menu, input, buttonRenderer, "main.versus", "0 0 100% 25%", SkirmishMapSelectState.class);
+    MenuUtil.createTransitionButton(menu, input, buttonRenderer, "main.test.rain", "0 25% 100% 25%", null); // TODO
+    MenuUtil.createTransitionButton(menu, input, buttonRenderer, "main.test.weather", "0 50% 100% 25%", null); // TODO
+    MenuUtil.createTransitionButton(menu, input, buttonRenderer, "main.options", "0 75% 100% 25%", OptionsMainState.class);
+    MenuUtil.registerMenuHandler(stm, input, StartScreenState.class);
   }
 }
