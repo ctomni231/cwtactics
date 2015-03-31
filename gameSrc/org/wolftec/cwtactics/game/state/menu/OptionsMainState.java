@@ -1,5 +1,6 @@
 package org.wolftec.cwtactics.game.state.menu;
 
+import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
 import org.wolftec.cwtactics.game.renderer.GuiButtonRenderer;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wPlay.audio.AudioChannel;
@@ -19,6 +20,12 @@ public class OptionsMainState implements MenuState {
   @Injected
   private AudioManager audio;
 
+  @Injected
+  private GameConfigManager cfgMgr;
+
+  private boolean enabledAnimatedTiles;
+  private boolean enabledForceTouch;
+
   private UiElement sfx;
   private UiElement music;
 
@@ -32,22 +39,20 @@ public class OptionsMainState implements MenuState {
   public void createLayout(StateManager stm, UiInputHandler input, UiContainer root) {
     UiContainer menu = MenuUtil.createContainer(root, null, "20% 20% 80% 80%");
 
-    // ----------------------- SFX -----------------------
-    MenuUtil.createActionButton(menu, input, buttonRenderer, null, "0 0 20% 10%", () -> {
-      updateVolume(sfx, -5);
-    });
+    MenuUtil.createActionButton(menu, input, buttonRenderer, null, "0 0 20% 10%", () -> updateVolume(sfx, -5));
     sfx = MenuUtil.createActionButton(menu, input, buttonRenderer, null, "22% 0 56% 10%", null);
-    MenuUtil.createActionButton(menu, input, buttonRenderer, null, "80% 0 20% 10%", () -> {
-      updateVolume(sfx, 5);
+    MenuUtil.createActionButton(menu, input, buttonRenderer, null, "80% 0 20% 10%", () -> updateVolume(sfx, 5));
+
+    MenuUtil.createActionButton(menu, input, buttonRenderer, null, "0 10% 20% 10%", () -> updateVolume(music, -5));
+    music = MenuUtil.createActionButton(menu, input, buttonRenderer, null, "22% 10% 56% 10%", null);
+    MenuUtil.createActionButton(menu, input, buttonRenderer, null, "80% 10% 20% 10%", () -> updateVolume(music, 5));
+
+    MenuUtil.createActionButton(menu, input, buttonRenderer, "menu.back", "0 0 50% 10%", () -> {
+      cfgMgr.getConfig("animatedTiles").setValue(enabledAnimatedTiles ? 1 : 0);
+      cfgMgr.getConfig("forceTouch").setValue(enabledForceTouch ? 1 : 0);
+      cfgMgr.saveData(() -> stm.changeToStateClass(MainMenuState.class));
     });
 
-    // ----------------------- MUSIC -----------------------
-    MenuUtil.createActionButton(menu, input, buttonRenderer, null, "0 10% 20% 10%", () -> {
-      updateVolume(music, -5);
-    });
-    music = MenuUtil.createActionButton(menu, input, buttonRenderer, null, "22% 10% 56% 10%", null);
-    MenuUtil.createActionButton(menu, input, buttonRenderer, null, "80% 10% 20% 10%", () -> {
-      updateVolume(music, 5);
-    });
+    MenuUtil.registerMenuHandler(stm, input, MainMenuState.class);
   }
 }

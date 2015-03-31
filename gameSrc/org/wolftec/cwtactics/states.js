@@ -616,28 +616,12 @@ exports.state = {
 // ------------------------------------------------------------------------------------------------
 
 
-var audioDto = require("../dataTransfer/audio");
-var configDto = require("../dataTransfer/config");
-
-var h = parseInt((constants.SCREEN_HEIGHT - 18) / 2, 10);
-var w = parseInt((constants.SCREEN_WIDTH - 16) / 2, 10);
-
-var sfxButton;
-var musicButton;
-
 var saveStep1 = function () {
     audioDto.saveVolumeConfigs(saveStep2);
 };
 
 var saveStep2 = function () {
     statemachine.changeState("MAIN_MENU");
-};
-
-var updateSound = function (isSFX,change,state) {
-    var vol = ((isSFX)? audio.getSfxVolume() : audio.getMusicVolume()) + change;
-    (isSFX)? audio.setSfxVolume(vol) : audio.setMusicVolume(vol);
-    ((isSFX)? sfxButton : musicButton).text = Math.round(vol * 100).toString();
-    state.rendered = false;
 };
 
 exports.state = {
@@ -655,36 +639,6 @@ exports.state = {
     doLayout: function (layout) {
 
         layout
-
-            .addRowGap(h)
-
-            // -------------------------------------------------------
-
-            .addColGap(w)
-            .addButton(4, 2, 0, "OPTIONS_SFX_VOL_DOWN", widgets.UIField.STYLE_NW, function () {
-                updateSound(true,-0.05,this);
-            })
-            .addButton(8, 2, 0, "OPTIONS_SFX_VOL", widgets.UIField.STYLE_N, 8)
-            .addButton(4, 2, 0, "OPTIONS_SFX_VOL_UP", widgets.UIField.STYLE_NE, function () {
-                updateSound(true,+0.05,this);
-            })
-            .breakLine()
-
-            // -------------------------------------------------------
-
-            .addColGap(w)
-            .addButton(4, 2, 0, "OPTIONS_MUSIC_VOL_DOWN", widgets.UIField.STYLE_SW, function () {
-                updateSound(false,-0.05,this);
-            })
-            .addButton(8, 2, 0, "OPTIONS_MUSIC_VOL", widgets.UIField.STYLE_S, 8)
-            .addButton(4, 2, 0, "OPTIONS_MUSIC_VOL_UP", widgets.UIField.STYLE_ES, function () {
-                updateSound(false,+0.05,this);
-            })
-            .breakLine()
-
-            // -------------------------------------------------------
-
-            .addRowGap(1)
 
             // -------------------------------------------------------
 
@@ -742,9 +696,6 @@ exports.state = {
 
                 config.getConfig("animatedTiles").value = (layout.getButtonByKey(
                     "OPTIONS_CHECKBOX_ANIMATED_TILES").checked === true);
-
-                // saveGameConfig options
-                configDto.saveGameConfig(saveStep1);
             });
 
         sfxButton = layout.getButtonByKey("OPTIONS_SFX_VOL");
