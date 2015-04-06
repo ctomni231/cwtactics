@@ -1,11 +1,11 @@
 package org.wolftec.cwtactics.game.state.menu;
 
 import org.wolftec.cwtactics.game.domain.managers.GameConfigManager;
-import org.wolftec.cwtactics.game.renderer.GuiButtonRenderer;
-import org.wolftec.cwtactics.game.renderer.GuiCheckboxRenderer;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wPlay.audio.AudioChannel;
 import org.wolftec.wPlay.audio.AudioManager;
+import org.wolftec.wPlay.gui.UiButtonRenderer;
+import org.wolftec.wPlay.gui.UiCheckboxRenderer;
 import org.wolftec.wPlay.gui.UiContainer;
 import org.wolftec.wPlay.gui.UiElement;
 import org.wolftec.wPlay.state.MenuState;
@@ -14,10 +14,10 @@ import org.wolftec.wPlay.state.StateManager;
 public class OptionsMainState extends MenuState {
 
   @Injected
-  private GuiButtonRenderer buttonRenderer;
+  private UiButtonRenderer buttonRenderer;
 
   @Injected
-  private GuiCheckboxRenderer checkboxRenderer;
+  private UiCheckboxRenderer checkboxRenderer;
 
   @Injected
   private AudioManager audio;

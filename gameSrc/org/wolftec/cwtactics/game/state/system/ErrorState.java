@@ -5,25 +5,19 @@ import org.stjs.javascript.dom.Form;
 import org.stjs.javascript.dom.Input;
 import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
 import org.wolftec.wCore.core.BrowserUtil;
-import org.wolftec.wCore.core.ComponentManager;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
-import org.wolftec.wCore.core.ManagedComponentInitialization;
 import org.wolftec.wCore.core.ManagedConstruction;
 import org.wolftec.wCore.log.Logger;
-import org.wolftec.wPlay.gui.UiContainer;
-import org.wolftec.wPlay.state.State;
+import org.wolftec.wCore.persistence.VirtualFilesystemManager;
+import org.wolftec.wPlay.state.MenuState;
 import org.wolftec.wPlay.state.StateManager;
 
 @ManagedComponent
-public class ErrorState implements State, ManagedComponentInitialization {
+public class ErrorState extends MenuState {
 
   // TODO by config
   public static final String ERROR_FORM_URL = "http://battle.customwars.com/report/index.php";
-
-  // TODO use button group
-
-  private UiContainer p_container;
 
   @ManagedConstruction
   private Logger log;
@@ -31,15 +25,29 @@ public class ErrorState implements State, ManagedComponentInitialization {
   @Injected
   private UserInterfaceLayerBean ui;
 
-  private String errorMessage;
-  private boolean rendered;
+  @Injected
+  private VirtualFilesystemManager vfs;
 
-  private int selectedAction;
+  private String errorMessage;
 
   @Override
-  public void onComponentConstruction(ComponentManager manager) {
-    p_container = new UiContainer(null);
+  public void createLayout(StateManager stm) {
+    // TODO
 
+    createActionButton(root, null, "menu.error.sendReport", "20% 70% 20% 20%", () -> {
+      sendErrorReport();
+      BrowserUtil.reloadCurrentURL();
+    });
+
+    createActionButton(root, null, "menu.error.cleanData", "40% 70% 20% 20%", () -> {
+      vfs.purgeKeys(null, (err) -> {
+        BrowserUtil.reloadCurrentURL();
+      });
+    });
+
+    createActionButton(root, null, "menu.error.reload", "60% 70% 20% 20%", () -> {
+      BrowserUtil.reloadCurrentURL();
+    });
   }
 
   public void setErrorMessage(String message) {
@@ -48,20 +56,7 @@ public class ErrorState implements State, ManagedComponentInitialization {
 
   @Override
   public void enter(StateManager stm) {
-    rendered = false;
     errorMessage = "";
-    selectedAction = 0;
-
-    String pressedAction = null;
-
-    if (pressedAction == "SEND") {
-      sendErrorReport();
-    }
-  }
-
-  @Override
-  public void render(int delta) {
-    p_container.draw(ui);
   }
 
   private void sendErrorReport() {

@@ -11,10 +11,10 @@ import org.wolftec.cwtactics.game.domain.model.Tile;
 import org.wolftec.cwtactics.game.domain.model.Unit;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wPlay.layergfx.DirectionUtil.Direction;
 import org.wolftec.wPlay.layergfx.GraphicLayer;
 import org.wolftec.wPlay.layergfx.Sprite;
 import org.wolftec.wPlay.layergfx.SpriteManager;
-import org.wolftec.wPlay.layergfx.DirectionUtil.Direction;
 
 @ManagedComponent
 public class UnitLayerBean extends GraphicLayer {
@@ -46,11 +46,6 @@ public class UnitLayerBean extends GraphicLayer {
   /** */
   public void setHiddenUnitId(int unitId) {
     hiddenUnitId = unitId;
-  }
-
-  @Override
-  public boolean isDoubleStepAnimated() {
-    return true;
   }
 
   @Override
@@ -108,8 +103,7 @@ public class UnitLayerBean extends GraphicLayer {
   @Override
   public void onSetScreenPosition(int x, int oy, int offsetX, int offsetY) {
     int halfTileBase = JSGlobal.parseInt(EngineGlobals.TILE_BASE / 2, 10);
-    Unit hiddenUnit = (hiddenUnitId != EngineGlobals.INACTIVE_ID ? gameround.getUnit(hiddenUnitId)
-        : null);
+    Unit hiddenUnit = (hiddenUnitId != EngineGlobals.INACTIVE_ID ? gameround.getUnit(hiddenUnitId) : null);
 
     for (int xe = x + w; x < xe; x++) {
       for (int y = oy, ye = y + h; y < ye; y++) {
@@ -187,10 +181,8 @@ public class UnitLayerBean extends GraphicLayer {
   public void onFullScreenRender() {
     int x = screenOffsetX;
     int y = screenOffsetY;
-    int w = (gameround.getMapWidth() < EngineGlobals.SCREEN_WIDTH) ? gameround.getMapWidth()
-        : EngineGlobals.SCREEN_WIDTH;
-    int h = (gameround.getMapHeight() < EngineGlobals.SCREEN_HEIGHT) ? gameround.getMapHeight()
-        : EngineGlobals.SCREEN_HEIGHT;
+    int w = (gameround.getMapWidth() < EngineGlobals.SCREEN_WIDTH) ? gameround.getMapWidth() : EngineGlobals.SCREEN_WIDTH;
+    int h = (gameround.getMapHeight() < EngineGlobals.SCREEN_HEIGHT) ? gameround.getMapHeight() : EngineGlobals.SCREEN_HEIGHT;
 
     clearAll();
 

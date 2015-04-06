@@ -12,9 +12,10 @@ import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wCore.core.ManagedComponentInitialization;
 import org.wolftec.wCore.core.ReflectionUtil;
 import org.wolftec.wPlay.fnc.Function5;
+import org.wolftec.wPlay.savegame.SaveGameHandler;
 
 @ManagedComponent
-public class GameManager implements ManagedComponentInitialization {
+public class GameManager implements ManagedComponentInitialization, SaveGameHandler {
 
   private Map map;
 
@@ -198,8 +199,7 @@ public class GameManager implements ManagedComponentInitialization {
    *        a property on it
    * @param {Player} wantedOwner wanted owner of the property/unit
    */
-  public void onEachTile(Callback3<Integer, Integer, Tile> cb, boolean needsUnit,
-      boolean needsProp, Player wantedOwner) {
+  public void onEachTile(Callback3<Integer, Integer, Tile> cb, boolean needsUnit, boolean needsProp, Player wantedOwner) {
     for (int x = 0, xe = mapWidth; x < xe; x++) {
       for (int y = 0, ye = mapHeight; y < ye; y++) {
         Tile tile = getTile(x, y);
@@ -230,8 +230,7 @@ public class GameManager implements ManagedComponentInitialization {
    * @param cb
    * @param cbArg
    */
-  public void doInRange(int x, int y, int range,
-      Function5<Integer, Integer, Integer, Tile, Object, Boolean> cb, Object cbArg) {
+  public void doInRange(int x, int y, int range, Function5<Integer, Integer, Integer, Tile, Object, Boolean> cb, Object cbArg) {
 
     int lX;
     int hX;
@@ -265,6 +264,17 @@ public class GameManager implements ManagedComponentInitialization {
 
   public void setWeather(WeatherType weather) {
     this.weather = weather;
+  }
+
+  @Override
+  public void onLoadGame(Object gameData) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public Object onSaveGame() {
+    return null;
   }
 
 }

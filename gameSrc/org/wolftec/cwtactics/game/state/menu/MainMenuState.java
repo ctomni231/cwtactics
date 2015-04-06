@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.state.menu;
 
-import org.wolftec.cwtactics.game.renderer.GuiButtonRenderer;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
+import org.wolftec.wPlay.gui.UiButtonRenderer;
 import org.wolftec.wPlay.gui.UiContainer;
 import org.wolftec.wPlay.state.MenuState;
 import org.wolftec.wPlay.state.StateManager;
@@ -11,7 +11,7 @@ import org.wolftec.wPlay.state.StateManager;
 public class MainMenuState extends MenuState {
 
   @Injected
-  private GuiButtonRenderer buttonRenderer;
+  private UiButtonRenderer buttonRenderer;
 
   @Override
   public void createLayout(StateManager stm) {

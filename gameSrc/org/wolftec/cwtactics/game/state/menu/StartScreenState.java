@@ -3,13 +3,14 @@ package org.wolftec.cwtactics.game.state.menu;
 import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.renderer.BackgroundLayerBean;
 import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
-import org.wolftec.cwtactics.game.state.InputAction;
 import org.wolftec.wCore.core.ConvertUtility;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wCore.i18n.LocalizationManager;
 import org.wolftec.wPlay.audio.AudioManager;
-import org.wolftec.wPlay.gui.UiContainer;
+import org.wolftec.wPlay.gui.UiButtonRenderer;
+import org.wolftec.wPlay.gui.UiTextFieldRenderer;
+import org.wolftec.wPlay.gui.UiElement;
 import org.wolftec.wPlay.input.LiveInputManager;
 import org.wolftec.wPlay.state.MenuState;
 import org.wolftec.wPlay.state.StateManager;
@@ -29,13 +30,21 @@ public class StartScreenState extends MenuState {
   @Injected
   private BackgroundLayerBean bgLayer;
 
+  @Injected
+  private UiButtonRenderer buttonRenderer;
+
+  @Injected
+  private UiTextFieldRenderer textRenderer;
+
+  private UiElement adviceEl;
+
   private int timeLeft;
   private int maxTooltips;
-  private String activeAdvice;
 
   @Override
-  public void createLayout(UiContainer root, OptionsBuilderFactory options) {
-
+  public void createLayout(StateManager mgr) {
+    adviceEl = createTextField(root, textRenderer, "", "20% 20% 60% 40%");
+    createActionButton(root, buttonRenderer, "button.startgame", "40% 80% 20% 10%", () -> mgr.changeToStateClass(MainMenuState.class));
   }
 
   @Override
@@ -56,16 +65,11 @@ public class StartScreenState extends MenuState {
 
   @Override
   public void update(StateManager stm, LiveInputManager input, int delta) {
-    if (input.isActionPressed(InputAction.A) || input.isActionPressed(InputAction.B)) {
-      stm.changeToStateClass(MainMenuState.class);
-      return;
-    }
-
     timeLeft--;
     if (timeLeft < 0) {
-      // TODO set activeAdvice
+
       int randomIndex = ConvertUtility.floatToInt((float) Math.random() * maxTooltips) + 1;
-      activeAdvice = localization.solveKey("TOOLTIPS_" + randomIndex);
+      adviceEl.data.$put("elementText", localization.solveKey("TOOLTIPS_" + randomIndex));
 
       timeLeft = EngineGlobals.START_SCREEN_TOOLTIP_TIME;
     }

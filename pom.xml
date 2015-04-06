@@ -14,7 +14,7 @@
   <profile>
    <id>wolftec_core</id>
    <properties>
-    <src.folder>wolftecCoreSrc/</src.folder>
+    <src.folder>.</src.folder>
    </properties>
   </profile>
  </profiles>
@@ -27,6 +27,11 @@
      <groupId>org.apache.maven.plugins</groupId>
      <artifactId>maven-compiler-plugin</artifactId>
      <configuration>
+      <includes>
+       <include>wolftecCoreSrc/**/*.java</include>
+       <include>wPlay/**/*.java</include>
+       <include>gameSrc/**/*.java</include>
+      </includes>
       <source>1.8</source>
       <target>1.8</target>
      </configuration>
@@ -46,7 +51,8 @@
      </executions>
      <configuration>
       <includes>
-       <include>**/*.java</include>
+       <include>wolftecCoreSrc/**/*.java</include>
+       <include>wPlay/**/*.java</include>
       </includes>
       
       
