@@ -1,4 +1,9 @@
 [
+  { "id":"linkPlay",
+  	"label": "PLAY CWT!!!",
+  	"link":"http://ctomni231.github.io/cwtactics/0_3_5/game/game.html",
+    "title":"Play Online Game Now" },
+    
   { "id":"linkFb",
   	"label": "Facebook",
   	"link":"https://www.facebook.com/customwarstactics",
