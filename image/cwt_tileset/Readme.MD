@@ -89,6 +89,7 @@ List of pretty much every sprite you'd ever need for reference.
 ***
 
 # Custom Wars Tactics - Clear(C) Tileset
+# Custom Wars Tactics - Rain(R) Tileset - RGBA Tint (0, 127, 127, 62)
 
 ## Terrain Types
 
@@ -195,85 +196,17 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *CITY* = City
 * [x] *BASE* = Factory
 * [x] *APRT* = Airport
-* [ ] *PORT* = Seaport
+* [x] *PORT* = Seaport
 * [x] *CMTR* = Communication-Tower
-* [ ] *SILO* = Missile Silo
-* [ ] *PLTF* = Missile Silo Platform
-* [ ] *RDAR* = Radar
+* [x] *SILO* = Missile Silo
+* [x] *PLTF* = Missile Silo Platform
+* [x] *RDAR* = Radar
 * [ ] *TAPT* = Temporary Airport
-* [ ] *TSPT* = Temporary Seaport
+* [x] *TSPT* = Temporary Seaport
 * [ ] *RUBL* = Rubble
 * [x] *PIPS* = Pipeseam
 * [ ] *STRH* = Stronghold
-* [ ] *LABS* = Lab
-* [ ] *QURY* = Query
-* [ ] *ORIG* = Oil Rig
-* [ ] *WALL* = Wall
-
-## Inventions
-
-* [ ] *BHMC* = Black Hole Mini-Cannon
-* [ ] *BHCN* = Black Hole Cannon (3x3 Tiles)
-* [ ] *BHDR* = Black Hole Death Ray (3x3 Tiles)
-* [ ] *BHFR* = Black Hole Fortress (4x4 Tiles)
-* [ ] *BHFT* = Black Hole Factory (3x3 Tiles)
-* [ ] *BHLZ* = Black Hole Lazer
-* [ ] *BHMS* = Black Hole Missile (4x4 Tiles)
-* [ ] *BRBL* = Big Rubble (3x3 Tiles)
-* [ ] *SRBL* = Small Rubble
-* [ ] *VCNO* = Volcano
-* [ ] *BCRY* = Black Hole Crystal
-* [ ] *BOBL* = Black Hole Obelisk (3x3 Tiles)
-* [ ] *BARK* = Black Hole Ark (3x3 Tiles)
-* [ ] *TGUN* = IDS Talon Gun (3x3 Tiles)
-* [ ] *DTGN* = IDS Talon Gun Rubble (3x3 Tiles)
-
-***
-
-# Custom Wars Tactics - Rain(R) Tileset
-
-## Terrain Types
-
-* [ ] *PLIN* = Plain
-* [ ] *FRST* = Forest
-* [ ] *MNTN* = Mountain
-* [ ] *RIVR* = River
-* [ ] *ROAD* = Road
-* [ ] *BRDG* = Bridge
-* [ ] *REEF* = Reef
-* [ ] *WTLD* = Wasteland
-* [ ] *RUIN* = Ruins
-* [ ] *SHOA* = Shoals
-* [ ] *SEAS* = Seas
-* [ ] *METR* = Meteor
-* [ ] *PLZM* = Plasma
-* [ ] *PLZP* = Plazma Pipe
-* [ ] *PZPS* = Plazma Pipeseam
-* [ ] *PIPE* = Pipe
-* [ ] *PIPR* = Piperail
-* [ ] *SWMP* = Swamp
-* [ ] *MIST* = Mist
-* [ ] *RSEA* = Rough Seas
-* [ ] *FIRE* = Fire
-* [ ] *NULL* = Null
-
-## Property Types
-
-* [ ] *HQTR* = Headquarters [All Factions]
-* [ ] *CITY* = City
-* [ ] *BASE* = Factory
-* [ ] *APRT* = Airport
-* [ ] *PORT* = Seaport
-* [ ] *CMTR* = Communication-Tower
-* [ ] *SILO* = Missile Silo
-* [ ] *PLTF* = Missile Silo Platform
-* [ ] *RDAR* = Radar
-* [ ] *TAPT* = Temporary Airport
-* [ ] *TSPT* = Temporary Seaport
-* [ ] *RUBL* = Rubble
-* [ ] *PIPS* = Pipeseam
-* [ ] *STRH* = Stronghold
-* [ ] *LABS* = Lab
+* [x] *LABS* = Lab
 * [ ] *QURY* = Query
 * [ ] *ORIG* = Oil Rig
 * [ ] *WALL* = Wall
