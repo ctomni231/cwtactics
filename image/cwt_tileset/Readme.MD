@@ -75,16 +75,32 @@ List of pretty much every sprite you'd ever need for reference.
 
 ## Unit Types - [secv90 CO Specific](http://secv90.tumblr.com/tagged/advance-wars)
 
-* [ ] *ACYC* - Anti-Tank Cycle (CO Grimm)
-* [ ] *CHAP* - Chaperon (CO Javier)
-* [ ] *INTK* - Intel Truck (CO Sonja)
-* [ ] *SMUG* - Smuggler (CO Hachi)
-* [ ] *PTNK* - Prism Tank (CO Von Bolt)
-* [ ] *LGTK* - Logistic Truck (CO Sasha)
+### Orange Star
+
 * [ ] *RTNK* - Repair Tank (CO Andy)
 * [ ] *COMM* - Commando (CO Sami)
-* [ ] *THNT* - Tank Hunter (CO Jess)
+* [ ] *SMUG* - Smuggler (CO Hachi)
+
+### Blue Moon
+
+* [ ] *SIEG* - Siege Cannon (CO Grit)
+* [ ] *LGTK* - Logistic Truck (CO Sasha)
+
+### Yellow Comet
+
+* [ ] *RYLG* - Royal Guard (CO Kanbei)
+* [ ] *INTK* - Intel Truck (CO Sonja)
+* [ ] *ACYC* - Anti-Tank Cycle (CO Grimm)
+
+### Green Earth
+
 * [ ] *MSUB* - Missile Submarine (CO Drake)
+* [ ] *THNT* - Tank Hunter (CO Jess)
+* [ ] *CHAP* - Chaperon (CO Javier)
+
+### Black Hole
+
+* [ ] *PTNK* - Prism Tank (CO Von Bolt)
 
 ***
 
