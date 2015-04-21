@@ -217,7 +217,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *SILO* = Missile Silo
 * [x] *PLTF* = Missile Silo Platform
 * [x] *RDAR* = Radar
-* [ ] *TAPT* = Temporary Airport
+* [x] *TAPT* = Temporary Airport
 * [x] *TSPT* = Temporary Seaport
 * [ ] *RUBL* = Rubble
 * [x] *PIPS* = Pipeseam
