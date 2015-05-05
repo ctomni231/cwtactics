@@ -3,44 +3,58 @@
 
  <modelVersion>4.0.0</modelVersion>
  <groupId>org.wolfTec</groupId>
- <artifactId>cwtactics</artifactId>
- <version>0.3.799-b1-SNAPSHOT</version>
+ <artifactId>wolfTecEngine</artifactId>
+ <version>1.0</version>
 
  <properties>
   <stjs.version>3.1.3</stjs.version>
  </properties>
+ <repositories>
+  <repository>
+   <id>mvnrepository</id>
+   <url>http://central.maven.org/maven2</url>
+   <snapshots>
+    <enabled>false</enabled>
+   </snapshots>
+   <releases>
+    <enabled>true</enabled>
+   </releases>
+  </repository>
+ </repositories>
 
- <profiles>
-  <profile>
-   <id>wolftec_core</id>
-   <properties>
-    <src.folder>.</src.folder>
-   </properties>
-  </profile>
- </profiles>
-
+  <!-- Output to jar format -->
+  <packaging>jar</packaging>
+  
  <build>
-  <sourceDirectory>${src.folder}</sourceDirectory>
+  <sourceDirectory>src</sourceDirectory>
   <pluginManagement>
    <plugins>
+
+    <!-- ******************************* JAVA COMPILER ******************************* -->
     <plugin>
      <groupId>org.apache.maven.plugins</groupId>
      <artifactId>maven-compiler-plugin</artifactId>
      <configuration>
-      <includes>
-       <include>wolftecCoreSrc/**/*.java</include>
-       <include>wPlay/**/*.java</include>
-       <include>gameSrc/**/*.java</include>
-      </includes>
       <source>1.8</source>
       <target>1.8</target>
      </configuration>
     </plugin>
 
+    <!-- ******************************* STJS ******************************* -->
     <plugin>
+
      <groupId>org.st-js</groupId>
      <artifactId>stjs-maven-plugin</artifactId>
      <version>${stjs.version}</version>
+
+     <dependencies>
+      <dependency>
+       <artifactId>stjs-generator-plugin-java8</artifactId>
+       <groupId>org.st-js</groupId>
+       <version>${stjs.version}</version>
+      </dependency>
+     </dependencies>
+
      <executions>
       <execution>
        <id>main</id>
@@ -51,11 +65,9 @@
      </executions>
      <configuration>
       <includes>
-       <include>wolftecCoreSrc/**/*.java</include>
-       <include>wPlay/**/*.java</include>
+       <include>**/*.java</include>
       </includes>
-      
-      
+
       <pack>true</pack>
       <annotations>
 
@@ -78,6 +90,7 @@
      </configuration>
     </plugin>
 
+    <!-- ******************************* ANT ******************************* -->
     <plugin>
      <groupId>org.apache.maven.plugins</groupId>
      <artifactId>maven-antrun-plugin</artifactId>
@@ -97,44 +110,56 @@
 
          <copy file="${project.build.outputDirectory}/wolfTecEngine.js"
           todir="${basedir}/dest" overwrite="true" />
+
         </target>
        </configuration>
       </execution>
      </executions>
     </plugin>
 
+    <!-- ******************************* JAR ******************************* -->
+    <!-- put in the manifest file that this is a STJS lib (bridge or not) -->
+    <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-jar-plugin</artifactId>
+     <configuration>
+      <archive>
+       <manifestEntries>
+        <STJS-Library>true</STJS-Library>
+       </manifestEntries>
+      </archive>
+     </configuration>
+    </plugin>
    </plugins>
   </pluginManagement>
  </build>
 
  <dependencies>
+
   <dependency>
    <groupId>org.st-js.bridge</groupId>
    <artifactId>html</artifactId>
    <version>5.0.bv2</version>
   </dependency>
+
   <dependency>
    <groupId>org.st-js</groupId>
    <artifactId>server</artifactId>
    <version>${stjs.version}</version>
   </dependency>
+
   <dependency>
    <groupId>org.st-js</groupId>
    <artifactId>shared</artifactId>
    <version>${stjs.version}</version>
   </dependency>
-  <dependency>
-   <groupId>org.st-js</groupId>
-   <artifactId>test-helper</artifactId>
-   <version>${stjs.version}</version>
-   <scope>test</scope>
-  </dependency>
+
   <dependency>
    <groupId>com.sun</groupId>
    <artifactId>tools</artifactId>
    <version>1.8</version>
    <scope>system</scope>
-   <systemPath>C:\Program Files\Java\jdk1.8.0_40\lib\tools.jar</systemPath>
+   <systemPath>C:\Program Files\Java\jdk1.8.0_45\lib\tools.jar</systemPath>
   </dependency>
  </dependencies>
 </project>
