@@ -8,7 +8,7 @@ import org.wolftec.wPlay.state.StateManager;
 /**
  * 
  */
-@ManagedComponent
+@Constructed
 public class FlushActionsState implements InGameState {
 
   @Override

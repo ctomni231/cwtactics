@@ -18,7 +18,7 @@ import org.wolftec.wPlay.loading.GameLoadingHandler;
  * the remote file system as first game loading action if the local file system
  * is empty.
  */
-@ManagedComponent
+@Constructed
 public class CopyData implements GameLoadingHandler {
 
   @ManagedConstruction

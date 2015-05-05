@@ -9,7 +9,7 @@ import org.wolftec.cwtactics.gameold.domain.model.Tile;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 
-@ManagedComponent
+@Constructed
 public class TileVariantCalculator {
 
   private Map<String, ConnectedTile> types;

@@ -9,7 +9,7 @@ import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wPlay.state.StateManager;
 
-@ManagedComponent
+@Constructed
 public class Options implements Action {
 
   @Injected

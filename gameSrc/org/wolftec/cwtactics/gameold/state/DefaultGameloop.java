@@ -9,7 +9,7 @@ import org.wolftec.wPlay.state.GameloopHandlerBak;
 import org.wolftec.wPlay.state.State;
 import org.wolftec.wPlay.state.StateManager;
 
-@ManagedComponent
+@Constructed
 public class DefaultGameloop implements GameloopHandlerBak {
 
   @Injected

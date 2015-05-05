@@ -7,7 +7,7 @@ import org.wolftec.wPlay.input.LiveInputManager;
 import org.wolftec.wPlay.state.State;
 import org.wolftec.wPlay.state.StateManager;
 
-@ManagedComponent
+@Constructed
 public class PortraitModeState implements State {
 
   @Injected

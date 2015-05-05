@@ -14,7 +14,7 @@ import org.wolftec.wCore.core.ReflectionUtil;
 import org.wolftec.wPlay.fnc.Function5;
 import org.wolftec.wPlay.savegame.SaveGameHandler;
 
-@ManagedComponent
+@Constructed
 public class GameManager implements ManagedComponentInitialization, SaveGameHandler {
 
   private Map map;

@@ -10,7 +10,7 @@ import org.wolftec.wCore.core.ConvertUtility;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 
-@ManagedComponent
+@Constructed
 public class WeatherLogic {
 
   @Injected

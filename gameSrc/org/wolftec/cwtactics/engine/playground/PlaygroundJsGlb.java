@@ -5,5 +5,5 @@ import org.stjs.javascript.annotation.GlobalScope;
 @GlobalScope
 public class PlaygroundJsGlb {
 
-  public native Playground playground(Playground object);
+  public native static Playground playground(Playground object);
 }

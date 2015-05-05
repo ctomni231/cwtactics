@@ -12,7 +12,7 @@ import org.wolftec.cwtactics.gameold.domain.types.UnitType;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 
-@ManagedComponent
+@Constructed
 public class FactoryLogic {
 
   @Injected

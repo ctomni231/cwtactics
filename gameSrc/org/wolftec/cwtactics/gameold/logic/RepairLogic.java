@@ -7,7 +7,7 @@ import org.wolftec.cwtactics.gameold.domain.model.Unit;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 
-@ManagedComponent public class RepairLogic {
+@Constructed public class RepairLogic {
 
   @Injected private GameManager gameround;
   

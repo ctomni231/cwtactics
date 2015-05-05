@@ -13,7 +13,7 @@ import org.wolftec.wCore.log.Logger;
 import org.wolftec.wCore.persistence.DataTypeConverter;
 import org.wolftec.wCore.persistence.VirtualFilesystemManager;
 
-@ManagedComponent
+@Constructed
 public class MapManager implements ManagedComponentInitialization {
 
   @ManagedConstruction

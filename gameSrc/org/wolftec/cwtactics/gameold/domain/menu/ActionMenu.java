@@ -6,7 +6,7 @@ import org.wolftec.wCore.core.ComponentManager;
 import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wCore.core.ManagedComponentInitialization;
 
-@ManagedComponent
+@Constructed
 public class ActionMenu implements ManagedComponentInitialization {
 
   private CircularBuffer<MenuEntry> entries;

@@ -12,7 +12,7 @@ import org.wolftec.wCore.persistence.DataTypeConverter;
 import org.wolftec.wPlay.network.NetworkBackend;
 import org.wolftec.wPlay.state.ActionQueueHandler;
 
-@ManagedComponent
+@Constructed
 public class ActionManager implements ActionQueueHandler<ActionItem>,
     ManagedComponentInitialization {
 

@@ -15,7 +15,7 @@ import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wCore.core.ManagedConstruction;
 import org.wolftec.wCore.log.Logger;
 
-@ManagedComponent
+@Constructed
 public class GameRoundSetupBean {
 
   @ManagedConstruction

@@ -7,7 +7,7 @@ import org.wolftec.cwtactics.gameold.domain.model.Player;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 
-@ManagedComponent
+@Constructed
 public class CommanderLogic {
 
   @Injected

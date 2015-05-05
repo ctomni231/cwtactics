@@ -9,7 +9,7 @@ import org.wolftec.wPlay.loading.GameLoadingManager;
 import org.wolftec.wPlay.state.State;
 import org.wolftec.wPlay.state.StateManager;
 
-@ManagedComponent
+@Constructed
 public class LoadAssetsState implements State, ElementLoadedListener {
 
   @ManagedConstruction

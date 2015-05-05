@@ -10,7 +10,7 @@ import org.wolftec.cwtactics.gameold.renderer.UnitLayerBean;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 
-@ManagedComponent
+@Constructed
 public class Wait implements Action {
 
   @Injected

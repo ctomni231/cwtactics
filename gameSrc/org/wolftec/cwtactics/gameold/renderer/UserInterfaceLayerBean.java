@@ -15,7 +15,7 @@ import org.wolftec.wPlay.layergfx.SpriteManager;
  * All user interface stuff will be rendered into this layer. It's the top front
  * layer of the game screen.
  */
-@ManagedComponent
+@Constructed
 public class UserInterfaceLayerBean extends GraphicLayer {
 
   @Injected

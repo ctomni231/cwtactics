@@ -14,7 +14,7 @@ import org.wolftec.wPlay.layergfx.Sprite;
 import org.wolftec.wPlay.layergfx.SpriteManager;
 import org.wolftec.wPlay.layergfx.DirectionUtil.Direction;
 
-@ManagedComponent
+@Constructed
 @LayerIndex(EngineGlobals.LAYER_FOCUS)
 @LayerFrames(EngineGlobals.LAYER_FOCUS_FRAMES)
 @LayerFrameTime(EngineGlobals.LAYER_FOCUS_FRAMETIME)

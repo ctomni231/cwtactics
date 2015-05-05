@@ -12,7 +12,7 @@ import org.wolftec.wCore.log.Logger;
 import org.wolftec.wCore.persistence.VirtualFilesystemManager;
 import org.wolftec.wPlay.loading.GameLoadingHandler;
 
-@ManagedComponent
+@Constructed
 public class ResetCheck implements GameLoadingHandler {
 
   @ManagedConstruction

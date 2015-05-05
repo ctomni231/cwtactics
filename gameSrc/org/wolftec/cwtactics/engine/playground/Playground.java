@@ -218,7 +218,17 @@ public class Playground {
   public void keyup(KeyboardEvent ev) {
   }
 
-  public void leavestate() {
+  @STJSBridge
+  public static class ChangeStateEvent {
+    public PlaygroundState prev;
+    public PlaygroundState next;
+    public PlaygroundState state;
+  }
+
+  public void enterstate(ChangeStateEvent event) {
+  }
+
+  public void leavestate(ChangeStateEvent event) {
   }
 
   public native void loadAtlases(String... images);
@@ -262,7 +272,7 @@ public class Playground {
   public void resize() {
   }
 
-  public native void setState(Playground state);
+  public native void setState(PlaygroundState state);
 
   public void step(int delta) {
   }

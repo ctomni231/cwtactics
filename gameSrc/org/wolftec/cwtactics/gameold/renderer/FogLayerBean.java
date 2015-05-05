@@ -12,7 +12,7 @@ import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wPlay.layergfx.GraphicLayer;
 import org.wolftec.wPlay.layergfx.SpriteManager;
 
-@ManagedComponent
+@Constructed
 public class FogLayerBean extends GraphicLayer {
 
   @Injected

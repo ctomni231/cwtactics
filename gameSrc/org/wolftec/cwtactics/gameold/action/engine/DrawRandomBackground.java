@@ -7,7 +7,7 @@ import org.wolftec.cwtactics.gameold.renderer.BackgroundLayerBean;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 
-@ManagedComponent
+@Constructed
 public class DrawRandomBackground implements Action {
 
   @Injected

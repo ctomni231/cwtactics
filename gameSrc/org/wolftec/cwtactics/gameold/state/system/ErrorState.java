@@ -13,7 +13,7 @@ import org.wolftec.wCore.persistence.VirtualFilesystemManager;
 import org.wolftec.wPlay.state.MenuState;
 import org.wolftec.wPlay.state.StateManager;
 
-@ManagedComponent
+@Constructed
 public class ErrorState extends MenuState {
 
   // TODO by config

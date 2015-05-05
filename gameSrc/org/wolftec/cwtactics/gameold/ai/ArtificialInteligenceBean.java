@@ -10,7 +10,7 @@ import org.wolftec.wCore.log.Logger;
 import org.wolftec.wPlay.decision.DecisionTree;
 import org.wolftec.wPlay.decision.Sequence;
 
-@ManagedComponent
+@Constructed
 public class ArtificialInteligenceBean implements ManagedComponentInitialization {
 
   @ManagedConstruction

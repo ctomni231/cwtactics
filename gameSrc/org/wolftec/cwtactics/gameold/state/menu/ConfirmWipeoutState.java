@@ -9,7 +9,7 @@ import org.wolftec.wPlay.gui.UiContainer;
 import org.wolftec.wPlay.state.MenuState;
 import org.wolftec.wPlay.state.StateManager;
 
-@ManagedComponent
+@Constructed
 public class ConfirmWipeoutState extends MenuState {
 
   @Injected

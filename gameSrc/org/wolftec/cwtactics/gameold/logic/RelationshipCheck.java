@@ -11,7 +11,7 @@ import org.wolftec.wCore.core.ManagedComponent;
 /**
  *
  */
-@ManagedComponent
+@Constructed
 public class RelationshipCheck {
 
   @Injected

@@ -12,7 +12,7 @@ import org.wolftec.wPlay.layergfx.GraphicLayer;
 import org.wolftec.wPlay.layergfx.SpriteManager;
 import org.wolftec.wPlay.layergfx.DirectionUtil.Direction;
 
-@ManagedComponent
+@Constructed
 public class MapLayerBean extends GraphicLayer {
 
   @Injected

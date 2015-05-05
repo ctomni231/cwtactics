@@ -11,7 +11,7 @@ import org.wolftec.cwtactics.gameold.domain.types.PropertyType;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 
-@ManagedComponent
+@Constructed
 public class SpecialWeaponsLogic {
 
   @Injected

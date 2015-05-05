@@ -7,7 +7,7 @@ import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wCore.core.ManagedComponentInitialization;
 import org.wolftec.wPlay.layergfx.DirectionUtil.Direction;
 
-@ManagedComponent
+@Constructed
 public class MovePathCache implements ManagedComponentInitialization {
 
   public CircularBuffer<Direction> path;

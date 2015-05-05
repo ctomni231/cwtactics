@@ -9,7 +9,7 @@ import org.wolftec.wPlay.layergfx.Sprite;
  * Background layer contains the background image of the screen. It's visible in
  * the menu and on maps which are smaller than the screen.
  */
-@ManagedComponent
+@Constructed
 public class BackgroundLayerBean extends GraphicLayer {
 
   @Override

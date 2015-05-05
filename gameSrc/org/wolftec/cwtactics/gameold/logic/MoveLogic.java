@@ -24,7 +24,7 @@ import org.wolftec.wCore.log.Logger;
 import org.wolftec.wPlay.layergfx.DirectionUtil.Direction;
 import org.wolftec.wPlay.pathfinding.PathFinder;
 
-@ManagedComponent
+@Constructed
 public class MoveLogic implements ManagedComponentInitialization {
 
   @ManagedConstruction

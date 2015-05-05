@@ -11,7 +11,7 @@ import org.wolftec.cwtactics.gameold.logic.TransferLogic;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 
-@ManagedComponent
+@Constructed
 public class TransferMoney implements Action {
 
   @Injected

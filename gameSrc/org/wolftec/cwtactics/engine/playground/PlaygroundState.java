@@ -10,7 +10,10 @@ public class PlaygroundState {
   public void create() {
   }
 
-  public void enterstate() {
+  public void enter() {
+  }
+
+  public void leave() {
   }
 
   public void step(int delta) {

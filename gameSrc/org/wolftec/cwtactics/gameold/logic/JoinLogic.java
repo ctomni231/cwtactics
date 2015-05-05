@@ -6,7 +6,7 @@ import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.JsUtil;
 import org.wolftec.wCore.core.ManagedComponent;
 
-@ManagedComponent
+@Constructed
 public class JoinLogic {
 
   @Injected
