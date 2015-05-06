@@ -8,6 +8,7 @@ import org.wolftec.cwtactics.engine.components.ConstructedLogger;
 import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.PlaygroundJsGlb;
 import org.wolftec.cwtactics.engine.playground.PlaygroundState;
+import org.wolftec.cwtactics.game.states.GameInit;
 
 public class Cwt extends Playground implements ConstructedClass, ConstructedLogger {
 
@@ -30,6 +31,11 @@ public class Cwt extends Playground implements ConstructedClass, ConstructedLogg
     info("Initialize playground engine");
     PlaygroundJsGlb.playground(this);
 
+  }
+
+  @Override
+  public void ready() {
+    setStateByClass(GameInit.class);
   }
 
   @Override

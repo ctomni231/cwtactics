@@ -1,40 +1,4 @@
 stjs.ns("cwt");
-cwt.Constants = function() {};
-stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
-    /**
-     *  The version of the game build.
-     */
-    constructor.VERSION = "0.40";
-    /**
-     *  The version of the game build.
-     */
-    constructor.NAMESPACE = "cwt";
-    /**
-     *  Internal screen height in pixel.
-     */
-    constructor.SCREEN_HEIGHT_PX = 480;
-    /**
-     *  Internal screen width in pixel.
-     */
-    constructor.SCREEN_WIDTH_PX = 640;
-}, {}, {});
-stjs.ns("cwt");
-cwt.ConstructedLogger = function() {};
-stjs.extend(cwt.ConstructedLogger, null, [], function(constructor, prototype) {
-    prototype.getLoggerName = function() {
-        return ((this).constructor)["__className"];
-    };
-    prototype.info = function(msg) {
-        console.info("[" + this.getLoggerName() + "][INFO] " + msg);
-    };
-    prototype.warn = function(msg) {
-        console.warn("[" + this.getLoggerName() + "][WARN] " + msg);
-    };
-    prototype.error = function(msg) {
-        console.error("[" + this.getLoggerName() + "][ERROR] " + msg);
-    };
-}, {}, {});
-stjs.ns("cwt");
 cwt.Playground = function() {};
 stjs.extend(cwt.Playground, null, [], function(constructor, prototype) {
     constructor.GamepadEvent = function() {};
@@ -167,6 +131,42 @@ stjs.extend(cwt.Playground, null, [], function(constructor, prototype) {
     prototype.touchstart = function(ev) {};
 }, {container: "Element", atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus"}, {});
 stjs.ns("cwt");
+cwt.Constants = function() {};
+stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
+    /**
+     *  The version of the game build.
+     */
+    constructor.VERSION = "0.40";
+    /**
+     *  The version of the game build.
+     */
+    constructor.NAMESPACE = "cwt";
+    /**
+     *  Internal screen height in pixel.
+     */
+    constructor.SCREEN_HEIGHT_PX = 480;
+    /**
+     *  Internal screen width in pixel.
+     */
+    constructor.SCREEN_WIDTH_PX = 640;
+}, {}, {});
+stjs.ns("cwt");
+cwt.ConstructedLogger = function() {};
+stjs.extend(cwt.ConstructedLogger, null, [], function(constructor, prototype) {
+    prototype.getLoggerName = function() {
+        return ((this).constructor)["__className"];
+    };
+    prototype.info = function(msg) {
+        console.info("[" + this.getLoggerName() + "][INFO] " + msg);
+    };
+    prototype.warn = function(msg) {
+        console.warn("[" + this.getLoggerName() + "][WARN] " + msg);
+    };
+    prototype.error = function(msg) {
+        console.error("[" + this.getLoggerName() + "][ERROR] " + msg);
+    };
+}, {}, {});
+stjs.ns("cwt");
 cwt.ConstructedClass = function() {};
 stjs.extend(cwt.ConstructedClass, null, [], function(constructor, prototype) {
     prototype.onConstruction = function() {};
@@ -186,7 +186,8 @@ cwt.GameMode = stjs.enumeration("ADVANCE_WARS_1", "ADVANCE_WARS_2");
 stjs.ns("cwt");
 cwt.GameInit = function() {};
 stjs.extend(cwt.GameInit, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.enter = function() {
+    prototype.enter = function() {};
+    prototype.render = function() {
         this.app.layer.clear("black");
     };
 }, {app: "cwt.Playground"}, {});
@@ -215,6 +216,7 @@ stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
             var object = ((window)[namespace])[objectName];
             if ((object).hasOwnProperty("$typeDescription")) {
                 (object)["__className"] = objectName;
+                ((object).prototype)["__className"] = objectName;
                 var interfaces = (object)["$inherit"];
                 if (interfaces.indexOf(cwt.ConstructedClass) != -1) {
                     var cmp = new object();
@@ -253,6 +255,9 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass, cwt.ConstructedLogger], functi
         this.container = window.document.getElementById("game");
         this.info("Initialize playground engine");
         playground(this);
+    };
+    prototype.ready = function() {
+        this.setStateByClass(cwt.GameInit);
     };
     prototype.render = function() {
         this.layer.clear("yellow");

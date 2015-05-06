@@ -41,6 +41,8 @@ public class ConstructedFactory {
       if (JSObjectAdapter.hasOwnProperty(object, "$typeDescription")) {
 
         JSObjectAdapter.$put(object, "__className", objectName);
+        JSObjectAdapter.$put(JSObjectAdapter.$prototype(object), "__className", objectName);
+
         Array<Class<?>> interfaces = (Array<Class<?>>) JSObjectAdapter.$get(object, "$inherit");
         if (interfaces.indexOf(ConstructedClass.class) != -1) {
           ConstructedClass cmp = JSObjectAdapter.$js("new object()");

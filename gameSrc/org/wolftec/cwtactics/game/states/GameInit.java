@@ -7,6 +7,10 @@ public class GameInit extends PlaygroundState implements ConstructedClass {
 
   @Override
   public void enter() {
+  }
+
+  @Override
+  public void render() {
     app.layer.clear("black");
   }
 

@@ -8,6 +8,5 @@ import org.wolftec.cwtactics.engine.components.ConstructedFactory;
 public class Starter {
   public static void main(String[] args) {
     ConstructedFactory.initObjects();
-    // ConstructedFactory.getObject(Cwt.class).setStateByClass(GameInit.class);
   }
 }
