@@ -8,6 +8,11 @@ public class Constants {
   public static final String VERSION = "0.40";
 
   /**
+   * The version of the game build.
+   */
+  public static final String NAMESPACE = "cwt";
+
+  /**
    * Internal screen height in pixel.
    */
   public static final int SCREEN_HEIGHT_PX = 480;

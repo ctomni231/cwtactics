@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics;
+package org.wolftec.cwtactics.gameold;
 
 import org.wolftec.wCore.core.ManagerOptions;
 

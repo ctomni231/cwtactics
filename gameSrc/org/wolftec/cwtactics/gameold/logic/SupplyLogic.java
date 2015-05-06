@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.gameold.logic;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.domain.model.GameManager;
 import org.wolftec.cwtactics.gameold.domain.model.Property;
 import org.wolftec.cwtactics.gameold.domain.model.Tile;

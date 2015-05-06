@@ -2,45 +2,46 @@ package org.wolftec.cwtactics.engine.playground;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
-import org.stjs.javascript.annotation.STJSBridge;
+import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.DOMEvent;
+import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwtactics.engine.playground.CanvasQuery.Atlas;
 
-@STJSBridge
+@SyntheticType
 public class Playground {
 
-  @STJSBridge
+  @SyntheticType
   public static class GamepadEvent {
     public String button;
     public int gamepad;
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class KeyboardEvent {
     public int key;
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class KeyboardKeys {
     public int a;
     public int ctrl;
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class KeyboardStatus {
     public KeyboardKeys keys;
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class MouseEvent {
     public DOMEvent original;
     public int x;
     public int y;
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class MouseStatus {
     public boolean left;
     public boolean middle;
@@ -53,7 +54,7 @@ public class Playground {
     public native void unlock();
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class PointerEvent {
     public String button;
     public int delta;
@@ -67,7 +68,7 @@ public class Playground {
     public int y;
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class ResourcePaths {
     public String atlases;
     public String base;
@@ -75,12 +76,12 @@ public class Playground {
     public String sounds;
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class Sound {
 
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class SoundActions {
 
     public native void alias(String alias, String source, double volume, double rate);
@@ -100,7 +101,7 @@ public class Playground {
     public native void stop(String key);
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class TouchEvent {
     public int id;
     public DOMEvent original;
@@ -108,7 +109,7 @@ public class Playground {
     public int y;
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class TouchStatus {
     public int x;
     public int y;
@@ -116,7 +117,7 @@ public class Playground {
     // TODO touches
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class Tween {
 
     public native Tween delay(double time);
@@ -146,7 +147,7 @@ public class Playground {
     public native Tween wait(double time);
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class Tweenable {
     public String background;
     public int height;
@@ -157,9 +158,11 @@ public class Playground {
     public int y;
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class TweenData extends Tweenable {
   }
+
+  public Element container;
 
   public Map<String, Atlas> atlases;
 
@@ -218,7 +221,7 @@ public class Playground {
   public void keyup(KeyboardEvent ev) {
   }
 
-  @STJSBridge
+  @SyntheticType
   public static class ChangeStateEvent {
     public PlaygroundState prev;
     public PlaygroundState next;
@@ -231,13 +234,13 @@ public class Playground {
   public void leavestate(ChangeStateEvent event) {
   }
 
-  public native void loadAtlases(String... images);
+  public native void loadAtlases(String... arguments);
 
-  public native void loadData(String... images);
+  public native void loadData(String... arguments);
 
-  public native void loadImages(String... images);
+  public native void loadImages(String... arguments);
 
-  public native void loadSounds(String... sounds);
+  public native void loadSounds(String... arguments);
 
   public void mousedown(MouseEvent ev) {
   }

@@ -1,11 +1,11 @@
 package org.wolftec.cwtactics.gameold.state;
 
-import org.wolftec.cwtactics.EngineGlobals;
 import org.wolftec.cwtactics.game.domain.menu.ActionMenu;
 import org.wolftec.cwtactics.game.domain.model.GameManager;
 import org.wolftec.cwtactics.game.domain.model.Tile;
 import org.wolftec.cwtactics.game.logic.MoveCode;
 import org.wolftec.cwtactics.game.renderer.UserInterfaceLayerBean;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.wCore.core.ComponentManager;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;

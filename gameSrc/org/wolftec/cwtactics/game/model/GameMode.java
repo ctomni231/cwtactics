@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.gameold.domain.model;
+package org.wolftec.cwtactics.game.model;
 
 public enum GameMode {
 

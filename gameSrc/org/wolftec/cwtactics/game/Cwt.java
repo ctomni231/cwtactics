@@ -1,5 +1,6 @@
 package org.wolftec.cwtactics.game;
 
+import org.stjs.javascript.Global;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.components.ConstructedFactory;
 import org.wolftec.cwtactics.engine.components.ConstructedLogger;
@@ -9,23 +10,22 @@ import org.wolftec.cwtactics.engine.playground.PlaygroundState;
 
 public class Cwt extends Playground implements ConstructedClass, ConstructedLogger {
 
-  public final String version = Constants.VERSION;
-
-  public Playground playground;
-
   @Override
   public void onConstruction() {
     width = Constants.SCREEN_WIDTH_PX;
     height = Constants.SCREEN_HEIGHT_PX;
     smoothing = false;
+
+    container = Global.window.document.getElementById("game");
+
+    info("Initialize playground engine");
+    PlaygroundJsGlb.playground(this);
+
   }
 
-  /**
-   * Converts the game descriptor into a real playground instance and starts the
-   * game initialization procedure.
-   */
-  public void createGameInstance() {
-    playground = PlaygroundJsGlb.playground(this);
+  @Override
+  public void render() {
+    layer.clear("yellow");
   }
 
   /**

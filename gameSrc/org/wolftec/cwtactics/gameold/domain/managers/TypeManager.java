@@ -5,7 +5,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.domain.types.ArmyType;
 import org.wolftec.cwtactics.gameold.domain.types.CoType;
 import org.wolftec.cwtactics.gameold.domain.types.MoveType;

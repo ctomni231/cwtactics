@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.gameold.state.menu;
 
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.renderer.BackgroundLayerBean;
 import org.wolftec.cwtactics.gameold.renderer.UserInterfaceLayerBean;
 import org.wolftec.wCore.core.ConvertUtility;

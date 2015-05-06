@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.gameold.domain.managers;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.domain.config.Config;
 import org.wolftec.cwtactics.gameold.domain.config.GameAppConfigData;
 import org.wolftec.wCore.core.ComponentManager;

@@ -5,7 +5,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.domain.model.GameManager;
 import org.wolftec.cwtactics.gameold.domain.model.Tile;
 import org.wolftec.cwtactics.gameold.domain.model.Unit;

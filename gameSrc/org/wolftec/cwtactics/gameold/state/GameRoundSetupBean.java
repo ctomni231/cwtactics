@@ -2,10 +2,10 @@ package org.wolftec.cwtactics.gameold.state;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.game.model.GameMode;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.domain.managers.TypeManager;
 import org.wolftec.cwtactics.gameold.domain.model.GameManager;
-import org.wolftec.cwtactics.gameold.domain.model.GameMode;
 import org.wolftec.cwtactics.gameold.domain.model.Player;
 import org.wolftec.cwtactics.gameold.domain.types.MapFileType;
 import org.wolftec.cwtactics.gameold.logic.ChangeMode;

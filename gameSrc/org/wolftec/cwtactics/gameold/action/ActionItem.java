@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.gameold.action;
 
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.wCore.validation.DataObject;
 import org.wolftec.wCore.validation.validators.IntValue;
 import org.wolftec.wCore.validation.validators.StringValue;

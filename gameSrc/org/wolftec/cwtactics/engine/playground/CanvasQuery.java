@@ -1,26 +1,31 @@
 package org.wolftec.cwtactics.engine.playground;
 
 import org.stjs.javascript.Array;
+import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.dom.Image;
 import org.stjs.javascript.dom.canvas.CanvasImageData;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
+@STJSBridge
 public class CanvasQuery {
 
+  @STJSBridge
   public static class Atlas {
-    public AtlasFrame[] frames;
+    public Array<AtlasFrame> frames;
     public Canvas images;
   }
 
+  @STJSBridge
   public static class AtlasFrame {
     public int height;
-    public int[] offset;
-    public int[] region;
+    public Array<Integer> offset;
+    public Array<Integer> region;
     public int width;
   }
 
+  @STJSBridge
   public static class BordersData {
     public Array<Object> bottom; // x,y,w,h,mode
     public Array<Object> bottomLeft; // x,y,w,h,mode
@@ -32,11 +37,13 @@ public class CanvasQuery {
     public Array<Object> topRight; // x,y,w,h,mode
   }
 
+  @STJSBridge
   public static class Position {
     public int x;
     public int y;
   }
 
+  @STJSBridge
   public static class TextBoundaries {
     public int height;
     public int lineHeight;
@@ -44,6 +51,7 @@ public class CanvasQuery {
     public int width;
   }
 
+  @STJSBridge
   public static class TrimChanges {
     public int bottom;
     public int left;

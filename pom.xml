@@ -3,8 +3,8 @@
 
  <modelVersion>4.0.0</modelVersion>
  <groupId>org.wolfTec</groupId>
- <artifactId>wolfTecEngine</artifactId>
- <version>1.0</version>
+ <artifactId>CustomWarsTactics</artifactId>
+ <version>0.40</version>
 
  <properties>
   <stjs.version>3.1.3</stjs.version>
@@ -26,7 +26,9 @@
   <packaging>jar</packaging>
   
  <build>
-  <sourceDirectory>src</sourceDirectory>
+  
+  <sourceDirectory>gameSrc</sourceDirectory>
+  
   <pluginManagement>
    <plugins>
 
@@ -35,8 +37,14 @@
      <groupId>org.apache.maven.plugins</groupId>
      <artifactId>maven-compiler-plugin</artifactId>
      <configuration>
+      
       <source>1.8</source>
       <target>1.8</target>
+      
+      <excludes>
+        <exclude>**/gameold/**/*.java</exclude>
+      </excludes>
+      
      </configuration>
     </plugin>
 
@@ -44,7 +52,9 @@
     <plugin>
 
      <groupId>org.st-js</groupId>
+     
      <artifactId>stjs-maven-plugin</artifactId>
+     
      <version>${stjs.version}</version>
 
      <dependencies>
@@ -63,34 +73,26 @@
        </goals>
       </execution>
      </executions>
+     
      <configuration>
+      
       <includes>
        <include>**/*.java</include>
       </includes>
+      
+      <excludes>
+        <exclude>**/gameold/**/*.java</exclude>
+      </excludes>
 
       <pack>true</pack>
+      
       <annotations>
-
-       <annotation>ValidateKey</annotation>
-       <annotation>StringValue</annotation>
-       <annotation>StringKey</annotation>
-       <annotation>IntValue</annotation>
-       <annotation>ComplexValue</annotation>
-       <annotation>BooleanValue</annotation>
-
-       <annotation>LayerData</annotation>
-
-       <annotation>Bean</annotation>
-       <annotation>Created</annotation>
-       <annotation>Factory</annotation>
-       <annotation>Injected</annotation>
-       <annotation>PostInitialization</annotation>
-       <annotation>ThisAccessSafe</annotation>
       </annotations>
      </configuration>
     </plugin>
 
     <!-- ******************************* ANT ******************************* -->
+    
     <plugin>
      <groupId>org.apache.maven.plugins</groupId>
      <artifactId>maven-antrun-plugin</artifactId>
@@ -106,10 +108,10 @@
         <target>
 
          <copy file="${project.build.outputDirectory}/stjs.js"
-          todir="${basedir}/dest" overwrite="true" />
+               todir="${basedir}/dest" overwrite="true" />
 
-         <copy file="${project.build.outputDirectory}/wolfTecEngine.js"
-          todir="${basedir}/dest" overwrite="true" />
+         <copy file="${project.build.outputDirectory}/CustomWarsTactics.js"
+               todir="${basedir}/dest" overwrite="true" />
 
         </target>
        </configuration>
@@ -119,6 +121,7 @@
 
     <!-- ******************************* JAR ******************************* -->
     <!-- put in the manifest file that this is a STJS lib (bridge or not) -->
+    
     <plugin>
      <groupId>org.apache.maven.plugins</groupId>
      <artifactId>maven-jar-plugin</artifactId>

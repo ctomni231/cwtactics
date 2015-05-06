@@ -1,9 +1,9 @@
 package org.wolftec.cwtactics.gameold.logic;
 
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.game.model.GameMode;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.domain.managers.GameConfigManager;
 import org.wolftec.cwtactics.gameold.domain.model.GameManager;
-import org.wolftec.cwtactics.gameold.domain.model.GameMode;
 import org.wolftec.cwtactics.gameold.domain.model.Player;
 import org.wolftec.cwtactics.gameold.domain.model.Tile;
 import org.wolftec.cwtactics.gameold.domain.model.Unit;

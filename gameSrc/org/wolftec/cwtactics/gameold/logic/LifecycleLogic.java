@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.gameold.logic;
 
 import org.stjs.javascript.JSGlobal;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.domain.managers.GameConfigManager;
 import org.wolftec.cwtactics.gameold.domain.managers.TypeManager;
 import org.wolftec.cwtactics.gameold.domain.model.GameManager;

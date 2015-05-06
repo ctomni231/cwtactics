@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.engine.playground;
 
-import org.stjs.javascript.annotation.STJSBridge;
+import org.stjs.javascript.annotation.SyntheticType;
 
-@STJSBridge
+@SyntheticType
 public class PlaygroundState {
 
   public Playground app;

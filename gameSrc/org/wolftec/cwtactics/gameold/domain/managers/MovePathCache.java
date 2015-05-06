@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.gameold.domain.managers;
 
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.wCore.container.CircularBuffer;
 import org.wolftec.wCore.core.ComponentManager;
 import org.wolftec.wCore.core.ManagedComponent;

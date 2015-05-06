@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.gameold.startup;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wCore.core.ManagedConstruction;

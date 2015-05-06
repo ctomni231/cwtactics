@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.gameold.logic;
 
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 
 public enum MoveCode {
 

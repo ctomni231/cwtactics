@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.gameold.renderer;
 
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wPlay.layergfx.GraphicLayer;
 import org.wolftec.wPlay.layergfx.Sprite;

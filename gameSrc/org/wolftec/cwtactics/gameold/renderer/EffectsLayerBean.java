@@ -5,7 +5,7 @@ import org.stjs.javascript.Date;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Namespace;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.wCore.core.ManagedComponent;
 import org.wolftec.wCore.core.ManagedConstruction;
 import org.wolftec.wCore.log.Logger;

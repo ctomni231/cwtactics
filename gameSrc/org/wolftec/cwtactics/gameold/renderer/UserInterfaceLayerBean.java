@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.gameold.renderer;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.state.StateDataBean;
 import org.wolftec.wCore.core.Injected;
 import org.wolftec.wCore.core.ManagedComponent;

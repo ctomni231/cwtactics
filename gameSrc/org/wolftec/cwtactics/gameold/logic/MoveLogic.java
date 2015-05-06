@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.gameold.logic;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.domain.managers.TypeManager;
 import org.wolftec.cwtactics.gameold.domain.model.GameManager;
 import org.wolftec.cwtactics.gameold.domain.model.Player;

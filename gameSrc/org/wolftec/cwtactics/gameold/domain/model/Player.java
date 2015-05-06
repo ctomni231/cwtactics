@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.gameold.domain.model;
 
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.cwtactics.gameold.domain.types.ArmyType;
 import org.wolftec.cwtactics.gameold.domain.types.CoType;
 import org.wolftec.wCore.validation.DataObject;

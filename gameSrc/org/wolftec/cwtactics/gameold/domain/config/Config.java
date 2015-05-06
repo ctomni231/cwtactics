@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.gameold.domain.config;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Template;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 
 /**
  *

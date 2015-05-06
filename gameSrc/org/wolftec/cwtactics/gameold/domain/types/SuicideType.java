@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.gameold.domain.types;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwtactics.EngineGlobals;
+import org.wolftec.cwtactics.gameold.EngineGlobals;
 import org.wolftec.wCore.validation.DataObject;
 import org.wolftec.wCore.validation.validators.IntValue;
 import org.wolftec.wCore.validation.validators.StringValue;
