@@ -21,9 +21,18 @@ stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
 stjs.ns("cwt");
 cwt.ConstructedLogger = function() {};
 stjs.extend(cwt.ConstructedLogger, null, [], function(constructor, prototype) {
-    prototype.info = function(msg) {};
-    prototype.warn = function(msg) {};
-    prototype.error = function(msg) {};
+    prototype.getLoggerName = function() {
+        return ((this).constructor)["__className"];
+    };
+    prototype.info = function(msg) {
+        console.info("[" + this.getLoggerName() + "][INFO] " + msg);
+    };
+    prototype.warn = function(msg) {
+        console.warn("[" + this.getLoggerName() + "][WARN] " + msg);
+    };
+    prototype.error = function(msg) {
+        console.error("[" + this.getLoggerName() + "][ERROR] " + msg);
+    };
 }, {}, {});
 stjs.ns("cwt");
 cwt.Playground = function() {};
@@ -234,6 +243,9 @@ stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
 stjs.ns("cwt");
 cwt.Cwt = function() {};
 stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass, cwt.ConstructedLogger], function(constructor, prototype) {
+    prototype.getLoggerName = function() {
+        return (cwt.Cwt)["__className"];
+    };
     prototype.onConstruction = function() {
         this.width = cwt.Constants.SCREEN_WIDTH_PX;
         this.height = cwt.Constants.SCREEN_HEIGHT_PX;
@@ -255,10 +267,10 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass, cwt.ConstructedLogger], functi
         this.setState(cwt.ConstructedFactory.getObject(stateClass));
     };
     prototype.enterstate = function(event) {
-        this.info("Enter state " + event.state);
+        this.info("Enter state " + ((event.state)["__className"]));
     };
     prototype.leavestate = function(event) {
-        this.info("Leaving state " + event.state);
+        this.info("Leaving state " + ((event.state)["__className"]));
     };
 }, {container: "Element", atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus"}, {});
 /**
