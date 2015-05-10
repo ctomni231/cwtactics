@@ -1,0 +1,12 @@
+{
+  "ID": "MVWT",
+  "sound": null,
+  "costs": 
+  {
+    "WATER": 1,
+    "PORT": 1,
+    "REEF": 2,
+    "SHOAL": 1,
+    "*": -1
+  }
+}

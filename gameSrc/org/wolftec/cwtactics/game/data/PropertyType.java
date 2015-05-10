@@ -24,9 +24,9 @@ public class PropertyType extends ObjectType {
 
   @Override
   protected void validateData(Array<String> errors) {
-    checkExpression(Is.is.integer(defense) && Is.is.within(defense, 0, 6), errors, "defense");
-    checkExpression(Is.is.integer(vision) && Is.is.within(vision, 0, Constants.MAX_SELECTION_RANGE), errors, "vision");
-    checkExpression(Is.is.integer(capturePoints) && Is.is.within(capturePoints, 0, 20), errors, "capturePoints");
+    checkExpression(Is.is.integer(defense) && Is.is.within(defense, -1, 7), errors, "defense");
+    checkExpression(Is.is.integer(vision) && Is.is.within(vision, -1, Constants.MAX_SELECTION_RANGE + 1), errors, "vision");
+    checkExpression(Is.is.integer(capturePoints) && Is.is.within(capturePoints, -1, 21), errors, "capturePoints");
 
     checkType(rocketsilo, errors);
 
@@ -37,7 +37,7 @@ public class PropertyType extends ObjectType {
 
     JsUtil.forEachObjectValue(repairs, (unitOrMoveTypeId, amount) -> {
       checkExpression(Is.is.string(unitOrMoveTypeId), errors, "reapirs key " + unitOrMoveTypeId);
-      checkExpression(Is.is.integer((Number) amount) && Is.is.within((Number) amount, 1, 10), errors, "repairs value of " + unitOrMoveTypeId);
+      checkExpression(Is.is.integer((Number) amount) && Is.is.within((Number) amount, 0, 11), errors, "repairs value of " + unitOrMoveTypeId);
       // TODO id check
       });
 

@@ -8,6 +8,10 @@ import org.wolftec.cwtactics.engine.components.ConstructedClass;
 
 public class BrowserService implements ConstructedClass {
 
+  public void requestJsonFile(String path, Callback2<String, Object> callback) {
+    // TODO
+  }
+
   /**
    * Invokes a XmlHttpRequest.
    * 
@@ -44,7 +48,8 @@ public class BrowserService implements ConstructedClass {
       }
     };
 
-    // create a randomized parameter for the URL to make sure it won't be cached
+    // TODO create a randomized parameter for the URL to make sure it won't be
+    // cached
     request.open("get", path, true);
 
     request.send();

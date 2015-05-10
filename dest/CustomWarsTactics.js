@@ -497,8 +497,8 @@ stjs.extend(cwt.CoType, cwt.ObjectType, [], function(constructor, prototype) {
     prototype.coStars = 0;
     prototype.scoStars = 0;
     prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.coStars) && is.within(this.coStars, 0, 10), errors, "coStars");
-        this.checkExpression(is.integer(this.scoStars) && is.within(this.scoStars, this.coStars, 11), errors, "scoStars");
+        this.checkExpression(is.integer(this.coStars) && is.within(this.coStars, 0, 11), errors, "coStars");
+        this.checkExpression(is.integer(this.scoStars) && is.within(this.scoStars, 0, 11), errors, "scoStars");
     };
 }, {}, {});
 stjs.ns("cwt");
@@ -581,15 +581,15 @@ stjs.extend(cwt.PropertyType, cwt.ObjectType, [], function(constructor, prototyp
     prototype.blocker = false;
     prototype.notTransferable = false;
     prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.defense) && is.within(this.defense, 0, 6), errors, "defense");
-        this.checkExpression(is.integer(this.vision) && is.within(this.vision, 0, cwt.Constants.MAX_SELECTION_RANGE), errors, "vision");
-        this.checkExpression(is.integer(this.capturePoints) && is.within(this.capturePoints, 0, 20), errors, "capturePoints");
+        this.checkExpression(is.integer(this.defense) && is.within(this.defense, -1, 7), errors, "defense");
+        this.checkExpression(is.integer(this.vision) && is.within(this.vision, -1, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "vision");
+        this.checkExpression(is.integer(this.capturePoints) && is.within(this.capturePoints, -1, 21), errors, "capturePoints");
         this.checkType(this.rocketsilo, errors);
         this.checkExpression(is.array(this.builds) && is.not.empty(this.builds), errors, "builds");
         cwt.JsUtil.forEachArrayValue(this.builds, function(index, value) {});
         cwt.JsUtil.forEachObjectValue(this.repairs, stjs.bind(this, function(unitOrMoveTypeId, amount) {
             this.checkExpression(is.string(unitOrMoveTypeId), errors, "reapirs key " + unitOrMoveTypeId);
-            this.checkExpression(is.integer(amount) && is.within(amount, 1, 10), errors, "repairs value of " + unitOrMoveTypeId);
+            this.checkExpression(is.integer(amount) && is.within(amount, 0, 11), errors, "repairs value of " + unitOrMoveTypeId);
         }));
         this.checkType(this.laser, errors);
         this.checkExpression(is.string(this.changesTo) && is.not.empty(this.changesTo), errors, "changesTo");
@@ -754,27 +754,45 @@ stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], function(c
         config.size = cwt.Constants.OFFLINE_DB_SIZE;
         localforage.config(config);
     };
-    prototype.loadData = function(game, dataService) {
-        this.info("loading data");
-        var data = game.getAssetEntry("ORST", "armies", "json");
-        game.loader.add(data.key);
-        localforage.getItem(data.key, stjs.bind(this, function(err, value) {
-            if (value != null) {
+    prototype.loadFolderData = function(game, folder, dataClass) {
+        this.info("loading data from folder " + folder);
+        var data = game.getAssetEntry("__filelist__.json", folder, "json");
+        localforage.getItem(data.path, stjs.bind(this, function(err, value) {
+            if (value == null) {
+                cwt.ConstructedFactory.getObject(cwt.BrowserService).doXmlHttpRequest(data.url, null, stjs.bind(this, function(objData, error) {
+                    this.loadRemoteFolderByContentList(game, folder, JSON.parse(objData), dataClass);
+                }));
+            } else {
+                this.loadCachedFolderByContentList(game, folder, value, dataClass);
+            }
+        }));
+    };
+    prototype.loadRemoteFolderByContentList = function(game, folder, content, dataClass) {
+        cwt.JsUtil.forEachArrayValue(content, stjs.bind(this, function(index, id) {
+            var data = game.getAssetEntry(id, folder, "json");
+            game.loader.add(data.key);
+            this.info("grabbed value from " + data.url);
+            cwt.ConstructedFactory.getObject(cwt.BrowserService).doXmlHttpRequest(data.url, null, stjs.bind(this, function(objData, error) {
+                this.info("parsing and validating " + data.key);
+                var type = stjs.typefy(JSON.parse(objData), dataClass);
+                cwt.ConstructedFactory.getObject(cwt.GameDataService).registerDataType(type);
+                this.info("putting " + data.key + " into the cache");
+                localforage.setItem(data.key, type, function(errInner, valueInner) {
+                    game.loader.success(data.key);
+                });
+            }));
+        }));
+    };
+    prototype.loadCachedFolderByContentList = function(game, folder, content, dataClass) {
+        cwt.JsUtil.forEachArrayValue(content, stjs.bind(this, function(index, id) {
+            var data = game.getAssetEntry(id, folder, "json");
+            game.loader.add(data.key);
+            localforage.getItem(data.key, stjs.bind(this, function(err, value) {
                 this.info("grabbed value from the cache");
-                var type = stjs.typefy(value, cwt.ArmyType);
+                var type = stjs.typefy(value, dataClass);
                 cwt.ConstructedFactory.getObject(cwt.GameDataService).registerDataType(type);
                 game.loader.success(data.key);
-            } else {
-                this.info("grabbed value from remote resource location");
-                cwt.ConstructedFactory.getObject(cwt.BrowserService).doXmlHttpRequest(data.url, null, stjs.bind(this, function(objData, error) {
-                    var type = stjs.typefy(JSON.parse(objData), cwt.ArmyType);
-                    cwt.ConstructedFactory.getObject(cwt.GameDataService).registerDataType(type);
-                    this.info("putting it into the cache");
-                    localforage.setItem(data.key, type, function(errInner, valueInner) {
-                        game.loader.success(data.key);
-                    });
-                }));
-            }
+            }));
         }));
     };
 }, {}, {});
@@ -795,8 +813,13 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
     };
     prototype.create = function() {
         var offlineDataLoader = cwt.ConstructedFactory.getObject(cwt.OfflineCacheDataLoader);
-        var dataService = cwt.ConstructedFactory.getObject(cwt.GameDataService);
-        offlineDataLoader.loadData(this, dataService);
+        offlineDataLoader.loadFolderData(this, "armies", cwt.ArmyType);
+        offlineDataLoader.loadFolderData(this, "cos", cwt.CoType);
+        offlineDataLoader.loadFolderData(this, "tiles", cwt.TileType);
+        offlineDataLoader.loadFolderData(this, "props", cwt.PropertyType);
+        offlineDataLoader.loadFolderData(this, "movetypes", cwt.MoveType);
+        offlineDataLoader.loadFolderData(this, "units", cwt.UnitType);
+        offlineDataLoader.loadFolderData(this, "weathers", cwt.WeatherType);
     };
     prototype.ready = function() {
         this.setStateByClass(cwt.GameInit);

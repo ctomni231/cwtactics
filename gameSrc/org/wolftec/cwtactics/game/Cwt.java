@@ -10,7 +10,13 @@ import org.wolftec.cwtactics.engine.playground.PlaygroundGlobal;
 import org.wolftec.cwtactics.engine.playground.PlaygroundState;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
-import org.wolftec.cwtactics.game.service.GameDataService;
+import org.wolftec.cwtactics.game.data.ArmyType;
+import org.wolftec.cwtactics.game.data.CoType;
+import org.wolftec.cwtactics.game.data.MoveType;
+import org.wolftec.cwtactics.game.data.PropertyType;
+import org.wolftec.cwtactics.game.data.TileType;
+import org.wolftec.cwtactics.game.data.UnitType;
+import org.wolftec.cwtactics.game.data.WeatherType;
 import org.wolftec.cwtactics.game.states.GameInit;
 
 public class Cwt extends Playground implements ConstructedClass {
@@ -41,8 +47,14 @@ public class Cwt extends Playground implements ConstructedClass {
   @Override
   public void create() {
     OfflineCacheDataLoader offlineDataLoader = ConstructedFactory.getObject(OfflineCacheDataLoader.class);
-    GameDataService dataService = ConstructedFactory.getObject(GameDataService.class);
-    offlineDataLoader.loadData(this, dataService);
+
+    offlineDataLoader.loadFolderData(this, "armies", ArmyType.class);
+    offlineDataLoader.loadFolderData(this, "cos", CoType.class);
+    offlineDataLoader.loadFolderData(this, "tiles", TileType.class);
+    offlineDataLoader.loadFolderData(this, "props", PropertyType.class);
+    offlineDataLoader.loadFolderData(this, "movetypes", MoveType.class);
+    offlineDataLoader.loadFolderData(this, "units", UnitType.class);
+    offlineDataLoader.loadFolderData(this, "weathers", WeatherType.class);
   }
 
   @Override

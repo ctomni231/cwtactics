@@ -1,6 +1,6 @@
 {
-
-  "maps": {
+  "maps": 
+  {
     "Minus Hills": "maps/minus-hills-v1.json",
     "Outpost Plus": "maps/outpost-plus-v1.json",
     "Shuriken Valley": "maps/shuriken-valley-v1.json",
@@ -11,7 +11,8 @@
     "Test-MillionMarch": "maps/millionmarch.json"
   },
 
-  "tooltips": [
+  "tooltips": 
+  [
     "TOOLTIP_1",
     "TOOLTIP_2",
     "TOOLTIP_3",
@@ -25,7 +26,8 @@
     "TOOLTIP_11"
   ],
 
-  "sounds": {
+  "sounds": 
+  {
     "CANNON_TANK_BIG": "sound/tnk_cannon_big.wav",
     "CANNON_TANK_SMALL": "sound/tnk_cannon_small.wav",
     "MACHINE_GUN": "sound/mg.wav",
@@ -36,28 +38,34 @@
     "MAP_TICK": "sound/maptick.wav"
   },
 
-  "musics": {
+  "musics": 
+  {
     "MAIN_MENU_BG": "music/Epoch.mp3"
   },
 
-  "minimapIndex": {
-    "PLIN":0,
-    "FRST":1,
-    "MNTN":2,
-    "ROAD":3,
-    "RIVER":5,
-    "BRDG":3,
-    "WATER":5,
-    "REEF":6,
-    "SHOAL":7
+  "minimapIndex": 
+  {
+    "PLIN": 0,
+    "FRST": 1,
+    "MNTN": 2,
+    "ROAD": 3,
+    "RIVER": 5,
+    "BRDG": 3,
+    "WATER": 5,
+    "REEF": 6,
+    "SHOAL": 7
   },
 
-  "graphics": {
-    "COLOR_MAP": [
+  "graphics": 
+  {
+    "COLOR_MAP": 
+    [
       "image/BuildingBaseColors.png",
       "image/UnitBaseColors.png"
     ],
-    "UNITS": {
+
+    "UNITS": 
+    {
       "WRTK": "image/cwt_anim/units/CWT_WRTK.png",
       "TNTK": "image/cwt_anim/units/CWT_TANK.png",
       "TCTR": "image/cwt_anim/units/CWT_TCTR.png",
@@ -82,8 +90,11 @@
       "ARTY": "image/cwt_anim/units/CWT_ARTY.png",
       "ACAR": "image/cwt_anim/units/CWT_ACAR.png"
     },
-    "TILES": {
-      "WATER": [
+
+    "TILES": 
+    {
+      "WATER": 
+      [
         {
           "ROAD": "L",
           "PLIN": "L",
@@ -95,55 +106,573 @@
           "RIVER": "RV",
           "DEFAULT": ""
         },
+
         [
-          [ 0, "S", "S", "S", "S", "S", "S", "S", "S" ],
-          [ 1, "L", "L", "L", "L", "L", "L", "L", "L" ],
-          [ 2, "L", "", "S", "", "L", "", "S", "" ],
-          [ 3, "S", "", "L", "", "S", "", "L", "" ],
-          [ 4, "L", "", "S", "", "L", "", "L", "" ],
-          [ 5, "L", "", "L", "", "L", "", "S", "" ],
-          [ 6, "L", "", "L", "", "S", "", "L", "" ],
-          [ 6, "S", "", "L", "", "L", "", "L", "" ],
-          [ 7, "L", "L", "S", "S", "S", "L", "L", "L" ],
-          [ 7, "L", "", "S", "S", "S", "", "L", "" ],
-          [ 8, "L", "L", "L", "L", "S", "S", "S", "L" ],
-          [ 8, "L", "", "L", "", "S", "S", "S", "" ],
-          [ 9, "L", "L", "S", "S", "S", "S", "S", "L" ],
-          [ 10, "RV", "L", "S", "S", "S", "S", "S", "L" ],
-          [ 11, "S", "L", "L", "L", "L", "L", "L", "L" ],
-          [ 12, "S", "S", "S", "L", "L", "L", "L", "L" ],
-          [ 13, "S", "", "L", "", "L", "", "S", "S" ],
-          [ 14, "S", "", "S", "", "L", "", "S", "" ],
-          [ 15, "S", "S", "S", "L", "RV", "L", "S", "S" ],
-          [ 16, "S", "", "S", "", "S", "", "L", "" ],
-          [ 17, "S" , "S", "S", "S", "S", "L", "RV", "L" ],
-          [ 18, "S", "", "L", "", "S", "", "", "" ],
-          [ 19, "S", "L", "RV", "L", "S", "S", "S", "S" ],
-          [ 20, "S", "L", "S", "L", "S", "L", "S", "L" ],
-          [ 21, "S", "L", "S", "S", "S", "L", "S", "L" ],
-          [ 22, "S", "L", "S", "L", "S", "S", "S", "L" ],
-          [ 23, "S", "L", "S", "S", "S", "S", "S", "L" ],
-          [ 24, "S", "S", "S", "L", "S", "L", "S", "L" ],
-          [ 25, "S", "S", "S", "S", "S", "L", "S", "L" ],
-          [ 26, "S", "S", "S", "L", "S", "S", "S", "L" ],
-          [ 27, "S", "S", "S", "S", "S", "S", "S", "L" ],
-          [ 28, "S", "L", "S", "L", "S", "L", "S", "S" ],
-          [ 29, "S", "L", "S", "S", "S", "L", "S", "S" ],
-          [ 30, "S", "L", "S", "L", "S", "S", "S", "S" ],
-          [ 31, "S", "L", "S", "S", "S", "S", "S", "S" ],
-          [ 32, "S", "S", "S", "L", "S", "L", "S", "S" ],
-          [ 33, "S", "S", "S", "L", "S", "S", "S", "S" ],
-          [ 34, "S", "S", "S", "S", "S", "L", "S", "S" ],
-          [ 35, "L", "L", "S", "S", "S", "S", "S", "S" ],
-          [ 35, "L", "S", "S", "S", "S", "S", "S", "L" ],
-          [ 35, "L", "S", "S", "S", "S", "S", "S", "S" ],
-          [ 36, "L", "L", "S", "L", "S", "", "S", "L" ],
-          [ 37, "S", "L", "S", "", "", "", "", "" ],
-          [ 38, "", "", "S", "L", "S", "", "", "" ],
-          [ 39, "", "", "", "", "S", "L", "S", "" ],
-          [ 40, "S", "", "", "", "", "", "S", "L" ],
-          [ 41, "", "", "", "", "", "", "", "" ]
+          [
+            0,
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S"
+          ],
+
+          [
+            1,
+            "L",
+            "L",
+            "L",
+            "L",
+            "L",
+            "L",
+            "L",
+            "L"
+          ],
+
+          [
+            2,
+            "L",
+            "",
+            "S",
+            "",
+            "L",
+            "",
+            "S",
+            ""
+          ],
+
+          [
+            3,
+            "S",
+            "",
+            "L",
+            "",
+            "S",
+            "",
+            "L",
+            ""
+          ],
+
+          [
+            4,
+            "L",
+            "",
+            "S",
+            "",
+            "L",
+            "",
+            "L",
+            ""
+          ],
+
+          [
+            5,
+            "L",
+            "",
+            "L",
+            "",
+            "L",
+            "",
+            "S",
+            ""
+          ],
+
+          [
+            6,
+            "L",
+            "",
+            "L",
+            "",
+            "S",
+            "",
+            "L",
+            ""
+          ],
+
+          [
+            6,
+            "S",
+            "",
+            "L",
+            "",
+            "L",
+            "",
+            "L",
+            ""
+          ],
+
+          [
+            7,
+            "L",
+            "L",
+            "S",
+            "S",
+            "S",
+            "L",
+            "L",
+            "L"
+          ],
+
+          [
+            7,
+            "L",
+            "",
+            "S",
+            "S",
+            "S",
+            "",
+            "L",
+            ""
+          ],
+
+          [
+            8,
+            "L",
+            "L",
+            "L",
+            "L",
+            "S",
+            "S",
+            "S",
+            "L"
+          ],
+
+          [
+            8,
+            "L",
+            "",
+            "L",
+            "",
+            "S",
+            "S",
+            "S",
+            ""
+          ],
+
+          [
+            9,
+            "L",
+            "L",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "L"
+          ],
+
+          [
+            10,
+            "RV",
+            "L",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "L"
+          ],
+
+          [
+            11,
+            "S",
+            "L",
+            "L",
+            "L",
+            "L",
+            "L",
+            "L",
+            "L"
+          ],
+
+          [
+            12,
+            "S",
+            "S",
+            "S",
+            "L",
+            "L",
+            "L",
+            "L",
+            "L"
+          ],
+
+          [
+            13,
+            "S",
+            "",
+            "L",
+            "",
+            "L",
+            "",
+            "S",
+            "S"
+          ],
+
+          [
+            14,
+            "S",
+            "",
+            "S",
+            "",
+            "L",
+            "",
+            "S",
+            ""
+          ],
+
+          [
+            15,
+            "S",
+            "S",
+            "S",
+            "L",
+            "RV",
+            "L",
+            "S",
+            "S"
+          ],
+
+          [
+            16,
+            "S",
+            "",
+            "S",
+            "",
+            "S",
+            "",
+            "L",
+            ""
+          ],
+
+          [
+            17,
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "L",
+            "RV",
+            "L"
+          ],
+
+          [
+            18,
+            "S",
+            "",
+            "L",
+            "",
+            "S",
+            "",
+            "",
+            ""
+          ],
+
+          [
+            19,
+            "S",
+            "L",
+            "RV",
+            "L",
+            "S",
+            "S",
+            "S",
+            "S"
+          ],
+
+          [
+            20,
+            "S",
+            "L",
+            "S",
+            "L",
+            "S",
+            "L",
+            "S",
+            "L"
+          ],
+
+          [
+            21,
+            "S",
+            "L",
+            "S",
+            "S",
+            "S",
+            "L",
+            "S",
+            "L"
+          ],
+
+          [
+            22,
+            "S",
+            "L",
+            "S",
+            "L",
+            "S",
+            "S",
+            "S",
+            "L"
+          ],
+
+          [
+            23,
+            "S",
+            "L",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "L"
+          ],
+
+          [
+            24,
+            "S",
+            "S",
+            "S",
+            "L",
+            "S",
+            "L",
+            "S",
+            "L"
+          ],
+
+          [
+            25,
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "L",
+            "S",
+            "L"
+          ],
+
+          [
+            26,
+            "S",
+            "S",
+            "S",
+            "L",
+            "S",
+            "S",
+            "S",
+            "L"
+          ],
+
+          [
+            27,
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "L"
+          ],
+
+          [
+            28,
+            "S",
+            "L",
+            "S",
+            "L",
+            "S",
+            "L",
+            "S",
+            "S"
+          ],
+
+          [
+            29,
+            "S",
+            "L",
+            "S",
+            "S",
+            "S",
+            "L",
+            "S",
+            "S"
+          ],
+
+          [
+            30,
+            "S",
+            "L",
+            "S",
+            "L",
+            "S",
+            "S",
+            "S",
+            "S"
+          ],
+
+          [
+            31,
+            "S",
+            "L",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S"
+          ],
+
+          [
+            32,
+            "S",
+            "S",
+            "S",
+            "L",
+            "S",
+            "L",
+            "S",
+            "S"
+          ],
+
+          [
+            33,
+            "S",
+            "S",
+            "S",
+            "L",
+            "S",
+            "S",
+            "S",
+            "S"
+          ],
+
+          [
+            34,
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "L",
+            "S",
+            "S"
+          ],
+
+          [
+            35,
+            "L",
+            "L",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S"
+          ],
+
+          [
+            35,
+            "L",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "L"
+          ],
+
+          [
+            35,
+            "L",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S",
+            "S"
+          ],
+
+          [
+            36,
+            "L",
+            "L",
+            "S",
+            "L",
+            "S",
+            "",
+            "S",
+            "L"
+          ],
+
+          [
+            37,
+            "S",
+            "L",
+            "S",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+
+          [
+            38,
+            "",
+            "",
+            "S",
+            "L",
+            "S",
+            "",
+            "",
+            ""
+          ],
+
+          [
+            39,
+            "",
+            "",
+            "",
+            "",
+            "S",
+            "L",
+            "S",
+            ""
+          ],
+
+          [
+            40,
+            "S",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "S",
+            "L"
+          ],
+
+          [
+            41,
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
         ],
+
         [
           "image/cwt_anim/terrain/CWT_SEAS(S).png",
           "image/cwt_anim/terrain/CWT_SEAS(S)$~~~~~~~~.png",
@@ -188,35 +717,48 @@
           "image/cwt_anim/terrain/CWT_SEAS(S)$SSSS~SSS.png",
           "image/cwt_anim/terrain/CWT_SEAS(S).png"
         ],
+
         true,
         false
       ],
-      "SHOAL": [
+
+      "SHOAL": 
+      [
         "image/cwt_anim/terrain/CWT_SHOA(BS)$BB~S~S~S.png",
         true,
         false
       ],
-      "FRST": [
+
+      "FRST": 
+      [
         "image/cwt_anim/terrain/CWT_FRST.png",
         false,
         true
       ],
-      "MNTN": [
+
+      "MNTN": 
+      [
         "image/cwt_anim/terrain/CWT_MNTN.png",
         false,
         true
       ],
-      "PLIN": [
+
+      "PLIN": 
+      [
         "image/cwt_anim/terrain/CWT_PLIN.png",
         false,
         false
       ],
-      "REEF": [
+
+      "REEF": 
+      [
         "image/cwt_anim/terrain/CWT_REEF(S).png",
         true,
         false
       ],
-      "ROAD": [
+
+      "ROAD": 
+      [
         {
           "ROAD": "R",
           "WATER": "S",
@@ -226,22 +768,121 @@
           "MNTN": "L",
           "REEF": "S"
         },
+
         [
-          [0, "R", "R", "R", "R" ],
-          [1, "", "R", "R", "R" ],
-          [2, "R", "R", "", "R" ],
-          [3, "R", "R", "R", "" ],
-          [4, "R", "", "R", "R" ],
-          [5, "", "R", "", "R" ],
-          [6, "", "R", "R", "" ],
-          [7, "", "", "R", "R" ],
-          [8, "R", "R", "", "" ],
-          [9, "R", "", "", "R" ],
-          [10, "R", "", "R", "" ],
-          [10, "", "", "R", "" ],
-          [10, "R", "", "", "" ],
-          [11, "", "", "", "" ]
+          [
+            0,
+            "R",
+            "R",
+            "R",
+            "R"
+          ],
+
+          [
+            1,
+            "",
+            "R",
+            "R",
+            "R"
+          ],
+
+          [
+            2,
+            "R",
+            "R",
+            "",
+            "R"
+          ],
+
+          [
+            3,
+            "R",
+            "R",
+            "R",
+            ""
+          ],
+
+          [
+            4,
+            "R",
+            "",
+            "R",
+            "R"
+          ],
+
+          [
+            5,
+            "",
+            "R",
+            "",
+            "R"
+          ],
+
+          [
+            6,
+            "",
+            "R",
+            "R",
+            ""
+          ],
+
+          [
+            7,
+            "",
+            "",
+            "R",
+            "R"
+          ],
+
+          [
+            8,
+            "R",
+            "R",
+            "",
+            ""
+          ],
+
+          [
+            9,
+            "R",
+            "",
+            "",
+            "R"
+          ],
+
+          [
+            10,
+            "R",
+            "",
+            "R",
+            ""
+          ],
+
+          [
+            10,
+            "",
+            "",
+            "R",
+            ""
+          ],
+
+          [
+            10,
+            "R",
+            "",
+            "",
+            ""
+          ],
+
+          [
+            11,
+            "",
+            "",
+            "",
+            ""
+          ]
         ],
+
         [
           "image/cwt_anim/terrain/CWT_ROAD(O)$OOOO~~~~.png",
           "image/cwt_anim/terrain/CWT_ROAD(O)$~OOO~~~~.png",
@@ -256,32 +897,141 @@
           "image/cwt_anim/terrain/CWT_ROAD(O)$OO~~~~~~.png",
           "image/cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png"
         ],
+
         false,
         false
       ],
-      "BRDG": [
+
+      "BRDG": 
+      [
         {
           "ROAD": "R",
           "BRDG": "R",
           "SEAS": "S"
         },
+
         [
-          [0, "R", "R", "R", "R" ],
-          [1, "", "R", "R", "R" ],
-          [2, "R", "R", "", "R" ],
-          [3, "R", "R", "R", "" ],
-          [4, "R", "", "R", "R" ],
-          [5, "", "", "R", "R" ],
-          [6, "R", "", "", "R" ],
-          [7, "R", "R", "", "" ],
-          [8, "", "R", "R", "" ],
-          [9, "R", "S", "R", "S"],
-          [10, "S", "R", "S", "R"],
-          [11, "R", "", "R", ""],
-          [11, "", "", "R", ""],
-          [11, "R", "", "", ""],
-          [12, "", "", "", "" ]
+          [
+            0,
+            "R",
+            "R",
+            "R",
+            "R"
+          ],
+
+          [
+            1,
+            "",
+            "R",
+            "R",
+            "R"
+          ],
+
+          [
+            2,
+            "R",
+            "R",
+            "",
+            "R"
+          ],
+
+          [
+            3,
+            "R",
+            "R",
+            "R",
+            ""
+          ],
+
+          [
+            4,
+            "R",
+            "",
+            "R",
+            "R"
+          ],
+
+          [
+            5,
+            "",
+            "",
+            "R",
+            "R"
+          ],
+
+          [
+            6,
+            "R",
+            "",
+            "",
+            "R"
+          ],
+
+          [
+            7,
+            "R",
+            "R",
+            "",
+            ""
+          ],
+
+          [
+            8,
+            "",
+            "R",
+            "R",
+            ""
+          ],
+
+          [
+            9,
+            "R",
+            "S",
+            "R",
+            "S"
+          ],
+
+          [
+            10,
+            "S",
+            "R",
+            "S",
+            "R"
+          ],
+
+          [
+            11,
+            "R",
+            "",
+            "R",
+            ""
+          ],
+
+          [
+            11,
+            "",
+            "",
+            "R",
+            ""
+          ],
+
+          [
+            11,
+            "R",
+            "",
+            "",
+            ""
+          ],
+
+          [
+            12,
+            "",
+            "",
+            "",
+            ""
+          ]
         ],
+
         [
           "image/cwt_anim/terrain/CWT_BRDG(OSRB)$OOOO~~~~.png",
           "image/cwt_anim/terrain/CWT_BRDG(OSRB)$~OOO~~~~.png",
@@ -297,27 +1047,115 @@
           "image/cwt_anim/terrain/CWT_BRDG(ORB)$OO~~~~~~.png",
           "image/cwt_anim/terrain/CWT_BRDG(ORB)$~~OO~~~~.png"
         ],
+
         false,
         false
       ],
-      "RIVER": [
+
+      "RIVER": 
+      [
         {
           "RIVER": "R"
         },
+
         [
-          [0, "R", "R", "R", "R" ],
-          [1, "", "R", "R", "R" ],
-          [2, "R", "R", "", "R" ],
-          [3, "R", "R", "R", "" ],
-          [4, "R", "", "R", "R" ],
-          [5, "", "R", "", "R" ],
-          [6, "", "R", "R", "" ],
-          [7, "", "", "R", "R" ],
-          [8, "R", "R", "", "" ],
-          [9, "R", "", "", "R" ],
-          [10, "R", "", "R", "" ],
-          [11, "", "", "", "" ]
+          [
+            0,
+            "R",
+            "R",
+            "R",
+            "R"
+          ],
+
+          [
+            1,
+            "",
+            "R",
+            "R",
+            "R"
+          ],
+
+          [
+            2,
+            "R",
+            "R",
+            "",
+            "R"
+          ],
+
+          [
+            3,
+            "R",
+            "R",
+            "R",
+            ""
+          ],
+
+          [
+            4,
+            "R",
+            "",
+            "R",
+            "R"
+          ],
+
+          [
+            5,
+            "",
+            "R",
+            "",
+            "R"
+          ],
+
+          [
+            6,
+            "",
+            "R",
+            "R",
+            ""
+          ],
+
+          [
+            7,
+            "",
+            "",
+            "R",
+            "R"
+          ],
+
+          [
+            8,
+            "R",
+            "R",
+            "",
+            ""
+          ],
+
+          [
+            9,
+            "R",
+            "",
+            "",
+            "R"
+          ],
+
+          [
+            10,
+            "R",
+            "",
+            "R",
+            ""
+          ],
+
+          [
+            11,
+            "",
+            "",
+            "",
+            ""
+          ]
         ],
+
         [
           "image/cwt_anim/terrain/CWT_RIVR(R)$RRRR~~~~.png",
           "image/cwt_anim/terrain/CWT_RIVR(R)$~RRR~~~~.png",
@@ -332,12 +1170,14 @@
           "image/cwt_anim/terrain/CWT_RIVR(R)$RR~~~~~~.png",
           "image/cwt_anim/terrain/CWT_RIVR(R)$~~RR~~~~.png"
         ],
+
         true,
         false
       ]
     },
-    
-    "PROPERTIES": {
+
+    "PROPERTIES": 
+    {
       "BASE": "image/cwt_anim/properties/CWT_BASE.png",
       "CITY": "image/cwt_anim/properties/CWT_CITY.png",
       "APRT": "image/cwt_anim/properties/CWT_APRT.png",
@@ -349,26 +1189,29 @@
       "SILO_EMPTY": "image/cwt_anim/properties/CWT_PLTF.png",
       "HQTR": "image/cwt_anim/properties/CWT_HQTR.png"
     },
-    
+
     "ARROW": "image/arrow.png",
-    
     "DUST": "image/UnitDust.png",
-    
     "ROCKET_FLY": "image/missileup.png",
-    
-    "OTHERS": {
+    "OTHERS": 
+    {
       "CURSOR": "image/cursor.png",
-      "MINIMAP": [
+      "MINIMAP": 
+      [
         "image/map/AWDS(C)-2x2.png",
         "image/map/AWDS(C)-4x4.png"
       ],
-      "BACKGROUNDS": [
+
+      "BACKGROUNDS": 
+      [
         "image/mobile/background/RedStar.jpg",
         "image/mobile/background/YellowComet.jpg",
         "image/mobile/background/GreenEarth.jpg",
         "image/mobile/background/BlueMoon.jpg"
       ],
-      "HP": [
+
+      "HP": 
+      [
         "image/symbol/0.png",
         "image/symbol/1.png",
         "image/symbol/2.png",
@@ -380,7 +1223,9 @@
         "image/symbol/8.png",
         "image/symbol/9.png"
       ],
-      "SYMBOLS": [
+
+      "SYMBOLS": 
+      [
         "image/symbol/hp.png",
         "image/symbol/ammo.png",
         "image/symbol/fuel.png",
@@ -396,7 +1241,9 @@
         "image/symbol/elite.png",
         "image/symbol/veteran.png"
       ],
-      "SELECTION": [
+
+      "SELECTION": 
+      [
         "image/cwt_anim/wall/CWT_SILO$W~WW~~~~.png",
         "image/cwt_anim/wall/CWT_SILO$~WWW~~~~.png",
         "image/cwt_anim/wall/CWT_SILO$WWW~~~~~.png",
@@ -407,1217 +1254,30 @@
         "image/cwt_anim/wall/CWT_SILO$W~~W~~~~.png",
         "image/cwt_anim/wall/CWT_SILO$WWWW~~~~.png"
       ],
-      "FOCUS": [
+
+      "FOCUS": 
+      [
         "image/unitmove.png",
         "image/unitatk.png"
       ],
-      "EXPLOSIONS": [
+
+      "EXPLOSIONS": 
+      [
         "image/object_explode/UNIT_LAND.png",
         "image/object_explode/UNIT_AIR.png",
         "image/object_explode/UNIT_DUST.png",
         "image/object_explode/UNIT_SEA.png"
       ],
+
       "SMOKE": "image/smoked.png",
       "TRAPPED": "image/icons/trapsign.png"
     }
   },
 
-  "armies": [
+  "languages": 
+  {
+    "de": 
     {
-      "ID": "BLMN",
-      "name": "Blue Moon",
-      "color": 1,
-      "music": "music/BlueMoonTheme.mp3"
-    },
-    {
-      "ID": "GRET",
-      "name": "Green Earth",
-      "color": 2,
-      "music": "music/GreenEarthTheme.mp3"
-    },
-    {
-      "ID": "ORST",
-      "name": "Orange Star",
-      "color": 0,
-      "music": "music/OrangeStarTheme.mp3"
-    },
-    {
-      "ID": "YLCM",
-      "name": "Yellow Comet",
-      "color": 3,
-      "music": "music/YellowCometTheme.mp3"
-    }
-  ],
-
-  "commanders": [
-    {
-      "ID": "ANDY",
-      "faction": "ORST",
-      "music": "music/Andy.mp3",
-      "coStars": 3,
-      "scoStars": 3,
-
-      "effects": {
-        "COP": {
-          "POWER": "forEach(unitList(player),repair(20))"
-        },
-        "SCOP": {
-          "POWER": "forEach(unitList(player),repair(50))",
-          "att": "+(30,value)",
-          "def": "+(10,value)",
-          "movepoints": "+(1,value)"
-        }
-      }
-    },
-    {
-
-      "ID": "MAX",
-      "faction": "BLMN",
-      "music": "music/Max.mp3",
-      "coStars": 3,
-      "scoStars": 3,
-
-      "effects": {
-
-        "D2D": {
-          "att": [
-            "if( direct(unit),",
-            "if(not(infantry(unit)),",
-            "if(gameMode(AW2),",
-            "+(50,value),",
-            "+(20,value))),",
-            "-(10,value))"
-          ],
-          "maxrange": "if( indirect(unit), -(1,value), value)"
-        },
-
-        "COP": {
-          "att": [
-            "if( direct(unit),",
-            "if(not(infantry(unit)),",
-            "+(40,value), ",
-            "value),",
-            "value)"
-          ],
-          "def": "+(10,value)",
-          "movepoints": "if( gameMode(AW2), +(1,value), value)"
-        },
-
-        "SCOP": {
-          "att": [
-            "if( direct(unit),",
-            "if(not(infantry(unit)),",
-            "+(70,value), ",
-            "value),",
-            "value)"
-          ],
-          "def": "+(10,value)",
-          "movepoints": "if( gameMode(AW2), +(2,value), value)"
-        }
-      }
-    },
-    {
-      "ID": "SAMI",
-      "faction": "ORST",
-      "music": "music/sami.mp3",
-
-      "coStars": 3,
-      "scoStars": 5,
-
-      "effects": {
-        "D2D": {
-          "att": [
-            "if( infantry(unit), +(30,value),",
-            "if( direct(unit), -(10,value),",
-            "value )",
-            "value )"
-          ],
-          "movepoints": "if( transport(unit), +(1,value), value )",
-          "captureRate": "+(50,value)"
-        },
-        "COP": {
-          "movepoints": "if( infantry(unit), +(1,value), value )",
-          "att": "if( infantry(unit), +(20,value), value )",
-          "def": "+(10,value)"
-        },
-        "SCOP": {
-          "movepoints": "if( infantry(unit), +(2,value), value )",
-          "att": "if( infantry(unit), +(50,value), value )",
-          "def": "+(10,value)",
-          "captureRate": "+(999,value)"
-        }
-      }
-    }
-  ],
-
-  "units": [
-    {
-      "ID": "INFT",
-      "cost": 1000,
-      "range": 3,
-      "movetype": "MV_INFT",
-      "vision": 2,
-      "fuel": 99,
-      "captures": 10,
-      "ammo": 0,
-      "attack": {
-        "sec_wp": {
-          "INFT": 55,
-          "MECH": 45,
-          "RECN": 12,
-          "TNTK": 5,
-          "MDTK": 1,
-          "NTNK": 1,
-          "WRTK": 1,
-          "APCR": 14,
-          "ARTY": 15,
-          "RCKT": 25,
-          "AAIR": 5,
-          "MISS": 25,
-          "PIPR": 5,
-          "OOZM": 20,
-          "BCTR": 7,
-          "TCTR": 30
-        }
-      }
-    },
-    {
-      "ID": "MECH",
-      "cost": 3000,
-      "range": 2,
-      "movetype": "MV_MECH",
-      "vision": 2,
-      "fuel": 70,
-      "captures": 10,
-      "ammo": 3,
-      "attack": {
-        "main_wp": {
-          "RECN": 85,
-          "TNTK": 55,
-          "MDTK": 15,
-          "NTNK": 15,
-          "WRTK": 5,
-          "APCR": 75,
-          "ARTY": 70,
-          "RCKT": 85,
-          "AAIR": 65,
-          "MISS": 85,
-          "PIPR": 55,
-          "OOZM": 30
-        },
-        "sec_wp": {
-          "INFT": 65,
-          "MECH": 55,
-          "RECN": 18,
-          "TNTK": 6,
-          "MDTK": 1,
-          "NTNK": 1,
-          "WRTK": 1,
-          "APCR": 20,
-          "ARTY": 32,
-          "RCKT": 35,
-          "AAIR": 6,
-          "MISS": 35,
-          "PIPR": 6,
-          "OOZM": 20,
-          "BCTR": 9,
-          "TCTR": 35
-        }
-      }
-    },
-    {
-      "ID": "RECN",
-      "cost": 4000,
-      "range": 8,
-      "movetype": "TIRE_A",
-      "vision": 5,
-      "fuel": 80,
-      "ammo": 0,
-      "attack": {
-        "sec_wp": {
-          "INFT": 70,
-          "MECH": 65,
-          "RECN": 35,
-          "TNTK": 6,
-          "MDTK": 1,
-          "NTNK": 1,
-          "WRTK": 1,
-          "APCR": 45,
-          "ARTY": 45,
-          "RCKT": 55,
-          "AAIR": 4,
-          "MISS": 28,
-          "PIPR": 6,
-          "OOZM": 20,
-          "BCTR": 10,
-          "TCTR": 35
-        }
-      }
-    },
-    {
-      "ID": "APCR",
-      "cost": 5000,
-      "range": 6,
-      "movetype": "TANK",
-      "vision": 1,
-      "fuel": 70,
-      "ammo": 0,
-      "maxloads": 1,
-      "canload": [
-        "MV_INFT",
-        "MV_MECH"
-      ],
-      "supply": [
-        "*"
-      ],
-      "assets": {
-        "gfx": "cwt_anim/units/CWT_APCR.png"
-      }
-    },
-    {
-      "ID": "ARTY",
-      "cost": 6000,
-      "range": 5,
-      "movetype": "TANK",
-      "vision": 1,
-      "fuel": 50,
-      "ammo": 6,
-      "attack": {
-        "main_wp": {
-          "INFT": 90,
-          "MECH": 85,
-          "RECN": 80,
-          "TNTK": 70,
-          "MDTK": 45,
-          "NTNK": 40,
-          "WRTK": 15,
-          "AAIR": 75,
-          "ARTY": 75,
-          "RCKT": 80,
-          "PIPR": 70,
-          "MISS": 80,
-          "APCR": 70,
-          "OOZM": 5,
-          "CRUS": 50,
-          "SUBM": 60,
-          "BSHP": 40,
-          "ACAR": 45,
-          "LNDR": 55,
-          "BLBT": 55
-        },
-        "minrange": 2,
-        "maxrange": 3
-      }
-    },
-    {
-      "ID": "TNTK",
-      "cost": 7000,
-      "range": 6,
-      "movetype": "TANK",
-      "vision": 3,
-      "fuel": 70,
-      "ammo": 9,
-      "attack": {
-        "main_wp": {
-          "RECN": 85,
-          "TNTK": 55,
-          "MDTK": 15,
-          "NTNK": 15,
-          "WRTK": 10,
-          "APCR": 75,
-          "ARTY": 70,
-          "RCKT": 85,
-          "AAIR": 65,
-          "MISS": 85,
-          "PIPR": 55,
-          "OOZM": 20,
-          "CRUS": 5,
-          "SUBM": 1,
-          "BSHP": 1,
-          "ACAR": 1,
-          "LNDR": 10,
-          "BLBT": 10
-        },
-        "sec_wp": {
-          "INFT": 75,
-          "MECH": 70,
-          "RECN": 40,
-          "TNTK": 6,
-          "MDTK": 1,
-          "NTNK": 1,
-          "WRTK": 1,
-          "APCR": 45,
-          "ARTY": 45,
-          "RCKT": 55,
-          "AAIR": 6,
-          "MISS": 30,
-          "PIPR": 6,
-          "OOZM": 20,
-          "BCTR": 10,
-          "TCTR": 40
-        }
-      }
-    },
-    {
-      "ID": "MDTK",
-      "cost": 16000,
-      "range": 5,
-      "movetype": "TANK",
-      "vision": 1,
-      "fuel": 50,
-      "ammo": 8,
-      "attack": {
-        "main_wp": {
-          "RECN": 105,
-          "TNTK": 85,
-          "MDTK": 55,
-          "NTNK": 45,
-          "WRTK": 25,
-          "AAIR": 105,
-          "ARTY": 105,
-          "RCKT": 105,
-          "PIPR": 85,
-          "MISS": 105,
-          "APCR": 105,
-          "OOZM": 30,
-          "CRUS": 30,
-          "SUBM": 10,
-          "BSHP": 10,
-          "ACAR": 10,
-          "LNDR": 35,
-          "BLBT": 35
-        },
-        "sec_wp": {
-          "INFT": 105,
-          "MECH": 95,
-          "RECN": 45,
-          "TNTK": 8,
-          "MDTK": 1,
-          "NTNK": 1,
-          "WRTK": 1,
-          "AAIR": 7,
-          "ARTY": 45,
-          "RCKT": 55,
-          "PIPR": 8,
-          "MISS": 35,
-          "APCR": 45,
-          "OOZM": 20,
-          "BCTR": 12,
-          "TCTR": 45
-        }
-      }
-    },
-    {
-      "ID": "AAIR",
-      "cost": 8000,
-      "range": 6,
-      "movetype": "TANK",
-      "vision": 2,
-      "fuel": 60,
-      "ammo": 9,
-      "attack": {
-        "main_wp": {
-          "INFT": 105,
-          "MECH": 105,
-          "RECN": 60,
-          "TNTK": 25,
-          "MDTK": 10,
-          "NTNK": 5,
-          "WRTK": 1,
-          "AAIR": 45,
-          "ARTY": 50,
-          "RCKT": 55,
-          "PIPR": 25,
-          "MISS": 55,
-          "APCR": 50,
-          "OOZM": 30,
-          "FGTR": 65,
-          "BMBR": 75,
-          "STLH": 75,
-          "BCTR": 105,
-          "TCTR": 105,
-          "BKBM": 120
-        }
-      },
-      "assets": {
-        "gfx": "cwt_anim/units/CWT_AAIR.png",
-        "pri_att_sound": "mg.wav",
-        "sec_att_sound": "mg.wav"
-      }
-    },
-    {
-      "ID": "WRTK",
-      "cost": 28000,
-      "range": 4,
-      "movetype": "TANK",
-      "vision": 1,
-      "fuel": 70,
-      "ammo": 3,
-      "attack": {
-        "main_wp": {
-          "RECN": 195,
-          "TNTK": 180,
-          "MDTK": 125,
-          "NTNK": 115,
-          "WRTK": 65,
-          "AAIR": 195,
-          "ARTY": 195,
-          "RCKT": 195,
-          "PIPR": 180,
-          "MISS": 195,
-          "APCR": 195,
-          "OOZM": 45,
-          "CRUS": 65,
-          "SUBM": 45,
-          "BSHP": 45,
-          "ACAR": 45,
-          "LNDR": 75,
-          "BLBT": 105
-        },
-        "sec_wp": {
-          "INFT": 135,
-          "MECH": 125,
-          "RECN": 65,
-          "TNTK": 10,
-          "MDTK": 1,
-          "NTNK": 1,
-          "WRTK": 1,
-          "AAIR": 17,
-          "ARTY": 65,
-          "RCKT": 75,
-          "PIPR": 10,
-          "MISS": 55,
-          "APCR": 65,
-          "OOZM": 30,
-          "BCTR": 22,
-          "TCTR": 55
-        }
-      }
-    },
-    {
-      "ID": "NTNK",
-      "cost": 22000,
-      "range": 6,
-      "movetype": "TANK",
-      "vision": 1,
-      "fuel": 99,
-      "ammo": 9,
-      "attack": {
-        "main_wp": {
-          "RECN": 125,
-          "TNTK": 105,
-          "MDTK": 75,
-          "NTNK": 55,
-          "WRTK": 35,
-          "AAIR": 115,
-          "ARTY": 115,
-          "RCKT": 125,
-          "PIPR": 105,
-          "MISS": 125,
-          "APCR": 125,
-          "OOZM": 35,
-          "CRUS": 30,
-          "SUBM": 15,
-          "BSHP": 15,
-          "ACAR": 15,
-          "LNDR": 40,
-          "BLBT": 40
-        },
-        "sec_wp": {
-          "INFT": 125,
-          "MECH": 115,
-          "RECN": 65,
-          "TNTK": 10,
-          "MDTK": 1,
-          "NTNK": 1,
-          "WRTK": 1,
-          "AAIR": 17,
-          "ARTY": 65,
-          "RCKT": 75,
-          "PIPR": 10,
-          "MISS": 55,
-          "APCR": 65,
-          "OOZM": 20,
-          "BCTR": 22,
-          "TCTR": 55
-        }
-      }
-    },
-    {
-      "ID": "MISS",
-      "cost": 12000,
-      "range": 4,
-      "movetype": "TIRE_A",
-      "vision": 5,
-      "fuel": 50,
-      "ammo": 6,
-      "attack": {
-        "main_wp": {
-          "FGTR": 100,
-          "BMBR": 100,
-          "STLH": 100,
-          "BCTR": 115,
-          "TCTR": 115,
-          "BKBM": 120
-        },
-        "minrange": 3,
-        "maxrange": 5
-      }
-    },
-    {
-      "ID": "RCKT",
-      "cost": 15000,
-      "range": 5,
-      "movetype": "TIRE_A",
-      "vision": 1,
-      "fuel": 50,
-      "ammo": 6,
-      "attack": {
-        "main_wp": {
-          "INFT": 95,
-          "MECH": 90,
-          "RECN": 90,
-          "TNTK": 80,
-          "MDTK": 55,
-          "NTNK": 50,
-          "WRTK": 25,
-          "AAIR": 85,
-          "ARTY": 80,
-          "RCKT": 85,
-          "PIPR": 80,
-          "MISS": 90,
-          "APCR": 80,
-          "OOZM": 15,
-          "CRUS": 60,
-          "SUBM": 85,
-          "BSHP": 55,
-          "ACAR": 60,
-          "LNDR": 60,
-          "BLBT": 60
-        },
-        "minrange": 3,
-        "maxrange": 5
-      }
-    },
-    {
-      "ID": "BCTR",
-      "cost": 9000,
-      "range": 6,
-      "movetype": "COPTER",
-      "copter": true,
-      "dailyFuelDrain": 2,
-      "vision": 3,
-      "fuel": 99,
-      "ammo": 6,
-      "attack": {
-        "main_wp": {
-          "RECN": 55,
-          "TNTK": 55,
-          "MDTK": 25,
-          "NTNK": 20,
-          "WRTK": 10,
-          "AAIR": 25,
-          "ARTY": 65,
-          "RCKT": 65,
-          "PIPR": 55,
-          "MISS": 65,
-          "APCR": 60,
-          "OOZM": 25,
-          "CRUS": 25,
-          "SUBM": 25,
-          "BSHP": 25,
-          "ACAR": 25,
-          "LNDR": 25,
-          "BLBT": 25
-        },
-        "sec_wp": {
-          "INFT": 75,
-          "MECH": 75,
-          "RECN": 30,
-          "TNTK": 6,
-          "MDTK": 1,
-          "NTNK": 1,
-          "WRTK": 1,
-          "AAIR": 6,
-          "ARTY": 25,
-          "RCKT": 35,
-          "PIPR": 6,
-          "MISS": 35,
-          "APCR": 20,
-          "OOZM": 20,
-          "BCTR": 65,
-          "TCTR": 95
-        }
-      }
-    },
-    {
-      "ID": "TCTR",
-      "cost": 5000,
-      "range": 6,
-      "copter": true,
-      "movetype": "COPTER",
-      "vision": 2,
-      "fuel": 99,
-      "dailyFuelDrain": 2,
-      "ammo": 0,
-      "maxloads": 1,
-      "canload": [
-        "MV_INFT",
-        "MV_MECH"
-      ]
-    },
-    {
-      "ID": "STLH",
-      "cost": 24000,
-      "range": 6,
-      "movetype": "AIR",
-      "vision": 4,
-      "fuel": 60,
-      "ammo": 6,
-      "dailyFuelDrain": 5,
-      "dailyFuelDrainHidden": 8,
-      "stealth": true,
-      "attack": {
-        "main_wp": {
-          "INFT": 90,
-          "MECH": 90,
-          "RECN": 85,
-          "TNTK": 75,
-          "MDTK": 70,
-          "NTNK": 60,
-          "WRTK": 15,
-          "AAIR": 50,
-          "ARTY": 75,
-          "RCKT": 85,
-          "PIPR": 80,
-          "MISS": 85,
-          "APCR": 85,
-          "OOZM": 30,
-          "FGTR": 45,
-          "BMBR": 70,
-          "STLH": 55,
-          "BCTR": 85,
-          "TCTR": 95,
-          "BKBM": 120,
-          "CRUS": 35,
-          "SUBM": 55,
-          "BSHP": 45,
-          "ACAR": 45,
-          "LNDR": 65,
-          "BLBT": 65
-        }
-      }
-    },
-    {
-      "ID": "FGTR",
-      "cost": 20000,
-      "range": 9,
-      "movetype": "AIR",
-      "vision": 2,
-      "fuel": 99,
-      "dailyFuelDrain": 5,
-      "ammo": 9,
-      "attack": {
-        "main_wp": {
-          "FGTR": 55,
-          "BMBR": 100,
-          "STLH": 85,
-          "BCTR": 120,
-          "TCTR": 120,
-          "BKBM": 120
-        }
-      }
-    },
-    {
-      "ID": "BMBR",
-      "cost": 22000,
-      "range": 7,
-      "movetype": "AIR",
-      "dailyFuelDrain": 5,
-      "vision": 3,
-      "fuel": 99,
-      "ammo": 9,
-      "attack": {
-        "main_wp": {
-          "INFT": 110,
-          "MECH": 110,
-          "RECN": 105,
-          "TNTK": 105,
-          "MDTK": 95,
-          "NTNK": 90,
-          "WRTK": 35,
-          "AAIR": 95,
-          "ARTY": 105,
-          "RCKT": 105,
-          "PIPR": 105,
-          "MISS": 105,
-          "APCR": 105,
-          "OOZM": 35,
-          "CRUS": 50,
-          "SUBM": 95,
-          "BSHP": 75,
-          "ACAR": 105,
-          "LNDR": 95,
-          "BLBT": 75
-        }
-      }
-    },
-    {
-      "ID": "BKBM",
-      "cost": 25000,
-      "range": 9,
-      "movetype": "AIR",
-      "dailyFuelDrain": 5,
-      "vision": 1,
-      "fuel": 45,
-      "ammo": 0,
-      "suicide": {
-        "damage": 5,
-        "range": 3,
-        "nodamage": [
-          "OOZM"
-        ]
-      }
-    },
-    {
-      "ID": "SUBM",
-      "cost": 20000,
-      "range": 5,
-      "movetype": "SHIP",
-      "vision": 5,
-      "fuel": 60,
-      "stealth": true,
-      "dailyFuelDrain": 1,
-      "dailyFuelDrainHidden": 5,
-      "ammo": 6,
-      "attack": {
-        "main_wp": {
-          "CRUS": 25,
-          "SUBM": 55,
-          "BSHP": 65,
-          "ACAR": 75,
-          "LNDR": 95,
-          "BLBT": 95
-        }
-      }
-    },
-    {
-      "ID": "LNDR",
-      "cost": 12000,
-      "range": 6,
-      "movetype": "WATER_TRANSPORT",
-      "vision": 1,
-      "fuel": 99,
-      "dailyFuelDrain": 1,
-      "ammo": 0,
-      "maxloads": 1,
-      "canload": [
-        "MV_MECH",
-        "MV_INFT",
-        "TIRE_A",
-        "TIRE_B",
-        "TANK"
-      ]
-    },
-    {
-      "ID": "ACAR",
-      "cost": 30000,
-      "range": 5,
-      "movetype": "SHIP",
-      "vision": 4,
-      "fuel": 99,
-      "dailyFuelDrain": 1,
-      "ammo": 9,
-      "maxloads": 2,
-      "suppliesloads": true,
-      "canload": [
-        "AIR"
-      ],
-      "attack": {
-        "main_wp": {
-          "FGTR": 100,
-          "BMBR": 100,
-          "STLH": 100,
-          "BCTR": 115,
-          "TCTR": 115,
-          "BKBM": 120
-        },
-        "minrange": 3,
-        "maxrange": 8
-      }
-    },
-    {
-      "ID": "CRUS",
-      "cost": 18000,
-      "range": 6,
-      "movetype": "SHIP",
-      "vision": 3,
-      "fuel": 99,
-      "ammo": 9,
-      "dailyFuelDrain": 1,
-      "attack": {
-        "main_wp": {
-          "CRUS": 25,
-          "SUBM": 90,
-          "BSHP": 5,
-          "ACAR": 5,
-          "LNDR": 25,
-          "BLBT": 25
-        },
-        "sec_wp": {
-          "FGTR": 85,
-          "BMBR": 100,
-          "STLH": 100,
-          "BCTR": 105,
-          "TCTR": 105,
-          "BKBM": 120
-        }
-      },
-      "maxloads": 2,
-      "canload": [
-        "AIR"
-      ]
-    },
-    {
-      "ID": "BSHP",
-      "cost": 28000,
-      "range": 5,
-      "movetype": "SHIP",
-      "vision": 2,
-      "fuel": 99,
-      "dailyFuelDrain": 1,
-      "ammo": 9,
-      "attack": {
-        "main_wp": {
-          "INFT": 95,
-          "MECH": 90,
-          "RECN": 90,
-          "TNTK": 80,
-          "MDTK": 55,
-          "NTNK": 50,
-          "WRTK": 25,
-          "AAIR": 85,
-          "ARTY": 80,
-          "RCKT": 85,
-          "PIPR": 80,
-          "MISS": 90,
-          "APCR": 80,
-          "OOZM": 20,
-          "CRUS": 95,
-          "SUBM": 95,
-          "BSHP": 50,
-          "ACAR": 60,
-          "LNDR": 95,
-          "BLBT": 95
-        },
-        "minrange": 2,
-        "maxrange": 6
-      }
-    },
-    {
-      "ID": "BKBT",
-      "cost": 7500,
-      "range": 7,
-      "movetype": "WATER_TRANSPORT",
-      "vision": 1,
-      "fuel": 60,
-      "ammo": 0,
-      "dailyFuelDrain": 1,
-      "maxloads": 2,
-      "canload": [
-        "INFT",
-        "MECH"
-      ],
-      "repairs": {
-        "SHIP": 1
-      }
-    }
-  ],
-
-  "properties": [
-    {
-      "ID": "HQTR",
-      "vision": 0,
-      "defense": 4,
-      "capturePoints": 20,
-      "funds": 1000,
-      "looseAfterCaptured": true,
-      "changeAfterCaptured": "CITY",
-      "notTransferable": true,
-      "supply": [
-        "INFT",
-        "MECH",
-        "TIRE_A",
-        "TIRE_B",
-        "TANK"
-      ],
-      "repairs": {
-        "INFT": 2,
-        "MECH": 2,
-        "TIRE_A": 2,
-        "TIRE_B": 2,
-        "TANK": 2
-      }
-    },
-    {
-      "ID": "CITY",
-      "vision": 0,
-      "defense": 3,
-      "capturePoints": 20,
-      "funds": 1000,
-      "supply": [
-        "INFT",
-        "MECH",
-        "TIRE_A",
-        "TIRE_B",
-        "TANK"
-      ],
-      "repairs": {
-        "INFT": 2,
-        "MECH": 2,
-        "TIRE_A": 2,
-        "TIRE_B": 2,
-        "TANK": 2
-      }
-    },
-    {
-      "ID": "BASE",
-      "vision": 0,
-      "defense": 3,
-      "capturePoints": 20,
-      "funds": 1000,
-      "supply": [
-        "MV_INFT",
-        "MV_MECH",
-        "TIRE_A",
-        "TIRE_B",
-        "TANK"
-      ],
-      "repairs": {
-        "MV_INFT": 2,
-        "MV_MECH": 2,
-        "TIRE_A": 2,
-        "TIRE_B": 2,
-        "TANK": 2
-      },
-      "builds": [
-        "MV_INFT",
-        "MV_MECH",
-        "TIRE_A",
-        "TIRE_B",
-        "TANK"
-      ]
-    },
-    {
-      "ID": "APRT",
-      "vision": 0,
-      "defense": 3,
-      "capturePoints": 20,
-      "funds": 1000,
-      "supply": [
-        "AIR"
-      ],
-      "repairs": {
-        "AIR": 2
-      },
-      "builds": [
-        "AIR"
-      ]
-    },
-    {
-      "ID": "PORT",
-      "vision": 0,
-      "defense": 3,
-      "capturePoints": 20,
-      "funds": 1000,
-      "supply": [
-        "SHIP",
-        "WATER_TRANSPORT"
-      ],
-      "repairs": {
-        "SHIP": 2,
-        "WATER_TRANSPORT": 2
-      },
-      "builds": [
-        "SHIP",
-        "WATER_TRANSPORT"
-      ]
-    },
-    {
-      "ID": "RADAR",
-      "vision": 4,
-      "defense": 3,
-      "points": 20
-    },
-    {
-      "ID": "RUIB",
-      "defense": 0,
-      "vision": 0
-    },
-    {
-      "ID": "RUIS",
-      "defense": 0,
-      "vision": 0
-    },
-    {
-      "ID": "SILO",
-      "defense": 3,
-      "vision": 0,
-      "rocketsilo": {
-        "fireable": ["INFT", "MECH"],
-        "range": 2,
-        "damage": 3
-      },
-      "changeTo": "SILO_EMPTY"
-    },
-    {
-      "ID": "SILO_EMPTY",
-      "defense": 3,
-      "vision": 0,
-      "rocketsilo": {}
-    }
-  ],
-
-  "tiles": [
-    {
-      "ID": "PLIN",
-      "defense": 1
-    },
-    {
-      "ID": "MNTN",
-      "defense": 4
-    },
-    {
-      "ID": "FRST",
-      "defense": 2,
-      "blocksVision": true
-    },
-    {
-      "ID": "ROAD",
-      "defense": 0
-    },
-    {
-      "ID": "BRDG",
-      "defense": 0
-    },
-    {
-      "ID": "RIVER",
-      "defense": 0
-    },
-    {
-      "ID": "WATER",
-      "defense": 0
-    },
-    {
-      "ID": "SHOAL",
-      "defense": 0
-    },
-    {
-      "ID": "REEF",
-      "defense": 1,
-      "blocksVision": true
-    }
-  ],
-
-  "movetypes": [
-    {
-      "ID": "MV_INFT",
-      "sound": null,
-      "costs": {
-        "MNTN": 2,
-        "WATER": -1,
-        "REEF": -1,
-        "*": 1
-      }
-    },
-    {
-      "ID": "MV_MECH",
-      "sound": null,
-      "costs": {
-        "WATER": -1,
-        "REEF": -1,
-        "*": 1
-      }
-    },
-    {
-      "ID": "TANK",
-      "sound": null,
-      "costs": {
-        "FRST": 2,
-        "MNTN": -1,
-        "RIVER": -1,
-        "WATER": -1,
-        "REEF": -1,
-        "*": 1
-      }
-    },
-    {
-      "ID": "TIRE_A",
-      "sound": null,
-      "costs": {
-        "PLIN": 2,
-        "FRST": 3,
-        "MNTN": -1,
-        "RIVER": -1,
-        "WATER": -1,
-        "REEF": -1,
-        "*": 1
-      }
-    },
-    {
-      "ID": "WATER_TRANSPORT",
-      "sound": null,
-      "costs": {
-        "WATER": 1,
-        "PORT": 1,
-        "REEF": 2,
-        "SHOAL": 1,
-        "*": -1
-      }
-    },
-    {
-      "ID": "COPTER",
-      "sound": null,
-      "costs": {
-        "*": 1
-      }
-    },
-    {
-      "ID": "AIR",
-      "sound": null,
-      "costs": {
-        "*": 1
-      }
-    },
-    {
-      "ID": "SHIP",
-      "sound": null,
-      "costs": {
-        "WATER": 1,
-        "PORT": 1,
-        "REEF": 2,
-        "*": -1
-      }
-    }
-  ],
-
-  "weathers": [
-    {
-      "ID": "SUN",
-      "rules": [],
-      "defaultWeather": true
-    },
-    {
-      "ID": "SNOW"
-    },
-    {
-      "ID": "RAIN"
-    }
-  ],
-
-  "languages": {
-
-    "de": {
       "INFT": "Infanterie",
       "MECH": "Mech. Infanterie",
       "TNTK": "Leichter Panzer",
@@ -1643,11 +1303,9 @@
       "ACAR": "Flugzeugträger",
       "LNDR": "Transportboot",
       "BSHP": "Schlachtschiff",
-
       "PLIN": "Wiese",
       "MNTN": "Berg",
       "FRST": "Wald",
-
       "ROAD": "Straße",
       "BASE": "Fabrik",
       "HQTR": "Hauptquartiert",
@@ -1657,7 +1315,6 @@
       "BHMCW": "Mini-Kanone (West)",
       "PQRT": "Hafen",
       "APRT": "Flughafen",
-
       "CTPR": "Besetze Geb&auml;ude",
       "UNUN": "Einheit ausladen",
       "LODU": "Einheit einladen",
@@ -1709,7 +1366,6 @@
       "RAIN": "Regen",
       "SNOW": "Schnee",
       "gameHasEnded": "Das Spiel ist vorbei, es existiert nur noch ein Team",
-
       "activatePower": "Aktiviere CO Kraft",
       "cop": "CO Power",
       "scop": "Super CO Power",
@@ -1729,12 +1385,10 @@
       "supplyUnit": "Versorgen",
       "wait": "Warten",
       "explode": "Explodieren",
-
       "options": "Optionen",
       "options.sfx": "SFX An/Aus",
       "options.music": "Musik An/Aus",
       "options.yield": "Aufgeben",
-
       "loading.loadMaps": "Lade Karten",
       "loading.loadImages": "Lade Grafiken",
       "loading.cropImages": "Schneide Grafiken zu",
@@ -1743,51 +1397,40 @@
       "loading.prepareInput": "Initialisiere Eingabesysteme",
       "loading.prepareLanguage": "Wechsle Sprache",
       "loading.done": "Fertig",
-
       "menu.header": "Menü",
       "menu.version": "Version",
-
       "player": "Spieler",
-
       "config.type.prev": "<<",
       "config.type.next": ">>",
       "config.co.prev": "<<",
       "config.co.next": ">>",
       "config.team.next": ">>",
       "config.team.prev": "<<",
-
       "config.playerCo": "CO",
       "config.playerType": "Typ",
       "config.playerTeam": "Team",
-
       "config.next": "Spiel Starten",
-
       "config.player.off": "Frei",
       "config.player.disabled": "-",
       "config.player.co.none": "Kein",
       "config.player.AI": "KI",
       "config.player.human": "Spieler",
-
       "message.panel.header": "Nachricht",
-
       "versus.playerconfig": "Spielerkonfiguration",
       "versus.next": "Spielerkonfiguration",
       "versus.mapSelection": "Kartenauswahl",
       "versus.prevMap": "Vorherige Karte",
       "versus.nextMap": "Nächste Karte",
-
       "error.panel.action": "Spieldaten zurücksetzen?",
       "error.panel.header": "Schwerwiegender Fehler",
       "error.panel.reason": "Grund",
       "error.panel.data": "Daten",
       "error.panel.no": "Nein",
       "error.panel.yes": "Ja",
-
       "MAIN_MENU_OPTIONS": "Optionen",
       "MAIN_MENU_NETWORK": "Netzwerkspiel",
       "MAIN_MENU_SKIRMISH": "Einzelspiel",
       "MAIN_MENU_TEST_WEATHER": "Wetter-Test",
-
       "OPTIONS_SFX_VOL_DOWN": "-",
       "OPTIONS_SFX_VOL_UP": "+",
       "OPTIONS_MUSIC_VOL_DOWN": "-",
@@ -1798,18 +1441,15 @@
       "OPTIONS_MENU_CHANGE_GAMEPAD_LAYOUT": "Konfiguriere Gamepad",
       "OPTIONS_MENU_WIPE_OUT": "Daten zurücksetzen",
       "OPTIONS_MENU_GO_BACK": "Zurück",
-
       "OPTIONS_WIPE_OUT_TEXT": "Löscht alle Spieldaten. Beim nächsten\nSpielstart werden benötigte Daten erneut geladen.",
       "OPTIONS_WIPE_OUT_NO": "Abbrechen",
       "OPTIONS_WIPE_OUT_YES": "Tu es!",
-
       "OPTIONS_KEYMAP_RIGHT": "Rechts",
       "OPTIONS_KEYMAP_LEFT": "Links",
       "OPTIONS_KEYMAP_DOWN": "Unten",
       "OPTIONS_KEYMAP_UP": "Oben",
       "OPTIONS_KEYMAP_ACTION": "Aktion",
       "OPTIONS_KEYMAP_CANCEL": "Abbrechen",
-
       "MAP_SELECT_PAGE_LEFT": "<<",
       "MAP_SELECT_PAGE": "",
       "MAP_SELECT_PAGE_RIGHT": ">>",
@@ -1819,25 +1459,21 @@
       "MENU_LEFT": "<<",
       "MENU_CONFIGURED_MATCH": "Eigenes Spiel",
       "MENU_FAST_MATCH": "Schnelles Spiel",
-
       "PLAYER_CONFIG_SLOT1": "Slot 1",
       "PLAYER_CONFIG_SLOT2": "Slot 2",
       "PLAYER_CONFIG_SLOT3": "Slot 3",
       "PLAYER_CONFIG_SLOT4": "Slot 4",
-
       "PLAYER_CONFIG_NAME": "Name",
       "PLAYER_CONFIG_TYPE": "Typ",
       "PLAYER_CONFIG_TEAM": "Team",
       "PLAYER_CONFIG_CO_A": "Haupt-CO",
       "PLAYER_CONFIG_GAMEMODE": "Spielmodus",
-
       "VALUE_R": "",
       "VALUE_L": "",
       "VALUE_U": "",
       "VALUE_D": "",
       "VALUE_A": "",
       "VALUE_C": "",
-
       "co_getStarCost": "Star Kosten",
       "co_getStarCostIncrease": "Star K. Erhö.",
       "co_getStarCostIncreaseSteps": "Star K. Erhö. Stufen",
@@ -1853,10 +1489,8 @@
       "captureLimit": "Gebäude-Limit",
       "timer_turnTimeLimit": "Zugzeit (Min.)",
       "timer_gameTimeLimit": "Spielzeit (Min.)",
-
       "OPTIONS_KEYMAP_GOBACK": "Zurück",
       "OPTIONS_KEYMAP_SET": "Setze Tasten",
-
       "TOOLTIP_1": "Change the keyboard and gamepad settings by selecting\nOptions from the main or in-game menu",
       "TOOLTIP_2": "Activate zooming the map by using the scroll wheel for\nthe mouse, pinching for touch screen, and the in-game menu.",
       "TOOLTIP_3": "Press and hold Cancel over an idle unit to\nsee its attack range.",
@@ -1870,7 +1504,8 @@
       "TOOLTIP_11": "A full desktop counterpart for Custom Wars Tactics\nis being developed. Stay tuned!"
     },
 
-    "en": {
+    "en": 
+    {
       "INFT": "Infantry",
       "MECH": "Mech. Infantry",
       "TNTK": "Tank",
@@ -1896,11 +1531,9 @@
       "ACAR": "Aircraft Carrier",
       "LNDR": "Lander",
       "BSHP": "Battleship",
-
       "PLIN": "Plain",
       "MNTN": "Mountain",
       "FRST": "Forrest",
-
       "ROAD": "Road",
       "BASE": "Base",
       "HQTR": "Headquarter",
@@ -1910,7 +1543,6 @@
       "BHMCW": "Mini-Cannon (West)",
       "PQRT": "SeaPort",
       "APRT": "Airport",
-
       "CTPR": "Capture Property",
       "UNUN": "Unload Unit",
       "LODU": "Load Unit",
@@ -1953,7 +1585,6 @@
       "RAIN": "Rain",
       "SNOW": "Snow",
       "gameHasEnded": "The game has ended because only one team is left",
-
       "activatePower": "Activate Power",
       "cop": "Co Power",
       "scop": "Super Co Power",
@@ -1973,7 +1604,6 @@
       "supplyUnit": "Supply",
       "wait": "Wait",
       "explode": "Explode",
-
       "loading.loadMaps": "Loading Maps",
       "loading.loadImages": "Loading Images",
       "loading.cropImages": "Cropping Images",
@@ -1982,51 +1612,40 @@
       "loading.prepareInput": "Preparing Input Systems",
       "loading.prepareLanguage": "Localize Strings",
       "loading.done": "Complete",
-
       "menu.header": "Menu",
       "menu.version": "Version",
-
       "player": "Player",
-
       "config.type.prev": "<<",
       "config.type.next": ">>",
       "config.co.prev": "<<",
       "config.co.next": ">>",
       "config.team.next": ">>",
       "config.team.prev": "<<",
-
       "config.playerCo": "CO",
       "config.playerType": "Type",
       "config.playerTeam": "Team",
-
       "config.next": "Start Game",
-
       "config.player.off": "Free",
       "config.player.disabled": "-",
       "config.player.co.none": "None",
       "config.player.AI": "AI",
       "config.player.human": "Human",
-
       "message.panel.header": "Message",
-
       "versus.playerconfig": "Player Configuration",
       "versus.mapSelection": "Select Map",
       "versus.next": "Game Configuration",
       "versus.prevMap": "Previous Map",
       "versus.nextMap": "Next Map",
-
       "error.panel.action": "Reset Game-Data?",
       "error.panel.header": "Fatal Error",
       "error.panel.reason": "Reason",
       "error.panel.data": "Data",
       "error.panel.no": "No",
       "error.panel.yes": "Yes",
-
       "MAIN_MENU_OPTIONS": "Options",
       "MAIN_MENU_NETWORK": "Network Game",
       "MAIN_MENU_SKIRMISH": "Singleplayer",
       "MAIN_MENU_TEST_WEATHER": "Weather-Test",
-
       "OPTIONS_SFX_VOL_DOWN": "-",
       "OPTIONS_SFX_VOL_UP": "+",
       "OPTIONS_MUSIC_VOL_DOWN": "-",
@@ -2037,18 +1656,15 @@
       "OPTIONS_MENU_CHANGE_GAMEPAD_LAYOUT": "Remap Gamepad",
       "OPTIONS_MENU_WIPE_OUT": "Reset Data",
       "OPTIONS_MENU_GO_BACK": "Go Back",
-
       "OPTIONS_WIPE_OUT_TEXT": "Do you want to erase all game data? The game\ndata will be downloaded during the next start\nof the game.",
       "OPTIONS_WIPE_OUT_NO": "Cancel",
       "OPTIONS_WIPE_OUT_YES": "Do It",
-
       "OPTIONS_KEYMAP_RIGHT": "Right",
       "OPTIONS_KEYMAP_LEFT": "Left",
       "OPTIONS_KEYMAP_DOWN": "Down",
       "OPTIONS_KEYMAP_UP": "Up",
       "OPTIONS_KEYMAP_ACTION": "Action",
       "OPTIONS_KEYMAP_CANCEL": "Cancel",
-
       "MAP_SELECT_PAGE_LEFT": "<<",
       "MAP_SELECT_PAGE": "",
       "MAP_SELECT_PAGE_RIGHT": ">>",
@@ -2058,25 +1674,21 @@
       "MENU_NEXT": "Next",
       "MENU_CONFIGURED_MATCH": "Configured Match",
       "MENU_FAST_MATCH": "Fast Match",
-
       "PLAYER_CONFIG_SLOT1": "Slot 1",
       "PLAYER_CONFIG_SLOT2": "Slot 2",
       "PLAYER_CONFIG_SLOT3": "Slot 3",
       "PLAYER_CONFIG_SLOT4": "Slot 4",
-
       "PLAYER_CONFIG_NAME": "Name",
       "PLAYER_CONFIG_TYPE": "Type",
       "PLAYER_CONFIG_TEAM": "Team",
       "PLAYER_CONFIG_CO_A": "Main CO",
       "PLAYER_CONFIG_GAMEMODE": "Gamemode",
-
       "VALUE_R": "",
       "VALUE_L": "",
       "VALUE_U": "",
       "VALUE_D": "",
       "VALUE_A": "",
       "VALUE_C": "",
-
       "co_getStarCost": "Star Costs",
       "co_getStarCostIncrease": "Star Costs Increase",
       "co_getStarCostIncreaseSteps": "Star C. Incr. Steps",
@@ -2092,10 +1704,8 @@
       "captureLimit": "Capture Limit",
       "timer_turnTimeLimit": "Turn Time (Min.)",
       "timer_gameTimeLimit": "Game Time (Min.)",
-
       "OPTIONS_KEYMAP_GOBACK": "Go Back",
       "OPTIONS_KEYMAP_SET": "Remap Keys",
-
       "TOOLTIP_1": "Change the keyboard and gamepad settings by selecting\nOptions from the main or in-game menu",
       "TOOLTIP_2": "Activate zooming the map by using the scroll wheel for\nthe mouse, pinching for touch screen, and the in-game menu.",
       "TOOLTIP_3": "Press and hold Cancel over an idle unit to see\nits attack range.",
