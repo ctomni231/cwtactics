@@ -1,6 +1,7 @@
 package org.wolftec.cwtactics.engine.playground;
 
 import org.stjs.javascript.Array;
+import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.Element;
@@ -8,6 +9,7 @@ import org.stjs.javascript.dom.Image;
 import org.stjs.javascript.dom.canvas.CanvasImageData;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
+@GlobalScope
 @STJSBridge
 public class CanvasQuery {
 
@@ -103,6 +105,7 @@ public class CanvasQuery {
 
   public native CanvasQuery clip();
 
+  @Override
   public native CanvasQuery clone();
 
   public native CanvasQuery closePath();

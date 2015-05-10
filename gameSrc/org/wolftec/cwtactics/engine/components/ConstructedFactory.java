@@ -7,7 +7,8 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Function1;
-import org.wolftec.cwtactics.game.Constants;
+import org.wolftec.cwtactics.Constants;
+import org.wolftec.cwtactics.engine.util.JsUtil;
 
 /**
  * 
@@ -16,7 +17,7 @@ import org.wolftec.cwtactics.game.Constants;
  */
 public class ConstructedFactory {
 
-  private static Map<String, Object> components;
+  private static Map<String, ConstructedClass> components;
 
   /**
    * Initializes all classes which extends the {@link ConstructedClass}
@@ -32,7 +33,7 @@ public class ConstructedFactory {
         .$get(objectConst, "keys");
     Map<String, Object> namespaceObj = (Map<String, Object>) JSObjectAdapter.$get(Global.window, namespace);
     Array<String> keys = objectPropertiesFn.$invoke(namespaceObj);
-
+    // TODO refactor
     for (int i = 0; i < keys.$length(); i++) {
 
       String objectName = keys.$get(i);
@@ -47,10 +48,13 @@ public class ConstructedFactory {
         if (interfaces.indexOf(ConstructedClass.class) != -1) {
           ConstructedClass cmp = JSObjectAdapter.$js("new object()");
           components.$put(objectName, cmp);
-          cmp.onConstruction();
         }
       }
     }
+
+    JsUtil.forEachMapValue(components, (componentName, component) -> {
+      component.onConstruction();
+    });
   }
 
   /**

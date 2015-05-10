@@ -7,7 +7,7 @@
  <version>0.40</version>
 
  <properties>
-  <stjs.version>3.1.3</stjs.version>
+  <stjs.version>3.1.4</stjs.version>
  </properties>
  <repositories>
   <repository>
@@ -108,6 +108,15 @@
         <target>
 
          <copy file="${project.build.outputDirectory}/stjs.js"
+               todir="${basedir}/dest" overwrite="true" />
+               
+         <copy file="${basedir}/gameSrc/org/wolftec/cwtactics/engine/ischeck/js/is.js"
+               todir="${basedir}/dest" overwrite="true" />
+               
+         <copy file="${basedir}/gameSrc/org/wolftec/cwtactics/engine/localforage/js/localforage.js"
+               todir="${basedir}/dest" overwrite="true" />
+               
+         <copy file="${basedir}/gameSrc/org/wolftec/cwtactics/engine/playground/js/playground.js"
                todir="${basedir}/dest" overwrite="true" />
 
          <copy file="${project.build.outputDirectory}/CustomWarsTactics.js"

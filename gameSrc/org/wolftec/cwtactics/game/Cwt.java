@@ -1,23 +1,26 @@
 package org.wolftec.cwtactics.game;
 
 import org.stjs.javascript.Global;
-import org.stjs.javascript.JSObjectAdapter;
+import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.components.ConstructedFactory;
-import org.wolftec.cwtactics.engine.components.ConstructedLogger;
+import org.wolftec.cwtactics.engine.loader.OfflineCacheDataLoader;
 import org.wolftec.cwtactics.engine.playground.Playground;
-import org.wolftec.cwtactics.engine.playground.PlaygroundJsGlb;
+import org.wolftec.cwtactics.engine.playground.PlaygroundGlobal;
 import org.wolftec.cwtactics.engine.playground.PlaygroundState;
+import org.wolftec.cwtactics.engine.util.ClassUtil;
+import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
+import org.wolftec.cwtactics.game.service.GameDataService;
 import org.wolftec.cwtactics.game.states.GameInit;
 
-public class Cwt extends Playground implements ConstructedClass, ConstructedLogger {
+public class Cwt extends Playground implements ConstructedClass {
 
   @Override
   public String getLoggerName() {
     // all functions of this class will be called in an object of a different
     // type after being converted to a playground object
     // ==> to avoid a "undefined" logger name we going to set a fixed one
-    return (String) JSObjectAdapter.$get(Cwt.class, "__className");
+    return ClassUtil.getClassName(Cwt.class);
   }
 
   @Override
@@ -26,11 +29,20 @@ public class Cwt extends Playground implements ConstructedClass, ConstructedLogg
     height = Constants.SCREEN_HEIGHT_PX;
     smoothing = false;
 
+    PlaygroundUtil.setBasePath(this, "../modifications/cwt/");
+
     container = Global.window.document.getElementById("game");
 
-    info("Initialize playground engine");
-    PlaygroundJsGlb.playground(this);
+    info("initialize playground engine");
+    PlaygroundGlobal.playground(this);
 
+  }
+
+  @Override
+  public void create() {
+    OfflineCacheDataLoader offlineDataLoader = ConstructedFactory.getObject(OfflineCacheDataLoader.class);
+    GameDataService dataService = ConstructedFactory.getObject(GameDataService.class);
+    offlineDataLoader.loadData(this, dataService);
   }
 
   @Override
@@ -55,11 +67,11 @@ public class Cwt extends Playground implements ConstructedClass, ConstructedLogg
 
   @Override
   public void enterstate(ChangeStateEvent event) {
-    info("Enter state " + ((String) JSObjectAdapter.$get(event.state, "__className")));
+    info("enter state " + ClassUtil.getClassName(event.state));
   }
 
   @Override
   public void leavestate(ChangeStateEvent event) {
-    info("Leaving state " + ((String) JSObjectAdapter.$get(event.state, "__className")));
+    info("leaving state " + ClassUtil.getClassName(event.state));
   }
 }

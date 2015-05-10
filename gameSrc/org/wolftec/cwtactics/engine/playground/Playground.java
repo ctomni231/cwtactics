@@ -13,6 +13,38 @@ import org.wolftec.cwtactics.engine.playground.CanvasQuery.Atlas;
 public class Playground {
 
   @SyntheticType
+  public static class AssetEntry {
+
+    /**
+     * extension matched from key - otherwise defaultExtension
+     */
+    public String ext;
+
+    /**
+     * normalized key that you can use to store the asset
+     */
+    public String key;
+
+    /**
+     * if it requires more than one file - here is url without extension for
+     * example texture atlas consists of atlas.png + atlas.json
+     */
+    public String path;
+
+    /**
+     * by a rule of thumb is to use the url to load a file
+     */
+    public String url;
+  }
+
+  @SyntheticType
+  public static class ChangeStateEvent {
+    public PlaygroundState next;
+    public PlaygroundState prev;
+    public PlaygroundState state;
+  }
+
+  @SyntheticType
   public static class GamepadEvent {
     public String button;
     public int gamepad;
@@ -32,6 +64,29 @@ public class Playground {
   @SyntheticType
   public static class KeyboardStatus {
     public KeyboardKeys keys;
+  }
+
+  @SyntheticType
+  public static class Loader {
+
+    /**
+     * tell the loader that we are adding another item to the queue
+     * 
+     * @param entryId
+     */
+    public native void add(String entryId);
+
+    /**
+     * 
+     * @param entryId
+     */
+    public native void error(String entryId);
+
+    /**
+     * 
+     * @param entryId
+     */
+    public native void success(String entryId);
   }
 
   @SyntheticType
@@ -162,9 +217,9 @@ public class Playground {
   public static class TweenData extends Tweenable {
   }
 
-  public Element container;
-
   public Map<String, Atlas> atlases;
+
+  public Element container;
 
   public Map<String, Object> data;
 
@@ -177,6 +232,8 @@ public class Playground {
   public CanvasQuery layer;
 
   public int lifetime;
+
+  public Loader loader;
 
   public MouseStatus mouse;
 
@@ -206,6 +263,9 @@ public class Playground {
 
   public native double ease(double progress, String easing);
 
+  public void enterstate(ChangeStateEvent event) {
+  }
+
   public void gamepaddown(GamepadEvent ev) {
   }
 
@@ -215,20 +275,13 @@ public class Playground {
   public void gamepadup(GamepadEvent ev) {
   }
 
+  /** get asset key and url */
+  public native AssetEntry getAssetEntry(String path, String folder, String defaultExtension);
+
   public void keydown(KeyboardEvent ev) {
   }
 
   public void keyup(KeyboardEvent ev) {
-  }
-
-  @SyntheticType
-  public static class ChangeStateEvent {
-    public PlaygroundState prev;
-    public PlaygroundState next;
-    public PlaygroundState state;
-  }
-
-  public void enterstate(ChangeStateEvent event) {
   }
 
   public void leavestate(ChangeStateEvent event) {
