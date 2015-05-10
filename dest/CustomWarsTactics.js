@@ -128,6 +128,7 @@ stjs.extend(cwt.Playground, null, [], function(constructor, prototype) {
     prototype.sound = null;
     prototype.touch = null;
     prototype.width = 0;
+    prototype.state = null;
     prototype.create = function() {};
     prototype.createstate = function() {};
     prototype.enterstate = function(event) {};
@@ -152,7 +153,7 @@ stjs.extend(cwt.Playground, null, [], function(constructor, prototype) {
     prototype.touchend = function(ev) {};
     prototype.touchmove = function(ev) {};
     prototype.touchstart = function(ev) {};
-}, {atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus"}, {});
+}, {atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
 stjs.ns("cwt");
 cwt.ClassUtil = function() {};
 stjs.extend(cwt.ClassUtil, null, [], function(constructor, prototype) {
@@ -161,6 +162,9 @@ stjs.extend(cwt.ClassUtil, null, [], function(constructor, prototype) {
             return null;
         }
         return (object)["__className"];
+    };
+    constructor.getClass = function(object) {
+        return (object).constructor;
     };
 }, {}, {});
 stjs.ns("cwt");
@@ -174,45 +178,15 @@ stjs.extend(cwt.PlaygroundUtil, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 stjs.ns("cwt");
-cwt.Constants = function() {};
-stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
-    /**
-     *  The version of the game build.
-     */
-    constructor.VERSION = "0.40";
-    /**
-     *  The expected number of characters in an object identifier.
-     */
-    constructor.IDENTIFIER_LENGTH = 4;
-    /**
-     *  Internal screen height in pixel.
-     */
-    constructor.SCREEN_HEIGHT_PX = 480;
-    /**
-     *  Internal screen width in pixel.
-     */
-    constructor.SCREEN_WIDTH_PX = 640;
-    /**
-     *  Maximum range of a selection.
-     */
-    constructor.MAX_SELECTION_RANGE = 15;
-    /**
-     *  The version of the game build.
-     */
-    constructor.NAMESPACE = "cwt";
-    /**
-     *  Controls the exact length of the logger name field in a log message. The
-     *  class name will be extended (with spaces) or trimmed to has the exact
-     *  wanted length.
-     */
-    constructor.LOGGER_CLASS_NAME_LENGTH = 20;
-    constructor.LOGGER_CSS_INFO_HEAD = "color: #197519; font-weight: bold";
-    constructor.LOGGER_CSS_WARN_HEAD = "color: #FF7519; font-weight: bold";
-    constructor.LOGGER_CSS_ERROR_HEAD = "color: #B20000; font-weight: bold";
-    constructor.LOGGER_CSS_TEXT = "color: #1A1A1A";
-    constructor.OFFLINE_DB_SIZE = 50;
-    constructor.OFFLINE_DB_NAME = "CWT-DB";
-}, {}, {});
+cwt.PlaygroundState = function() {};
+stjs.extend(cwt.PlaygroundState, null, [], function(constructor, prototype) {
+    prototype.app = null;
+    prototype.create = function() {};
+    prototype.enter = function() {};
+    prototype.leave = function() {};
+    prototype.step = function(delta) {};
+    prototype.render = function() {};
+}, {app: "cwt.Playground"}, {});
 stjs.ns("cwt");
 cwt.LocalForageConfig = function() {};
 stjs.extend(cwt.LocalForageConfig, null, [], function(constructor, prototype) {
@@ -262,15 +236,45 @@ stjs.extend(cwt.LocalForageConfig, null, [], function(constructor, prototype) {
     prototype.description = null;
 }, {driver: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
-cwt.PlaygroundState = function() {};
-stjs.extend(cwt.PlaygroundState, null, [], function(constructor, prototype) {
-    prototype.app = null;
-    prototype.create = function() {};
-    prototype.enter = function() {};
-    prototype.leave = function() {};
-    prototype.step = function(delta) {};
-    prototype.render = function() {};
-}, {app: "cwt.Playground"}, {});
+cwt.Constants = function() {};
+stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
+    /**
+     *  The version of the game build.
+     */
+    constructor.VERSION = "0.40";
+    /**
+     *  The expected number of characters in an object identifier.
+     */
+    constructor.IDENTIFIER_LENGTH = 4;
+    /**
+     *  Internal screen height in pixel.
+     */
+    constructor.SCREEN_HEIGHT_PX = 480;
+    /**
+     *  Internal screen width in pixel.
+     */
+    constructor.SCREEN_WIDTH_PX = 640;
+    /**
+     *  Maximum range of a selection.
+     */
+    constructor.MAX_SELECTION_RANGE = 15;
+    /**
+     *  The version of the game build.
+     */
+    constructor.NAMESPACE = "cwt";
+    /**
+     *  Controls the exact length of the logger name field in a log message. The
+     *  class name will be extended (with spaces) or trimmed to has the exact
+     *  wanted length.
+     */
+    constructor.LOGGER_CLASS_NAME_LENGTH = 20;
+    constructor.LOGGER_CSS_INFO_HEAD = "color: #197519; font-weight: bold";
+    constructor.LOGGER_CSS_WARN_HEAD = "color: #FF7519; font-weight: bold";
+    constructor.LOGGER_CSS_ERROR_HEAD = "color: #B20000; font-weight: bold";
+    constructor.LOGGER_CSS_TEXT = "color: #1A1A1A";
+    constructor.OFFLINE_DB_SIZE = 50;
+    constructor.OFFLINE_DB_NAME = "CWT-DB";
+}, {}, {});
 stjs.ns("cwt");
 cwt.ObjectType = function() {};
 stjs.extend(cwt.ObjectType, null, [], function(constructor, prototype) {
@@ -600,16 +604,9 @@ stjs.extend(cwt.PropertyType, cwt.ObjectType, [], function(constructor, prototyp
     };
 }, {repairs: {name: "Map", arguments: [null, null]}, rocketsilo: "cwt.RocketSiloType", builds: {name: "Array", arguments: [null]}, laser: "cwt.LaserType"}, {});
 stjs.ns("cwt");
-cwt.GameInit = function() {};
-stjs.extend(cwt.GameInit, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.enter = function() {};
-    prototype.render = function() {
-        this.app.layer.clear("black");
-    };
-}, {app: "cwt.Playground"}, {});
-stjs.ns("cwt");
 cwt.BrowserService = function() {};
 stjs.extend(cwt.BrowserService, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.requestJsonFile = function(path, callback) {};
     /**
      *  Invokes a XmlHttpRequest.
      *  
@@ -696,13 +693,28 @@ stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
     };
 }, {components: {name: "Map", arguments: [null, "cwt.ConstructedClass"]}}, {});
 stjs.ns("cwt");
+cwt.ErrorScreen = function() {};
+stjs.extend(cwt.ErrorScreen, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.errorMsg = null;
+    prototype.enter = function() {};
+    prototype.render = function() {
+        this.app.layer.clear("black").fillStyle("red").font("24pt Arial").fillText("An error occured", 60, 228).fillText(this.errorMsg, 120, 270);
+    };
+}, {app: "cwt.Playground"}, {});
+stjs.ns("cwt");
+cwt.StartScreen = function() {};
+stjs.extend(cwt.StartScreen, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.enter = function() {};
+    prototype.render = function() {
+        this.app.layer.clear("black").fillStyle("white").font("24pt Arial").fillText("Custom Wars: Tactics", 60, 228).fillText("Development Version", 120, 270);
+    };
+}, {app: "cwt.Playground"}, {});
+stjs.ns("cwt");
 cwt.GameDataService = function() {};
 stjs.extend(cwt.GameDataService, null, [cwt.ConstructedClass], function(constructor, prototype) {
     prototype.typeMap = null;
-    prototype.idMap = null;
     prototype.onConstruction = function() {
         this.typeMap = {};
-        this.idMap = {};
     };
     /**
      *  Registers a data type object. After that this object can be grabbed type
@@ -714,6 +726,8 @@ stjs.extend(cwt.GameDataService, null, [cwt.ConstructedClass], function(construc
         type.validate(stjs.bind(this, function(errors) {
             if (errors.length > 0) {
                 this.throwError("InvalidDataType Errors:" + JSON.stringify(errors));
+            } else if ((this.typeMap).hasOwnProperty(type.ID)) {
+                this.throwError("InvalidDataType Errors: ID " + type.ID + " is alreday registered");
             } else {
                 this.info("registered " + cwt.ClassUtil.getClassName(type) + " object with id " + type.ID);
                 this.typeMap[type.ID] = type;
@@ -730,7 +744,7 @@ stjs.extend(cwt.GameDataService, null, [cwt.ConstructedClass], function(construc
     prototype.getArmy = function(armyId) {
         return this.getDataType(armyId, cwt.ClassUtil.getClassName(cwt.ArmyType));
     };
-}, {typeMap: {name: "Map", arguments: [null, "cwt.ObjectType"]}, idMap: {name: "Map", arguments: [null, null]}}, {});
+}, {typeMap: {name: "Map", arguments: [null, "cwt.ObjectType"]}}, {});
 /**
  *  Starter class with main function.
  */
@@ -774,12 +788,17 @@ stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], function(c
             this.info("grabbed value from " + data.url);
             cwt.ConstructedFactory.getObject(cwt.BrowserService).doXmlHttpRequest(data.url, null, stjs.bind(this, function(objData, error) {
                 this.info("parsing and validating " + data.key);
-                var type = stjs.typefy(JSON.parse(objData), dataClass);
-                cwt.ConstructedFactory.getObject(cwt.GameDataService).registerDataType(type);
-                this.info("putting " + data.key + " into the cache");
-                localforage.setItem(data.key, type, function(errInner, valueInner) {
-                    game.loader.success(data.key);
-                });
+                try {
+                    var type = stjs.typefy(JSON.parse(objData), dataClass);
+                    cwt.ConstructedFactory.getObject(cwt.GameDataService).registerDataType(type);
+                    this.info("putting " + data.key + " into the cache");
+                    localforage.setItem(data.key, type, function(errInner, valueInner) {
+                        game.loader.success(data.key);
+                    });
+                }catch (e) {
+                    this.warn("could not parse data type " + data.key);
+                    game.loader.error(data.key);
+                }
             }));
         }));
     };
@@ -803,15 +822,15 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
         return cwt.ClassUtil.getClassName(cwt.Cwt);
     };
     prototype.onConstruction = function() {
-        this.width = cwt.Constants.SCREEN_WIDTH_PX;
-        this.height = cwt.Constants.SCREEN_HEIGHT_PX;
-        this.smoothing = false;
         cwt.PlaygroundUtil.setBasePath(this, "../modifications/cwt/");
         this.container = window.document.getElementById("game");
         this.info("initialize playground engine");
-        playground(this);
+        (window)["cwtPly"] = playground(this);
     };
-    prototype.create = function() {
+    prototype.preload = function() {
+        this.loader.on("error", stjs.bind(this, function(error) {
+            return this.error("Failed to load asset => " + error);
+        }));
         var offlineDataLoader = cwt.ConstructedFactory.getObject(cwt.OfflineCacheDataLoader);
         offlineDataLoader.loadFolderData(this, "armies", cwt.ArmyType);
         offlineDataLoader.loadFolderData(this, "cos", cwt.CoType);
@@ -822,7 +841,14 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
         offlineDataLoader.loadFolderData(this, "weathers", cwt.WeatherType);
     };
     prototype.ready = function() {
-        this.setStateByClass(cwt.GameInit);
+        this.setStateByClass(cwt.StartScreen);
+    };
+    prototype.error = function(msg) {
+        this.warn("Got an error: " + msg);
+        if (cwt.ClassUtil.getClass(this.state) != cwt.ErrorScreen) {
+            cwt.ConstructedFactory.getObject(cwt.ErrorScreen).errorMsg = msg;
+            this.setStateByClass(cwt.ErrorScreen);
+        }
     };
     prototype.render = function() {
         this.layer.clear("yellow");
@@ -842,4 +868,4 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
     prototype.leavestate = function(event) {
         this.info("leaving state " + cwt.ClassUtil.getClassName(event.state));
     };
-}, {atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus"}, {});
+}, {atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});

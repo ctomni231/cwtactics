@@ -99,9 +99,9 @@ public class CanvasQuery {
 
   public native CanvasQuery circle(int x, int y, int radius);
 
-  public native void clear();
+  public native CanvasQuery clear();
 
-  public native void clear(String color);
+  public native CanvasQuery clear(String color);
 
   public native CanvasQuery clip();
 

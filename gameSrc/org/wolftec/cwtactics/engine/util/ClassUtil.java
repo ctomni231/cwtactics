@@ -11,4 +11,8 @@ public class ClassUtil {
     }
     return (String) JSObjectAdapter.$get(object, "__className");
   }
+
+  public static Class<?> getClass(Object object) {
+    return (Class<?>) JSObjectAdapter.$constructor(object);
+  }
 }

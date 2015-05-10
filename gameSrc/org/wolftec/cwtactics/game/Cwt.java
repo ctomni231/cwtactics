@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game;
 
 import org.stjs.javascript.Global;
-import org.wolftec.cwtactics.Constants;
+import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.components.ConstructedFactory;
 import org.wolftec.cwtactics.engine.loader.OfflineCacheDataLoader;
@@ -17,7 +17,8 @@ import org.wolftec.cwtactics.game.data.PropertyType;
 import org.wolftec.cwtactics.game.data.TileType;
 import org.wolftec.cwtactics.game.data.UnitType;
 import org.wolftec.cwtactics.game.data.WeatherType;
-import org.wolftec.cwtactics.game.states.GameInit;
+import org.wolftec.cwtactics.game.states.ErrorScreen;
+import org.wolftec.cwtactics.game.states.StartScreen;
 
 public class Cwt extends Playground implements ConstructedClass {
 
@@ -31,21 +32,24 @@ public class Cwt extends Playground implements ConstructedClass {
 
   @Override
   public void onConstruction() {
-    width = Constants.SCREEN_WIDTH_PX;
-    height = Constants.SCREEN_HEIGHT_PX;
-    smoothing = false;
+
+    // width = Constants.SCREEN_WIDTH_PX;
+    // height = Constants.SCREEN_HEIGHT_PX;
+    // smoothing = false;
 
     PlaygroundUtil.setBasePath(this, "../modifications/cwt/");
 
     container = Global.window.document.getElementById("game");
 
     info("initialize playground engine");
-    PlaygroundGlobal.playground(this);
 
+    JSObjectAdapter.$put(Global.window, "cwtPly", PlaygroundGlobal.playground(this));
   }
 
   @Override
-  public void create() {
+  public void preload() {
+    loader.on("error", (error) -> error("Failed to load asset => " + error));
+
     OfflineCacheDataLoader offlineDataLoader = ConstructedFactory.getObject(OfflineCacheDataLoader.class);
 
     offlineDataLoader.loadFolderData(this, "armies", ArmyType.class);
@@ -59,7 +63,16 @@ public class Cwt extends Playground implements ConstructedClass {
 
   @Override
   public void ready() {
-    setStateByClass(GameInit.class);
+    setStateByClass(StartScreen.class);
+  }
+
+  @Override
+  public void error(String msg) {
+    warn("Got an error: " + msg);
+    if (ClassUtil.getClass(state) != ErrorScreen.class) {
+      ConstructedFactory.getObject(ErrorScreen.class).errorMsg = msg;
+      setStateByClass(ErrorScreen.class);
+    }
   }
 
   @Override

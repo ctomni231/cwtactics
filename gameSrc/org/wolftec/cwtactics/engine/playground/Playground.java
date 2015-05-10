@@ -7,6 +7,7 @@ import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback0;
+import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwtactics.engine.playground.CanvasQuery.Atlas;
 
 @SyntheticType
@@ -87,6 +88,12 @@ public class Playground {
      * @param entryId
      */
     public native void success(String entryId);
+
+    public native Loader on(String event, Callback1<String> cb);
+
+    public native Loader off(String event, Callback1<String> cb);
+
+    public native Loader once(String event, Callback1<String> cb);
   }
 
   @SyntheticType
@@ -254,6 +261,8 @@ public class Playground {
   public TouchStatus touch;
 
   public int width;
+
+  public PlaygroundState state;
 
   public void create() {
   }

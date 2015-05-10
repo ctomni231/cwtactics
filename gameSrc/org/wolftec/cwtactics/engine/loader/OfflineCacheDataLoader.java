@@ -53,12 +53,18 @@ public class OfflineCacheDataLoader implements ConstructedClass {
       info("grabbed value from " + data.url);
       ConstructedFactory.getObject(BrowserService.class).doXmlHttpRequest(data.url, null, (objData, error) -> {
         info("parsing and validating " + data.key);
-        T type = JSGlobal.stjs.typefy((T) JSGlobal.JSON.parse((String) objData), dataClass);
-        ConstructedFactory.getObject(GameDataService.class).registerDataType(type);
-        info("putting " + data.key + " into the cache");
-        LocalForage.localforage.setItem(data.key, type, (errInner, valueInner) -> {
-          game.loader.success(data.key);
-        });
+        try {
+          T type = JSGlobal.stjs.typefy((T) JSGlobal.JSON.parse((String) objData), dataClass);
+          ConstructedFactory.getObject(GameDataService.class).registerDataType(type);
+          info("putting " + data.key + " into the cache");
+          LocalForage.localforage.setItem(data.key, type, (errInner, valueInner) -> {
+            game.loader.success(data.key);
+          });
+        } catch (Exception e) {
+          warn("could not parse data type " + data.key);
+          game.loader.error(data.key);
+        }
+
       });
     });
   }
