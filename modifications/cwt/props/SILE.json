@@ -1,9 +1,8 @@
 {
-  "ID": "SILO_EMPTY",
+  "ID": "SILE",
   "defense": 3,
   "vision": 0,
-  "rocketsilo": 
-  {
+  "rocketsilo": {
     
   }
 }

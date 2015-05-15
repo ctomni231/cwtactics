@@ -7,10 +7,8 @@
   "fuel": 99,
   "ammo": 9,
   "dailyFuelDrain": 1,
-  "attack": 
-  {
-    "main_wp": 
-    {
+  "attack": {
+    "main_wp": {
       "CRUS": 25,
       "SUBM": 90,
       "BSHP": 5,
@@ -19,8 +17,7 @@
       "BLBT": 25
     },
 
-    "sec_wp": 
-    {
+    "sec_wp": {
       "FGTR": 85,
       "BMBR": 100,
       "STLH": 100,
@@ -31,8 +28,7 @@
   },
 
   "maxloads": 2,
-  "canload": 
-  [
+  "canload": [
     "AIR"
   ]
 }

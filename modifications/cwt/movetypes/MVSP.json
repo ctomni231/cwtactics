@@ -1,9 +1,8 @@
 {
   "ID": "MVSP",
   "sound": null,
-  "costs": 
-  {
-    "WATER": 1,
+  "costs": {
+    "WATR": 1,
     "PORT": 1,
     "REEF": 2,
     "*": -1

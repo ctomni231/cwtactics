@@ -1,6 +1,7 @@
 package org.wolftec.cwtactics.game.data;
 
 import org.stjs.javascript.Array;
+import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.ischeck.Is;
@@ -30,7 +31,7 @@ public class PropertyType extends ObjectType {
 
     checkType(rocketsilo, errors);
 
-    checkExpression(Is.is.array(builds) && Is.is.not.empty(builds), errors, "builds");
+    checkExpression(Is.is.array(builds), errors, "builds");
     JsUtil.forEachArrayValue(builds, (index, value) -> {
       // TODO id check
       });
@@ -44,9 +45,29 @@ public class PropertyType extends ObjectType {
     checkType(laser, errors);
 
     checkExpression(Is.is.string(changesTo) && Is.is.not.empty(changesTo), errors, "changesTo");
-    checkExpression(Is.is.integer(funds) && Is.is.within(funds, 0, 99999), errors, "funds");
+    checkExpression(Is.is.integer(funds) && Is.is.within(funds, -1, 100000), errors, "funds");
     checkExpression(Is.is.bool(looseAfterCaptured), errors, "looseAfterCaptured");
     checkExpression(Is.is.bool(notTransferable), errors, "notTransferable");
     checkExpression(Is.is.bool(blocker), errors, "blocker");
+  }
+
+  @Override
+  public void grabDataFromMap(Map<String, Object> data) {
+    rocketsilo = new RocketSiloType();
+    laser = new LaserType();
+
+    defense = grabMapValue(data, "defense", 0);
+    vision = grabMapValue(data, "vision", 0);
+    capturePoints = grabMapValue(data, "capturePoints", 20);
+    visionBlocker = grabMapValue(data, "visionBlocker", false);
+    rocketsilo.grabDataFromMap(grabMapValue(data, "rocketsilo", JSCollections.$map()));
+    repairs = grabMapValue(data, "repairs", JSCollections.$map());
+    builds = grabMapValue(data, "builds", JSCollections.$array());
+    laser.grabDataFromMap(grabMapValue(data, "laser", JSCollections.$map()));
+    changesTo = grabMapValue(data, "changesTo", "NONE");
+    funds = grabMapValue(data, "funds", 0);
+    blocker = grabMapValue(data, "blocker", false);
+    looseAfterCaptured = grabMapValue(data, "looseAfterCaptured", false);
+    notTransferable = grabMapValue(data, "notTransferable", false);
   }
 }

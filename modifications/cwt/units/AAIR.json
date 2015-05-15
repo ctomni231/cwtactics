@@ -4,12 +4,9 @@
   "range": 6,
   "movetype": "TANK",
   "vision": 2,
-  "fuel": 60,
   "ammo": 9,
-  "attack": 
-  {
-    "main_wp": 
-    {
+  "attack": {
+    "main_wp": {
       "INFT": 105,
       "MECH": 105,
       "RECN": 60,
@@ -33,8 +30,7 @@
     }
   },
 
-  "assets": 
-  {
+  "assets": {
     "gfx": "cwt_anim/units/CWT_AAIR.png",
     "pri_att_sound": "mg.wav",
     "sec_att_sound": "mg.wav"

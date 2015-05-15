@@ -1,8 +1,7 @@
 {
   "ID": "MVCP",
   "sound": null,
-  "costs": 
-  {
+  "costs": {
     "*": 1
   }
 }

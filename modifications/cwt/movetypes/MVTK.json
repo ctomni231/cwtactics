@@ -1,12 +1,11 @@
 {
   "ID": "MVTK",
   "sound": null,
-  "costs": 
-  {
+  "costs": {
     "FRST": 2,
     "MNTN": -1,
-    "RIVER": -1,
-    "WATER": -1,
+    "RIVR": -1,
+    "WATR": -1,
     "REEF": -1,
     "*": 1
   }

@@ -63,16 +63,14 @@ public class Cwt extends Playground implements ConstructedClass {
 
   @Override
   public void ready() {
-    setStateByClass(StartScreen.class);
+    boolean hasErrors = ConstructedFactory.getObject(ErrorScreen.class).errorMsg != null;
+    setStateByClass(hasErrors ? ErrorScreen.class : StartScreen.class);
   }
 
   @Override
   public void error(String msg) {
     warn("Got an error: " + msg);
-    if (ClassUtil.getClass(state) != ErrorScreen.class) {
-      ConstructedFactory.getObject(ErrorScreen.class).errorMsg = msg;
-      setStateByClass(ErrorScreen.class);
-    }
+    ConstructedFactory.getObject(ErrorScreen.class).errorMsg = msg;
   }
 
   @Override

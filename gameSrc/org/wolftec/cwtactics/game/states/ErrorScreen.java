@@ -8,6 +8,11 @@ public class ErrorScreen extends PlaygroundState implements ConstructedClass {
   public String errorMsg;
 
   @Override
+  public void onConstruction() {
+    errorMsg = null;
+  }
+
+  @Override
   public void enter() {
   }
 

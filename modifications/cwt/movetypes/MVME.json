@@ -1,9 +1,8 @@
 {
   "ID": "MVME",
   "sound": null,
-  "costs": 
-  {
-    "WATER": -1,
+  "costs": {
+    "WATR": -1,
     "REEF": -1,
     "*": 1
   }

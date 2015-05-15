@@ -1,6 +1,7 @@
 package org.wolftec.cwtactics.game.data;
 
 import org.stjs.javascript.Array;
+import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.engine.ischeck.Is;
 
 public class MapFileType extends ObjectType {
@@ -13,5 +14,11 @@ public class MapFileType extends ObjectType {
   protected void validateData(Array<String> errors) {
     checkExpression(Is.is.string(mapName), errors, "mapName");
     checkExpression(Is.is.integer(maxPlayers) && Is.is.within(maxPlayers, 2, 4), errors, "maxPlayers");
+  }
+
+  @Override
+  public void grabDataFromMap(Map<String, Object> data) {
+    mapName = grabMapValue(data, "mapName", null);
+    maxPlayers = grabMapValue(data, "maxPlayers", -1);
   }
 }

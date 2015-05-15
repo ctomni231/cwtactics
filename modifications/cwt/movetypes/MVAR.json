@@ -1,8 +1,7 @@
 {
   "ID": "MVAR",
   "sound": null,
-  "costs": 
-  {
+  "costs": {
     "*": 1
   }
 }

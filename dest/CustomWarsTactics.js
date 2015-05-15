@@ -284,12 +284,8 @@ stjs.extend(cwt.ObjectType, null, [], function(constructor, prototype) {
             errors.push(msg);
         }
     };
-    prototype.checkType = function(tpye, errors) {
-        tpye.validate(function(objectErrors) {
-            return objectErrors.forEach(function(objectError) {
-                errors.push(objectError);
-            });
-        });
+    prototype.checkType = function(type, errors) {
+        type.validateData(errors);
     };
     /**
      *  Validates the data type and returns all failures as a list as parameter
@@ -305,6 +301,9 @@ stjs.extend(cwt.ObjectType, null, [], function(constructor, prototype) {
         }catch (validationError) {}
         callback(errors);
     };
+    prototype.grabMapValue = function(data, key, defaultValue) {
+        return (data).hasOwnProperty(key) ? data[key] : defaultValue;
+    };
     /**
      *  Usable to extend the validation behavior (e.g. when sub type adds new
      *  properties).
@@ -312,6 +311,11 @@ stjs.extend(cwt.ObjectType, null, [], function(constructor, prototype) {
      *  @param errors
      */
     prototype.validateData = function(errors) {};
+    prototype.grabDataFromMapGlobal = function(data) {
+        this.ID = this.grabMapValue(data, "ID", null);
+        this.grabDataFromMap(data);
+    };
+    prototype.grabDataFromMap = function(data) {};
 }, {}, {});
 stjs.ns("cwt");
 cwt.Modification = function() {};
@@ -406,6 +410,10 @@ stjs.extend(cwt.TileType, cwt.ObjectType, [], function(constructor, prototype) {
         this.checkExpression(is.bool(this.blocksVision), errors, "blocksVision");
         this.checkExpression(is.integer(this.defense) && is.above(this.defense, -1), errors, "defense");
     };
+    prototype.grabDataFromMap = function(data) {
+        this.defense = this.grabMapValue(data, "defense", 0);
+        this.blocksVision = this.grabMapValue(data, "blocksVision", false);
+    };
 }, {}, {});
 stjs.ns("cwt");
 cwt.WeatherType = function() {
@@ -415,6 +423,9 @@ stjs.extend(cwt.WeatherType, cwt.ObjectType, [], function(constructor, prototype
     prototype.isDefaultWeather = false;
     prototype.validateData = function(errors) {
         this.checkExpression(is.bool(this.isDefaultWeather), errors, "isDefaultWeather");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.isDefaultWeather = this.grabMapValue(data, "isDefaultWeather", false);
     };
 }, {}, {});
 stjs.ns("cwt");
@@ -426,63 +437,29 @@ stjs.extend(cwt.ArmyType, cwt.ObjectType, [], function(constructor, prototype) {
     prototype.validateData = function(errors) {
         this.checkExpression(is.string(this.name) && is.within(this.name.length, 3, 20), errors, "name");
     };
+    prototype.grabDataFromMap = function(data) {
+        this.name = this.grabMapValue(data, "name", null);
+    };
 }, {}, {});
-stjs.ns("cwt");
-cwt.UnitType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.UnitType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.cost = -1;
-    prototype.range = 1;
-    prototype.vision = 1;
-    prototype.fuel = 0;
-    prototype.ammo = 0;
-    prototype.movetype = null;
-    prototype.dailyFuelDrain = 0;
-    prototype.dailyFuelDrainHidden = 0;
-    prototype.maxloads = -1;
-    prototype.canload = null;
-    prototype.supply = null;
-    prototype.captures = -1;
-    prototype.stealth = false;
-    prototype.attack = null;
-    prototype.suicide = null;
-    /**
-     * 
-     *  @return move type object for the given move type id of the unit type
-     */
-    prototype.getMoveType = function() {
-        return null;
-    };
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.bool(this.stealth), errors, "stealth");
-        this.checkExpression(is.integer(this.cost) && is.within(this.cost, -1, 999999) && is.not.equal(this.cost, 0), errors, "cost");
-        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, cwt.Constants.MAX_SELECTION_RANGE), errors, "range");
-        this.checkExpression(is.integer(this.vision) && is.within(this.vision, 1, cwt.Constants.MAX_SELECTION_RANGE), errors, "vision");
-        this.checkExpression(is.integer(this.fuel) && is.within(this.fuel, 0, 99), errors, "fuel");
-        this.checkExpression(is.integer(this.ammo) && is.within(this.ammo, 0, 99), errors, "ammo");
-        this.checkExpression(is.integer(this.dailyFuelDrain) && is.within(this.dailyFuelDrain, 0, 99), errors, "dailyFuelDrain");
-        this.checkExpression(is.integer(this.dailyFuelDrainHidden) && is.within(this.dailyFuelDrainHidden, this.dailyFuelDrain + 1, 99), errors, "dailyFuelDrainHidden");
-        this.checkExpression(is.integer(this.maxloads) && is.within(this.maxloads, -1, 5) && is.not.equal(this.maxloads, 0), errors, "maxloads");
-        this.checkExpression(is.integer(this.captures) && is.within(this.captures, -1, 999) && is.not.equal(this.captures, 0), errors, "captures");
-        this.checkType(this.attack, errors);
-        this.checkType(this.suicide, errors);
-    };
-}, {canload: {name: "Array", arguments: [null]}, supply: {name: "Array", arguments: [null]}, attack: "cwt.AttackType", suicide: "cwt.SuicideType"}, {});
 stjs.ns("cwt");
 cwt.RocketSiloType = function() {
     cwt.ObjectType.call(this);
 };
 stjs.extend(cwt.RocketSiloType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.fireable = null;
     prototype.damage = 0;
     prototype.range = 0;
+    prototype.fireableBy = null;
     prototype.validateData = function(errors) {
-        this.checkExpression(is.array(this.fireable), errors, "fireable");
-        this.checkExpression(is.integer(this.range) && is.within(this.range, 1, 5), errors, "range");
-        this.checkExpression(is.integer(this.damage) && is.within(this.damage, 1, 9), errors, "damage");
+        this.checkExpression(is.array(this.fireableBy), errors, "fireable");
+        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, 6), errors, "range");
+        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
     };
-}, {fireable: {name: "Array", arguments: [null]}}, {});
+    prototype.grabDataFromMap = function(data) {
+        this.damage = this.grabMapValue(data, "damage", 0);
+        this.range = this.grabMapValue(data, "range", 1);
+        this.fireableBy = this.grabMapValue(data, "fireable", []);
+    };
+}, {fireableBy: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
 cwt.LaserType = function() {
     cwt.ObjectType.call(this);
@@ -490,7 +467,10 @@ cwt.LaserType = function() {
 stjs.extend(cwt.LaserType, cwt.ObjectType, [], function(constructor, prototype) {
     prototype.damage = 0;
     prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.damage) && is.within(this.damage, 1, 9), errors, "damage");
+        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.damage = this.grabMapValue(data, "damage", 0);
     };
 }, {}, {});
 stjs.ns("cwt");
@@ -504,6 +484,10 @@ stjs.extend(cwt.CoType, cwt.ObjectType, [], function(constructor, prototype) {
         this.checkExpression(is.integer(this.coStars) && is.within(this.coStars, 0, 11), errors, "coStars");
         this.checkExpression(is.integer(this.scoStars) && is.within(this.scoStars, 0, 11), errors, "scoStars");
     };
+    prototype.grabDataFromMap = function(data) {
+        this.coStars = this.grabMapValue(data, "coStars", 1);
+        this.scoStars = this.grabMapValue(data, "scoStars", 1);
+    };
 }, {}, {});
 stjs.ns("cwt");
 cwt.SuicideType = function() {
@@ -514,9 +498,14 @@ stjs.extend(cwt.SuicideType, cwt.ObjectType, [], function(constructor, prototype
     prototype.range = 0;
     prototype.noDamage = null;
     prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.damage) && is.within(this.damage, 0, 10), errors, "damage");
-        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, cwt.Constants.MAX_SELECTION_RANGE), errors, "range");
+        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
+        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "range");
         this.checkExpression(is.array(this.noDamage), errors, "noDamage");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.damage = this.grabMapValue(data, "damage", 0);
+        this.range = this.grabMapValue(data, "range", 1);
+        this.noDamage = this.grabMapValue(data, "noDamage", []);
     };
 }, {noDamage: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
@@ -530,6 +519,10 @@ stjs.extend(cwt.MapFileType, cwt.ObjectType, [], function(constructor, prototype
         this.checkExpression(is.string(this.mapName), errors, "mapName");
         this.checkExpression(is.integer(this.maxPlayers) && is.within(this.maxPlayers, 2, 4), errors, "maxPlayers");
     };
+    prototype.grabDataFromMap = function(data) {
+        this.mapName = this.grabMapValue(data, "mapName", null);
+        this.maxPlayers = this.grabMapValue(data, "maxPlayers", -1);
+    };
 }, {}, {});
 stjs.ns("cwt");
 cwt.MoveType = function() {
@@ -540,8 +533,11 @@ stjs.extend(cwt.MoveType, cwt.ObjectType, [], function(constructor, prototype) {
     prototype.validateData = function(errors) {
         cwt.JsUtil.forEachObjectValue(this.costs, stjs.bind(this, function(tileTypeId, movecosts) {
             this.checkExpression(is.string(tileTypeId), errors, "costs -> " + tileTypeId + " key");
-            this.checkExpression(is.integer(movecosts) && is.within(movecosts, -1, 100) && is.not.equal(movecosts, 0), errors, "costs -> " + tileTypeId + " value");
+            this.checkExpression(is.integer(movecosts) && is.within(movecosts, -2, 100) && is.not.equal(movecosts, 0), errors, "costs -> " + tileTypeId + " value");
         }));
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.costs = this.grabMapValue(data, "costs", {});
     };
 }, {costs: {name: "Map", arguments: [null, null]}}, {});
 stjs.ns("cwt");
@@ -549,60 +545,29 @@ cwt.AttackType = function() {
     cwt.ObjectType.call(this);
 };
 stjs.extend(cwt.AttackType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.minrange = 1;
-    prototype.maxrange = 1;
+    prototype.minrange = null;
+    prototype.maxrange = null;
     prototype.mainWeapon = null;
     prototype.secondaryWeapon = null;
     prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.minrange) && is.within(this.minrange, 1, cwt.Constants.MAX_SELECTION_RANGE), errors, "minrange");
-        this.checkExpression(is.integer(this.maxrange) && is.within(this.maxrange, this.minrange + 1, cwt.Constants.MAX_SELECTION_RANGE), errors, "maxrange");
+        this.checkExpression(is.integer(this.minrange) && is.within(this.minrange, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "minrange");
+        this.checkExpression(is.integer(this.maxrange) && is.within(this.maxrange, this.minrange - 1, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "maxrange");
         this.checkDamageMap(this.mainWeapon, "mainWeapon", errors);
         this.checkDamageMap(this.secondaryWeapon, "secondaryWeapon", errors);
     };
     prototype.checkDamageMap = function(damageMap, errorItemName, errors) {
         cwt.JsUtil.forEachObjectValue(damageMap, stjs.bind(this, function(typeId, damage) {
             this.checkExpression(is.string(typeId), errors, errorItemName + " key");
-            this.checkExpression(is.integer(damage) && is.within(damage, 0, 999), errors, errorItemName + " entry");
+            this.checkExpression(is.integer(damage) && is.within(damage, 0, 1000), errors, errorItemName + " entry");
         }));
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.minrange = this.grabMapValue(data, "minrange", 1);
+        this.maxrange = this.grabMapValue(data, "maxrange", 1);
+        this.mainWeapon = this.grabMapValue(data, "mainWeapon", {});
+        this.secondaryWeapon = this.grabMapValue(data, "secondaryWeapon", {});
     };
 }, {mainWeapon: {name: "Map", arguments: [null, null]}, secondaryWeapon: {name: "Map", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.PropertyType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.PropertyType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.repairs = null;
-    prototype.defense = 0;
-    prototype.vision = 0;
-    prototype.capturePoints = 20;
-    prototype.visionBlocker = false;
-    prototype.rocketsilo = null;
-    prototype.builds = null;
-    prototype.laser = null;
-    prototype.changesTo = null;
-    prototype.funds = 0;
-    prototype.looseAfterCaptured = false;
-    prototype.blocker = false;
-    prototype.notTransferable = false;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.defense) && is.within(this.defense, -1, 7), errors, "defense");
-        this.checkExpression(is.integer(this.vision) && is.within(this.vision, -1, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "vision");
-        this.checkExpression(is.integer(this.capturePoints) && is.within(this.capturePoints, -1, 21), errors, "capturePoints");
-        this.checkType(this.rocketsilo, errors);
-        this.checkExpression(is.array(this.builds) && is.not.empty(this.builds), errors, "builds");
-        cwt.JsUtil.forEachArrayValue(this.builds, function(index, value) {});
-        cwt.JsUtil.forEachObjectValue(this.repairs, stjs.bind(this, function(unitOrMoveTypeId, amount) {
-            this.checkExpression(is.string(unitOrMoveTypeId), errors, "reapirs key " + unitOrMoveTypeId);
-            this.checkExpression(is.integer(amount) && is.within(amount, 0, 11), errors, "repairs value of " + unitOrMoveTypeId);
-        }));
-        this.checkType(this.laser, errors);
-        this.checkExpression(is.string(this.changesTo) && is.not.empty(this.changesTo), errors, "changesTo");
-        this.checkExpression(is.integer(this.funds) && is.within(this.funds, 0, 99999), errors, "funds");
-        this.checkExpression(is.bool(this.looseAfterCaptured), errors, "looseAfterCaptured");
-        this.checkExpression(is.bool(this.notTransferable), errors, "notTransferable");
-        this.checkExpression(is.bool(this.blocker), errors, "blocker");
-    };
-}, {repairs: {name: "Map", arguments: [null, null]}, rocketsilo: "cwt.RocketSiloType", builds: {name: "Array", arguments: [null]}, laser: "cwt.LaserType"}, {});
 stjs.ns("cwt");
 cwt.BrowserService = function() {};
 stjs.extend(cwt.BrowserService, null, [cwt.ConstructedClass], function(constructor, prototype) {
@@ -696,6 +661,9 @@ stjs.ns("cwt");
 cwt.ErrorScreen = function() {};
 stjs.extend(cwt.ErrorScreen, null, [cwt.ConstructedClass], function(constructor, prototype) {
     prototype.errorMsg = null;
+    prototype.onConstruction = function() {
+        this.errorMsg = null;
+    };
     prototype.enter = function() {};
     prototype.render = function() {
         this.app.layer.clear("black").fillStyle("red").font("24pt Arial").fillText("An error occured", 60, 228).fillText(this.errorMsg, 120, 270);
@@ -745,6 +713,121 @@ stjs.extend(cwt.GameDataService, null, [cwt.ConstructedClass], function(construc
         return this.getDataType(armyId, cwt.ClassUtil.getClassName(cwt.ArmyType));
     };
 }, {typeMap: {name: "Map", arguments: [null, "cwt.ObjectType"]}}, {});
+stjs.ns("cwt");
+cwt.PropertyType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.PropertyType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.repairs = null;
+    prototype.defense = 0;
+    prototype.vision = 0;
+    prototype.capturePoints = 20;
+    prototype.visionBlocker = false;
+    prototype.rocketsilo = null;
+    prototype.builds = null;
+    prototype.laser = null;
+    prototype.changesTo = null;
+    prototype.funds = 0;
+    prototype.looseAfterCaptured = false;
+    prototype.blocker = false;
+    prototype.notTransferable = false;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.integer(this.defense) && is.within(this.defense, -1, 7), errors, "defense");
+        this.checkExpression(is.integer(this.vision) && is.within(this.vision, -1, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "vision");
+        this.checkExpression(is.integer(this.capturePoints) && is.within(this.capturePoints, -1, 21), errors, "capturePoints");
+        this.checkType(this.rocketsilo, errors);
+        this.checkExpression(is.array(this.builds), errors, "builds");
+        cwt.JsUtil.forEachArrayValue(this.builds, function(index, value) {});
+        cwt.JsUtil.forEachObjectValue(this.repairs, stjs.bind(this, function(unitOrMoveTypeId, amount) {
+            this.checkExpression(is.string(unitOrMoveTypeId), errors, "reapirs key " + unitOrMoveTypeId);
+            this.checkExpression(is.integer(amount) && is.within(amount, 0, 11), errors, "repairs value of " + unitOrMoveTypeId);
+        }));
+        this.checkType(this.laser, errors);
+        this.checkExpression(is.string(this.changesTo) && is.not.empty(this.changesTo), errors, "changesTo");
+        this.checkExpression(is.integer(this.funds) && is.within(this.funds, -1, 100000), errors, "funds");
+        this.checkExpression(is.bool(this.looseAfterCaptured), errors, "looseAfterCaptured");
+        this.checkExpression(is.bool(this.notTransferable), errors, "notTransferable");
+        this.checkExpression(is.bool(this.blocker), errors, "blocker");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.rocketsilo = new cwt.RocketSiloType();
+        this.laser = new cwt.LaserType();
+        this.defense = this.grabMapValue(data, "defense", 0);
+        this.vision = this.grabMapValue(data, "vision", 0);
+        this.capturePoints = this.grabMapValue(data, "capturePoints", 20);
+        this.visionBlocker = this.grabMapValue(data, "visionBlocker", false);
+        this.rocketsilo.grabDataFromMap(this.grabMapValue(data, "rocketsilo", {}));
+        this.repairs = this.grabMapValue(data, "repairs", {});
+        this.builds = this.grabMapValue(data, "builds", []);
+        this.laser.grabDataFromMap(this.grabMapValue(data, "laser", {}));
+        this.changesTo = this.grabMapValue(data, "changesTo", "NONE");
+        this.funds = this.grabMapValue(data, "funds", 0);
+        this.blocker = this.grabMapValue(data, "blocker", false);
+        this.looseAfterCaptured = this.grabMapValue(data, "looseAfterCaptured", false);
+        this.notTransferable = this.grabMapValue(data, "notTransferable", false);
+    };
+}, {repairs: {name: "Map", arguments: [null, null]}, rocketsilo: "cwt.RocketSiloType", builds: {name: "Array", arguments: [null]}, laser: "cwt.LaserType"}, {});
+stjs.ns("cwt");
+cwt.UnitType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.UnitType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.cost = 0;
+    prototype.range = 0;
+    prototype.vision = 0;
+    prototype.fuel = 0;
+    prototype.ammo = 0;
+    prototype.movetype = null;
+    prototype.dailyFuelDrain = 0;
+    prototype.dailyFuelDrainHidden = 0;
+    prototype.maxloads = 0;
+    prototype.canload = null;
+    prototype.supply = null;
+    prototype.captures = 0;
+    prototype.stealth = false;
+    prototype.attack = null;
+    prototype.suicide = null;
+    /**
+     * 
+     *  @return move type object for the given move type id of the unit type
+     */
+    prototype.getMoveType = function() {
+        return null;
+    };
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.bool(this.stealth), errors, "stealth");
+        this.checkExpression(is.integer(this.cost) && is.within(this.cost, -1, 1000000) && is.not.equal(this.cost, 0), errors, "cost");
+        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "range");
+        this.checkExpression(is.integer(this.vision) && is.within(this.vision, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "vision");
+        this.checkExpression(is.integer(this.fuel) && is.within(this.fuel, -1, 100), errors, "fuel");
+        this.checkExpression(is.integer(this.ammo) && is.within(this.ammo, -1, 100), errors, "ammo");
+        this.checkExpression(is.integer(this.dailyFuelDrain) && is.within(this.dailyFuelDrain, -1, 100), errors, "dailyFuelDrain");
+        this.checkExpression(is.integer(this.dailyFuelDrainHidden) && is.within(this.dailyFuelDrainHidden, this.dailyFuelDrain, 100), errors, "dailyFuelDrainHidden");
+        this.checkExpression(is.integer(this.maxloads) && is.within(this.maxloads, -1, 5), errors, "maxloads");
+        this.checkExpression(is.integer(this.captures) && is.within(this.captures, -1, 1000), errors, "captures");
+        this.checkType(this.attack, errors);
+        this.checkType(this.suicide, errors);
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.attack = new cwt.AttackType();
+        this.suicide = new cwt.SuicideType();
+        this.cost = this.grabMapValue(data, "cost", 1);
+        this.range = this.grabMapValue(data, "range", 1);
+        this.vision = this.grabMapValue(data, "vision", 1);
+        this.fuel = this.grabMapValue(data, "fuel", 0);
+        this.ammo = this.grabMapValue(data, "ammo", 0);
+        this.movetype = this.grabMapValue(data, "movetype", null);
+        this.dailyFuelDrain = this.grabMapValue(data, "dailyFuelDrain", 0);
+        this.dailyFuelDrainHidden = this.grabMapValue(data, "dailyFuelDrainHidden", this.dailyFuelDrain + 1);
+        this.maxloads = this.grabMapValue(data, "maxloads", 0);
+        this.canload = this.grabMapValue(data, "canload", []);
+        this.supply = this.grabMapValue(data, "supply", []);
+        this.captures = this.grabMapValue(data, "captures", 0);
+        this.stealth = this.grabMapValue(data, "stealth", false);
+        this.attack.grabDataFromMap(this.grabMapValue(data, "attack", {}));
+        this.suicide.grabDataFromMap(this.grabMapValue(data, "suicide", {}));
+    };
+}, {canload: {name: "Array", arguments: [null]}, supply: {name: "Array", arguments: [null]}, attack: "cwt.AttackType", suicide: "cwt.SuicideType"}, {});
 /**
  *  Starter class with main function.
  */
@@ -789,7 +872,8 @@ stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], function(c
             cwt.ConstructedFactory.getObject(cwt.BrowserService).doXmlHttpRequest(data.url, null, stjs.bind(this, function(objData, error) {
                 this.info("parsing and validating " + data.key);
                 try {
-                    var type = stjs.typefy(JSON.parse(objData), dataClass);
+                    var type = new dataClass();
+                    type.grabDataFromMapGlobal(JSON.parse(objData));
                     cwt.ConstructedFactory.getObject(cwt.GameDataService).registerDataType(type);
                     this.info("putting " + data.key + " into the cache");
                     localforage.setItem(data.key, type, function(errInner, valueInner) {
@@ -841,14 +925,12 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
         offlineDataLoader.loadFolderData(this, "weathers", cwt.WeatherType);
     };
     prototype.ready = function() {
-        this.setStateByClass(cwt.StartScreen);
+        var hasErrors = cwt.ConstructedFactory.getObject(cwt.ErrorScreen).errorMsg != null;
+        this.setStateByClass(hasErrors ? cwt.ErrorScreen : cwt.StartScreen);
     };
     prototype.error = function(msg) {
         this.warn("Got an error: " + msg);
-        if (cwt.ClassUtil.getClass(this.state) != cwt.ErrorScreen) {
-            cwt.ConstructedFactory.getObject(cwt.ErrorScreen).errorMsg = msg;
-            this.setStateByClass(cwt.ErrorScreen);
-        }
+        cwt.ConstructedFactory.getObject(cwt.ErrorScreen).errorMsg = msg;
     };
     prototype.render = function() {
         this.layer.clear("yellow");

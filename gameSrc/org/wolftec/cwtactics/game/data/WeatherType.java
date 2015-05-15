@@ -1,6 +1,7 @@
 package org.wolftec.cwtactics.game.data;
 
 import org.stjs.javascript.Array;
+import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.engine.ischeck.Is;
 
 public class WeatherType extends ObjectType {
@@ -10,5 +11,10 @@ public class WeatherType extends ObjectType {
   @Override
   protected void validateData(Array<String> errors) {
     checkExpression(Is.is.bool(isDefaultWeather), errors, "isDefaultWeather");
+  }
+
+  @Override
+  public void grabDataFromMap(Map<String, Object> data) {
+    isDefaultWeather = grabMapValue(data, "isDefaultWeather", false);
   }
 }

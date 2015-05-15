@@ -3,6 +3,8 @@ package org.wolftec.cwtactics.engine.loader;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.components.ConstructedFactory;
@@ -54,7 +56,8 @@ public class OfflineCacheDataLoader implements ConstructedClass {
       ConstructedFactory.getObject(BrowserService.class).doXmlHttpRequest(data.url, null, (objData, error) -> {
         info("parsing and validating " + data.key);
         try {
-          T type = JSGlobal.stjs.typefy((T) JSGlobal.JSON.parse((String) objData), dataClass);
+          T type = JSObjectAdapter.$js("new dataClass()");
+          type.grabDataFromMapGlobal((Map<String, Object>) JSGlobal.JSON.parse((String) objData));
           ConstructedFactory.getObject(GameDataService.class).registerDataType(type);
           info("putting " + data.key + " into the cache");
           LocalForage.localforage.setItem(data.key, type, (errInner, valueInner) -> {

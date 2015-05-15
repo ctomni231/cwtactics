@@ -2,6 +2,8 @@ package org.wolftec.cwtactics.game.data;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwtactics.engine.ischeck.Is;
 
@@ -15,10 +17,8 @@ public abstract class ObjectType {
     }
   }
 
-  protected void checkType(ObjectType tpye, Array<String> errors) {
-    tpye.validate((objectErrors) -> objectErrors.$forEach(objectError -> {
-      errors.push(objectError);
-    }));
+  protected void checkType(ObjectType type, Array<String> errors) {
+    type.validateData(errors);
   }
 
   /**
@@ -41,6 +41,10 @@ public abstract class ObjectType {
     callback.$invoke(errors);
   }
 
+  protected <T> T grabMapValue(Map<String, Object> data, String key, T defaultValue) {
+    return JSObjectAdapter.hasOwnProperty(data, key) ? (T) data.$get(key) : defaultValue;
+  }
+
   /**
    * Usable to extend the validation behavior (e.g. when sub type adds new
    * properties).
@@ -48,4 +52,11 @@ public abstract class ObjectType {
    * @param errors
    */
   protected abstract void validateData(Array<String> errors);
+
+  public void grabDataFromMapGlobal(Map<String, Object> data) {
+    ID = grabMapValue(data, "ID", null);
+    grabDataFromMap(data);
+  }
+
+  public abstract void grabDataFromMap(Map<String, Object> data);
 }
