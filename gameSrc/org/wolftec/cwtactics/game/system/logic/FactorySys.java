@@ -1,8 +1,11 @@
-package org.wolftec.cwtactics.game.system;
+package org.wolftec.cwtactics.game.system.logic;
 
+import org.stjs.javascript.Array;
+import org.wolftec.cwtactics.game.components.IEntityComponent;
 import org.wolftec.cwtactics.game.components.data.FactoryCmp;
 import org.wolftec.cwtactics.game.components.objects.OwnableCmp;
 import org.wolftec.cwtactics.game.components.objects.Positionable;
+import org.wolftec.cwtactics.game.system.ISystem;
 
 public class FactorySys implements ISystem {
 
@@ -39,7 +42,12 @@ public class FactorySys implements ISystem {
     Positionable unitPos = entityManager().acquireEntityComponent(unitEntity, Positionable.class);
     OwnableCmp unitOwner = entityManager().acquireEntityComponent(unitEntity, OwnableCmp.class);
 
-    // TODO
+    // set unit abilities as reference
+    Array<IEntityComponent> typeComponents = entityManager().getEntityComponents(type);
+    for (int i = 0; i < typeComponents.$length(); i++) {
+      entityManager().attachEntityComponent(unitEntity, typeComponents.$get(i));
+    }
+
     unitPos.x = factoryPos.x;
     unitPos.y = factoryPos.y;
     unitOwner.owner = factoryOwner.owner;

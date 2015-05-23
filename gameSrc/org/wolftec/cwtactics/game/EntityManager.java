@@ -10,6 +10,7 @@ import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.components.IEntityComponent;
+import org.wolftec.cwtactics.game.components.IFlyweightComponent;
 
 public class EntityManager implements ConstructedClass {
 
@@ -35,12 +36,38 @@ public class EntityManager implements ConstructedClass {
 
   public <T extends IEntityComponent> T acquireEntityComponent(String id, Class<T> componentClass) {
     // TODO cache components
+    return attachEntityComponent(id, JSObjectAdapter.$js("new componentClass()"));
+  }
+
+  public <T extends IEntityComponent> T attachEntityComponent(String id, T component) {
     Map<String, IEntityComponent> entityMap = entities.$get(id);
-    T component = JSObjectAdapter.$js("new componentClass()");
     entityMap.$put(ClassUtil.getClassName(component), component);
     return component;
   }
 
+  public <T extends IEntityComponent> void detachEntityComponent(String id, T component) {
+    Map<String, IEntityComponent> entityMap = entities.$get(id);
+    entityMap.$delete(ClassUtil.getClassName(component));
+  }
+
+  public <T extends IEntityComponent> void detachEntityComponent(String id, Class<T> componentClass) {
+    Map<String, IEntityComponent> entityMap = entities.$get(id);
+    entityMap.$delete(ClassUtil.getClassName(componentClass));
+  }
+
+  /**
+   * Releases an entity. All connected {@link IEntityComponent} objects will be
+   * detached, cached in a pool and reused with the next acquire call.
+   * 
+   * <strong>Be aware (!) </strong> that this manager will not pooling
+   * {@link IEntityComponent} objects which extends the
+   * {@link IFlyweightComponent} interface. It's suggested to leave at least one
+   * entity connected to your object over the whole life time of the game. If
+   * you release all connections to your {@link IFlyweightComponent} object then
+   * it will be available for remove by the garbage collector.
+   * 
+   * @param id
+   */
   public void releaseEntity(String id) {
 
     // TODO cache components

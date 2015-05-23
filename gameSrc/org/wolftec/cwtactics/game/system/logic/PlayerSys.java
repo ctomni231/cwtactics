@@ -1,7 +1,8 @@
-package org.wolftec.cwtactics.game.system;
+package org.wolftec.cwtactics.game.system.logic;
 
 import org.wolftec.cwtactics.game.components.objects.OwnableCmp;
 import org.wolftec.cwtactics.game.components.objects.PlayerCmp;
+import org.wolftec.cwtactics.game.system.ISystem;
 
 public class PlayerSys implements ISystem {
 

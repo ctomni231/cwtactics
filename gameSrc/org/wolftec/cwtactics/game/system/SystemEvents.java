@@ -13,6 +13,15 @@ public class SystemEvents implements ConstructedClass {
 
   public Observerable1<Integer> FRAME_TICK;
 
+  /**
+   * (player, turnNumber)
+   */
+  public Observerable2<Integer, Integer> TURN_STARTS;
+
+  public Observerable2<String, Integer> WEATHER_CHANGES;
+
+  public Observerable1<String> WEATHER_CHANGED;
+
   public Observerable2<String, Integer> UNIT_HEALED;
 
   public Observerable2<String, Integer> UNIT_DAMAGED;
@@ -44,5 +53,8 @@ public class SystemEvents implements ConstructedClass {
     UNIT_MOVED = new Observerable4<String, Integer, Integer, Array<Integer>>();
     PLAYER_GOLD_CHANGES = new Observerable2<String, Integer>();
     UNIT_PRODUCED = new Observerable4<String, String, Integer, Integer>();
+
+    WEATHER_CHANGED = new Observerable1<String>();
+    WEATHER_CHANGES = new Observerable2<String, Integer>();
   }
 }

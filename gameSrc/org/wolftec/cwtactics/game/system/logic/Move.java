@@ -1,14 +1,15 @@
-package org.wolftec.cwtactics.game.system;
+package org.wolftec.cwtactics.game.system.logic;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwtactics.game.components.data.MovableCmp;
+import org.wolftec.cwtactics.game.components.data.MovingAbilityCmp;
 import org.wolftec.cwtactics.game.components.objects.Positionable;
+import org.wolftec.cwtactics.game.system.ISystem;
 
 public class Move implements ISystem {
 
   public void moveEntity(String id, Array<Integer> path) {
     Positionable posC = entityManager().getEntityComponent(id, Positionable.class);
-    MovableCmp moveableC = entityManager().getEntityComponent(id, MovableCmp.class);
+    MovingAbilityCmp moveableC = entityManager().getEntityComponent(id, MovingAbilityCmp.class);
 
     int cX = posC.x;
     int cY = posC.y;
