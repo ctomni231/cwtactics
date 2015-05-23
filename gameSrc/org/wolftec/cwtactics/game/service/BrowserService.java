@@ -8,6 +8,7 @@ import org.wolftec.cwtactics.engine.components.ConstructedClass;
 
 public class BrowserService implements ConstructedClass {
 
+  @Deprecated
   public void requestJsonFile(String path, Callback2<String, Object> callback) {
     // TODO
   }
@@ -22,6 +23,7 @@ public class BrowserService implements ConstructedClass {
    *          callback will be invoked with two parameters => object data and
    *          error message (both aren't not null at the same time)
    */
+  @Deprecated
   public void doXmlHttpRequest(String path, String specialType, Callback2<Object, String> callback) {
 
     final XMLHttpRequest request = new XMLHttpRequest();

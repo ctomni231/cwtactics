@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.engine.loader;
+package org.wolftec.cwtactics.engine.converter;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

@@ -16,7 +16,7 @@ public class CanvasQuery {
   @STJSBridge
   public static class Atlas {
     public Array<AtlasFrame> frames;
-    public Canvas images;
+    public Canvas image;
   }
 
   @STJSBridge

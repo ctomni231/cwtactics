@@ -4,7 +4,7 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.components.ConstructedFactory;
-import org.wolftec.cwtactics.engine.loader.OfflineCacheDataLoader;
+import org.wolftec.cwtactics.engine.converter.OfflineCacheDataLoader;
 import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.PlaygroundGlobal;
 import org.wolftec.cwtactics.engine.playground.PlaygroundState;
@@ -17,8 +17,10 @@ import org.wolftec.cwtactics.game.data.PropertyType;
 import org.wolftec.cwtactics.game.data.TileType;
 import org.wolftec.cwtactics.game.data.UnitType;
 import org.wolftec.cwtactics.game.data.WeatherType;
+import org.wolftec.cwtactics.game.service.AssetLoader;
 import org.wolftec.cwtactics.game.states.ErrorScreen;
 import org.wolftec.cwtactics.game.states.StartScreen;
+import org.wolftec.cwtactics.game.system.SystemEvents;
 
 public class Cwt extends Playground implements ConstructedClass {
 
@@ -37,7 +39,7 @@ public class Cwt extends Playground implements ConstructedClass {
     // height = Constants.SCREEN_HEIGHT_PX;
     // smoothing = false;
 
-    PlaygroundUtil.setBasePath(this, "../modifications/cwt/");
+    PlaygroundUtil.setBasePath(this, "../");
 
     container = Global.window.document.getElementById("game");
 
@@ -50,15 +52,22 @@ public class Cwt extends Playground implements ConstructedClass {
   public void preload() {
     loader.on("error", (error) -> error("Failed to load asset => " + error));
 
-    OfflineCacheDataLoader offlineDataLoader = ConstructedFactory.getObject(OfflineCacheDataLoader.class);
+    ConstructedFactory.getObject(SystemEvents.class).ERROR_RAISED.subscribe((error) -> {
+      error(error);
+      setStateByClass(ErrorScreen.class);
+    });
 
-    offlineDataLoader.loadFolderData(this, "armies", ArmyType.class);
-    offlineDataLoader.loadFolderData(this, "cos", CoType.class);
-    offlineDataLoader.loadFolderData(this, "tiles", TileType.class);
-    offlineDataLoader.loadFolderData(this, "props", PropertyType.class);
-    offlineDataLoader.loadFolderData(this, "movetypes", MoveType.class);
-    offlineDataLoader.loadFolderData(this, "units", UnitType.class);
-    offlineDataLoader.loadFolderData(this, "weathers", WeatherType.class);
+    // OfflineCacheDataLoader offlineDataLoader = ConstructedFactory.getObject(OfflineCacheDataLoader.class);
+
+//    offlineDataLoader.loadData(this, "modifications/cwt/armies", ArmyType.class);
+//    offlineDataLoader.loadData(this, "modifications/cwt/cos", CoType.class);
+//    offlineDataLoader.loadData(this, "modifications/cwt/tiles", TileType.class);
+//    offlineDataLoader.loadData(this, "modifications/cwt/props", PropertyType.class);
+//    offlineDataLoader.loadData(this, "modifications/cwt/movetypes", MoveType.class);
+//    offlineDataLoader.loadData(this, "modifications/cwt/units", UnitType.class);
+//    offlineDataLoader.loadData(this, "modifications/cwt/weathers", WeatherType.class);
+//
+//    offlineDataLoader.loadAssets(this, "image/cwt_tileset/units", ConstructedFactory.getObject(AssetLoader.class));
   }
 
   @Override
@@ -74,6 +83,11 @@ public class Cwt extends Playground implements ConstructedClass {
   }
 
   @Override
+  public void step(int delta) {
+    ConstructedFactory.getObject(SystemEvents.class).FRAME_TICK.publish(delta);
+  }
+
+  @Override
   public void render() {
     layer.clear("yellow");
   }
@@ -81,7 +95,7 @@ public class Cwt extends Playground implements ConstructedClass {
   /**
    * Sets a state by it's class. The class needs to be a {@link Constructed}
    * class.
-   * 
+   *
    * @param stateClass
    */
   public void setStateByClass(Class<? extends PlaygroundState> stateClass) {
