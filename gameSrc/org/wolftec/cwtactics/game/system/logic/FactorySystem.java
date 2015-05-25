@@ -7,7 +7,7 @@ import org.wolftec.cwtactics.game.components.objects.OwnableCmp;
 import org.wolftec.cwtactics.game.components.objects.Positionable;
 import org.wolftec.cwtactics.game.system.ISystem;
 
-public class FactorySys implements ISystem {
+public class FactorySystem implements ISystem {
 
   @Override
   public void onInit() {
@@ -30,17 +30,17 @@ public class FactorySys implements ISystem {
       events().ERROR_RAISED.publish("EntityIsNoFactory");
     }
 
-    FactoryCmp factoryData = getEntityComponent(factoryId, FactoryCmp.class);
+    FactoryCmp factoryData = gec(factoryId, FactoryCmp.class);
     if (factoryData.builds.indexOf(type) == -1) {
       events().ERROR_RAISED.publish("GivenTypeIsNotProcuceAble");
     }
 
-    Positionable factoryPos = getEntityComponent(factoryId, Positionable.class);
-    OwnableCmp factoryOwner = getEntityComponent(factoryId, OwnableCmp.class);
+    Positionable factoryPos = gec(factoryId, Positionable.class);
+    OwnableCmp factoryOwner = gec(factoryId, OwnableCmp.class);
 
     String unitEntity = entityManager().acquireEntity();
-    Positionable unitPos = entityManager().acquireEntityComponent(unitEntity, Positionable.class);
-    OwnableCmp unitOwner = entityManager().acquireEntityComponent(unitEntity, OwnableCmp.class);
+    Positionable unitPos = aec(unitEntity, Positionable.class);
+    OwnableCmp unitOwner = aec(unitEntity, OwnableCmp.class);
 
     // set unit abilities as reference
     Array<IEntityComponent> typeComponents = entityManager().getEntityComponents(type);
