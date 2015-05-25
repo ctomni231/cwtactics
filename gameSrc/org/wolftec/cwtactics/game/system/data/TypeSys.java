@@ -1,10 +1,13 @@
 package org.wolftec.cwtactics.game.system.data;
 
 import org.stjs.javascript.Array;
+import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
+import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.components.IEntityComponent;
 import org.wolftec.cwtactics.game.components.data.BuyableCmp;
 import org.wolftec.cwtactics.game.components.data.DirectFighting;
@@ -31,6 +34,8 @@ public class TypeSys implements ISystem, ConstructedClass {
   @Override
   public void onConstruction() {
 
+    events().ERROR_RAISED.subscribe((err) -> error(err));
+
     requiredUnitComponents = JSCollections.$array();
     requiredUnitComponents.push(MovingAbilityCmp.class);
     requiredUnitComponents.push(MovingCostsCmp.class);
@@ -53,13 +58,60 @@ public class TypeSys implements ISystem, ConstructedClass {
 
   public void createUnitType(Map<String, Object> data) {
     String id = (String) data.$get("ID");
-    entityManager().acquireEntityWithId(id);
-    // parse components
+    parseTypeComponents(entityManager().acquireEntityWithId(id), data, requiredUnitComponents, optionalUnitComponents);
   }
 
-  private <T extends IEntityComponent> void parseTypeComponents(String entityId, Map<String, Object> data, Array<Class<T>> requiredComponents,
-      Array<Class<T>> optionalComponents) {
+  private void parseTypeComponents(String entityId, Map<String, Object> data, Array<Class<? extends IEntityComponent>> requiredComponents,
+      Array<Class<? extends IEntityComponent>> optionalComponents) {
+
     try {
+      Array<Boolean> solvedRequired = JSCollections.$array();
+
+      Array<String> dataKeys = JsUtil.objectKeys(data);
+      for (int i = 0; i < dataKeys.$length(); i++) {
+        String componentName = dataKeys.$get(i);
+
+        if (componentName == "ID") {
+          continue;
+        }
+
+        Class<? extends IEntityComponent> componentClass = (Class<? extends IEntityComponent>) JSObjectAdapter.$get(JSObjectAdapter.$get(Global.window, "cwt"),
+            componentName);
+
+        if (componentClass == JSGlobal.undefined) {
+          events().ERROR_RAISED.publish("UnknownComponentType: " + componentName);
+          return;
+        }
+
+        if (requiredComponents.indexOf(componentClass) == -1) {
+          if (optionalComponents.indexOf(componentClass) == -1) {
+            events().ERROR_RAISED.publish("UnsupportedComponentForEntity: " + componentName);
+            return;
+          }
+        } else {
+          solvedRequired.push(true);
+        }
+
+        Object componentRawData = data.$get(componentName);
+
+        if (JSGlobal.typeof(componentRawData) == "string") {
+          String componentEntityRef = (String) componentRawData;
+          entityManager().attachEntityComponent(entityId, gec(componentEntityRef, componentClass));
+
+        } else {
+          IEntityComponent component = aec(entityId, componentClass);
+          Map<String, Object> componentData = (Map<String, Object>) componentRawData;
+
+          Array<String> componentDataKeys = JsUtil.objectKeys(componentData);
+          for (int j = 0; j < componentDataKeys.$length(); j++) {
+            JSObjectAdapter.$put(component, componentDataKeys.$get(j), componentData.$get(componentDataKeys.$get(j)));
+          }
+        }
+      }
+
+      if (requiredComponents.$length() != solvedRequired.$length()) {
+        events().ERROR_RAISED.publish("NotAllRequiredComponentsFound");
+      }
 
     } catch (Error e) {
       events().ERROR_RAISED.publish("CouldNotReadType: " + JSGlobal.JSON.stringify(data));

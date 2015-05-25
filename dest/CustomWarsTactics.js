@@ -1620,6 +1620,9 @@ stjs.extend(cwt.EntityManager, null, [cwt.ConstructedClass], function(constructo
         return this.acquireEntityWithId("E" + (this.entityIdCounter - 1));
     };
     prototype.acquireEntityWithId = function(id) {
+        if (id == null || id == undefined || this.entities[id] != undefined) {
+            return null;
+        }
         this.entities[id] = {};
         return id;
     };
@@ -1712,7 +1715,7 @@ stjs.extend(cwt.EntityManager, null, [cwt.ConstructedClass], function(constructo
                 data[entityId] = this.entities[entityId];
             }
         }
-        dataCallback(JSON.stringify(data));
+        dataCallback(JSON.stringify(data, null, 2));
     };
 }, {entities: {name: "Map", arguments: [null, {name: "Map", arguments: [null, "cwt.IEntityComponent"]}]}, allSelector: {name: "Function1", arguments: [null, null]}}, {});
 /**
@@ -1894,13 +1897,16 @@ cwt.ISystem = function() {};
 stjs.extend(cwt.ISystem, null, [], function(constructor, prototype) {
     prototype.onInit = function() {};
     prototype.entityManager = function() {
-        return null;
+        return cwt.ConstructedFactory.getObject(cwt.EntityManager);
     };
     prototype.getEntityComponent = function(id, clazz) {
         return this.entityManager().getEntityComponent(id, clazz);
     };
     prototype.events = function() {
         return cwt.ConstructedFactory.getObject(cwt.SystemEvents);
+    };
+    prototype.aec = function(id, componentClass) {
+        return this.entityManager().acquireEntityComponent(id, componentClass);
     };
     prototype.gec = function(id, clazz) {
         return this.entityManager().getEntityComponent(id, clazz);
@@ -1952,7 +1958,9 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
         this.info("enter state " + cwt.ClassUtil.getClassName(event.state));
     };
     prototype.keydown = function(ev) {
-        cwt.ConstructedFactory.getObject(cwt.SystemEvents).INPUT_CANCEL.publish(this);
+        cwt.ConstructedFactory.getObject(cwt.EntityManager).createEntityDataDump(stjs.bind(this, function(data) {
+            return this.info(data);
+        }));
     };
     prototype.leavestate = function(event) {
         this.info("leaving state " + cwt.ClassUtil.getClassName(event.state));
@@ -2052,6 +2060,9 @@ stjs.extend(cwt.TypeSys, null, [cwt.ISystem, cwt.ConstructedClass], function(con
     prototype.requiredUnitComponents = null;
     prototype.optionalUnitComponents = null;
     prototype.onConstruction = function() {
+        this.events().ERROR_RAISED.subscribe(stjs.bind(this, function(err) {
+            return this.error(err);
+        }));
         this.requiredUnitComponents = [];
         this.requiredUnitComponents.push(cwt.MovingAbilityCmp);
         this.requiredUnitComponents.push(cwt.MovingCostsCmp);
@@ -2072,10 +2083,47 @@ stjs.extend(cwt.TypeSys, null, [cwt.ISystem, cwt.ConstructedClass], function(con
     };
     prototype.createUnitType = function(data) {
         var id = data["ID"];
-        this.entityManager().acquireEntityWithId(id);
+        this.parseTypeComponents(this.entityManager().acquireEntityWithId(id), data, this.requiredUnitComponents, this.optionalUnitComponents);
     };
     prototype.parseTypeComponents = function(entityId, data, requiredComponents, optionalComponents) {
-        try {}catch (e) {
+        try {
+            var solvedRequired = [];
+            var dataKeys = cwt.JsUtil.objectKeys(data);
+            for (var i = 0; i < dataKeys.length; i++) {
+                var componentName = dataKeys[i];
+                if (componentName == "ID") {
+                    continue;
+                }
+                var componentClass = ((window)["cwt"])[componentName];
+                if (componentClass == undefined) {
+                    this.events().ERROR_RAISED.publish("UnknownComponentType: " + componentName);
+                    return;
+                }
+                if (requiredComponents.indexOf(componentClass) == -1) {
+                    if (optionalComponents.indexOf(componentClass) == -1) {
+                        this.events().ERROR_RAISED.publish("UnsupportedComponentForEntity: " + componentName);
+                        return;
+                    }
+                } else {
+                    solvedRequired.push(true);
+                }
+                var componentRawData = data[componentName];
+                if ((typeof componentRawData) == "string") {
+                    var componentEntityRef = componentRawData;
+                    this.entityManager().attachEntityComponent(entityId, this.gec(componentEntityRef, componentClass));
+                } else {
+                    var component = this.aec(entityId, componentClass);
+                    var componentData = componentRawData;
+                    var componentDataKeys = cwt.JsUtil.objectKeys(componentData);
+                    for (var j = 0; j < componentDataKeys.length; j++) {
+                        (component)[componentDataKeys[j]] = componentData[componentDataKeys[j]];
+                    }
+                }
+            }
+            if (requiredComponents.length != solvedRequired.length) {
+                this.events().ERROR_RAISED.publish("NotAllRequiredComponentsFound");
+            }
+        }catch (e) {
             this.events().ERROR_RAISED.publish("CouldNotReadType: " + JSON.stringify(data));
         }
     };

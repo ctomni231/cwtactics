@@ -12,7 +12,7 @@ public interface ISystem {
   }
 
   default EntityManager entityManager() {
-    return null; // TODO
+    return ConstructedFactory.getObject(EntityManager.class);
   }
 
   default <T extends IEntityComponent> T getEntityComponent(String id, Class<T> clazz) {
@@ -21,6 +21,10 @@ public interface ISystem {
 
   default SystemEvents events() {
     return ConstructedFactory.getObject(SystemEvents.class);
+  }
+
+  default <T extends IEntityComponent> T aec(String id, Class<T> componentClass) {
+    return entityManager().acquireEntityComponent(id, componentClass);
   }
 
   default <T extends IEntityComponent> T gec(String id, Class<T> clazz) {

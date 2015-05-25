@@ -36,6 +36,9 @@ public class EntityManager implements ConstructedClass {
   }
 
   public String acquireEntityWithId(String id) {
+    if (id == null || id == JSGlobal.undefined || entities.$get(id) != JSGlobal.undefined) {
+      return null;
+    }
     entities.$put(id, JSCollections.$map());
     return id;
   }
@@ -151,6 +154,6 @@ public class EntityManager implements ConstructedClass {
       }
     }
 
-    dataCallback.$invoke(JSGlobal.JSON.stringify(data));
+    dataCallback.$invoke(JSObjectAdapter.$js("JSON.stringify(data, null, 2)"));
   }
 }
