@@ -4,22 +4,12 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.components.ConstructedFactory;
-import org.wolftec.cwtactics.engine.converter.OfflineCacheDataLoader;
 import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.PlaygroundGlobal;
 import org.wolftec.cwtactics.engine.playground.PlaygroundState;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
-import org.wolftec.cwtactics.game.data.ArmyType;
-import org.wolftec.cwtactics.game.data.CoType;
-import org.wolftec.cwtactics.game.data.MoveType;
-import org.wolftec.cwtactics.game.data.PropertyType;
-import org.wolftec.cwtactics.game.data.TileType;
-import org.wolftec.cwtactics.game.data.UnitType;
-import org.wolftec.cwtactics.game.data.WeatherType;
-import org.wolftec.cwtactics.game.service.AssetLoader;
 import org.wolftec.cwtactics.game.states.ErrorScreen;
-import org.wolftec.cwtactics.game.states.StartScreen;
 import org.wolftec.cwtactics.game.system.SystemEvents;
 
 public class Cwt extends Playground implements ConstructedClass {
@@ -52,28 +42,38 @@ public class Cwt extends Playground implements ConstructedClass {
   public void preload() {
     loader.on("error", (error) -> error("Failed to load asset => " + error));
 
-    ConstructedFactory.getObject(SystemEvents.class).ERROR_RAISED.subscribe((error) -> {
-      error(error);
-      setStateByClass(ErrorScreen.class);
-    });
+    // ConstructedFactory.getObject(SystemEvents.class).ERROR_RAISED.subscribe((error)
+    // -> {
+    // error(error);
+    // setStateByClass(ErrorScreen.class);
+    // });
 
-    // OfflineCacheDataLoader offlineDataLoader = ConstructedFactory.getObject(OfflineCacheDataLoader.class);
+    // OfflineCacheDataLoader offlineDataLoader =
+    // ConstructedFactory.getObject(OfflineCacheDataLoader.class);
 
-//    offlineDataLoader.loadData(this, "modifications/cwt/armies", ArmyType.class);
-//    offlineDataLoader.loadData(this, "modifications/cwt/cos", CoType.class);
-//    offlineDataLoader.loadData(this, "modifications/cwt/tiles", TileType.class);
-//    offlineDataLoader.loadData(this, "modifications/cwt/props", PropertyType.class);
-//    offlineDataLoader.loadData(this, "modifications/cwt/movetypes", MoveType.class);
-//    offlineDataLoader.loadData(this, "modifications/cwt/units", UnitType.class);
-//    offlineDataLoader.loadData(this, "modifications/cwt/weathers", WeatherType.class);
-//
-//    offlineDataLoader.loadAssets(this, "image/cwt_tileset/units", ConstructedFactory.getObject(AssetLoader.class));
+    // offlineDataLoader.loadData(this, "modifications/cwt/armies",
+    // ArmyType.class);
+    // offlineDataLoader.loadData(this, "modifications/cwt/cos", CoType.class);
+    // offlineDataLoader.loadData(this, "modifications/cwt/tiles",
+    // TileType.class);
+    // offlineDataLoader.loadData(this, "modifications/cwt/props",
+    // PropertyType.class);
+    // offlineDataLoader.loadData(this, "modifications/cwt/movetypes",
+    // MoveType.class);
+    // offlineDataLoader.loadData(this, "modifications/cwt/units",
+    // UnitType.class);
+    // offlineDataLoader.loadData(this, "modifications/cwt/weathers",
+    // WeatherType.class);
+    //
+    // offlineDataLoader.loadAssets(this, "image/cwt_tileset/units",
+    // ConstructedFactory.getObject(AssetLoader.class));
   }
 
   @Override
   public void ready() {
-    boolean hasErrors = ConstructedFactory.getObject(ErrorScreen.class).errorMsg != null;
-    setStateByClass(hasErrors ? ErrorScreen.class : StartScreen.class);
+    // boolean hasErrors =
+    // ConstructedFactory.getObject(ErrorScreen.class).errorMsg != null;
+    // setStateByClass(hasErrors ? ErrorScreen.class : StartScreen.class);
   }
 
   @Override
@@ -105,6 +105,12 @@ public class Cwt extends Playground implements ConstructedClass {
   @Override
   public void enterstate(ChangeStateEvent event) {
     info("enter state " + ClassUtil.getClassName(event.state));
+  }
+
+  @Override
+  public void keydown(KeyboardEvent ev) {
+
+    ConstructedFactory.getObject(SystemEvents.class).INPUT_CANCEL.publish(this);
   }
 
   @Override

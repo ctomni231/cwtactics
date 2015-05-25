@@ -13,9 +13,9 @@ public class WeatherSys implements ISystem {
   }
 
   private void changeWeather(String weather, int duration) {
-    getEntityComponent(EntityId.GAME_ROUND, WeatherDurationCmp.class).days = duration;
+    gec(EntityId.GAME_ROUND, WeatherDurationCmp.class).days = duration;
 
-    entityManager().detachEntityComponent(EntityId.GAME_ROUND, WeatherCmp.class);
+    entityManager().detachEntityComponentByClass(EntityId.GAME_ROUND, WeatherCmp.class);
     entityManager().attachEntityComponent(EntityId.GAME_ROUND, getEntityComponent(weather, WeatherCmp.class));
 
     events().WEATHER_CHANGED.publish(weather);

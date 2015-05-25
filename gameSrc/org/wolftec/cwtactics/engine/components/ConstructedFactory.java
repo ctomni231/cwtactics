@@ -46,6 +46,7 @@ public class ConstructedFactory {
 
         Array<Class<?>> interfaces = (Array<Class<?>>) JSObjectAdapter.$get(object, "$inherit");
         if (interfaces.indexOf(ConstructedClass.class) != -1) {
+          Global.console.log("CONSTRUCTING => " + objectName);
           ConstructedClass cmp = JSObjectAdapter.$js("new object()");
           components.$put(objectName, cmp);
         }

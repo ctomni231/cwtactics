@@ -6,8 +6,32 @@ import org.wolftec.cwtactics.engine.event.Observerable1;
 import org.wolftec.cwtactics.engine.event.Observerable2;
 import org.wolftec.cwtactics.engine.event.Observerable3;
 import org.wolftec.cwtactics.engine.event.Observerable4;
+import org.wolftec.cwtactics.engine.playground.Playground;
 
 public class SystemEvents implements ConstructedClass {
+
+  public Observerable1<Playground> INIT_ENGINE;
+
+  // -------------------- USER INTERACTION --------------------
+
+  public Observerable1<Playground> INPUT_ACTION;
+
+  public Observerable1<Playground> INPUT_CANCEL;
+
+  /**
+   * (TileEntity, TilePropertyEntity, TileUnitEntity)
+   */
+  public Observerable3<String, String, String> CLICK_ON_TILE;
+
+  // ----------------------------------------------------------
+
+  // -------------------- ACTIONS --------------------
+
+  public Observerable4<String, String, String, String> INVOKE_ACTION;
+
+  public Observerable1<String> OBJECT_WAITS;
+
+  // -------------------------------------------------
 
   public Observerable1<String> ERROR_RAISED;
 
@@ -56,5 +80,10 @@ public class SystemEvents implements ConstructedClass {
 
     WEATHER_CHANGED = new Observerable1<String>();
     WEATHER_CHANGES = new Observerable2<String, Integer>();
+
+    INPUT_ACTION = new Observerable1<Playground>();
+    INPUT_CANCEL = new Observerable1<Playground>();
+
+    INIT_ENGINE = new Observerable1<Playground>();
   }
 }

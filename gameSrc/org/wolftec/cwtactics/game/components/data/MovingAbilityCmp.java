@@ -6,4 +6,5 @@ public class MovingAbilityCmp implements IEntityComponent {
 
   public int fuel;
   public int range;
+  public String movetype;
 }

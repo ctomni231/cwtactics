@@ -1,5 +1,7 @@
 package org.wolftec.cwtactics.game.components.data;
 
-public class BuyableCmp {
+import org.wolftec.cwtactics.game.components.IEntityComponent;
+
+public class BuyableCmp implements IEntityComponent {
   public int cost;
 }

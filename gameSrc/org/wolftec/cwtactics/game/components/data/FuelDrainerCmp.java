@@ -1,5 +1,7 @@
 package org.wolftec.cwtactics.game.components.data;
 
-public class FuelDrainerCmp {
+import org.wolftec.cwtactics.game.components.IEntityComponent;
+
+public class FuelDrainerCmp implements IEntityComponent {
   public int drain;
 }

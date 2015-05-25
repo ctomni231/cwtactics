@@ -6,6 +6,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Function1;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
@@ -19,9 +20,14 @@ public class EntityManager implements ConstructedClass {
   private Map<String, Map<String, IEntityComponent>> entities;
   private int entityIdCounter;
 
+  private Function1<String, Boolean> allSelector;
+
   public EntityManager() {
     entityIdCounter = 0;
     entities = JSCollections.$map();
+    allSelector = (key) -> {
+      return true;
+    };
   }
 
   public String acquireEntity() {
@@ -50,7 +56,7 @@ public class EntityManager implements ConstructedClass {
     entityMap.$delete(ClassUtil.getClassName(component));
   }
 
-  public <T extends IEntityComponent> void detachEntityComponent(String id, Class<T> componentClass) {
+  public <T extends IEntityComponent> void detachEntityComponentByClass(String id, Class<T> componentClass) {
     Map<String, IEntityComponent> entityMap = entities.$get(id);
     entityMap.$delete(ClassUtil.getClassName(componentClass));
   }
@@ -115,14 +121,35 @@ public class EntityManager implements ConstructedClass {
   }
 
   /**
-   * Creates a complete data dump of the entity data.
+   * Creates a complete data dump of the internal entity data.
    * 
    * @param dataCallback
    */
   public void createEntityDataDump(Callback1<String> dataCallback) {
+    createEntityDataDumpWithSelector(allSelector, dataCallback);
+  }
+
+  /**
+   * Creates a data dump of the internal entity data. The result entities will
+   * be selected by the given selector function.
+   * 
+   * @param selector
+   *          (string) -> boolean => returns true when a given entityId should
+   *          be added to the data dump else false
+   * @param dataCallback
+   */
+  public void createEntityDataDumpWithSelector(Function1<String, Boolean> selector, Callback1<String> dataCallback) {
+
     Map<String, Object> data = JSObjectAdapter.$object(JSCollections.$map());
-    data.$put("entityData", entities);
-    data.$put("counter", entityIdCounter);
+
+    Array<String> entityIds = JsUtil.objectKeys(entities);
+    for (int i = 0; i < entityIds.$length(); i++) {
+      String entityId = entityIds.$get(i);
+
+      if (selector.$invoke(entityId)) {
+        data.$put(entityId, entities.$get(entityId));
+      }
+    }
 
     dataCallback.$invoke(JSGlobal.JSON.stringify(data));
   }
