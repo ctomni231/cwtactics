@@ -7,7 +7,14 @@ public class MenuSys implements ISystem {
 
   @Override
   public void onInit() {
-    entityManager().acquireEntityWithId("MENU");
-    entityManager().acquireEntityComponent("MENU", MenuCmp.class);
+    aec(entityManager().acquireEntityWithId("MENU"), MenuCmp.class);
+
+    events().FLUSHED_ACTION.subscribe(() -> {
+    });
+  }
+
+  public void onFlushedAction() {
+    MenuCmp menu = gec("MENU", MenuCmp.class);
+    // TODO clear here ?
   }
 }

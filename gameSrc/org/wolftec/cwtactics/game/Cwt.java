@@ -89,7 +89,7 @@ public class Cwt extends Playground implements ConstructedClass {
 
   @Override
   public void render() {
-    layer.clear("yellow");
+    // layer.clear("yellow");
   }
 
   /**
@@ -110,6 +110,7 @@ public class Cwt extends Playground implements ConstructedClass {
   @Override
   public void keydown(KeyboardEvent ev) {
     ConstructedFactory.getObject(EntityManager.class).createEntityDataDump((data) -> info(data));
+    ConstructedFactory.getObject(SystemEvents.class).INPUT_CANCEL.publish(this);
   }
 
   @Override

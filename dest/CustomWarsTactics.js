@@ -1942,9 +1942,7 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
     prototype.step = function(delta) {
         cwt.ConstructedFactory.getObject(cwt.SystemEvents).FRAME_TICK.publish(delta);
     };
-    prototype.render = function() {
-        this.layer.clear("yellow");
-    };
+    prototype.render = function() {};
     /**
      *  Sets a state by it's class. The class needs to be a {@link Constructed}
      *  class.
@@ -1961,6 +1959,7 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
         cwt.ConstructedFactory.getObject(cwt.EntityManager).createEntityDataDump(stjs.bind(this, function(data) {
             return this.info(data);
         }));
+        cwt.ConstructedFactory.getObject(cwt.SystemEvents).INPUT_CANCEL.publish(this);
     };
     prototype.leavestate = function(event) {
         this.info("leaving state " + cwt.ClassUtil.getClassName(event.state));
@@ -1978,6 +1977,43 @@ stjs.extend(cwt.PlayerSys, null, [cwt.ISystem], function(constructor, prototype)
             var ownC = this.entityManager().getEntityComponent(unit, cwt.OwnableCmp);
             this.entityManager().getEntityComponent(ownC.owner, cwt.Player).numOfUnits++;
         }));
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.FactorySystem = function() {};
+stjs.extend(cwt.FactorySystem, null, [cwt.ISystem], function(constructor, prototype) {
+    prototype.onInit = function() {};
+    prototype.isFactory = function(factoryId) {
+        return this.entityManager().hasEntityComponent(factoryId, cwt.FactoryCmp);
+    };
+    /**
+     *  
+     *  @param factoryId
+     *           entity id of the factory
+     *  @param type
+     *           wanted unit type that will be produced
+     */
+    prototype.buildUnit = function(factoryId, type) {
+        if (!this.isFactory(factoryId)) {
+            this.events().ERROR_RAISED.publish("EntityIsNoFactory");
+        }
+        var factoryData = this.gec(factoryId, cwt.FactoryCmp);
+        if (factoryData.builds.indexOf(type) == -1) {
+            this.events().ERROR_RAISED.publish("GivenTypeIsNotProcuceAble");
+        }
+        var factoryPos = this.gec(factoryId, cwt.Positionable);
+        var factoryOwner = this.gec(factoryId, cwt.OwnableCmp);
+        var unitEntity = this.entityManager().acquireEntity();
+        var unitPos = this.aec(unitEntity, cwt.Positionable);
+        var unitOwner = this.aec(unitEntity, cwt.OwnableCmp);
+        var typeComponents = this.entityManager().getEntityComponents(type);
+        for (var i = 0; i < typeComponents.length; i++) {
+            this.entityManager().attachEntityComponent(unitEntity, typeComponents[i]);
+        }
+        unitPos.x = factoryPos.x;
+        unitPos.y = factoryPos.y;
+        unitOwner.owner = factoryOwner.owner;
+        this.events().UNIT_PRODUCED.publish(unitEntity, type, unitPos.x, unitPos.y);
     };
 }, {}, {});
 stjs.ns("cwt");
@@ -2011,48 +2047,6 @@ stjs.extend(cwt.WeatherSys, null, [cwt.ISystem], function(constructor, prototype
         this.entityManager().attachEntityComponent(cwt.EntityId.GAME_ROUND, this.getEntityComponent(weather, cwt.WeatherCmp));
         this.events().WEATHER_CHANGED.publish(weather);
     };
-}, {}, {});
-stjs.ns("cwt");
-cwt.FactorySys = function() {};
-stjs.extend(cwt.FactorySys, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onInit = function() {};
-    prototype.isFactory = function(factoryId) {
-        return this.entityManager().hasEntityComponent(factoryId, cwt.FactoryCmp);
-    };
-    /**
-     *  
-     *  @param factoryId
-     *           entity id of the factory
-     *  @param type
-     *           wanted unit type that will be produced
-     */
-    prototype.buildUnit = function(factoryId, type) {
-        if (!this.isFactory(factoryId)) {
-            this.events().ERROR_RAISED.publish("EntityIsNoFactory");
-        }
-        var factoryData = this.getEntityComponent(factoryId, cwt.FactoryCmp);
-        if (factoryData.builds.indexOf(type) == -1) {
-            this.events().ERROR_RAISED.publish("GivenTypeIsNotProcuceAble");
-        }
-        var factoryPos = this.getEntityComponent(factoryId, cwt.Positionable);
-        var factoryOwner = this.getEntityComponent(factoryId, cwt.OwnableCmp);
-        var unitEntity = this.entityManager().acquireEntity();
-        var unitPos = this.entityManager().acquireEntityComponent(unitEntity, cwt.Positionable);
-        var unitOwner = this.entityManager().acquireEntityComponent(unitEntity, cwt.OwnableCmp);
-        var typeComponents = this.entityManager().getEntityComponents(type);
-        for (var i = 0; i < typeComponents.length; i++) {
-            this.entityManager().attachEntityComponent(unitEntity, typeComponents[i]);
-        }
-        unitPos.x = factoryPos.x;
-        unitPos.y = factoryPos.y;
-        unitOwner.owner = factoryOwner.owner;
-        this.events().UNIT_PRODUCED.publish(unitEntity, type, unitPos.x, unitPos.y);
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.Battle = function() {};
-stjs.extend(cwt.Battle, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onInit = function() {};
 }, {}, {});
 stjs.ns("cwt");
 cwt.TypeSys = function() {};
@@ -2156,8 +2150,46 @@ stjs.extend(cwt.MenuSys, null, [cwt.ISystem], function(constructor, prototype) {
     };
 }, {}, {});
 stjs.ns("cwt");
-cwt.Move = function() {};
-stjs.extend(cwt.Move, null, [cwt.ISystem], function(constructor, prototype) {
+cwt.HealthSystem = function() {};
+stjs.extend(cwt.HealthSystem, null, [cwt.ISystem], function(constructor, prototype) {
+    prototype.onInit = function() {
+        this.events().INFLICTS_DAMAGE.subscribe(stjs.bind(this, function(att, def, damage) {
+            return this.damageEntity(att, def, damage);
+        }));
+    };
+    prototype.damageEntity = function(attacker, defender, damage) {
+        var hpC = this.gec(attacker, cwt.HealthComponent);
+        hpC.hp -= damage;
+        if (hpC.hp < 0) {
+            hpC.hp = 0;
+        }
+        this.events().UNIT_DAMAGED.publish(defender, damage);
+    };
+    /**
+     *  Heals an unit object.
+     *  
+     *  @param id
+     *           entity id
+     *  @param amount
+     *           amount of healing in health
+     */
+    prototype.healEntity = function(id, amount) {
+        var hpC = this.gec(id, cwt.HealthComponent);
+        hpC.hp += amount;
+        if (hpC.hp > 99) {
+            hpC.hp = 99;
+        }
+        this.events().UNIT_HEALED.publish(id, amount);
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.BattleSystem = function() {};
+stjs.extend(cwt.BattleSystem, null, [cwt.ISystem], function(constructor, prototype) {
+    prototype.onInit = function() {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.MoveSystem = function() {};
+stjs.extend(cwt.MoveSystem, null, [cwt.ISystem], function(constructor, prototype) {
     prototype.moveEntity = function(id, path) {
         var posC = this.entityManager().getEntityComponent(id, cwt.Positionable);
         var moveableC = this.entityManager().getEntityComponent(id, cwt.MovingAbilityCmp);
@@ -2169,51 +2201,5 @@ stjs.extend(cwt.Move, null, [cwt.ISystem], function(constructor, prototype) {
         posC.x = cX;
         posC.y = cY;
         this.publishEvent("unit/moved");
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.Health = function() {};
-stjs.extend(cwt.Health, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onInit = function() {
-        this.events().INFLICTS_DAMAGE.subscribe(stjs.bind(this, function(attacker, defender, damage) {
-            return this.damageEntity(defender, damage, 0);
-        }));
-    };
-    /**
-     *  Damages an unit object.
-     *  
-     *  @param id
-     *           entity id
-     *  @param amount
-     *           amount of damage
-     *  @param minRest
-     */
-    prototype.damageEntity = function(id, amount, minRest) {
-        var hpC = this.grabHealthComponent(id);
-        hpC.hp -= amount;
-        if (hpC.hp < 0) {
-            hpC.hp = 0;
-        }
-        this.events().UNIT_DAMAGED.publish(id, amount);
-    };
-    /**
-     *  Heals an unit object.
-     *  
-     *  @param id
-     *           entity id
-     *  @param amount
-     *           amount of healing in health
-     */
-    prototype.healEntity = function(id, amount) {
-        var hpC = this.grabHealthComponent(id);
-        hpC.hp += amount;
-        if (hpC.hp > 99) {
-            hpC.hp = 99;
-        }
-        this.events().UNIT_HEALED.publish(id, amount);
-    };
-    prototype.grabHealthComponent = function(id) {
-        var hpC = this.entityManager().getEntityComponent(id, cwt.HealthComponent);
-        return hpC;
     };
 }, {}, {});

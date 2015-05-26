@@ -12,9 +12,11 @@ public class WaitAction implements ISystem {
   public void onInit() {
 
     events().CLICK_ON_TILE.subscribe((tile, property, unit) -> {
-      MenuEntry entry = gec("MENU", MenuCmp.class).entries.$get(0);
-      entry.enabled = true;
-      entry.key = ClassUtil.getClassName(WaitAction.class);
+      if (property == null && unit == null) {
+        MenuEntry entry = gec("MENU", MenuCmp.class).entries.$get(0);
+        entry.enabled = true;
+        entry.key = ClassUtil.getClassName(WaitAction.class);
+      }
     });
 
     events().INVOKE_ACTION.subscribe((action, p1, p2, p3) -> {

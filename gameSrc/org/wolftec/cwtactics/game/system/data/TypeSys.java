@@ -64,6 +64,11 @@ public class TypeSys implements ISystem, ConstructedClass {
   private void parseTypeComponents(String entityId, Map<String, Object> data, Array<Class<? extends IEntityComponent>> requiredComponents,
       Array<Class<? extends IEntityComponent>> optionalComponents) {
 
+    if (entityId == null) {
+      events().ERROR_RAISED.publish("IllegalDatasheetID");
+      return;
+    }
+
     try {
       Array<Boolean> solvedRequired = JSCollections.$array();
 

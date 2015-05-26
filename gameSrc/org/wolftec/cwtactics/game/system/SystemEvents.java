@@ -2,6 +2,7 @@ package org.wolftec.cwtactics.game.system;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
+import org.wolftec.cwtactics.engine.event.Observerable0;
 import org.wolftec.cwtactics.engine.event.Observerable1;
 import org.wolftec.cwtactics.engine.event.Observerable2;
 import org.wolftec.cwtactics.engine.event.Observerable3;
@@ -11,6 +12,8 @@ import org.wolftec.cwtactics.engine.playground.Playground;
 public class SystemEvents implements ConstructedClass {
 
   public Observerable1<Playground> INIT_ENGINE;
+
+  public Observerable0 FLUSHED_ACTION;
 
   // -------------------- USER INTERACTION --------------------
 
@@ -85,5 +88,7 @@ public class SystemEvents implements ConstructedClass {
     INPUT_CANCEL = new Observerable1<Playground>();
 
     INIT_ENGINE = new Observerable1<Playground>();
+
+    FLUSHED_ACTION = new Observerable0();
   }
 }
