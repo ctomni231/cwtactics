@@ -175,7 +175,7 @@ java.policy.applet
 
 build.xml
 netbeans.xml
-pom.xml
+# pom.xml
 
 .idea/workspace.xml
 

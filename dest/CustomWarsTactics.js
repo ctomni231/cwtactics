@@ -1,226 +1,4 @@
 stjs.ns("cwt");
-cwt.LaserCmp = function() {};
-stjs.extend(cwt.LaserCmp, null, [], function(constructor, prototype) {
-    prototype.damage = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.JsUtil = function() {};
-stjs.extend(cwt.JsUtil, null, [], function(constructor, prototype) {
-    constructor.objectKeys = function(obj) {
-        return Object.keys(obj);
-    };
-    constructor.forEachObjectKeys = function(obj, callback) {
-        cwt.JsUtil.objectKeys(obj).forEach(callback);
-    };
-    constructor.forEachObjectValue = function(obj, callback) {
-        var keys = cwt.JsUtil.objectKeys(obj);
-        for (var i = 0; i < keys.length; i++) {
-            var key = keys[i];
-            callback(key, (obj)[key]);
-        }
-    };
-    constructor.forEachMapValue = function(obj, callback) {
-        cwt.JsUtil.forEachObjectValue(obj, callback);
-    };
-    constructor.forEachArrayValue = function(array, callback) {
-        for (var i = 0; i < array.length; i++) {
-            callback(i, array[i]);
-        }
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.ObjectType = function() {};
-stjs.extend(cwt.ObjectType, null, [], function(constructor, prototype) {
-    prototype.ID = null;
-    prototype.checkExpression = function(expr, errors, msg) {
-        if (!expr) {
-            errors.push(msg);
-        }
-    };
-    prototype.checkType = function(type, errors) {
-        type.validateData(errors);
-    };
-    /**
-     *  Validates the data type and returns all failures as a list as parameter
-     *  when calling the callback.
-     *  
-     *  @param callback
-     */
-    prototype.validate = function(callback) {
-        var errors = [];
-        this.checkExpression(is.string(this.ID) && is.equal(this.ID.length, 4), errors, "ID");
-        try {
-            this.validateData(errors);
-        }catch (validationError) {}
-        callback(errors);
-    };
-    prototype.grabMapValue = function(data, key, defaultValue) {
-        return (data).hasOwnProperty(key) ? data[key] : defaultValue;
-    };
-    /**
-     *  Usable to extend the validation behavior (e.g. when sub type adds new
-     *  properties).
-     *  
-     *  @param errors
-     */
-    prototype.validateData = function(errors) {};
-    prototype.grabDataFromMapGlobal = function(data) {
-        this.ID = this.grabMapValue(data, "ID", null);
-        this.grabDataFromMap(data);
-    };
-    prototype.grabDataFromMap = function(data) {};
-}, {}, {});
-stjs.ns("cwt");
-cwt.IEntityComponent = function() {};
-stjs.extend(cwt.IEntityComponent, null, [], null, {}, {});
-/**
- *  A flyweight component is a component which is shared between several
- *  components. It should be used to prevent multiple initialization of state
- *  game data.
- */
-stjs.ns("cwt");
-cwt.IFlyweightComponent = function() {};
-stjs.extend(cwt.IFlyweightComponent, null, [], null, {}, {});
-stjs.ns("cwt");
-cwt.Color = function() {};
-stjs.extend(cwt.Color, null, [], function(constructor, prototype) {}, {}, {});
-stjs.ns("cwt");
-cwt.Observerable3 = function() {
-    this.observers = [];
-};
-stjs.extend(cwt.Observerable3, null, [], function(constructor, prototype) {
-    prototype.observers = null;
-    prototype.subscribe = function(handler) {
-        this.observers.push(handler);
-    };
-    prototype.unsubscribe = function(handler) {
-         while (true){
-            var index = this.observers.indexOf(handler);
-            if (index == -1) {
-                return;
-            }
-            this.observers.splice(index, 1);
-        }
-    };
-    prototype.publish = function(dataA, dataB, dataC) {
-        for (var i = 0; i < this.observers.length; i++) {
-            this.observers[i](dataA, dataB, dataC);
-        }
-    };
-}, {observers: {name: "Array", arguments: [{name: "Callback3", arguments: ["A", "B", "C"]}]}}, {});
-/**
- *  Utility class which contains a lot of browser environment related functions.
- */
-stjs.ns("cwt");
-cwt.BrowserUtil = function() {};
-stjs.extend(cwt.BrowserUtil, null, [], function(constructor, prototype) {
-    constructor.requestJsonFile = function(path, callback) {
-        cwt.BrowserUtil.doXmlHttpRequest(path, null, function(data, error) {
-            var dataMap = null;
-            if (error == null) {
-                dataMap = JSON.parse(data);
-            }
-            callback(dataMap, error);
-        });
-    };
-    /**
-     *  Invokes a XmlHttpRequest.
-     *  
-     *  @param path
-     *  @param specialType
-     *           null or a special binary response type like array buffer
-     *  @param callback
-     *           callback will be invoked with two parameters => object data and
-     *           error message (both aren't not null at the same time)
-     */
-    constructor.doXmlHttpRequest = function(path, specialType, callback) {
-        var request = new XMLHttpRequest();
-        if (specialType != null) {
-            (request)["responseType"] = specialType;
-        }
-        request.onreadystatechange = function() {
-            if (request.readyState == 4) {
-                if (request.readyState == 4 && request.status == 200) {
-                    if (specialType != null) {
-                        callback((request)["response"], null);
-                    } else {
-                        callback(request.responseText, null);
-                    }
-                } else {
-                    callback(null, request.statusText);
-                }
-            }
-        };
-        request.open("get", path, true);
-        request.send();
-    };
-    /**
-     *  Creates a DOM element.
-     *  
-     *  @param tag
-     *           name of the tag
-     *  @return a DOM element with the given tag
-     */
-    constructor.createDomElement = function(tag) {
-        return document.createElement(tag);
-    };
-    /**
-     *  
-     *  @param handler
-     */
-    constructor.requestAnimationFrame = function(handler) {
-        requestAnimationFrame(handler);
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.Observerable4 = function() {
-    this.observers = [];
-};
-stjs.extend(cwt.Observerable4, null, [], function(constructor, prototype) {
-    prototype.observers = null;
-    prototype.subscribe = function(handler) {
-        this.observers.push(handler);
-    };
-    prototype.unsubscribe = function(handler) {
-         while (true){
-            var index = this.observers.indexOf(handler);
-            if (index == -1) {
-                return;
-            }
-            this.observers.splice(index, 1);
-        }
-    };
-    prototype.publish = function(dataA, dataB, dataC, dataD) {
-        for (var i = 0; i < this.observers.length; i++) {
-            this.observers[i](dataA, dataB, dataC, dataD);
-        }
-    };
-}, {observers: {name: "Array", arguments: [{name: "Callback4", arguments: ["A", "B", "C", "D"]}]}}, {});
-stjs.ns("cwt");
-cwt.Observerable2 = function() {
-    this.observers = [];
-};
-stjs.extend(cwt.Observerable2, null, [], function(constructor, prototype) {
-    prototype.observers = null;
-    prototype.subscribe = function(handler) {
-        this.observers.push(handler);
-    };
-    prototype.unsubscribe = function(handler) {
-         while (true){
-            var index = this.observers.indexOf(handler);
-            if (index == -1) {
-                return;
-            }
-            this.observers.splice(index, 1);
-        }
-    };
-    prototype.publish = function(dataA, dataB) {
-        for (var i = 0; i < this.observers.length; i++) {
-            this.observers[i](dataA, dataB);
-        }
-    };
-}, {observers: {name: "Array", arguments: [{name: "Callback2", arguments: ["A", "B"]}]}}, {});
-stjs.ns("cwt");
 cwt.Playground = function() {};
 stjs.extend(cwt.Playground, null, [], function(constructor, prototype) {
     constructor.AssetEntry = function() {};
@@ -377,6 +155,7 @@ stjs.extend(cwt.Playground, null, [], function(constructor, prototype) {
     prototype.touchstart = function(ev) {};
 }, {atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
 stjs.ns("cwt");
+<<<<<<< HEAD
 cwt.Observerable1 = function() {
     this.observers = [];
 };
@@ -468,6 +247,8 @@ stjs.extend(cwt.PlaygroundUtil, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 stjs.ns("cwt");
+=======
+>>>>>>> branch 'master' of https://github.com/ctomni231/cwtactics.git
 cwt.PlaygroundState = function() {};
 stjs.extend(cwt.PlaygroundState, null, [], function(constructor, prototype) {
     prototype.app = null;
@@ -479,6 +260,83 @@ stjs.extend(cwt.PlaygroundState, null, [], function(constructor, prototype) {
     prototype.keydown = function(ev) {};
     prototype.keyup = function(ev) {};
 }, {app: "cwt.Playground"}, {});
+stjs.ns("cwt");
+cwt.Modification = function() {};
+stjs.extend(cwt.Modification, null, [], function(constructor, prototype) {
+    prototype.sounds = null;
+    prototype.musics = null;
+    prototype.maps = null;
+}, {sounds: {name: "Map", arguments: [null, null]}, musics: {name: "Map", arguments: [null, null]}, maps: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.IEntityComponent = function() {};
+stjs.extend(cwt.IEntityComponent, null, [], null, {}, {});
+stjs.ns("cwt");
+cwt.JsUtil = function() {};
+stjs.extend(cwt.JsUtil, null, [], function(constructor, prototype) {
+    constructor.objectKeys = function(obj) {
+        return Object.keys(obj);
+    };
+    constructor.forEachObjectKeys = function(obj, callback) {
+        cwt.JsUtil.objectKeys(obj).forEach(callback);
+    };
+    constructor.forEachObjectValue = function(obj, callback) {
+        var keys = cwt.JsUtil.objectKeys(obj);
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i];
+            callback(key, (obj)[key]);
+        }
+    };
+    constructor.forEachMapValue = function(obj, callback) {
+        cwt.JsUtil.forEachObjectValue(obj, callback);
+    };
+    constructor.forEachArrayValue = function(array, callback) {
+        for (var i = 0; i < array.length; i++) {
+            callback(i, array[i]);
+        }
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.ObjectType = function() {};
+stjs.extend(cwt.ObjectType, null, [], function(constructor, prototype) {
+    prototype.ID = null;
+    prototype.checkExpression = function(expr, errors, msg) {
+        if (!expr) {
+            errors.push(msg);
+        }
+    };
+    prototype.checkType = function(type, errors) {
+        type.validateData(errors);
+    };
+    /**
+     *  Validates the data type and returns all failures as a list as parameter
+     *  when calling the callback.
+     *  
+     *  @param callback
+     */
+    prototype.validate = function(callback) {
+        var errors = [];
+        this.checkExpression(is.string(this.ID) && is.equal(this.ID.length, 4), errors, "ID");
+        try {
+            this.validateData(errors);
+        }catch (validationError) {}
+        callback(errors);
+    };
+    prototype.grabMapValue = function(data, key, defaultValue) {
+        return (data).hasOwnProperty(key) ? data[key] : defaultValue;
+    };
+    /**
+     *  Usable to extend the validation behavior (e.g. when sub type adds new
+     *  properties).
+     *  
+     *  @param errors
+     */
+    prototype.validateData = function(errors) {};
+    prototype.grabDataFromMapGlobal = function(data) {
+        this.ID = this.grabMapValue(data, "ID", null);
+        this.grabDataFromMap(data);
+    };
+    prototype.grabDataFromMap = function(data) {};
+}, {}, {});
 stjs.ns("cwt");
 cwt.Constants = function() {};
 stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
@@ -520,6 +378,19 @@ stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
     constructor.OFFLINE_DB_NAME = "CWT-DB";
 }, {}, {});
 stjs.ns("cwt");
+cwt.ClassUtil = function() {};
+stjs.extend(cwt.ClassUtil, null, [], function(constructor, prototype) {
+    constructor.getClassName = function(object) {
+        if (object == null || object == undefined) {
+            return null;
+        }
+        return (object)["__className"];
+    };
+    constructor.getClass = function(object) {
+        return (object).constructor;
+    };
+}, {}, {});
+stjs.ns("cwt");
 cwt.DataConverter = function() {};
 stjs.extend(cwt.DataConverter, null, [], function(constructor, prototype) {
     prototype.grabData = function(asset, callback) {};
@@ -527,25 +398,82 @@ stjs.extend(cwt.DataConverter, null, [], function(constructor, prototype) {
     prototype.loadData = function(data, callback) {};
 }, {}, {});
 stjs.ns("cwt");
-cwt.EntityId = function() {};
-stjs.extend(cwt.EntityId, null, [], function(constructor, prototype) {
-    constructor.GAME_ROUND = "GAME_ROUND";
-    constructor.UNIT = "UNIT_";
-    constructor.PROPERTY = "PROPERTY_";
+cwt.PlaygroundUtil = function() {};
+stjs.extend(cwt.PlaygroundUtil, null, [], function(constructor, prototype) {
+    constructor.setBasePath = function(instance, path) {
+        if (instance.paths == null) {
+            instance.paths = {};
+        }
+        instance.paths.base = path;
+    };
+}, {}, {});
+/**
+ *  Utility class which contains a lot of browser environment related functions.
+ */
+stjs.ns("cwt");
+cwt.BrowserUtil = function() {};
+stjs.extend(cwt.BrowserUtil, null, [], function(constructor, prototype) {
+    constructor.requestJsonFile = function(path, callback) {
+        cwt.BrowserUtil.doXmlHttpRequest(path, null, function(data, error) {
+            var dataMap = null;
+            if (error == null) {
+                dataMap = JSON.parse(data);
+            }
+            callback(dataMap, error);
+        });
+    };
+    /**
+     *  Invokes a XmlHttpRequest.
+     *  
+     *  @param path
+     *  @param specialType
+     *           null or a special binary response type like array buffer
+     *  @param callback
+     *           callback will be invoked with two parameters => object data and
+     *           error message (both aren't not null at the same time)
+     */
+    constructor.doXmlHttpRequest = function(path, specialType, callback) {
+        var request = new XMLHttpRequest();
+        if (specialType != null) {
+            (request)["responseType"] = specialType;
+        }
+        request.onreadystatechange = function() {
+            if (request.readyState == 4) {
+                if (request.readyState == 4 && request.status == 200) {
+                    if (specialType != null) {
+                        callback((request)["response"], null);
+                    } else {
+                        callback(request.responseText, null);
+                    }
+                } else {
+                    callback(null, request.statusText);
+                }
+            }
+        };
+        request.open("get", path, true);
+        request.send();
+    };
+    /**
+     *  Creates a DOM element.
+     *  
+     *  @param tag
+     *           name of the tag
+     *  @return a DOM element with the given tag
+     */
+    constructor.createDomElement = function(tag) {
+        return document.createElement(tag);
+    };
+    /**
+     *  
+     *  @param handler
+     */
+    constructor.requestAnimationFrame = function(handler) {
+        requestAnimationFrame(handler);
+    };
 }, {}, {});
 stjs.ns("cwt");
-cwt.FireableCmp = function() {};
-stjs.extend(cwt.FireableCmp, null, [], function(constructor, prototype) {
-    prototype.damage = 0;
-    prototype.range = 0;
-    prototype.fireableBy = null;
-}, {fireableBy: {name: "Array", arguments: [null]}}, {});
-stjs.ns("cwt");
-cwt.DataTypeCmp = function() {};
-stjs.extend(cwt.DataTypeCmp, null, [], function(constructor, prototype) {
-    constructor.DataType = stjs.enumeration("UNIT_TYPE", "TILE_TYPE", "PROPERTY_TYPE", "WEATHER_TYPE", "ARMY_TYPE", "CO_TYPE");
-    prototype.type = null;
-}, {type: {name: "Enum", arguments: ["cwt.DataTypeCmp.DataType"]}}, {});
+cwt.RenderableCmp = function() {};
+stjs.extend(cwt.RenderableCmp, null, [], null, {}, {});
 stjs.ns("cwt");
 cwt.LocalForageConfig = function() {};
 stjs.extend(cwt.LocalForageConfig, null, [], function(constructor, prototype) {
@@ -595,30 +523,172 @@ stjs.extend(cwt.LocalForageConfig, null, [], function(constructor, prototype) {
     prototype.description = null;
 }, {driver: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
-cwt.RenderableCmp = function() {};
-stjs.extend(cwt.RenderableCmp, null, [], null, {}, {});
-stjs.ns("cwt");
 cwt.ArmyCmp = function() {};
 stjs.extend(cwt.ArmyCmp, null, [], function(constructor, prototype) {
     prototype.name = null;
 }, {}, {});
 stjs.ns("cwt");
-cwt.MapCmp = function() {};
-stjs.extend(cwt.MapCmp, null, [], function(constructor, prototype) {
-    prototype.tiles = null;
-}, {tiles: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
+cwt.CapturerCmp = function() {};
+stjs.extend(cwt.CapturerCmp, null, [], function(constructor, prototype) {
+    prototype.points = 0;
+}, {}, {});
 stjs.ns("cwt");
-cwt.TransportContainerCmp = function() {};
-stjs.extend(cwt.TransportContainerCmp, null, [], function(constructor, prototype) {
-    prototype.loads = null;
-}, {loads: {name: "Array", arguments: [null]}}, {});
+cwt.Color = function() {};
+stjs.extend(cwt.Color, null, [], function(constructor, prototype) {}, {}, {});
 stjs.ns("cwt");
-cwt.Modification = function() {};
-stjs.extend(cwt.Modification, null, [], function(constructor, prototype) {
-    prototype.sounds = null;
-    prototype.musics = null;
-    prototype.maps = null;
-}, {sounds: {name: "Map", arguments: [null, null]}, musics: {name: "Map", arguments: [null, null]}, maps: {name: "Array", arguments: [null]}}, {});
+cwt.Observerable2 = function() {
+    this.observers = [];
+};
+stjs.extend(cwt.Observerable2, null, [], function(constructor, prototype) {
+    prototype.observers = null;
+    prototype.subscribe = function(handler) {
+        this.observers.push(handler);
+    };
+    prototype.unsubscribe = function(handler) {
+         while (true){
+            var index = this.observers.indexOf(handler);
+            if (index == -1) {
+                return;
+            }
+            this.observers.splice(index, 1);
+        }
+    };
+    prototype.publish = function(dataA, dataB) {
+        for (var i = 0; i < this.observers.length; i++) {
+            this.observers[i](dataA, dataB);
+        }
+    };
+}, {observers: {name: "Array", arguments: [{name: "Callback2", arguments: ["A", "B"]}]}}, {});
+stjs.ns("cwt");
+cwt.Colors = function() {};
+stjs.extend(cwt.Colors, null, [], function(constructor, prototype) {}, {}, {});
+stjs.ns("cwt");
+cwt.Observerable3 = function() {
+    this.observers = [];
+};
+stjs.extend(cwt.Observerable3, null, [], function(constructor, prototype) {
+    prototype.observers = null;
+    prototype.subscribe = function(handler) {
+        this.observers.push(handler);
+    };
+    prototype.unsubscribe = function(handler) {
+         while (true){
+            var index = this.observers.indexOf(handler);
+            if (index == -1) {
+                return;
+            }
+            this.observers.splice(index, 1);
+        }
+    };
+    prototype.publish = function(dataA, dataB, dataC) {
+        for (var i = 0; i < this.observers.length; i++) {
+            this.observers[i](dataA, dataB, dataC);
+        }
+    };
+}, {observers: {name: "Array", arguments: [{name: "Callback3", arguments: ["A", "B", "C"]}]}}, {});
+stjs.ns("cwt");
+cwt.Observerable4 = function() {
+    this.observers = [];
+};
+stjs.extend(cwt.Observerable4, null, [], function(constructor, prototype) {
+    prototype.observers = null;
+    prototype.subscribe = function(handler) {
+        this.observers.push(handler);
+    };
+    prototype.unsubscribe = function(handler) {
+         while (true){
+            var index = this.observers.indexOf(handler);
+            if (index == -1) {
+                return;
+            }
+            this.observers.splice(index, 1);
+        }
+    };
+    prototype.publish = function(dataA, dataB, dataC, dataD) {
+        for (var i = 0; i < this.observers.length; i++) {
+            this.observers[i](dataA, dataB, dataC, dataD);
+        }
+    };
+}, {observers: {name: "Array", arguments: [{name: "Callback4", arguments: ["A", "B", "C", "D"]}]}}, {});
+stjs.ns("cwt");
+cwt.Observerable1 = function() {
+    this.observers = [];
+};
+stjs.extend(cwt.Observerable1, null, [], function(constructor, prototype) {
+    prototype.observers = null;
+    prototype.subscribe = function(handler) {
+        this.observers.push(handler);
+    };
+    prototype.unsubscribe = function(handler) {
+         while (true){
+            var index = this.observers.indexOf(handler);
+            if (index == -1) {
+                return;
+            }
+            this.observers.splice(index, 1);
+        }
+    };
+    prototype.publish = function(dataA) {
+        for (var i = 0; i < this.observers.length; i++) {
+            this.observers[i](dataA);
+        }
+    };
+}, {observers: {name: "Array", arguments: [{name: "Callback1", arguments: ["A"]}]}}, {});
+stjs.ns("cwt");
+cwt.Observerable0 = function() {
+    this.observers = [];
+};
+stjs.extend(cwt.Observerable0, null, [], function(constructor, prototype) {
+    prototype.observers = null;
+    prototype.subscribe = function(handler) {
+        this.observers.push(handler);
+    };
+    prototype.unsubscribe = function(handler) {
+         while (true){
+            var index = this.observers.indexOf(handler);
+            if (index == -1) {
+                return;
+            }
+            this.observers.splice(index, 1);
+        }
+    };
+    prototype.publish = function() {
+        for (var i = 0; i < this.observers.length; i++) {
+            this.observers[i]();
+        }
+    };
+}, {observers: {name: "Array", arguments: ["Callback0"]}}, {});
+stjs.ns("cwt");
+cwt.FundsCmp = function() {};
+stjs.extend(cwt.FundsCmp, null, [], function(constructor, prototype) {
+    prototype.funds = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.EntityId = function() {};
+stjs.extend(cwt.EntityId, null, [], function(constructor, prototype) {
+    constructor.GAME_ROUND = "GAME_ROUND";
+    constructor.UNIT = "UNIT_";
+    constructor.PROPERTY = "PROPERTY_";
+}, {}, {});
+/**
+ *  A flyweight component is a component which is shared between several
+ *  components. It should be used to prevent multiple initialization of state
+ *  game data.
+ */
+stjs.ns("cwt");
+cwt.IFlyweightComponent = function() {};
+stjs.extend(cwt.IFlyweightComponent, null, [], null, {}, {});
+stjs.ns("cwt");
+cwt.LaserCmp = function() {};
+stjs.extend(cwt.LaserCmp, null, [], function(constructor, prototype) {
+    prototype.damage = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.Tile = function() {};
+stjs.extend(cwt.Tile, null, [], function(constructor, prototype) {
+    prototype.defense = 0;
+    prototype.blocksVision = false;
+}, {}, {});
 stjs.ns("cwt");
 cwt.CoCmp = function() {};
 stjs.extend(cwt.CoCmp, null, [], function(constructor, prototype) {
@@ -627,64 +697,174 @@ stjs.extend(cwt.CoCmp, null, [], function(constructor, prototype) {
     prototype.scoStars = 0;
 }, {}, {});
 stjs.ns("cwt");
-cwt.CapturerCmp = function() {};
-stjs.extend(cwt.CapturerCmp, null, [], function(constructor, prototype) {
+cwt.GameModeCmp = function() {};
+stjs.extend(cwt.GameModeCmp, null, [], function(constructor, prototype) {
+    constructor.GameMode = stjs.enumeration("AW1", "AW2");
+    prototype.mode = null;
+}, {mode: {name: "Enum", arguments: ["cwt.GameModeCmp.GameMode"]}}, {});
+stjs.ns("cwt");
+cwt.MapCmp = function() {};
+stjs.extend(cwt.MapCmp, null, [], function(constructor, prototype) {
+    prototype.tiles = null;
+}, {tiles: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
+stjs.ns("cwt");
+cwt.FireableCmp = function() {};
+stjs.extend(cwt.FireableCmp, null, [], function(constructor, prototype) {
+    prototype.damage = 0;
+    prototype.range = 0;
+    prototype.fireableBy = null;
+}, {fireableBy: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.DataTypeCmp = function() {};
+stjs.extend(cwt.DataTypeCmp, null, [], function(constructor, prototype) {
+    constructor.DataType = stjs.enumeration("UNIT_TYPE", "TILE_TYPE", "PROPERTY_TYPE", "WEATHER_TYPE", "ARMY_TYPE", "CO_TYPE");
+    prototype.type = null;
+}, {type: {name: "Enum", arguments: ["cwt.DataTypeCmp.DataType"]}}, {});
+stjs.ns("cwt");
+cwt.TransportContainerCmp = function() {};
+stjs.extend(cwt.TransportContainerCmp, null, [], function(constructor, prototype) {
+    prototype.loads = null;
+}, {loads: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.MenuCmp = function() {
+    this.entries = [];
+    for (var i = 0; i < 10; i++) {
+        this.entries.push({});
+    }
+};
+stjs.extend(cwt.MenuCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    constructor.MenuEntry = function() {};
+    stjs.extend(cwt.MenuCmp.MenuEntry, null, [], function(constructor, prototype) {
+        prototype.key = null;
+        prototype.enabled = false;
+    }, {}, {});
+    prototype.entries = null;
+}, {entries: {name: "Array", arguments: ["cwt.MenuCmp.MenuEntry"]}}, {});
+stjs.ns("cwt");
+cwt.TransportCmp = function() {};
+stjs.extend(cwt.TransportCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.maxloads = 0;
+    prototype.canload = null;
+}, {canload: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.HealthComponent = function() {};
+stjs.extend(cwt.HealthComponent, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.hp = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.RepairerCmp = function() {};
+stjs.extend(cwt.RepairerCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.repairs = null;
+}, {repairs: {name: "Map", arguments: [null, null]}}, {});
+stjs.ns("cwt");
+cwt.CapturableCmp = function() {};
+stjs.extend(cwt.CapturableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
     prototype.points = 0;
 }, {}, {});
 stjs.ns("cwt");
-cwt.MoveType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.MoveType, cwt.ObjectType, [], function(constructor, prototype) {
+cwt.MovingCostsCmp = function() {};
+stjs.extend(cwt.MovingCostsCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
     prototype.costs = null;
-    prototype.validateData = function(errors) {
-        cwt.JsUtil.forEachObjectValue(this.costs, stjs.bind(this, function(tileTypeId, movecosts) {
-            this.checkExpression(is.string(tileTypeId), errors, "costs -> " + tileTypeId + " key");
-            this.checkExpression(is.integer(movecosts) && is.within(movecosts, -2, 100) && is.not.equal(movecosts, 0), errors, "costs -> " + tileTypeId + " value");
-        }));
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.costs = this.grabMapValue(data, "costs", {});
-    };
 }, {costs: {name: "Map", arguments: [null, null]}}, {});
 stjs.ns("cwt");
-cwt.WeatherType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.WeatherType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.isDefaultWeather = false;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.bool(this.isDefaultWeather), errors, "isDefaultWeather");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.isDefaultWeather = this.grabMapValue(data, "isDefaultWeather", false);
-    };
+cwt.MovingAbilityCmp = function() {};
+stjs.extend(cwt.MovingAbilityCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.fuel = 0;
+    prototype.range = 0;
+    prototype.movetype = null;
 }, {}, {});
 stjs.ns("cwt");
-cwt.ArmyType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.ArmyType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.name = null;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.string(this.name) && is.within(this.name.length, 3, 20), errors, "name");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.name = this.grabMapValue(data, "name", null);
-    };
+cwt.DamageMap = function() {};
+stjs.extend(cwt.DamageMap, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.data = null;
+}, {data: {name: "Map", arguments: [null, null]}}, {});
+stjs.ns("cwt");
+cwt.DataType = function() {};
+stjs.extend(cwt.DataType, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.typeEntity = null;
 }, {}, {});
 stjs.ns("cwt");
-cwt.LaserType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.LaserType, cwt.ObjectType, [], function(constructor, prototype) {
+cwt.SupplierCmp = function() {};
+stjs.extend(cwt.SupplierCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.supplies = null;
+}, {supplies: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.HidableCmp = function() {};
+stjs.extend(cwt.HidableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.hidden = false;
+    prototype.dailyFuelDrainHidden = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.FuelDrainerCmp = function() {};
+stjs.extend(cwt.FuelDrainerCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.drain = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.Positionable = function() {};
+stjs.extend(cwt.Positionable, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.x = 0;
+    prototype.y = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.Player = function() {};
+stjs.extend(cwt.Player, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.gold = 0;
+    prototype.numOfUnits = 0;
+    prototype.numOfProperties = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.IndirectFighting = function() {};
+stjs.extend(cwt.IndirectFighting, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.ammo = 0;
+    prototype.maxRange = 0;
+    prototype.minRange = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.VisionerCmp = function() {};
+stjs.extend(cwt.VisionerCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.vision = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.WeatherCmp = function() {};
+stjs.extend(cwt.WeatherCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.defaultWeather = false;
+}, {}, {});
+stjs.ns("cwt");
+cwt.MovingCmp = function() {};
+stjs.extend(cwt.MovingCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.fuel = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.OwnableCmp = function() {};
+stjs.extend(cwt.OwnableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.owner = null;
+}, {}, {});
+stjs.ns("cwt");
+cwt.SuicideCmp = function() {};
+stjs.extend(cwt.SuicideCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
     prototype.damage = 0;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.damage = this.grabMapValue(data, "damage", 0);
-    };
+    prototype.range = 0;
+    prototype.noDamage = null;
+}, {noDamage: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.SingleUse = function() {};
+stjs.extend(cwt.SingleUse, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.used = false;
+}, {}, {});
+stjs.ns("cwt");
+cwt.WeatherDurationCmp = function() {};
+stjs.extend(cwt.WeatherDurationCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.days = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.BuyableCmp = function() {};
+stjs.extend(cwt.BuyableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.cost = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.DirectFighting = function() {};
+stjs.extend(cwt.DirectFighting, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.ammo = 0;
 }, {}, {});
 stjs.ns("cwt");
 cwt.TileType = function() {
@@ -700,22 +880,6 @@ stjs.extend(cwt.TileType, cwt.ObjectType, [], function(constructor, prototype) {
     prototype.grabDataFromMap = function(data) {
         this.defense = this.grabMapValue(data, "defense", 0);
         this.blocksVision = this.grabMapValue(data, "blocksVision", false);
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.MapFileType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.MapFileType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.mapName = null;
-    prototype.maxPlayers = 0;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.string(this.mapName), errors, "mapName");
-        this.checkExpression(is.integer(this.maxPlayers) && is.within(this.maxPlayers, 2, 4), errors, "maxPlayers");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.mapName = this.grabMapValue(data, "mapName", null);
-        this.maxPlayers = this.grabMapValue(data, "maxPlayers", -1);
     };
 }, {}, {});
 stjs.ns("cwt");
@@ -738,6 +902,48 @@ stjs.extend(cwt.RocketSiloType, cwt.ObjectType, [], function(constructor, protot
     };
 }, {fireableBy: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
+cwt.WeatherType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.WeatherType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.isDefaultWeather = false;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.bool(this.isDefaultWeather), errors, "isDefaultWeather");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.isDefaultWeather = this.grabMapValue(data, "isDefaultWeather", false);
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.LaserType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.LaserType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.damage = 0;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.damage = this.grabMapValue(data, "damage", 0);
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.MapFileType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.MapFileType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.mapName = null;
+    prototype.maxPlayers = 0;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.string(this.mapName), errors, "mapName");
+        this.checkExpression(is.integer(this.maxPlayers) && is.within(this.maxPlayers, 2, 4), errors, "maxPlayers");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.mapName = this.grabMapValue(data, "mapName", null);
+        this.maxPlayers = this.grabMapValue(data, "maxPlayers", -1);
+    };
+}, {}, {});
+stjs.ns("cwt");
 cwt.CoType = function() {
     cwt.ObjectType.call(this);
 };
@@ -754,151 +960,134 @@ stjs.extend(cwt.CoType, cwt.ObjectType, [], function(constructor, prototype) {
     };
 }, {}, {});
 stjs.ns("cwt");
-cwt.VisionerCmp = function() {};
-stjs.extend(cwt.VisionerCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.vision = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.DataType = function() {};
-stjs.extend(cwt.DataType, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.typeEntity = null;
-}, {}, {});
-stjs.ns("cwt");
-cwt.FuelDrainerCmp = function() {};
-stjs.extend(cwt.FuelDrainerCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.drain = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.SupplierCmp = function() {};
-stjs.extend(cwt.SupplierCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.supplies = null;
-}, {supplies: {name: "Array", arguments: [null]}}, {});
-stjs.ns("cwt");
-cwt.MenuCmp = function() {
-    this.entries = [];
-    for (var i = 0; i < 10; i++) {
-        this.entries.push({});
-    }
+cwt.ArmyType = function() {
+    cwt.ObjectType.call(this);
 };
-stjs.extend(cwt.MenuCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    constructor.MenuEntry = function() {};
-    stjs.extend(cwt.MenuCmp.MenuEntry, null, [], function(constructor, prototype) {
-        prototype.key = null;
-        prototype.enabled = false;
-    }, {}, {});
-    prototype.entries = null;
-}, {entries: {name: "Array", arguments: ["cwt.MenuCmp.MenuEntry"]}}, {});
-stjs.ns("cwt");
-cwt.WeatherCmp = function() {};
-stjs.extend(cwt.WeatherCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.defaultWeather = false;
+stjs.extend(cwt.ArmyType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.name = null;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.string(this.name) && is.within(this.name.length, 3, 20), errors, "name");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.name = this.grabMapValue(data, "name", null);
+    };
 }, {}, {});
 stjs.ns("cwt");
-cwt.WeatherDurationCmp = function() {};
-stjs.extend(cwt.WeatherDurationCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.days = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.BuyableCmp = function() {};
-stjs.extend(cwt.BuyableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.cost = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.TransportCmp = function() {};
-stjs.extend(cwt.TransportCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.maxloads = 0;
-    prototype.canload = null;
-}, {canload: {name: "Array", arguments: [null]}}, {});
-stjs.ns("cwt");
-cwt.Positionable = function() {};
-stjs.extend(cwt.Positionable, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.x = 0;
-    prototype.y = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.HealthComponent = function() {};
-stjs.extend(cwt.HealthComponent, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.hp = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.DamageMap = function() {};
-stjs.extend(cwt.DamageMap, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.data = null;
-}, {data: {name: "Map", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.MovingCostsCmp = function() {};
-stjs.extend(cwt.MovingCostsCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+cwt.MoveType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.MoveType, cwt.ObjectType, [], function(constructor, prototype) {
     prototype.costs = null;
+    prototype.validateData = function(errors) {
+        cwt.JsUtil.forEachObjectValue(this.costs, stjs.bind(this, function(tileTypeId, movecosts) {
+            this.checkExpression(is.string(tileTypeId), errors, "costs -> " + tileTypeId + " key");
+            this.checkExpression(is.integer(movecosts) && is.within(movecosts, -2, 100) && is.not.equal(movecosts, 0), errors, "costs -> " + tileTypeId + " value");
+        }));
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.costs = this.grabMapValue(data, "costs", {});
+    };
 }, {costs: {name: "Map", arguments: [null, null]}}, {});
 stjs.ns("cwt");
-cwt.Player = function() {};
-stjs.extend(cwt.Player, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.gold = 0;
-    prototype.numOfUnits = 0;
-    prototype.numOfProperties = 0;
-}, {}, {});
+cwt.AttackType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.AttackType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.minrange = null;
+    prototype.maxrange = null;
+    prototype.mainWeapon = null;
+    prototype.secondaryWeapon = null;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.integer(this.minrange) && is.within(this.minrange, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "minrange");
+        this.checkExpression(is.integer(this.maxrange) && is.within(this.maxrange, this.minrange - 1, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "maxrange");
+        this.checkDamageMap(this.mainWeapon, "mainWeapon", errors);
+        this.checkDamageMap(this.secondaryWeapon, "secondaryWeapon", errors);
+    };
+    prototype.checkDamageMap = function(damageMap, errorItemName, errors) {
+        cwt.JsUtil.forEachObjectValue(damageMap, stjs.bind(this, function(typeId, damage) {
+            this.checkExpression(is.string(typeId), errors, errorItemName + " key");
+            this.checkExpression(is.integer(damage) && is.within(damage, 0, 1000), errors, errorItemName + " entry");
+        }));
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.minrange = this.grabMapValue(data, "minrange", 1);
+        this.maxrange = this.grabMapValue(data, "maxrange", 1);
+        this.mainWeapon = this.grabMapValue(data, "mainWeapon", {});
+        this.secondaryWeapon = this.grabMapValue(data, "secondaryWeapon", {});
+    };
+}, {mainWeapon: {name: "Map", arguments: [null, null]}, secondaryWeapon: {name: "Map", arguments: [null, null]}}, {});
 stjs.ns("cwt");
-cwt.MovingAbilityCmp = function() {};
-stjs.extend(cwt.MovingAbilityCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.fuel = 0;
-    prototype.range = 0;
-    prototype.movetype = null;
-}, {}, {});
-stjs.ns("cwt");
-cwt.DirectFighting = function() {};
-stjs.extend(cwt.DirectFighting, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.ammo = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.CapturableCmp = function() {};
-stjs.extend(cwt.CapturableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.points = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.MovingCmp = function() {};
-stjs.extend(cwt.MovingCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.fuel = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.SuicideCmp = function() {};
-stjs.extend(cwt.SuicideCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+cwt.SuicideType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.SuicideType, cwt.ObjectType, [], function(constructor, prototype) {
     prototype.damage = 0;
     prototype.range = 0;
     prototype.noDamage = null;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
+        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "range");
+        this.checkExpression(is.array(this.noDamage), errors, "noDamage");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.damage = this.grabMapValue(data, "damage", 0);
+        this.range = this.grabMapValue(data, "range", 1);
+        this.noDamage = this.grabMapValue(data, "noDamage", []);
+    };
 }, {noDamage: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
-cwt.IndirectFighting = function() {};
-stjs.extend(cwt.IndirectFighting, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.ammo = 0;
-    prototype.maxRange = 0;
-    prototype.minRange = 0;
+cwt.ConstructedClass = function() {};
+stjs.extend(cwt.ConstructedClass, null, [], function(constructor, prototype) {
+    constructor.NAME_UNKNOWN_LOGGER = "UnknownLogger";
+    constructor.PROPERTY_LOGGER_NAME = "__loggerName";
+    prototype.getLoggerName = function() {
+        var name = cwt.ClassUtil.getClassName(this);
+        return name == null ? cwt.ConstructedClass.NAME_UNKNOWN_LOGGER : name;
+    };
+    prototype.getCachedLoggerName = function() {
+        var loggerName = ((this).constructor)[cwt.ConstructedClass.PROPERTY_LOGGER_NAME];
+        if (loggerName == undefined) {
+            loggerName = this.getLoggerName();
+            if (loggerName.length < cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
+                var missingSpaces = cwt.Constants.LOGGER_CLASS_NAME_LENGTH - loggerName.length;
+                var newName = "";
+                for (var i = 0; i < missingSpaces; i++) {
+                    newName += " ";
+                }
+                loggerName = newName + loggerName;
+            } else if (loggerName.length > cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
+                loggerName = loggerName.substring(0, cwt.Constants.LOGGER_CLASS_NAME_LENGTH);
+            }
+            ((this).constructor)[cwt.ConstructedClass.PROPERTY_LOGGER_NAME] = loggerName;
+        }
+        return loggerName;
+    };
+    prototype.info = function(msg) {
+        console.log("%c[" + this.getCachedLoggerName() + "][ INFO] %c" + msg, cwt.Constants.LOGGER_CSS_INFO_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
+    };
+    prototype.warn = function(msg) {
+        console.log("%c[" + this.getCachedLoggerName() + "][ WARN] %c" + msg, cwt.Constants.LOGGER_CSS_WARN_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
+    };
+    prototype.error = function(msg) {
+        console.log("%c[" + this.getCachedLoggerName() + "][ERROR] %c" + msg, cwt.Constants.LOGGER_CSS_ERROR_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
+    };
+    prototype.throwError = function(msg) {
+        this.error(msg);
+        throw new Error(msg);
+    };
+    prototype.onConstruction = function() {};
 }, {}, {});
 stjs.ns("cwt");
-cwt.HidableCmp = function() {};
-stjs.extend(cwt.HidableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.hidden = false;
-    prototype.dailyFuelDrainHidden = 0;
+cwt.TypedObjectConverter = function() {};
+stjs.extend(cwt.TypedObjectConverter, null, [cwt.DataConverter], function(constructor, prototype) {
+    prototype.grabData = function(asset, callback) {
+        cwt.BrowserUtil.doXmlHttpRequest(asset.url, null, function(objData, error) {});
+    };
+    prototype.cacheData = function(data, callback) {
+        callback(JSON.stringify(data));
+    };
+    prototype.loadData = function(data, callback) {};
 }, {}, {});
-stjs.ns("cwt");
-cwt.OwnableCmp = function() {};
-stjs.extend(cwt.OwnableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.owner = null;
-}, {}, {});
-stjs.ns("cwt");
-cwt.RepairerCmp = function() {};
-stjs.extend(cwt.RepairerCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.repairs = null;
-}, {repairs: {name: "Map", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.SingleUse = function() {};
-stjs.extend(cwt.SingleUse, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.used = false;
-}, {}, {});
-stjs.ns("cwt");
-cwt.FactoryCmp = function() {};
-stjs.extend(cwt.FactoryCmp, null, [cwt.IEntityComponent, cwt.IFlyweightComponent], function(constructor, prototype) {
-    prototype.builds = null;
-}, {builds: {name: "Array", arguments: [null]}}, {});
 /**
  *  Image utility class to manipulate images.
  */
@@ -1219,106 +1408,6 @@ stjs.extend(cwt.ImageUtil, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 stjs.ns("cwt");
-cwt.SuicideType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.SuicideType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.damage = 0;
-    prototype.range = 0;
-    prototype.noDamage = null;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
-        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "range");
-        this.checkExpression(is.array(this.noDamage), errors, "noDamage");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.damage = this.grabMapValue(data, "damage", 0);
-        this.range = this.grabMapValue(data, "range", 1);
-        this.noDamage = this.grabMapValue(data, "noDamage", []);
-    };
-}, {noDamage: {name: "Array", arguments: [null]}}, {});
-stjs.ns("cwt");
-cwt.AttackType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.AttackType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.minrange = null;
-    prototype.maxrange = null;
-    prototype.mainWeapon = null;
-    prototype.secondaryWeapon = null;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.minrange) && is.within(this.minrange, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "minrange");
-        this.checkExpression(is.integer(this.maxrange) && is.within(this.maxrange, this.minrange - 1, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "maxrange");
-        this.checkDamageMap(this.mainWeapon, "mainWeapon", errors);
-        this.checkDamageMap(this.secondaryWeapon, "secondaryWeapon", errors);
-    };
-    prototype.checkDamageMap = function(damageMap, errorItemName, errors) {
-        cwt.JsUtil.forEachObjectValue(damageMap, stjs.bind(this, function(typeId, damage) {
-            this.checkExpression(is.string(typeId), errors, errorItemName + " key");
-            this.checkExpression(is.integer(damage) && is.within(damage, 0, 1000), errors, errorItemName + " entry");
-        }));
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.minrange = this.grabMapValue(data, "minrange", 1);
-        this.maxrange = this.grabMapValue(data, "maxrange", 1);
-        this.mainWeapon = this.grabMapValue(data, "mainWeapon", {});
-        this.secondaryWeapon = this.grabMapValue(data, "secondaryWeapon", {});
-    };
-}, {mainWeapon: {name: "Map", arguments: [null, null]}, secondaryWeapon: {name: "Map", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.ConstructedClass = function() {};
-stjs.extend(cwt.ConstructedClass, null, [], function(constructor, prototype) {
-    constructor.NAME_UNKNOWN_LOGGER = "UnknownLogger";
-    constructor.PROPERTY_LOGGER_NAME = "__loggerName";
-    prototype.getLoggerName = function() {
-        var name = cwt.ClassUtil.getClassName(this);
-        return name == null ? cwt.ConstructedClass.NAME_UNKNOWN_LOGGER : name;
-    };
-    prototype.getCachedLoggerName = function() {
-        var loggerName = ((this).constructor)[cwt.ConstructedClass.PROPERTY_LOGGER_NAME];
-        if (loggerName == undefined) {
-            loggerName = this.getLoggerName();
-            if (loggerName.length < cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
-                var missingSpaces = cwt.Constants.LOGGER_CLASS_NAME_LENGTH - loggerName.length;
-                var newName = "";
-                for (var i = 0; i < missingSpaces; i++) {
-                    newName += " ";
-                }
-                loggerName = newName + loggerName;
-            } else if (loggerName.length > cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
-                loggerName = loggerName.substring(0, cwt.Constants.LOGGER_CLASS_NAME_LENGTH);
-            }
-            ((this).constructor)[cwt.ConstructedClass.PROPERTY_LOGGER_NAME] = loggerName;
-        }
-        return loggerName;
-    };
-    prototype.info = function(msg) {
-        console.log("%c[" + this.getCachedLoggerName() + "][ INFO] %c" + msg, cwt.Constants.LOGGER_CSS_INFO_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
-    };
-    prototype.warn = function(msg) {
-        console.log("%c[" + this.getCachedLoggerName() + "][ WARN] %c" + msg, cwt.Constants.LOGGER_CSS_WARN_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
-    };
-    prototype.error = function(msg) {
-        console.log("%c[" + this.getCachedLoggerName() + "][ERROR] %c" + msg, cwt.Constants.LOGGER_CSS_ERROR_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
-    };
-    prototype.throwError = function(msg) {
-        this.error(msg);
-        throw new Error(msg);
-    };
-    prototype.onConstruction = function() {};
-}, {}, {});
-stjs.ns("cwt");
-cwt.TypedObjectConverter = function() {};
-stjs.extend(cwt.TypedObjectConverter, null, [cwt.DataConverter], function(constructor, prototype) {
-    prototype.grabData = function(asset, callback) {
-        cwt.BrowserUtil.doXmlHttpRequest(asset.url, null, function(objData, error) {});
-    };
-    prototype.cacheData = function(data, callback) {
-        callback(JSON.stringify(data));
-    };
-    prototype.loadData = function(data, callback) {};
-}, {}, {});
-stjs.ns("cwt");
 cwt.ObjectConverter = function() {};
 stjs.extend(cwt.ObjectConverter, null, [cwt.DataConverter], function(constructor, prototype) {
     prototype.grabData = function(asset, callback) {
@@ -1335,6 +1424,21 @@ stjs.extend(cwt.ObjectConverter, null, [cwt.DataConverter], function(constructor
         callback(JSON.parse(data));
     };
 }, {}, {});
+stjs.ns("cwt");
+cwt.FactoryCmp = function() {};
+stjs.extend(cwt.FactoryCmp, null, [cwt.IEntityComponent, cwt.IFlyweightComponent], function(constructor, prototype) {
+    prototype.builds = null;
+}, {builds: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.SecondaryWeaponDamageMap = function() {
+    cwt.DamageMap.call(this);
+};
+stjs.extend(cwt.SecondaryWeaponDamageMap, cwt.DamageMap, [], null, {data: {name: "Map", arguments: [null, null]}}, {});
+stjs.ns("cwt");
+cwt.MainWeaponDamageMap = function() {
+    cwt.DamageMap.call(this);
+};
+stjs.extend(cwt.MainWeaponDamageMap, cwt.DamageMap, [], null, {data: {name: "Map", arguments: [null, null]}}, {});
 stjs.ns("cwt");
 cwt.PropertyType = function() {
     cwt.ObjectType.call(this);
@@ -1389,38 +1493,6 @@ stjs.extend(cwt.PropertyType, cwt.ObjectType, [], function(constructor, prototyp
         this.notTransferable = this.grabMapValue(data, "notTransferable", false);
     };
 }, {repairs: {name: "Map", arguments: [null, null]}, rocketsilo: "cwt.RocketSiloType", builds: {name: "Array", arguments: [null]}, laser: "cwt.LaserType"}, {});
-stjs.ns("cwt");
-cwt.SecondaryWeaponDamageMap = function() {
-    cwt.DamageMap.call(this);
-};
-stjs.extend(cwt.SecondaryWeaponDamageMap, cwt.DamageMap, [], null, {data: {name: "Map", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.MainWeaponDamageMap = function() {
-    cwt.DamageMap.call(this);
-};
-stjs.extend(cwt.MainWeaponDamageMap, cwt.DamageMap, [], null, {data: {name: "Map", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.ImageConverter = function() {};
-stjs.extend(cwt.ImageConverter, null, [cwt.DataConverter], function(constructor, prototype) {
-    prototype.grabData = function(asset, callback) {
-        var img = new Image();
-        img.onload = function(image) {
-            var canvas = cwt.BrowserUtil.createDomElement("canvas");
-            var ctx = canvas.getContext("2d");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-            callback(canvas);
-        };
-        img.src = asset.path;
-    };
-    prototype.cacheData = function(data, callback) {
-        cwt.ImageUtil.convertImageToString(data, callback);
-    };
-    prototype.loadData = function(data, callback) {
-        cwt.ImageUtil.convertStringToImage(data, callback);
-    };
-}, {}, {});
 stjs.ns("cwt");
 cwt.UnitType = function() {
     cwt.ObjectType.call(this);
@@ -1482,6 +1554,7 @@ stjs.extend(cwt.UnitType, cwt.ObjectType, [], function(constructor, prototype) {
         this.suicide.grabDataFromMap(this.grabMapValue(data, "suicide", {}));
     };
 }, {canload: {name: "Array", arguments: [null]}, supply: {name: "Array", arguments: [null]}, attack: "cwt.AttackType", suicide: "cwt.SuicideType"}, {});
+<<<<<<< HEAD
 stjs.ns("cwt");
 cwt.SystemEvents = function() {};
 stjs.extend(cwt.SystemEvents, null, [cwt.ConstructedClass], function(constructor, prototype) {
@@ -1629,6 +1702,8 @@ stjs.extend(cwt.GameDataService, null, [cwt.ConstructedClass], function(construc
         return this.getDataType(armyId, cwt.ClassUtil.getClassName(cwt.ArmyType));
     };
 }, {typeMap: {name: "Map", arguments: [null, "cwt.ObjectType"]}}, {});
+=======
+>>>>>>> branch 'master' of https://github.com/ctomni231/cwtactics.git
 stjs.ns("cwt");
 cwt.EntityManager = function() {
     this.entityIdCounter = 0;
@@ -1744,6 +1819,162 @@ stjs.extend(cwt.EntityManager, null, [cwt.ConstructedClass], function(constructo
         dataCallback(JSON.stringify(data, null, 2));
     };
 }, {entities: {name: "Map", arguments: [null, {name: "Map", arguments: [null, "cwt.IEntityComponent"]}]}, allSelector: {name: "Function1", arguments: [null, null]}}, {});
+stjs.ns("cwt");
+cwt.GameDataService = function() {};
+stjs.extend(cwt.GameDataService, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.typeMap = null;
+    prototype.onConstruction = function() {
+        this.typeMap = {};
+    };
+    /**
+     *  Registers a data type object. After that this object can be grabbed type
+     *  safe by the get methods of this service.
+     *  
+     *  @param type
+     */
+    prototype.registerDataType = function(type) {
+        type.validate(stjs.bind(this, function(errors) {
+            if (errors.length > 0) {
+                this.throwError("InvalidDataType Errors:" + JSON.stringify(errors));
+            } else if ((this.typeMap).hasOwnProperty(type.ID)) {
+                this.throwError("InvalidDataType Errors: ID " + type.ID + " is alreday registered");
+            } else {
+                this.info("registered " + cwt.ClassUtil.getClassName(type) + " object with id " + type.ID);
+                this.typeMap[type.ID] = type;
+            }
+        }));
+    };
+    prototype.getDataType = function(id, typeClassName) {
+        var type = this.typeMap[id];
+        if (cwt.ClassUtil.getClassName(type) != typeClassName) {
+            this.throwError("NoDataTypeExists (" + typeClassName + ":" + id + ")");
+        }
+        return type;
+    };
+    prototype.getArmy = function(armyId) {
+        return this.getDataType(armyId, cwt.ClassUtil.getClassName(cwt.ArmyType));
+    };
+}, {typeMap: {name: "Map", arguments: [null, "cwt.ObjectType"]}}, {});
+stjs.ns("cwt");
+cwt.StartScreen = function() {};
+stjs.extend(cwt.StartScreen, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.enter = function() {};
+    prototype.render = function() {
+        this.app.layer.clear("black").fillStyle("white").font("24pt Arial").fillText("Custom Wars: Tactics", 60, 228).fillText("Development Version", 120, 270);
+    };
+    prototype.keydown = function(ev) {};
+}, {app: "cwt.Playground"}, {});
+stjs.ns("cwt");
+cwt.SystemEvents = function() {};
+stjs.extend(cwt.SystemEvents, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.INIT_ENGINE = null;
+    prototype.FLUSHED_ACTION = null;
+    prototype.INPUT_ACTION = null;
+    prototype.INPUT_CANCEL = null;
+    /**
+     *  (TileEntity, TilePropertyEntity, TileUnitEntity)
+     */
+    prototype.CLICK_ON_TILE = null;
+    prototype.INVOKE_ACTION = null;
+    prototype.OBJECT_WAITS = null;
+    prototype.ERROR_RAISED = null;
+    prototype.FRAME_TICK = null;
+    /**
+     *  (player, turnNumber)
+     */
+    prototype.TURN_STARTS = null;
+    prototype.WEATHER_CHANGES = null;
+    prototype.WEATHER_CHANGED = null;
+    prototype.UNIT_HEALED = null;
+    prototype.UNIT_DAMAGED = null;
+    prototype.INFLICTS_DAMAGE = null;
+    prototype.UNIT_CREATED = null;
+    prototype.UNIT_DESTROYED = null;
+    prototype.UNIT_MOVED = null;
+    prototype.PLAYER_GOLD_CHANGES = null;
+    /**
+     *  (Id, Type, X, Y)
+     */
+    prototype.UNIT_PRODUCED = null;
+    prototype.onConstruction = function() {
+        this.ERROR_RAISED = new cwt.Observerable1();
+        this.FRAME_TICK = new cwt.Observerable1();
+        this.UNIT_HEALED = new cwt.Observerable2();
+        this.UNIT_DAMAGED = new cwt.Observerable2();
+        this.INFLICTS_DAMAGE = new cwt.Observerable3();
+        this.UNIT_CREATED = new cwt.Observerable1();
+        this.UNIT_DESTROYED = new cwt.Observerable1();
+        this.UNIT_MOVED = new cwt.Observerable4();
+        this.PLAYER_GOLD_CHANGES = new cwt.Observerable2();
+        this.UNIT_PRODUCED = new cwt.Observerable4();
+        this.WEATHER_CHANGED = new cwt.Observerable1();
+        this.WEATHER_CHANGES = new cwt.Observerable2();
+        this.INPUT_ACTION = new cwt.Observerable1();
+        this.INPUT_CANCEL = new cwt.Observerable1();
+        this.INIT_ENGINE = new cwt.Observerable1();
+        this.FLUSHED_ACTION = new cwt.Observerable0();
+    };
+}, {INIT_ENGINE: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, FLUSHED_ACTION: "cwt.Observerable0", INPUT_ACTION: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, INPUT_CANCEL: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, CLICK_ON_TILE: {name: "cwt.Observerable3", arguments: [null, null, null]}, INVOKE_ACTION: {name: "cwt.Observerable4", arguments: [null, null, null, null]}, OBJECT_WAITS: {name: "cwt.Observerable1", arguments: [null]}, ERROR_RAISED: {name: "cwt.Observerable1", arguments: [null]}, FRAME_TICK: {name: "cwt.Observerable1", arguments: [null]}, TURN_STARTS: {name: "cwt.Observerable2", arguments: [null, null]}, WEATHER_CHANGES: {name: "cwt.Observerable2", arguments: [null, null]}, WEATHER_CHANGED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_HEALED: {name: "cwt.Observerable2", arguments: [null, null]}, UNIT_DAMAGED: {name: "cwt.Observerable2", arguments: [null, null]}, INFLICTS_DAMAGE: {name: "cwt.Observerable3", arguments: [null, null, null]}, UNIT_CREATED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_DESTROYED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_MOVED: {name: "cwt.Observerable4", arguments: [null, null, null, {name: "Array", arguments: [null]}]}, PLAYER_GOLD_CHANGES: {name: "cwt.Observerable2", arguments: [null, null]}, UNIT_PRODUCED: {name: "cwt.Observerable4", arguments: [null, null, null, null]}}, {});
+stjs.ns("cwt");
+cwt.UnitAssetLoader = function() {};
+stjs.extend(cwt.UnitAssetLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.defaultFrameData = null;
+    prototype.knownTypeIds = null;
+    prototype.onConstruction = function() {
+        this.knownTypeIds = [];
+    };
+    prototype.loadData = function() {};
+    prototype.createDefaultFrame = function() {
+        var frame = new cwt.CanvasQuery.Atlas();
+        var frames = [];
+        frame.frames = frames;
+        for (var j = 0; j < 9; j++) {
+            var subFrame = new cwt.CanvasQuery.AtlasFrame();
+            subFrame.height = 32;
+            subFrame.width = 32;
+            subFrame.region = [0, 0, 32, 32];
+            subFrame.offset = [0, 0];
+            frames.push(subFrame);
+        }
+        return frame;
+    };
+}, {defaultFrameData: "cwt.CanvasQuery.Atlas", knownTypeIds: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.BrowserService = function() {};
+stjs.extend(cwt.BrowserService, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.requestJsonFile = function(path, callback) {};
+    /**
+     *  Invokes a XmlHttpRequest.
+     *  
+     *  @param path
+     *  @param specialType
+     *           null or a special binary response type like array buffer
+     *  @param callback
+     *           callback will be invoked with two parameters => object data and
+     *           error message (both aren't not null at the same time)
+     */
+    prototype.doXmlHttpRequest = function(path, specialType, callback) {
+        var request = new XMLHttpRequest();
+        if (specialType != null) {
+            (request)["responseType"] = specialType;
+        }
+        request.onreadystatechange = function() {
+            if (request.readyState == 4) {
+                if (request.readyState == 4 && request.status == 200) {
+                    if (specialType != null) {
+                        callback((request)["response"], null);
+                    } else {
+                        callback(request.responseText, null);
+                    }
+                } else {
+                    callback(null, request.statusText);
+                }
+            }
+        };
+        request.open("get", path, true);
+        request.send();
+    };
+}, {}, {});
 /**
  *  
  *  <strong>This class is dynamic, so if you are going to change things here then
@@ -1799,51 +2030,67 @@ stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
     };
 }, {components: {name: "Map", arguments: [null, "cwt.ConstructedClass"]}}, {});
 stjs.ns("cwt");
-cwt.StartScreen = function() {};
-stjs.extend(cwt.StartScreen, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.enter = function() {};
-    prototype.render = function() {
-        this.app.layer.clear("black").fillStyle("white").font("24pt Arial").fillText("Custom Wars: Tactics", 60, 228).fillText("Development Version", 120, 270);
+cwt.ImageConverter = function() {};
+stjs.extend(cwt.ImageConverter, null, [cwt.DataConverter], function(constructor, prototype) {
+    prototype.grabData = function(asset, callback) {
+        var img = new Image();
+        img.onload = function(image) {
+            var canvas = cwt.BrowserUtil.createDomElement("canvas");
+            var ctx = canvas.getContext("2d");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            callback(canvas);
+        };
+        img.src = asset.path;
     };
-    prototype.keydown = function(ev) {};
-}, {app: "cwt.Playground"}, {});
-stjs.ns("cwt");
-cwt.AssetLoader = function() {};
-stjs.extend(cwt.AssetLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    constructor.FOLDER_IMAGES = "image/cwt_tileset/units";
-    constructor.FOLDER_SHEETS = "modifications/cwt/units";
-    prototype.imgGrabber = null;
-    prototype.sheetGrabber = null;
-    prototype.onConstruction = function() {
-        this.imgGrabber = new cwt.ImageConverter();
-        this.sheetGrabber = new cwt.TypedObjectConverter();
+    prototype.cacheData = function(data, callback) {
+        cwt.ImageUtil.convertImageToString(data, callback);
     };
-    prototype.loadEntry = function(app, entry, frameData) {
-        this.sheetGrabber.grabData(entry, stjs.bind(this, function(sheet) {
-            app.data[entry.key] = sheet;
-            var spriteEntry = app.getAssetEntry("CWT_" + entry.key, cwt.AssetLoader.FOLDER_IMAGES, "png");
-            this.imgGrabber.grabData(spriteEntry, function(sheetSprite) {
-                var sprite = new cwt.CanvasQuery.Atlas();
-                sprite.image = sheetSprite;
-                sprite.frames = frameData.frames;
-                app.atlases[entry.key] = sprite;
-            });
-        }));
-    };
-    prototype.loadFolder = function(app, dataClass) {};
-}, {imgGrabber: "cwt.ImageConverter", sheetGrabber: {name: "cwt.TypedObjectConverter", arguments: ["cwt.UnitType"]}}, {});
-/**
- *  Starter class with main function.
- */
-stjs.ns("cwt");
-cwt.Starter = function() {};
-stjs.extend(cwt.Starter, null, [], function(constructor, prototype) {
-    constructor.main = function(args) {
-        cwt.ConstructedFactory.initObjects();
+    prototype.loadData = function(data, callback) {
+        cwt.ImageUtil.convertStringToImage(data, callback);
     };
 }, {}, {});
-if (!stjs.mainCallDisabled) 
-    cwt.Starter.main();
+stjs.ns("cwt");
+cwt.ErrorScreen = function() {};
+stjs.extend(cwt.ErrorScreen, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.errorMsg = null;
+    prototype.onConstruction = function() {
+        this.errorMsg = null;
+    };
+    prototype.enter = function() {};
+    prototype.render = function() {
+        this.app.layer.clear("black").fillStyle("red").font("24pt Arial").fillText("An error occured", 60, 228).fillText(this.errorMsg, 120, 270);
+    };
+    prototype.keyup = function(ev) {
+        cwt.ConstructedFactory.getObject(cwt.SystemEvents).INPUT_ACTION.publish(this.app);
+    };
+}, {app: "cwt.Playground"}, {});
+stjs.ns("cwt");
+cwt.ISystem = function() {};
+stjs.extend(cwt.ISystem, null, [], function(constructor, prototype) {
+    prototype.onInit = function() {};
+    prototype.entityManager = function() {
+        return cwt.ConstructedFactory.getObject(cwt.EntityManager);
+    };
+    prototype.getEntityComponent = function(id, clazz) {
+        return this.entityManager().getEntityComponent(id, clazz);
+    };
+    prototype.events = function() {
+        return cwt.ConstructedFactory.getObject(cwt.SystemEvents);
+    };
+    prototype.aec = function(id, componentClass) {
+        return this.entityManager().acquireEntityComponent(id, componentClass);
+    };
+    prototype.gec = function(id, clazz) {
+        return this.entityManager().getEntityComponent(id, clazz);
+    };
+    prototype.gedtc = function(id, clazz) {
+        var manager = this.entityManager();
+        return manager.getEntityComponent(manager.getEntityComponent(id, cwt.DataType).typeEntity, clazz);
+    };
+    prototype.publishEvent = function(event) {};
+}, {}, {});
 stjs.ns("cwt");
 cwt.OfflineCacheDataLoader = function() {};
 stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
@@ -1903,46 +2150,43 @@ stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], function(c
         }));
     };
 }, {}, {});
+/**
+ *  Starter class with main function.
+ */
 stjs.ns("cwt");
-cwt.ErrorScreen = function() {};
-stjs.extend(cwt.ErrorScreen, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.errorMsg = null;
-    prototype.onConstruction = function() {
-        this.errorMsg = null;
+cwt.Starter = function() {};
+stjs.extend(cwt.Starter, null, [], function(constructor, prototype) {
+    constructor.main = function(args) {
+        cwt.ConstructedFactory.initObjects();
     };
-    prototype.enter = function() {};
-    prototype.render = function() {
-        this.app.layer.clear("black").fillStyle("red").font("24pt Arial").fillText("An error occured", 60, 228).fillText(this.errorMsg, 120, 270);
-    };
-    prototype.keyup = function(ev) {
-        cwt.ConstructedFactory.getObject(cwt.SystemEvents).INPUT_ACTION.publish(this.app);
-    };
-}, {app: "cwt.Playground"}, {});
-stjs.ns("cwt");
-cwt.ISystem = function() {};
-stjs.extend(cwt.ISystem, null, [], function(constructor, prototype) {
-    prototype.onInit = function() {};
-    prototype.entityManager = function() {
-        return cwt.ConstructedFactory.getObject(cwt.EntityManager);
-    };
-    prototype.getEntityComponent = function(id, clazz) {
-        return this.entityManager().getEntityComponent(id, clazz);
-    };
-    prototype.events = function() {
-        return cwt.ConstructedFactory.getObject(cwt.SystemEvents);
-    };
-    prototype.aec = function(id, componentClass) {
-        return this.entityManager().acquireEntityComponent(id, componentClass);
-    };
-    prototype.gec = function(id, clazz) {
-        return this.entityManager().getEntityComponent(id, clazz);
-    };
-    prototype.gedtc = function(id, clazz) {
-        var manager = this.entityManager();
-        return manager.getEntityComponent(manager.getEntityComponent(id, cwt.DataType).typeEntity, clazz);
-    };
-    prototype.publishEvent = function(event) {};
 }, {}, {});
+if (!stjs.mainCallDisabled) 
+    cwt.Starter.main();
+stjs.ns("cwt");
+cwt.AssetLoader = function() {};
+stjs.extend(cwt.AssetLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    constructor.FOLDER_IMAGES = "image/cwt_tileset/units";
+    constructor.FOLDER_SHEETS = "modifications/cwt/units";
+    prototype.imgGrabber = null;
+    prototype.sheetGrabber = null;
+    prototype.onConstruction = function() {
+        this.imgGrabber = new cwt.ImageConverter();
+        this.sheetGrabber = new cwt.TypedObjectConverter();
+    };
+    prototype.loadEntry = function(app, entry, frameData) {
+        this.sheetGrabber.grabData(entry, stjs.bind(this, function(sheet) {
+            app.data[entry.key] = sheet;
+            var spriteEntry = app.getAssetEntry("CWT_" + entry.key, cwt.AssetLoader.FOLDER_IMAGES, "png");
+            this.imgGrabber.grabData(spriteEntry, function(sheetSprite) {
+                var sprite = new cwt.CanvasQuery.Atlas();
+                sprite.image = sheetSprite;
+                sprite.frames = frameData.frames;
+                app.atlases[entry.key] = sprite;
+            });
+        }));
+    };
+    prototype.loadFolder = function(app, dataClass) {};
+}, {imgGrabber: "cwt.ImageConverter", sheetGrabber: {name: "cwt.TypedObjectConverter", arguments: ["cwt.UnitType"]}}, {});
 stjs.ns("cwt");
 cwt.Cwt = function() {};
 stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototype) {
@@ -1992,6 +2236,7 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
     };
 }, {atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
 stjs.ns("cwt");
+<<<<<<< HEAD
 cwt.PlayerSys = function() {};
 stjs.extend(cwt.PlayerSys, null, [cwt.ISystem], function(constructor, prototype) {
     prototype.onInit = function() {
@@ -2077,6 +2322,8 @@ stjs.extend(cwt.WeatherSys, null, [cwt.ISystem], function(constructor, prototype
     };
 }, {}, {});
 stjs.ns("cwt");
+=======
+>>>>>>> branch 'master' of https://github.com/ctomni231/cwtactics.git
 cwt.TypeSys = function() {};
 stjs.extend(cwt.TypeSys, null, [cwt.ISystem, cwt.ConstructedClass], function(constructor, prototype) {
     prototype.requiredUnitComponents = null;
@@ -2155,6 +2402,66 @@ stjs.extend(cwt.TypeSys, null, [cwt.ISystem, cwt.ConstructedClass], function(con
     };
 }, {requiredUnitComponents: {name: "Array", arguments: [{name: "Class", arguments: ["Object"]}]}, optionalUnitComponents: {name: "Array", arguments: [{name: "Class", arguments: ["Object"]}]}}, {});
 stjs.ns("cwt");
+cwt.MenuSys = function() {};
+stjs.extend(cwt.MenuSys, null, [cwt.ISystem], function(constructor, prototype) {
+    prototype.onInit = function() {
+        this.aec(this.entityManager().acquireEntityWithId("MENU"), cwt.MenuCmp);
+        this.events().FLUSHED_ACTION.subscribe(function() {});
+    };
+    prototype.onFlushedAction = function() {
+        var menu = this.gec("MENU", cwt.MenuCmp);
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.PlayerSys = function() {};
+stjs.extend(cwt.PlayerSys, null, [cwt.ISystem], function(constructor, prototype) {
+    prototype.onInit = function() {
+        this.events().UNIT_DESTROYED.subscribe(stjs.bind(this, function(unit) {
+            var ownC = this.entityManager().getEntityComponent(unit, cwt.OwnableCmp);
+            this.entityManager().getEntityComponent(ownC.owner, cwt.Player).numOfUnits--;
+        }));
+        this.events().UNIT_CREATED.subscribe(stjs.bind(this, function(unit) {
+            var ownC = this.entityManager().getEntityComponent(unit, cwt.OwnableCmp);
+            this.entityManager().getEntityComponent(ownC.owner, cwt.Player).numOfUnits++;
+        }));
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.MoveSystem = function() {};
+stjs.extend(cwt.MoveSystem, null, [cwt.ISystem], function(constructor, prototype) {
+    prototype.moveEntity = function(id, path) {
+        var posC = this.entityManager().getEntityComponent(id, cwt.Positionable);
+        var moveableC = this.entityManager().getEntityComponent(id, cwt.MovingAbilityCmp);
+        var cX = posC.x;
+        var cY = posC.y;
+        var oX = cX;
+        var oY = cY;
+        var cFuel = moveableC.fuel;
+        posC.x = cX;
+        posC.y = cY;
+        this.publishEvent("unit/moved");
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.WaitAction = function() {};
+stjs.extend(cwt.WaitAction, null, [cwt.ISystem], function(constructor, prototype) {
+    prototype.onInit = function() {
+        this.events().CLICK_ON_TILE.subscribe(stjs.bind(this, function(tile, property, unit) {
+            if (property == null && unit == null) {
+                var entry = this.gec("MENU", cwt.MenuCmp).entries[0];
+                entry.enabled = true;
+                entry.key = cwt.ClassUtil.getClassName(cwt.WaitAction);
+            }
+        }));
+        this.events().INVOKE_ACTION.subscribe(stjs.bind(this, function(action, p1, p2, p3) {
+            if (action == cwt.ClassUtil.getClassName(cwt.WaitAction)) {
+                this.gec(p1, cwt.SingleUse).used = true;
+                this.events().OBJECT_WAITS.publish(p1);
+            }
+        }));
+    };
+}, {}, {});
+stjs.ns("cwt");
 cwt.MapRenderer = function() {};
 stjs.extend(cwt.MapRenderer, null, [cwt.ISystem, cwt.ConstructedClass], function(constructor, prototype) {
     prototype.appRef = null;
@@ -2173,6 +2480,7 @@ stjs.extend(cwt.MapRenderer, null, [cwt.ISystem, cwt.ConstructedClass], function
         }));
     };
 }, {appRef: "cwt.Playground"}, {});
+<<<<<<< HEAD
 stjs.ns("cwt");
 cwt.MenuSys = function() {};
 stjs.extend(cwt.MenuSys, null, [cwt.ISystem], function(constructor, prototype) {
@@ -2184,6 +2492,8 @@ stjs.extend(cwt.MenuSys, null, [cwt.ISystem], function(constructor, prototype) {
         var menu = this.gec("MENU", cwt.MenuCmp);
     };
 }, {}, {});
+=======
+>>>>>>> branch 'master' of https://github.com/ctomni231/cwtactics.git
 stjs.ns("cwt");
 cwt.HealthSystem = function() {};
 stjs.extend(cwt.HealthSystem, null, [cwt.ISystem], function(constructor, prototype) {
@@ -2223,18 +2533,54 @@ stjs.extend(cwt.BattleSystem, null, [cwt.ISystem], function(constructor, prototy
     prototype.onInit = function() {};
 }, {}, {});
 stjs.ns("cwt");
-cwt.MoveSystem = function() {};
-stjs.extend(cwt.MoveSystem, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.moveEntity = function(id, path) {
-        var posC = this.entityManager().getEntityComponent(id, cwt.Positionable);
-        var moveableC = this.entityManager().getEntityComponent(id, cwt.MovingAbilityCmp);
-        var cX = posC.x;
-        var cY = posC.y;
-        var oX = cX;
-        var oY = cY;
-        var cFuel = moveableC.fuel;
-        posC.x = cX;
-        posC.y = cY;
-        this.publishEvent("unit/moved");
+cwt.WeatherSys = function() {};
+stjs.extend(cwt.WeatherSys, null, [cwt.ISystem], function(constructor, prototype) {
+    prototype.onInit = function() {
+        this.events().WEATHER_CHANGES.subscribe(stjs.bind(this, function(weather, days) {
+            return this.changeWeather(weather, days);
+        }));
+    };
+    prototype.changeWeather = function(weather, duration) {
+        this.gec(cwt.EntityId.GAME_ROUND, cwt.WeatherDurationCmp).days = duration;
+        this.entityManager().detachEntityComponentByClass(cwt.EntityId.GAME_ROUND, cwt.WeatherCmp);
+        this.entityManager().attachEntityComponent(cwt.EntityId.GAME_ROUND, this.getEntityComponent(weather, cwt.WeatherCmp));
+        this.events().WEATHER_CHANGED.publish(weather);
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.FactorySystem = function() {};
+stjs.extend(cwt.FactorySystem, null, [cwt.ISystem], function(constructor, prototype) {
+    prototype.onInit = function() {};
+    prototype.isFactory = function(factoryId) {
+        return this.entityManager().hasEntityComponent(factoryId, cwt.FactoryCmp);
+    };
+    /**
+     *  
+     *  @param factoryId
+     *           entity id of the factory
+     *  @param type
+     *           wanted unit type that will be produced
+     */
+    prototype.buildUnit = function(factoryId, type) {
+        if (!this.isFactory(factoryId)) {
+            this.events().ERROR_RAISED.publish("EntityIsNoFactory");
+        }
+        var factoryData = this.gec(factoryId, cwt.FactoryCmp);
+        if (factoryData.builds.indexOf(type) == -1) {
+            this.events().ERROR_RAISED.publish("GivenTypeIsNotProcuceAble");
+        }
+        var factoryPos = this.gec(factoryId, cwt.Positionable);
+        var factoryOwner = this.gec(factoryId, cwt.OwnableCmp);
+        var unitEntity = this.entityManager().acquireEntity();
+        var unitPos = this.aec(unitEntity, cwt.Positionable);
+        var unitOwner = this.aec(unitEntity, cwt.OwnableCmp);
+        var typeComponents = this.entityManager().getEntityComponents(type);
+        for (var i = 0; i < typeComponents.length; i++) {
+            this.entityManager().attachEntityComponent(unitEntity, typeComponents[i]);
+        }
+        unitPos.x = factoryPos.x;
+        unitPos.y = factoryPos.y;
+        unitOwner.owner = factoryOwner.owner;
+        this.events().UNIT_PRODUCED.publish(unitEntity, type, unitPos.x, unitPos.y);
     };
 }, {}, {});
