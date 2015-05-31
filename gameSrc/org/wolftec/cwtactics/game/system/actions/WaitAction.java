@@ -9,7 +9,7 @@ import org.wolftec.cwtactics.game.system.ISystem;
 public class WaitAction implements ISystem {
 
   @Override
-  public void onInit() {
+  public void onConstruction() {
 
     events().CLICK_ON_TILE.subscribe((tile, property, unit) -> {
       if (property == null && unit == null) {

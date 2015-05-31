@@ -7,16 +7,16 @@ import org.wolftec.cwtactics.game.system.ISystem;
 public class PlayerSys implements ISystem {
 
   @Override
-  public void onInit() {
+  public void onConstruction() {
+    events().UNIT_DESTROYED.subscribe(this::unitDestructs);
+    events().UNIT_CREATED.subscribe(this::unitCreates);
+  }
 
-    events().UNIT_DESTROYED.subscribe((unit) -> {
-      OwnableCmp ownC = entityManager().getEntityComponent(unit, OwnableCmp.class);
-      entityManager().getEntityComponent(ownC.owner, Player.class).numOfUnits--;
-    });
+  public void unitCreates(String unit) {
+    gec(gec(unit, OwnableCmp.class).owner, Player.class).numOfUnits++;
+  }
 
-    events().UNIT_CREATED.subscribe((unit) -> {
-      OwnableCmp ownC = entityManager().getEntityComponent(unit, OwnableCmp.class);
-      entityManager().getEntityComponent(ownC.owner, Player.class).numOfUnits++;
-    });
+  public void unitDestructs(String unit) {
+    gec(gec(unit, OwnableCmp.class).owner, Player.class).numOfUnits--;
   }
 }

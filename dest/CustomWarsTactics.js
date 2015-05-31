@@ -401,6 +401,30 @@ stjs.extend(cwt.Observerable1, null, [], function(constructor, prototype) {
     };
 }, {observers: {name: "Array", arguments: [{name: "Callback1", arguments: ["A"]}]}}, {});
 stjs.ns("cwt");
+cwt.Observerable0 = function() {
+    this.observers = [];
+};
+stjs.extend(cwt.Observerable0, null, [], function(constructor, prototype) {
+    prototype.observers = null;
+    prototype.subscribe = function(handler) {
+        this.observers.push(handler);
+    };
+    prototype.unsubscribe = function(handler) {
+         while (true){
+            var index = this.observers.indexOf(handler);
+            if (index == -1) {
+                return;
+            }
+            this.observers.splice(index, 1);
+        }
+    };
+    prototype.publish = function() {
+        for (var i = 0; i < this.observers.length; i++) {
+            this.observers[i]();
+        }
+    };
+}, {observers: {name: "Array", arguments: ["Callback0"]}}, {});
+stjs.ns("cwt");
 cwt.GameModeCmp = function() {};
 stjs.extend(cwt.GameModeCmp, null, [], function(constructor, prototype) {
     constructor.GameMode = stjs.enumeration("AW1", "AW2");
@@ -1462,6 +1486,7 @@ stjs.ns("cwt");
 cwt.SystemEvents = function() {};
 stjs.extend(cwt.SystemEvents, null, [cwt.ConstructedClass], function(constructor, prototype) {
     prototype.INIT_ENGINE = null;
+    prototype.FLUSHED_ACTION = null;
     prototype.INPUT_ACTION = null;
     prototype.INPUT_CANCEL = null;
     /**
@@ -1505,8 +1530,9 @@ stjs.extend(cwt.SystemEvents, null, [cwt.ConstructedClass], function(constructor
         this.INPUT_ACTION = new cwt.Observerable1();
         this.INPUT_CANCEL = new cwt.Observerable1();
         this.INIT_ENGINE = new cwt.Observerable1();
+        this.FLUSHED_ACTION = new cwt.Observerable0();
     };
-}, {INIT_ENGINE: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, INPUT_ACTION: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, INPUT_CANCEL: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, CLICK_ON_TILE: {name: "cwt.Observerable3", arguments: [null, null, null]}, INVOKE_ACTION: {name: "cwt.Observerable4", arguments: [null, null, null, null]}, OBJECT_WAITS: {name: "cwt.Observerable1", arguments: [null]}, ERROR_RAISED: {name: "cwt.Observerable1", arguments: [null]}, FRAME_TICK: {name: "cwt.Observerable1", arguments: [null]}, TURN_STARTS: {name: "cwt.Observerable2", arguments: [null, null]}, WEATHER_CHANGES: {name: "cwt.Observerable2", arguments: [null, null]}, WEATHER_CHANGED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_HEALED: {name: "cwt.Observerable2", arguments: [null, null]}, UNIT_DAMAGED: {name: "cwt.Observerable2", arguments: [null, null]}, INFLICTS_DAMAGE: {name: "cwt.Observerable3", arguments: [null, null, null]}, UNIT_CREATED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_DESTROYED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_MOVED: {name: "cwt.Observerable4", arguments: [null, null, null, {name: "Array", arguments: [null]}]}, PLAYER_GOLD_CHANGES: {name: "cwt.Observerable2", arguments: [null, null]}, UNIT_PRODUCED: {name: "cwt.Observerable4", arguments: [null, null, null, null]}}, {});
+}, {INIT_ENGINE: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, FLUSHED_ACTION: "cwt.Observerable0", INPUT_ACTION: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, INPUT_CANCEL: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, CLICK_ON_TILE: {name: "cwt.Observerable3", arguments: [null, null, null]}, INVOKE_ACTION: {name: "cwt.Observerable4", arguments: [null, null, null, null]}, OBJECT_WAITS: {name: "cwt.Observerable1", arguments: [null]}, ERROR_RAISED: {name: "cwt.Observerable1", arguments: [null]}, FRAME_TICK: {name: "cwt.Observerable1", arguments: [null]}, TURN_STARTS: {name: "cwt.Observerable2", arguments: [null, null]}, WEATHER_CHANGES: {name: "cwt.Observerable2", arguments: [null, null]}, WEATHER_CHANGED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_HEALED: {name: "cwt.Observerable2", arguments: [null, null]}, UNIT_DAMAGED: {name: "cwt.Observerable2", arguments: [null, null]}, INFLICTS_DAMAGE: {name: "cwt.Observerable3", arguments: [null, null, null]}, UNIT_CREATED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_DESTROYED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_MOVED: {name: "cwt.Observerable4", arguments: [null, null, null, {name: "Array", arguments: [null]}]}, PLAYER_GOLD_CHANGES: {name: "cwt.Observerable2", arguments: [null, null]}, UNIT_PRODUCED: {name: "cwt.Observerable4", arguments: [null, null, null, null]}}, {});
 stjs.ns("cwt");
 cwt.UnitAssetLoader = function() {};
 stjs.extend(cwt.UnitAssetLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
@@ -2021,9 +2047,11 @@ cwt.WaitAction = function() {};
 stjs.extend(cwt.WaitAction, null, [cwt.ISystem], function(constructor, prototype) {
     prototype.onInit = function() {
         this.events().CLICK_ON_TILE.subscribe(stjs.bind(this, function(tile, property, unit) {
-            var entry = this.gec("MENU", cwt.MenuCmp).entries[0];
-            entry.enabled = true;
-            entry.key = cwt.ClassUtil.getClassName(cwt.WaitAction);
+            if (property == null && unit == null) {
+                var entry = this.gec("MENU", cwt.MenuCmp).entries[0];
+                entry.enabled = true;
+                entry.key = cwt.ClassUtil.getClassName(cwt.WaitAction);
+            }
         }));
         this.events().INVOKE_ACTION.subscribe(stjs.bind(this, function(action, p1, p2, p3) {
             if (action == cwt.ClassUtil.getClassName(cwt.WaitAction)) {
@@ -2080,6 +2108,10 @@ stjs.extend(cwt.TypeSys, null, [cwt.ISystem, cwt.ConstructedClass], function(con
         this.parseTypeComponents(this.entityManager().acquireEntityWithId(id), data, this.requiredUnitComponents, this.optionalUnitComponents);
     };
     prototype.parseTypeComponents = function(entityId, data, requiredComponents, optionalComponents) {
+        if (entityId == null) {
+            this.events().ERROR_RAISED.publish("IllegalDatasheetID");
+            return;
+        }
         try {
             var solvedRequired = [];
             var dataKeys = cwt.JsUtil.objectKeys(data);
@@ -2145,8 +2177,11 @@ stjs.ns("cwt");
 cwt.MenuSys = function() {};
 stjs.extend(cwt.MenuSys, null, [cwt.ISystem], function(constructor, prototype) {
     prototype.onInit = function() {
-        this.entityManager().acquireEntityWithId("MENU");
-        this.entityManager().acquireEntityComponent("MENU", cwt.MenuCmp);
+        this.aec(this.entityManager().acquireEntityWithId("MENU"), cwt.MenuCmp);
+        this.events().FLUSHED_ACTION.subscribe(stjs.bind(this, "onFlushedAction"));
+    };
+    prototype.onFlushedAction = function() {
+        var menu = this.gec("MENU", cwt.MenuCmp);
     };
 }, {}, {});
 stjs.ns("cwt");

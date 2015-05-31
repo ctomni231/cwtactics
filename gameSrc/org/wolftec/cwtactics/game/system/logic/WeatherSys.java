@@ -8,8 +8,8 @@ import org.wolftec.cwtactics.game.system.ISystem;
 public class WeatherSys implements ISystem {
 
   @Override
-  public void onInit() {
-    events().WEATHER_CHANGES.subscribe((weather, days) -> changeWeather(weather, days));
+  public void onConstruction() {
+    events().WEATHER_CHANGES.subscribe(this::changeWeather);
   }
 
   private void changeWeather(String weather, int duration) {

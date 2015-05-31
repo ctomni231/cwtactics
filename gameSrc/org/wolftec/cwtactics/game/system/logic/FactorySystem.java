@@ -10,12 +10,12 @@ import org.wolftec.cwtactics.game.system.ISystem;
 public class FactorySystem implements ISystem {
 
   @Override
-  public void onInit() {
+  public void onConstruction() {
 
   }
 
   public boolean isFactory(String factoryId) {
-    return entityManager().hasEntityComponent(factoryId, FactoryCmp.class);
+    return gec(factoryId, FactoryCmp.class) != null;
   }
 
   /**
@@ -34,6 +34,8 @@ public class FactorySystem implements ISystem {
     if (factoryData.builds.indexOf(type) == -1) {
       events().ERROR_RAISED.publish("GivenTypeIsNotProcuceAble");
     }
+
+    // TODO way too much coupling here :P
 
     Positionable factoryPos = gec(factoryId, Positionable.class);
     OwnableCmp factoryOwner = gec(factoryId, OwnableCmp.class);

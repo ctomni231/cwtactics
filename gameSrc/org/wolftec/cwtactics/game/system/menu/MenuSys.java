@@ -6,11 +6,12 @@ import org.wolftec.cwtactics.game.system.ISystem;
 public class MenuSys implements ISystem {
 
   @Override
-  public void onInit() {
-    aec(entityManager().acquireEntityWithId("MENU"), MenuCmp.class);
+  public void onConstruction() {
 
-    events().FLUSHED_ACTION.subscribe(() -> {
-    });
+    aewid("MENU");
+    aec("MENU", MenuCmp.class);
+
+    events().FLUSHED_ACTION.subscribe(this::onFlushedAction);
   }
 
   public void onFlushedAction() {

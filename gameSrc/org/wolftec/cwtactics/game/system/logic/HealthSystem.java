@@ -6,12 +6,19 @@ import org.wolftec.cwtactics.game.system.ISystem;
 public class HealthSystem implements ISystem {
 
   @Override
-  public void onInit() {
-    events().INFLICTS_DAMAGE.subscribe((att, def, damage) -> damageEntity(att, def, damage));
+  public void onConstruction() {
+    events().INFLICTS_DAMAGE.subscribe(this::damageEntity);
   }
 
+  /**
+   * Damages a defender entity with a given amount of damage.
+   * 
+   * @param attacker
+   * @param defender
+   * @param damage
+   */
   public void damageEntity(String attacker, String defender, Integer damage) {
-    HealthComponent hpC = gec(attacker, HealthComponent.class);
+    HealthComponent hpC = gec(defender, HealthComponent.class);
 
     hpC.hp -= damage;
     if (hpC.hp < 0) {
