@@ -8,7 +8,8 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.components.IEntityComponent;
+import org.wolftec.cwtactics.game.IEntityComponent;
+import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.data.BuyableCmp;
 import org.wolftec.cwtactics.game.components.data.DirectFighting;
 import org.wolftec.cwtactics.game.components.data.FuelDrainerCmp;
@@ -24,7 +25,6 @@ import org.wolftec.cwtactics.game.components.data.SupplierCmp;
 import org.wolftec.cwtactics.game.components.data.TransportCmp;
 import org.wolftec.cwtactics.game.components.data.VisionerCmp;
 import org.wolftec.cwtactics.game.components.objects.CapturableCmp;
-import org.wolftec.cwtactics.game.system.ISystem;
 
 public class TypeSys implements ISystem, ConstructedClass {
 

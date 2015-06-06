@@ -1,9 +1,9 @@
 package org.wolftec.cwtactics.game.system.logic;
 
 import org.wolftec.cwtactics.game.EntityId;
+import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.data.WeatherCmp;
 import org.wolftec.cwtactics.game.components.objects.WeatherDurationCmp;
-import org.wolftec.cwtactics.game.system.ISystem;
 
 public class WeatherSys implements ISystem {
 

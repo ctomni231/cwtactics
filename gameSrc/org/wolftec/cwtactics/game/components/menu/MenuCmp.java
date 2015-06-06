@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.game.components.menu;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.SyntheticType;
-import org.wolftec.cwtactics.game.components.IEntityComponent;
+import org.wolftec.cwtactics.game.IEntityComponent;
 
 public class MenuCmp implements IEntityComponent {
 

@@ -77,6 +77,11 @@ public class Cwt extends Playground implements ConstructedClass {
   }
 
   @Override
+  public void mousedown(MouseEvent ev) {
+    ConstructedFactory.getObject(SystemEvents.class).MOUSE_CLICK.publish(ev.x, ev.y, "LEFT");
+  }
+
+  @Override
   public void error(String msg) {
     warn("Got an error: " + msg);
     ConstructedFactory.getObject(ErrorScreen.class).errorMsg = msg;

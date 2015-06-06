@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.components;
+package org.wolftec.cwtactics.game;
 
 /**
  * A flyweight component is a component which is shared between several

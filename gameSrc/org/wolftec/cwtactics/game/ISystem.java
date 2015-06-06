@@ -1,10 +1,9 @@
-package org.wolftec.cwtactics.game.system;
+package org.wolftec.cwtactics.game;
 
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.components.ConstructedFactory;
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.components.IEntityComponent;
 import org.wolftec.cwtactics.game.components.data.DataType;
+import org.wolftec.cwtactics.game.system.SystemEvents;
 
 public interface ISystem extends ConstructedClass {
 
@@ -22,6 +21,11 @@ public interface ISystem extends ConstructedClass {
 
   default <T extends IEntityComponent> T aec(String id, Class<T> componentClass) {
     return entityManager().acquireEntityComponent(id, componentClass);
+  }
+
+  default <T extends IEvent> T publish(Class<T> eventClass) {
+    // TODO
+    return null;
   }
 
   /**

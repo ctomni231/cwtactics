@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.system.menu;
 
+import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.menu.MenuCmp;
-import org.wolftec.cwtactics.game.system.ISystem;
 
 public class MenuSys implements ISystem {
 

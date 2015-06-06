@@ -10,8 +10,6 @@ import org.stjs.javascript.functions.Function1;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.components.IEntityComponent;
-import org.wolftec.cwtactics.game.components.IFlyweightComponent;
 
 public class EntityManager implements ConstructedClass {
 

@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.system.logic;
 
-import org.wolftec.cwtactics.game.system.ISystem;
+import org.wolftec.cwtactics.game.ISystem;
 
 public class BattleSystem implements ISystem {
 

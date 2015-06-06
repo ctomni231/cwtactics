@@ -4,6 +4,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.playground.Playground;
+import org.wolftec.cwtactics.game.ISystem;
 
 public class MapRendererSystem implements ISystem, ConstructedClass {
 

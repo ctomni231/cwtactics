@@ -1,11 +1,11 @@
 package org.wolftec.cwtactics.game.system.logic;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwtactics.game.components.IEntityComponent;
+import org.wolftec.cwtactics.game.IEntityComponent;
+import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.data.FactoryCmp;
 import org.wolftec.cwtactics.game.components.objects.OwnableCmp;
 import org.wolftec.cwtactics.game.components.objects.Positionable;
-import org.wolftec.cwtactics.game.system.ISystem;
 
 public class FactorySystem implements ISystem {
 

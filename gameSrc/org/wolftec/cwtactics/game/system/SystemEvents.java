@@ -1,24 +1,22 @@
 package org.wolftec.cwtactics.game.system;
 
 import org.stjs.javascript.Array;
+import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwtactics.engine.components.ConstructedClass;
+import org.wolftec.cwtactics.engine.event.Observerable;
 import org.wolftec.cwtactics.engine.event.Observerable0;
 import org.wolftec.cwtactics.engine.event.Observerable1;
 import org.wolftec.cwtactics.engine.event.Observerable2;
 import org.wolftec.cwtactics.engine.event.Observerable3;
 import org.wolftec.cwtactics.engine.event.Observerable4;
 import org.wolftec.cwtactics.engine.playground.Playground;
+import org.wolftec.cwtactics.engine.util.JsUtil;
 
 public class SystemEvents implements ConstructedClass {
 
   public Observerable1<Playground> INIT_ENGINE;
-
   public Observerable0 FLUSHED_ACTION;
-
-  // -------------------- USER INTERACTION --------------------
-
   public Observerable1<Playground> INPUT_ACTION;
-
   public Observerable1<Playground> INPUT_CANCEL;
 
   /**
@@ -26,24 +24,30 @@ public class SystemEvents implements ConstructedClass {
    */
   public Observerable3<String, String, String> CLICK_ON_TILE;
 
-  // ----------------------------------------------------------
-
-  // -------------------- ACTIONS --------------------
-
   public Observerable4<String, String, String, String> INVOKE_ACTION;
 
   public Observerable1<String> OBJECT_WAITS;
-
-  // -------------------------------------------------
 
   public Observerable1<String> ERROR_RAISED;
 
   public Observerable1<Integer> FRAME_TICK;
 
+  public Observerable3<Integer, Integer, String> MOUSE_CLICK;
+
+  public Observerable2<Integer, Integer> SET_CURSOR;
+
+  public Observerable0 CURSOR_ACTION;
+
   /**
    * (player, turnNumber)
    */
   public Observerable2<Integer, Integer> TURN_STARTS;
+
+  public Observerable0 TURN_ENDS;
+
+  public Observerable0 GAME_STARTS;
+
+  public Observerable0 GAME_ENDS;
 
   public Observerable2<String, Integer> WEATHER_CHANGES;
 
@@ -70,25 +74,21 @@ public class SystemEvents implements ConstructedClass {
 
   @Override
   public void onConstruction() {
-    ERROR_RAISED = new Observerable1<String>();
-    FRAME_TICK = new Observerable1<Integer>();
-    UNIT_HEALED = new Observerable2<String, Integer>();
-    UNIT_DAMAGED = new Observerable2<String, Integer>();
-    INFLICTS_DAMAGE = new Observerable3<String, String, Integer>();
-    UNIT_CREATED = new Observerable1<String>();
-    UNIT_DESTROYED = new Observerable1<String>();
-    UNIT_MOVED = new Observerable4<String, Integer, Integer, Array<Integer>>();
-    PLAYER_GOLD_CHANGES = new Observerable2<String, Integer>();
-    UNIT_PRODUCED = new Observerable4<String, String, Integer, Integer>();
+    constructEvents();
+  }
 
-    WEATHER_CHANGED = new Observerable1<String>();
-    WEATHER_CHANGES = new Observerable2<String, Integer>();
+  private void constructEvents() {
+    Array<String> eventNames = JsUtil.objectKeys(JSObjectAdapter.$properties(this));
+    for (int i = 0; i < eventNames.$length(); i++) {
+      String eventName = eventNames.$get(i);
 
-    INPUT_ACTION = new Observerable1<Playground>();
-    INPUT_CANCEL = new Observerable1<Playground>();
+      if (eventName == "onConstruction") {
+        continue;
+      }
 
-    INIT_ENGINE = new Observerable1<Playground>();
-
-    FLUSHED_ACTION = new Observerable0();
+      // we use the generic Observerable class here because this one supports
+      // zero to n arguments
+      JSObjectAdapter.$put(this, eventName, new Observerable());
+    }
   }
 }

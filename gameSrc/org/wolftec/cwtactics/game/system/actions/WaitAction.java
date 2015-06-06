@@ -1,10 +1,10 @@
 package org.wolftec.cwtactics.game.system.actions;
 
 import org.wolftec.cwtactics.engine.util.ClassUtil;
+import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.data.SingleUse;
 import org.wolftec.cwtactics.game.components.menu.MenuCmp;
 import org.wolftec.cwtactics.game.components.menu.MenuCmp.MenuEntry;
-import org.wolftec.cwtactics.game.system.ISystem;
 
 public class WaitAction implements ISystem {
 
