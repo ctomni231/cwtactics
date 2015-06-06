@@ -10,21 +10,21 @@ import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.IEntityComponent;
 import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.components.data.BuyableCmp;
-import org.wolftec.cwtactics.game.components.data.DirectFighting;
+import org.wolftec.cwtactics.game.battle.DirectFighting;
+import org.wolftec.cwtactics.game.battle.IndirectFighting;
+import org.wolftec.cwtactics.game.battle.MainWeaponDamageMap;
+import org.wolftec.cwtactics.game.battle.SecondaryWeaponDamageMap;
 import org.wolftec.cwtactics.game.components.data.FuelDrainerCmp;
 import org.wolftec.cwtactics.game.components.data.HidableCmp;
-import org.wolftec.cwtactics.game.components.data.IndirectFighting;
-import org.wolftec.cwtactics.game.components.data.MainWeaponDamageMap;
 import org.wolftec.cwtactics.game.components.data.MovingAbilityCmp;
 import org.wolftec.cwtactics.game.components.data.MovingCostsCmp;
 import org.wolftec.cwtactics.game.components.data.RepairerCmp;
-import org.wolftec.cwtactics.game.components.data.SecondaryWeaponDamageMap;
 import org.wolftec.cwtactics.game.components.data.SuicideCmp;
 import org.wolftec.cwtactics.game.components.data.SupplierCmp;
 import org.wolftec.cwtactics.game.components.data.TransportCmp;
 import org.wolftec.cwtactics.game.components.data.VisionerCmp;
 import org.wolftec.cwtactics.game.components.objects.CapturableCmp;
+import org.wolftec.cwtactics.game.factory.BuyableComponent;
 
 public class TypeSys implements ISystem, ConstructedClass {
 
@@ -50,7 +50,7 @@ public class TypeSys implements ISystem, ConstructedClass {
     optionalUnitComponents.push(TransportCmp.class);
     optionalUnitComponents.push(DirectFighting.class);
     optionalUnitComponents.push(IndirectFighting.class);
-    optionalUnitComponents.push(BuyableCmp.class);
+    optionalUnitComponents.push(BuyableComponent.class);
     optionalUnitComponents.push(CapturableCmp.class);
     optionalUnitComponents.push(MainWeaponDamageMap.class);
     optionalUnitComponents.push(SecondaryWeaponDamageMap.class);
