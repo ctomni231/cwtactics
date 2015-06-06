@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.system.logic;
 
 import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.components.objects.OwnableCmp;
 import org.wolftec.cwtactics.game.components.objects.Player;
+import org.wolftec.cwtactics.game.owner.RelatedComponent;
 
 public class PlayerSys implements ISystem {
 
@@ -13,10 +13,10 @@ public class PlayerSys implements ISystem {
   }
 
   public void unitCreates(String unit) {
-    gec(gec(unit, OwnableCmp.class).owner, Player.class).numOfUnits++;
+    gec(gec(unit, RelatedComponent.class).owner, Player.class).numOfUnits++;
   }
 
   public void unitDestructs(String unit) {
-    gec(gec(unit, OwnableCmp.class).owner, Player.class).numOfUnits--;
+    gec(gec(unit, RelatedComponent.class).owner, Player.class).numOfUnits--;
   }
 }

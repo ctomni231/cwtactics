@@ -4,7 +4,7 @@ import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.event.ActionInvokedEvent;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.ObjectChangeTypeEvent;
-import org.wolftec.cwtactics.game.event.OwnerEvent;
+import org.wolftec.cwtactics.game.event.OwnerChangeEvent;
 import org.wolftec.cwtactics.game.event.PositionEvent;
 import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
 import org.wolftec.cwtactics.game.event.UnitProducedEvent;
@@ -18,8 +18,8 @@ public class FactorySystem implements ISystem, ActionInvokedEvent {
 
     String unit = entityManager().acquireEntity();
 
-    publish(ObjectChangeTypeEvent.class).onObjectGetsType(type);
-    publish(OwnerEvent.class).onUnitGetsPropertyOwner(factory);
+    publish(ObjectChangeTypeEvent.class).onObjectGetsType(unit, type);
+    publish(OwnerChangeEvent.class).onUnitGetsPropertyOwner(unit, factory);
     publish(PositionEvent.class).onUnitPlacedAtProperty(unit, factory);
     publish(UnitCreatedEvent.class).onUnitCreated(unit);
 

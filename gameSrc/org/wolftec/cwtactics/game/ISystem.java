@@ -42,6 +42,16 @@ public interface ISystem extends ConstructedClass {
     return entityManager().getEntityComponent(id, clazz);
   }
 
+  default <T extends IEntityComponent> T gogec(String id, Class<T> clazz) {
+    T component;
+
+    component = entityManager().getEntityComponent(id, clazz);
+    if (component == null) {
+      component = entityManager().acquireEntityComponent(id, clazz);
+    }
+    return component;
+  }
+
   default <T extends IEntityComponent> T gedtc(String id, Class<T> clazz) {
     EntityManager manager = entityManager();
     return manager.getEntityComponent(manager.getEntityComponent(id, DataType.class).typeEntity, clazz);

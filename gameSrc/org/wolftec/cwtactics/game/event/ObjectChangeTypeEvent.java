@@ -4,7 +4,5 @@ import org.wolftec.cwtactics.game.IEvent;
 
 public interface ObjectChangeTypeEvent extends IEvent {
 
-  void onObjectGetsType(String type);
-
-  void onObjectChangeType(String type);
+  void onObjectGetsType(String object, String type);
 }

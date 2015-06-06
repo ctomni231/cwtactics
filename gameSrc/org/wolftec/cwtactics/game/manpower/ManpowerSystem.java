@@ -1,9 +1,9 @@
 package org.wolftec.cwtactics.game.manpower;
 
 import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.components.objects.OwnableCmp;
 import org.wolftec.cwtactics.game.event.GameStartEvent;
 import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
+import org.wolftec.cwtactics.game.owner.RelatedComponent;
 
 /**
  * The {@link ManpowerSystem} gives players the restriction to pay an additional
@@ -21,6 +21,6 @@ public class ManpowerSystem implements ISystem, UnitCreatedEvent, GameStartEvent
 
   @Override
   public void onUnitCreated(String unitEntity) {
-    gec(gec(unitEntity, OwnableCmp.class).owner, ManpowerComponent.class).manpower -= 1;
+    gec(gec(unitEntity, RelatedComponent.class).owner, ManpowerComponent.class).manpower -= 1;
   }
 }
