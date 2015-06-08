@@ -14,7 +14,7 @@ import org.wolftec.cwtactics.game.battle.DirectFighting;
 import org.wolftec.cwtactics.game.battle.IndirectFighting;
 import org.wolftec.cwtactics.game.battle.MainWeaponDamageMap;
 import org.wolftec.cwtactics.game.battle.SecondaryWeaponDamageMap;
-import org.wolftec.cwtactics.game.components.BuyableComponent;
+import org.wolftec.cwtactics.game.components.Buyable;
 import org.wolftec.cwtactics.game.components.old.CapturableCmp;
 import org.wolftec.cwtactics.game.components.old.FuelDrainerCmp;
 import org.wolftec.cwtactics.game.components.old.HidableCmp;
@@ -50,7 +50,7 @@ public class TypeSys implements ISystem, ConstructedClass {
     optionalUnitComponents.push(TransportCmp.class);
     optionalUnitComponents.push(DirectFighting.class);
     optionalUnitComponents.push(IndirectFighting.class);
-    optionalUnitComponents.push(BuyableComponent.class);
+    optionalUnitComponents.push(Buyable.class);
     optionalUnitComponents.push(CapturableCmp.class);
     optionalUnitComponents.push(MainWeaponDamageMap.class);
     optionalUnitComponents.push(SecondaryWeaponDamageMap.class);

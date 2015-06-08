@@ -1,5 +1,5 @@
 package org.wolftec.cwtactics.game.components;
 
-public class MovableComponent {
+public class Movable {
   public int range;
 }

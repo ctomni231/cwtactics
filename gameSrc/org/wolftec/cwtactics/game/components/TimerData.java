@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.game.components;
 
 import org.wolftec.cwtactics.game.IEntityComponent;
 
-public class GameTimeCompnent implements IEntityComponent {
+public class TimerData implements IEntityComponent {
 
   public int turnTime;
   public int gameTime;

@@ -2,6 +2,6 @@ package org.wolftec.cwtactics.game.components;
 
 import org.wolftec.cwtactics.game.IEntityComponent;
 
-public class WeatherDataComponent implements IEntityComponent {
-  public boolean defaultWeather;
+public class Buyable implements IEntityComponent {
+  public int cost;
 }

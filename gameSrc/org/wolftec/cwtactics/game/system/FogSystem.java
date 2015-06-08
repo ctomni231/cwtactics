@@ -5,8 +5,8 @@ import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.IEntityComponent;
 import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.components.PositionComponent;
-import org.wolftec.cwtactics.game.components.RelatedComponent;
+import org.wolftec.cwtactics.game.components.Position;
+import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Vision;
 import org.wolftec.cwtactics.game.components.Turn;
 import org.wolftec.cwtactics.game.event.FogEvent;
@@ -28,7 +28,7 @@ public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, 
   public void onUnitProduced(String factory, String unit, String type) {
     if (!isTurnOwnerObject(unit)) return;
 
-    PositionComponent pos = em().getComponent(unit, PositionComponent.class);
+    Position pos = em().getComponent(unit, Position.class);
     Vision vision = em().getComponent(unit, Vision.class);
 
     changeVision(pos.x, pos.y, vision.range, +1);
@@ -38,7 +38,7 @@ public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, 
   public void onUnitDestroyed(String unit) {
     if (!isTurnOwnerObject(unit)) return;
 
-    PositionComponent pos = em().getComponent(unit, PositionComponent.class);
+    Position pos = em().getComponent(unit, Position.class);
     Vision vision = em().getComponent(unit, Vision.class);
 
     changeVision(pos.x, pos.y, vision.range, -1);
@@ -74,6 +74,6 @@ public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, 
   }
 
   private boolean isTurnOwnerObject(String unit) {
-    return (em().getComponent(unit, RelatedComponent.class).owner == em().getComponent(EntityId.GAME_ROUND, Turn.class).owner);
+    return (em().getComponent(unit, Owner.class).owner == em().getComponent(EntityId.GAME_ROUND, Turn.class).owner);
   }
 }

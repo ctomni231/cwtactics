@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.game.system.old;
 
 import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.Player;
-import org.wolftec.cwtactics.game.components.RelatedComponent;
+import org.wolftec.cwtactics.game.components.Owner;
 
 public class PlayerSys implements ISystem {
 
@@ -13,10 +13,10 @@ public class PlayerSys implements ISystem {
   }
 
   public void unitCreates(String unit) {
-    gec(gec(unit, RelatedComponent.class).owner, Player.class).numOfUnits++;
+    gec(gec(unit, Owner.class).owner, Player.class).numOfUnits++;
   }
 
   public void unitDestructs(String unit) {
-    gec(gec(unit, RelatedComponent.class).owner, Player.class).numOfUnits--;
+    gec(gec(unit, Owner.class).owner, Player.class).numOfUnits--;
   }
 }

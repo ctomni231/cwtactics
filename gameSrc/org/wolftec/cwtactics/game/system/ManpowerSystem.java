@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.system;
 
 import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.components.ManpowerComponent;
-import org.wolftec.cwtactics.game.components.RelatedComponent;
+import org.wolftec.cwtactics.game.components.Manpower;
+import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.event.GameStartEvent;
 import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
 
@@ -22,6 +22,6 @@ public class ManpowerSystem implements ISystem, UnitCreatedEvent, GameStartEvent
 
   @Override
   public void onUnitCreated(String unitEntity) {
-    gec(gec(unitEntity, RelatedComponent.class).owner, ManpowerComponent.class).manpower -= 1;
+    em().getComponent(em().getComponent(unitEntity, Owner.class).owner, Manpower.class).manpower--;
   }
 }

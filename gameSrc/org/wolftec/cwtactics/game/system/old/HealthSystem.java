@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.system.old;
 
 import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.components.HealthComponent;
+import org.wolftec.cwtactics.game.components.Living;
 
 public class HealthSystem implements ISystem {
 
@@ -18,7 +18,7 @@ public class HealthSystem implements ISystem {
    * @param damage
    */
   public void damageEntity(String attacker, String defender, Integer damage) {
-    HealthComponent hpC = gec(defender, HealthComponent.class);
+    Living hpC = gec(defender, Living.class);
 
     hpC.hp -= damage;
     if (hpC.hp < 0) {
@@ -37,7 +37,7 @@ public class HealthSystem implements ISystem {
    *          amount of healing in health
    */
   public void healEntity(String id, int amount) {
-    HealthComponent hpC = gec(id, HealthComponent.class);
+    Living hpC = gec(id, Living.class);
 
     hpC.hp += amount;
     if (hpC.hp > 99) {

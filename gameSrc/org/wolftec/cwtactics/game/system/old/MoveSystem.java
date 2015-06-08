@@ -2,13 +2,13 @@ package org.wolftec.cwtactics.game.system.old;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.components.PositionComponent;
+import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.components.old.MovingAbilityCmp;
 
 public class MoveSystem implements ISystem {
 
   public void moveEntity(String id, Array<Integer> path) {
-    PositionComponent posC = entityManager().getComponent(id, PositionComponent.class);
+    Position posC = entityManager().getComponent(id, Position.class);
     MovingAbilityCmp moveableC = entityManager().getComponent(id, MovingAbilityCmp.class);
 
     int cX = posC.x;
