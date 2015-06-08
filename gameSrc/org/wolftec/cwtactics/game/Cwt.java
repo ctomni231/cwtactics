@@ -10,7 +10,7 @@ import org.wolftec.cwtactics.engine.playground.PlaygroundState;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
 import org.wolftec.cwtactics.game.states.ErrorScreen;
-import org.wolftec.cwtactics.game.system.SystemEvents;
+import org.wolftec.cwtactics.game.system.old.SystemEvents;
 
 public class Cwt extends Playground implements ConstructedClass {
 

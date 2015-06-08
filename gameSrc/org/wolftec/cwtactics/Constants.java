@@ -2,6 +2,8 @@ package org.wolftec.cwtactics;
 
 public class Constants {
 
+  public static final int UNIT_HEALTH = 99;
+
   /**
    * The version of the game build.
    */

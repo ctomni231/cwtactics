@@ -1,12 +1,11 @@
 {
   "ID": "AAIR",
-  "cost": 8000,
-  "range": 6,
-  "movetype": "TANK",
-  "vision": 2,
-  "ammo": 9,
-  "attack": {
-    "main_wp": {
+  "BuyableComponent": {
+    "cost": 8000
+  },
+  "FightingComponent": {
+    "ammo": 9,
+    "mainDamage": {
       "INFT": 105,
       "MECH": 105,
       "RECN": 60,
@@ -29,10 +28,17 @@
       "BKBM": 120
     }
   },
-
-  "assets": {
-    "gfx": "cwt_anim/units/CWT_AAIR.png",
-    "pri_att_sound": "mg.wav",
-    "sec_att_sound": "mg.wav"
+  "MovingCostComponent": "MVTK",
+  "MovableComponent": {
+    "range": 6
+  },
+  "FogRevealingComponent": {
+    "range": 2
+  },
+  "RenderableComponent": {
+    "sprite": "CWT_AAIR"
+  },
+  "NoiseMakingComponent:": {
+    "primaryAttack": "HEAVY_MG"
   }
 }

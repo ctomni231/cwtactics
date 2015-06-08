@@ -15,6 +15,7 @@ public class EntityManager implements ConstructedClass {
 
   // TODO cache old entity arrays ?
 
+  private Map<String, String> entityPrototypes;
   private Map<String, Map<String, IEntityComponent>> entities;
   private int entityIdCounter;
 
@@ -23,6 +24,7 @@ public class EntityManager implements ConstructedClass {
   public EntityManager() {
     entityIdCounter = 0;
     entities = JSCollections.$map();
+    entityPrototypes = JSCollections.$map();
     allSelector = (key) -> {
       return true;
     };
@@ -38,6 +40,7 @@ public class EntityManager implements ConstructedClass {
       return null;
     }
     entities.$put(id, JSCollections.$map());
+    entityPrototypes.$put(id, null);
     return id;
   }
 
@@ -99,6 +102,18 @@ public class EntityManager implements ConstructedClass {
     return components;
   }
 
+  public <T extends IEntityComponent> Array<String> getEntitiesWithComponentType(Class<T> clazz) {
+    Array<String> resultEntities = JSCollections.$array();
+    Array<String> entityNames = JsUtil.objectKeys(entities);
+    for (int i = 0; i < entityNames.$length(); i++) {
+      String entityName = entityNames.$get(i);
+      if (getComponent(entityName, clazz) != null) {
+        resultEntities.push(entityName);
+      }
+    }
+    return resultEntities;
+  }
+
   /**
    * Returns a component of an entity.
    * 
@@ -108,17 +123,35 @@ public class EntityManager implements ConstructedClass {
    *          class of the wanted component
    * @return component object or null
    */
-  public <T extends IEntityComponent> T getEntityComponent(String lId, Class<T> lComponentClass) {
+  public <T extends IEntityComponent> T getComponent(String lId, Class<T> lComponentClass) {
 
     Map<String, IEntityComponent> componentMap = entities.$get(lId);
     String componentName = ClassUtil.getClassName(lComponentClass);
     T component = (T) componentMap.$get(componentName);
 
-    return component == JSGlobal.undefined ? null : component;
+    if (component == JSGlobal.undefined) {
+
+      // we search also in the prototype if possible
+      String proto = entityPrototypes.$get(lId);
+      return proto != JSGlobal.undefined ? getComponent(proto, lComponentClass) : null;
+
+    } else {
+      return component;
+    }
+  }
+
+  public <T extends IEntityComponent> T getNonNullComponent(String lId, Class<T> lComponentClass) {
+    T component;
+
+    component = getComponent(lId, lComponentClass);
+    if (component == null) {
+      component = acquireEntityComponent(lId, lComponentClass);
+    }
+    return component;
   }
 
   public <T extends IEntityComponent> boolean hasEntityComponent(String lId, Class<T> lComponentClass) {
-    return getEntityComponent(lId, lComponentClass) != null;
+    return getComponent(lId, lComponentClass) != null;
   }
 
   /**
@@ -153,5 +186,9 @@ public class EntityManager implements ConstructedClass {
     }
 
     dataCallback.$invoke(JSObjectAdapter.$js("JSON.stringify(data, null, 2)"));
+  }
+
+  public void setEntityPrototype(String entity, String prototype) {
+
   }
 }

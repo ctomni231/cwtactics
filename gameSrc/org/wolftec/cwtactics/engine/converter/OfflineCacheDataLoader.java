@@ -13,9 +13,9 @@ import org.wolftec.cwtactics.engine.localforage.LocalForageConfig;
 import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.Playground.AssetEntry;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.data.ObjectType;
-import org.wolftec.cwtactics.game.service.BrowserService;
-import org.wolftec.cwtactics.game.service.GameDataService;
+import org.wolftec.cwtactics.game.components.old.ObjectType;
+import org.wolftec.cwtactics.game.system.old.BrowserService;
+import org.wolftec.cwtactics.game.system.old.GameDataService;
 
 public class OfflineCacheDataLoader implements ConstructedClass {
   // TODO naming
