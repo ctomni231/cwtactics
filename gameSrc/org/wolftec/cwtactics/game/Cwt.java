@@ -9,20 +9,14 @@ import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.ConstructedFactory;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ClickEvent;
 
 public class Cwt extends Playground implements ConstructedClass {
 
+  private Log log;
   private EntityManager em;
   private EventEmitter ev;
-
-  @Override
-  public String getLoggerName() {
-    // all functions of this class will be called in an object of a different
-    // type after being converted to a playground object
-    // ==> to avoid a "undefined" logger name we going to set a fixed one
-    return ClassUtil.getClassName(Cwt.class);
-  }
 
   @Override
   public void onConstruction() {
@@ -35,14 +29,14 @@ public class Cwt extends Playground implements ConstructedClass {
 
     container = Global.window.document.getElementById("game");
 
-    info("initialize playground engine");
+    log.info("initialize playground engine");
 
     JSObjectAdapter.$put(Global.window, "cwtPly", PlaygroundGlobal.playground(this));
   }
 
   @Override
   public void preload() {
-    loader.on("error", (error) -> error("Failed to load asset => " + error));
+    loader.on("error", (error) -> log.error("Failed to load asset => " + error));
 
     // ConstructedFactory.getObject(SystemEvents.class).ERROR_RAISED.subscribe((error)
     // -> {
@@ -80,11 +74,6 @@ public class Cwt extends Playground implements ConstructedClass {
   }
 
   @Override
-  public void error(String msg) {
-    warn("Got an error: " + msg);
-  }
-
-  @Override
   public void step(int delta) {
   }
 
@@ -105,7 +94,7 @@ public class Cwt extends Playground implements ConstructedClass {
 
   @Override
   public void enterstate(ChangeStateEvent event) {
-    info("enter state " + ClassUtil.getClassName(event.state));
+    log.info("enter state " + ClassUtil.getClassName(event.state));
   }
 
   @Override
@@ -120,6 +109,6 @@ public class Cwt extends Playground implements ConstructedClass {
 
   @Override
   public void leavestate(ChangeStateEvent event) {
-    info("leaving state " + ClassUtil.getClassName(event.state));
+    log.info("leaving state " + ClassUtil.getClassName(event.state));
   }
 }

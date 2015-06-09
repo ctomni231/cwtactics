@@ -7,6 +7,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.Constants;
+import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 
 /**
@@ -41,7 +42,8 @@ public class ConstructedFactory {
     });
 
     injectDependencies(namespace);
-    publischInitEvent();
+    injectConstructedObjects(namespace);
+    publishInitEvent();
   }
 
   private static void injectDependencies(Object namespace) {
@@ -65,7 +67,33 @@ public class ConstructedFactory {
     });
   }
 
-  private static void publischInitEvent() {
+  private static void injectConstructedObjects(Object namespace) {
+    JsUtil.forEachMapValue(instances, (instanceName, instanceObject) -> {
+      Class<?> instanceClass = (Class<?>) JSObjectAdapter.$get(namespace, instanceName);
+      Map<String, Object> instanceDependencies = (Map<String, Object>) JSObjectAdapter.$get(instanceClass, "$typeDescription");
+      checkClassConstructedProperties(namespace, instanceObject, instanceDependencies);
+    });
+  }
+
+  private static void checkClassConstructedProperties(Object namespace, ConstructedClass instance, Map<String, Object> instanceDependencies) {
+    JsUtil.forEachMapValue(instanceDependencies, (property, dependencyName) -> {
+      if (JSGlobal.typeof(dependencyName) == "string") {
+        String dependencyClassName = ((String) dependencyName).replace(Constants.NAMESPACE + ".", "");
+        Class<?> dependencyClass = (Class<?>) JSObjectAdapter.$get(namespace, dependencyClassName);
+        if (dependencyClass != JSGlobal.undefined && JSObjectAdapter.hasOwnProperty(dependencyClass, "$typeDescription")) {
+          Array<Class<?>> interfaces = (Array<Class<?>>) JSObjectAdapter.$get(dependencyClass, "$inherit");
+          if (interfaces.indexOf(ConstructedObject.class) != -1) {
+            Global.console.log("CREATING => " + dependencyClassName + " AS " + property + " IN " + ClassUtil.getClassName(instance));
+            ConstructedObject constructedObject = JSObjectAdapter.$js("new dependencyClass()");
+            constructedObject.onConstruction(instance);
+            JSObjectAdapter.$put(instance, property, constructedObject);
+          }
+        }
+      }
+    });
+  }
+
+  private static void publishInitEvent() {
     JsUtil.forEachMapValue(instances, (componentName, component) -> {
       component.onConstruction();
     });

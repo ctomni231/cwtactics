@@ -1,21 +1,26 @@
 package org.wolftec.cwtactics.game.system;
 
 import org.stjs.javascript.Array;
+import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.Config;
 import org.wolftec.cwtactics.game.components.ValueMetaData;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.GameStartEvent;
 
 public class ConfigSystem implements ISystem, GameStartEvent {
 
+  private Log log;
+  private EntityManager em;
+
   @Override
   public void onGameStart() {
-    info("going to reset all config values");
+    log.info("going to reset all config values");
 
-    Array<String> entities = em().getEntitiesWithComponentType(Config.class);
+    Array<String> entities = em.getEntitiesWithComponentType(Config.class);
     for (int i = 0; i < entities.$length(); i++) {
       String entity = entities.$get(i);
-      em().getComponent(entity, Config.class).value = em().getComponent(entity, ValueMetaData.class).defaultValue;
+      em.getComponent(entity, Config.class).value = em.getComponent(entity, ValueMetaData.class).defaultValue;
     }
   }
 

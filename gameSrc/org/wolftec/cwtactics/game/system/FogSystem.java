@@ -3,6 +3,7 @@ package org.wolftec.cwtactics.game.system;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.game.EntityId;
+import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.IEntityComponent;
 import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.Owner;
@@ -14,6 +15,8 @@ import org.wolftec.cwtactics.game.event.UnitDestroyedEvent;
 import org.wolftec.cwtactics.game.event.UnitProducedEvent;
 
 public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, UnitDestroyedEvent {
+
+  private EntityManager em;
 
   private Array<Array<Integer>> turnOwnerData; // TODO bounds
   private Array<Array<Integer>> clientOwnerData; // TODO bounds
@@ -28,8 +31,8 @@ public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, 
   public void onUnitProduced(String factory, String unit, String type) {
     if (!isTurnOwnerObject(unit)) return;
 
-    Position pos = em().getComponent(unit, Position.class);
-    Vision vision = em().getComponent(unit, Vision.class);
+    Position pos = em.getComponent(unit, Position.class);
+    Vision vision = em.getComponent(unit, Vision.class);
 
     changeVision(turnOwnerData, pos.x, pos.y, vision.range, +1, true);
     changeVision(clientOwnerData, pos.x, pos.y, vision.range, +1, false); // TODO
@@ -39,8 +42,8 @@ public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, 
   public void onUnitDestroyed(String unit) {
     if (!isTurnOwnerObject(unit)) return;
 
-    Position pos = em().getComponent(unit, Position.class);
-    Vision vision = em().getComponent(unit, Vision.class);
+    Position pos = em.getComponent(unit, Position.class);
+    Vision vision = em.getComponent(unit, Vision.class);
 
     changeVision(turnOwnerData, pos.x, pos.y, vision.range, -1, true);
     changeVision(clientOwnerData, pos.x, pos.y, vision.range, +1, false); // TODO
@@ -78,6 +81,6 @@ public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, 
   }
 
   private boolean isTurnOwnerObject(String unit) {
-    return (em().getComponent(unit, Owner.class).owner == em().getComponent(EntityId.GAME_ROUND, Turn.class).owner);
+    return (em.getComponent(unit, Owner.class).owner == em.getComponent(EntityId.GAME_ROUND, Turn.class).owner);
   }
 }

@@ -1,8 +1,10 @@
 package org.wolftec.cwtactics.game.system;
 
 import org.wolftec.cwtactics.game.EntityId;
+import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.TimerData;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.GameEndEvent;
 import org.wolftec.cwtactics.game.event.GameStartEvent;
 import org.wolftec.cwtactics.game.event.NextFrameEvent;
@@ -17,33 +19,36 @@ import org.wolftec.cwtactics.game.event.TurnStartEvent;
  */
 public class GameTimeSystem implements ISystem, NextFrameEvent, GameStartEvent, TurnStartEvent {
 
+  private Log log;
+  private EntityManager em;
+
   @Override
   public void onNextFrame(int delta) {
-    TimerData data = em().getComponent(EntityId.GAME_ROUND, TimerData.class);
+    TimerData data = em.getComponent(EntityId.GAME_ROUND, TimerData.class);
 
     data.gameTime += delta;
     data.turnTime += delta;
 
     if (data.turnTime >= data.turnTimeLimit) {
-      info("ending current turn because turn time limit is reached");
+      log.info("ending current turn because turn time limit is reached");
       publish(TurnEndEvent.class).onTurnEnd();
 
     } else if (data.gameTime >= data.gameTimeLimit) {
-      info("ending game because game time limit is reached");
+      log.info("ending game because game time limit is reached");
       publish(GameEndEvent.class).onGameEnd();
     }
   }
 
   @Override
   public void onGameStart() {
-    TimerData data = em().getComponent(EntityId.GAME_ROUND, TimerData.class);
+    TimerData data = em.getComponent(EntityId.GAME_ROUND, TimerData.class);
     data.gameTime = 0;
     data.turnTime = 0;
   }
 
   @Override
   public void onTurnStart(String player, int turn) {
-    TimerData data = em().getComponent(EntityId.GAME_ROUND, TimerData.class);
+    TimerData data = em.getComponent(EntityId.GAME_ROUND, TimerData.class);
     data.turnTime = 0;
   }
 }

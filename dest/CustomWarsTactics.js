@@ -79,6 +79,11 @@ stjs.extend(cwt.JsUtil, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 stjs.ns("cwt");
+cwt.ConstructedClass = function() {};
+stjs.extend(cwt.ConstructedClass, null, [], function(constructor, prototype) {
+    prototype.onConstruction = function() {};
+}, {}, {});
+stjs.ns("cwt");
 cwt.Color = function() {};
 stjs.extend(cwt.Color, null, [], function(constructor, prototype) {}, {}, {});
 stjs.ns("cwt");
@@ -200,9 +205,6 @@ stjs.extend(cwt.ObjectType, null, [], function(constructor, prototype) {
     prototype.grabDataFromMap = function(data) {};
 }, {}, {});
 stjs.ns("cwt");
-cwt.EntitySerializationUtil = function() {};
-stjs.extend(cwt.EntitySerializationUtil, null, [], null, {}, {});
-stjs.ns("cwt");
 cwt.ClassUtil = function() {};
 stjs.extend(cwt.ClassUtil, null, [], function(constructor, prototype) {
     constructor.getClassName = function(object) {
@@ -215,6 +217,14 @@ stjs.extend(cwt.ClassUtil, null, [], function(constructor, prototype) {
         return (object).constructor;
     };
 }, {}, {});
+stjs.ns("cwt");
+cwt.ConstructedObject = function() {};
+stjs.extend(cwt.ConstructedObject, null, [], function(constructor, prototype) {
+    prototype.onConstruction = function(instance) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.EntitySerializationUtil = function() {};
+stjs.extend(cwt.EntitySerializationUtil, null, [], null, {}, {});
 stjs.ns("cwt");
 cwt.Colors = function() {};
 stjs.extend(cwt.Colors, null, [], function(constructor, prototype) {}, {}, {});
@@ -888,6 +898,82 @@ stjs.extend(cwt.CaptureEvents, null, [cwt.IEvent], function(constructor, prototy
     prototype.onLoweredCapturePoints = function(capturer, property, leftPoints) {};
     prototype.onCapturedProperty = function(capturer, property) {};
 }, {}, {});
+stjs.ns("cwt");
+cwt.UnitAssetLoader = function() {};
+stjs.extend(cwt.UnitAssetLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.defaultFrameData = null;
+    prototype.knownTypeIds = null;
+    prototype.onConstruction = function() {
+        this.knownTypeIds = [];
+    };
+    prototype.loadData = function() {};
+    prototype.createDefaultFrame = function() {
+        var frame = new cwt.CanvasQuery.Atlas();
+        var frames = [];
+        frame.frames = frames;
+        for (var j = 0; j < 9; j++) {
+            var subFrame = new cwt.CanvasQuery.AtlasFrame();
+            subFrame.height = 32;
+            subFrame.width = 32;
+            subFrame.region = [0, 0, 32, 32];
+            subFrame.offset = [0, 0];
+            frames.push(subFrame);
+        }
+        return frame;
+    };
+}, {defaultFrameData: "cwt.CanvasQuery.Atlas", knownTypeIds: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.GameDataService = function() {};
+stjs.extend(cwt.GameDataService, null, [cwt.ConstructedClass], null, {}, {});
+stjs.ns("cwt");
+cwt.ComponentManager = function() {};
+stjs.extend(cwt.ComponentManager, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.getComponents = function(componentClass) {
+        return null;
+    };
+    prototype.getComponent = function(entity, componentClass) {
+        return null;
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.OfflineCacheDataLoader = function() {};
+stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], null, {}, {});
+stjs.ns("cwt");
+cwt.BrowserService = function() {};
+stjs.extend(cwt.BrowserService, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.requestJsonFile = function(path, callback) {};
+    /**
+     *  Invokes a XmlHttpRequest.
+     *  
+     *  @param path
+     *  @param specialType
+     *           null or a special binary response type like array buffer
+     *  @param callback
+     *           callback will be invoked with two parameters => object data and
+     *           error message (both aren't not null at the same time)
+     */
+    prototype.doXmlHttpRequest = function(path, specialType, callback) {
+        var request = new XMLHttpRequest();
+        if (specialType != null) {
+            (request)["responseType"] = specialType;
+        }
+        request.onreadystatechange = function() {
+            if (request.readyState == 4) {
+                if (request.readyState == 4 && request.status == 200) {
+                    if (specialType != null) {
+                        callback((request)["response"], null);
+                    } else {
+                        callback(request.responseText, null);
+                    }
+                } else {
+                    callback(null, request.statusText);
+                }
+            }
+        };
+        request.open("get", path, true);
+        request.send();
+    };
+}, {}, {});
 /**
  *  Image utility class to manipulate images.
  */
@@ -1377,46 +1463,296 @@ stjs.extend(cwt.SuicideType, cwt.ObjectType, [], function(constructor, prototype
     };
 }, {noDamage: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
-cwt.ConstructedClass = function() {};
-stjs.extend(cwt.ConstructedClass, null, [], function(constructor, prototype) {
-    constructor.NAME_UNKNOWN_LOGGER = "UnknownLogger";
-    constructor.PROPERTY_LOGGER_NAME = "__loggerName";
-    prototype.getLoggerName = function() {
-        var name = cwt.ClassUtil.getClassName(this);
-        return name == null ? cwt.ConstructedClass.NAME_UNKNOWN_LOGGER : name;
+cwt.EntityManager = function() {
+    this.entityIdCounter = 0;
+    this.entities = {};
+    this.entityPrototypes = {};
+    this.allSelector = function(key) {
+        return true;
     };
-    prototype.getCachedLoggerName = function() {
-        var loggerName = ((this).constructor)[cwt.ConstructedClass.PROPERTY_LOGGER_NAME];
-        if (loggerName == undefined) {
-            loggerName = this.getLoggerName();
-            if (loggerName.length < cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
-                var missingSpaces = cwt.Constants.LOGGER_CLASS_NAME_LENGTH - loggerName.length;
-                var newName = "";
-                for (var i = 0; i < missingSpaces; i++) {
-                    newName += " ";
-                }
-                loggerName = newName + loggerName;
-            } else if (loggerName.length > cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
-                loggerName = loggerName.substring(0, cwt.Constants.LOGGER_CLASS_NAME_LENGTH);
-            }
-            ((this).constructor)[cwt.ConstructedClass.PROPERTY_LOGGER_NAME] = loggerName;
+};
+stjs.extend(cwt.EntityManager, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.entityPrototypes = null;
+    prototype.entities = null;
+    prototype.entityIdCounter = 0;
+    prototype.allSelector = null;
+    prototype.acquireEntity = function() {
+        this.entityIdCounter++;
+        return this.acquireEntityWithId("E" + (this.entityIdCounter - 1));
+    };
+    prototype.acquireEntityWithId = function(id) {
+        if (id == null || id == undefined || this.entities[id] != undefined) {
+            return null;
         }
-        return loggerName;
+        this.entities[id] = {};
+        this.entityPrototypes[id] = null;
+        return id;
+    };
+    prototype.acquireEntityComponent = function(id, componentClass) {
+        return this.attachEntityComponent(id, new componentClass());
+    };
+    prototype.attachEntityComponent = function(id, component) {
+        var entityMap = this.entities[id];
+        entityMap[cwt.ClassUtil.getClassName(component)] = component;
+        return component;
+    };
+    prototype.detachEntityComponent = function(id, component) {
+        var entityMap = this.entities[id];
+        delete entityMap[cwt.ClassUtil.getClassName(component)];
+    };
+    prototype.detachEntityComponentByClass = function(id, componentClass) {
+        var entityMap = this.entities[id];
+        delete entityMap[cwt.ClassUtil.getClassName(componentClass)];
+    };
+    /**
+     *  Releases an entity. All connected {@link IEntityComponent} objects will be
+     *  detached, cached in a pool and reused with the next acquire call.
+     *  
+     *  <strong>Be aware (!) </strong> that this manager will not pooling
+     *  {@link IEntityComponent} objects which extends the
+     *  {@link IFlyweightComponent} interface. It's suggested to leave at least one
+     *  entity connected to your object over the whole life time of the game. If
+     *  you release all connections to your {@link IFlyweightComponent} object then
+     *  it will be available for remove by the garbage collector.
+     *  
+     *  @param id
+     */
+    prototype.releaseEntity = function(id) {};
+    /**
+     *  CAUTION: expensive
+     *  
+     *  @param lId
+     *  @return
+     */
+    prototype.getEntityComponents = function(lId) {
+        var componentMap = this.entities[lId];
+        var componentKeys = cwt.JsUtil.objectKeys(componentMap);
+        var components = [];
+        for (var i = 0; i < componentKeys.length; i++) {
+            components.push(componentMap[componentKeys[i]]);
+        }
+        return components;
+    };
+    prototype.getEntitiesWithComponentType = function(clazz) {
+        var resultEntities = [];
+        var entityNames = cwt.JsUtil.objectKeys(this.entities);
+        for (var i = 0; i < entityNames.length; i++) {
+            var entityName = entityNames[i];
+            if (this.getComponent(entityName, clazz) != null) {
+                resultEntities.push(entityName);
+            }
+        }
+        return resultEntities;
+    };
+    /**
+     *  Returns a component of an entity.
+     *  
+     *  @param lId
+     *           id of the entity
+     *  @param lComponentClass
+     *           class of the wanted component
+     *  @return component object or null
+     */
+    prototype.getComponent = function(lId, lComponentClass) {
+        var componentMap = this.entities[lId];
+        var componentName = cwt.ClassUtil.getClassName(lComponentClass);
+        var component = componentMap[componentName];
+        if (component == undefined) {
+            var proto = this.entityPrototypes[lId];
+            return proto != undefined ? this.getComponent(proto, lComponentClass) : null;
+        } else {
+            return component;
+        }
+    };
+    prototype.getNonNullComponent = function(lId, lComponentClass) {
+        var component;
+        component = this.getComponent(lId, lComponentClass);
+        if (component == null) {
+            component = this.acquireEntityComponent(lId, lComponentClass);
+        }
+        return component;
+    };
+    prototype.hasEntityComponent = function(lId, lComponentClass) {
+        return this.getComponent(lId, lComponentClass) != null;
+    };
+    /**
+     *  Creates a complete data dump of the internal entity data.
+     *  
+     *  @param dataCallback
+     */
+    prototype.createEntityDataDump = function(dataCallback) {
+        this.createEntityDataDumpWithSelector(this.allSelector, dataCallback);
+    };
+    /**
+     *  Creates a data dump of the internal entity data. The result entities will
+     *  be selected by the given selector function.
+     *  
+     *  @param selector
+     *           (string) -> boolean => returns true when a given entityId should
+     *           be added to the data dump else false
+     *  @param dataCallback
+     */
+    prototype.createEntityDataDumpWithSelector = function(selector, dataCallback) {
+        var data = ({});
+        var entityIds = cwt.JsUtil.objectKeys(this.entities);
+        for (var i = 0; i < entityIds.length; i++) {
+            var entityId = entityIds[i];
+            if (selector(entityId)) {
+                data[entityId] = this.entities[entityId];
+            }
+        }
+        dataCallback(JSON.stringify(data, null, 2));
+    };
+    prototype.setEntityPrototype = function(entity, prototype) {};
+}, {entityPrototypes: {name: "Map", arguments: [null, null]}, entities: {name: "Map", arguments: [null, {name: "Map", arguments: [null, "cwt.IEntityComponent"]}]}, allSelector: {name: "Function1", arguments: [null, null]}}, {});
+/**
+ *  
+ *  <strong>This class is dynamic, so if you are going to change things here then
+ *  be careful!</strong>
+ */
+stjs.ns("cwt");
+cwt.ConstructedFactory = function() {};
+stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
+    constructor.instances = null;
+    /**
+     *  Initializes all classes which extends the {@link ConstructedClass}
+     *  interface.
+     */
+    constructor.initObjects = function() {
+        cwt.ConstructedFactory.instances = {};
+        var namespace = (window)[cwt.Constants.NAMESPACE];
+        var classNames = cwt.JsUtil.objectKeys(namespace);
+        cwt.JsUtil.forEachArrayValue(classNames, function(index, className) {
+            var classObject = (namespace)[className];
+            cwt.ConstructedFactory.setClassNameProperty(className, classObject);
+            if (cwt.ConstructedFactory.isConstructedClass(classObject)) {
+                console.log("CONSTRUCTING => " + className);
+                var cmp = new classObject();
+                cwt.ConstructedFactory.instances[className] = cmp;
+            }
+        });
+        cwt.ConstructedFactory.injectDependencies(namespace);
+        cwt.ConstructedFactory.injectConstructedObjects(namespace);
+        cwt.ConstructedFactory.publishInitEvent();
+    };
+    constructor.injectDependencies = function(namespace) {
+        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(instanceName, instanceObject) {
+            var instanceClass = (namespace)[instanceName];
+            var instanceDependencies = (instanceClass)["$typeDescription"];
+            cwt.JsUtil.forEachMapValue(instanceDependencies, function(property, dependencyName) {
+                if ((typeof dependencyName) == "string") {
+                    var dependencyClassName = (dependencyName).replace(cwt.Constants.NAMESPACE + ".", "");
+                    var dependency = cwt.ConstructedFactory.instances[dependencyClassName];
+                    if (dependency != undefined) {
+                        console.log("INJECTING => " + dependencyClassName + " INTO " + instanceName);
+                        (instanceObject)[property] = dependency;
+                    }
+                }
+            });
+        });
+    };
+    constructor.injectConstructedObjects = function(namespace) {
+        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(instanceName, instanceObject) {
+            var instanceClass = (namespace)[instanceName];
+            var instanceDependencies = (instanceClass)["$typeDescription"];
+            cwt.ConstructedFactory.checkClassConstructedProperties(namespace, instanceObject, instanceDependencies);
+        });
+    };
+    constructor.checkClassConstructedProperties = function(namespace, instance, instanceDependencies) {
+        cwt.JsUtil.forEachMapValue(instanceDependencies, function(property, dependencyName) {
+            if ((typeof dependencyName) == "string") {
+                var dependencyClassName = (dependencyName).replace(cwt.Constants.NAMESPACE + ".", "");
+                var dependencyClass = (namespace)[dependencyClassName];
+                if (dependencyClass != undefined && (dependencyClass).hasOwnProperty("$typeDescription")) {
+                    var interfaces = (dependencyClass)["$inherit"];
+                    if (interfaces.indexOf(cwt.ConstructedObject) != -1) {
+                        console.log("CREATING => " + dependencyClassName + " AS " + property + " IN " + cwt.ClassUtil.getClassName(instance));
+                        var constructedObject = new dependencyClass();
+                        constructedObject.onConstruction(instance);
+                        (instance)[property] = constructedObject;
+                    }
+                }
+            }
+        });
+    };
+    constructor.publishInitEvent = function() {
+        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(componentName, component) {
+            component.onConstruction();
+        });
+    };
+    constructor.setClassNameProperty = function(className, classObject) {
+        if ((classObject).hasOwnProperty("$typeDescription")) {
+            (classObject)["__className"] = className;
+            ((classObject).prototype)["__className"] = className;
+        }
+    };
+    /**
+     *  Searches for the {@link ConstructedClass} interface in a class hierarchy.
+     *  At the moment the class has to implement an interface which extends the
+     *  {@link ConstructedClass} interface in it's own hierarchy to be recognized
+     *  as constructed class.
+     *  
+     *  @param classObj
+     *           class that will be checked
+     *  @return true when the class object is a constructed class, else false
+     */
+    constructor.isConstructedClass = function(classObj) {
+        if ((classObj).hasOwnProperty("$typeDescription")) {
+            var interfaces = (classObj)["$inherit"];
+            if (interfaces.indexOf(cwt.ConstructedClass) != -1) {
+                return true;
+            }
+            for (var i = 0; i < interfaces.length; i++) {
+                var interfaceObj = interfaces[i];
+                if (cwt.ConstructedFactory.isConstructedClass(interfaceObj)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+    /**
+     *  
+     *  @param clazz
+     *  @return the instantiated object of the given class
+     *  @throws IllegalArgumentException
+     *            when the given class is not registered as constructed class or
+     *            when it's a member of a non supported namespace
+     */
+    constructor.getObject = function(clazz) {
+        var value = cwt.ConstructedFactory.instances[(clazz)["__className"]];
+        if (undefined == value) {
+            return null;
+        }
+        return value;
+    };
+}, {instances: {name: "Map", arguments: [null, "cwt.ConstructedClass"]}}, {});
+stjs.ns("cwt");
+cwt.Log = function() {};
+stjs.extend(cwt.Log, null, [cwt.ConstructedObject], function(constructor, prototype) {
+    prototype.loggerName = null;
+    prototype.onConstruction = function(instance) {
+        this.loggerName = cwt.ClassUtil.getClassName(instance);
+        if (this.loggerName.length < cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
+            var missingSpaces = cwt.Constants.LOGGER_CLASS_NAME_LENGTH - this.loggerName.length;
+            var newName = "";
+            for (var i = 0; i < missingSpaces; i++) {
+                newName += " ";
+            }
+            this.loggerName = newName + this.loggerName;
+        } else if (this.loggerName.length > cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
+            this.loggerName = this.loggerName.substring(0, cwt.Constants.LOGGER_CLASS_NAME_LENGTH);
+        }
     };
     prototype.info = function(msg) {
-        console.log("%c[" + this.getCachedLoggerName() + "][ INFO] %c" + msg, cwt.Constants.LOGGER_CSS_INFO_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
+        console.log("%c[" + this.loggerName + "][ INFO] %c" + msg, cwt.Constants.LOGGER_CSS_INFO_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
     };
     prototype.warn = function(msg) {
-        console.log("%c[" + this.getCachedLoggerName() + "][ WARN] %c" + msg, cwt.Constants.LOGGER_CSS_WARN_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
+        console.log("%c[" + this.loggerName + "][ WARN] %c" + msg, cwt.Constants.LOGGER_CSS_WARN_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
     };
     prototype.error = function(msg) {
-        console.log("%c[" + this.getCachedLoggerName() + "][ERROR] %c" + msg, cwt.Constants.LOGGER_CSS_ERROR_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
+        console.log("%c[" + this.loggerName + "][ERROR] %c" + msg, cwt.Constants.LOGGER_CSS_ERROR_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
     };
-    prototype.throwError = function(msg) {
-        this.error(msg);
-        throw new Error(msg);
-    };
-    prototype.onConstruction = function() {};
 }, {}, {});
 stjs.ns("cwt");
 cwt.TypedObjectConverter = function() {};
@@ -1584,399 +1920,23 @@ stjs.extend(cwt.UnitType, cwt.ObjectType, [], function(constructor, prototype) {
     };
 }, {canload: {name: "Array", arguments: [null]}, supply: {name: "Array", arguments: [null]}, attack: "cwt.AttackType", suicide: "cwt.SuicideType"}, {});
 stjs.ns("cwt");
-cwt.UnitAssetLoader = function() {};
-stjs.extend(cwt.UnitAssetLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.defaultFrameData = null;
-    prototype.knownTypeIds = null;
-    prototype.onConstruction = function() {
-        this.knownTypeIds = [];
-    };
-    prototype.loadData = function() {};
-    prototype.createDefaultFrame = function() {
-        var frame = new cwt.CanvasQuery.Atlas();
-        var frames = [];
-        frame.frames = frames;
-        for (var j = 0; j < 9; j++) {
-            var subFrame = new cwt.CanvasQuery.AtlasFrame();
-            subFrame.height = 32;
-            subFrame.width = 32;
-            subFrame.region = [0, 0, 32, 32];
-            subFrame.offset = [0, 0];
-            frames.push(subFrame);
-        }
-        return frame;
-    };
-}, {defaultFrameData: "cwt.CanvasQuery.Atlas", knownTypeIds: {name: "Array", arguments: [null]}}, {});
-/**
- *  
- *  <strong>This class is dynamic, so if you are going to change things here then
- *  be careful!</strong>
- */
-stjs.ns("cwt");
-cwt.ConstructedFactory = function() {};
-stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
-    constructor.instances = null;
-    /**
-     *  Initializes all classes which extends the {@link ConstructedClass}
-     *  interface.
-     */
-    constructor.initObjects = function() {
-        cwt.ConstructedFactory.instances = {};
-        var namespace = (window)[cwt.Constants.NAMESPACE];
-        var classNames = cwt.JsUtil.objectKeys(namespace);
-        cwt.JsUtil.forEachArrayValue(classNames, function(index, className) {
-            var classObject = (namespace)[className];
-            cwt.ConstructedFactory.setClassNameProperty(className, classObject);
-            if (cwt.ConstructedFactory.isConstructedClass(classObject)) {
-                console.log("CONSTRUCTING => " + className);
-                var cmp = new classObject();
-                cwt.ConstructedFactory.instances[className] = cmp;
-            }
-        });
-        cwt.ConstructedFactory.injectDependencies(namespace);
-        cwt.ConstructedFactory.publischInitEvent();
-    };
-    constructor.injectDependencies = function(namespace) {
-        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(instanceName, instanceObject) {
-            var instanceClass = (namespace)[instanceName];
-            var instanceDependencies = (instanceClass)["$typeDescription"];
-            cwt.JsUtil.forEachMapValue(instanceDependencies, function(property, dependencyName) {
-                if ((typeof dependencyName) == "string") {
-                    var dependencyClassName = (dependencyName).replace(cwt.Constants.NAMESPACE + ".", "");
-                    var dependency = cwt.ConstructedFactory.instances[dependencyClassName];
-                    if (dependency != undefined) {
-                        console.log("INJECTING => " + dependencyClassName + " INTO " + instanceName);
-                        (instanceObject)[property] = dependency;
-                    }
-                }
-            });
-        });
-    };
-    constructor.publischInitEvent = function() {
-        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(componentName, component) {
-            component.onConstruction();
-        });
-    };
-    constructor.setClassNameProperty = function(className, classObject) {
-        if ((classObject).hasOwnProperty("$typeDescription")) {
-            (classObject)["__className"] = className;
-            ((classObject).prototype)["__className"] = className;
-        }
-    };
-    /**
-     *  Searches for the {@link ConstructedClass} interface in a class hierarchy.
-     *  At the moment the class has to implement an interface which extends the
-     *  {@link ConstructedClass} interface in it's own hierarchy to be recognized
-     *  as constructed class.
-     *  
-     *  @param classObj
-     *           class that will be checked
-     *  @return true when the class object is a constructed class, else false
-     */
-    constructor.isConstructedClass = function(classObj) {
-        if ((classObj).hasOwnProperty("$typeDescription")) {
-            var interfaces = (classObj)["$inherit"];
-            if (interfaces.indexOf(cwt.ConstructedClass) != -1) {
-                return true;
-            }
-            for (var i = 0; i < interfaces.length; i++) {
-                var interfaceObj = interfaces[i];
-                if (cwt.ConstructedFactory.isConstructedClass(interfaceObj)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    };
-    /**
-     *  
-     *  @param clazz
-     *  @return the instantiated object of the given class
-     *  @throws IllegalArgumentException
-     *            when the given class is not registered as constructed class or
-     *            when it's a member of a non supported namespace
-     */
-    constructor.getObject = function(clazz) {
-        var value = cwt.ConstructedFactory.instances[(clazz)["__className"]];
-        if (undefined == value) {
-            return null;
-        }
-        return value;
-    };
-}, {instances: {name: "Map", arguments: [null, "cwt.ConstructedClass"]}}, {});
-stjs.ns("cwt");
-cwt.GameDataService = function() {};
-stjs.extend(cwt.GameDataService, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.typeMap = null;
-    prototype.onConstruction = function() {
-        this.typeMap = {};
-    };
-    /**
-     *  Registers a data type object. After that this object can be grabbed type
-     *  safe by the get methods of this service.
-     *  
-     *  @param type
-     */
-    prototype.registerDataType = function(type) {
-        type.validate(stjs.bind(this, function(errors) {
-            if (errors.length > 0) {
-                this.throwError("InvalidDataType Errors:" + JSON.stringify(errors));
-            } else if ((this.typeMap).hasOwnProperty(type.ID)) {
-                this.throwError("InvalidDataType Errors: ID " + type.ID + " is alreday registered");
-            } else {
-                this.info("registered " + cwt.ClassUtil.getClassName(type) + " object with id " + type.ID);
-                this.typeMap[type.ID] = type;
-            }
-        }));
-    };
-    prototype.getDataType = function(id, typeClassName) {
-        var type = this.typeMap[id];
-        if (cwt.ClassUtil.getClassName(type) != typeClassName) {
-            this.throwError("NoDataTypeExists (" + typeClassName + ":" + id + ")");
-        }
-        return type;
-    };
-    prototype.getArmy = function(armyId) {
-        return this.getDataType(armyId, cwt.ClassUtil.getClassName(cwt.ArmyType));
-    };
-}, {typeMap: {name: "Map", arguments: [null, "cwt.ObjectType"]}}, {});
-stjs.ns("cwt");
-cwt.ComponentManager = function() {};
-stjs.extend(cwt.ComponentManager, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.getComponents = function(componentClass) {
-        return null;
-    };
-    prototype.getComponent = function(entity, componentClass) {
-        return null;
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.EntityManager = function() {
-    this.entityIdCounter = 0;
-    this.entities = {};
-    this.entityPrototypes = {};
-    this.allSelector = function(key) {
-        return true;
-    };
-};
-stjs.extend(cwt.EntityManager, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.entityPrototypes = null;
-    prototype.entities = null;
-    prototype.entityIdCounter = 0;
-    prototype.allSelector = null;
-    prototype.acquireEntity = function() {
-        this.entityIdCounter++;
-        return this.acquireEntityWithId("E" + (this.entityIdCounter - 1));
-    };
-    prototype.acquireEntityWithId = function(id) {
-        if (id == null || id == undefined || this.entities[id] != undefined) {
-            return null;
-        }
-        this.entities[id] = {};
-        this.entityPrototypes[id] = null;
-        return id;
-    };
-    prototype.acquireEntityComponent = function(id, componentClass) {
-        return this.attachEntityComponent(id, new componentClass());
-    };
-    prototype.attachEntityComponent = function(id, component) {
-        var entityMap = this.entities[id];
-        entityMap[cwt.ClassUtil.getClassName(component)] = component;
-        return component;
-    };
-    prototype.detachEntityComponent = function(id, component) {
-        var entityMap = this.entities[id];
-        delete entityMap[cwt.ClassUtil.getClassName(component)];
-    };
-    prototype.detachEntityComponentByClass = function(id, componentClass) {
-        var entityMap = this.entities[id];
-        delete entityMap[cwt.ClassUtil.getClassName(componentClass)];
-    };
-    /**
-     *  Releases an entity. All connected {@link IEntityComponent} objects will be
-     *  detached, cached in a pool and reused with the next acquire call.
-     *  
-     *  <strong>Be aware (!) </strong> that this manager will not pooling
-     *  {@link IEntityComponent} objects which extends the
-     *  {@link IFlyweightComponent} interface. It's suggested to leave at least one
-     *  entity connected to your object over the whole life time of the game. If
-     *  you release all connections to your {@link IFlyweightComponent} object then
-     *  it will be available for remove by the garbage collector.
-     *  
-     *  @param id
-     */
-    prototype.releaseEntity = function(id) {};
-    /**
-     *  CAUTION: expensive
-     *  
-     *  @param lId
-     *  @return
-     */
-    prototype.getEntityComponents = function(lId) {
-        var componentMap = this.entities[lId];
-        var componentKeys = cwt.JsUtil.objectKeys(componentMap);
-        var components = [];
-        for (var i = 0; i < componentKeys.length; i++) {
-            components.push(componentMap[componentKeys[i]]);
-        }
-        return components;
-    };
-    prototype.getEntitiesWithComponentType = function(clazz) {
-        var resultEntities = [];
-        var entityNames = cwt.JsUtil.objectKeys(this.entities);
-        for (var i = 0; i < entityNames.length; i++) {
-            var entityName = entityNames[i];
-            if (this.getComponent(entityName, clazz) != null) {
-                resultEntities.push(entityName);
-            }
-        }
-        return resultEntities;
-    };
-    /**
-     *  Returns a component of an entity.
-     *  
-     *  @param lId
-     *           id of the entity
-     *  @param lComponentClass
-     *           class of the wanted component
-     *  @return component object or null
-     */
-    prototype.getComponent = function(lId, lComponentClass) {
-        var componentMap = this.entities[lId];
-        var componentName = cwt.ClassUtil.getClassName(lComponentClass);
-        var component = componentMap[componentName];
-        if (component == undefined) {
-            var proto = this.entityPrototypes[lId];
-            return proto != undefined ? this.getComponent(proto, lComponentClass) : null;
-        } else {
-            return component;
-        }
-    };
-    prototype.getNonNullComponent = function(lId, lComponentClass) {
-        var component;
-        component = this.getComponent(lId, lComponentClass);
-        if (component == null) {
-            component = this.acquireEntityComponent(lId, lComponentClass);
-        }
-        return component;
-    };
-    prototype.hasEntityComponent = function(lId, lComponentClass) {
-        return this.getComponent(lId, lComponentClass) != null;
-    };
-    /**
-     *  Creates a complete data dump of the internal entity data.
-     *  
-     *  @param dataCallback
-     */
-    prototype.createEntityDataDump = function(dataCallback) {
-        this.createEntityDataDumpWithSelector(this.allSelector, dataCallback);
-    };
-    /**
-     *  Creates a data dump of the internal entity data. The result entities will
-     *  be selected by the given selector function.
-     *  
-     *  @param selector
-     *           (string) -> boolean => returns true when a given entityId should
-     *           be added to the data dump else false
-     *  @param dataCallback
-     */
-    prototype.createEntityDataDumpWithSelector = function(selector, dataCallback) {
-        var data = ({});
-        var entityIds = cwt.JsUtil.objectKeys(this.entities);
-        for (var i = 0; i < entityIds.length; i++) {
-            var entityId = entityIds[i];
-            if (selector(entityId)) {
-                data[entityId] = this.entities[entityId];
-            }
-        }
-        dataCallback(JSON.stringify(data, null, 2));
-    };
-    prototype.setEntityPrototype = function(entity, prototype) {};
-}, {entityPrototypes: {name: "Map", arguments: [null, null]}, entities: {name: "Map", arguments: [null, {name: "Map", arguments: [null, "cwt.IEntityComponent"]}]}, allSelector: {name: "Function1", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.BrowserService = function() {};
-stjs.extend(cwt.BrowserService, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.requestJsonFile = function(path, callback) {};
-    /**
-     *  Invokes a XmlHttpRequest.
-     *  
-     *  @param path
-     *  @param specialType
-     *           null or a special binary response type like array buffer
-     *  @param callback
-     *           callback will be invoked with two parameters => object data and
-     *           error message (both aren't not null at the same time)
-     */
-    prototype.doXmlHttpRequest = function(path, specialType, callback) {
-        var request = new XMLHttpRequest();
-        if (specialType != null) {
-            (request)["responseType"] = specialType;
-        }
-        request.onreadystatechange = function() {
-            if (request.readyState == 4) {
-                if (request.readyState == 4 && request.status == 200) {
-                    if (specialType != null) {
-                        callback((request)["response"], null);
-                    } else {
-                        callback(request.responseText, null);
-                    }
-                } else {
-                    callback(null, request.statusText);
-                }
-            }
-        };
-        request.open("get", path, true);
-        request.send();
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.AssetLoader = function() {};
-stjs.extend(cwt.AssetLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    constructor.FOLDER_IMAGES = "image/cwt_tileset/units";
-    constructor.FOLDER_SHEETS = "modifications/cwt/units";
-    prototype.imgGrabber = null;
-    prototype.sheetGrabber = null;
-    prototype.onConstruction = function() {
-        this.imgGrabber = new cwt.ImageConverter();
-        this.sheetGrabber = new cwt.TypedObjectConverter();
-    };
-    prototype.loadEntry = function(app, entry, frameData) {
-        this.sheetGrabber.grabData(entry, stjs.bind(this, function(sheet) {
-            app.data[entry.key] = sheet;
-            var spriteEntry = app.getAssetEntry("CWT_" + entry.key, cwt.AssetLoader.FOLDER_IMAGES, "png");
-            this.imgGrabber.grabData(spriteEntry, function(sheetSprite) {
-                var sprite = new cwt.CanvasQuery.Atlas();
-                sprite.image = sheetSprite;
-                sprite.frames = frameData.frames;
-                app.atlases[entry.key] = sprite;
-            });
-        }));
-    };
-    prototype.loadFolder = function(app, dataClass) {};
-}, {imgGrabber: "cwt.ImageConverter", sheetGrabber: {name: "cwt.TypedObjectConverter", arguments: ["cwt.UnitType"]}}, {});
-stjs.ns("cwt");
 cwt.Cwt = function() {};
 stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.log = null;
     prototype.em = null;
     prototype.ev = null;
-    prototype.getLoggerName = function() {
-        return cwt.ClassUtil.getClassName(cwt.Cwt);
-    };
     prototype.onConstruction = function() {
         cwt.PlaygroundUtil.setBasePath(this, "../");
         this.container = window.document.getElementById("game");
-        this.info("initialize playground engine");
+        this.log.info("initialize playground engine");
         (window)["cwtPly"] = playground(this);
     };
     prototype.preload = function() {
         this.loader.on("error", stjs.bind(this, function(error) {
-            return this.error("Failed to load asset => " + error);
+            return this.log.error("Failed to load asset => " + error);
         }));
     };
     prototype.ready = function() {};
-    prototype.error = function(msg) {
-        this.warn("Got an error: " + msg);
-    };
     prototype.step = function(delta) {};
     prototype.render = function() {};
     /**
@@ -1989,7 +1949,7 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
         this.setState(cwt.ConstructedFactory.getObject(stateClass));
     };
     prototype.enterstate = function(event) {
-        this.info("enter state " + cwt.ClassUtil.getClassName(event.state));
+        this.log.info("enter state " + cwt.ClassUtil.getClassName(event.state));
     };
     prototype.keydown = function(ev) {
         (this.ev.getEventEmitter()).onClick(ev.key + "", 0, 0);
@@ -1998,9 +1958,9 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
         (this.ev.getEventEmitter()).onClick(ev.original.which + "", 0, 0);
     };
     prototype.leavestate = function(event) {
-        this.info("leaving state " + cwt.ClassUtil.getClassName(event.state));
+        this.log.info("leaving state " + cwt.ClassUtil.getClassName(event.state));
     };
-}, {em: "cwt.EntityManager", ev: "cwt.EventEmitter", atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
+}, {log: "cwt.Log", em: "cwt.EntityManager", ev: "cwt.EventEmitter", atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
 /**
  *  Starter class with main function.
  */
@@ -2016,6 +1976,7 @@ if (!stjs.mainCallDisabled)
 stjs.ns("cwt");
 cwt.EventEmitter = function() {};
 stjs.extend(cwt.EventEmitter, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.log = null;
     prototype.eventEmitter = null;
     prototype.eventListeners = null;
     prototype.onConstruction = function() {
@@ -2037,10 +1998,10 @@ stjs.extend(cwt.EventEmitter, null, [cwt.ConstructedClass], function(constructor
                     if (!classFnName.startsWith("on")) 
                         return;
                     if ((this.eventEmitter).hasOwnProperty(classFnName)) {
-                        this.error("event function " + classFnName + " is already registered by an other event class");
+                        this.log.error("event function " + classFnName + " is already registered by an other event class");
                     }
                     (this.eventEmitter)[classFnName] = this.createEventEmitterCallback(classFnName);
-                    this.info("registered event emitter for " + classFnName);
+                    this.log.info("registered event emitter for " + classFnName);
                 }));
             }
         }
@@ -2086,7 +2047,7 @@ stjs.extend(cwt.EventEmitter, null, [cwt.ConstructedClass], function(constructor
                         this.eventListeners[classFnName] = [];
                     }
                     this.eventListeners[classFnName].push(constructedInstance);
-                    this.info("registered event listener " + className + " for " + classFnName);
+                    this.log.info("registered event listener " + className + " for " + classFnName);
                 }));
             }
         }
@@ -2094,85 +2055,35 @@ stjs.extend(cwt.EventEmitter, null, [cwt.ConstructedClass], function(constructor
     prototype.getEventEmitter = function() {
         return this.eventEmitter;
     };
-}, {eventEmitter: "Object", eventListeners: {name: "Map", arguments: [null, {name: "Array", arguments: ["Object"]}]}}, {});
+}, {log: "cwt.Log", eventEmitter: "Object", eventListeners: {name: "Map", arguments: [null, {name: "Array", arguments: ["Object"]}]}}, {});
 stjs.ns("cwt");
-cwt.OfflineCacheDataLoader = function() {};
-stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
+cwt.AssetLoader = function() {};
+stjs.extend(cwt.AssetLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    constructor.FOLDER_IMAGES = "image/cwt_tileset/units";
+    constructor.FOLDER_SHEETS = "modifications/cwt/units";
+    prototype.imgGrabber = null;
+    prototype.sheetGrabber = null;
     prototype.onConstruction = function() {
-        this.info("initializing cache loader");
-        var config = {};
-        config.driver = [localforage.INDEXEDDB, localforage.WEBSQL];
-        config.name = cwt.Constants.OFFLINE_DB_NAME;
-        config.size = cwt.Constants.OFFLINE_DB_SIZE;
-        localforage.config(config);
+        this.imgGrabber = new cwt.ImageConverter();
+        this.sheetGrabber = new cwt.TypedObjectConverter();
     };
-    prototype.loadFolderData = function(game, folder, dataClass) {
-        this.info("loading data from folder " + folder);
-        var data = game.getAssetEntry("__filelist__.json", folder, "json");
-        localforage.getItem(data.path, stjs.bind(this, function(err, value) {
-            if (value == null) {
-                cwt.ConstructedFactory.getObject(cwt.BrowserService).doXmlHttpRequest(data.url, null, stjs.bind(this, function(objData, error) {
-                    this.loadRemoteFolderByContentList(game, folder, JSON.parse(objData), dataClass);
-                }));
-            } else {
-                this.loadCachedFolderByContentList(game, folder, value, dataClass);
-            }
+    prototype.loadEntry = function(app, entry, frameData) {
+        this.sheetGrabber.grabData(entry, stjs.bind(this, function(sheet) {
+            app.data[entry.key] = sheet;
+            var spriteEntry = app.getAssetEntry("CWT_" + entry.key, cwt.AssetLoader.FOLDER_IMAGES, "png");
+            this.imgGrabber.grabData(spriteEntry, function(sheetSprite) {
+                var sprite = new cwt.CanvasQuery.Atlas();
+                sprite.image = sheetSprite;
+                sprite.frames = frameData.frames;
+                app.atlases[entry.key] = sprite;
+            });
         }));
     };
-    prototype.loadRemoteFolderByContentList = function(game, folder, content, dataClass) {
-        cwt.JsUtil.forEachArrayValue(content, stjs.bind(this, function(index, id) {
-            var data = game.getAssetEntry(id, folder, "json");
-            game.loader.add(data.key);
-            this.info("grabbed value from " + data.url);
-            cwt.ConstructedFactory.getObject(cwt.BrowserService).doXmlHttpRequest(data.url, null, stjs.bind(this, function(objData, error) {
-                this.info("parsing and validating " + data.key);
-                try {
-                    var type = new dataClass();
-                    type.grabDataFromMapGlobal(JSON.parse(objData));
-                    cwt.ConstructedFactory.getObject(cwt.GameDataService).registerDataType(type);
-                    this.info("putting " + data.key + " into the cache");
-                    localforage.setItem(data.key, type, function(errInner, valueInner) {
-                        game.loader.success(data.key);
-                    });
-                }catch (e) {
-                    this.warn("could not parse data type " + data.key);
-                    game.loader.error(data.key);
-                }
-            }));
-        }));
-    };
-    prototype.loadCachedFolderByContentList = function(game, folder, content, dataClass) {
-        cwt.JsUtil.forEachArrayValue(content, stjs.bind(this, function(index, id) {
-            var data = game.getAssetEntry(id, folder, "json");
-            game.loader.add(data.key);
-            localforage.getItem(data.key, stjs.bind(this, function(err, value) {
-                this.info("grabbed value from the cache");
-                var type = stjs.typefy(value, dataClass);
-                cwt.ConstructedFactory.getObject(cwt.GameDataService).registerDataType(type);
-                game.loader.success(data.key);
-            }));
-        }));
-    };
-}, {}, {});
+    prototype.loadFolder = function(app, dataClass) {};
+}, {imgGrabber: "cwt.ImageConverter", sheetGrabber: {name: "cwt.TypedObjectConverter", arguments: ["cwt.UnitType"]}}, {});
 stjs.ns("cwt");
 cwt.ISystem = function() {};
 stjs.extend(cwt.ISystem, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.em = function() {
-        var em = (this)["__em__"];
-        if (em == undefined) {
-            em = cwt.ConstructedFactory.getObject(cwt.EntityManager);
-            (this)["__em__"] = em;
-        }
-        return em;
-    };
-    prototype.cm = function() {
-        var cm = (this)["__cm__"];
-        if (cm == undefined) {
-            cm = cwt.ConstructedFactory.getObject(cwt.ComponentManager);
-            (this)["__cm__"] = cm;
-        }
-        return cm;
-    };
     /**
      *  Returns the publisher event emitter object for a given event type. Calling
      *  the event function on this object leads into an invocation of all listeners
@@ -2191,13 +2102,13 @@ stjs.extend(cwt.ScreenSystem, null, [cwt.ISystem], null, {}, {});
 stjs.ns("cwt");
 cwt.SerializationSystem = function() {};
 stjs.extend(cwt.SerializationSystem, null, [cwt.ISystem, cwt.ClickEvent], function(constructor, prototype) {
-    prototype.onClick = function(type, x, y) {
-        this.info("GOT A CLICK TOO");
-    };
+    prototype.log = null;
+    prototype.em = null;
+    prototype.onClick = function(type, x, y) {};
     prototype.onConstruction = function() {
-        this.info("creating data model");
-        this.em().acquireEntityWithId("MAP");
-        var map = this.em().acquireEntityComponent("MAP", cwt.TileMap);
+        this.log.info("creating data model");
+        this.em.acquireEntityWithId("MAP");
+        var map = this.em.acquireEntityComponent("MAP", cwt.TileMap);
         map.tiles = [];
         for (var x = 0; x < cwt.Constants.MAX_MAP_SIDE_LENGTH; x++) {
             map.tiles[x] = [];
@@ -2206,19 +2117,21 @@ stjs.extend(cwt.SerializationSystem, null, [cwt.ISystem, cwt.ClickEvent], functi
             }
         }
     };
-}, {}, {});
+}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
 stjs.ns("cwt");
 cwt.ConfigSystem = function() {};
 stjs.extend(cwt.ConfigSystem, null, [cwt.ISystem, cwt.GameStartEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.em = null;
     prototype.onGameStart = function() {
-        this.info("going to reset all config values");
-        var entities = this.em().getEntitiesWithComponentType(cwt.Config);
+        this.log.info("going to reset all config values");
+        var entities = this.em.getEntitiesWithComponentType(cwt.Config);
         for (var i = 0; i < entities.length; i++) {
             var entity = entities[i];
-            this.em().getComponent(entity, cwt.Config).value = this.em().getComponent(entity, cwt.ValueMetaData).defaultValue;
+            this.em.getComponent(entity, cwt.Config).value = this.em.getComponent(entity, cwt.ValueMetaData).defaultValue;
         }
     };
-}, {}, {});
+}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
 /**
  *  The {@link BattleSystem} allows players to use units with the battle ability
  *  to fight against other entities with the living ability.
@@ -2226,26 +2139,28 @@ stjs.extend(cwt.ConfigSystem, null, [cwt.ISystem, cwt.GameStartEvent], function(
 stjs.ns("cwt");
 cwt.BattleSystem = function() {};
 stjs.extend(cwt.BattleSystem, null, [cwt.ISystem, cwt.UnitCreatedEvent], function(constructor, prototype) {
+    prototype.em = null;
     prototype.onUnitCreated = function(unitEntity) {
-        this.em().getNonNullComponent(unitEntity, cwt.Living).hp = cwt.Constants.UNIT_HEALTH;
+        this.em.getNonNullComponent(unitEntity, cwt.Living).hp = cwt.Constants.UNIT_HEALTH;
     };
     prototype.isDirectFighter = function(entity) {
         return !this.isIndirectFighter(entity);
     };
     prototype.isIndirectFighter = function(entity) {
-        return this.em().getComponent(entity, cwt.RangedFighter) != null;
+        return this.em.getComponent(entity, cwt.RangedFighter) != null;
     };
     prototype.isBallisticFither = function(entity) {
-        var range = this.em().getComponent(entity, cwt.RangedFighter);
+        var range = this.em.getComponent(entity, cwt.RangedFighter);
         return range != null && range.minRange == 1;
     };
-}, {}, {});
+}, {em: "cwt.EntityManager"}, {});
 stjs.ns("cwt");
 cwt.HealthSystem = function() {};
 stjs.extend(cwt.HealthSystem, null, [cwt.ISystem], null, {}, {});
 stjs.ns("cwt");
 cwt.FogSystem = function() {};
 stjs.extend(cwt.FogSystem, null, [cwt.ISystem, cwt.IEntityComponent, cwt.UnitProducedEvent, cwt.UnitDestroyedEvent], function(constructor, prototype) {
+    prototype.em = null;
     prototype.turnOwnerData = null;
     prototype.clientOwnerData = null;
     prototype.onConstruction = function() {
@@ -2255,16 +2170,16 @@ stjs.extend(cwt.FogSystem, null, [cwt.ISystem, cwt.IEntityComponent, cwt.UnitPro
     prototype.onUnitProduced = function(factory, unit, type) {
         if (!this.isTurnOwnerObject(unit)) 
             return;
-        var pos = this.em().getComponent(unit, cwt.Position);
-        var vision = this.em().getComponent(unit, cwt.Vision);
+        var pos = this.em.getComponent(unit, cwt.Position);
+        var vision = this.em.getComponent(unit, cwt.Vision);
         this.changeVision(this.turnOwnerData, pos.x, pos.y, vision.range, +1, true);
         this.changeVision(this.clientOwnerData, pos.x, pos.y, vision.range, +1, false);
     };
     prototype.onUnitDestroyed = function(unit) {
         if (!this.isTurnOwnerObject(unit)) 
             return;
-        var pos = this.em().getComponent(unit, cwt.Position);
-        var vision = this.em().getComponent(unit, cwt.Vision);
+        var pos = this.em.getComponent(unit, cwt.Position);
+        var vision = this.em.getComponent(unit, cwt.Vision);
         this.changeVision(this.turnOwnerData, pos.x, pos.y, vision.range, -1, true);
         this.changeVision(this.clientOwnerData, pos.x, pos.y, vision.range, +1, false);
     };
@@ -2294,9 +2209,9 @@ stjs.extend(cwt.FogSystem, null, [cwt.ISystem, cwt.IEntityComponent, cwt.UnitPro
         }
     };
     prototype.isTurnOwnerObject = function(unit) {
-        return (this.em().getComponent(unit, cwt.Owner).owner == this.em().getComponent(cwt.EntityId.GAME_ROUND, cwt.Turn).owner);
+        return (this.em.getComponent(unit, cwt.Owner).owner == this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.Turn).owner);
     };
-}, {turnOwnerData: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}, clientOwnerData: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
+}, {em: "cwt.EntityManager", turnOwnerData: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}, clientOwnerData: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
 stjs.ns("cwt");
 cwt.MapRendererSystem = function() {};
 stjs.extend(cwt.MapRendererSystem, null, [cwt.ISystem, cwt.ConstructedClass], null, {}, {});
@@ -2309,41 +2224,43 @@ stjs.extend(cwt.MenuSys, null, [cwt.ISystem], null, {}, {});
 stjs.ns("cwt");
 cwt.CaptureSystem = function() {};
 stjs.extend(cwt.CaptureSystem, null, [cwt.ISystem, cwt.ActionInvokedEvent], function(constructor, prototype) {
+    prototype.em = null;
     prototype.onInvokeAction = function(action, pstr, p1, p2, p3, p4, p5) {
         if (action == "Capture") {
             var property = null;
             var capturer = null;
-            var propertyData = this.em().getComponent(property, cwt.Capturable);
-            var capturerData = this.em().getComponent(capturer, cwt.Capturer);
+            var propertyData = this.em.getComponent(property, cwt.Capturable);
+            var capturerData = this.em.getComponent(capturer, cwt.Capturer);
             propertyData.points -= capturerData.points;
             this.publish(cwt.CaptureEvents).onLoweredCapturePoints(capturer, property, capturerData.points);
             if (propertyData.points <= 0) {
-                var propertyOwner = this.em().getComponent(property, cwt.Owner);
-                var capturerOwner = this.em().getComponent(capturer, cwt.Owner);
+                var propertyOwner = this.em.getComponent(property, cwt.Owner);
+                var capturerOwner = this.em.getComponent(capturer, cwt.Owner);
                 propertyOwner.owner = capturerOwner.owner;
                 this.publish(cwt.CaptureEvents).onCapturedProperty(capturer, property);
             }
         }
     };
-}, {}, {});
+}, {em: "cwt.EntityManager"}, {});
 stjs.ns("cwt");
 cwt.ModelCreationSystem = function() {};
 stjs.extend(cwt.ModelCreationSystem, null, [cwt.ISystem, cwt.SystemStartEvent], function(constructor, prototype) {
+    prototype.em = null;
     prototype.onSystemStart = function() {
         for (var i = 0; i < 4; i++) {
-            this.em().acquireEntityWithId("P" + i);
+            this.em.acquireEntityWithId("P" + i);
         }
         for (var i = 0; i < 4 * 50; i++) {
-            this.em().acquireEntityWithId("U" + i);
-            this.em().acquireEntityComponent("U" + i, cwt.Owner);
+            this.em.acquireEntityWithId("U" + i);
+            this.em.acquireEntityComponent("U" + i, cwt.Owner);
         }
         for (var i = 0; i < 200; i++) {
-            this.em().acquireEntityWithId("PR" + i);
-            this.em().acquireEntityComponent("PR" + i, cwt.Position);
-            this.em().acquireEntityComponent("PR" + i, cwt.Owner);
+            this.em.acquireEntityWithId("PR" + i);
+            this.em.acquireEntityComponent("PR" + i, cwt.Position);
+            this.em.acquireEntityComponent("PR" + i, cwt.Owner);
         }
     };
-}, {}, {});
+}, {em: "cwt.EntityManager"}, {});
 stjs.ns("cwt");
 cwt.TypeSys = function() {};
 stjs.extend(cwt.TypeSys, null, [cwt.ISystem, cwt.ConstructedClass], null, {}, {});
@@ -2353,19 +2270,21 @@ stjs.extend(cwt.PlayerSys, null, [cwt.ISystem], null, {}, {});
 stjs.ns("cwt");
 cwt.FactorySystem = function() {};
 stjs.extend(cwt.FactorySystem, null, [cwt.ISystem, cwt.ActionInvokedEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.em = null;
     prototype.onBuildUnit = function(factory, type) {
-        var factoryData = this.em().getComponent(factory, cwt.Factory);
+        var factoryData = this.em.getComponent(factory, cwt.Factory);
         this.checkBuildData(type, factoryData);
-        var unit = this.em().acquireEntity();
-        var unitOwner = this.em().getNonNullComponent(unit, cwt.Owner);
-        var unitPos = this.em().getNonNullComponent(unit, cwt.Position);
-        var factoryOwner = this.em().getComponent(factory, cwt.Owner);
-        var factoryPos = this.em().getComponent(factory, cwt.Position);
+        var unit = this.em.acquireEntity();
+        var unitOwner = this.em.getNonNullComponent(unit, cwt.Owner);
+        var unitPos = this.em.getNonNullComponent(unit, cwt.Position);
+        var factoryOwner = this.em.getComponent(factory, cwt.Owner);
+        var factoryPos = this.em.getComponent(factory, cwt.Position);
         unitOwner.owner = factoryOwner.owner;
         unitPos.x = factoryPos.x;
         unitPos.y = factoryPos.y;
-        this.em().setEntityPrototype(unit, type);
-        this.info("produced a unit [ID:" + unit + ", Type: " + type + "]");
+        this.em.setEntityPrototype(unit, type);
+        this.log.info("produced a unit [ID:" + unit + ", Type: " + type + "]");
         this.publish(cwt.UnitProducedEvent).onUnitProduced(factory, unit, type);
     };
     prototype.checkBuildData = function(type, factoryData) {
@@ -2375,45 +2294,51 @@ stjs.extend(cwt.FactorySystem, null, [cwt.ISystem, cwt.ActionInvokedEvent], func
             this.publish(cwt.ErrorEvent).onIllegalGameData("TypeIsNotProcuceAble");
         }
     };
-}, {}, {});
+}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
 stjs.ns("cwt");
 cwt.AudioSystem = function() {};
 stjs.extend(cwt.AudioSystem, null, [cwt.ISystem, cwt.ClickEvent], function(constructor, prototype) {
+    prototype.log = null;
     prototype.onClick = function(type, x, y) {
-        this.info("GOT A CLICK => " + type);
+        this.log.info("GOT A CLICK => " + type);
     };
-}, {}, {});
+}, {log: "cwt.Log"}, {});
 stjs.ns("cwt");
 cwt.WeatherSystem = function() {};
 stjs.extend(cwt.WeatherSystem, null, [cwt.ISystem, cwt.DayStartEvent, cwt.WeatherChangesEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.em = null;
+    prototype.onConstruction = function() {
+        this.log.info("created");
+    };
     prototype.onWeatherChanges = function(weather, duration) {
-        var data = this.em().getNonNullComponent(cwt.EntityId.GAME_ROUND, cwt.WeatherData);
+        var data = this.em.getNonNullComponent(cwt.EntityId.GAME_ROUND, cwt.WeatherData);
         data.days = duration;
         data.weather = weather;
     };
     prototype.onDayStart = function(day) {
-        var data = this.em().getComponent(cwt.EntityId.GAME_ROUND, cwt.WeatherData);
-        var currentWeather = this.em().getComponent(data.weather, cwt.Weather);
+        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.WeatherData);
+        var currentWeather = this.em.getComponent(data.weather, cwt.Weather);
         data.days--;
         if (data.days == 0) {
-            this.info("changing weather..");
-            var weatherTypes = this.em().getEntitiesWithComponentType(cwt.Weather);
+            this.log.info("changing weather..");
+            var weatherTypes = this.em.getEntitiesWithComponentType(cwt.Weather);
             var newWeatherEntity;
              while (true){
                 newWeatherEntity = weatherTypes[cwt.NumberUtil.getRandomInt(weatherTypes.length)];
-                if (newWeatherEntity != cwt.EntityId.GAME_ROUND && currentWeather != this.em().getComponent(newWeatherEntity, cwt.Weather)) {
+                if (newWeatherEntity != cwt.EntityId.GAME_ROUND && currentWeather != this.em.getComponent(newWeatherEntity, cwt.Weather)) {
                     break;
                 }
             }
-            var newWeather = this.em().getComponent(newWeatherEntity, cwt.Weather);
+            var newWeather = this.em.getComponent(newWeatherEntity, cwt.Weather);
             var newDuration = newWeather.defaultWeather ? 1 : this.generateRandomDuration();
-            this.info("..to " + newWeatherEntity + " for " + newDuration + " days");
+            this.log.info("..to " + newWeatherEntity + " for " + newDuration + " days");
         }
     };
     prototype.generateRandomDuration = function() {
         return 1;
     };
-}, {}, {});
+}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
 stjs.ns("cwt");
 cwt.WaitAction = function() {};
 stjs.extend(cwt.WaitAction, null, [cwt.ISystem], function(constructor, prototype) {
@@ -2429,11 +2354,12 @@ stjs.extend(cwt.WaitAction, null, [cwt.ISystem], function(constructor, prototype
 stjs.ns("cwt");
 cwt.ManpowerSystem = function() {};
 stjs.extend(cwt.ManpowerSystem, null, [cwt.ISystem, cwt.UnitCreatedEvent, cwt.GameStartEvent], function(constructor, prototype) {
+    prototype.em = null;
     prototype.onGameStart = function() {};
     prototype.onUnitCreated = function(unitEntity) {
-        this.em().getComponent(this.em().getComponent(unitEntity, cwt.Owner).owner, cwt.Manpower).manpower--;
+        this.em.getComponent(this.em.getComponent(unitEntity, cwt.Owner).owner, cwt.Manpower).manpower--;
     };
-}, {}, {});
+}, {em: "cwt.EntityManager"}, {});
 /**
  *  The {@link GameTimeSystem} adds time limits for the turn and game mechanic.
  *  When a turn limit is reached then the turn will be ended by this system. If
@@ -2443,25 +2369,27 @@ stjs.extend(cwt.ManpowerSystem, null, [cwt.ISystem, cwt.UnitCreatedEvent, cwt.Ga
 stjs.ns("cwt");
 cwt.GameTimeSystem = function() {};
 stjs.extend(cwt.GameTimeSystem, null, [cwt.ISystem, cwt.NextFrameEvent, cwt.GameStartEvent, cwt.TurnStartEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.em = null;
     prototype.onNextFrame = function(delta) {
-        var data = this.em().getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
+        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
         data.gameTime += delta;
         data.turnTime += delta;
         if (data.turnTime >= data.turnTimeLimit) {
-            this.info("ending current turn because turn time limit is reached");
+            this.log.info("ending current turn because turn time limit is reached");
             this.publish(cwt.TurnEndEvent).onTurnEnd();
         } else if (data.gameTime >= data.gameTimeLimit) {
-            this.info("ending game because game time limit is reached");
+            this.log.info("ending game because game time limit is reached");
             this.publish(cwt.GameEndEvent).onGameEnd();
         }
     };
     prototype.onGameStart = function() {
-        var data = this.em().getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
+        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
         data.gameTime = 0;
         data.turnTime = 0;
     };
     prototype.onTurnStart = function(player, turn) {
-        var data = this.em().getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
+        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
         data.turnTime = 0;
     };
-}, {}, {});
+}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});

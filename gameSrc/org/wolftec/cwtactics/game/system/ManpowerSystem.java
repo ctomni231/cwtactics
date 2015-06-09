@@ -1,5 +1,6 @@
 package org.wolftec.cwtactics.game.system;
 
+import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.Manpower;
 import org.wolftec.cwtactics.game.components.Owner;
@@ -15,6 +16,8 @@ import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
  */
 public class ManpowerSystem implements ISystem, UnitCreatedEvent, GameStartEvent {
 
+  private EntityManager em;
+
   @Override
   public void onGameStart() {
     // TODO give all players at least 1000 manpower :P
@@ -22,6 +25,6 @@ public class ManpowerSystem implements ISystem, UnitCreatedEvent, GameStartEvent
 
   @Override
   public void onUnitCreated(String unitEntity) {
-    em().getComponent(em().getComponent(unitEntity, Owner.class).owner, Manpower.class).manpower--;
+    em.getComponent(em.getComponent(unitEntity, Owner.class).owner, Manpower.class).manpower--;
   }
 }

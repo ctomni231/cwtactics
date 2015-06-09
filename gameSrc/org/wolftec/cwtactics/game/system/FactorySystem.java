@@ -1,36 +1,41 @@
 package org.wolftec.cwtactics.game.system;
 
+import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.Factory;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Position;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ActionInvokedEvent;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.UnitProducedEvent;
 
 public class FactorySystem implements ISystem, ActionInvokedEvent {
 
+  private Log log;
+  private EntityManager em;
+
   @Override
   public void onBuildUnit(String factory, String type) {
-    Factory factoryData = em().getComponent(factory, Factory.class);
+    Factory factoryData = em.getComponent(factory, Factory.class);
 
     checkBuildData(type, factoryData);
 
-    String unit = em().acquireEntity();
+    String unit = em.acquireEntity();
 
-    Owner unitOwner = em().getNonNullComponent(unit, Owner.class);
-    Position unitPos = em().getNonNullComponent(unit, Position.class);
+    Owner unitOwner = em.getNonNullComponent(unit, Owner.class);
+    Position unitPos = em.getNonNullComponent(unit, Position.class);
 
-    Owner factoryOwner = em().getComponent(factory, Owner.class);
-    Position factoryPos = em().getComponent(factory, Position.class);
+    Owner factoryOwner = em.getComponent(factory, Owner.class);
+    Position factoryPos = em.getComponent(factory, Position.class);
 
     unitOwner.owner = factoryOwner.owner;
     unitPos.x = factoryPos.x;
     unitPos.y = factoryPos.y;
 
-    em().setEntityPrototype(unit, type);
+    em.setEntityPrototype(unit, type);
 
-    info("produced a unit [ID:" + unit + ", Type: " + type + "]");
+    log.info("produced a unit [ID:" + unit + ", Type: " + type + "]");
 
     publish(UnitProducedEvent.class).onUnitProduced(factory, unit, type);
   }

@@ -12,9 +12,11 @@ import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.ConstructedFactory;
+import org.wolftec.cwtactics.game.core.Log;
 
 public class EventEmitter implements ConstructedClass {
 
+  private Log log;
   private Object eventEmitter;
   private Map<String, Array<Object>> eventListeners;
 
@@ -42,14 +44,14 @@ public class EventEmitter implements ConstructedClass {
           if (!classFnName.startsWith("on")) return;
 
           if (JSObjectAdapter.hasOwnProperty(eventEmitter, classFnName)) {
-            error("event function " + classFnName + " is already registered by an other event class");
+            log.error("event function " + classFnName + " is already registered by an other event class");
             // TODO solve that drawback by having an emitter object for every
             // event class
           }
 
           JSObjectAdapter.$put(eventEmitter, classFnName, createEventEmitterCallback(classFnName));
 
-          info("registered event emitter for " + classFnName);
+          log.info("registered event emitter for " + classFnName);
         });
       }
     }
@@ -108,7 +110,7 @@ public class EventEmitter implements ConstructedClass {
 
           eventListeners.$get(classFnName).push(constructedInstance);
 
-          info("registered event listener " + className + " for " + classFnName);
+          log.info("registered event listener " + className + " for " + classFnName);
         });
       }
     }
