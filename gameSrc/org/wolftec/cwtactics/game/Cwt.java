@@ -9,11 +9,9 @@ import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.ConstructedFactory;
-import org.wolftec.cwtactics.game.core.Inject;
 
 public class Cwt extends Playground implements ConstructedClass {
 
-  @Inject
   private EntityManager em;
 
   @Override

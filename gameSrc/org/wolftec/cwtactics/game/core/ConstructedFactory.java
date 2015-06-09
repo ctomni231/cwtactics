@@ -54,10 +54,11 @@ public class ConstructedFactory {
           String dependencyClassName = ((String) dependencyName).replace(Constants.NAMESPACE + ".", "");
           ConstructedClass dependency = instances.$get(dependencyClassName);
 
+          // if the dependency is a constructed class, means it's collected in
+          // the instances map, then inject it
           if (dependency != JSGlobal.undefined) {
             Global.console.log("INJECTING => " + dependencyClassName + " INTO " + instanceName);
             JSObjectAdapter.$put(instanceObject, property, dependency);
-            ;
           }
         }
       });
