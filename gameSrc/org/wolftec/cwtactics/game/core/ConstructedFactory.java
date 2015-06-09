@@ -120,7 +120,7 @@ public class ConstructedFactory {
   public static <T> T getObject(Class<T> clazz) {
     T value = (T) instances.$get((String) JSObjectAdapter.$get(clazz, "__className"));
     if (JSGlobal.undefined == value) {
-      JSGlobal.exception("IllegalArgumentException");
+      return null;
     }
     return value;
   }

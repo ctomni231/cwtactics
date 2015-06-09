@@ -5,6 +5,48 @@ stjs.ns("cwt");
 cwt.IEvent = function() {};
 stjs.extend(cwt.IEvent, null, [], null, {}, {});
 stjs.ns("cwt");
+cwt.Constants = function() {};
+stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
+    constructor.UNIT_HEALTH = 99;
+    /**
+     *  The version of the game build.
+     */
+    constructor.VERSION = "0.40";
+    /**
+     *  The expected number of characters in an object identifier.
+     */
+    constructor.IDENTIFIER_LENGTH = 4;
+    /**
+     *  Internal screen height in pixel.
+     */
+    constructor.SCREEN_HEIGHT_PX = 480;
+    /**
+     *  Internal screen width in pixel.
+     */
+    constructor.SCREEN_WIDTH_PX = 640;
+    /**
+     *  Maximum range of a selection.
+     */
+    constructor.MAX_SELECTION_RANGE = 15;
+    /**
+     *  The version of the game build.
+     */
+    constructor.NAMESPACE = "cwt";
+    /**
+     *  Controls the exact length of the logger name field in a log message. The
+     *  class name will be extended (with spaces) or trimmed to has the exact
+     *  wanted length.
+     */
+    constructor.LOGGER_CLASS_NAME_LENGTH = 20;
+    constructor.LOGGER_CSS_INFO_HEAD = "color: #197519; font-weight: bold";
+    constructor.LOGGER_CSS_WARN_HEAD = "color: #FF7519; font-weight: bold";
+    constructor.LOGGER_CSS_ERROR_HEAD = "color: #B20000; font-weight: bold";
+    constructor.LOGGER_CSS_TEXT = "color: #1A1A1A";
+    constructor.OFFLINE_DB_SIZE = 50;
+    constructor.OFFLINE_DB_NAME = "CWT-DB";
+    constructor.MAX_MAP_SIDE_LENGTH = 50;
+}, {}, {});
+stjs.ns("cwt");
 cwt.FireableCmp = function() {};
 stjs.extend(cwt.FireableCmp, null, [], function(constructor, prototype) {
     prototype.damage = 0;
@@ -156,47 +198,6 @@ stjs.extend(cwt.ObjectType, null, [], function(constructor, prototype) {
         this.grabDataFromMap(data);
     };
     prototype.grabDataFromMap = function(data) {};
-}, {}, {});
-stjs.ns("cwt");
-cwt.Constants = function() {};
-stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
-    constructor.UNIT_HEALTH = 99;
-    /**
-     *  The version of the game build.
-     */
-    constructor.VERSION = "0.40";
-    /**
-     *  The expected number of characters in an object identifier.
-     */
-    constructor.IDENTIFIER_LENGTH = 4;
-    /**
-     *  Internal screen height in pixel.
-     */
-    constructor.SCREEN_HEIGHT_PX = 480;
-    /**
-     *  Internal screen width in pixel.
-     */
-    constructor.SCREEN_WIDTH_PX = 640;
-    /**
-     *  Maximum range of a selection.
-     */
-    constructor.MAX_SELECTION_RANGE = 15;
-    /**
-     *  The version of the game build.
-     */
-    constructor.NAMESPACE = "cwt";
-    /**
-     *  Controls the exact length of the logger name field in a log message. The
-     *  class name will be extended (with spaces) or trimmed to has the exact
-     *  wanted length.
-     */
-    constructor.LOGGER_CLASS_NAME_LENGTH = 20;
-    constructor.LOGGER_CSS_INFO_HEAD = "color: #197519; font-weight: bold";
-    constructor.LOGGER_CSS_WARN_HEAD = "color: #FF7519; font-weight: bold";
-    constructor.LOGGER_CSS_ERROR_HEAD = "color: #B20000; font-weight: bold";
-    constructor.LOGGER_CSS_TEXT = "color: #1A1A1A";
-    constructor.OFFLINE_DB_SIZE = 50;
-    constructor.OFFLINE_DB_NAME = "CWT-DB";
 }, {}, {});
 stjs.ns("cwt");
 cwt.EntitySerializationUtil = function() {};
@@ -523,9 +524,6 @@ stjs.extend(cwt.LaserCmp, null, [], function(constructor, prototype) {
     prototype.damage = 0;
 }, {}, {});
 stjs.ns("cwt");
-cwt.Inject = function() {};
-stjs.extend(cwt.Inject, null, [], null, {}, {});
-stjs.ns("cwt");
 cwt.Tile = function() {};
 stjs.extend(cwt.Tile, null, [], function(constructor, prototype) {
     prototype.defense = 0;
@@ -537,14 +535,6 @@ stjs.extend(cwt.GameModeCmp, null, [], function(constructor, prototype) {
     constructor.GameMode = stjs.enumeration("AW1", "AW2");
     prototype.mode = null;
 }, {mode: {name: "Enum", arguments: ["cwt.GameModeCmp.GameMode"]}}, {});
-stjs.ns("cwt");
-cwt.TileMap = function() {};
-stjs.extend(cwt.TileMap, null, [], function(constructor, prototype) {
-    prototype.tiles = null;
-    prototype.getTileAt = function(x, y) {
-        return this.tiles[x][y];
-    };
-}, {tiles: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
 stjs.ns("cwt");
 cwt.Turn = function() {};
 stjs.extend(cwt.Turn, null, [cwt.IEntityComponent], function(constructor, prototype) {
@@ -775,6 +765,14 @@ stjs.extend(cwt.MovingCostsCmp, null, [cwt.IEntityComponent], function(construct
     prototype.costs = null;
 }, {costs: {name: "Map", arguments: [null, null]}}, {});
 stjs.ns("cwt");
+cwt.TileMap = function() {};
+stjs.extend(cwt.TileMap, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.tiles = null;
+    prototype.getTileAt = function(x, y) {
+        return this.tiles[x][y];
+    };
+}, {tiles: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
+stjs.ns("cwt");
 cwt.RangedFighter = function() {};
 stjs.extend(cwt.RangedFighter, null, [cwt.IEntityComponent], function(constructor, prototype) {
     prototype.maxRange = 0;
@@ -842,6 +840,11 @@ stjs.extend(cwt.PositionEvent, null, [cwt.IEvent], function(constructor, prototy
     prototype.onUnitPlacedAtProperty = function(unit, property) {};
     prototype.onUnitPlacedAtTile = function(unit, tile) {};
     prototype.onUnitPlacedAtPosition = function(unit, x, y) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.ClickEvent = function() {};
+stjs.extend(cwt.ClickEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onClick = function(type, x, y) {};
 }, {}, {});
 stjs.ns("cwt");
 cwt.UnitDestroyedEvent = function() {};
@@ -1234,6 +1237,34 @@ stjs.extend(cwt.WeatherType, cwt.ObjectType, [], function(constructor, prototype
     };
 }, {}, {});
 stjs.ns("cwt");
+cwt.AttackType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.AttackType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.minrange = null;
+    prototype.maxrange = null;
+    prototype.mainWeapon = null;
+    prototype.secondaryWeapon = null;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.integer(this.minrange) && is.within(this.minrange, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "minrange");
+        this.checkExpression(is.integer(this.maxrange) && is.within(this.maxrange, this.minrange - 1, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "maxrange");
+        this.checkDamageMap(this.mainWeapon, "mainWeapon", errors);
+        this.checkDamageMap(this.secondaryWeapon, "secondaryWeapon", errors);
+    };
+    prototype.checkDamageMap = function(damageMap, errorItemName, errors) {
+        cwt.JsUtil.forEachObjectValue(damageMap, stjs.bind(this, function(typeId, damage) {
+            this.checkExpression(is.string(typeId), errors, errorItemName + " key");
+            this.checkExpression(is.integer(damage) && is.within(damage, 0, 1000), errors, errorItemName + " entry");
+        }));
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.minrange = this.grabMapValue(data, "minrange", 1);
+        this.maxrange = this.grabMapValue(data, "maxrange", 1);
+        this.mainWeapon = this.grabMapValue(data, "mainWeapon", {});
+        this.secondaryWeapon = this.grabMapValue(data, "secondaryWeapon", {});
+    };
+}, {mainWeapon: {name: "Map", arguments: [null, null]}, secondaryWeapon: {name: "Map", arguments: [null, null]}}, {});
+stjs.ns("cwt");
 cwt.MapFileType = function() {
     cwt.ObjectType.call(this);
 };
@@ -1326,34 +1357,6 @@ stjs.extend(cwt.ArmyType, cwt.ObjectType, [], function(constructor, prototype) {
         this.name = this.grabMapValue(data, "name", null);
     };
 }, {}, {});
-stjs.ns("cwt");
-cwt.AttackType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.AttackType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.minrange = null;
-    prototype.maxrange = null;
-    prototype.mainWeapon = null;
-    prototype.secondaryWeapon = null;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.minrange) && is.within(this.minrange, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "minrange");
-        this.checkExpression(is.integer(this.maxrange) && is.within(this.maxrange, this.minrange - 1, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "maxrange");
-        this.checkDamageMap(this.mainWeapon, "mainWeapon", errors);
-        this.checkDamageMap(this.secondaryWeapon, "secondaryWeapon", errors);
-    };
-    prototype.checkDamageMap = function(damageMap, errorItemName, errors) {
-        cwt.JsUtil.forEachObjectValue(damageMap, stjs.bind(this, function(typeId, damage) {
-            this.checkExpression(is.string(typeId), errors, errorItemName + " key");
-            this.checkExpression(is.integer(damage) && is.within(damage, 0, 1000), errors, errorItemName + " entry");
-        }));
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.minrange = this.grabMapValue(data, "minrange", 1);
-        this.maxrange = this.grabMapValue(data, "maxrange", 1);
-        this.mainWeapon = this.grabMapValue(data, "mainWeapon", {});
-        this.secondaryWeapon = this.grabMapValue(data, "secondaryWeapon", {});
-    };
-}, {mainWeapon: {name: "Map", arguments: [null, null]}, secondaryWeapon: {name: "Map", arguments: [null, null]}}, {});
 stjs.ns("cwt");
 cwt.SuicideType = function() {
     cwt.ObjectType.call(this);
@@ -1644,7 +1647,6 @@ stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
                     if (dependency != undefined) {
                         console.log("INJECTING => " + dependencyClassName + " INTO " + instanceName);
                         (instanceObject)[property] = dependency;
-                        ;
                     }
                 }
             });
@@ -1697,7 +1699,7 @@ stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
     constructor.getObject = function(clazz) {
         var value = cwt.ConstructedFactory.instances[(clazz)["__className"]];
         if (undefined == value) {
-            exception("IllegalArgumentException");
+            return null;
         }
         return value;
     };
@@ -2011,36 +2013,87 @@ stjs.extend(cwt.Starter, null, [], function(constructor, prototype) {
 if (!stjs.mainCallDisabled) 
     cwt.Starter.main();
 stjs.ns("cwt");
-cwt.ISystem = function() {};
-stjs.extend(cwt.ISystem, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.em = function() {
-        var em = (this)["__em__"];
-        if (em == undefined) {
-            em = cwt.ConstructedFactory.getObject(cwt.EntityManager);
-            (this)["__em__"] = em;
+cwt.EventEmitter = function() {};
+stjs.extend(cwt.EventEmitter, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.eventEmitter = null;
+    prototype.eventListeners = null;
+    prototype.onConstruction = function() {
+        this.eventEmitter = {};
+        this.eventListeners = {};
+        this.createEventEmitter();
+        this.registerSubriberSystems();
+    };
+    prototype.createEventEmitter = function() {
+        var namespace = (window)[cwt.Constants.NAMESPACE];
+        var classNames = cwt.JsUtil.objectKeys(namespace);
+        for (var i = 0; i < classNames.length; i++) {
+            var className = classNames[i];
+            var classObject = (namespace)[className];
+            if (this.isEventClass(classObject)) {
+                var classPrototype = (classObject).prototype;
+                var classFunctions = cwt.JsUtil.objectKeys(classPrototype);
+                cwt.JsUtil.forEachArrayValue(classFunctions, stjs.bind(this, function(index, classFnName) {
+                    if (!classFnName.startsWith("on")) 
+                        return;
+                    if ((this.eventEmitter).hasOwnProperty(classFnName)) {
+                        this.error("event function " + classFnName + " is already registered by an other event class");
+                    }
+                    (this.eventEmitter)[classFnName] = this.createEventEmitterCallback(classFnName);
+                    this.info("registered event emitter for " + classFnName);
+                }));
+            }
         }
-        return em;
     };
-    prototype.cm = function() {
-        var cm = (this)["__cm__"];
-        if (cm == undefined) {
-            cm = cwt.ConstructedFactory.getObject(cwt.ComponentManager);
-            (this)["__cm__"] = cm;
+    prototype.isEventClass = function(classObject) {
+        var inherits = (classObject)["$inherit"];
+        return inherits.indexOf(cwt.IEvent) != -1;
+    };
+    prototype.createEventEmitterCallback = function(evName) {
+        var eventListeners = this.eventListeners;
+        return function() {
+            var listeners = eventListeners[evName];
+            for (var i = 0; i < listeners.length; i++) {
+                var listener = listeners[i];
+                ((listener)[evName]).apply(listener, arguments);
+            }
+        };
+    };
+    prototype.registerSubriberSystems = function() {
+        var namespace = (window)[cwt.Constants.NAMESPACE];
+        var classNames = cwt.JsUtil.objectKeys(namespace);
+        for (var i = 0; i < classNames.length; i++) {
+            var className = classNames[i];
+            this.checkClass(namespace, className);
         }
-        return cm;
     };
-    /**
-     *  Returns the publisher event emitter object for a given event type. Calling
-     *  the event function on this object leads into an invocation of all listeners
-     *  for that event function.
-     *  
-     *  @param eventClass
-     *  @return
-     */
-    prototype.publish = function(eventClass) {
-        return null;
+    prototype.checkClass = function(namespace, className) {
+        var classObject = (namespace)[className];
+        var constructedInstance = cwt.ConstructedFactory.getObject(classObject);
+        if (constructedInstance == null) {
+            return;
+        }
+        var classInherits = (classObject)["$inherit"];
+        for (var j = 0; j < classInherits.length; j++) {
+            var possibleEventClass = classInherits[j];
+            if (this.isEventClass(possibleEventClass)) {
+                var classPrototype = (possibleEventClass).prototype;
+                var classFunctions = cwt.JsUtil.objectKeys(classPrototype);
+                cwt.JsUtil.forEachArrayValue(classFunctions, stjs.bind(this, function(index, classFnName) {
+                    if (!classFnName.startsWith("on")) 
+                        return;
+                    if (this.eventListeners[classFnName] == undefined) {
+                        this.eventListeners[classFnName] = [];
+                    }
+                    this.eventListeners[classFnName].push(constructedInstance);
+                    this.info("registered event listener " + className + " for " + classFnName);
+                }));
+            }
+        }
     };
-}, {}, {});
+    prototype.getEventEmitter = function() {
+        return this.eventEmitter;
+    };
+}, {eventEmitter: "Object", eventListeners: {name: "Map", arguments: [null, {name: "Array", arguments: ["Object"]}]}}, {});
 stjs.ns("cwt");
 cwt.OfflineCacheDataLoader = function() {};
 stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
@@ -2101,8 +2154,58 @@ stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], function(c
     };
 }, {}, {});
 stjs.ns("cwt");
+cwt.ISystem = function() {};
+stjs.extend(cwt.ISystem, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.em = function() {
+        var em = (this)["__em__"];
+        if (em == undefined) {
+            em = cwt.ConstructedFactory.getObject(cwt.EntityManager);
+            (this)["__em__"] = em;
+        }
+        return em;
+    };
+    prototype.cm = function() {
+        var cm = (this)["__cm__"];
+        if (cm == undefined) {
+            cm = cwt.ConstructedFactory.getObject(cwt.ComponentManager);
+            (this)["__cm__"] = cm;
+        }
+        return cm;
+    };
+    /**
+     *  Returns the publisher event emitter object for a given event type. Calling
+     *  the event function on this object leads into an invocation of all listeners
+     *  for that event function.
+     *  
+     *  @param eventClass
+     *  @return
+     */
+    prototype.publish = function(eventClass) {
+        return cwt.ConstructedFactory.getObject(cwt.EventEmitter).getEventEmitter();
+    };
+}, {}, {});
+stjs.ns("cwt");
 cwt.ScreenSystem = function() {};
 stjs.extend(cwt.ScreenSystem, null, [cwt.ISystem], null, {}, {});
+stjs.ns("cwt");
+cwt.SerializationSystem = function() {};
+stjs.extend(cwt.SerializationSystem, null, [cwt.ISystem, cwt.ClickEvent], function(constructor, prototype) {
+    prototype.onClick = function(type, x, y) {
+        this.info("GOT A CLICK TOO");
+    };
+    prototype.onConstruction = function() {
+        this.info("creating data model");
+        this.em().acquireEntityWithId("MAP");
+        var map = this.em().acquireEntityComponent("MAP", cwt.TileMap);
+        map.tiles = [];
+        for (var x = 0; x < cwt.Constants.MAX_MAP_SIDE_LENGTH; x++) {
+            map.tiles[x] = [];
+            for (var y = 0; y < cwt.Constants.MAX_MAP_SIDE_LENGTH; y++) {
+                map.tiles[x][y] = null;
+            }
+        }
+    };
+}, {}, {});
 stjs.ns("cwt");
 cwt.ConfigSystem = function() {};
 stjs.extend(cwt.ConfigSystem, null, [cwt.ISystem, cwt.GameStartEvent], function(constructor, prototype) {
@@ -2274,7 +2377,11 @@ stjs.extend(cwt.FactorySystem, null, [cwt.ISystem, cwt.ActionInvokedEvent], func
 }, {}, {});
 stjs.ns("cwt");
 cwt.AudioSystem = function() {};
-stjs.extend(cwt.AudioSystem, null, [cwt.ISystem], null, {}, {});
+stjs.extend(cwt.AudioSystem, null, [cwt.ISystem, cwt.ClickEvent], function(constructor, prototype) {
+    prototype.onClick = function(type, x, y) {
+        this.info("GOT A CLICK");
+    };
+}, {}, {});
 stjs.ns("cwt");
 cwt.WeatherSystem = function() {};
 stjs.extend(cwt.WeatherSystem, null, [cwt.ISystem, cwt.DayStartEvent, cwt.WeatherChangesEvent], function(constructor, prototype) {

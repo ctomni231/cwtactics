@@ -42,7 +42,6 @@ public interface ISystem extends ConstructedClass {
    * @return
    */
   default <T extends IEvent> T publish(Class<T> eventClass) {
-    // TODO
-    return null;
+    return ConstructedFactory.getObject(EventEmitter.class).getEventEmitter();
   }
 }

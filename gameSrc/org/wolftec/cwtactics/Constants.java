@@ -52,4 +52,6 @@ public class Constants {
   public static final int OFFLINE_DB_SIZE = 50;
 
   public static final String OFFLINE_DB_NAME = "CWT-DB";
+
+  public static final int MAX_MAP_SIDE_LENGTH = 50;
 }
