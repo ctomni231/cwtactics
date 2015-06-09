@@ -9,10 +9,12 @@ import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.ConstructedFactory;
+import org.wolftec.cwtactics.game.event.ClickEvent;
 
 public class Cwt extends Playground implements ConstructedClass {
 
   private EntityManager em;
+  private EventEmitter ev;
 
   @Override
   public String getLoggerName() {
@@ -78,10 +80,6 @@ public class Cwt extends Playground implements ConstructedClass {
   }
 
   @Override
-  public void mousedown(MouseEvent ev) {
-  }
-
-  @Override
   public void error(String msg) {
     warn("Got an error: " + msg);
   }
@@ -112,7 +110,12 @@ public class Cwt extends Playground implements ConstructedClass {
 
   @Override
   public void keydown(KeyboardEvent ev) {
-    em.createEntityDataDump((data) -> info(data));
+    ((ClickEvent) this.ev.getEventEmitter()).onClick(ev.key + "", 0, 0);
+  }
+
+  @Override
+  public void mousedown(MouseEvent ev) {
+    ((ClickEvent) this.ev.getEventEmitter()).onClick(ev.original.which + "", 0, 0);
   }
 
   @Override

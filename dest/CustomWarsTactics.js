@@ -1958,6 +1958,7 @@ stjs.ns("cwt");
 cwt.Cwt = function() {};
 stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototype) {
     prototype.em = null;
+    prototype.ev = null;
     prototype.getLoggerName = function() {
         return cwt.ClassUtil.getClassName(cwt.Cwt);
     };
@@ -1973,7 +1974,6 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
         }));
     };
     prototype.ready = function() {};
-    prototype.mousedown = function(ev) {};
     prototype.error = function(msg) {
         this.warn("Got an error: " + msg);
     };
@@ -1992,14 +1992,15 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
         this.info("enter state " + cwt.ClassUtil.getClassName(event.state));
     };
     prototype.keydown = function(ev) {
-        this.em.createEntityDataDump(stjs.bind(this, function(data) {
-            return this.info(data);
-        }));
+        (this.ev.getEventEmitter()).onClick(ev.key + "", 0, 0);
+    };
+    prototype.mousedown = function(ev) {
+        (this.ev.getEventEmitter()).onClick(ev.original.which + "", 0, 0);
     };
     prototype.leavestate = function(event) {
         this.info("leaving state " + cwt.ClassUtil.getClassName(event.state));
     };
-}, {em: "cwt.EntityManager", atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
+}, {em: "cwt.EntityManager", ev: "cwt.EventEmitter", atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
 /**
  *  Starter class with main function.
  */
@@ -2379,7 +2380,7 @@ stjs.ns("cwt");
 cwt.AudioSystem = function() {};
 stjs.extend(cwt.AudioSystem, null, [cwt.ISystem, cwt.ClickEvent], function(constructor, prototype) {
     prototype.onClick = function(type, x, y) {
-        this.info("GOT A CLICK");
+        this.info("GOT A CLICK => " + type);
     };
 }, {}, {});
 stjs.ns("cwt");

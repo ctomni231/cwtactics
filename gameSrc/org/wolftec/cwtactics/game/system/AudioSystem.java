@@ -7,6 +7,6 @@ public class AudioSystem implements ISystem, ClickEvent {
 
   @Override
   public void onClick(String type, int x, int y) {
-    info("GOT A CLICK");
+    info("GOT A CLICK => " + type);
   }
 }
