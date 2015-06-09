@@ -5,10 +5,10 @@ import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.IEntityComponent;
 import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.components.Owner;
-import org.wolftec.cwtactics.game.components.Vision;
+import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.components.Turn;
+import org.wolftec.cwtactics.game.components.Vision;
 import org.wolftec.cwtactics.game.event.FogEvent;
 import org.wolftec.cwtactics.game.event.UnitDestroyedEvent;
 import org.wolftec.cwtactics.game.event.UnitProducedEvent;
@@ -31,7 +31,8 @@ public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, 
     Position pos = em().getComponent(unit, Position.class);
     Vision vision = em().getComponent(unit, Vision.class);
 
-    changeVision(pos.x, pos.y, vision.range, +1);
+    changeVision(turnOwnerData, pos.x, pos.y, vision.range, +1, true);
+    changeVision(clientOwnerData, pos.x, pos.y, vision.range, +1, false); // TODO
   }
 
   @Override
@@ -41,10 +42,11 @@ public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, 
     Position pos = em().getComponent(unit, Position.class);
     Vision vision = em().getComponent(unit, Vision.class);
 
-    changeVision(pos.x, pos.y, vision.range, -1);
+    changeVision(turnOwnerData, pos.x, pos.y, vision.range, -1, true);
+    changeVision(clientOwnerData, pos.x, pos.y, vision.range, +1, false); // TODO
   }
 
-  private void changeVision(int x, int y, int range, int change) {
+  private void changeVision(Array<Array<Integer>> data, int x, int y, int range, int change, boolean publishEvents) {
     // TODO bounds
 
     int xe = x + range;
@@ -57,17 +59,19 @@ public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, 
 
     int oy = y;
     for (; x <= xe; x++) {
-      Array<Integer> column = turnOwnerData.$get(x);
+      Array<Integer> column = data.$get(x);
       for (y = oy; y <= ye; y++) {
 
         int oldVision = column.$get(y);
         column.$set(y, oldVision + change);
 
-        if (column.$get(y) == 0 && oldVision > 0) {
-          publish(FogEvent.class).onTileVisionChanges(x, y, false);
+        if (publishEvents) {
+          if (column.$get(y) == 0 && oldVision > 0) {
+            publish(FogEvent.class).onTileVisionChanges(x, y, false);
 
-        } else if (column.$get(y) > 0 && oldVision == 0) {
-          publish(FogEvent.class).onTileVisionChanges(x, y, true);
+          } else if (column.$get(y) > 0 && oldVision == 0) {
+            publish(FogEvent.class).onTileVisionChanges(x, y, true);
+          }
         }
       }
     }

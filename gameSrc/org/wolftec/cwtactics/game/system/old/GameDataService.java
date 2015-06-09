@@ -4,10 +4,10 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.game.components.old.ArmyType;
 import org.wolftec.cwtactics.game.components.old.ObjectType;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 
 public class GameDataService implements ConstructedClass {
 

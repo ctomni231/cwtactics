@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game;
 
-import org.wolftec.cwtactics.engine.components.ConstructedFactory;
+import org.wolftec.cwtactics.game.core.ConstructedFactory;
 
 /**
  * Starter class with main function.

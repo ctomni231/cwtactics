@@ -3,8 +3,8 @@ package org.wolftec.cwtactics.game.system;
 import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.components.WeatherData;
 import org.wolftec.cwtactics.game.components.Weather;
+import org.wolftec.cwtactics.game.components.WeatherData;
 import org.wolftec.cwtactics.game.event.DayStartEvent;
 import org.wolftec.cwtactics.game.event.WeatherChangesEvent;
 import org.wolftec.cwtactics.game.util.NumberUtil;
@@ -47,6 +47,8 @@ public class WeatherSystem implements ISystem, DayStartEvent, WeatherChangesEven
   }
 
   private int generateRandomDuration() {
-    return getCfgValue("weatherMinDays") + NumberUtil.getRandomInt(getCfgValue("weatherRandomDays"));
+    return 1;
+    // TODO return getCfgValue("weatherMinDays") +
+    // NumberUtil.getRandomInt(getCfgValue("weatherRandomDays"));
   }
 }

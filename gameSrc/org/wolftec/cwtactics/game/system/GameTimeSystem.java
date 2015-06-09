@@ -1,5 +1,6 @@
 package org.wolftec.cwtactics.game.system;
 
+import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.TimerData;
 import org.wolftec.cwtactics.game.event.GameEndEvent;
@@ -18,7 +19,7 @@ public class GameTimeSystem implements ISystem, NextFrameEvent, GameStartEvent, 
 
   @Override
   public void onNextFrame(int delta) {
-    TimerData data = em().getComponent("GAMETIME", TimerData.class);
+    TimerData data = em().getComponent(EntityId.GAME_ROUND, TimerData.class);
 
     data.gameTime += delta;
     data.turnTime += delta;
@@ -35,14 +36,14 @@ public class GameTimeSystem implements ISystem, NextFrameEvent, GameStartEvent, 
 
   @Override
   public void onGameStart() {
-    TimerData data = em().getComponent("GAMETIME", TimerData.class);
+    TimerData data = em().getComponent(EntityId.GAME_ROUND, TimerData.class);
     data.gameTime = 0;
     data.turnTime = 0;
   }
 
   @Override
   public void onTurnStart(String player, int turn) {
-    TimerData data = em().getComponent("GAMETIME", TimerData.class);
+    TimerData data = em().getComponent(EntityId.GAME_ROUND, TimerData.class);
     data.turnTime = 0;
   }
 }

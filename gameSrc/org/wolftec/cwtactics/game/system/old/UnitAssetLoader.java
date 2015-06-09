@@ -2,9 +2,9 @@ package org.wolftec.cwtactics.game.system.old;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.playground.CanvasQuery.Atlas;
 import org.wolftec.cwtactics.engine.playground.CanvasQuery.AtlasFrame;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 
 public class UnitAssetLoader implements ConstructedClass {
 

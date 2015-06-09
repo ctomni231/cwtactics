@@ -1,13 +1,16 @@
 stjs.ns("cwt");
-cwt.GameEndEvent = function() {};
-stjs.extend(cwt.GameEndEvent, null, [], function(constructor, prototype) {
-    prototype.onGameEnd = function() {};
-}, {}, {});
+cwt.IEntityComponent = function() {};
+stjs.extend(cwt.IEntityComponent, null, [], null, {}, {});
 stjs.ns("cwt");
-cwt.LaserCmp = function() {};
-stjs.extend(cwt.LaserCmp, null, [], function(constructor, prototype) {
+cwt.IEvent = function() {};
+stjs.extend(cwt.IEvent, null, [], null, {}, {});
+stjs.ns("cwt");
+cwt.FireableCmp = function() {};
+stjs.extend(cwt.FireableCmp, null, [], function(constructor, prototype) {
     prototype.damage = 0;
-}, {}, {});
+    prototype.range = 0;
+    prototype.fireableBy = null;
+}, {fireableBy: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
 cwt.JsUtil = function() {};
 stjs.extend(cwt.JsUtil, null, [], function(constructor, prototype) {
@@ -34,85 +37,20 @@ stjs.extend(cwt.JsUtil, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 stjs.ns("cwt");
-cwt.ObjectType = function() {};
-stjs.extend(cwt.ObjectType, null, [], function(constructor, prototype) {
-    prototype.ID = null;
-    prototype.checkExpression = function(expr, errors, msg) {
-        if (!expr) {
-            errors.push(msg);
-        }
-    };
-    prototype.checkType = function(type, errors) {
-        type.validateData(errors);
-    };
-    /**
-     *  Validates the data type and returns all failures as a list as parameter
-     *  when calling the callback.
-     *  
-     *  @param callback
-     */
-    prototype.validate = function(callback) {
-        var errors = [];
-        this.checkExpression(is.string(this.ID) && is.equal(this.ID.length, 4), errors, "ID");
-        try {
-            this.validateData(errors);
-        }catch (validationError) {}
-        callback(errors);
-    };
-    prototype.grabMapValue = function(data, key, defaultValue) {
-        return (data).hasOwnProperty(key) ? data[key] : defaultValue;
-    };
-    /**
-     *  Usable to extend the validation behavior (e.g. when sub type adds new
-     *  properties).
-     *  
-     *  @param errors
-     */
-    prototype.validateData = function(errors) {};
-    prototype.grabDataFromMapGlobal = function(data) {
-        this.ID = this.grabMapValue(data, "ID", null);
-        this.grabDataFromMap(data);
-    };
-    prototype.grabDataFromMap = function(data) {};
-}, {}, {});
-stjs.ns("cwt");
-cwt.IEntityComponent = function() {};
-stjs.extend(cwt.IEntityComponent, null, [], null, {}, {});
-/**
- *  A flyweight component is a component which is shared between several
- *  components. It should be used to prevent multiple initialization of state
- *  game data.
- */
-stjs.ns("cwt");
-cwt.IFlyweightComponent = function() {};
-stjs.extend(cwt.IFlyweightComponent, null, [], null, {}, {});
-stjs.ns("cwt");
 cwt.Color = function() {};
 stjs.extend(cwt.Color, null, [], function(constructor, prototype) {}, {}, {});
 stjs.ns("cwt");
-cwt.Observerable3 = function() {
-    this.observers = [];
-};
-stjs.extend(cwt.Observerable3, null, [], function(constructor, prototype) {
-    prototype.observers = null;
-    prototype.subscribe = function(handler) {
-        this.observers.push(handler);
-    };
-    prototype.unsubscribe = function(handler) {
-         while (true){
-            var index = this.observers.indexOf(handler);
-            if (index == -1) {
-                return;
-            }
-            this.observers.splice(index, 1);
-        }
-    };
-    prototype.publish = function(dataA, dataB, dataC) {
-        for (var i = 0; i < this.observers.length; i++) {
-            this.observers[i](dataA, dataB, dataC);
-        }
-    };
-}, {observers: {name: "Array", arguments: [{name: "Callback3", arguments: ["A", "B", "C"]}]}}, {});
+cwt.ArmyCmp = function() {};
+stjs.extend(cwt.ArmyCmp, null, [], function(constructor, prototype) {
+    prototype.name = null;
+}, {}, {});
+stjs.ns("cwt");
+cwt.CoCmp = function() {};
+stjs.extend(cwt.CoCmp, null, [], function(constructor, prototype) {
+    prototype.name = null;
+    prototype.coStars = 0;
+    prototype.scoStars = 0;
+}, {}, {});
 /**
  *  Utility class which contains a lot of browser environment related functions.
  */
@@ -178,53 +116,133 @@ stjs.extend(cwt.BrowserUtil, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 stjs.ns("cwt");
-cwt.Observerable4 = function() {
-    this.observers = [];
-};
-stjs.extend(cwt.Observerable4, null, [], function(constructor, prototype) {
-    prototype.observers = null;
-    prototype.subscribe = function(handler) {
-        this.observers.push(handler);
-    };
-    prototype.unsubscribe = function(handler) {
-         while (true){
-            var index = this.observers.indexOf(handler);
-            if (index == -1) {
-                return;
-            }
-            this.observers.splice(index, 1);
+cwt.ObjectType = function() {};
+stjs.extend(cwt.ObjectType, null, [], function(constructor, prototype) {
+    prototype.ID = null;
+    prototype.checkExpression = function(expr, errors, msg) {
+        if (!expr) {
+            errors.push(msg);
         }
     };
-    prototype.publish = function(dataA, dataB, dataC, dataD) {
-        for (var i = 0; i < this.observers.length; i++) {
-            this.observers[i](dataA, dataB, dataC, dataD);
-        }
+    prototype.checkType = function(type, errors) {
+        type.validateData(errors);
     };
-}, {observers: {name: "Array", arguments: [{name: "Callback4", arguments: ["A", "B", "C", "D"]}]}}, {});
+    /**
+     *  Validates the data type and returns all failures as a list as parameter
+     *  when calling the callback.
+     *  
+     *  @param callback
+     */
+    prototype.validate = function(callback) {
+        var errors = [];
+        this.checkExpression(is.string(this.ID) && is.equal(this.ID.length, 4), errors, "ID");
+        try {
+            this.validateData(errors);
+        }catch (validationError) {}
+        callback(errors);
+    };
+    prototype.grabMapValue = function(data, key, defaultValue) {
+        return (data).hasOwnProperty(key) ? data[key] : defaultValue;
+    };
+    /**
+     *  Usable to extend the validation behavior (e.g. when sub type adds new
+     *  properties).
+     *  
+     *  @param errors
+     */
+    prototype.validateData = function(errors) {};
+    prototype.grabDataFromMapGlobal = function(data) {
+        this.ID = this.grabMapValue(data, "ID", null);
+        this.grabDataFromMap(data);
+    };
+    prototype.grabDataFromMap = function(data) {};
+}, {}, {});
 stjs.ns("cwt");
-cwt.Observerable2 = function() {
-    this.observers = [];
-};
-stjs.extend(cwt.Observerable2, null, [], function(constructor, prototype) {
-    prototype.observers = null;
-    prototype.subscribe = function(handler) {
-        this.observers.push(handler);
-    };
-    prototype.unsubscribe = function(handler) {
-         while (true){
-            var index = this.observers.indexOf(handler);
-            if (index == -1) {
-                return;
-            }
-            this.observers.splice(index, 1);
+cwt.Constants = function() {};
+stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
+    constructor.UNIT_HEALTH = 99;
+    /**
+     *  The version of the game build.
+     */
+    constructor.VERSION = "0.40";
+    /**
+     *  The expected number of characters in an object identifier.
+     */
+    constructor.IDENTIFIER_LENGTH = 4;
+    /**
+     *  Internal screen height in pixel.
+     */
+    constructor.SCREEN_HEIGHT_PX = 480;
+    /**
+     *  Internal screen width in pixel.
+     */
+    constructor.SCREEN_WIDTH_PX = 640;
+    /**
+     *  Maximum range of a selection.
+     */
+    constructor.MAX_SELECTION_RANGE = 15;
+    /**
+     *  The version of the game build.
+     */
+    constructor.NAMESPACE = "cwt";
+    /**
+     *  Controls the exact length of the logger name field in a log message. The
+     *  class name will be extended (with spaces) or trimmed to has the exact
+     *  wanted length.
+     */
+    constructor.LOGGER_CLASS_NAME_LENGTH = 20;
+    constructor.LOGGER_CSS_INFO_HEAD = "color: #197519; font-weight: bold";
+    constructor.LOGGER_CSS_WARN_HEAD = "color: #FF7519; font-weight: bold";
+    constructor.LOGGER_CSS_ERROR_HEAD = "color: #B20000; font-weight: bold";
+    constructor.LOGGER_CSS_TEXT = "color: #1A1A1A";
+    constructor.OFFLINE_DB_SIZE = 50;
+    constructor.OFFLINE_DB_NAME = "CWT-DB";
+}, {}, {});
+stjs.ns("cwt");
+cwt.EntitySerializationUtil = function() {};
+stjs.extend(cwt.EntitySerializationUtil, null, [], null, {}, {});
+stjs.ns("cwt");
+cwt.ClassUtil = function() {};
+stjs.extend(cwt.ClassUtil, null, [], function(constructor, prototype) {
+    constructor.getClassName = function(object) {
+        if (object == null || object == undefined) {
+            return null;
         }
+        return (object)["__className"];
     };
-    prototype.publish = function(dataA, dataB) {
-        for (var i = 0; i < this.observers.length; i++) {
-            this.observers[i](dataA, dataB);
-        }
+    constructor.getClass = function(object) {
+        return (object).constructor;
     };
-}, {observers: {name: "Array", arguments: [{name: "Callback2", arguments: ["A", "B"]}]}}, {});
+}, {}, {});
+stjs.ns("cwt");
+cwt.Colors = function() {};
+stjs.extend(cwt.Colors, null, [], function(constructor, prototype) {}, {}, {});
+stjs.ns("cwt");
+cwt.Movable = function() {};
+stjs.extend(cwt.Movable, null, [], function(constructor, prototype) {
+    prototype.range = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.EntityId = function() {};
+stjs.extend(cwt.EntityId, null, [], function(constructor, prototype) {
+    constructor.GAME_ROUND = "GAME_ROUND";
+    constructor.UNIT = "UNIT_";
+    constructor.PROPERTY = "PROPERTY_";
+    constructor.getUnitEntityId = function(number) {
+        return cwt.EntityId.UNIT + number;
+    };
+    constructor.getPropertyEntityId = function(number) {
+        return cwt.EntityId.PROPERTY + number;
+    };
+    constructor.getTileEntityId = function(x, y) {
+        return "TILE_" + x + "_" + y;
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.MovingCosts = function() {};
+stjs.extend(cwt.MovingCosts, null, [], function(constructor, prototype) {
+    prototype.costs = null;
+}, {costs: {name: "Map", arguments: [null, null]}}, {});
 stjs.ns("cwt");
 cwt.Playground = function() {};
 stjs.extend(cwt.Playground, null, [], function(constructor, prototype) {
@@ -382,116 +400,6 @@ stjs.extend(cwt.Playground, null, [], function(constructor, prototype) {
     prototype.touchstart = function(ev) {};
 }, {atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
 stjs.ns("cwt");
-cwt.Observerable = function() {
-    this.observers = [];
-};
-stjs.extend(cwt.Observerable, null, [], function(constructor, prototype) {
-    prototype.observers = null;
-    prototype.subscribe = function(handler) {
-        this.observers.push(handler);
-    };
-    prototype.unsubscribe = function(handler) {
-         while (true){
-            var index = this.observers.indexOf(handler);
-            if (index == -1) {
-                return;
-            }
-            this.observers.splice(index, 1);
-        }
-    };
-    prototype.publish = function() {
-        for (var i = 0; i < this.observers.length; i++) {
-            (this.observers[i]).apply(null, arguments);
-        }
-    };
-}, {observers: {name: "Array", arguments: ["Callback0"]}}, {});
-stjs.ns("cwt");
-cwt.Observerable1 = function() {
-    this.observers = [];
-};
-stjs.extend(cwt.Observerable1, null, [], function(constructor, prototype) {
-    prototype.observers = null;
-    prototype.subscribe = function(handler) {
-        this.observers.push(handler);
-    };
-    prototype.unsubscribe = function(handler) {
-         while (true){
-            var index = this.observers.indexOf(handler);
-            if (index == -1) {
-                return;
-            }
-            this.observers.splice(index, 1);
-        }
-    };
-    prototype.publish = function(dataA) {
-        for (var i = 0; i < this.observers.length; i++) {
-            this.observers[i](dataA);
-        }
-    };
-}, {observers: {name: "Array", arguments: [{name: "Callback1", arguments: ["A"]}]}}, {});
-stjs.ns("cwt");
-cwt.Observerable0 = function() {
-    this.observers = [];
-};
-stjs.extend(cwt.Observerable0, null, [], function(constructor, prototype) {
-    prototype.observers = null;
-    prototype.subscribe = function(handler) {
-        this.observers.push(handler);
-    };
-    prototype.unsubscribe = function(handler) {
-         while (true){
-            var index = this.observers.indexOf(handler);
-            if (index == -1) {
-                return;
-            }
-            this.observers.splice(index, 1);
-        }
-    };
-    prototype.publish = function() {
-        for (var i = 0; i < this.observers.length; i++) {
-            this.observers[i]();
-        }
-    };
-}, {observers: {name: "Array", arguments: ["Callback0"]}}, {});
-stjs.ns("cwt");
-cwt.GameModeCmp = function() {};
-stjs.extend(cwt.GameModeCmp, null, [], function(constructor, prototype) {
-    constructor.GameMode = stjs.enumeration("AW1", "AW2");
-    prototype.mode = null;
-}, {mode: {name: "Enum", arguments: ["cwt.GameModeCmp.GameMode"]}}, {});
-stjs.ns("cwt");
-cwt.FundsCmp = function() {};
-stjs.extend(cwt.FundsCmp, null, [], function(constructor, prototype) {
-    prototype.funds = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.Colors = function() {};
-stjs.extend(cwt.Colors, null, [], function(constructor, prototype) {}, {}, {});
-stjs.ns("cwt");
-cwt.Tile = function() {};
-stjs.extend(cwt.Tile, null, [], function(constructor, prototype) {
-    prototype.defense = 0;
-    prototype.blocksVision = false;
-}, {}, {});
-stjs.ns("cwt");
-cwt.TurnEndEvent = function() {};
-stjs.extend(cwt.TurnEndEvent, null, [], function(constructor, prototype) {
-    prototype.onTurnEnd = function() {};
-}, {}, {});
-stjs.ns("cwt");
-cwt.ClassUtil = function() {};
-stjs.extend(cwt.ClassUtil, null, [], function(constructor, prototype) {
-    constructor.getClassName = function(object) {
-        if (object == null || object == undefined) {
-            return null;
-        }
-        return (object)["__className"];
-    };
-    constructor.getClass = function(object) {
-        return (object).constructor;
-    };
-}, {}, {});
-stjs.ns("cwt");
 cwt.PlaygroundUtil = function() {};
 stjs.extend(cwt.PlaygroundUtil, null, [], function(constructor, prototype) {
     constructor.setBasePath = function(instance, path) {
@@ -514,46 +422,6 @@ stjs.extend(cwt.PlaygroundState, null, [], function(constructor, prototype) {
     prototype.keyup = function(ev) {};
 }, {app: "cwt.Playground"}, {});
 stjs.ns("cwt");
-cwt.Constants = function() {};
-stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
-    /**
-     *  The version of the game build.
-     */
-    constructor.VERSION = "0.40";
-    /**
-     *  The expected number of characters in an object identifier.
-     */
-    constructor.IDENTIFIER_LENGTH = 4;
-    /**
-     *  Internal screen height in pixel.
-     */
-    constructor.SCREEN_HEIGHT_PX = 480;
-    /**
-     *  Internal screen width in pixel.
-     */
-    constructor.SCREEN_WIDTH_PX = 640;
-    /**
-     *  Maximum range of a selection.
-     */
-    constructor.MAX_SELECTION_RANGE = 15;
-    /**
-     *  The version of the game build.
-     */
-    constructor.NAMESPACE = "cwt";
-    /**
-     *  Controls the exact length of the logger name field in a log message. The
-     *  class name will be extended (with spaces) or trimmed to has the exact
-     *  wanted length.
-     */
-    constructor.LOGGER_CLASS_NAME_LENGTH = 20;
-    constructor.LOGGER_CSS_INFO_HEAD = "color: #197519; font-weight: bold";
-    constructor.LOGGER_CSS_WARN_HEAD = "color: #FF7519; font-weight: bold";
-    constructor.LOGGER_CSS_ERROR_HEAD = "color: #B20000; font-weight: bold";
-    constructor.LOGGER_CSS_TEXT = "color: #1A1A1A";
-    constructor.OFFLINE_DB_SIZE = 50;
-    constructor.OFFLINE_DB_NAME = "CWT-DB";
-}, {}, {});
-stjs.ns("cwt");
 cwt.DataConverter = function() {};
 stjs.extend(cwt.DataConverter, null, [], function(constructor, prototype) {
     prototype.grabData = function(asset, callback) {};
@@ -561,49 +429,11 @@ stjs.extend(cwt.DataConverter, null, [], function(constructor, prototype) {
     prototype.loadData = function(data, callback) {};
 }, {}, {});
 stjs.ns("cwt");
-cwt.NextFrameEvent = function() {};
-stjs.extend(cwt.NextFrameEvent, null, [], function(constructor, prototype) {
-    prototype.onNextFrame = function(delta) {};
-}, {}, {});
+cwt.RenderableCmp = function() {};
+stjs.extend(cwt.RenderableCmp, null, [], null, {}, {});
 stjs.ns("cwt");
-cwt.GameStartEvent = function() {};
-stjs.extend(cwt.GameStartEvent, null, [], function(constructor, prototype) {
-    prototype.onGameStart = function() {};
-}, {}, {});
-stjs.ns("cwt");
-cwt.TurnStartEvent = function() {};
-stjs.extend(cwt.TurnStartEvent, null, [], function(constructor, prototype) {
-    prototype.onTurnStart = function(player, turn) {};
-}, {}, {});
-stjs.ns("cwt");
-cwt.EntityId = function() {};
-stjs.extend(cwt.EntityId, null, [], function(constructor, prototype) {
-    constructor.GAME_ROUND = "GAME_ROUND";
-    constructor.UNIT = "UNIT_";
-    constructor.PROPERTY = "PROPERTY_";
-    constructor.getUnitEntityId = function(number) {
-        return cwt.EntityId.UNIT + number;
-    };
-    constructor.getPropertyEntityId = function(number) {
-        return cwt.EntityId.PROPERTY + number;
-    };
-    constructor.getTileEntityId = function(x, y) {
-        return "TILE_" + x + "_" + y;
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.FireableCmp = function() {};
-stjs.extend(cwt.FireableCmp, null, [], function(constructor, prototype) {
-    prototype.damage = 0;
-    prototype.range = 0;
-    prototype.fireableBy = null;
-}, {fireableBy: {name: "Array", arguments: [null]}}, {});
-stjs.ns("cwt");
-cwt.DataTypeCmp = function() {};
-stjs.extend(cwt.DataTypeCmp, null, [], function(constructor, prototype) {
-    constructor.DataType = stjs.enumeration("UNIT_TYPE", "TILE_TYPE", "PROPERTY_TYPE", "WEATHER_TYPE", "ARMY_TYPE", "CO_TYPE");
-    prototype.type = null;
-}, {type: {name: "Enum", arguments: ["cwt.DataTypeCmp.DataType"]}}, {});
+cwt.ITest = function() {};
+stjs.extend(cwt.ITest, null, [], null, {}, {});
 stjs.ns("cwt");
 cwt.LocalForageConfig = function() {};
 stjs.extend(cwt.LocalForageConfig, null, [], function(constructor, prototype) {
@@ -653,30 +483,6 @@ stjs.extend(cwt.LocalForageConfig, null, [], function(constructor, prototype) {
     prototype.description = null;
 }, {driver: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
-cwt.TimeLimitComponents = function() {};
-stjs.extend(cwt.TimeLimitComponents, null, [], function(constructor, prototype) {
-    prototype.turnTimeLimit = 0;
-    prototype.gameTimeLimit = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.RenderableCmp = function() {};
-stjs.extend(cwt.RenderableCmp, null, [], null, {}, {});
-stjs.ns("cwt");
-cwt.ArmyCmp = function() {};
-stjs.extend(cwt.ArmyCmp, null, [], function(constructor, prototype) {
-    prototype.name = null;
-}, {}, {});
-stjs.ns("cwt");
-cwt.MapCmp = function() {};
-stjs.extend(cwt.MapCmp, null, [], function(constructor, prototype) {
-    prototype.tiles = null;
-}, {tiles: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
-stjs.ns("cwt");
-cwt.TransportContainerCmp = function() {};
-stjs.extend(cwt.TransportContainerCmp, null, [], function(constructor, prototype) {
-    prototype.loads = null;
-}, {loads: {name: "Array", arguments: [null]}}, {});
-stjs.ns("cwt");
 cwt.Modification = function() {};
 stjs.extend(cwt.Modification, null, [], function(constructor, prototype) {
     prototype.sounds = null;
@@ -684,11 +490,17 @@ stjs.extend(cwt.Modification, null, [], function(constructor, prototype) {
     prototype.maps = null;
 }, {sounds: {name: "Map", arguments: [null, null]}, musics: {name: "Map", arguments: [null, null]}, maps: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
-cwt.CoCmp = function() {};
-stjs.extend(cwt.CoCmp, null, [], function(constructor, prototype) {
-    prototype.name = null;
-    prototype.coStars = 0;
-    prototype.scoStars = 0;
+cwt.TimeLimitComponents = function() {};
+stjs.extend(cwt.TimeLimitComponents, null, [], function(constructor, prototype) {
+    prototype.turnTimeLimit = 0;
+    prototype.gameTimeLimit = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.NumberUtil = function() {};
+stjs.extend(cwt.NumberUtil, null, [], function(constructor, prototype) {
+    constructor.getRandomInt = function(max) {
+        return parseInt((stjs.trunc(Math.random())) * max, 10);
+    };
 }, {}, {});
 stjs.ns("cwt");
 cwt.CapturerCmp = function() {};
@@ -696,136 +508,49 @@ stjs.extend(cwt.CapturerCmp, null, [], function(constructor, prototype) {
     prototype.points = 0;
 }, {}, {});
 stjs.ns("cwt");
-cwt.MoveType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.MoveType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.costs = null;
-    prototype.validateData = function(errors) {
-        cwt.JsUtil.forEachObjectValue(this.costs, stjs.bind(this, function(tileTypeId, movecosts) {
-            this.checkExpression(is.string(tileTypeId), errors, "costs -> " + tileTypeId + " key");
-            this.checkExpression(is.integer(movecosts) && is.within(movecosts, -2, 100) && is.not.equal(movecosts, 0), errors, "costs -> " + tileTypeId + " value");
-        }));
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.costs = this.grabMapValue(data, "costs", {});
-    };
-}, {costs: {name: "Map", arguments: [null, null]}}, {});
+cwt.TransportContainerCmp = function() {};
+stjs.extend(cwt.TransportContainerCmp, null, [], function(constructor, prototype) {
+    prototype.loads = null;
+}, {loads: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
-cwt.WeatherType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.WeatherType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.isDefaultWeather = false;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.bool(this.isDefaultWeather), errors, "isDefaultWeather");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.isDefaultWeather = this.grabMapValue(data, "isDefaultWeather", false);
-    };
+cwt.FundsCmp = function() {};
+stjs.extend(cwt.FundsCmp, null, [], function(constructor, prototype) {
+    prototype.funds = 0;
 }, {}, {});
 stjs.ns("cwt");
-cwt.ArmyType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.ArmyType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.name = null;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.string(this.name) && is.within(this.name.length, 3, 20), errors, "name");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.name = this.grabMapValue(data, "name", null);
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.LaserType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.LaserType, cwt.ObjectType, [], function(constructor, prototype) {
+cwt.LaserCmp = function() {};
+stjs.extend(cwt.LaserCmp, null, [], function(constructor, prototype) {
     prototype.damage = 0;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.damage = this.grabMapValue(data, "damage", 0);
-    };
 }, {}, {});
 stjs.ns("cwt");
-cwt.TileType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.TileType, cwt.ObjectType, [], function(constructor, prototype) {
+cwt.Inject = function() {};
+stjs.extend(cwt.Inject, null, [], null, {}, {});
+stjs.ns("cwt");
+cwt.Tile = function() {};
+stjs.extend(cwt.Tile, null, [], function(constructor, prototype) {
     prototype.defense = 0;
     prototype.blocksVision = false;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.bool(this.blocksVision), errors, "blocksVision");
-        this.checkExpression(is.integer(this.defense) && is.above(this.defense, -1), errors, "defense");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.defense = this.grabMapValue(data, "defense", 0);
-        this.blocksVision = this.grabMapValue(data, "blocksVision", false);
-    };
 }, {}, {});
 stjs.ns("cwt");
-cwt.MapFileType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.MapFileType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.mapName = null;
-    prototype.maxPlayers = 0;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.string(this.mapName), errors, "mapName");
-        this.checkExpression(is.integer(this.maxPlayers) && is.within(this.maxPlayers, 2, 4), errors, "maxPlayers");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.mapName = this.grabMapValue(data, "mapName", null);
-        this.maxPlayers = this.grabMapValue(data, "maxPlayers", -1);
-    };
-}, {}, {});
+cwt.GameModeCmp = function() {};
+stjs.extend(cwt.GameModeCmp, null, [], function(constructor, prototype) {
+    constructor.GameMode = stjs.enumeration("AW1", "AW2");
+    prototype.mode = null;
+}, {mode: {name: "Enum", arguments: ["cwt.GameModeCmp.GameMode"]}}, {});
 stjs.ns("cwt");
-cwt.RocketSiloType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.RocketSiloType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.damage = 0;
-    prototype.range = 0;
-    prototype.fireableBy = null;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.array(this.fireableBy), errors, "fireable");
-        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, 6), errors, "range");
-        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
+cwt.TileMap = function() {};
+stjs.extend(cwt.TileMap, null, [], function(constructor, prototype) {
+    prototype.tiles = null;
+    prototype.getTileAt = function(x, y) {
+        return this.tiles[x][y];
     };
-    prototype.grabDataFromMap = function(data) {
-        this.damage = this.grabMapValue(data, "damage", 0);
-        this.range = this.grabMapValue(data, "range", 1);
-        this.fireableBy = this.grabMapValue(data, "fireable", []);
-    };
-}, {fireableBy: {name: "Array", arguments: [null]}}, {});
+}, {tiles: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
 stjs.ns("cwt");
-cwt.CoType = function() {
-    cwt.ObjectType.call(this);
-};
-stjs.extend(cwt.CoType, cwt.ObjectType, [], function(constructor, prototype) {
-    prototype.coStars = 0;
-    prototype.scoStars = 0;
-    prototype.validateData = function(errors) {
-        this.checkExpression(is.integer(this.coStars) && is.within(this.coStars, 0, 11), errors, "coStars");
-        this.checkExpression(is.integer(this.scoStars) && is.within(this.scoStars, 0, 11), errors, "scoStars");
-    };
-    prototype.grabDataFromMap = function(data) {
-        this.coStars = this.grabMapValue(data, "coStars", 1);
-        this.scoStars = this.grabMapValue(data, "scoStars", 1);
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.VisionerCmp = function() {};
-stjs.extend(cwt.VisionerCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.vision = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.DataType = function() {};
-stjs.extend(cwt.DataType, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.typeEntity = null;
+cwt.Turn = function() {};
+stjs.extend(cwt.Turn, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.owner = null;
+    prototype.day = 0;
+    prototype.turn = 0;
 }, {}, {});
 stjs.ns("cwt");
 cwt.FuelDrainerCmp = function() {};
@@ -833,73 +558,15 @@ stjs.extend(cwt.FuelDrainerCmp, null, [cwt.IEntityComponent], function(construct
     prototype.drain = 0;
 }, {}, {});
 stjs.ns("cwt");
-cwt.SupplierCmp = function() {};
-stjs.extend(cwt.SupplierCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.supplies = null;
-}, {supplies: {name: "Array", arguments: [null]}}, {});
-stjs.ns("cwt");
-cwt.MenuCmp = function() {
-    this.entries = [];
-    for (var i = 0; i < 10; i++) {
-        this.entries.push({});
-    }
-};
-stjs.extend(cwt.MenuCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    constructor.MenuEntry = function() {};
-    stjs.extend(cwt.MenuCmp.MenuEntry, null, [], function(constructor, prototype) {
-        prototype.key = null;
-        prototype.enabled = false;
-    }, {}, {});
-    prototype.entries = null;
-}, {entries: {name: "Array", arguments: ["cwt.MenuCmp.MenuEntry"]}}, {});
-stjs.ns("cwt");
-cwt.WeatherCmp = function() {};
-stjs.extend(cwt.WeatherCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.defaultWeather = false;
+cwt.HidableCmp = function() {};
+stjs.extend(cwt.HidableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.hidden = false;
+    prototype.dailyFuelDrainHidden = 0;
 }, {}, {});
 stjs.ns("cwt");
-cwt.WeatherDurationCmp = function() {};
-stjs.extend(cwt.WeatherDurationCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.days = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.BuyableCmp = function() {};
-stjs.extend(cwt.BuyableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.cost = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.TransportCmp = function() {};
-stjs.extend(cwt.TransportCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.maxloads = 0;
-    prototype.canload = null;
-}, {canload: {name: "Array", arguments: [null]}}, {});
-stjs.ns("cwt");
-cwt.Positionable = function() {};
-stjs.extend(cwt.Positionable, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.x = 0;
-    prototype.y = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.HealthComponent = function() {};
-stjs.extend(cwt.HealthComponent, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.hp = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.DamageMap = function() {};
-stjs.extend(cwt.DamageMap, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.data = null;
-}, {data: {name: "Map", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.MovingCostsCmp = function() {};
-stjs.extend(cwt.MovingCostsCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.costs = null;
-}, {costs: {name: "Map", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.Player = function() {};
-stjs.extend(cwt.Player, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.gold = 0;
-    prototype.numOfUnits = 0;
-    prototype.numOfProperties = 0;
+cwt.Capturable = function() {};
+stjs.extend(cwt.Capturable, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.points = 0;
 }, {}, {});
 stjs.ns("cwt");
 cwt.MovingAbilityCmp = function() {};
@@ -909,27 +576,12 @@ stjs.extend(cwt.MovingAbilityCmp, null, [cwt.IEntityComponent], function(constru
     prototype.movetype = null;
 }, {}, {});
 stjs.ns("cwt");
-cwt.DirectFighting = function() {};
-stjs.extend(cwt.DirectFighting, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.ammo = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.CapturableCmp = function() {};
-stjs.extend(cwt.CapturableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.points = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.GameTimeCompnent = function() {};
-stjs.extend(cwt.GameTimeCompnent, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.turnTime = 0;
-    prototype.gameTime = 0;
-    prototype.turnTimeLimit = 0;
-    prototype.gameTimeLimit = 0;
-}, {}, {});
-stjs.ns("cwt");
-cwt.MovingCmp = function() {};
-stjs.extend(cwt.MovingCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.fuel = 0;
+cwt.ValueMetaData = function() {};
+stjs.extend(cwt.ValueMetaData, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.lowerBound = 0;
+    prototype.upperBound = 0;
+    prototype.changeValue = 0;
+    prototype.defaultValue = 0;
 }, {}, {});
 stjs.ns("cwt");
 cwt.SuicideCmp = function() {};
@@ -939,27 +591,64 @@ stjs.extend(cwt.SuicideCmp, null, [cwt.IEntityComponent], function(constructor, 
     prototype.noDamage = null;
 }, {noDamage: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
-cwt.UsableComponent = function() {};
-stjs.extend(cwt.UsableComponent, null, [cwt.IEntityComponent], function(constructor, prototype) {
+cwt.Manpower = function() {};
+stjs.extend(cwt.Manpower, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.manpower = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.SingleUse = function() {};
+stjs.extend(cwt.SingleUse, null, [cwt.IEntityComponent], function(constructor, prototype) {
     prototype.used = false;
 }, {}, {});
 stjs.ns("cwt");
-cwt.IndirectFighting = function() {};
-stjs.extend(cwt.IndirectFighting, null, [cwt.IEntityComponent], function(constructor, prototype) {
+cwt.Weather = function() {};
+stjs.extend(cwt.Weather, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.defaultWeather = false;
+}, {}, {});
+stjs.ns("cwt");
+cwt.DataType = function() {};
+stjs.extend(cwt.DataType, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.typeEntity = null;
+}, {}, {});
+stjs.ns("cwt");
+cwt.TimerData = function() {};
+stjs.extend(cwt.TimerData, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.turnTime = 0;
+    prototype.gameTime = 0;
+    prototype.turnTimeLimit = 0;
+    prototype.gameTimeLimit = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.Factory = function() {};
+stjs.extend(cwt.Factory, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.builds = null;
+}, {builds: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.Fighter = function() {};
+stjs.extend(cwt.Fighter, null, [cwt.IEntityComponent], function(constructor, prototype) {
     prototype.ammo = 0;
-    prototype.maxRange = 0;
-    prototype.minRange = 0;
+    prototype.mainDamage = null;
+    prototype.secondaryDamage = null;
+}, {mainDamage: {name: "Map", arguments: [null, null]}, secondaryDamage: {name: "Map", arguments: [null, null]}}, {});
+stjs.ns("cwt");
+cwt.Config = function() {};
+stjs.extend(cwt.Config, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.value = 0;
 }, {}, {});
 stjs.ns("cwt");
-cwt.HidableCmp = function() {};
-stjs.extend(cwt.HidableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.hidden = false;
-    prototype.dailyFuelDrainHidden = 0;
+cwt.Sprite = function() {};
+stjs.extend(cwt.Sprite, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.sprite = null;
 }, {}, {});
 stjs.ns("cwt");
-cwt.OwnableCmp = function() {};
-stjs.extend(cwt.OwnableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.owner = null;
+cwt.RepairerCmp = function() {};
+stjs.extend(cwt.RepairerCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.repairs = null;
+}, {repairs: {name: "Map", arguments: [null, null]}}, {});
+stjs.ns("cwt");
+cwt.Buyable = function() {};
+stjs.extend(cwt.Buyable, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.cost = 0;
 }, {}, {});
 stjs.ns("cwt");
 cwt.MenuComponent = function() {
@@ -1003,20 +692,199 @@ stjs.extend(cwt.MenuComponent, null, [cwt.IEntityComponent], function(constructo
     };
 }, {entries: {name: "Array", arguments: ["cwt.MenuComponent.MenuEntry"]}}, {});
 stjs.ns("cwt");
-cwt.RepairerCmp = function() {};
-stjs.extend(cwt.RepairerCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
-    prototype.repairs = null;
-}, {repairs: {name: "Map", arguments: [null, null]}}, {});
+cwt.TransportCmp = function() {};
+stjs.extend(cwt.TransportCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.maxloads = 0;
+    prototype.canload = null;
+}, {canload: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
-cwt.SingleUse = function() {};
-stjs.extend(cwt.SingleUse, null, [cwt.IEntityComponent], function(constructor, prototype) {
+cwt.Vision = function() {};
+stjs.extend(cwt.Vision, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.range = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.Position = function() {};
+stjs.extend(cwt.Position, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.x = 0;
+    prototype.y = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.Living = function() {};
+stjs.extend(cwt.Living, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.hp = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.CapturableCmp = function() {};
+stjs.extend(cwt.CapturableCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.points = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.MenuCmp = function() {
+    this.entries = [];
+    for (var i = 0; i < 10; i++) {
+        this.entries.push({});
+    }
+};
+stjs.extend(cwt.MenuCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    constructor.MenuEntry = function() {};
+    stjs.extend(cwt.MenuCmp.MenuEntry, null, [], function(constructor, prototype) {
+        prototype.key = null;
+        prototype.enabled = false;
+    }, {}, {});
+    prototype.entries = null;
+}, {entries: {name: "Array", arguments: ["cwt.MenuCmp.MenuEntry"]}}, {});
+stjs.ns("cwt");
+cwt.SupplierCmp = function() {};
+stjs.extend(cwt.SupplierCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.supplies = null;
+}, {supplies: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.UsableComponent = function() {};
+stjs.extend(cwt.UsableComponent, null, [cwt.IEntityComponent], function(constructor, prototype) {
     prototype.used = false;
 }, {}, {});
 stjs.ns("cwt");
-cwt.FactoryCmp = function() {};
-stjs.extend(cwt.FactoryCmp, null, [cwt.IEntityComponent, cwt.IFlyweightComponent], function(constructor, prototype) {
-    prototype.builds = null;
-}, {builds: {name: "Array", arguments: [null]}}, {});
+cwt.Owner = function() {};
+stjs.extend(cwt.Owner, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.owner = null;
+}, {}, {});
+stjs.ns("cwt");
+cwt.MovingCmp = function() {};
+stjs.extend(cwt.MovingCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.fuel = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.WeatherData = function() {};
+stjs.extend(cwt.WeatherData, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.days = 0;
+    prototype.weather = null;
+}, {}, {});
+stjs.ns("cwt");
+cwt.VisionerCmp = function() {};
+stjs.extend(cwt.VisionerCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.vision = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.Capturer = function() {};
+stjs.extend(cwt.Capturer, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.points = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.MovingCostsCmp = function() {};
+stjs.extend(cwt.MovingCostsCmp, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.costs = null;
+}, {costs: {name: "Map", arguments: [null, null]}}, {});
+stjs.ns("cwt");
+cwt.RangedFighter = function() {};
+stjs.extend(cwt.RangedFighter, null, [cwt.IEntityComponent], function(constructor, prototype) {
+    prototype.maxRange = 0;
+    prototype.minRange = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.GameEndEvent = function() {};
+stjs.extend(cwt.GameEndEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onGameEnd = function() {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.LoadEntityEvent = function() {};
+stjs.extend(cwt.LoadEntityEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onLoadEntity = function(data, entityType) {};
+    prototype.onLoadedEntity = function(entity, type) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.UnitProducedEvent = function() {};
+stjs.extend(cwt.UnitProducedEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onUnitProduced = function(factory, unit, type) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.ErrorEvent = function() {};
+stjs.extend(cwt.ErrorEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onIllegalGameData = function(message) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.UnitCreatedEvent = function() {};
+stjs.extend(cwt.UnitCreatedEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onUnitCreated = function(unitEntity) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.WeatherChangesEvent = function() {};
+stjs.extend(cwt.WeatherChangesEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onWeatherChanges = function(weather, duration) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.SystemStartEvent = function() {};
+stjs.extend(cwt.SystemStartEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onSystemStart = function() {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.TurnEndEvent = function() {};
+stjs.extend(cwt.TurnEndEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onTurnEnd = function() {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.ObjectChangeTypeEvent = function() {};
+stjs.extend(cwt.ObjectChangeTypeEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onObjectGetsType = function(object, type) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.DayStartEvent = function() {};
+stjs.extend(cwt.DayStartEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onDayStart = function(day) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.NextFrameEvent = function() {};
+stjs.extend(cwt.NextFrameEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onNextFrame = function(delta) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.PositionEvent = function() {};
+stjs.extend(cwt.PositionEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onUnitPlacedAtProperty = function(unit, property) {};
+    prototype.onUnitPlacedAtTile = function(unit, tile) {};
+    prototype.onUnitPlacedAtPosition = function(unit, x, y) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.UnitDestroyedEvent = function() {};
+stjs.extend(cwt.UnitDestroyedEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onUnitDestroyed = function(unitEntity) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.ActionInvokedEvent = function() {};
+stjs.extend(cwt.ActionInvokedEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onBuildUnit = function(factory, type) {};
+    prototype.onInvokeAction = function(action, pstr, p1, p2, p3, p4, p5) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.TurnStartEvent = function() {};
+stjs.extend(cwt.TurnStartEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onTurnStart = function(player, turn) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.ConfigUpdateEvent = function() {};
+stjs.extend(cwt.ConfigUpdateEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onConfigUpdate = function(configName, increaseValue) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.FogEvent = function() {};
+stjs.extend(cwt.FogEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onTileVisionChanges = function(x, y, visible) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.GameStartEvent = function() {};
+stjs.extend(cwt.GameStartEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onGameStart = function() {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.OwnerChangeEvent = function() {};
+stjs.extend(cwt.OwnerChangeEvent, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onUnitGetsPropertyOwner = function(unit, factory) {};
+}, {}, {});
+stjs.ns("cwt");
+cwt.CaptureEvents = function() {};
+stjs.extend(cwt.CaptureEvents, null, [cwt.IEvent], function(constructor, prototype) {
+    prototype.onLoweredCapturePoints = function(capturer, property, leftPoints) {};
+    prototype.onCapturedProperty = function(capturer, property) {};
+}, {}, {});
 /**
  *  Image utility class to manipulate images.
  */
@@ -1337,24 +1205,127 @@ stjs.extend(cwt.ImageUtil, null, [], function(constructor, prototype) {
     };
 }, {}, {});
 stjs.ns("cwt");
-cwt.SuicideType = function() {
+cwt.CoType = function() {
     cwt.ObjectType.call(this);
 };
-stjs.extend(cwt.SuicideType, cwt.ObjectType, [], function(constructor, prototype) {
+stjs.extend(cwt.CoType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.coStars = 0;
+    prototype.scoStars = 0;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.integer(this.coStars) && is.within(this.coStars, 0, 11), errors, "coStars");
+        this.checkExpression(is.integer(this.scoStars) && is.within(this.scoStars, 0, 11), errors, "scoStars");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.coStars = this.grabMapValue(data, "coStars", 1);
+        this.scoStars = this.grabMapValue(data, "scoStars", 1);
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.WeatherType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.WeatherType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.isDefaultWeather = false;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.bool(this.isDefaultWeather), errors, "isDefaultWeather");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.isDefaultWeather = this.grabMapValue(data, "isDefaultWeather", false);
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.MapFileType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.MapFileType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.mapName = null;
+    prototype.maxPlayers = 0;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.string(this.mapName), errors, "mapName");
+        this.checkExpression(is.integer(this.maxPlayers) && is.within(this.maxPlayers, 2, 4), errors, "maxPlayers");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.mapName = this.grabMapValue(data, "mapName", null);
+        this.maxPlayers = this.grabMapValue(data, "maxPlayers", -1);
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.RocketSiloType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.RocketSiloType, cwt.ObjectType, [], function(constructor, prototype) {
     prototype.damage = 0;
     prototype.range = 0;
-    prototype.noDamage = null;
+    prototype.fireableBy = null;
     prototype.validateData = function(errors) {
+        this.checkExpression(is.array(this.fireableBy), errors, "fireable");
+        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, 6), errors, "range");
         this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
-        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "range");
-        this.checkExpression(is.array(this.noDamage), errors, "noDamage");
     };
     prototype.grabDataFromMap = function(data) {
         this.damage = this.grabMapValue(data, "damage", 0);
         this.range = this.grabMapValue(data, "range", 1);
-        this.noDamage = this.grabMapValue(data, "noDamage", []);
+        this.fireableBy = this.grabMapValue(data, "fireable", []);
     };
-}, {noDamage: {name: "Array", arguments: [null]}}, {});
+}, {fireableBy: {name: "Array", arguments: [null]}}, {});
+stjs.ns("cwt");
+cwt.MoveType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.MoveType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.costs = null;
+    prototype.validateData = function(errors) {
+        cwt.JsUtil.forEachObjectValue(this.costs, stjs.bind(this, function(tileTypeId, movecosts) {
+            this.checkExpression(is.string(tileTypeId), errors, "costs -> " + tileTypeId + " key");
+            this.checkExpression(is.integer(movecosts) && is.within(movecosts, -2, 100) && is.not.equal(movecosts, 0), errors, "costs -> " + tileTypeId + " value");
+        }));
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.costs = this.grabMapValue(data, "costs", {});
+    };
+}, {costs: {name: "Map", arguments: [null, null]}}, {});
+stjs.ns("cwt");
+cwt.LaserType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.LaserType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.damage = 0;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.damage = this.grabMapValue(data, "damage", 0);
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.TileType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.TileType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.defense = 0;
+    prototype.blocksVision = false;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.bool(this.blocksVision), errors, "blocksVision");
+        this.checkExpression(is.integer(this.defense) && is.above(this.defense, -1), errors, "defense");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.defense = this.grabMapValue(data, "defense", 0);
+        this.blocksVision = this.grabMapValue(data, "blocksVision", false);
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.ArmyType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.ArmyType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.name = null;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.string(this.name) && is.within(this.name.length, 3, 20), errors, "name");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.name = this.grabMapValue(data, "name", null);
+    };
+}, {}, {});
 stjs.ns("cwt");
 cwt.AttackType = function() {
     cwt.ObjectType.call(this);
@@ -1383,6 +1354,25 @@ stjs.extend(cwt.AttackType, cwt.ObjectType, [], function(constructor, prototype)
         this.secondaryWeapon = this.grabMapValue(data, "secondaryWeapon", {});
     };
 }, {mainWeapon: {name: "Map", arguments: [null, null]}, secondaryWeapon: {name: "Map", arguments: [null, null]}}, {});
+stjs.ns("cwt");
+cwt.SuicideType = function() {
+    cwt.ObjectType.call(this);
+};
+stjs.extend(cwt.SuicideType, cwt.ObjectType, [], function(constructor, prototype) {
+    prototype.damage = 0;
+    prototype.range = 0;
+    prototype.noDamage = null;
+    prototype.validateData = function(errors) {
+        this.checkExpression(is.integer(this.damage) && is.within(this.damage, -1, 10), errors, "damage");
+        this.checkExpression(is.integer(this.range) && is.within(this.range, 0, cwt.Constants.MAX_SELECTION_RANGE + 1), errors, "range");
+        this.checkExpression(is.array(this.noDamage), errors, "noDamage");
+    };
+    prototype.grabDataFromMap = function(data) {
+        this.damage = this.grabMapValue(data, "damage", 0);
+        this.range = this.grabMapValue(data, "range", 1);
+        this.noDamage = this.grabMapValue(data, "noDamage", []);
+    };
+}, {noDamage: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
 cwt.ConstructedClass = function() {};
 stjs.extend(cwt.ConstructedClass, null, [], function(constructor, prototype) {
@@ -1454,8 +1444,27 @@ stjs.extend(cwt.ObjectConverter, null, [cwt.DataConverter], function(constructor
     };
 }, {}, {});
 stjs.ns("cwt");
-cwt.EventEmitter = function() {};
-stjs.extend(cwt.EventEmitter, null, [cwt.GameStartEvent, cwt.GameEndEvent, cwt.NextFrameEvent, cwt.TurnStartEvent, cwt.TurnEndEvent], null, {}, {});
+cwt.ImageConverter = function() {};
+stjs.extend(cwt.ImageConverter, null, [cwt.DataConverter], function(constructor, prototype) {
+    prototype.grabData = function(asset, callback) {
+        var img = new Image();
+        img.onload = function(image) {
+            var canvas = cwt.BrowserUtil.createDomElement("canvas");
+            var ctx = canvas.getContext("2d");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            callback(canvas);
+        };
+        img.src = asset.path;
+    };
+    prototype.cacheData = function(data, callback) {
+        cwt.ImageUtil.convertImageToString(data, callback);
+    };
+    prototype.loadData = function(data, callback) {
+        cwt.ImageUtil.convertStringToImage(data, callback);
+    };
+}, {}, {});
 stjs.ns("cwt");
 cwt.PropertyType = function() {
     cwt.ObjectType.call(this);
@@ -1510,38 +1519,6 @@ stjs.extend(cwt.PropertyType, cwt.ObjectType, [], function(constructor, prototyp
         this.notTransferable = this.grabMapValue(data, "notTransferable", false);
     };
 }, {repairs: {name: "Map", arguments: [null, null]}, rocketsilo: "cwt.RocketSiloType", builds: {name: "Array", arguments: [null]}, laser: "cwt.LaserType"}, {});
-stjs.ns("cwt");
-cwt.SecondaryWeaponDamageMap = function() {
-    cwt.DamageMap.call(this);
-};
-stjs.extend(cwt.SecondaryWeaponDamageMap, cwt.DamageMap, [], null, {data: {name: "Map", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.MainWeaponDamageMap = function() {
-    cwt.DamageMap.call(this);
-};
-stjs.extend(cwt.MainWeaponDamageMap, cwt.DamageMap, [], null, {data: {name: "Map", arguments: [null, null]}}, {});
-stjs.ns("cwt");
-cwt.ImageConverter = function() {};
-stjs.extend(cwt.ImageConverter, null, [cwt.DataConverter], function(constructor, prototype) {
-    prototype.grabData = function(asset, callback) {
-        var img = new Image();
-        img.onload = function(image) {
-            var canvas = cwt.BrowserUtil.createDomElement("canvas");
-            var ctx = canvas.getContext("2d");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-            callback(canvas);
-        };
-        img.src = asset.path;
-    };
-    prototype.cacheData = function(data, callback) {
-        cwt.ImageUtil.convertImageToString(data, callback);
-    };
-    prototype.loadData = function(data, callback) {
-        cwt.ImageUtil.convertStringToImage(data, callback);
-    };
-}, {}, {});
 stjs.ns("cwt");
 cwt.UnitType = function() {
     cwt.ObjectType.call(this);
@@ -1604,58 +1581,6 @@ stjs.extend(cwt.UnitType, cwt.ObjectType, [], function(constructor, prototype) {
     };
 }, {canload: {name: "Array", arguments: [null]}, supply: {name: "Array", arguments: [null]}, attack: "cwt.AttackType", suicide: "cwt.SuicideType"}, {});
 stjs.ns("cwt");
-cwt.SystemEvents = function() {};
-stjs.extend(cwt.SystemEvents, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.INIT_ENGINE = null;
-    prototype.FLUSHED_ACTION = null;
-    prototype.INPUT_ACTION = null;
-    prototype.INPUT_CANCEL = null;
-    /**
-     *  (TileEntity, TilePropertyEntity, TileUnitEntity)
-     */
-    prototype.CLICK_ON_TILE = null;
-    prototype.INVOKE_ACTION = null;
-    prototype.OBJECT_WAITS = null;
-    prototype.ERROR_RAISED = null;
-    prototype.FRAME_TICK = null;
-    prototype.MOUSE_CLICK = null;
-    prototype.SET_CURSOR = null;
-    prototype.CURSOR_ACTION = null;
-    /**
-     *  (player, turnNumber)
-     */
-    prototype.TURN_STARTS = null;
-    prototype.TURN_ENDS = null;
-    prototype.GAME_STARTS = null;
-    prototype.GAME_ENDS = null;
-    prototype.WEATHER_CHANGES = null;
-    prototype.WEATHER_CHANGED = null;
-    prototype.UNIT_HEALED = null;
-    prototype.UNIT_DAMAGED = null;
-    prototype.INFLICTS_DAMAGE = null;
-    prototype.UNIT_CREATED = null;
-    prototype.UNIT_DESTROYED = null;
-    prototype.UNIT_MOVED = null;
-    prototype.PLAYER_GOLD_CHANGES = null;
-    /**
-     *  (Id, Type, X, Y)
-     */
-    prototype.UNIT_PRODUCED = null;
-    prototype.onConstruction = function() {
-        this.constructEvents();
-    };
-    prototype.constructEvents = function() {
-        var eventNames = cwt.JsUtil.objectKeys((this));
-        for (var i = 0; i < eventNames.length; i++) {
-            var eventName = eventNames[i];
-            if (eventName == "onConstruction") {
-                continue;
-            }
-            (this)[eventName] = new cwt.Observerable();
-        }
-    };
-}, {INIT_ENGINE: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, FLUSHED_ACTION: "cwt.Observerable0", INPUT_ACTION: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, INPUT_CANCEL: {name: "cwt.Observerable1", arguments: ["cwt.Playground"]}, CLICK_ON_TILE: {name: "cwt.Observerable3", arguments: [null, null, null]}, INVOKE_ACTION: {name: "cwt.Observerable4", arguments: [null, null, null, null]}, OBJECT_WAITS: {name: "cwt.Observerable1", arguments: [null]}, ERROR_RAISED: {name: "cwt.Observerable1", arguments: [null]}, FRAME_TICK: {name: "cwt.Observerable1", arguments: [null]}, MOUSE_CLICK: {name: "cwt.Observerable3", arguments: [null, null, null]}, SET_CURSOR: {name: "cwt.Observerable2", arguments: [null, null]}, CURSOR_ACTION: "cwt.Observerable0", TURN_STARTS: {name: "cwt.Observerable2", arguments: [null, null]}, TURN_ENDS: "cwt.Observerable0", GAME_STARTS: "cwt.Observerable0", GAME_ENDS: "cwt.Observerable0", WEATHER_CHANGES: {name: "cwt.Observerable2", arguments: [null, null]}, WEATHER_CHANGED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_HEALED: {name: "cwt.Observerable2", arguments: [null, null]}, UNIT_DAMAGED: {name: "cwt.Observerable2", arguments: [null, null]}, INFLICTS_DAMAGE: {name: "cwt.Observerable3", arguments: [null, null, null]}, UNIT_CREATED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_DESTROYED: {name: "cwt.Observerable1", arguments: [null]}, UNIT_MOVED: {name: "cwt.Observerable4", arguments: [null, null, null, {name: "Array", arguments: [null]}]}, PLAYER_GOLD_CHANGES: {name: "cwt.Observerable2", arguments: [null, null]}, UNIT_PRODUCED: {name: "cwt.Observerable4", arguments: [null, null, null, null]}}, {});
-stjs.ns("cwt");
 cwt.UnitAssetLoader = function() {};
 stjs.extend(cwt.UnitAssetLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
     prototype.defaultFrameData = null;
@@ -1679,42 +1604,104 @@ stjs.extend(cwt.UnitAssetLoader, null, [cwt.ConstructedClass], function(construc
         return frame;
     };
 }, {defaultFrameData: "cwt.CanvasQuery.Atlas", knownTypeIds: {name: "Array", arguments: [null]}}, {});
+/**
+ *  
+ *  <strong>This class is dynamic, so if you are going to change things here then
+ *  be careful!</strong>
+ */
 stjs.ns("cwt");
-cwt.BrowserService = function() {};
-stjs.extend(cwt.BrowserService, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.requestJsonFile = function(path, callback) {};
+cwt.ConstructedFactory = function() {};
+stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
+    constructor.instances = null;
     /**
-     *  Invokes a XmlHttpRequest.
-     *  
-     *  @param path
-     *  @param specialType
-     *           null or a special binary response type like array buffer
-     *  @param callback
-     *           callback will be invoked with two parameters => object data and
-     *           error message (both aren't not null at the same time)
+     *  Initializes all classes which extends the {@link ConstructedClass}
+     *  interface.
      */
-    prototype.doXmlHttpRequest = function(path, specialType, callback) {
-        var request = new XMLHttpRequest();
-        if (specialType != null) {
-            (request)["responseType"] = specialType;
-        }
-        request.onreadystatechange = function() {
-            if (request.readyState == 4) {
-                if (request.readyState == 4 && request.status == 200) {
-                    if (specialType != null) {
-                        callback((request)["response"], null);
-                    } else {
-                        callback(request.responseText, null);
+    constructor.initObjects = function() {
+        cwt.ConstructedFactory.instances = {};
+        var namespace = (window)[cwt.Constants.NAMESPACE];
+        var classNames = cwt.JsUtil.objectKeys(namespace);
+        cwt.JsUtil.forEachArrayValue(classNames, function(index, className) {
+            var classObject = (namespace)[className];
+            cwt.ConstructedFactory.setClassNameProperty(className, classObject);
+            if (cwt.ConstructedFactory.isConstructedClass(classObject)) {
+                console.log("CONSTRUCTING => " + className);
+                var cmp = new classObject();
+                cwt.ConstructedFactory.instances[className] = cmp;
+            }
+        });
+        cwt.ConstructedFactory.injectDependencies(namespace);
+        cwt.ConstructedFactory.publischInitEvent();
+    };
+    constructor.injectDependencies = function(namespace) {
+        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(instanceName, instanceObject) {
+            var instanceClass = (namespace)[instanceName];
+            var instanceDependencies = (instanceClass)["$typeDescription"];
+            cwt.JsUtil.forEachMapValue(instanceDependencies, function(property, dependencyName) {
+                if ((typeof dependencyName) == "string") {
+                    var dependencyClassName = (dependencyName).replace(cwt.Constants.NAMESPACE + ".", "");
+                    var dependency = cwt.ConstructedFactory.instances[dependencyClassName];
+                    if (dependency != undefined) {
+                        console.log("INJECTING => " + dependencyClassName + " INTO " + instanceName);
+                        (instanceObject)[property] = dependency;
+                        ;
                     }
-                } else {
-                    callback(null, request.statusText);
+                }
+            });
+        });
+    };
+    constructor.publischInitEvent = function() {
+        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(componentName, component) {
+            component.onConstruction();
+        });
+    };
+    constructor.setClassNameProperty = function(className, classObject) {
+        if ((classObject).hasOwnProperty("$typeDescription")) {
+            (classObject)["__className"] = className;
+            ((classObject).prototype)["__className"] = className;
+        }
+    };
+    /**
+     *  Searches for the {@link ConstructedClass} interface in a class hierarchy.
+     *  At the moment the class has to implement an interface which extends the
+     *  {@link ConstructedClass} interface in it's own hierarchy to be recognized
+     *  as constructed class.
+     *  
+     *  @param classObj
+     *           class that will be checked
+     *  @return true when the class object is a constructed class, else false
+     */
+    constructor.isConstructedClass = function(classObj) {
+        if ((classObj).hasOwnProperty("$typeDescription")) {
+            var interfaces = (classObj)["$inherit"];
+            if (interfaces.indexOf(cwt.ConstructedClass) != -1) {
+                return true;
+            }
+            for (var i = 0; i < interfaces.length; i++) {
+                var interfaceObj = interfaces[i];
+                if (cwt.ConstructedFactory.isConstructedClass(interfaceObj)) {
+                    return true;
                 }
             }
-        };
-        request.open("get", path, true);
-        request.send();
+        }
+        return false;
     };
-}, {}, {});
+    /**
+     *  
+     *  @param clazz
+     *  @return the instantiated object of the given class
+     *  @throws IllegalArgumentException
+     *            when the given class is not registered as constructed class or
+     *            when it's a member of a non supported namespace
+     */
+    constructor.getObject = function(clazz) {
+        var value = cwt.ConstructedFactory.instances[(clazz)["__className"]];
+        if (undefined == value) {
+            exception("IllegalArgumentException");
+        }
+        return value;
+    };
+}, {instances: {name: "Map", arguments: [null, "cwt.ConstructedClass"]}}, {});
 stjs.ns("cwt");
 cwt.GameDataService = function() {};
 stjs.extend(cwt.GameDataService, null, [cwt.ConstructedClass], function(constructor, prototype) {
@@ -1752,14 +1739,26 @@ stjs.extend(cwt.GameDataService, null, [cwt.ConstructedClass], function(construc
     };
 }, {typeMap: {name: "Map", arguments: [null, "cwt.ObjectType"]}}, {});
 stjs.ns("cwt");
+cwt.ComponentManager = function() {};
+stjs.extend(cwt.ComponentManager, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.getComponents = function(componentClass) {
+        return null;
+    };
+    prototype.getComponent = function(entity, componentClass) {
+        return null;
+    };
+}, {}, {});
+stjs.ns("cwt");
 cwt.EntityManager = function() {
     this.entityIdCounter = 0;
     this.entities = {};
+    this.entityPrototypes = {};
     this.allSelector = function(key) {
         return true;
     };
 };
 stjs.extend(cwt.EntityManager, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.entityPrototypes = null;
     prototype.entities = null;
     prototype.entityIdCounter = 0;
     prototype.allSelector = null;
@@ -1772,6 +1771,7 @@ stjs.extend(cwt.EntityManager, null, [cwt.ConstructedClass], function(constructo
             return null;
         }
         this.entities[id] = {};
+        this.entityPrototypes[id] = null;
         return id;
     };
     prototype.acquireEntityComponent = function(id, componentClass) {
@@ -1819,6 +1819,17 @@ stjs.extend(cwt.EntityManager, null, [cwt.ConstructedClass], function(constructo
         }
         return components;
     };
+    prototype.getEntitiesWithComponentType = function(clazz) {
+        var resultEntities = [];
+        var entityNames = cwt.JsUtil.objectKeys(this.entities);
+        for (var i = 0; i < entityNames.length; i++) {
+            var entityName = entityNames[i];
+            if (this.getComponent(entityName, clazz) != null) {
+                resultEntities.push(entityName);
+            }
+        }
+        return resultEntities;
+    };
     /**
      *  Returns a component of an entity.
      *  
@@ -1828,14 +1839,27 @@ stjs.extend(cwt.EntityManager, null, [cwt.ConstructedClass], function(constructo
      *           class of the wanted component
      *  @return component object or null
      */
-    prototype.getEntityComponent = function(lId, lComponentClass) {
+    prototype.getComponent = function(lId, lComponentClass) {
         var componentMap = this.entities[lId];
         var componentName = cwt.ClassUtil.getClassName(lComponentClass);
         var component = componentMap[componentName];
-        return component == undefined ? null : component;
+        if (component == undefined) {
+            var proto = this.entityPrototypes[lId];
+            return proto != undefined ? this.getComponent(proto, lComponentClass) : null;
+        } else {
+            return component;
+        }
+    };
+    prototype.getNonNullComponent = function(lId, lComponentClass) {
+        var component;
+        component = this.getComponent(lId, lComponentClass);
+        if (component == null) {
+            component = this.acquireEntityComponent(lId, lComponentClass);
+        }
+        return component;
     };
     prototype.hasEntityComponent = function(lId, lComponentClass) {
-        return this.getEntityComponent(lId, lComponentClass) != null;
+        return this.getComponent(lId, lComponentClass) != null;
     };
     /**
      *  Creates a complete data dump of the internal entity data.
@@ -1865,70 +1889,44 @@ stjs.extend(cwt.EntityManager, null, [cwt.ConstructedClass], function(constructo
         }
         dataCallback(JSON.stringify(data, null, 2));
     };
-}, {entities: {name: "Map", arguments: [null, {name: "Map", arguments: [null, "cwt.IEntityComponent"]}]}, allSelector: {name: "Function1", arguments: [null, null]}}, {});
-/**
- *  
- *  <strong>This class is dynamic, so if you are going to change things here then
- *  be careful!</strong>
- */
+    prototype.setEntityPrototype = function(entity, prototype) {};
+}, {entityPrototypes: {name: "Map", arguments: [null, null]}, entities: {name: "Map", arguments: [null, {name: "Map", arguments: [null, "cwt.IEntityComponent"]}]}, allSelector: {name: "Function1", arguments: [null, null]}}, {});
 stjs.ns("cwt");
-cwt.ConstructedFactory = function() {};
-stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
-    constructor.components = null;
+cwt.BrowserService = function() {};
+stjs.extend(cwt.BrowserService, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.requestJsonFile = function(path, callback) {};
     /**
-     *  Initializes all classes which extends the {@link ConstructedClass}
-     *  interface.
+     *  Invokes a XmlHttpRequest.
+     *  
+     *  @param path
+     *  @param specialType
+     *           null or a special binary response type like array buffer
+     *  @param callback
+     *           callback will be invoked with two parameters => object data and
+     *           error message (both aren't not null at the same time)
      */
-    constructor.initObjects = function() {
-        cwt.ConstructedFactory.components = {};
-        var namespace = cwt.Constants.NAMESPACE;
-        var objectConst = (window)["Object"];
-        var objectPropertiesFn = (objectConst)["keys"];
-        var namespaceObj = (window)[namespace];
-        var keys = objectPropertiesFn(namespaceObj);
-        for (var i = 0; i < keys.length; i++) {
-            var objectName = keys[i];
-            var object = ((window)[namespace])[objectName];
-            if ((object).hasOwnProperty("$typeDescription")) {
-                (object)["__className"] = objectName;
-                ((object).prototype)["__className"] = objectName;
-                var interfaces = (object)["$inherit"];
-                if (interfaces.indexOf(cwt.ConstructedClass) != -1) {
-                    console.log("CONSTRUCTING => " + objectName);
-                    var cmp = new object();
-                    cwt.ConstructedFactory.components[objectName] = cmp;
+    prototype.doXmlHttpRequest = function(path, specialType, callback) {
+        var request = new XMLHttpRequest();
+        if (specialType != null) {
+            (request)["responseType"] = specialType;
+        }
+        request.onreadystatechange = function() {
+            if (request.readyState == 4) {
+                if (request.readyState == 4 && request.status == 200) {
+                    if (specialType != null) {
+                        callback((request)["response"], null);
+                    } else {
+                        callback(request.responseText, null);
+                    }
+                } else {
+                    callback(null, request.statusText);
                 }
             }
-        }
-        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.components, function(componentName, component) {
-            component.onConstruction();
-        });
+        };
+        request.open("get", path, true);
+        request.send();
     };
-    /**
-     *  
-     *  @param clazz
-     *  @return the instantiated object of the given class
-     *  @throws IllegalArgumentException
-     *            when the given class is not registered as constructed class or
-     *            when it's a member of a non supported namespace
-     */
-    constructor.getObject = function(clazz) {
-        var value = cwt.ConstructedFactory.components[(clazz)["__className"]];
-        if (undefined == value) {
-            exception("IllegalArgumentException");
-        }
-        return value;
-    };
-}, {components: {name: "Map", arguments: [null, "cwt.ConstructedClass"]}}, {});
-stjs.ns("cwt");
-cwt.StartScreen = function() {};
-stjs.extend(cwt.StartScreen, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.enter = function() {};
-    prototype.render = function() {
-        this.app.layer.clear("black").fillStyle("white").font("24pt Arial").fillText("Custom Wars: Tactics", 60, 228).fillText("Development Version", 120, 270);
-    };
-    prototype.keydown = function(ev) {};
-}, {app: "cwt.Playground"}, {});
+}, {}, {});
 stjs.ns("cwt");
 cwt.AssetLoader = function() {};
 stjs.extend(cwt.AssetLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
@@ -1954,6 +1952,52 @@ stjs.extend(cwt.AssetLoader, null, [cwt.ConstructedClass], function(constructor,
     };
     prototype.loadFolder = function(app, dataClass) {};
 }, {imgGrabber: "cwt.ImageConverter", sheetGrabber: {name: "cwt.TypedObjectConverter", arguments: ["cwt.UnitType"]}}, {});
+stjs.ns("cwt");
+cwt.Cwt = function() {};
+stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.em = null;
+    prototype.getLoggerName = function() {
+        return cwt.ClassUtil.getClassName(cwt.Cwt);
+    };
+    prototype.onConstruction = function() {
+        cwt.PlaygroundUtil.setBasePath(this, "../");
+        this.container = window.document.getElementById("game");
+        this.info("initialize playground engine");
+        (window)["cwtPly"] = playground(this);
+    };
+    prototype.preload = function() {
+        this.loader.on("error", stjs.bind(this, function(error) {
+            return this.error("Failed to load asset => " + error);
+        }));
+    };
+    prototype.ready = function() {};
+    prototype.mousedown = function(ev) {};
+    prototype.error = function(msg) {
+        this.warn("Got an error: " + msg);
+    };
+    prototype.step = function(delta) {};
+    prototype.render = function() {};
+    /**
+     *  Sets a state by it's class. The class needs to be a {@link Constructed}
+     *  class.
+     * 
+     *  @param stateClass
+     */
+    prototype.setStateByClass = function(stateClass) {
+        this.setState(cwt.ConstructedFactory.getObject(stateClass));
+    };
+    prototype.enterstate = function(event) {
+        this.info("enter state " + cwt.ClassUtil.getClassName(event.state));
+    };
+    prototype.keydown = function(ev) {
+        this.em.createEntityDataDump(stjs.bind(this, function(data) {
+            return this.info(data);
+        }));
+    };
+    prototype.leavestate = function(event) {
+        this.info("leaving state " + cwt.ClassUtil.getClassName(event.state));
+    };
+}, {em: "cwt.EntityManager", atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
 /**
  *  Starter class with main function.
  */
@@ -1966,6 +2010,37 @@ stjs.extend(cwt.Starter, null, [], function(constructor, prototype) {
 }, {}, {});
 if (!stjs.mainCallDisabled) 
     cwt.Starter.main();
+stjs.ns("cwt");
+cwt.ISystem = function() {};
+stjs.extend(cwt.ISystem, null, [cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.em = function() {
+        var em = (this)["__em__"];
+        if (em == undefined) {
+            em = cwt.ConstructedFactory.getObject(cwt.EntityManager);
+            (this)["__em__"] = em;
+        }
+        return em;
+    };
+    prototype.cm = function() {
+        var cm = (this)["__cm__"];
+        if (cm == undefined) {
+            cm = cwt.ConstructedFactory.getObject(cwt.ComponentManager);
+            (this)["__cm__"] = cm;
+        }
+        return cm;
+    };
+    /**
+     *  Returns the publisher event emitter object for a given event type. Calling
+     *  the event function on this object leads into an invocation of all listeners
+     *  for that event function.
+     *  
+     *  @param eventClass
+     *  @return
+     */
+    prototype.publish = function(eventClass) {
+        return null;
+    };
+}, {}, {});
 stjs.ns("cwt");
 cwt.OfflineCacheDataLoader = function() {};
 stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], function(constructor, prototype) {
@@ -2026,156 +2101,229 @@ stjs.extend(cwt.OfflineCacheDataLoader, null, [cwt.ConstructedClass], function(c
     };
 }, {}, {});
 stjs.ns("cwt");
-cwt.ErrorScreen = function() {};
-stjs.extend(cwt.ErrorScreen, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.errorMsg = null;
-    prototype.onConstruction = function() {
-        this.errorMsg = null;
-    };
-    prototype.enter = function() {};
-    prototype.render = function() {
-        this.app.layer.clear("black").fillStyle("red").font("24pt Arial").fillText("An error occured", 60, 228).fillText(this.errorMsg, 120, 270);
-    };
-    prototype.keyup = function(ev) {
-        cwt.ConstructedFactory.getObject(cwt.SystemEvents).INPUT_ACTION.publish(this.app);
-    };
-}, {app: "cwt.Playground"}, {});
+cwt.ScreenSystem = function() {};
+stjs.extend(cwt.ScreenSystem, null, [cwt.ISystem], null, {}, {});
 stjs.ns("cwt");
-cwt.ISystem = function() {};
-stjs.extend(cwt.ISystem, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.entityManager = function() {
-        return cwt.ConstructedFactory.getObject(cwt.EntityManager);
+cwt.ConfigSystem = function() {};
+stjs.extend(cwt.ConfigSystem, null, [cwt.ISystem, cwt.GameStartEvent], function(constructor, prototype) {
+    prototype.onGameStart = function() {
+        this.info("going to reset all config values");
+        var entities = this.em().getEntitiesWithComponentType(cwt.Config);
+        for (var i = 0; i < entities.length; i++) {
+            var entity = entities[i];
+            this.em().getComponent(entity, cwt.Config).value = this.em().getComponent(entity, cwt.ValueMetaData).defaultValue;
+        }
     };
-    prototype.getEntityComponent = function(id, clazz) {
-        return this.entityManager().getEntityComponent(id, clazz);
+}, {}, {});
+/**
+ *  The {@link BattleSystem} allows players to use units with the battle ability
+ *  to fight against other entities with the living ability.
+ */
+stjs.ns("cwt");
+cwt.BattleSystem = function() {};
+stjs.extend(cwt.BattleSystem, null, [cwt.ISystem, cwt.UnitCreatedEvent], function(constructor, prototype) {
+    prototype.onUnitCreated = function(unitEntity) {
+        this.em().getNonNullComponent(unitEntity, cwt.Living).hp = cwt.Constants.UNIT_HEALTH;
     };
-    prototype.events = function() {
-        return cwt.ConstructedFactory.getObject(cwt.SystemEvents);
+    prototype.isDirectFighter = function(entity) {
+        return !this.isIndirectFighter(entity);
     };
-    prototype.aec = function(id, componentClass) {
-        return this.entityManager().acquireEntityComponent(id, componentClass);
+    prototype.isIndirectFighter = function(entity) {
+        return this.em().getComponent(entity, cwt.RangedFighter) != null;
     };
-    prototype.publish = function() {
-        return null;
+    prototype.isBallisticFither = function(entity) {
+        var range = this.em().getComponent(entity, cwt.RangedFighter);
+        return range != null && range.minRange == 1;
     };
-    /**
-     *  Shortcut for <code>entityManager().acquireEntityWithId(id)</code>
-     *  
-     *  @param id
-     *  @return
-     */
-    prototype.aewid = function(id) {
-        return this.entityManager().acquireEntityWithId(id);
-    };
-    prototype.gec = function(id, clazz) {
-        return this.entityManager().getEntityComponent(id, clazz);
-    };
-    prototype.gedtc = function(id, clazz) {
-        var manager = this.entityManager();
-        return manager.getEntityComponent(manager.getEntityComponent(id, cwt.DataType).typeEntity, clazz);
-    };
-    prototype.publishEvent = function(event) {};
 }, {}, {});
 stjs.ns("cwt");
-cwt.Cwt = function() {};
-stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.getLoggerName = function() {
-        return cwt.ClassUtil.getClassName(cwt.Cwt);
-    };
+cwt.HealthSystem = function() {};
+stjs.extend(cwt.HealthSystem, null, [cwt.ISystem], null, {}, {});
+stjs.ns("cwt");
+cwt.FogSystem = function() {};
+stjs.extend(cwt.FogSystem, null, [cwt.ISystem, cwt.IEntityComponent, cwt.UnitProducedEvent, cwt.UnitDestroyedEvent], function(constructor, prototype) {
+    prototype.turnOwnerData = null;
+    prototype.clientOwnerData = null;
     prototype.onConstruction = function() {
-        cwt.PlaygroundUtil.setBasePath(this, "../");
-        this.container = window.document.getElementById("game");
-        this.info("initialize playground engine");
-        (window)["cwtPly"] = playground(this);
+        this.turnOwnerData = [];
+        this.clientOwnerData = [];
     };
-    prototype.preload = function() {
-        this.loader.on("error", stjs.bind(this, function(error) {
-            return this.error("Failed to load asset => " + error);
-        }));
+    prototype.onUnitProduced = function(factory, unit, type) {
+        if (!this.isTurnOwnerObject(unit)) 
+            return;
+        var pos = this.em().getComponent(unit, cwt.Position);
+        var vision = this.em().getComponent(unit, cwt.Vision);
+        this.changeVision(this.turnOwnerData, pos.x, pos.y, vision.range, +1, true);
+        this.changeVision(this.clientOwnerData, pos.x, pos.y, vision.range, +1, false);
     };
-    prototype.ready = function() {};
-    prototype.mousedown = function(ev) {
-        cwt.ConstructedFactory.getObject(cwt.SystemEvents).MOUSE_CLICK.publish(ev.x, ev.y, "LEFT");
+    prototype.onUnitDestroyed = function(unit) {
+        if (!this.isTurnOwnerObject(unit)) 
+            return;
+        var pos = this.em().getComponent(unit, cwt.Position);
+        var vision = this.em().getComponent(unit, cwt.Vision);
+        this.changeVision(this.turnOwnerData, pos.x, pos.y, vision.range, -1, true);
+        this.changeVision(this.clientOwnerData, pos.x, pos.y, vision.range, +1, false);
     };
-    prototype.error = function(msg) {
-        this.warn("Got an error: " + msg);
-        cwt.ConstructedFactory.getObject(cwt.ErrorScreen).errorMsg = msg;
+    prototype.changeVision = function(data, x, y, range, change, publishEvents) {
+        var xe = x + range;
+        var ye = y + range;
+        x -= range;
+        y -= range;
+        if (x < 0) 
+            x = 0;
+        if (y < 0) 
+            y = 0;
+        var oy = y;
+        for (; x <= xe; x++) {
+            var column = data[x];
+            for (y = oy; y <= ye; y++) {
+                var oldVision = column[y];
+                column[y] = oldVision + change;
+                if (publishEvents) {
+                    if (column[y] == 0 && oldVision > 0) {
+                        this.publish(cwt.FogEvent).onTileVisionChanges(x, y, false);
+                    } else if (column[y] > 0 && oldVision == 0) {
+                        this.publish(cwt.FogEvent).onTileVisionChanges(x, y, true);
+                    }
+                }
+            }
+        }
     };
-    prototype.step = function(delta) {
-        cwt.ConstructedFactory.getObject(cwt.SystemEvents).FRAME_TICK.publish(delta);
+    prototype.isTurnOwnerObject = function(unit) {
+        return (this.em().getComponent(unit, cwt.Owner).owner == this.em().getComponent(cwt.EntityId.GAME_ROUND, cwt.Turn).owner);
     };
-    prototype.render = function() {};
-    /**
-     *  Sets a state by it's class. The class needs to be a {@link Constructed}
-     *  class.
-     * 
-     *  @param stateClass
-     */
-    prototype.setStateByClass = function(stateClass) {
-        this.setState(cwt.ConstructedFactory.getObject(stateClass));
+}, {turnOwnerData: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}, clientOwnerData: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
+stjs.ns("cwt");
+cwt.MapRendererSystem = function() {};
+stjs.extend(cwt.MapRendererSystem, null, [cwt.ISystem, cwt.ConstructedClass], null, {}, {});
+stjs.ns("cwt");
+cwt.MoveSystem = function() {};
+stjs.extend(cwt.MoveSystem, null, [cwt.ISystem], null, {}, {});
+stjs.ns("cwt");
+cwt.MenuSys = function() {};
+stjs.extend(cwt.MenuSys, null, [cwt.ISystem], null, {}, {});
+stjs.ns("cwt");
+cwt.CaptureSystem = function() {};
+stjs.extend(cwt.CaptureSystem, null, [cwt.ISystem, cwt.ActionInvokedEvent], function(constructor, prototype) {
+    prototype.onInvokeAction = function(action, pstr, p1, p2, p3, p4, p5) {
+        if (action == "Capture") {
+            var property = null;
+            var capturer = null;
+            var propertyData = this.em().getComponent(property, cwt.Capturable);
+            var capturerData = this.em().getComponent(capturer, cwt.Capturer);
+            propertyData.points -= capturerData.points;
+            this.publish(cwt.CaptureEvents).onLoweredCapturePoints(capturer, property, capturerData.points);
+            if (propertyData.points <= 0) {
+                var propertyOwner = this.em().getComponent(property, cwt.Owner);
+                var capturerOwner = this.em().getComponent(capturer, cwt.Owner);
+                propertyOwner.owner = capturerOwner.owner;
+                this.publish(cwt.CaptureEvents).onCapturedProperty(capturer, property);
+            }
+        }
     };
-    prototype.enterstate = function(event) {
-        this.info("enter state " + cwt.ClassUtil.getClassName(event.state));
+}, {}, {});
+stjs.ns("cwt");
+cwt.ModelCreationSystem = function() {};
+stjs.extend(cwt.ModelCreationSystem, null, [cwt.ISystem, cwt.SystemStartEvent], function(constructor, prototype) {
+    prototype.onSystemStart = function() {
+        for (var i = 0; i < 4; i++) {
+            this.em().acquireEntityWithId("P" + i);
+        }
+        for (var i = 0; i < 4 * 50; i++) {
+            this.em().acquireEntityWithId("U" + i);
+            this.em().acquireEntityComponent("U" + i, cwt.Owner);
+        }
+        for (var i = 0; i < 200; i++) {
+            this.em().acquireEntityWithId("PR" + i);
+            this.em().acquireEntityComponent("PR" + i, cwt.Position);
+            this.em().acquireEntityComponent("PR" + i, cwt.Owner);
+        }
     };
-    prototype.keydown = function(ev) {
-        cwt.ConstructedFactory.getObject(cwt.EntityManager).createEntityDataDump(stjs.bind(this, function(data) {
-            return this.info(data);
-        }));
-        cwt.ConstructedFactory.getObject(cwt.SystemEvents).INPUT_CANCEL.publish(this);
-    };
-    prototype.leavestate = function(event) {
-        this.info("leaving state " + cwt.ClassUtil.getClassName(event.state));
-    };
-}, {atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
+}, {}, {});
+stjs.ns("cwt");
+cwt.TypeSys = function() {};
+stjs.extend(cwt.TypeSys, null, [cwt.ISystem, cwt.ConstructedClass], null, {}, {});
 stjs.ns("cwt");
 cwt.PlayerSys = function() {};
-stjs.extend(cwt.PlayerSys, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onConstruction = function() {
-        this.events().UNIT_DESTROYED.subscribe(stjs.bind(this, "unitDestructs"));
-        this.events().UNIT_CREATED.subscribe(stjs.bind(this, "unitCreates"));
+stjs.extend(cwt.PlayerSys, null, [cwt.ISystem], null, {}, {});
+stjs.ns("cwt");
+cwt.FactorySystem = function() {};
+stjs.extend(cwt.FactorySystem, null, [cwt.ISystem, cwt.ActionInvokedEvent], function(constructor, prototype) {
+    prototype.onBuildUnit = function(factory, type) {
+        var factoryData = this.em().getComponent(factory, cwt.Factory);
+        this.checkBuildData(type, factoryData);
+        var unit = this.em().acquireEntity();
+        var unitOwner = this.em().getNonNullComponent(unit, cwt.Owner);
+        var unitPos = this.em().getNonNullComponent(unit, cwt.Position);
+        var factoryOwner = this.em().getComponent(factory, cwt.Owner);
+        var factoryPos = this.em().getComponent(factory, cwt.Position);
+        unitOwner.owner = factoryOwner.owner;
+        unitPos.x = factoryPos.x;
+        unitPos.y = factoryPos.y;
+        this.em().setEntityPrototype(unit, type);
+        this.info("produced a unit [ID:" + unit + ", Type: " + type + "]");
+        this.publish(cwt.UnitProducedEvent).onUnitProduced(factory, unit, type);
     };
-    prototype.unitCreates = function(unit) {
-        this.gec(this.gec(unit, cwt.OwnableCmp).owner, cwt.Player).numOfUnits++;
-    };
-    prototype.unitDestructs = function(unit) {
-        this.gec(this.gec(unit, cwt.OwnableCmp).owner, cwt.Player).numOfUnits--;
+    prototype.checkBuildData = function(type, factoryData) {
+        if (factoryData == null) {
+            this.publish(cwt.ErrorEvent).onIllegalGameData("NotAFactory");
+        } else if (factoryData.builds.indexOf(type) == -1) {
+            this.publish(cwt.ErrorEvent).onIllegalGameData("TypeIsNotProcuceAble");
+        }
     };
 }, {}, {});
 stjs.ns("cwt");
-cwt.FactorySystem = function() {};
-stjs.extend(cwt.FactorySystem, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onConstruction = function() {};
-    prototype.isFactory = function(factoryId) {
-        return this.gec(factoryId, cwt.FactoryCmp) != null;
+cwt.AudioSystem = function() {};
+stjs.extend(cwt.AudioSystem, null, [cwt.ISystem], null, {}, {});
+stjs.ns("cwt");
+cwt.WeatherSystem = function() {};
+stjs.extend(cwt.WeatherSystem, null, [cwt.ISystem, cwt.DayStartEvent, cwt.WeatherChangesEvent], function(constructor, prototype) {
+    prototype.onWeatherChanges = function(weather, duration) {
+        var data = this.em().getNonNullComponent(cwt.EntityId.GAME_ROUND, cwt.WeatherData);
+        data.days = duration;
+        data.weather = weather;
     };
-    /**
-     *  
-     *  @param factoryId
-     *           entity id of the factory
-     *  @param type
-     *           wanted unit type that will be produced
-     */
-    prototype.buildUnit = function(factoryId, type) {
-        if (!this.isFactory(factoryId)) {
-            this.events().ERROR_RAISED.publish("EntityIsNoFactory");
+    prototype.onDayStart = function(day) {
+        var data = this.em().getComponent(cwt.EntityId.GAME_ROUND, cwt.WeatherData);
+        var currentWeather = this.em().getComponent(data.weather, cwt.Weather);
+        data.days--;
+        if (data.days == 0) {
+            this.info("changing weather..");
+            var weatherTypes = this.em().getEntitiesWithComponentType(cwt.Weather);
+            var newWeatherEntity;
+             while (true){
+                newWeatherEntity = weatherTypes[cwt.NumberUtil.getRandomInt(weatherTypes.length)];
+                if (newWeatherEntity != cwt.EntityId.GAME_ROUND && currentWeather != this.em().getComponent(newWeatherEntity, cwt.Weather)) {
+                    break;
+                }
+            }
+            var newWeather = this.em().getComponent(newWeatherEntity, cwt.Weather);
+            var newDuration = newWeather.defaultWeather ? 1 : this.generateRandomDuration();
+            this.info("..to " + newWeatherEntity + " for " + newDuration + " days");
         }
-        var factoryData = this.gec(factoryId, cwt.FactoryCmp);
-        if (factoryData.builds.indexOf(type) == -1) {
-            this.events().ERROR_RAISED.publish("GivenTypeIsNotProcuceAble");
-        }
-        var factoryPos = this.gec(factoryId, cwt.Positionable);
-        var factoryOwner = this.gec(factoryId, cwt.OwnableCmp);
-        var unitEntity = this.entityManager().acquireEntity();
-        var unitPos = this.aec(unitEntity, cwt.Positionable);
-        var unitOwner = this.aec(unitEntity, cwt.OwnableCmp);
-        var typeComponents = this.entityManager().getEntityComponents(type);
-        for (var i = 0; i < typeComponents.length; i++) {
-            this.entityManager().attachEntityComponent(unitEntity, typeComponents[i]);
-        }
-        unitPos.x = factoryPos.x;
-        unitPos.y = factoryPos.y;
-        unitOwner.owner = factoryOwner.owner;
-        this.events().UNIT_PRODUCED.publish(unitEntity, type, unitPos.x, unitPos.y);
+    };
+    prototype.generateRandomDuration = function() {
+        return 1;
+    };
+}, {}, {});
+stjs.ns("cwt");
+cwt.WaitAction = function() {};
+stjs.extend(cwt.WaitAction, null, [cwt.ISystem], function(constructor, prototype) {
+    prototype.onConstruction = function() {};
+}, {}, {});
+/**
+ *  The {@link ManpowerSystem} gives players the restriction to pay an additional
+ *  resource per unit. This resource is manpower which is not expendable during
+ *  the game round and the player won't be able to produce units when the
+ *  manpower falls down to zero.
+ *  
+ */
+stjs.ns("cwt");
+cwt.ManpowerSystem = function() {};
+stjs.extend(cwt.ManpowerSystem, null, [cwt.ISystem, cwt.UnitCreatedEvent, cwt.GameStartEvent], function(constructor, prototype) {
+    prototype.onGameStart = function() {};
+    prototype.onUnitCreated = function(unitEntity) {
+        this.em().getComponent(this.em().getComponent(unitEntity, cwt.Owner).owner, cwt.Manpower).manpower--;
     };
 }, {}, {});
 /**
@@ -2188,258 +2336,24 @@ stjs.ns("cwt");
 cwt.GameTimeSystem = function() {};
 stjs.extend(cwt.GameTimeSystem, null, [cwt.ISystem, cwt.NextFrameEvent, cwt.GameStartEvent, cwt.TurnStartEvent], function(constructor, prototype) {
     prototype.onNextFrame = function(delta) {
-        var data = this.gec("GAMETIME", cwt.GameTimeCompnent);
+        var data = this.em().getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
         data.gameTime += delta;
         data.turnTime += delta;
         if (data.turnTime >= data.turnTimeLimit) {
             this.info("ending current turn because turn time limit is reached");
-            this.publish().onTurnEnd();
+            this.publish(cwt.TurnEndEvent).onTurnEnd();
         } else if (data.gameTime >= data.gameTimeLimit) {
             this.info("ending game because game time limit is reached");
-            this.publish().onGameEnd();
+            this.publish(cwt.GameEndEvent).onGameEnd();
         }
     };
     prototype.onGameStart = function() {
-        var data = this.gec("GAMETIME", cwt.GameTimeCompnent);
+        var data = this.em().getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
         data.gameTime = 0;
         data.turnTime = 0;
     };
     prototype.onTurnStart = function(player, turn) {
-        var data = this.gec("GAMETIME", cwt.GameTimeCompnent);
+        var data = this.em().getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
         data.turnTime = 0;
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.WaitAction = function() {};
-stjs.extend(cwt.WaitAction, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onConstruction = function() {
-        this.events().CLICK_ON_TILE.subscribe(stjs.bind(this, function(tile, property, unit) {
-            if (property == null && unit == null) {
-                var entry = this.gec("MENU", cwt.MenuCmp).entries[0];
-                entry.enabled = true;
-                entry.key = cwt.ClassUtil.getClassName(cwt.WaitAction);
-            }
-        }));
-        this.events().INVOKE_ACTION.subscribe(stjs.bind(this, function(action, p1, p2, p3) {
-            if (action == cwt.ClassUtil.getClassName(cwt.WaitAction)) {
-                this.gec(p1, cwt.SingleUse).used = true;
-                this.events().OBJECT_WAITS.publish(p1);
-            }
-        }));
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.ScreenSystem = function() {};
-stjs.extend(cwt.ScreenSystem, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onConstruction = function() {
-        this.events().MOUSE_CLICK.subscribe(stjs.bind(this, function(x, y, key) {
-            this.info("mouse click at " + x + " " + y);
-            this.events().SET_CURSOR.publish(x, y);
-            if (key == "LEFT") {
-                this.events().CURSOR_ACTION.publish();
-            } else if (key == "RIGHT") {}
-        }));
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.WeatherSys = function() {};
-stjs.extend(cwt.WeatherSys, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onConstruction = function() {
-        this.events().WEATHER_CHANGES.subscribe(stjs.bind(this, "changeWeather"));
-    };
-    prototype.changeWeather = function(weather, duration) {
-        this.gec(cwt.EntityId.GAME_ROUND, cwt.WeatherDurationCmp).days = duration;
-        this.entityManager().detachEntityComponentByClass(cwt.EntityId.GAME_ROUND, cwt.WeatherCmp);
-        this.entityManager().attachEntityComponent(cwt.EntityId.GAME_ROUND, this.getEntityComponent(weather, cwt.WeatherCmp));
-        this.events().WEATHER_CHANGED.publish(weather);
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.TypeSys = function() {};
-stjs.extend(cwt.TypeSys, null, [cwt.ISystem, cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.requiredUnitComponents = null;
-    prototype.optionalUnitComponents = null;
-    prototype.onConstruction = function() {
-        this.events().ERROR_RAISED.subscribe(stjs.bind(this, function(err) {
-            return this.error(err);
-        }));
-        this.requiredUnitComponents = [];
-        this.requiredUnitComponents.push(cwt.MovingAbilityCmp);
-        this.requiredUnitComponents.push(cwt.MovingCostsCmp);
-        this.requiredUnitComponents.push(cwt.VisionerCmp);
-        this.optionalUnitComponents = [];
-        this.optionalUnitComponents.push(cwt.FuelDrainerCmp);
-        this.optionalUnitComponents.push(cwt.HidableCmp);
-        this.optionalUnitComponents.push(cwt.SuicideCmp);
-        this.optionalUnitComponents.push(cwt.SupplierCmp);
-        this.optionalUnitComponents.push(cwt.RepairerCmp);
-        this.optionalUnitComponents.push(cwt.TransportCmp);
-        this.optionalUnitComponents.push(cwt.DirectFighting);
-        this.optionalUnitComponents.push(cwt.IndirectFighting);
-        this.optionalUnitComponents.push(cwt.BuyableCmp);
-        this.optionalUnitComponents.push(cwt.CapturableCmp);
-        this.optionalUnitComponents.push(cwt.MainWeaponDamageMap);
-        this.optionalUnitComponents.push(cwt.SecondaryWeaponDamageMap);
-    };
-    prototype.createUnitType = function(data) {
-        var id = data["ID"];
-        this.parseTypeComponents(this.entityManager().acquireEntityWithId(id), data, this.requiredUnitComponents, this.optionalUnitComponents);
-    };
-    prototype.parseTypeComponents = function(entityId, data, requiredComponents, optionalComponents) {
-        if (entityId == null) {
-            this.events().ERROR_RAISED.publish("IllegalDatasheetID");
-            return;
-        }
-        try {
-            var solvedRequired = [];
-            var dataKeys = cwt.JsUtil.objectKeys(data);
-            for (var i = 0; i < dataKeys.length; i++) {
-                var componentName = dataKeys[i];
-                if (componentName == "ID") {
-                    continue;
-                }
-                var componentClass = ((window)["cwt"])[componentName];
-                if (componentClass == undefined) {
-                    this.events().ERROR_RAISED.publish("UnknownComponentType: " + componentName);
-                    return;
-                }
-                if (requiredComponents.indexOf(componentClass) == -1) {
-                    if (optionalComponents.indexOf(componentClass) == -1) {
-                        this.events().ERROR_RAISED.publish("UnsupportedComponentForEntity: " + componentName);
-                        return;
-                    }
-                } else {
-                    solvedRequired.push(true);
-                }
-                var componentRawData = data[componentName];
-                if ((typeof componentRawData) == "string") {
-                    var componentEntityRef = componentRawData;
-                    this.entityManager().attachEntityComponent(entityId, this.gec(componentEntityRef, componentClass));
-                } else {
-                    var component = this.aec(entityId, componentClass);
-                    var componentData = componentRawData;
-                    var componentDataKeys = cwt.JsUtil.objectKeys(componentData);
-                    for (var j = 0; j < componentDataKeys.length; j++) {
-                        (component)[componentDataKeys[j]] = componentData[componentDataKeys[j]];
-                    }
-                }
-            }
-            if (requiredComponents.length != solvedRequired.length) {
-                this.events().ERROR_RAISED.publish("NotAllRequiredComponentsFound");
-            }
-        }catch (e) {
-            this.events().ERROR_RAISED.publish("CouldNotReadType: " + JSON.stringify(data));
-        }
-    };
-}, {requiredUnitComponents: {name: "Array", arguments: [{name: "Class", arguments: ["Object"]}]}, optionalUnitComponents: {name: "Array", arguments: [{name: "Class", arguments: ["Object"]}]}}, {});
-stjs.ns("cwt");
-cwt.MenuSys = function() {};
-stjs.extend(cwt.MenuSys, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onConstruction = function() {
-        this.aewid("MENU");
-        this.aec("MENU", cwt.MenuCmp);
-        this.events().FLUSHED_ACTION.subscribe(stjs.bind(this, "onFlushedAction"));
-    };
-    prototype.onFlushedAction = function() {
-        var menu = this.gec("MENU", cwt.MenuCmp);
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.MapRendererSystem = function() {};
-stjs.extend(cwt.MapRendererSystem, null, [cwt.ISystem, cwt.ConstructedClass], function(constructor, prototype) {
-    prototype.onConstruction = function() {
-        this.events().INPUT_CANCEL.subscribe(stjs.bind(this, "renderRandomBackgroundColor"));
-    };
-    prototype.renderRandomBackgroundColor = function(app) {
-        this.info("Changing background color");
-        var r = parseInt(255 * Math.random(), 10);
-        var g = parseInt(255 * Math.random(), 10);
-        var b = parseInt(255 * Math.random(), 10);
-        var color = "rgb(" + [r, g, b].join(", ") + ")";
-        app.layer.clear(color);
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.HealthSystem = function() {};
-stjs.extend(cwt.HealthSystem, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onConstruction = function() {
-        this.events().INFLICTS_DAMAGE.subscribe(stjs.bind(this, "damageEntity"));
-    };
-    /**
-     *  Damages a defender entity with a given amount of damage.
-     *  
-     *  @param attacker
-     *  @param defender
-     *  @param damage
-     */
-    prototype.damageEntity = function(attacker, defender, damage) {
-        var hpC = this.gec(defender, cwt.HealthComponent);
-        hpC.hp -= damage;
-        if (hpC.hp < 0) {
-            hpC.hp = 0;
-        }
-        this.events().UNIT_DAMAGED.publish(defender, damage);
-    };
-    /**
-     *  Heals an unit object.
-     *  
-     *  @param id
-     *           entity id
-     *  @param amount
-     *           amount of healing in health
-     */
-    prototype.healEntity = function(id, amount) {
-        var hpC = this.gec(id, cwt.HealthComponent);
-        hpC.hp += amount;
-        if (hpC.hp > 99) {
-            hpC.hp = 99;
-        }
-        this.events().UNIT_HEALED.publish(id, amount);
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.BattleSystem = function() {};
-stjs.extend(cwt.BattleSystem, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onConstruction = function() {};
-}, {}, {});
-stjs.ns("cwt");
-cwt.NewGameTimeSystem = function() {};
-stjs.extend(cwt.NewGameTimeSystem, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onConstruction = function() {
-        this.events().FRAME_TICK.subscribe(stjs.bind(this, function(time) {
-            var data = this.gec("GAMETIME", cwt.GameTimeCompnent);
-            data.gameTime += time;
-            data.turnTime += time;
-            if (data.turnTime >= data.turnTimeLimit) {
-                this.events().TURN_ENDS.publish();
-            } else if (data.gameTime >= data.gameTimeLimit) {
-                this.events().GAME_ENDS.publish();
-            }
-        }));
-        this.events().GAME_STARTS.subscribe(stjs.bind(this, function() {
-            var data = this.gec("GAMETIME", cwt.GameTimeCompnent);
-            data.gameTime = 0;
-            data.turnTime = 0;
-        }));
-        this.events().TURN_STARTS.subscribe(stjs.bind(this, function(player, turn) {
-            var data = this.gec("GAMETIME", cwt.GameTimeCompnent);
-            data.turnTime = 0;
-        }));
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.MoveSystem = function() {};
-stjs.extend(cwt.MoveSystem, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.moveEntity = function(id, path) {
-        var posC = this.entityManager().getEntityComponent(id, cwt.Positionable);
-        var moveableC = this.entityManager().getEntityComponent(id, cwt.MovingAbilityCmp);
-        var cX = posC.x;
-        var cY = posC.y;
-        var oX = cX;
-        var oY = cY;
-        var cFuel = moveableC.fuel;
-        posC.x = cX;
-        posC.y = cY;
-        this.publishEvent("unit/moved");
     };
 }, {}, {});

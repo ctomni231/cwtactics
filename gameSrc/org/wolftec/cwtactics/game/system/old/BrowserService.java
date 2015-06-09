@@ -4,7 +4,7 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.XMLHttpRequest;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback2;
-import org.wolftec.cwtactics.engine.components.ConstructedClass;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 
 public class BrowserService implements ConstructedClass {
 

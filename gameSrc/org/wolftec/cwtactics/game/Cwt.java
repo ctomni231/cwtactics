@@ -2,17 +2,19 @@ package org.wolftec.cwtactics.game;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwtactics.engine.components.ConstructedClass;
-import org.wolftec.cwtactics.engine.components.ConstructedFactory;
 import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.PlaygroundGlobal;
 import org.wolftec.cwtactics.engine.playground.PlaygroundState;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
-import org.wolftec.cwtactics.game.states.ErrorScreen;
-import org.wolftec.cwtactics.game.system.old.SystemEvents;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.ConstructedFactory;
+import org.wolftec.cwtactics.game.core.Inject;
 
 public class Cwt extends Playground implements ConstructedClass {
+
+  @Inject
+  private EntityManager em;
 
   @Override
   public String getLoggerName() {
@@ -74,22 +76,20 @@ public class Cwt extends Playground implements ConstructedClass {
     // boolean hasErrors =
     // ConstructedFactory.getObject(ErrorScreen.class).errorMsg != null;
     // setStateByClass(hasErrors ? ErrorScreen.class : StartScreen.class);
+
   }
 
   @Override
   public void mousedown(MouseEvent ev) {
-    ConstructedFactory.getObject(SystemEvents.class).MOUSE_CLICK.publish(ev.x, ev.y, "LEFT");
   }
 
   @Override
   public void error(String msg) {
     warn("Got an error: " + msg);
-    ConstructedFactory.getObject(ErrorScreen.class).errorMsg = msg;
   }
 
   @Override
   public void step(int delta) {
-    ConstructedFactory.getObject(SystemEvents.class).FRAME_TICK.publish(delta);
   }
 
   @Override
@@ -114,8 +114,7 @@ public class Cwt extends Playground implements ConstructedClass {
 
   @Override
   public void keydown(KeyboardEvent ev) {
-    ConstructedFactory.getObject(EntityManager.class).createEntityDataDump((data) -> info(data));
-    ConstructedFactory.getObject(SystemEvents.class).INPUT_CANCEL.publish(this);
+    em.createEntityDataDump((data) -> info(data));
   }
 
   @Override

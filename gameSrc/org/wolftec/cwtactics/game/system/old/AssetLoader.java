@@ -1,12 +1,12 @@
 package org.wolftec.cwtactics.game.system.old;
 
-import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.converter.ImageConverter;
 import org.wolftec.cwtactics.engine.converter.TypedObjectConverter;
 import org.wolftec.cwtactics.engine.playground.CanvasQuery.Atlas;
 import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.Playground.AssetEntry;
 import org.wolftec.cwtactics.game.components.old.UnitType;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 
 public class AssetLoader implements ConstructedClass {
 

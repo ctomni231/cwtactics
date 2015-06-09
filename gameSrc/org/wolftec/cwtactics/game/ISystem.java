@@ -2,10 +2,8 @@ package org.wolftec.cwtactics.game;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwtactics.engine.components.ConstructedClass;
-import org.wolftec.cwtactics.engine.components.ConstructedFactory;
-import org.wolftec.cwtactics.game.components.old.DataType;
-import org.wolftec.cwtactics.game.system.old.SystemEvents;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.ConstructedFactory;
 
 public interface ISystem extends ConstructedClass {
 
@@ -22,31 +20,17 @@ public interface ISystem extends ConstructedClass {
     return em;
   }
 
-  default int getCfgValue(String config) {
-    // TODO
-    return 0;
-  }
+  default ComponentManager cm() {
+    ComponentManager cm = (ComponentManager) JSObjectAdapter.$get(this, "__cm__");
 
-  /**
-   * WILL BE REMOVED SOON.
-   * 
-   * @deprecated
-   * @return
-   */
-  @Deprecated
-  default EntityManager entityManager() {
-    return ConstructedFactory.getObject(EntityManager.class);
-  }
+    // cache the entity manager reference to avoid expensive lookup
+    // TODO maybe there is a way without property (--> prototype ?)
+    if (cm == JSGlobal.undefined) {
+      cm = ConstructedFactory.getObject(ComponentManager.class);
+      JSObjectAdapter.$put(this, "__cm__", cm);
+    }
 
-  /**
-   * WILL BE REMOVED SOON.
-   * 
-   * @deprecated
-   * @return
-   */
-  @Deprecated
-  default SystemEvents events() {
-    return ConstructedFactory.getObject(SystemEvents.class);
+    return cm;
   }
 
   /**
@@ -60,91 +44,5 @@ public interface ISystem extends ConstructedClass {
   default <T extends IEvent> T publish(Class<T> eventClass) {
     // TODO
     return null;
-  }
-
-  /**
-   * WILL BE REMOVED SOON.
-   * 
-   * @deprecated
-   * @return
-   */
-  @Deprecated
-  default <T extends IEntityComponent> T aec(String id, Class<T> componentClass) {
-    return entityManager().acquireEntityComponent(id, componentClass);
-  }
-
-  /**
-   * WILL BE REMOVED SOON.
-   * 
-   * @deprecated
-   * @return
-   */
-  @Deprecated
-  default String aewid(String id) {
-    return entityManager().acquireEntityWithId(id);
-  }
-
-  /**
-   * WILL BE REMOVED SOON.
-   * 
-   * @deprecated
-   * @return
-   */
-  @Deprecated
-  default <T extends IEntityComponent> T gec(String id, Class<T> clazz) {
-    return entityManager().getComponent(id, clazz);
-  }
-
-  /**
-   * WILL BE REMOVED SOON.
-   * 
-   * @deprecated
-   * @return
-   */
-  @Deprecated
-  default <T extends IEntityComponent> T gogec(String id, Class<T> clazz) {
-    T component;
-
-    component = entityManager().getComponent(id, clazz);
-    if (component == null) {
-      component = entityManager().acquireEntityComponent(id, clazz);
-    }
-    return component;
-  }
-
-  /**
-   * WILL BE REMOVED SOON.
-   * 
-   * @deprecated
-   * @return
-   */
-  @Deprecated
-  default <T extends IEntityComponent> void atec(String id, T component) {
-    entityManager().attachEntityComponent(id, component);
-  }
-
-  /**
-   * WILL BE REMOVED SOON.
-   * 
-   * @deprecated
-   * @return
-   */
-  @Deprecated
-  default <T extends IEntityComponent> void datec(String id, Class<T> clazz) {
-    entityManager().detachEntityComponentByClass(id, clazz);
-  }
-
-  /**
-   * WILL BE REMOVED SOON.
-   * 
-   * @param id
-   * @param clazz
-   * @deprecated
-   * @return
-   */
-  @Deprecated
-  default <T extends IEntityComponent> T gedtc(String id, Class<T> clazz) {
-    EntityManager manager = entityManager();
-    return manager.getComponent(manager.getComponent(id, DataType.class).typeEntity, clazz);
   }
 }

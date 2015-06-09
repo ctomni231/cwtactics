@@ -6,14 +6,14 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.Constants;
-import org.wolftec.cwtactics.engine.components.ConstructedClass;
-import org.wolftec.cwtactics.engine.components.ConstructedFactory;
 import org.wolftec.cwtactics.engine.localforage.LocalForage;
 import org.wolftec.cwtactics.engine.localforage.LocalForageConfig;
 import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.Playground.AssetEntry;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.components.old.ObjectType;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.ConstructedFactory;
 import org.wolftec.cwtactics.game.system.old.BrowserService;
 import org.wolftec.cwtactics.game.system.old.GameDataService;
 

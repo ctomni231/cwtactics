@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.engine.components;
+package org.wolftec.cwtactics.game.core;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;

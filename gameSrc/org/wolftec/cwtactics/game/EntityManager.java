@@ -7,9 +7,9 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Function1;
-import org.wolftec.cwtactics.engine.components.ConstructedClass;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 
 public class EntityManager implements ConstructedClass {
 
