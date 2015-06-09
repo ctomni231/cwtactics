@@ -1,10 +1,7 @@
 package org.wolftec.cwtactics.game.system.old;
 
-import org.wolftec.cwtactics.game.ISystem;
+public class WaitAction {
 
-public class WaitAction implements ISystem {
-
-  @Override
   public void onConstruction() {
 
     // events().CLICK_ON_TILE.subscribe((tile, property, unit) -> {

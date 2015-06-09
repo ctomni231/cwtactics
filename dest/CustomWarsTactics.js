@@ -2,8 +2,16 @@ stjs.ns("cwt");
 cwt.IEntityComponent = function() {};
 stjs.extend(cwt.IEntityComponent, null, [], null, {}, {});
 stjs.ns("cwt");
+cwt.ScreenSystem = function() {};
+stjs.extend(cwt.ScreenSystem, null, [], null, {}, {});
+stjs.ns("cwt");
 cwt.IEvent = function() {};
 stjs.extend(cwt.IEvent, null, [], null, {}, {});
+stjs.ns("cwt");
+cwt.ConstructedClass = function() {};
+stjs.extend(cwt.ConstructedClass, null, [], function(constructor, prototype) {
+    prototype.onConstruction = function() {};
+}, {}, {});
 stjs.ns("cwt");
 cwt.Constants = function() {};
 stjs.extend(cwt.Constants, null, [], function(constructor, prototype) {
@@ -77,11 +85,6 @@ stjs.extend(cwt.JsUtil, null, [], function(constructor, prototype) {
             callback(i, array[i]);
         }
     };
-}, {}, {});
-stjs.ns("cwt");
-cwt.ConstructedClass = function() {};
-stjs.extend(cwt.ConstructedClass, null, [], function(constructor, prototype) {
-    prototype.onConstruction = function() {};
 }, {}, {});
 stjs.ns("cwt");
 cwt.Color = function() {};
@@ -225,6 +228,9 @@ stjs.extend(cwt.ConstructedObject, null, [], function(constructor, prototype) {
 stjs.ns("cwt");
 cwt.EntitySerializationUtil = function() {};
 stjs.extend(cwt.EntitySerializationUtil, null, [], null, {}, {});
+stjs.ns("cwt");
+cwt.HealthSystem = function() {};
+stjs.extend(cwt.HealthSystem, null, [], null, {}, {});
 stjs.ns("cwt");
 cwt.Colors = function() {};
 stjs.extend(cwt.Colors, null, [], function(constructor, prototype) {}, {}, {});
@@ -443,6 +449,12 @@ stjs.ns("cwt");
 cwt.RenderableCmp = function() {};
 stjs.extend(cwt.RenderableCmp, null, [], null, {}, {});
 stjs.ns("cwt");
+cwt.MapRendererSystem = function() {};
+stjs.extend(cwt.MapRendererSystem, null, [], null, {}, {});
+stjs.ns("cwt");
+cwt.MoveSystem = function() {};
+stjs.extend(cwt.MoveSystem, null, [], null, {}, {});
+stjs.ns("cwt");
 cwt.ITest = function() {};
 stjs.extend(cwt.ITest, null, [], null, {}, {});
 stjs.ns("cwt");
@@ -494,6 +506,9 @@ stjs.extend(cwt.LocalForageConfig, null, [], function(constructor, prototype) {
     prototype.description = null;
 }, {driver: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
+cwt.MenuSys = function() {};
+stjs.extend(cwt.MenuSys, null, [], null, {}, {});
+stjs.ns("cwt");
 cwt.Modification = function() {};
 stjs.extend(cwt.Modification, null, [], function(constructor, prototype) {
     prototype.sounds = null;
@@ -524,9 +539,20 @@ stjs.extend(cwt.TransportContainerCmp, null, [], function(constructor, prototype
     prototype.loads = null;
 }, {loads: {name: "Array", arguments: [null]}}, {});
 stjs.ns("cwt");
+cwt.TypeSys = function() {};
+stjs.extend(cwt.TypeSys, null, [], null, {}, {});
+stjs.ns("cwt");
+cwt.PlayerSys = function() {};
+stjs.extend(cwt.PlayerSys, null, [], null, {}, {});
+stjs.ns("cwt");
 cwt.FundsCmp = function() {};
 stjs.extend(cwt.FundsCmp, null, [], function(constructor, prototype) {
     prototype.funds = 0;
+}, {}, {});
+stjs.ns("cwt");
+cwt.WaitAction = function() {};
+stjs.extend(cwt.WaitAction, null, [], function(constructor, prototype) {
+    prototype.onConstruction = function() {};
 }, {}, {});
 stjs.ns("cwt");
 cwt.LaserCmp = function() {};
@@ -1782,6 +1808,281 @@ stjs.extend(cwt.ObjectConverter, null, [cwt.DataConverter], function(constructor
         callback(JSON.parse(data));
     };
 }, {}, {});
+/**
+ *  The {@link BattleSystem} allows players to use units with the battle ability
+ *  to fight against other entities with the living ability.
+ */
+stjs.ns("cwt");
+cwt.BattleSystem = function() {};
+stjs.extend(cwt.BattleSystem, null, [cwt.ConstructedClass, cwt.UnitCreatedEvent], function(constructor, prototype) {
+    prototype.em = null;
+    prototype.onUnitCreated = function(unitEntity) {
+        this.em.getNonNullComponent(unitEntity, cwt.Living).hp = cwt.Constants.UNIT_HEALTH;
+    };
+    prototype.isDirectFighter = function(entity) {
+        return !this.isIndirectFighter(entity);
+    };
+    prototype.isIndirectFighter = function(entity) {
+        return this.em.getComponent(entity, cwt.RangedFighter) != null;
+    };
+    prototype.isBallisticFither = function(entity) {
+        var range = this.em.getComponent(entity, cwt.RangedFighter);
+        return range != null && range.minRange == 1;
+    };
+}, {em: "cwt.EntityManager"}, {});
+stjs.ns("cwt");
+cwt.ModelCreationSystem = function() {};
+stjs.extend(cwt.ModelCreationSystem, null, [cwt.ConstructedClass, cwt.SystemStartEvent], function(constructor, prototype) {
+    prototype.em = null;
+    prototype.onSystemStart = function() {
+        for (var i = 0; i < 4; i++) {
+            this.em.acquireEntityWithId("P" + i);
+        }
+        for (var i = 0; i < 4 * 50; i++) {
+            this.em.acquireEntityWithId("U" + i);
+            this.em.acquireEntityComponent("U" + i, cwt.Owner);
+        }
+        for (var i = 0; i < 200; i++) {
+            this.em.acquireEntityWithId("PR" + i);
+            this.em.acquireEntityComponent("PR" + i, cwt.Position);
+            this.em.acquireEntityComponent("PR" + i, cwt.Owner);
+        }
+    };
+}, {em: "cwt.EntityManager"}, {});
+stjs.ns("cwt");
+cwt.WeatherSystem = function() {};
+stjs.extend(cwt.WeatherSystem, null, [cwt.ConstructedClass, cwt.DayStartEvent, cwt.WeatherChangesEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.em = null;
+    prototype.onConstruction = function() {
+        this.log.info("created");
+    };
+    prototype.onWeatherChanges = function(weather, duration) {
+        var data = this.em.getNonNullComponent(cwt.EntityId.GAME_ROUND, cwt.WeatherData);
+        data.days = duration;
+        data.weather = weather;
+    };
+    prototype.onDayStart = function(day) {
+        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.WeatherData);
+        var currentWeather = this.em.getComponent(data.weather, cwt.Weather);
+        data.days--;
+        if (data.days == 0) {
+            this.log.info("changing weather..");
+            var weatherTypes = this.em.getEntitiesWithComponentType(cwt.Weather);
+            var newWeatherEntity;
+             while (true){
+                newWeatherEntity = weatherTypes[cwt.NumberUtil.getRandomInt(weatherTypes.length)];
+                if (newWeatherEntity != cwt.EntityId.GAME_ROUND && currentWeather != this.em.getComponent(newWeatherEntity, cwt.Weather)) {
+                    break;
+                }
+            }
+            var newWeather = this.em.getComponent(newWeatherEntity, cwt.Weather);
+            var newDuration = newWeather.defaultWeather ? 1 : this.generateRandomDuration();
+            this.log.info("..to " + newWeatherEntity + " for " + newDuration + " days");
+        }
+    };
+    prototype.generateRandomDuration = function() {
+        return 1;
+    };
+}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
+stjs.ns("cwt");
+cwt.SerializationSystem = function() {};
+stjs.extend(cwt.SerializationSystem, null, [cwt.ConstructedClass, cwt.ClickEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.em = null;
+    prototype.onClick = function(type, x, y) {};
+    prototype.onConstruction = function() {
+        this.log.info("creating data model");
+        this.em.acquireEntityWithId("MAP");
+        var map = this.em.acquireEntityComponent("MAP", cwt.TileMap);
+        map.tiles = [];
+        for (var x = 0; x < cwt.Constants.MAX_MAP_SIDE_LENGTH; x++) {
+            map.tiles[x] = [];
+            for (var y = 0; y < cwt.Constants.MAX_MAP_SIDE_LENGTH; y++) {
+                map.tiles[x][y] = null;
+            }
+        }
+    };
+}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
+stjs.ns("cwt");
+cwt.AudioSystem = function() {};
+stjs.extend(cwt.AudioSystem, null, [cwt.ConstructedClass, cwt.ClickEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.onClick = function(type, x, y) {
+        this.log.info("GOT A CLICK => " + type);
+    };
+}, {log: "cwt.Log"}, {});
+stjs.ns("cwt");
+cwt.FactorySystem = function() {};
+stjs.extend(cwt.FactorySystem, null, [cwt.ConstructedClass, cwt.ActionInvokedEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.em = null;
+    prototype.ev = null;
+    prototype.onBuildUnit = function(factory, type) {
+        var factoryData = this.em.getComponent(factory, cwt.Factory);
+        this.checkBuildData(type, factoryData);
+        var unit = this.em.acquireEntity();
+        var unitOwner = this.em.getNonNullComponent(unit, cwt.Owner);
+        var unitPos = this.em.getNonNullComponent(unit, cwt.Position);
+        var factoryOwner = this.em.getComponent(factory, cwt.Owner);
+        var factoryPos = this.em.getComponent(factory, cwt.Position);
+        unitOwner.owner = factoryOwner.owner;
+        unitPos.x = factoryPos.x;
+        unitPos.y = factoryPos.y;
+        this.em.setEntityPrototype(unit, type);
+        this.log.info("produced a unit [ID:" + unit + ", Type: " + type + "]");
+        this.ev.publish(cwt.UnitProducedEvent).onUnitProduced(factory, unit, type);
+    };
+    prototype.checkBuildData = function(type, factoryData) {
+        if (factoryData == null) {
+            this.ev.publish(cwt.ErrorEvent).onIllegalGameData("NotAFactory");
+        } else if (factoryData.builds.indexOf(type) == -1) {
+            this.ev.publish(cwt.ErrorEvent).onIllegalGameData("TypeIsNotProcuceAble");
+        }
+    };
+}, {log: "cwt.Log", em: "cwt.EntityManager", ev: "cwt.EventEmitter"}, {});
+stjs.ns("cwt");
+cwt.FogSystem = function() {};
+stjs.extend(cwt.FogSystem, null, [cwt.ConstructedClass, cwt.IEntityComponent, cwt.UnitProducedEvent, cwt.UnitDestroyedEvent], function(constructor, prototype) {
+    prototype.em = null;
+    prototype.ev = null;
+    prototype.turnOwnerData = null;
+    prototype.clientOwnerData = null;
+    prototype.onConstruction = function() {
+        this.turnOwnerData = [];
+        this.clientOwnerData = [];
+    };
+    prototype.onUnitProduced = function(factory, unit, type) {
+        if (!this.isTurnOwnerObject(unit)) 
+            return;
+        var pos = this.em.getComponent(unit, cwt.Position);
+        var vision = this.em.getComponent(unit, cwt.Vision);
+        this.changeVision(this.turnOwnerData, pos.x, pos.y, vision.range, +1, true);
+        this.changeVision(this.clientOwnerData, pos.x, pos.y, vision.range, +1, false);
+    };
+    prototype.onUnitDestroyed = function(unit) {
+        if (!this.isTurnOwnerObject(unit)) 
+            return;
+        var pos = this.em.getComponent(unit, cwt.Position);
+        var vision = this.em.getComponent(unit, cwt.Vision);
+        this.changeVision(this.turnOwnerData, pos.x, pos.y, vision.range, -1, true);
+        this.changeVision(this.clientOwnerData, pos.x, pos.y, vision.range, +1, false);
+    };
+    prototype.changeVision = function(data, x, y, range, change, publishEvents) {
+        var xe = x + range;
+        var ye = y + range;
+        x -= range;
+        y -= range;
+        if (x < 0) 
+            x = 0;
+        if (y < 0) 
+            y = 0;
+        var oy = y;
+        for (; x <= xe; x++) {
+            var column = data[x];
+            for (y = oy; y <= ye; y++) {
+                var oldVision = column[y];
+                column[y] = oldVision + change;
+                if (publishEvents) {
+                    if (column[y] == 0 && oldVision > 0) {
+                        this.ev.publish(cwt.FogEvent).onTileVisionChanges(x, y, false);
+                    } else if (column[y] > 0 && oldVision == 0) {
+                        this.ev.publish(cwt.FogEvent).onTileVisionChanges(x, y, true);
+                    }
+                }
+            }
+        }
+    };
+    prototype.isTurnOwnerObject = function(unit) {
+        return (this.em.getComponent(unit, cwt.Owner).owner == this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.Turn).owner);
+    };
+}, {em: "cwt.EntityManager", ev: "cwt.EventEmitter", turnOwnerData: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}, clientOwnerData: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
+stjs.ns("cwt");
+cwt.ConfigSystem = function() {};
+stjs.extend(cwt.ConfigSystem, null, [cwt.ConstructedClass, cwt.GameStartEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.em = null;
+    prototype.onGameStart = function() {
+        this.log.info("going to reset all config values");
+        var entities = this.em.getEntitiesWithComponentType(cwt.Config);
+        for (var i = 0; i < entities.length; i++) {
+            var entity = entities[i];
+            this.em.getComponent(entity, cwt.Config).value = this.em.getComponent(entity, cwt.ValueMetaData).defaultValue;
+        }
+    };
+}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
+/**
+ *  The {@link ManpowerSystem} gives players the restriction to pay an additional
+ *  resource per unit. This resource is manpower which is not expendable during
+ *  the game round and the player won't be able to produce units when the
+ *  manpower falls down to zero.
+ *  
+ */
+stjs.ns("cwt");
+cwt.ManpowerSystem = function() {};
+stjs.extend(cwt.ManpowerSystem, null, [cwt.ConstructedClass, cwt.UnitCreatedEvent, cwt.GameStartEvent], function(constructor, prototype) {
+    prototype.em = null;
+    prototype.onGameStart = function() {};
+    prototype.onUnitCreated = function(unitEntity) {
+        this.em.getComponent(this.em.getComponent(unitEntity, cwt.Owner).owner, cwt.Manpower).manpower--;
+    };
+}, {em: "cwt.EntityManager"}, {});
+/**
+ *  The {@link GameTimeSystem} adds time limits for the turn and game mechanic.
+ *  When a turn limit is reached then the turn will be ended by this system. If
+ *  the game time limit is reached then the game round will be ended by this
+ *  system.
+ */
+stjs.ns("cwt");
+cwt.GameTimeSystem = function() {};
+stjs.extend(cwt.GameTimeSystem, null, [cwt.ConstructedClass, cwt.NextFrameEvent, cwt.GameStartEvent, cwt.TurnStartEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.em = null;
+    prototype.ev = null;
+    prototype.onNextFrame = function(delta) {
+        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
+        data.gameTime += delta;
+        data.turnTime += delta;
+        if (data.turnTime >= data.turnTimeLimit) {
+            this.log.info("ending current turn because turn time limit is reached");
+            this.ev.publish(cwt.TurnEndEvent).onTurnEnd();
+        } else if (data.gameTime >= data.gameTimeLimit) {
+            this.log.info("ending game because game time limit is reached");
+            this.ev.publish(cwt.GameEndEvent).onGameEnd();
+        }
+    };
+    prototype.onGameStart = function() {
+        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
+        data.gameTime = 0;
+        data.turnTime = 0;
+    };
+    prototype.onTurnStart = function(player, turn) {
+        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
+        data.turnTime = 0;
+    };
+}, {log: "cwt.Log", em: "cwt.EntityManager", ev: "cwt.EventEmitter"}, {});
+stjs.ns("cwt");
+cwt.CaptureSystem = function() {};
+stjs.extend(cwt.CaptureSystem, null, [cwt.ConstructedClass, cwt.ActionInvokedEvent], function(constructor, prototype) {
+    prototype.ev = null;
+    prototype.em = null;
+    prototype.onInvokeAction = function(action, pstr, p1, p2, p3, p4, p5) {
+        if (action == "Capture") {
+            var property = null;
+            var capturer = null;
+            var propertyData = this.em.getComponent(property, cwt.Capturable);
+            var capturerData = this.em.getComponent(capturer, cwt.Capturer);
+            propertyData.points -= capturerData.points;
+            this.ev.publish(cwt.CaptureEvents).onLoweredCapturePoints(capturer, property, capturerData.points);
+            if (propertyData.points <= 0) {
+                var propertyOwner = this.em.getComponent(property, cwt.Owner);
+                var capturerOwner = this.em.getComponent(capturer, cwt.Owner);
+                propertyOwner.owner = capturerOwner.owner;
+                this.ev.publish(cwt.CaptureEvents).onCapturedProperty(capturer, property);
+            }
+        }
+    };
+}, {ev: "cwt.EventEmitter", em: "cwt.EntityManager"}, {});
 stjs.ns("cwt");
 cwt.ImageConverter = function() {};
 stjs.extend(cwt.ImageConverter, null, [cwt.DataConverter], function(constructor, prototype) {
@@ -1924,7 +2225,7 @@ cwt.Cwt = function() {};
 stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototype) {
     prototype.log = null;
     prototype.em = null;
-    prototype.ev = null;
+    prototype.evem = null;
     prototype.onConstruction = function() {
         cwt.PlaygroundUtil.setBasePath(this, "../");
         this.container = window.document.getElementById("game");
@@ -1952,15 +2253,15 @@ stjs.extend(cwt.Cwt, null, [cwt.ConstructedClass], function(constructor, prototy
         this.log.info("enter state " + cwt.ClassUtil.getClassName(event.state));
     };
     prototype.keydown = function(ev) {
-        (this.ev.getEventEmitter()).onClick(ev.key + "", 0, 0);
+        this.evem.publish(cwt.ClickEvent).onClick(ev.key + "", 0, 0);
     };
     prototype.mousedown = function(ev) {
-        (this.ev.getEventEmitter()).onClick(ev.original.which + "", 0, 0);
+        this.evem.publish(cwt.ClickEvent).onClick(ev.original.which + "", 0, 0);
     };
     prototype.leavestate = function(event) {
         this.log.info("leaving state " + cwt.ClassUtil.getClassName(event.state));
     };
-}, {log: "cwt.Log", em: "cwt.EntityManager", ev: "cwt.EventEmitter", atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
+}, {log: "cwt.Log", em: "cwt.EntityManager", evem: "cwt.EventEmitter", atlases: {name: "Map", arguments: [null, "cwt.CanvasQuery.Atlas"]}, container: "Element", data: {name: "Map", arguments: [null, "Object"]}, images: {name: "Map", arguments: [null, "Canvas"]}, keyboard: "cwt.Playground.KeyboardStatus", layer: "cwt.CanvasQuery", loader: "cwt.Playground.Loader", mouse: "cwt.Playground.MouseStatus", music: "cwt.Playground.SoundActions", paths: "cwt.Playground.ResourcePaths", pointers: {name: "Array", arguments: ["cwt.Playground.PointerEvent"]}, sound: "cwt.Playground.SoundActions", touch: "cwt.Playground.TouchStatus", state: "cwt.PlaygroundState"}, {});
 /**
  *  Starter class with main function.
  */
@@ -2052,7 +2353,7 @@ stjs.extend(cwt.EventEmitter, null, [cwt.ConstructedClass], function(constructor
             }
         }
     };
-    prototype.getEventEmitter = function() {
+    prototype.publish = function(eventClass) {
         return this.eventEmitter;
     };
 }, {log: "cwt.Log", eventEmitter: "Object", eventListeners: {name: "Map", arguments: [null, {name: "Array", arguments: ["Object"]}]}}, {});
@@ -2081,315 +2382,3 @@ stjs.extend(cwt.AssetLoader, null, [cwt.ConstructedClass], function(constructor,
     };
     prototype.loadFolder = function(app, dataClass) {};
 }, {imgGrabber: "cwt.ImageConverter", sheetGrabber: {name: "cwt.TypedObjectConverter", arguments: ["cwt.UnitType"]}}, {});
-stjs.ns("cwt");
-cwt.ISystem = function() {};
-stjs.extend(cwt.ISystem, null, [cwt.ConstructedClass], function(constructor, prototype) {
-    /**
-     *  Returns the publisher event emitter object for a given event type. Calling
-     *  the event function on this object leads into an invocation of all listeners
-     *  for that event function.
-     *  
-     *  @param eventClass
-     *  @return
-     */
-    prototype.publish = function(eventClass) {
-        return cwt.ConstructedFactory.getObject(cwt.EventEmitter).getEventEmitter();
-    };
-}, {}, {});
-stjs.ns("cwt");
-cwt.ScreenSystem = function() {};
-stjs.extend(cwt.ScreenSystem, null, [cwt.ISystem], null, {}, {});
-stjs.ns("cwt");
-cwt.SerializationSystem = function() {};
-stjs.extend(cwt.SerializationSystem, null, [cwt.ISystem, cwt.ClickEvent], function(constructor, prototype) {
-    prototype.log = null;
-    prototype.em = null;
-    prototype.onClick = function(type, x, y) {};
-    prototype.onConstruction = function() {
-        this.log.info("creating data model");
-        this.em.acquireEntityWithId("MAP");
-        var map = this.em.acquireEntityComponent("MAP", cwt.TileMap);
-        map.tiles = [];
-        for (var x = 0; x < cwt.Constants.MAX_MAP_SIDE_LENGTH; x++) {
-            map.tiles[x] = [];
-            for (var y = 0; y < cwt.Constants.MAX_MAP_SIDE_LENGTH; y++) {
-                map.tiles[x][y] = null;
-            }
-        }
-    };
-}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
-stjs.ns("cwt");
-cwt.ConfigSystem = function() {};
-stjs.extend(cwt.ConfigSystem, null, [cwt.ISystem, cwt.GameStartEvent], function(constructor, prototype) {
-    prototype.log = null;
-    prototype.em = null;
-    prototype.onGameStart = function() {
-        this.log.info("going to reset all config values");
-        var entities = this.em.getEntitiesWithComponentType(cwt.Config);
-        for (var i = 0; i < entities.length; i++) {
-            var entity = entities[i];
-            this.em.getComponent(entity, cwt.Config).value = this.em.getComponent(entity, cwt.ValueMetaData).defaultValue;
-        }
-    };
-}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
-/**
- *  The {@link BattleSystem} allows players to use units with the battle ability
- *  to fight against other entities with the living ability.
- */
-stjs.ns("cwt");
-cwt.BattleSystem = function() {};
-stjs.extend(cwt.BattleSystem, null, [cwt.ISystem, cwt.UnitCreatedEvent], function(constructor, prototype) {
-    prototype.em = null;
-    prototype.onUnitCreated = function(unitEntity) {
-        this.em.getNonNullComponent(unitEntity, cwt.Living).hp = cwt.Constants.UNIT_HEALTH;
-    };
-    prototype.isDirectFighter = function(entity) {
-        return !this.isIndirectFighter(entity);
-    };
-    prototype.isIndirectFighter = function(entity) {
-        return this.em.getComponent(entity, cwt.RangedFighter) != null;
-    };
-    prototype.isBallisticFither = function(entity) {
-        var range = this.em.getComponent(entity, cwt.RangedFighter);
-        return range != null && range.minRange == 1;
-    };
-}, {em: "cwt.EntityManager"}, {});
-stjs.ns("cwt");
-cwt.HealthSystem = function() {};
-stjs.extend(cwt.HealthSystem, null, [cwt.ISystem], null, {}, {});
-stjs.ns("cwt");
-cwt.FogSystem = function() {};
-stjs.extend(cwt.FogSystem, null, [cwt.ISystem, cwt.IEntityComponent, cwt.UnitProducedEvent, cwt.UnitDestroyedEvent], function(constructor, prototype) {
-    prototype.em = null;
-    prototype.turnOwnerData = null;
-    prototype.clientOwnerData = null;
-    prototype.onConstruction = function() {
-        this.turnOwnerData = [];
-        this.clientOwnerData = [];
-    };
-    prototype.onUnitProduced = function(factory, unit, type) {
-        if (!this.isTurnOwnerObject(unit)) 
-            return;
-        var pos = this.em.getComponent(unit, cwt.Position);
-        var vision = this.em.getComponent(unit, cwt.Vision);
-        this.changeVision(this.turnOwnerData, pos.x, pos.y, vision.range, +1, true);
-        this.changeVision(this.clientOwnerData, pos.x, pos.y, vision.range, +1, false);
-    };
-    prototype.onUnitDestroyed = function(unit) {
-        if (!this.isTurnOwnerObject(unit)) 
-            return;
-        var pos = this.em.getComponent(unit, cwt.Position);
-        var vision = this.em.getComponent(unit, cwt.Vision);
-        this.changeVision(this.turnOwnerData, pos.x, pos.y, vision.range, -1, true);
-        this.changeVision(this.clientOwnerData, pos.x, pos.y, vision.range, +1, false);
-    };
-    prototype.changeVision = function(data, x, y, range, change, publishEvents) {
-        var xe = x + range;
-        var ye = y + range;
-        x -= range;
-        y -= range;
-        if (x < 0) 
-            x = 0;
-        if (y < 0) 
-            y = 0;
-        var oy = y;
-        for (; x <= xe; x++) {
-            var column = data[x];
-            for (y = oy; y <= ye; y++) {
-                var oldVision = column[y];
-                column[y] = oldVision + change;
-                if (publishEvents) {
-                    if (column[y] == 0 && oldVision > 0) {
-                        this.publish(cwt.FogEvent).onTileVisionChanges(x, y, false);
-                    } else if (column[y] > 0 && oldVision == 0) {
-                        this.publish(cwt.FogEvent).onTileVisionChanges(x, y, true);
-                    }
-                }
-            }
-        }
-    };
-    prototype.isTurnOwnerObject = function(unit) {
-        return (this.em.getComponent(unit, cwt.Owner).owner == this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.Turn).owner);
-    };
-}, {em: "cwt.EntityManager", turnOwnerData: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}, clientOwnerData: {name: "Array", arguments: [{name: "Array", arguments: [null]}]}}, {});
-stjs.ns("cwt");
-cwt.MapRendererSystem = function() {};
-stjs.extend(cwt.MapRendererSystem, null, [cwt.ISystem, cwt.ConstructedClass], null, {}, {});
-stjs.ns("cwt");
-cwt.MoveSystem = function() {};
-stjs.extend(cwt.MoveSystem, null, [cwt.ISystem], null, {}, {});
-stjs.ns("cwt");
-cwt.MenuSys = function() {};
-stjs.extend(cwt.MenuSys, null, [cwt.ISystem], null, {}, {});
-stjs.ns("cwt");
-cwt.CaptureSystem = function() {};
-stjs.extend(cwt.CaptureSystem, null, [cwt.ISystem, cwt.ActionInvokedEvent], function(constructor, prototype) {
-    prototype.em = null;
-    prototype.onInvokeAction = function(action, pstr, p1, p2, p3, p4, p5) {
-        if (action == "Capture") {
-            var property = null;
-            var capturer = null;
-            var propertyData = this.em.getComponent(property, cwt.Capturable);
-            var capturerData = this.em.getComponent(capturer, cwt.Capturer);
-            propertyData.points -= capturerData.points;
-            this.publish(cwt.CaptureEvents).onLoweredCapturePoints(capturer, property, capturerData.points);
-            if (propertyData.points <= 0) {
-                var propertyOwner = this.em.getComponent(property, cwt.Owner);
-                var capturerOwner = this.em.getComponent(capturer, cwt.Owner);
-                propertyOwner.owner = capturerOwner.owner;
-                this.publish(cwt.CaptureEvents).onCapturedProperty(capturer, property);
-            }
-        }
-    };
-}, {em: "cwt.EntityManager"}, {});
-stjs.ns("cwt");
-cwt.ModelCreationSystem = function() {};
-stjs.extend(cwt.ModelCreationSystem, null, [cwt.ISystem, cwt.SystemStartEvent], function(constructor, prototype) {
-    prototype.em = null;
-    prototype.onSystemStart = function() {
-        for (var i = 0; i < 4; i++) {
-            this.em.acquireEntityWithId("P" + i);
-        }
-        for (var i = 0; i < 4 * 50; i++) {
-            this.em.acquireEntityWithId("U" + i);
-            this.em.acquireEntityComponent("U" + i, cwt.Owner);
-        }
-        for (var i = 0; i < 200; i++) {
-            this.em.acquireEntityWithId("PR" + i);
-            this.em.acquireEntityComponent("PR" + i, cwt.Position);
-            this.em.acquireEntityComponent("PR" + i, cwt.Owner);
-        }
-    };
-}, {em: "cwt.EntityManager"}, {});
-stjs.ns("cwt");
-cwt.TypeSys = function() {};
-stjs.extend(cwt.TypeSys, null, [cwt.ISystem, cwt.ConstructedClass], null, {}, {});
-stjs.ns("cwt");
-cwt.PlayerSys = function() {};
-stjs.extend(cwt.PlayerSys, null, [cwt.ISystem], null, {}, {});
-stjs.ns("cwt");
-cwt.FactorySystem = function() {};
-stjs.extend(cwt.FactorySystem, null, [cwt.ISystem, cwt.ActionInvokedEvent], function(constructor, prototype) {
-    prototype.log = null;
-    prototype.em = null;
-    prototype.onBuildUnit = function(factory, type) {
-        var factoryData = this.em.getComponent(factory, cwt.Factory);
-        this.checkBuildData(type, factoryData);
-        var unit = this.em.acquireEntity();
-        var unitOwner = this.em.getNonNullComponent(unit, cwt.Owner);
-        var unitPos = this.em.getNonNullComponent(unit, cwt.Position);
-        var factoryOwner = this.em.getComponent(factory, cwt.Owner);
-        var factoryPos = this.em.getComponent(factory, cwt.Position);
-        unitOwner.owner = factoryOwner.owner;
-        unitPos.x = factoryPos.x;
-        unitPos.y = factoryPos.y;
-        this.em.setEntityPrototype(unit, type);
-        this.log.info("produced a unit [ID:" + unit + ", Type: " + type + "]");
-        this.publish(cwt.UnitProducedEvent).onUnitProduced(factory, unit, type);
-    };
-    prototype.checkBuildData = function(type, factoryData) {
-        if (factoryData == null) {
-            this.publish(cwt.ErrorEvent).onIllegalGameData("NotAFactory");
-        } else if (factoryData.builds.indexOf(type) == -1) {
-            this.publish(cwt.ErrorEvent).onIllegalGameData("TypeIsNotProcuceAble");
-        }
-    };
-}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
-stjs.ns("cwt");
-cwt.AudioSystem = function() {};
-stjs.extend(cwt.AudioSystem, null, [cwt.ISystem, cwt.ClickEvent], function(constructor, prototype) {
-    prototype.log = null;
-    prototype.onClick = function(type, x, y) {
-        this.log.info("GOT A CLICK => " + type);
-    };
-}, {log: "cwt.Log"}, {});
-stjs.ns("cwt");
-cwt.WeatherSystem = function() {};
-stjs.extend(cwt.WeatherSystem, null, [cwt.ISystem, cwt.DayStartEvent, cwt.WeatherChangesEvent], function(constructor, prototype) {
-    prototype.log = null;
-    prototype.em = null;
-    prototype.onConstruction = function() {
-        this.log.info("created");
-    };
-    prototype.onWeatherChanges = function(weather, duration) {
-        var data = this.em.getNonNullComponent(cwt.EntityId.GAME_ROUND, cwt.WeatherData);
-        data.days = duration;
-        data.weather = weather;
-    };
-    prototype.onDayStart = function(day) {
-        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.WeatherData);
-        var currentWeather = this.em.getComponent(data.weather, cwt.Weather);
-        data.days--;
-        if (data.days == 0) {
-            this.log.info("changing weather..");
-            var weatherTypes = this.em.getEntitiesWithComponentType(cwt.Weather);
-            var newWeatherEntity;
-             while (true){
-                newWeatherEntity = weatherTypes[cwt.NumberUtil.getRandomInt(weatherTypes.length)];
-                if (newWeatherEntity != cwt.EntityId.GAME_ROUND && currentWeather != this.em.getComponent(newWeatherEntity, cwt.Weather)) {
-                    break;
-                }
-            }
-            var newWeather = this.em.getComponent(newWeatherEntity, cwt.Weather);
-            var newDuration = newWeather.defaultWeather ? 1 : this.generateRandomDuration();
-            this.log.info("..to " + newWeatherEntity + " for " + newDuration + " days");
-        }
-    };
-    prototype.generateRandomDuration = function() {
-        return 1;
-    };
-}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});
-stjs.ns("cwt");
-cwt.WaitAction = function() {};
-stjs.extend(cwt.WaitAction, null, [cwt.ISystem], function(constructor, prototype) {
-    prototype.onConstruction = function() {};
-}, {}, {});
-/**
- *  The {@link ManpowerSystem} gives players the restriction to pay an additional
- *  resource per unit. This resource is manpower which is not expendable during
- *  the game round and the player won't be able to produce units when the
- *  manpower falls down to zero.
- *  
- */
-stjs.ns("cwt");
-cwt.ManpowerSystem = function() {};
-stjs.extend(cwt.ManpowerSystem, null, [cwt.ISystem, cwt.UnitCreatedEvent, cwt.GameStartEvent], function(constructor, prototype) {
-    prototype.em = null;
-    prototype.onGameStart = function() {};
-    prototype.onUnitCreated = function(unitEntity) {
-        this.em.getComponent(this.em.getComponent(unitEntity, cwt.Owner).owner, cwt.Manpower).manpower--;
-    };
-}, {em: "cwt.EntityManager"}, {});
-/**
- *  The {@link GameTimeSystem} adds time limits for the turn and game mechanic.
- *  When a turn limit is reached then the turn will be ended by this system. If
- *  the game time limit is reached then the game round will be ended by this
- *  system.
- */
-stjs.ns("cwt");
-cwt.GameTimeSystem = function() {};
-stjs.extend(cwt.GameTimeSystem, null, [cwt.ISystem, cwt.NextFrameEvent, cwt.GameStartEvent, cwt.TurnStartEvent], function(constructor, prototype) {
-    prototype.log = null;
-    prototype.em = null;
-    prototype.onNextFrame = function(delta) {
-        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
-        data.gameTime += delta;
-        data.turnTime += delta;
-        if (data.turnTime >= data.turnTimeLimit) {
-            this.log.info("ending current turn because turn time limit is reached");
-            this.publish(cwt.TurnEndEvent).onTurnEnd();
-        } else if (data.gameTime >= data.gameTimeLimit) {
-            this.log.info("ending game because game time limit is reached");
-            this.publish(cwt.GameEndEvent).onGameEnd();
-        }
-    };
-    prototype.onGameStart = function() {
-        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
-        data.gameTime = 0;
-        data.turnTime = 0;
-    };
-    prototype.onTurnStart = function(player, turn) {
-        var data = this.em.getComponent(cwt.EntityId.GAME_ROUND, cwt.TimerData);
-        data.turnTime = 0;
-    };
-}, {log: "cwt.Log", em: "cwt.EntityManager"}, {});

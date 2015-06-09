@@ -1,8 +1,7 @@
 package org.wolftec.cwtactics.game.system.old;
 
-import org.wolftec.cwtactics.game.ISystem;
 
-public class MoveSystem implements ISystem {
+public class MoveSystem {
   //
   // public void moveEntity(String id, Array<Integer> path) {
   // Position posC = entityManager().getComponent(id, Position.class);

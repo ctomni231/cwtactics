@@ -3,15 +3,15 @@ package org.wolftec.cwtactics.game.system;
 import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.Weather;
 import org.wolftec.cwtactics.game.components.WeatherData;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.DayStartEvent;
 import org.wolftec.cwtactics.game.event.WeatherChangesEvent;
 import org.wolftec.cwtactics.game.util.NumberUtil;
 
-public class WeatherSystem implements ISystem, DayStartEvent, WeatherChangesEvent {
+public class WeatherSystem implements ConstructedClass, DayStartEvent, WeatherChangesEvent {
 
   private Log log;
   private EntityManager em;

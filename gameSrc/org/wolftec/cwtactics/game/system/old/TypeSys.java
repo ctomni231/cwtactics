@@ -1,9 +1,7 @@
 package org.wolftec.cwtactics.game.system.old;
 
-import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
 
-public class TypeSys implements ISystem, ConstructedClass {
+public class TypeSys {
   //
   // private Array<Class<? extends IEntityComponent>> requiredUnitComponents;
   // private Array<Class<? extends IEntityComponent>> optionalUnitComponents;

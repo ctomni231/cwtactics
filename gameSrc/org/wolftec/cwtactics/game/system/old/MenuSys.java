@@ -1,8 +1,7 @@
 package org.wolftec.cwtactics.game.system.old;
 
-import org.wolftec.cwtactics.game.ISystem;
 
-public class MenuSys implements ISystem {
+public class MenuSys {
   //
   // @Override
   // public void onConstruction() {

@@ -1,8 +1,7 @@
 package org.wolftec.cwtactics.game.system.old;
 
-import org.wolftec.cwtactics.game.ISystem;
 
-public class HealthSystem implements ISystem {
+public class HealthSystem {
   //
   // @Override
   // public void onConstruction() {

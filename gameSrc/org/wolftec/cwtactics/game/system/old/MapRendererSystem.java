@@ -1,9 +1,7 @@
 package org.wolftec.cwtactics.game.system.old;
 
-import org.wolftec.cwtactics.game.ISystem;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
 
-public class MapRendererSystem implements ISystem, ConstructedClass {
+public class MapRendererSystem {
   //
   // @Override
   // public void onConstruction() {

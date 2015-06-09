@@ -2,8 +2,9 @@ package org.wolftec.cwtactics.game.system;
 
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.ISystem;
+import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.TimerData;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.GameEndEvent;
 import org.wolftec.cwtactics.game.event.GameStartEvent;
@@ -17,10 +18,11 @@ import org.wolftec.cwtactics.game.event.TurnStartEvent;
  * the game time limit is reached then the game round will be ended by this
  * system.
  */
-public class GameTimeSystem implements ISystem, NextFrameEvent, GameStartEvent, TurnStartEvent {
+public class GameTimeSystem implements ConstructedClass, NextFrameEvent, GameStartEvent, TurnStartEvent {
 
   private Log log;
   private EntityManager em;
+  private EventEmitter ev;
 
   @Override
   public void onNextFrame(int delta) {
@@ -31,11 +33,11 @@ public class GameTimeSystem implements ISystem, NextFrameEvent, GameStartEvent, 
 
     if (data.turnTime >= data.turnTimeLimit) {
       log.info("ending current turn because turn time limit is reached");
-      publish(TurnEndEvent.class).onTurnEnd();
+      ev.publish(TurnEndEvent.class).onTurnEnd();
 
     } else if (data.gameTime >= data.gameTimeLimit) {
       log.info("ending game because game time limit is reached");
-      publish(GameEndEvent.class).onGameEnd();
+      ev.publish(GameEndEvent.class).onGameEnd();
     }
   }
 

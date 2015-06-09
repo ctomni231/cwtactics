@@ -1,8 +1,7 @@
 package org.wolftec.cwtactics.game.system.old;
 
-import org.wolftec.cwtactics.game.ISystem;
 
-public class PlayerSys implements ISystem {
+public class PlayerSys {
   //
   // @Override
   // public void onConstruction() {

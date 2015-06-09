@@ -16,7 +16,7 @@ public class Cwt extends Playground implements ConstructedClass {
 
   private Log log;
   private EntityManager em;
-  private EventEmitter ev;
+  private EventEmitter evem;
 
   @Override
   public void onConstruction() {
@@ -99,12 +99,12 @@ public class Cwt extends Playground implements ConstructedClass {
 
   @Override
   public void keydown(KeyboardEvent ev) {
-    ((ClickEvent) this.ev.getEventEmitter()).onClick(ev.key + "", 0, 0);
+    evem.publish(ClickEvent.class).onClick(ev.key + "", 0, 0);
   }
 
   @Override
   public void mousedown(MouseEvent ev) {
-    ((ClickEvent) this.ev.getEventEmitter()).onClick(ev.original.which + "", 0, 0);
+    evem.publish(ClickEvent.class).onClick(ev.original.which + "", 0, 0);
   }
 
   @Override

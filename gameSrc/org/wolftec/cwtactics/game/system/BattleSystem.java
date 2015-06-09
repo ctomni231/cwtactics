@@ -2,16 +2,16 @@ package org.wolftec.cwtactics.game.system;
 
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.Living;
 import org.wolftec.cwtactics.game.components.RangedFighter;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
 
 /**
  * The {@link BattleSystem} allows players to use units with the battle ability
  * to fight against other entities with the living ability.
  */
-public class BattleSystem implements ISystem, UnitCreatedEvent {
+public class BattleSystem implements ConstructedClass, UnitCreatedEvent {
 
   private EntityManager em;
 

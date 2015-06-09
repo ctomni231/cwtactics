@@ -1,8 +1,7 @@
 package org.wolftec.cwtactics.game.system.old;
 
-import org.wolftec.cwtactics.game.ISystem;
 
-public class ScreenSystem implements ISystem {
+public class ScreenSystem {
   //
   // @Override
   // public void onConstruction() {

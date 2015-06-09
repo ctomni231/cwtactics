@@ -1,19 +1,21 @@
 package org.wolftec.cwtactics.game.system;
 
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.ISystem;
+import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.Factory;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Position;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ActionInvokedEvent;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.UnitProducedEvent;
 
-public class FactorySystem implements ISystem, ActionInvokedEvent {
+public class FactorySystem implements ConstructedClass, ActionInvokedEvent {
 
   private Log log;
   private EntityManager em;
+  private EventEmitter ev;
 
   @Override
   public void onBuildUnit(String factory, String type) {
@@ -37,14 +39,14 @@ public class FactorySystem implements ISystem, ActionInvokedEvent {
 
     log.info("produced a unit [ID:" + unit + ", Type: " + type + "]");
 
-    publish(UnitProducedEvent.class).onUnitProduced(factory, unit, type);
+    ev.publish(UnitProducedEvent.class).onUnitProduced(factory, unit, type);
   }
 
   private void checkBuildData(String type, Factory factoryData) {
     if (factoryData == null) {
-      publish(ErrorEvent.class).onIllegalGameData("NotAFactory");
+      ev.publish(ErrorEvent.class).onIllegalGameData("NotAFactory");
     } else if (factoryData.builds.indexOf(type) == -1) {
-      publish(ErrorEvent.class).onIllegalGameData("TypeIsNotProcuceAble");
+      ev.publish(ErrorEvent.class).onIllegalGameData("TypeIsNotProcuceAble");
     }
   }
 }

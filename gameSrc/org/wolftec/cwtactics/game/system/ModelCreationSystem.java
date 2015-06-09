@@ -1,13 +1,13 @@
 package org.wolftec.cwtactics.game.system;
 
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Position;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
 // TODO remove this class
-public class ModelCreationSystem implements ISystem, SystemStartEvent {
+public class ModelCreationSystem implements ConstructedClass, SystemStartEvent {
 
   private EntityManager em;
 

@@ -1,9 +1,9 @@
 package org.wolftec.cwtactics.game.system;
 
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.Manpower;
 import org.wolftec.cwtactics.game.components.Owner;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.GameStartEvent;
 import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
 
@@ -14,7 +14,7 @@ import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
  * manpower falls down to zero.
  * 
  */
-public class ManpowerSystem implements ISystem, UnitCreatedEvent, GameStartEvent {
+public class ManpowerSystem implements ConstructedClass, UnitCreatedEvent, GameStartEvent {
 
   private EntityManager em;
 

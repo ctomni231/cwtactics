@@ -1,15 +1,17 @@
 package org.wolftec.cwtactics.game.system;
 
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.ISystem;
+import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.Capturable;
 import org.wolftec.cwtactics.game.components.Capturer;
 import org.wolftec.cwtactics.game.components.Owner;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.ActionInvokedEvent;
 import org.wolftec.cwtactics.game.event.CaptureEvents;
 
-public class CaptureSystem implements ISystem, ActionInvokedEvent {
+public class CaptureSystem implements ConstructedClass, ActionInvokedEvent {
 
+  private EventEmitter ev;
   private EntityManager em;
 
   @Override
@@ -22,7 +24,7 @@ public class CaptureSystem implements ISystem, ActionInvokedEvent {
       Capturer capturerData = em.getComponent(capturer, Capturer.class);
 
       propertyData.points -= capturerData.points;
-      publish(CaptureEvents.class).onLoweredCapturePoints(capturer, property, capturerData.points);
+      ev.publish(CaptureEvents.class).onLoweredCapturePoints(capturer, property, capturerData.points);
 
       if (propertyData.points <= 0) {
 
@@ -31,7 +33,7 @@ public class CaptureSystem implements ISystem, ActionInvokedEvent {
 
         propertyOwner.owner = capturerOwner.owner;
 
-        publish(CaptureEvents.class).onCapturedProperty(capturer, property);
+        ev.publish(CaptureEvents.class).onCapturedProperty(capturer, property);
       }
     }
   }

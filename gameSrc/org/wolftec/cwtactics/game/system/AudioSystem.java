@@ -1,10 +1,10 @@
 package org.wolftec.cwtactics.game.system;
 
-import org.wolftec.cwtactics.game.ISystem;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ClickEvent;
 
-public class AudioSystem implements ISystem, ClickEvent {
+public class AudioSystem implements ConstructedClass, ClickEvent {
 
   private Log log;
 

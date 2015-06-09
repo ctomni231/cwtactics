@@ -4,19 +4,21 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
+import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.IEntityComponent;
-import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.components.Turn;
 import org.wolftec.cwtactics.game.components.Vision;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.FogEvent;
 import org.wolftec.cwtactics.game.event.UnitDestroyedEvent;
 import org.wolftec.cwtactics.game.event.UnitProducedEvent;
 
-public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, UnitDestroyedEvent {
+public class FogSystem implements ConstructedClass, IEntityComponent, UnitProducedEvent, UnitDestroyedEvent {
 
   private EntityManager em;
+  private EventEmitter ev;
 
   private Array<Array<Integer>> turnOwnerData; // TODO bounds
   private Array<Array<Integer>> clientOwnerData; // TODO bounds
@@ -70,10 +72,10 @@ public class FogSystem implements ISystem, IEntityComponent, UnitProducedEvent, 
 
         if (publishEvents) {
           if (column.$get(y) == 0 && oldVision > 0) {
-            publish(FogEvent.class).onTileVisionChanges(x, y, false);
+            ev.publish(FogEvent.class).onTileVisionChanges(x, y, false);
 
           } else if (column.$get(y) > 0 && oldVision == 0) {
-            publish(FogEvent.class).onTileVisionChanges(x, y, true);
+            ev.publish(FogEvent.class).onTileVisionChanges(x, y, true);
           }
         }
       }

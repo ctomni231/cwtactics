@@ -3,12 +3,12 @@ package org.wolftec.cwtactics.game.system;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.ISystem;
 import org.wolftec.cwtactics.game.components.TileMap;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ClickEvent;
 
-public class SerializationSystem implements ISystem, ClickEvent {
+public class SerializationSystem implements ConstructedClass, ClickEvent {
 
   private Log log;
   private EntityManager em;

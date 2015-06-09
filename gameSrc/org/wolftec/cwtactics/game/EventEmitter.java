@@ -45,8 +45,6 @@ public class EventEmitter implements ConstructedClass {
 
           if (JSObjectAdapter.hasOwnProperty(eventEmitter, classFnName)) {
             log.error("event function " + classFnName + " is already registered by an other event class");
-            // TODO solve that drawback by having an emitter object for every
-            // event class
           }
 
           JSObjectAdapter.$put(eventEmitter, classFnName, createEventEmitterCallback(classFnName));
@@ -116,7 +114,9 @@ public class EventEmitter implements ConstructedClass {
     }
   }
 
-  public <T extends IEvent> T getEventEmitter() {
+  public <T extends IEvent> T publish(Class<T> eventClass) {
+    // eventEmitter implements all T's (of course if you don't doing something
+    // low level with the IEvent classes)
     return (T) eventEmitter;
   }
 }
