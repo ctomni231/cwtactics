@@ -27,8 +27,15 @@ public class ConstructedFactory {
     instances = JSCollections.$map();
 
     Object namespace = JSObjectAdapter.$get(Global.window, Constants.NAMESPACE);
-    Array<String> classNames = JsUtil.objectKeys(namespace);
 
+    createSingletons(namespace);
+    injectDependencies(namespace);
+    injectConstructedObjects(namespace);
+    publishInitEvent();
+  }
+
+  private static void createSingletons(Object namespace) {
+    Array<String> classNames = JsUtil.objectKeys(namespace);
     JsUtil.forEachArrayValue(classNames, (index, className) -> {
       Object classObject = JSObjectAdapter.$get(namespace, className);
 
@@ -40,10 +47,6 @@ public class ConstructedFactory {
         instances.$put(className, cmp);
       }
     });
-
-    injectDependencies(namespace);
-    injectConstructedObjects(namespace);
-    publishInitEvent();
   }
 
   private static void injectDependencies(Object namespace) {

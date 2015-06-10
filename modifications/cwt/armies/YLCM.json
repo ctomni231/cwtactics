@@ -1,6 +1,8 @@
 {
   "ID": "YLCM",
-  "name": "Yellow Comet",
-  "color": 3,
-  "music": "music/YellowCometTheme.mp3"
+  "Army": {
+    "name": "Yellow Comet",
+    "color": 3,
+    "music": "music/YellowCometTheme.mp3"
+  }
 }

@@ -1,5 +1,9 @@
 {
   "ID": "REEF",
-  "defense": 1,
-  "blocksVision": true
+  "Defense": {
+    "defense": 1
+  },
+  "Visible": {
+    "blocksVision": true
+  }
 }

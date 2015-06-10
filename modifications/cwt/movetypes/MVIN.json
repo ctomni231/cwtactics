@@ -1,10 +1,11 @@
 {
   "ID": "MVIN",
-  "sound": null,
-  "costs": {
-    "MNTN": 2,
-    "WATR": -1,
-    "REEF": -1,
-    "*": 1
+  "MovingCosts": {
+    "costs": {
+      "MNTN": 2,
+      "WATR": -1,
+      "REEF": -1,
+      "*": 1
+    }
   }
 }

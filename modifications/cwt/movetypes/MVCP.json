@@ -1,7 +1,8 @@
 {
   "ID": "MVCP",
-  "sound": null,
-  "costs": {
-    "*": 1
+  "MovingCosts": {
+    "costs": {
+      "*": 1
+    }
   }
 }

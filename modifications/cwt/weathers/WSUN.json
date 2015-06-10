@@ -1,9 +1,6 @@
 {
   "ID": "WSUN",
-  "rules": 
-  [
-    
-  ],
-
-  "defaultWeather": true
+  "Weather": {
+    "defaultWeather": true
+  }
 }

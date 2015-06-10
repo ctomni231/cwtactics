@@ -1,27 +1,36 @@
 {
   "ID": "HQTR",
-  "vision": 0,
-  "defense": 4,
-  "capturePoints": 20,
-  "funds": 1000,
-  "looseAfterCaptured": true,
-  "changeAfterCaptured": "CITY",
-  "notTransferable": true,
-  "supply": 
-  [
-    "INFT",
-    "MECH",
-    "TIRE_A",
-    "TIRE_B",
-    "TANK"
-  ],
-
-  "repairs": 
-  {
-    "INFT": 2,
-    "MECH": 2,
-    "TIRE_A": 2,
-    "TIRE_B": 2,
-    "TANK": 2
+  "Vision": {
+    "range": 0
+  },
+  "Defense": {
+    "defense": 4
+  },
+  "Capturable": {
+    "points": 20,
+    "looseAfterCaptured": true,
+    "changeIntoAfterCaptured": "CITY"
+  },
+  "Funds": {
+    "amount": 1000
+  },
+  "Supplier": {
+    "supplies": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ]
+  },
+  "Repairer": {
+    "amount": 2,
+    "targets": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ]
   }
 }

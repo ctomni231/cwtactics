@@ -1,4 +1,6 @@
 {
   "ID": "PLIN",
-  "defense": 1
+  "Defense": {
+    "defense": 1
+  }
 }

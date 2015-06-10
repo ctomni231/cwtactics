@@ -38,42 +38,11 @@ public class Cwt extends Playground implements ConstructedClass, SystemStartEven
   @Override
   public void preload() {
     loader.on("error", (error) -> log.error("Failed to load asset => " + error));
-
     evem.publish(SystemStartEvent.class).onSystemStartup(this);
-
-    // ConstructedFactory.getObject(SystemEvents.class).ERROR_RAISED.subscribe((error)
-    // -> {
-    // error(error);
-    // setStateByClass(ErrorScreen.class);
-    // });
-
-    // OfflineCacheDataLoader offlineDataLoader =
-    // ConstructedFactory.getObject(OfflineCacheDataLoader.class);
-
-    // offlineDataLoader.loadData(this, "modifications/cwt/armies",
-    // ArmyType.class);
-    // offlineDataLoader.loadData(this, "modifications/cwt/cos", CoType.class);
-    // offlineDataLoader.loadData(this, "modifications/cwt/tiles",
-    // TileType.class);
-    // offlineDataLoader.loadData(this, "modifications/cwt/props",
-    // PropertyType.class);
-    // offlineDataLoader.loadData(this, "modifications/cwt/movetypes",
-    // MoveType.class);
-    // offlineDataLoader.loadData(this, "modifications/cwt/units",
-    // UnitType.class);
-    // offlineDataLoader.loadData(this, "modifications/cwt/weathers",
-    // WeatherType.class);
-    //
-    // offlineDataLoader.loadAssets(this, "image/cwt_tileset/units",
-    // ConstructedFactory.getObject(AssetLoader.class));
   }
 
   @Override
   public void ready() {
-    // boolean hasErrors =
-    // ConstructedFactory.getObject(ErrorScreen.class).errorMsg != null;
-    // setStateByClass(hasErrors ? ErrorScreen.class : StartScreen.class);
-
   }
 
   @Override
@@ -82,7 +51,6 @@ public class Cwt extends Playground implements ConstructedClass, SystemStartEven
 
   @Override
   public void render() {
-    // layer.clear("yellow");
   }
 
   /**

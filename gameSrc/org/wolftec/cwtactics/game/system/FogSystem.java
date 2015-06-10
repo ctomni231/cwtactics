@@ -2,13 +2,17 @@ package org.wolftec.cwtactics.game.system;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.wolftec.cwtactics.Constants;
+import org.wolftec.cwtactics.engine.ischeck.Is;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.components.Turn;
+import org.wolftec.cwtactics.game.components.Visible;
 import org.wolftec.cwtactics.game.components.Vision;
+import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.FogEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
@@ -19,6 +23,7 @@ public class FogSystem implements ConstructedClass, UnitProducedEvent, UnitDestr
 
   private EntityManager em;
   private EventEmitter ev;
+  private Asserter asserter;
 
   private Array<Array<Integer>> turnOwnerData; // TODO bounds
   private Array<Array<Integer>> clientOwnerData; // TODO bounds
@@ -34,11 +39,20 @@ public class FogSystem implements ConstructedClass, UnitProducedEvent, UnitDestr
     switch (entityType) {
 
       case LoadEntityEvent.TYPE_UNIT_DATA:
-        em.tryAcquireComponentFromData(entity, data, Vision.class);
+      case LoadEntityEvent.TYPE_PROPERTY_DATA:
+        Vision vision = em.tryAcquireComponentFromData(entity, data, Vision.class);
+        if (vision != null) {
+          asserter.assertTrue("vision.range int", Is.is.integer(vision.range));
+          asserter.assertTrue("vision.range >= 0(unit) or 1(property)", Is.is.above(vision.range, entityType == TYPE_UNIT_DATA ? 0 : -1));
+          asserter.assertTrue("vision.range < Constants.MAX_SELECTION_RANGE", Is.is.under(vision.range, Constants.MAX_SELECTION_RANGE));
+        }
         break;
 
-      case LoadEntityEvent.TYPE_PROPERTY_DATA:
-        em.tryAcquireComponentFromData(entity, data, Vision.class);
+      case LoadEntityEvent.TYPE_TILE_DATA:
+        Visible visible = em.tryAcquireComponentFromData(entity, data, Visible.class);
+        if (visible != null) {
+          asserter.assertTrue("visible.blocksVision bool", Is.is.bool(visible.blocksVision));
+        }
         break;
     }
   }

@@ -1,4 +1,6 @@
 {
   "ID": "WATR",
-  "defense": 0
+  "Defense": {
+    "defense": 0
+  }
 }

@@ -1,4 +1,6 @@
 {
   "ID": "BRDG",
-  "defense": 0
+  "Defense": {
+    "defense": 0
+  }
 }

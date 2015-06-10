@@ -45,6 +45,10 @@ public class EntityManager implements ConstructedClass {
     return id;
   }
 
+  public boolean isEntity(String id) {
+    return JSObjectAdapter.hasOwnProperty(entities, id);
+  }
+
   public <T extends IEntityComponent> T acquireEntityComponent(String id, Class<T> componentClass) {
     // TODO cache components
     return attachEntityComponent(id, JSObjectAdapter.$js("new componentClass()"));

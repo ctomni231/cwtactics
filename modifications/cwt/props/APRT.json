@@ -1,18 +1,31 @@
 {
   "ID": "APRT",
-  "vision": 0,
-  "defense": 3,
-  "capturePoints": 20,
-  "funds": 1000,
-  "supply": [
-    "AIR"
-  ],
-
-  "repairs": {
-    "AIR": 2
+  "Vision": {
+    "range": 0
   },
-
-  "builds": [
-    "AIR"
-  ]
+  "Defense": {
+    "defense": 3
+  },
+  "Capturable": {
+    "points": 20
+  },
+  "Funds": {
+    "amount": 1000
+  },
+  "Supplier": {
+    "supplies": [
+      "AIR"
+    ]
+  },
+  "Repairer": {
+    "amount": 2,
+    "targets": [
+      "AIR"
+    ]
+  },
+  "Factory": {
+    "builds": [
+      "AIR"
+    ]
+  }
 }

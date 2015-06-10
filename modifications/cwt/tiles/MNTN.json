@@ -1,4 +1,6 @@
 {
   "ID": "MNTN",
-  "defense": 4
+  "Defense": {
+    "defense": 4
+  }
 }

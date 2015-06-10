@@ -1,8 +1,9 @@
 {
   "ID": "SILE",
-  "defense": 3,
-  "vision": 0,
-  "rocketsilo": {
-    
+  "Vision": {
+    "range": 0
+  },
+  "Defense": {
+    "defense": 3
   }
 }

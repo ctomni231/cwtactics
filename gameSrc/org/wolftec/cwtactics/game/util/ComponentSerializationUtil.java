@@ -23,10 +23,9 @@ public class ComponentSerializationUtil {
       if (JSGlobal.typeof(JSObjectAdapter.$get(componentPrototype, property)) == "function") return;
       if (property.startsWith("__")) return;
 
-      if (!JSObjectAdapter.hasOwnProperty(componentData, property)) {
-        JSObjectAdapter.$js("throw new Error('[' + data.ID + '] MissingProperty ' + property + ' in component ' + componentClassName)");
+      if (JSObjectAdapter.hasOwnProperty(componentData, property)) {
+        JSObjectAdapter.$put(component, property, JSObjectAdapter.$get(componentData, property));
       }
-      JSObjectAdapter.$put(component, property, JSObjectAdapter.$get(componentData, property));
     });
 
     return component;

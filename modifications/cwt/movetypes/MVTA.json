@@ -1,13 +1,14 @@
 {
   "ID": "MVTA",
-  "sound": null,
-  "costs": {
-    "PLIN": 2,
-    "FRST": 3,
-    "MNTN": -1,
-    "RIVR": -1,
-    "WATR": -1,
-    "REEF": -1,
-    "*": 1
+  "MovingCosts": {
+    "costs": {
+      "PLIN": 2,
+      "FRST": 3,
+      "MNTN": -1,
+      "RIVR": -1,
+      "WATR": -1,
+      "REEF": -1,
+      "*": 1
+    }
   }
 }

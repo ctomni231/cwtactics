@@ -1,24 +1,34 @@
 {
   "ID": "CITY",
-  "vision": 0,
-  "defense": 3,
-  "capturePoints": 20,
-  "funds": 1000,
-  "supply": 
-  [
-    "INFT",
-    "MECH",
-    "TIRE_A",
-    "TIRE_B",
-    "TANK"
-  ],
-
-  "repairs": 
-  {
-    "INFT": 2,
-    "MECH": 2,
-    "TIRE_A": 2,
-    "TIRE_B": 2,
-    "TANK": 2
+  "Vision": {
+    "range": 0
+  },
+  "Defense": {
+    "defense": 3
+  },
+  "Capturable": {
+    "points": 20
+  },
+  "Funds": {
+    "amount": 1000
+  },
+  "Supplier": {
+    "supplies": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ]
+  },
+  "Repairer": {
+    "amount": 2,
+    "targets": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ]
   }
 }

@@ -1,5 +1,9 @@
 {
   "ID": "RUIS",
-  "defense": 0,
-  "vision": 0
+  "Vision": {
+    "range": 0
+  },
+  "Defense": {
+    "defense": 0
+  }
 }

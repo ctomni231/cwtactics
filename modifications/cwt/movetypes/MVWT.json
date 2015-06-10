@@ -1,11 +1,12 @@
 {
   "ID": "MVWT",
-  "sound": null,
-  "costs": {
-    "WATR": 1,
-    "PORT": 1,
-    "REEF": 2,
-    "SHOL": 1,
-    "*": -1
+  "MovingCosts": {
+    "costs": {
+      "WATR": 1,
+      "PORT": 1,
+      "REEF": 2,
+      "SHOL": 1,
+      "*": -1
+    }
   }
 }

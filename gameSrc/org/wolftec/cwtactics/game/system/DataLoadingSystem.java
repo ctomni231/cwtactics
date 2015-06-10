@@ -35,7 +35,14 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
 
   @Override
   public void onSystemStartup(Playground gameContainer) {
+    loadFolder(gameContainer, "modifications/cwt/tiles", LoadEntityEvent.TYPE_TILE_DATA);
+    loadFolder(gameContainer, "modifications/cwt/props", LoadEntityEvent.TYPE_PROPERTY_DATA);
+    loadFolder(gameContainer, "modifications/cwt/movetypes", LoadEntityEvent.TYPE_MOVETYPE_DATA);
     loadFolder(gameContainer, "modifications/cwt/units", LoadEntityEvent.TYPE_UNIT_DATA);
+    loadFolder(gameContainer, "modifications/cwt/weathers", LoadEntityEvent.TYPE_WEATHER_DATA);
+    // loadFolder(gameContainer, "modifications/cwt/cos",
+    // LoadEntityEvent.TYPE_CO_DATA);
+    loadFolder(gameContainer, "modifications/cwt/armies", LoadEntityEvent.TYPE_ARMY_DATA);
   }
 
   private void loadFolder(Playground gameContainer, String folder, String type) {
@@ -69,7 +76,9 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
         String entity = em.acquireEntityWithId(JSObjectAdapter.$get(objData, "ID").toString());
         ev.publish(LoadEntityEvent.class).onLoadEntity(entity, type, objData);
 
-        game.loader.success(data.key);
+        LocalForage.localforage.setItem(data.key, objData, (err, savedData) -> {
+          game.loader.success(data.key);
+        });
       });
     });
   }

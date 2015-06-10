@@ -1,12 +1,13 @@
 {
   "ID": "MVTK",
-  "sound": null,
-  "costs": {
-    "FRST": 2,
-    "MNTN": -1,
-    "RIVR": -1,
-    "WATR": -1,
-    "REEF": -1,
-    "*": 1
+  "MovingCosts": {
+    "costs": {
+      "FRST": 2,
+      "MNTN": -1,
+      "RIVR": -1,
+      "WATR": -1,
+      "REEF": -1,
+      "*": 1
+    }
   }
 }
