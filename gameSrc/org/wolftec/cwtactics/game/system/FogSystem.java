@@ -5,17 +5,17 @@ import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.IEntityComponent;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.components.Turn;
 import org.wolftec.cwtactics.game.components.Vision;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.FogEvent;
+import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.UnitDestroyedEvent;
 import org.wolftec.cwtactics.game.event.UnitProducedEvent;
 
-public class FogSystem implements ConstructedClass, IEntityComponent, UnitProducedEvent, UnitDestroyedEvent {
+public class FogSystem implements ConstructedClass, UnitProducedEvent, UnitDestroyedEvent, LoadEntityEvent {
 
   private EntityManager em;
   private EventEmitter ev;
@@ -27,6 +27,20 @@ public class FogSystem implements ConstructedClass, IEntityComponent, UnitProduc
   public void onConstruction() {
     turnOwnerData = JSCollections.$array();
     clientOwnerData = JSCollections.$array();
+  }
+
+  @Override
+  public void onLoadEntity(String entity, String entityType, Object data) {
+    switch (entityType) {
+
+      case LoadEntityEvent.TYPE_UNIT_DATA:
+        em.tryAcquireComponentFromData(entity, data, Vision.class);
+        break;
+
+      case LoadEntityEvent.TYPE_PROPERTY_DATA:
+        em.tryAcquireComponentFromData(entity, data, Vision.class);
+        break;
+    }
   }
 
   @Override

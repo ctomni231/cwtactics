@@ -10,6 +10,7 @@ import org.stjs.javascript.functions.Function1;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.util.ComponentSerializationUtil;
 
 public class EntityManager implements ConstructedClass {
 
@@ -47,6 +48,13 @@ public class EntityManager implements ConstructedClass {
   public <T extends IEntityComponent> T acquireEntityComponent(String id, Class<T> componentClass) {
     // TODO cache components
     return attachEntityComponent(id, JSObjectAdapter.$js("new componentClass()"));
+  }
+
+  public <T extends IEntityComponent> T tryAcquireComponentFromData(String id, Object data, Class<T> componentClass) {
+    // TODO cache components
+    T component = ComponentSerializationUtil.parseFromData(data, componentClass);
+    if (component != null) attachEntityComponent(id, component);
+    return component;
   }
 
   public <T extends IEntityComponent> T attachEntityComponent(String id, T component) {
@@ -117,22 +125,27 @@ public class EntityManager implements ConstructedClass {
   /**
    * Returns a component of an entity.
    * 
-   * @param lId
+   * @param id
    *          id of the entity
    * @param lComponentClass
    *          class of the wanted component
    * @return component object or null
    */
-  public <T extends IEntityComponent> T getComponent(String lId, Class<T> lComponentClass) {
+  public <T extends IEntityComponent> T getComponent(String id, Class<T> lComponentClass) {
 
-    Map<String, IEntityComponent> componentMap = entities.$get(lId);
+    Map<String, IEntityComponent> componentMap = entities.$get(id);
+
+    if (componentMap == JSGlobal.undefined) {
+      JSGlobal.exception("Entity " + id + " is not defined");
+    }
+
     String componentName = ClassUtil.getClassName(lComponentClass);
     T component = (T) componentMap.$get(componentName);
 
     if (component == JSGlobal.undefined) {
 
       // we search also in the prototype if possible
-      String proto = entityPrototypes.$get(lId);
+      String proto = entityPrototypes.$get(id);
       return proto != JSGlobal.undefined ? getComponent(proto, lComponentClass) : null;
 
     } else {

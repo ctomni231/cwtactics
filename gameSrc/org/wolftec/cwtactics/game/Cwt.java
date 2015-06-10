@@ -11,8 +11,9 @@ import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.ConstructedFactory;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ClickEvent;
+import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
-public class Cwt extends Playground implements ConstructedClass {
+public class Cwt extends Playground implements ConstructedClass, SystemStartEvent {
 
   private Log log;
   private EntityManager em;
@@ -24,19 +25,21 @@ public class Cwt extends Playground implements ConstructedClass {
     // width = Constants.SCREEN_WIDTH_PX;
     // height = Constants.SCREEN_HEIGHT_PX;
     // smoothing = false;
-
     PlaygroundUtil.setBasePath(this, "../");
-
     container = Global.window.document.getElementById("game");
+  }
 
+  @Override
+  public void onSystemInitialized() {
     log.info("initialize playground engine");
-
     JSObjectAdapter.$put(Global.window, "cwtPly", PlaygroundGlobal.playground(this));
   }
 
   @Override
   public void preload() {
     loader.on("error", (error) -> log.error("Failed to load asset => " + error));
+
+    evem.publish(SystemStartEvent.class).onSystemStartup(this);
 
     // ConstructedFactory.getObject(SystemEvents.class).ERROR_RAISED.subscribe((error)
     // -> {

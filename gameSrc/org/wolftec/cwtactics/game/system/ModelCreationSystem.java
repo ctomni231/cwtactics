@@ -1,8 +1,7 @@
 package org.wolftec.cwtactics.game.system;
 
+import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.components.Owner;
-import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
@@ -12,21 +11,21 @@ public class ModelCreationSystem implements ConstructedClass, SystemStartEvent {
   private EntityManager em;
 
   @Override
-  public void onSystemStart() {
+  public void onSystemStartup(Playground gameContainer) {
 
-    for (int i = 0; i < 4; i++) {
-      em.acquireEntityWithId("P" + i);
-    }
-
-    for (int i = 0; i < 4 * 50; i++) {
-      em.acquireEntityWithId("U" + i);
-      em.acquireEntityComponent("U" + i, Owner.class);
-    }
-
-    for (int i = 0; i < 200; i++) {
-      em.acquireEntityWithId("PR" + i);
-      em.acquireEntityComponent("PR" + i, Position.class);
-      em.acquireEntityComponent("PR" + i, Owner.class);
-    }
+    // for (int i = 0; i < 4; i++) {
+    // em.acquireEntityWithId("P" + i);
+    // }
+    //
+    // for (int i = 0; i < 4 * 50; i++) {
+    // em.acquireEntityWithId("U" + i);
+    // em.acquireEntityComponent("U" + i, Owner.class);
+    // }
+    //
+    // for (int i = 0; i < 200; i++) {
+    // em.acquireEntityWithId("PR" + i);
+    // em.acquireEntityComponent("PR" + i, Position.class);
+    // em.acquireEntityComponent("PR" + i, Owner.class);
+    // }
   }
 }

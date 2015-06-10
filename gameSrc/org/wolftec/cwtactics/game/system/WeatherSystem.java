@@ -8,10 +8,11 @@ import org.wolftec.cwtactics.game.components.WeatherData;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.DayStartEvent;
+import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.WeatherChangesEvent;
 import org.wolftec.cwtactics.game.util.NumberUtil;
 
-public class WeatherSystem implements ConstructedClass, DayStartEvent, WeatherChangesEvent {
+public class WeatherSystem implements ConstructedClass, DayStartEvent, WeatherChangesEvent, LoadEntityEvent {
 
   private Log log;
   private EntityManager em;
@@ -19,6 +20,15 @@ public class WeatherSystem implements ConstructedClass, DayStartEvent, WeatherCh
   @Override
   public void onConstruction() {
     log.info("created");
+  }
+
+  @Override
+  public void onLoadEntity(String entity, String entityType, Object data) {
+    switch (entityType) {
+      case LoadEntityEvent.TYPE_WEATHER_DATA:
+        em.tryAcquireComponentFromData(entity, data, Weather.class);
+        break;
+    }
   }
 
   @Override

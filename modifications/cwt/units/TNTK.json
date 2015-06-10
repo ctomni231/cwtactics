@@ -1,15 +1,19 @@
 {
   "ID": "TNTK",
-  "cost": 7000,
-  "range": 6,
-  "movetype": "TANK",
-  "vision": 3,
-  "fuel": 70,
-  "ammo": 9,
-  "attack": 
-  {
-    "main_wp": 
-    {
+  "Buyable": {
+    "cost": 7000
+  },
+  "Movable": {
+    "range": 6,
+    "fuel": 70,
+    "type": "TANK"
+  },
+  "Vision": {
+    "range": 3
+  },
+  "FighterPrimaryWeapon": {
+    "ammo": 9,
+    "damage": {
       "RECN": 85,
       "TNTK": 55,
       "MDTK": 15,
@@ -28,10 +32,10 @@
       "ACAR": 1,
       "LNDR": 10,
       "BLBT": 10
-    },
-
-    "sec_wp": 
-    {
+    }
+  },
+  "FighterSecondaryWeapon": {
+    "damage": {
       "INFT": 75,
       "MECH": 70,
       "RECN": 40,

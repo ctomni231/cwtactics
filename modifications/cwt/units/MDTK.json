@@ -1,15 +1,19 @@
 {
   "ID": "MDTK",
-  "cost": 16000,
-  "range": 5,
-  "movetype": "TANK",
-  "vision": 1,
-  "fuel": 50,
-  "ammo": 8,
-  "attack": 
-  {
-    "main_wp": 
-    {
+  "Buyable": {
+    "cost": 16000
+  },
+  "Movable": {
+    "range": 5,
+    "fuel": 50,
+    "type": "TANK"
+  },
+  "Vision": {
+    "range": 1
+  },
+  "FighterPrimaryWeapon": {
+    "ammo": 8,
+    "damage": {
       "RECN": 105,
       "TNTK": 85,
       "MDTK": 55,
@@ -28,10 +32,10 @@
       "ACAR": 10,
       "LNDR": 35,
       "BLBT": 35
-    },
-
-    "sec_wp": 
-    {
+    }
+  },
+  "FighterSecondaryWeapon": {
+    "damage": {
       "INFT": 105,
       "MECH": 95,
       "RECN": 45,

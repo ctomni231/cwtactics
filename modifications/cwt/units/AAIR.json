@@ -1,11 +1,11 @@
 {
   "ID": "AAIR",
-  "BuyableComponent": {
+  "Buyable": {
     "cost": 8000
   },
-  "FightingComponent": {
+  "FighterPrimaryWeapon": {
     "ammo": 9,
-    "mainDamage": {
+    "damage": {
       "INFT": 105,
       "MECH": 105,
       "RECN": 60,
@@ -28,17 +28,18 @@
       "BKBM": 120
     }
   },
-  "MovingCostComponent": "MVTK",
-  "MovableComponent": {
-    "range": 6
+  "Movable": {
+    "range": 6,
+    "fuel": 60,
+    "type": "MVTK"
   },
-  "FogRevealingComponent": {
+  "Vision": {
     "range": 2
   },
-  "RenderableComponent": {
+  "TODO_Renderable": {
     "sprite": "CWT_AAIR"
   },
-  "NoiseMakingComponent:": {
+  "TODO_NoiseMaking:": {
     "primaryAttack": "HEAVY_MG"
   }
 }

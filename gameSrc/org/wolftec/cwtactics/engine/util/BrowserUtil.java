@@ -2,7 +2,6 @@ package org.wolftec.cwtactics.engine.util;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.stjs.javascript.Map;
 import org.stjs.javascript.XMLHttpRequest;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback0;
@@ -13,12 +12,12 @@ import org.stjs.javascript.functions.Callback2;
  */
 public abstract class BrowserUtil {
 
-  public static void requestJsonFile(String path, Callback2<Map<String, Object>, Object> callback) {
+  public static void requestJsonFile(String path, Callback2<Object, Object> callback) {
     doXmlHttpRequest(path, null, (data, error) -> {
-      Map<String, Object> dataMap = null;
+      Object dataMap = null;
 
       if (error == null) {
-        dataMap = (Map<String, Object>) JSGlobal.JSON.parse((String) data);
+        dataMap = JSGlobal.JSON.parse((String) data);
       }
 
       callback.$invoke(dataMap, error);

@@ -8,11 +8,26 @@ import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.ActionInvokedEvent;
 import org.wolftec.cwtactics.game.event.CaptureEvents;
+import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 
-public class CaptureSystem implements ConstructedClass, ActionInvokedEvent {
+public class CaptureSystem implements ConstructedClass, ActionInvokedEvent, LoadEntityEvent {
 
   private EventEmitter ev;
   private EntityManager em;
+
+  @Override
+  public void onLoadEntity(String entity, String entityType, Object data) {
+    switch (entityType) {
+
+      case LoadEntityEvent.TYPE_UNIT_DATA:
+        em.tryAcquireComponentFromData(entity, data, Capturer.class);
+        break;
+
+      case LoadEntityEvent.TYPE_PROPERTY_DATA:
+        em.tryAcquireComponentFromData(entity, data, Capturable.class);
+        break;
+    }
+  }
 
   @Override
   public void onInvokeAction(String action, String pstr, int p1, int p2, int p3, int p4, int p5) {

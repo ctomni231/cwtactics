@@ -1,15 +1,18 @@
 {
   "ID": "RECN",
-  "cost": 4000,
-  "range": 8,
-  "movetype": "TIRE_A",
-  "vision": 5,
-  "fuel": 80,
-  "ammo": 0,
-  "attack": 
-  {
-    "sec_wp": 
-    {
+  "Buyable": {
+    "cost": 4000
+  },
+  "Movable": {
+    "range": 5,
+    "fuel": 80,
+    "type": "TIRE_A"
+  },
+  "Vision": {
+    "range": 5
+  },
+  "FighterSecondaryWeapon": {
+    "damage": {
       "INFT": 70,
       "MECH": 65,
       "RECN": 35,

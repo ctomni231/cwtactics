@@ -1,18 +1,25 @@
 {
   "ID": "SUBM",
-  "cost": 20000,
-  "range": 5,
-  "movetype": "SHIP",
-  "vision": 5,
-  "fuel": 60,
-  "stealth": true,
-  "dailyFuelDrain": 1,
-  "dailyFuelDrainHidden": 5,
-  "ammo": 6,
-  "attack": 
-  {
-    "main_wp": 
-    {
+  "Buyable": {
+    "cost": 20000
+  },
+  "Movable": {
+    "range": 5,
+    "fuel": 60,
+    "type": "SHIP"
+  },
+  "Vision": {
+    "range": 5
+  },
+  "FuelDrain": {
+    "daily": 1
+  },
+  "HideAble": {
+    "additionFuelDrain": 4
+  },
+  "FighterPrimaryWeapon": {
+    "ammo": 6,
+    "damage": {
       "CRUS": 25,
       "SUBM": 55,
       "BSHP": 65,

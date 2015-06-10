@@ -6,16 +6,11 @@ import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.TileMap;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.ClickEvent;
 
-public class SerializationSystem implements ConstructedClass, ClickEvent {
+public class SerializationSystem implements ConstructedClass {
 
   private Log log;
   private EntityManager em;
-
-  @Override
-  public void onClick(String type, int x, int y) {
-  }
 
   @Override
   public void onConstruction() {

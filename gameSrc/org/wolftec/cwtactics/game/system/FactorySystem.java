@@ -2,6 +2,7 @@ package org.wolftec.cwtactics.game.system;
 
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
+import org.wolftec.cwtactics.game.components.Buyable;
 import org.wolftec.cwtactics.game.components.Factory;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Position;
@@ -9,13 +10,27 @@ import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ActionInvokedEvent;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
+import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.UnitProducedEvent;
 
-public class FactorySystem implements ConstructedClass, ActionInvokedEvent {
+public class FactorySystem implements ConstructedClass, ActionInvokedEvent, LoadEntityEvent {
 
   private Log log;
   private EntityManager em;
   private EventEmitter ev;
+
+  @Override
+  public void onLoadEntity(String entity, String entityType, Object data) {
+    switch (entityType) {
+      case LoadEntityEvent.TYPE_UNIT_DATA:
+        em.tryAcquireComponentFromData(entity, data, Buyable.class);
+        break;
+
+      case LoadEntityEvent.TYPE_PROPERTY_DATA:
+        em.tryAcquireComponentFromData(entity, data, Factory.class);
+        break;
+    }
+  }
 
   @Override
   public void onBuildUnit(String factory, String type) {
@@ -45,6 +60,7 @@ public class FactorySystem implements ConstructedClass, ActionInvokedEvent {
   private void checkBuildData(String type, Factory factoryData) {
     if (factoryData == null) {
       ev.publish(ErrorEvent.class).onIllegalGameData("NotAFactory");
+
     } else if (factoryData.builds.indexOf(type) == -1) {
       ev.publish(ErrorEvent.class).onIllegalGameData("TypeIsNotProcuceAble");
     }

@@ -1,15 +1,19 @@
 {
   "ID": "WRTK",
-  "cost": 28000,
-  "range": 4,
-  "movetype": "TANK",
-  "vision": 1,
-  "fuel": 70,
-  "ammo": 3,
-  "attack": 
-  {
-    "main_wp": 
-    {
+  "Buyable": {
+    "cost": 28000
+  },
+  "Movable": {
+    "range": 4,
+    "fuel": 70,
+    "type": "TANK"
+  },
+  "Vision": {
+    "range": 1
+  },
+  "FighterPrimaryWeapon": {
+    "ammo": 3,
+    "damage": {
       "RECN": 195,
       "TNTK": 180,
       "MDTK": 125,
@@ -28,10 +32,10 @@
       "ACAR": 45,
       "LNDR": 75,
       "BLBT": 105
-    },
-
-    "sec_wp": 
-    {
+    }
+  },
+  "FighterSecondaryWeapon": {
+    "damage": {
       "INFT": 135,
       "MECH": 125,
       "RECN": 65,

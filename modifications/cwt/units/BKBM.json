@@ -1,18 +1,23 @@
 {
   "ID": "BKBM",
-  "cost": 25000,
-  "range": 9,
-  "movetype": "AIR",
-  "dailyFuelDrain": 5,
-  "vision": 1,
-  "fuel": 45,
-  "ammo": 0,
-  "suicide": 
-  {
+  "Buyable": {
+    "cost": 25000
+  },
+  "Movable": {
+    "range": 9,
+    "fuel": 45,
+    "type": "AIR"
+  },
+  "Vision": {
+    "range": 1
+  },
+  "FuelDrain": {
+    "daily": 5
+  },
+  "Suicide": {
     "damage": 5,
     "range": 3,
-    "nodamage": 
-    [
+    "noDamage": [
       "OOZM"
     ]
   }

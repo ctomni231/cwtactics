@@ -1,7 +1,13 @@
 package org.wolftec.cwtactics.game.event;
 
+import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.game.IEvent;
 
 public interface SystemStartEvent extends IEvent {
-  void onSystemStart();
+
+  default void onSystemInitialized() {
+  }
+
+  default void onSystemStartup(Playground gameContainer) {
+  }
 }

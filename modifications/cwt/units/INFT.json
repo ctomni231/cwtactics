@@ -1,16 +1,18 @@
 {
   "ID": "INFT",
-  "cost": 1000,
-  "range": 3,
-  "movetype": "MV_INFT",
-  "vision": 2,
-  "fuel": 99,
-  "captures": 10,
-  "ammo": 0,
-  "attack": 
-  {
-    "sec_wp": 
-    {
+  "Buyable": {
+    "cost": 1000
+  },
+  "Movable": {
+    "range": 3,
+    "fuel": 99,
+    "type": "MV_INFT"
+  },
+  "Vision": {
+    "range": 2
+  },
+  "FighterSecondaryWeapon": {
+    "damage": {
       "INFT": 55,
       "MECH": 45,
       "RECN": 12,
@@ -28,5 +30,8 @@
       "BCTR": 7,
       "TCTR": 30
     }
+  },
+  "Capturer": {
+    "points": 10
   }
 }
