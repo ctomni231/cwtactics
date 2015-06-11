@@ -10,19 +10,7 @@ public class Log implements ConstructedObject {
 
   @Override
   public void onConstruction(ConstructedClass instance) {
-    loggerName = ClassUtil.getClassName(instance);
-
-    if (loggerName.length() < Constants.LOGGER_CLASS_NAME_LENGTH) {
-      int missingSpaces = Constants.LOGGER_CLASS_NAME_LENGTH - loggerName.length();
-      String newName = "";
-      for (int i = 0; i < missingSpaces; i++) {
-        newName += " ";
-      }
-      loggerName = newName + loggerName;
-
-    } else if (loggerName.length() > Constants.LOGGER_CLASS_NAME_LENGTH) {
-      loggerName = loggerName.substring(0, Constants.LOGGER_CLASS_NAME_LENGTH);
-    }
+    loggerName = Log.convertNameToFixedLength(ClassUtil.getClassName(instance));
   }
 
   public void info(String msg) {
@@ -35,5 +23,20 @@ public class Log implements ConstructedObject {
 
   public void error(String msg) {
     Global.console.log("%c[" + loggerName + "][ERROR] %c" + msg, Constants.LOGGER_CSS_ERROR_HEAD, Constants.LOGGER_CSS_TEXT);
+  }
+
+  public static String convertNameToFixedLength(String loggerName) {
+    if (loggerName.length() < Constants.LOGGER_CLASS_NAME_LENGTH) {
+      int missingSpaces = Constants.LOGGER_CLASS_NAME_LENGTH - loggerName.length();
+      String newName = "";
+      for (int i = 0; i < missingSpaces; i++) {
+        newName += " ";
+      }
+      loggerName = newName + loggerName;
+
+    } else if (loggerName.length() > Constants.LOGGER_CLASS_NAME_LENGTH) {
+      loggerName = loggerName.substring(0, Constants.LOGGER_CLASS_NAME_LENGTH);
+    }
+    return loggerName;
   }
 }

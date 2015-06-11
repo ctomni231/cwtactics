@@ -17,6 +17,7 @@ import org.wolftec.cwtactics.engine.util.JsUtil;
  */
 public class ConstructedFactory {
 
+  private static Log log;
   private static Map<String, ConstructedClass> instances;
 
   /**
@@ -24,6 +25,9 @@ public class ConstructedFactory {
    * interface.
    */
   public static void initObjects(Array<String> forceConstructed) {
+    log = new Log();
+    JSObjectAdapter.$put(log, "loggerName", Log.convertNameToFixedLength("ConstructedFactory"));
+
     instances = JSCollections.$map();
 
     Object namespace = JSObjectAdapter.$get(Global.window, Constants.NAMESPACE);
@@ -59,7 +63,7 @@ public class ConstructedFactory {
 
   private static void createConstructedInstance(Object namespace, String className) {
     if (!JSObjectAdapter.hasOwnProperty(instances, className)) {
-      Global.console.log("CONSTRUCTING => " + className);
+      log.info("constructing " + className);
       Object classObject = JSObjectAdapter.$get(namespace, className);
       ConstructedClass cmp = JSObjectAdapter.$js("new classObject()");
       instances.$put(className, cmp);
@@ -79,7 +83,7 @@ public class ConstructedFactory {
           // if the dependency is a constructed class, means it's collected in
           // the instances map, then inject it
           if (dependency != JSGlobal.undefined) {
-            Global.console.log("INJECTING => " + dependencyClassName + " INTO " + instanceName);
+            log.info("injecting " + dependencyClassName + " into " + instanceName + " instance");
             JSObjectAdapter.$put(instanceObject, property, dependency);
           }
         }
@@ -103,7 +107,7 @@ public class ConstructedFactory {
         if (dependencyClass != JSGlobal.undefined && JSObjectAdapter.hasOwnProperty(dependencyClass, "$typeDescription")) {
           Array<Class<?>> interfaces = (Array<Class<?>>) JSObjectAdapter.$get(dependencyClass, "$inherit");
           if (interfaces.indexOf(ConstructedObject.class) != -1) {
-            Global.console.log("CREATING => " + dependencyClassName + " AS " + property + " IN " + ClassUtil.getClassName(instance));
+            log.info("creating object " + dependencyClassName + " as property " + property + " in " + ClassUtil.getClassName(instance) + " instance");
             ConstructedObject constructedObject = JSObjectAdapter.$js("new dependencyClass()");
             constructedObject.onConstruction(instance);
             JSObjectAdapter.$put(instance, property, constructedObject);

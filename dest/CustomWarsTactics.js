@@ -1593,17 +1593,7 @@ cwt.Log = function() {};
 stjs.extend(cwt.Log, null, [cwt.ConstructedObject], function(constructor, prototype) {
     prototype.loggerName = null;
     prototype.onConstruction = function(instance) {
-        this.loggerName = cwt.ClassUtil.getClassName(instance);
-        if (this.loggerName.length < cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
-            var missingSpaces = cwt.Constants.LOGGER_CLASS_NAME_LENGTH - this.loggerName.length;
-            var newName = "";
-            for (var i = 0; i < missingSpaces; i++) {
-                newName += " ";
-            }
-            this.loggerName = newName + this.loggerName;
-        } else if (this.loggerName.length > cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
-            this.loggerName = this.loggerName.substring(0, cwt.Constants.LOGGER_CLASS_NAME_LENGTH);
-        }
+        this.loggerName = cwt.Log.convertNameToFixedLength(cwt.ClassUtil.getClassName(instance));
     };
     prototype.info = function(msg) {
         console.log("%c[" + this.loggerName + "][ INFO] %c" + msg, cwt.Constants.LOGGER_CSS_INFO_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
@@ -1613,6 +1603,19 @@ stjs.extend(cwt.Log, null, [cwt.ConstructedObject], function(constructor, protot
     };
     prototype.error = function(msg) {
         console.log("%c[" + this.loggerName + "][ERROR] %c" + msg, cwt.Constants.LOGGER_CSS_ERROR_HEAD, cwt.Constants.LOGGER_CSS_TEXT);
+    };
+    constructor.convertNameToFixedLength = function(loggerName) {
+        if (loggerName.length < cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
+            var missingSpaces = cwt.Constants.LOGGER_CLASS_NAME_LENGTH - loggerName.length;
+            var newName = "";
+            for (var i = 0; i < missingSpaces; i++) {
+                newName += " ";
+            }
+            loggerName = newName + loggerName;
+        } else if (loggerName.length > cwt.Constants.LOGGER_CLASS_NAME_LENGTH) {
+            loggerName = loggerName.substring(0, cwt.Constants.LOGGER_CLASS_NAME_LENGTH);
+        }
+        return loggerName;
     };
 }, {}, {});
 stjs.ns("cwt");
@@ -1638,153 +1641,6 @@ stjs.extend(cwt.ComponentSerializationUtil, null, [], function(constructor, prot
         return component;
     };
 }, {}, {});
-/**
- *  
- *  <strong>This class is dynamic, so if you are going to change things here then
- *  be careful!</strong>
- */
-stjs.ns("cwt");
-cwt.ConstructedFactory = function() {};
-stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
-    constructor.instances = null;
-    /**
-     *  Initializes all classes which extends the {@link ConstructedClass}
-     *  interface.
-     */
-    constructor.initObjects = function(forceConstructed) {
-        cwt.ConstructedFactory.instances = {};
-        var namespace = (window)[cwt.Constants.NAMESPACE];
-        cwt.ConstructedFactory.createSingletons(namespace);
-        cwt.ConstructedFactory.createForcedSingletons(forceConstructed, namespace);
-        cwt.ConstructedFactory.injectDependencies(namespace);
-        cwt.ConstructedFactory.injectConstructedObjects(namespace);
-        cwt.ConstructedFactory.publishInitEvent();
-    };
-    constructor.createForcedSingletons = function(forceConstructed, namespace) {
-        if (forceConstructed != null) {
-            for (var i = 0; i < forceConstructed.length; i++) {
-                var className = forceConstructed[i];
-                cwt.ConstructedFactory.createConstructedInstance(namespace, className);
-            }
-        }
-    };
-    constructor.createSingletons = function(namespace) {
-        var classNames = cwt.JsUtil.objectKeys(namespace);
-        cwt.JsUtil.forEachArrayValue(classNames, function(index, className) {
-            var classObject = (namespace)[className];
-            cwt.ConstructedFactory.setClassNameProperty(className, classObject);
-            if (cwt.ConstructedFactory.isConstructedClass(classObject) && !cwt.ConstructedFactory.isDevBlockedAutomaticInstantiationClass(classObject)) {
-                cwt.ConstructedFactory.createConstructedInstance(namespace, className);
-            }
-        });
-    };
-    constructor.createConstructedInstance = function(namespace, className) {
-        if (!(cwt.ConstructedFactory.instances).hasOwnProperty(className)) {
-            console.log("CONSTRUCTING => " + className);
-            var classObject = (namespace)[className];
-            var cmp = new classObject();
-            cwt.ConstructedFactory.instances[className] = cmp;
-        }
-    };
-    constructor.injectDependencies = function(namespace) {
-        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(instanceName, instanceObject) {
-            var instanceClass = (namespace)[instanceName];
-            var instanceDependencies = (instanceClass)["$typeDescription"];
-            cwt.JsUtil.forEachMapValue(instanceDependencies, function(property, dependencyName) {
-                if ((typeof dependencyName) == "string") {
-                    var dependencyClassName = (dependencyName).replace(cwt.Constants.NAMESPACE + ".", "");
-                    var dependency = cwt.ConstructedFactory.instances[dependencyClassName];
-                    if (dependency != undefined) {
-                        console.log("INJECTING => " + dependencyClassName + " INTO " + instanceName);
-                        (instanceObject)[property] = dependency;
-                    }
-                }
-            });
-        });
-    };
-    constructor.injectConstructedObjects = function(namespace) {
-        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(instanceName, instanceObject) {
-            var instanceClass = (namespace)[instanceName];
-            var instanceDependencies = (instanceClass)["$typeDescription"];
-            cwt.ConstructedFactory.checkClassConstructedProperties(namespace, instanceObject, instanceDependencies);
-        });
-    };
-    constructor.checkClassConstructedProperties = function(namespace, instance, instanceDependencies) {
-        cwt.JsUtil.forEachMapValue(instanceDependencies, function(property, dependencyName) {
-            if ((typeof dependencyName) == "string") {
-                var dependencyClassName = (dependencyName).replace(cwt.Constants.NAMESPACE + ".", "");
-                var dependencyClass = (namespace)[dependencyClassName];
-                if (dependencyClass != undefined && (dependencyClass).hasOwnProperty("$typeDescription")) {
-                    var interfaces = (dependencyClass)["$inherit"];
-                    if (interfaces.indexOf(cwt.ConstructedObject) != -1) {
-                        console.log("CREATING => " + dependencyClassName + " AS " + property + " IN " + cwt.ClassUtil.getClassName(instance));
-                        var constructedObject = new dependencyClass();
-                        constructedObject.onConstruction(instance);
-                        (instance)[property] = constructedObject;
-                    }
-                }
-            }
-        });
-    };
-    constructor.publishInitEvent = function() {
-        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(componentName, component) {
-            component.onConstruction();
-        });
-    };
-    constructor.setClassNameProperty = function(className, classObject) {
-        if ((classObject).hasOwnProperty("$typeDescription")) {
-            (classObject)["__className"] = className;
-            ((classObject).prototype)["__className"] = className;
-        }
-    };
-    constructor.isDevBlockedAutomaticInstantiationClass = function(classObj) {
-        if ((classObj).hasOwnProperty("$typeDescription")) {
-            var interfaces = (classObj)["$inherit"];
-            return interfaces.indexOf(cwt.DevBlockConstruction) != -1;
-        }
-        return false;
-    };
-    /**
-     *  Searches for the {@link ConstructedClass} interface in a class hierarchy.
-     *  At the moment the class has to implement an interface which extends the
-     *  {@link ConstructedClass} interface in it's own hierarchy to be recognized
-     *  as constructed class.
-     *  
-     *  @param classObj
-     *           class that will be checked
-     *  @return true when the class object is a constructed class, else false
-     */
-    constructor.isConstructedClass = function(classObj) {
-        if ((classObj).hasOwnProperty("$typeDescription")) {
-            var interfaces = (classObj)["$inherit"];
-            if (interfaces.indexOf(cwt.ConstructedClass) != -1) {
-                return true;
-            }
-            for (var i = 0; i < interfaces.length; i++) {
-                var interfaceObj = interfaces[i];
-                if (cwt.ConstructedFactory.isConstructedClass(interfaceObj)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    };
-    /**
-     *  
-     *  @param clazz
-     *  @return the instantiated object of the given class
-     *  @throws IllegalArgumentException
-     *            when the given class is not registered as constructed class or
-     *            when it's a member of a non supported namespace
-     */
-    constructor.getObject = function(clazz) {
-        var value = cwt.ConstructedFactory.instances[(clazz)["__className"]];
-        if (undefined == value) {
-            return null;
-        }
-        return value;
-    };
-}, {instances: {name: "Map", arguments: [null, "cwt.ConstructedClass"]}}, {});
 stjs.ns("cwt");
 cwt.SerializationSystem = function() {};
 stjs.extend(cwt.SerializationSystem, null, [cwt.ConstructedClass], function(constructor, prototype) {
@@ -2605,6 +2461,156 @@ stjs.extend(cwt.Asserter, cwt.Log, [cwt.ConstructedObject], function(constructor
         }
     };
 }, {}, {});
+/**
+ *  
+ *  <strong>This class is dynamic, so if you are going to change things here then
+ *  be careful!</strong>
+ */
+stjs.ns("cwt");
+cwt.ConstructedFactory = function() {};
+stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
+    constructor.log = null;
+    constructor.instances = null;
+    /**
+     *  Initializes all classes which extends the {@link ConstructedClass}
+     *  interface.
+     */
+    constructor.initObjects = function(forceConstructed) {
+        cwt.ConstructedFactory.log = new cwt.Log();
+        (cwt.ConstructedFactory.log)["loggerName"] = cwt.Log.convertNameToFixedLength("ConstructedFactory");
+        cwt.ConstructedFactory.instances = {};
+        var namespace = (window)[cwt.Constants.NAMESPACE];
+        cwt.ConstructedFactory.createSingletons(namespace);
+        cwt.ConstructedFactory.createForcedSingletons(forceConstructed, namespace);
+        cwt.ConstructedFactory.injectDependencies(namespace);
+        cwt.ConstructedFactory.injectConstructedObjects(namespace);
+        cwt.ConstructedFactory.publishInitEvent();
+    };
+    constructor.createForcedSingletons = function(forceConstructed, namespace) {
+        if (forceConstructed != null) {
+            for (var i = 0; i < forceConstructed.length; i++) {
+                var className = forceConstructed[i];
+                cwt.ConstructedFactory.createConstructedInstance(namespace, className);
+            }
+        }
+    };
+    constructor.createSingletons = function(namespace) {
+        var classNames = cwt.JsUtil.objectKeys(namespace);
+        cwt.JsUtil.forEachArrayValue(classNames, function(index, className) {
+            var classObject = (namespace)[className];
+            cwt.ConstructedFactory.setClassNameProperty(className, classObject);
+            if (cwt.ConstructedFactory.isConstructedClass(classObject) && !cwt.ConstructedFactory.isDevBlockedAutomaticInstantiationClass(classObject)) {
+                cwt.ConstructedFactory.createConstructedInstance(namespace, className);
+            }
+        });
+    };
+    constructor.createConstructedInstance = function(namespace, className) {
+        if (!(cwt.ConstructedFactory.instances).hasOwnProperty(className)) {
+            cwt.ConstructedFactory.log.info("constructing " + className);
+            var classObject = (namespace)[className];
+            var cmp = new classObject();
+            cwt.ConstructedFactory.instances[className] = cmp;
+        }
+    };
+    constructor.injectDependencies = function(namespace) {
+        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(instanceName, instanceObject) {
+            var instanceClass = (namespace)[instanceName];
+            var instanceDependencies = (instanceClass)["$typeDescription"];
+            cwt.JsUtil.forEachMapValue(instanceDependencies, function(property, dependencyName) {
+                if ((typeof dependencyName) == "string") {
+                    var dependencyClassName = (dependencyName).replace(cwt.Constants.NAMESPACE + ".", "");
+                    var dependency = cwt.ConstructedFactory.instances[dependencyClassName];
+                    if (dependency != undefined) {
+                        cwt.ConstructedFactory.log.info("injecting " + dependencyClassName + " into " + instanceName + " instance");
+                        (instanceObject)[property] = dependency;
+                    }
+                }
+            });
+        });
+    };
+    constructor.injectConstructedObjects = function(namespace) {
+        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(instanceName, instanceObject) {
+            var instanceClass = (namespace)[instanceName];
+            var instanceDependencies = (instanceClass)["$typeDescription"];
+            cwt.ConstructedFactory.checkClassConstructedProperties(namespace, instanceObject, instanceDependencies);
+        });
+    };
+    constructor.checkClassConstructedProperties = function(namespace, instance, instanceDependencies) {
+        cwt.JsUtil.forEachMapValue(instanceDependencies, function(property, dependencyName) {
+            if ((typeof dependencyName) == "string") {
+                var dependencyClassName = (dependencyName).replace(cwt.Constants.NAMESPACE + ".", "");
+                var dependencyClass = (namespace)[dependencyClassName];
+                if (dependencyClass != undefined && (dependencyClass).hasOwnProperty("$typeDescription")) {
+                    var interfaces = (dependencyClass)["$inherit"];
+                    if (interfaces.indexOf(cwt.ConstructedObject) != -1) {
+                        cwt.ConstructedFactory.log.info("creating object " + dependencyClassName + " as property " + property + " in " + cwt.ClassUtil.getClassName(instance) + " instance");
+                        var constructedObject = new dependencyClass();
+                        constructedObject.onConstruction(instance);
+                        (instance)[property] = constructedObject;
+                    }
+                }
+            }
+        });
+    };
+    constructor.publishInitEvent = function() {
+        cwt.JsUtil.forEachMapValue(cwt.ConstructedFactory.instances, function(componentName, component) {
+            component.onConstruction();
+        });
+    };
+    constructor.setClassNameProperty = function(className, classObject) {
+        if ((classObject).hasOwnProperty("$typeDescription")) {
+            (classObject)["__className"] = className;
+            ((classObject).prototype)["__className"] = className;
+        }
+    };
+    constructor.isDevBlockedAutomaticInstantiationClass = function(classObj) {
+        if ((classObj).hasOwnProperty("$typeDescription")) {
+            var interfaces = (classObj)["$inherit"];
+            return interfaces.indexOf(cwt.DevBlockConstruction) != -1;
+        }
+        return false;
+    };
+    /**
+     *  Searches for the {@link ConstructedClass} interface in a class hierarchy.
+     *  At the moment the class has to implement an interface which extends the
+     *  {@link ConstructedClass} interface in it's own hierarchy to be recognized
+     *  as constructed class.
+     *  
+     *  @param classObj
+     *           class that will be checked
+     *  @return true when the class object is a constructed class, else false
+     */
+    constructor.isConstructedClass = function(classObj) {
+        if ((classObj).hasOwnProperty("$typeDescription")) {
+            var interfaces = (classObj)["$inherit"];
+            if (interfaces.indexOf(cwt.ConstructedClass) != -1) {
+                return true;
+            }
+            for (var i = 0; i < interfaces.length; i++) {
+                var interfaceObj = interfaces[i];
+                if (cwt.ConstructedFactory.isConstructedClass(interfaceObj)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+    /**
+     *  
+     *  @param clazz
+     *  @return the instantiated object of the given class
+     *  @throws IllegalArgumentException
+     *            when the given class is not registered as constructed class or
+     *            when it's a member of a non supported namespace
+     */
+    constructor.getObject = function(clazz) {
+        var value = cwt.ConstructedFactory.instances[(clazz)["__className"]];
+        if (undefined == value) {
+            return null;
+        }
+        return value;
+    };
+}, {log: "cwt.Log", instances: {name: "Map", arguments: [null, "cwt.ConstructedClass"]}}, {});
 stjs.ns("cwt");
 cwt.EntityManager = function() {
     this.entityIdCounter = 0;
