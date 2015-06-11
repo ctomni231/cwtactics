@@ -23,15 +23,25 @@ public class ConstructedFactory {
    * Initializes all classes which extends the {@link ConstructedClass}
    * interface.
    */
-  public static void initObjects() {
+  public static void initObjects(Array<String> forceConstructed) {
     instances = JSCollections.$map();
 
     Object namespace = JSObjectAdapter.$get(Global.window, Constants.NAMESPACE);
 
     createSingletons(namespace);
+    createForcedSingletons(forceConstructed, namespace);
     injectDependencies(namespace);
     injectConstructedObjects(namespace);
     publishInitEvent();
+  }
+
+  private static void createForcedSingletons(Array<String> forceConstructed, Object namespace) {
+    if (forceConstructed != null) {
+      for (int i = 0; i < forceConstructed.$length(); i++) {
+        String className = forceConstructed.$get(i);
+        createConstructedInstance(namespace, className);
+      }
+    }
   }
 
   private static void createSingletons(Object namespace) {
@@ -41,12 +51,19 @@ public class ConstructedFactory {
 
       setClassNameProperty(className, classObject);
 
-      if (isConstructedClass((Class<?>) classObject)) {
-        Global.console.log("CONSTRUCTING => " + className);
-        ConstructedClass cmp = JSObjectAdapter.$js("new classObject()");
-        instances.$put(className, cmp);
+      if (isConstructedClass((Class<?>) classObject) && !isDevBlockedAutomaticInstantiationClass((Class<?>) classObject)) {
+        createConstructedInstance(namespace, className);
       }
     });
+  }
+
+  private static void createConstructedInstance(Object namespace, String className) {
+    if (!JSObjectAdapter.hasOwnProperty(instances, className)) {
+      Global.console.log("CONSTRUCTING => " + className);
+      Object classObject = JSObjectAdapter.$get(namespace, className);
+      ConstructedClass cmp = JSObjectAdapter.$js("new classObject()");
+      instances.$put(className, cmp);
+    }
   }
 
   private static void injectDependencies(Object namespace) {
@@ -107,6 +124,14 @@ public class ConstructedFactory {
       JSObjectAdapter.$put(classObject, "__className", className);
       JSObjectAdapter.$put(JSObjectAdapter.$prototype(classObject), "__className", className);
     }
+  }
+
+  private static boolean isDevBlockedAutomaticInstantiationClass(Class<?> classObj) {
+    if (JSObjectAdapter.hasOwnProperty(classObj, "$typeDescription")) {
+      Array<Class<?>> interfaces = (Array<Class<?>>) JSObjectAdapter.$get(classObj, "$inherit");
+      return interfaces.indexOf(DevBlockConstruction.class) != -1;
+    }
+    return false;
   }
 
   /**
