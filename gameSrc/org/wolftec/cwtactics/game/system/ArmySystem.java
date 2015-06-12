@@ -1,7 +1,5 @@
 package org.wolftec.cwtactics.game.system;
 
-import org.wolftec.cwtactics.Constants;
-import org.wolftec.cwtactics.engine.ischeck.Is;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.Army;
 import org.wolftec.cwtactics.game.core.Asserter;
@@ -21,16 +19,11 @@ public class ArmySystem implements ConstructedClass, LoadEntityEvent {
   public void onLoadEntity(String entity, String entityType, Object data) {
     switch (entityType) {
       case LoadEntityEvent.TYPE_ARMY_DATA:
-
-        Army army = em.tryAcquireComponentFromData(entity, data, Army.class);
-        if (army != null) {
-          asserter.assertTrue("name string", Is.is.string(army.name));
-          asserter.assertTrue("name number of chars", Is.is.equal(army.name.length(), Constants.IDENTIFIER_LENGTH));
-          asserter.assertTrue("music string", Is.is.string(army.music));
-          asserter.assertTrue("color integer", Is.is.integer(army.color));
-          asserter.assertTrue("color greater equals 0", Is.is.above(army.color, -1));
-        }
-
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, Army.class, (army) -> {
+          asserter.inspectValue("Army.name of " + entity, army.name).isString();
+          asserter.inspectValue("Army.music of " + entity, army.music).isString();
+          asserter.inspectValue("Army.color of " + entity, army.color).isIntWithinRange(0, 999);
+        });
         break;
     }
   }

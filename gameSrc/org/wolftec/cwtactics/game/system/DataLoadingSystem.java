@@ -12,7 +12,6 @@ import org.wolftec.cwtactics.engine.util.BrowserUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.components.old.ObjectType;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
@@ -62,7 +61,7 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
     });
   }
 
-  private <T extends ObjectType> void loadRemoteFolderByContentList(Playground game, String folder, Array<String> content, String type) {
+  private void loadRemoteFolderByContentList(Playground game, String folder, Array<String> content, String type) {
     JsUtil.forEachArrayValue(content, (index, id) -> {
       AssetEntry data = game.getAssetEntry(id, folder, "json");
 
@@ -83,7 +82,7 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
     });
   }
 
-  private <T extends ObjectType> void loadCachedFolderByContentList(Playground game, String folder, Array<String> content, String type) {
+  private void loadCachedFolderByContentList(Playground game, String folder, Array<String> content, String type) {
     JsUtil.forEachArrayValue(content, (index, id) -> {
       AssetEntry data = game.getAssetEntry(id, folder, "json");
 

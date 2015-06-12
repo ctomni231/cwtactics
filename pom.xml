@@ -109,10 +109,7 @@
 
          <copy file="${project.build.outputDirectory}/stjs.js"
                todir="${basedir}/dest" overwrite="true" />
-               
-         <copy file="${basedir}/gameSrc/org/wolftec/cwtactics/engine/ischeck/js/is.js"
-               todir="${basedir}/dest" overwrite="true" />
-               
+                              
          <copy file="${basedir}/gameSrc/org/wolftec/cwtactics/engine/localforage/js/localforage.js"
                todir="${basedir}/dest" overwrite="true" />
                

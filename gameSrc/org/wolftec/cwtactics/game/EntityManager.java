@@ -61,6 +61,14 @@ public class EntityManager implements ConstructedClass {
     return component;
   }
 
+  public <T extends IEntityComponent> T tryAcquireComponentFromDataSuccessCb(String id, Object data, Class<T> componentClass, Callback1<T> successCb) {
+    T component = tryAcquireComponentFromData(id, data, componentClass);
+    if (component != null) {
+      successCb.$invoke(component);
+    }
+    return component;
+  }
+
   public <T extends IEntityComponent> T attachEntityComponent(String id, T component) {
     Map<String, IEntityComponent> entityMap = entities.$get(id);
     entityMap.$put(ClassUtil.getClassName(component), component);
@@ -104,6 +112,10 @@ public class EntityManager implements ConstructedClass {
   public Array<IEntityComponent> getEntityComponents(String lId) {
 
     Map<String, IEntityComponent> componentMap = entities.$get(lId);
+    if (componentMap == JSGlobal.undefined) {
+      return null;
+    }
+
     Array<String> componentKeys = JsUtil.objectKeys(componentMap);
     Array<IEntityComponent> components = JSCollections.$array();
 
@@ -138,9 +150,8 @@ public class EntityManager implements ConstructedClass {
   public <T extends IEntityComponent> T getComponent(String id, Class<T> lComponentClass) {
 
     Map<String, IEntityComponent> componentMap = entities.$get(id);
-
     if (componentMap == JSGlobal.undefined) {
-      JSGlobal.exception("Entity " + id + " is not defined");
+      return null;
     }
 
     String componentName = ClassUtil.getClassName(lComponentClass);

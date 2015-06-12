@@ -1,6 +1,5 @@
 package org.wolftec.cwtactics.game.system;
 
-import org.wolftec.cwtactics.engine.ischeck.Is;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.HideAble;
 import org.wolftec.cwtactics.game.core.Asserter;
@@ -20,12 +19,9 @@ public class StealthSystem implements ConstructedClass, LoadEntityEvent {
   public void onLoadEntity(String entity, String entityType, Object data) {
     switch (entityType) {
       case LoadEntityEvent.TYPE_UNIT_DATA:
-        HideAble hideAble = em.tryAcquireComponentFromData(entity, data, HideAble.class);
-        if (hideAble != null) {
-          asserter.assertTrue("hideAble.additionFuelDrain int", Is.is.integer(hideAble.additionFuelDrain));
-          asserter.assertTrue("hideAble.additionFuelDrain >= 0", Is.is.above(hideAble.additionFuelDrain, -1));
-          asserter.assertTrue("hideAble.additionFuelDrain < 100", Is.is.under(hideAble.additionFuelDrain, 100));
-        }
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, HideAble.class, (hideAble) -> {
+          asserter.inspectValue("HideAble.additionFuelDrain of " + entity, hideAble.additionFuelDrain).isIntWithinRange(0, 99);
+        });
         break;
     }
   }

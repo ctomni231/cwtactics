@@ -3,15 +3,12 @@ package org.wolftec.cwtactics.game.system;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Constants;
-import org.wolftec.cwtactics.engine.ischeck.Is;
-import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.Movable;
 import org.wolftec.cwtactics.game.components.Movemap;
 import org.wolftec.cwtactics.game.components.MovingCosts;
 import org.wolftec.cwtactics.game.components.Position;
-import org.wolftec.cwtactics.game.components.old.MovingAbilityCmp;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
@@ -46,32 +43,22 @@ public class MoveSystem implements ConstructedClass, MoveEvent, LoadEntityEvent 
     switch (entityType) {
 
       case LoadEntityEvent.TYPE_UNIT_DATA:
-        Movable mdata = em.tryAcquireComponentFromData(entity, data, Movable.class);
-        if (mdata != null) {
-          asserter.assertTrue("mdata.fuel int", Is.is.integer(mdata.fuel));
-          asserter.assertTrue("mdata.fuel > 0", Is.is.above(mdata.fuel, 0));
-          asserter.assertTrue("mdata.fuel < 100", Is.is.under(mdata.fuel, 100));
-
-          asserter.assertTrue("mdata.range int", Is.is.integer(mdata.range));
-          asserter.assertTrue("mdata.range > 0", Is.is.above(mdata.range, 0));
-          asserter.assertTrue("mdata.range < MAX_SELECTION_RANGE", Is.is.under(mdata.range, Constants.MAX_SELECTION_RANGE));
-
-          asserter.assertTrue("mdata.type str", Is.is.string(mdata.type));
-          asserter.assertTrue("mdata.type movetype", em.hasEntityComponent(mdata.type, MovingCosts.class));
-
-          em.setEntityPrototype(entity, mdata.type);
-        }
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, Movable.class, (mdata) -> {
+          asserter.inspectValue("Movable.fuel of " + entity, mdata.fuel).isIntWithinRange(1, 99);
+          asserter.inspectValue("Movable.range of " + entity, mdata.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
+          asserter.inspectValue("Movable.type of " + entity, mdata.type).isEntityId();
+        });
         break;
 
       case TYPE_MOVETYPE_DATA:
-        MovingCosts costs = em.tryAcquireComponentFromData(entity, data, MovingCosts.class);
-        if (costs != null) {
-          JsUtil.forEachMapValue(costs.costs, (key, value) -> {
-            asserter.assertTrue("costs.costs(v) int", Is.is.integer(value));
-            asserter.assertTrue("costs.costs(v) >= 0", Is.is.above(value, -1));
-            asserter.assertTrue("costs.costs(v) < 100", Is.is.under(value, 100));
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, MovingCosts.class, (costs) -> {
+          asserter.inspectValue("MovingCosts.costs of " + entity, costs.costs).forEachMapKey((key) -> {
+            asserter.isEntityId();
           });
-        }
+          asserter.inspectValue("MovingCosts.costs of " + entity, costs.costs).forEachMapValue((value) -> {
+            asserter.isIntWithinRange(0, 99);
+          });
+        });
         break;
     }
   }
@@ -79,13 +66,12 @@ public class MoveSystem implements ConstructedClass, MoveEvent, LoadEntityEvent 
   @Override
   public void onUnitMove(String unit, Array<Integer> steps) {
     Position position = em.getComponent(unit, Position.class);
-    MovingAbilityCmp modeData = em.getComponent(unit, MovingAbilityCmp.class);
 
     int cX = position.x;
     int cY = position.y;
     int oX = cX;
     int oY = cY;
-    int cFuel = modeData.fuel;
+    // int cFuel = modeData.fuel;
 
     // TODO
 

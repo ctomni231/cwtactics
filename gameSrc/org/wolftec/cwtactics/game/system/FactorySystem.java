@@ -1,11 +1,9 @@
 package org.wolftec.cwtactics.game.system;
 
-import org.wolftec.cwtactics.engine.ischeck.Is;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.Buyable;
 import org.wolftec.cwtactics.game.components.Factory;
-import org.wolftec.cwtactics.game.components.Living;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
@@ -27,22 +25,17 @@ public class FactorySystem implements ConstructedClass, ActionInvokedEvent, Load
   public void onLoadEntity(String entity, String entityType, Object data) {
     switch (entityType) {
       case LoadEntityEvent.TYPE_UNIT_DATA:
-        Buyable buyable = em.tryAcquireComponentFromData(entity, data, Buyable.class);
-        if (buyable != null) {
-          asserter.assertTrue("buyable.cost int", Is.is.integer(buyable.cost));
-          asserter.assertTrue("buyable.cost > 0", Is.is.above(buyable.cost, 0));
-        }
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, Buyable.class, (buyable) -> {
+          asserter.inspectValue("Buyable.cost of " + entity, buyable.cost).isIntWithinRange(0, 999999);
+        });
         break;
 
       case LoadEntityEvent.TYPE_PROPERTY_DATA:
-        Factory factory = em.tryAcquireComponentFromData(entity, data, Factory.class);
-        if (factory != null) {
-          asserter.assertTrue("factory.builds array", Is.is.array(factory.builds));
-          factory.builds.$forEach((entry) -> {
-            asserter.assertTrue("factory.builds(x) str", Is.is.string(entry));
-            asserter.assertTrue("factory.builds(x) unit entity", em.hasEntityComponent(entry, Living.class) && em.hasEntityComponent(entry, Owner.class));
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, Factory.class, (factory) -> {
+          asserter.inspectValue("Factory.builds of " + entity, factory.builds).forEachArrayValue((value) -> {
+            asserter.isEntityId();
           });
-        }
+        });
         break;
     }
   }

@@ -1,8 +1,6 @@
 package org.wolftec.cwtactics.game.system;
 
 import org.wolftec.cwtactics.Constants;
-import org.wolftec.cwtactics.engine.ischeck.Is;
-import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.Defense;
 import org.wolftec.cwtactics.game.components.FighterPrimaryWeapon;
@@ -35,37 +33,25 @@ public class BattleSystem implements ConstructedClass, UnitCreatedEvent, LoadEnt
     switch (entityType) {
 
       case TYPE_UNIT_DATA:
-        FighterPrimaryWeapon primWp = em.tryAcquireComponentFromData(entity, data, FighterPrimaryWeapon.class);
-        if (primWp != null) {
-          asserter.assertTrue("minrange int", Is.is.integer(primWp.ammo));
-          asserter.assertTrue("minrange >= 0", Is.is.above(primWp.ammo, 0));
-          asserter.assertTrue("maxrange < 10", Is.is.under(primWp.ammo, 10));
-        }
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, FighterPrimaryWeapon.class, (primWp) -> {
+          asserter.inspectValue("FPW.ammo of " + entity, primWp.ammo).isIntWithinRange(0, 10);
+        });
 
-        FighterSecondaryWeapon secWp = em.tryAcquireComponentFromData(entity, data, FighterSecondaryWeapon.class);
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, FighterSecondaryWeapon.class, (primWp) -> {
+        });
 
-        RangedFighter rangFig = em.tryAcquireComponentFromData(entity, data, RangedFighter.class);
-        if (rangFig != null) {
-          asserter.assertTrue("minrange int", Is.is.integer(rangFig.minRange));
-          asserter.assertTrue("minrange > 0", Is.is.above(rangFig.minRange, 0));
-          asserter.assertTrue("maxrange int", Is.is.integer(rangFig.maxRange));
-          asserter.assertTrue("maxrange > minrange", Is.is.above(rangFig.maxRange, rangFig.minRange));
-          asserter.assertTrue("maxrange < " + Constants.MAX_SELECTION_RANGE, Is.is.under(rangFig.maxRange, Constants.MAX_SELECTION_RANGE));
-
-          if (primWp == null) {
-            log.error(entity + " uses " + ClassUtil.getClassName(RangedFighter.class) + " without having " + ClassUtil.getClassName(FighterPrimaryWeapon.class));
-          }
-        }
-
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, RangedFighter.class, (rangFig) -> {
+          asserter.inspectValue("RF.minRange of " + entity, rangFig.minRange).isIntWithinRange(0, Constants.MAX_SELECTION_RANGE - 1);
+          asserter.inspectValue("RF.maxrange of " + entity, rangFig.maxRange).isIntWithinRange(rangFig.minRange + 1, Constants.MAX_SELECTION_RANGE);
+          asserter.inspectValue("FPW and RF exists together of " + entity, em.hasEntityComponent(entity, FighterPrimaryWeapon.class)).isTrue();
+        });
         break;
 
       case TYPE_PROPERTY_DATA:
       case TYPE_TILE_DATA:
-        Defense defense = em.tryAcquireComponentFromData(entity, data, Defense.class);
-        if (defense != null) {
-          asserter.assertTrue("minrange integer", Is.is.integer(defense.defense));
-          asserter.assertTrue("minrange greater equals 1", Is.is.above(defense.defense, -1));
-        }
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, Defense.class, (defense) -> {
+          asserter.inspectValue("DF.defense of " + entity, defense.defense).isIntWithinRange(0, 9);
+        });
         break;
     }
   }

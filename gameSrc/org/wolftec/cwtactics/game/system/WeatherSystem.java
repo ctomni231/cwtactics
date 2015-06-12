@@ -1,7 +1,6 @@
 package org.wolftec.cwtactics.game.system;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwtactics.engine.ischeck.Is;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.Weather;
@@ -29,10 +28,9 @@ public class WeatherSystem implements ConstructedClass, DayStartEvent, WeatherCh
   public void onLoadEntity(String entity, String entityType, Object data) {
     switch (entityType) {
       case LoadEntityEvent.TYPE_WEATHER_DATA:
-        Weather weather = em.tryAcquireComponentFromData(entity, data, Weather.class);
-        if (weather != null) {
-          asserter.assertTrue("weather.defaultWeather bool", Is.is.bool(weather.defaultWeather));
-        }
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, Weather.class, (weather) -> {
+          asserter.inspectValue("Weather.defaultWeather of " + entity, weather.defaultWeather).isBoolean();
+        });
         break;
     }
   }

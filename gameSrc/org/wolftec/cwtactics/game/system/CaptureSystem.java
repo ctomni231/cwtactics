@@ -1,6 +1,5 @@
 package org.wolftec.cwtactics.game.system;
 
-import org.wolftec.cwtactics.engine.ischeck.Is;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.Capturable;
@@ -23,24 +22,19 @@ public class CaptureSystem implements ConstructedClass, ActionInvokedEvent, Load
     switch (entityType) {
 
       case LoadEntityEvent.TYPE_UNIT_DATA:
-        Capturer capturer = em.tryAcquireComponentFromData(entity, data, Capturer.class);
-        if (capturer != null) {
-          asserter.assertTrue("points int", Is.is.integer(capturer.points));
-          asserter.assertTrue("points > 0", Is.is.above(capturer.points, 0));
-          asserter.assertTrue("points < 100", Is.is.under(capturer.points, 100));
-        }
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, Capturer.class, (capturer) -> {
+          asserter.inspectValue("Capturer.points of " + entity, capturer.points).isIntWithinRange(1, 99);
+        });
         break;
 
       case LoadEntityEvent.TYPE_PROPERTY_DATA:
-        Capturable capturable = em.tryAcquireComponentFromData(entity, data, Capturable.class);
-        if (capturable != null) {
-          asserter.assertTrue("points int", Is.is.integer(capturable.points));
-          asserter.assertTrue("points > 0", Is.is.above(capturable.points, 0));
-          asserter.assertTrue("points < 100", Is.is.under(capturable.points, 100));
-          asserter.assertTrue("looseAfterCaptured bool", Is.is.bool(capturable.looseAfterCaptured));
-          asserter.assertTrue("changeIntoAfterCaptured str or null", Is.is.string(capturable.changeIntoAfterCaptured)
-              || capturable.changeIntoAfterCaptured == null);
-        }
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, Capturable.class, (capturable) -> {
+          asserter.inspectValue("Capturable.points of " + entity, capturable.points).isIntWithinRange(1, 99);
+          asserter.inspectValue("Capturable.looseAfterCaptured of " + entity, capturable.looseAfterCaptured).isBoolean();
+          asserter.inspectValue("Capturable.changeIntoAfterCaptured", capturable.changeIntoAfterCaptured).whenNotNull(() -> {
+            asserter.isEntityId();
+          });
+        });
         break;
     }
   }

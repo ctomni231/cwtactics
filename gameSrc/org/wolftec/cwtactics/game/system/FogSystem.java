@@ -3,7 +3,6 @@ package org.wolftec.cwtactics.game.system;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Constants;
-import org.wolftec.cwtactics.engine.ischeck.Is;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
@@ -40,19 +39,16 @@ public class FogSystem implements ConstructedClass, UnitProducedEvent, UnitDestr
 
       case LoadEntityEvent.TYPE_UNIT_DATA:
       case LoadEntityEvent.TYPE_PROPERTY_DATA:
-        Vision vision = em.tryAcquireComponentFromData(entity, data, Vision.class);
-        if (vision != null) {
-          asserter.assertTrue("vision.range int", Is.is.integer(vision.range));
-          asserter.assertTrue("vision.range >= 0(unit) or 1(property)", Is.is.above(vision.range, entityType == TYPE_UNIT_DATA ? 0 : -1));
-          asserter.assertTrue("vision.range < Constants.MAX_SELECTION_RANGE", Is.is.under(vision.range, Constants.MAX_SELECTION_RANGE));
-        }
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, Vision.class, (vision) -> {
+          asserter.inspectValue("Vision.range of " + entity, vision.range)
+              .isIntWithinRange(entityType == TYPE_UNIT_DATA ? 1 : 0, Constants.MAX_SELECTION_RANGE);
+        });
         break;
 
       case LoadEntityEvent.TYPE_TILE_DATA:
-        Visible visible = em.tryAcquireComponentFromData(entity, data, Visible.class);
-        if (visible != null) {
-          asserter.assertTrue("visible.blocksVision bool", Is.is.bool(visible.blocksVision));
-        }
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, Visible.class, (visible) -> {
+          asserter.inspectValue("Visible.blocksVision of " + entity, visible.blocksVision).isBoolean();
+        });
         break;
     }
   }

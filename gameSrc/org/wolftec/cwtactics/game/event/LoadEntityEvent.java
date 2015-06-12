@@ -17,6 +17,6 @@ public interface LoadEntityEvent extends IEvent {
   default void onLoadEntity(String entity, String entityType, Object data) {
   }
 
-  default void onLoadedEntity(String entity, String type) {
+  default void onLoadedEntity(String entity, String entityType) {
   }
 }
