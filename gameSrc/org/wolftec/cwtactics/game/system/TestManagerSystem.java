@@ -51,7 +51,9 @@ public class TestManagerSystem implements ConstructedClass, SystemStartEvent {
       }
     });
 
-    log.info("completed " + ClassUtil.getClassName(test) + " test [TEST-CASES:" + (passed + failed) + " - PASSED:" + passed + " - FAILED:" + failed + "]");
+    printStatistics();
+
+    log.info("completed " + ClassUtil.getClassName(test) + " test");
   }
 
   private void callTestMethod(ITest test, String methodName) {
@@ -79,5 +81,9 @@ public class TestManagerSystem implements ConstructedClass, SystemStartEvent {
   private void resetStatistics() {
     passed = 0;
     failed = 0;
+  }
+
+  private void printStatistics() {
+    log.info("results: TEST-CASES:" + (passed + failed) + ", PASSED:" + passed + ", FAILED:" + failed);
   }
 }

@@ -2477,7 +2477,7 @@ stjs.extend(cwt.TestManagerSystem, null, [cwt.ConstructedClass, cwt.SystemStartE
                 this.callTestMethod(test, property);
             }
         }));
-        this.log.info("completed " + cwt.ClassUtil.getClassName(test) + " test => TEST-CASES:" + (this.passed + this.failed) + " PASSED:" + this.passed + " - FAILED:" + this.failed);
+        this.log.info("completed " + cwt.ClassUtil.getClassName(test) + " test [TEST-CASES:" + (this.passed + this.failed) + " - PASSED:" + this.passed + " - FAILED:" + this.failed + "]");
     };
     prototype.callTestMethod = function(test, methodName) {
         this.log.info("test case " + methodName);
