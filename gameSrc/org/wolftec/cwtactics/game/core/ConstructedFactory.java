@@ -184,4 +184,20 @@ public class ConstructedFactory {
     }
     return value;
   }
+
+  public static <T> Array<T> getObjects(Class<T> clazz) {
+    Array<T> result = JSCollections.$array();
+    Array<String> instanceNames = JsUtil.objectKeys(instances);
+    for (int i = 0; i < instanceNames.$length(); i++) {
+      String instanceName = instanceNames.$get(i);
+      ConstructedClass instance = instances.$get(instanceName);
+      Object classObj = JSObjectAdapter.$constructor(instance);
+      Array<Class<?>> interfaces = (Array<Class<?>>) JSObjectAdapter.$get(classObj, "$inherit");
+
+      if (interfaces.indexOf(clazz) != -1) {
+        result.push((T) instance);
+      }
+    }
+    return result;
+  }
 }

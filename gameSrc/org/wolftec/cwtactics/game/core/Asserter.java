@@ -13,6 +13,7 @@ public class Asserter extends Log implements ConstructedObject {
 
   private Object value;
   private String valueName;
+  private boolean anAssertionFailed;
 
   /**
    * Grabs the focus of a given value. All assertions will be checked against on
@@ -24,6 +25,7 @@ public class Asserter extends Log implements ConstructedObject {
   public Asserter inspectValue(String pName, Object pValue) {
     value = pValue;
     valueName = pName;
+    anAssertionFailed = false;
     return this;
   }
 
@@ -157,7 +159,14 @@ public class Asserter extends Log implements ConstructedObject {
     return this;
   }
 
+  public void throwWhenFailureWasDetected() {
+    if (anAssertionFailed) {
+      JSObjectAdapter.$js("throw new Error('AssertionFailures')");
+    }
+  }
+
   private void assertionFailed(String msg) {
     error("expected " + valueName + " " + msg + " [actual value is: " + value + "]");
+    anAssertionFailed = true;
   }
 }

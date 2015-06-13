@@ -1232,6 +1232,20 @@ stjs.extend(cwt.ComponentSerializationUtil, null, [], function(constructor, prot
     };
 }, {}, {});
 stjs.ns("cwt");
+cwt.SimpleTests = function() {};
+stjs.extend(cwt.SimpleTests, null, [cwt.ITest, cwt.ConstructedClass], function(constructor, prototype) {
+    prototype.asserter = null;
+    prototype.testWhichSucceeds = function() {
+        this.asserter.inspectValue("myInt", 10).isInt();
+        this.asserter.inspectValue("myString", "MyString").isString();
+        this.asserter.throwWhenFailureWasDetected();
+    };
+    prototype.testWhichFails = function() {
+        this.asserter.inspectValue("myInt", 10).isString();
+        this.asserter.throwWhenFailureWasDetected();
+    };
+}, {asserter: "cwt.Asserter"}, {});
+stjs.ns("cwt");
 cwt.SerializationSystem = function() {};
 stjs.extend(cwt.SerializationSystem, null, [cwt.ConstructedClass], function(constructor, prototype) {
     prototype.log = null;
@@ -1510,14 +1524,6 @@ stjs.extend(cwt.DataLoadingSystem, null, [cwt.ConstructedClass, cwt.SystemStartE
         }));
     };
 }, {log: "cwt.Log", em: "cwt.EntityManager", ev: "cwt.EventEmitter"}, {});
-stjs.ns("cwt");
-cwt.TestSystem = function() {};
-stjs.extend(cwt.TestSystem, null, [cwt.ConstructedClass, cwt.DevBlockConstruction, cwt.SystemStartEvent], function(constructor, prototype) {
-    prototype.log = null;
-    prototype.onSystemInitialized = function() {
-        this.log.warn("It worked yay! :D");
-    };
-}, {log: "cwt.Log"}, {});
 stjs.ns("cwt");
 cwt.ModelCreationSystem = function() {};
 stjs.extend(cwt.ModelCreationSystem, null, [cwt.ConstructedClass, cwt.SystemStartEvent], function(constructor, prototype) {
@@ -1861,6 +1867,7 @@ cwt.Asserter = function() {
 stjs.extend(cwt.Asserter, cwt.Log, [cwt.ConstructedObject], function(constructor, prototype) {
     prototype.value = null;
     prototype.valueName = null;
+    prototype.anAssertionFailed = false;
     /**
      *  Grabs the focus of a given value. All assertions will be checked against on
      *  the inspected value.
@@ -1871,6 +1878,7 @@ stjs.extend(cwt.Asserter, cwt.Log, [cwt.ConstructedObject], function(constructor
     prototype.inspectValue = function(pName, pValue) {
         this.value = pValue;
         this.valueName = pName;
+        this.anAssertionFailed = false;
         return this;
     };
     prototype.whenNotNull = function(validationFn) {
@@ -1916,7 +1924,7 @@ stjs.extend(cwt.Asserter, cwt.Log, [cwt.ConstructedObject], function(constructor
             for (var i = 0; i < valueArr.length; i++) {
                 var entryKey = valueArr[i];
                 var entryValue = (oldValue)[entryKey];
-                this.inspectValue(oldName + " - object item key " + entryKey + " - ", entryValue);
+                this.inspectValue(oldName + " - object item value for key " + entryKey + " - ", entryValue);
                 valueCb(entryValue);
             }
             this.inspectValue(oldName, oldValue);
@@ -1974,8 +1982,14 @@ stjs.extend(cwt.Asserter, cwt.Log, [cwt.ConstructedObject], function(constructor
         }
         return this;
     };
+    prototype.throwWhenFailureWasDetected = function() {
+        if (this.anAssertionFailed) {
+            throw new Error('AssertionFailures');
+        }
+    };
     prototype.assertionFailed = function(msg) {
         this.error("expected " + this.valueName + " " + msg + " [actual value is: " + this.value + "]");
+        this.anAssertionFailed = true;
     };
 }, {value: "Object"}, {});
 /**
@@ -2126,6 +2140,20 @@ stjs.extend(cwt.ConstructedFactory, null, [], function(constructor, prototype) {
             return null;
         }
         return value;
+    };
+    constructor.getObjects = function(clazz) {
+        var result = [];
+        var instanceNames = cwt.JsUtil.objectKeys(cwt.ConstructedFactory.instances);
+        for (var i = 0; i < instanceNames.length; i++) {
+            var instanceName = instanceNames[i];
+            var instance = cwt.ConstructedFactory.instances[instanceName];
+            var classObj = (instance).constructor;
+            var interfaces = (classObj)["$inherit"];
+            if (interfaces.indexOf(clazz) != -1) {
+                result.push(instance);
+            }
+        }
+        return result;
     };
 }, {log: "cwt.Log", instances: {name: "Map", arguments: [null, "cwt.ConstructedClass"]}}, {});
 stjs.ns("cwt");
@@ -2421,6 +2449,59 @@ stjs.extend(cwt.EventEmitter, null, [cwt.ConstructedClass], function(constructor
         return this.eventEmitter;
     };
 }, {log: "cwt.Log", eventEmitter: "Object", eventListeners: {name: "Map", arguments: [null, {name: "Array", arguments: ["Object"]}]}}, {});
+stjs.ns("cwt");
+cwt.TestManagerSystem = function() {};
+stjs.extend(cwt.TestManagerSystem, null, [cwt.ConstructedClass, cwt.SystemStartEvent], function(constructor, prototype) {
+    prototype.log = null;
+    prototype.passed = 0;
+    prototype.failed = 0;
+    prototype.onSystemInitialized = function() {
+        if (this.isTestExecutionEnabled()) {
+            this.callAllTests();
+        }
+    };
+    prototype.callAllTests = function() {
+        this.log.info("start tests");
+        cwt.JsUtil.forEachArrayValue(cwt.ConstructedFactory.getObjects(cwt.ITest), stjs.bind(this, function(index, test) {
+            this.callTestMethods(test);
+        }));
+        this.log.info("completed tests");
+    };
+    prototype.callTestMethods = function(test) {
+        this.log.info("  start test " + cwt.ClassUtil.getClassName(test));
+        this.resetStatistics();
+        var testProto = ((test).constructor).prototype;
+        var properties = cwt.JsUtil.objectKeys(testProto);
+        cwt.JsUtil.forEachArrayValue(properties, stjs.bind(this, function(index, property) {
+            if (this.isTestCaseProperty(test, property)) {
+                this.callTestMethod(test, property);
+            }
+        }));
+        this.log.info("  completed test " + cwt.ClassUtil.getClassName(test) + " [PASSED:" + this.passed + " - FAILED:" + this.failed + "]");
+    };
+    prototype.callTestMethod = function(test, methodName) {
+        this.log.info("    running test case " + methodName);
+        try {
+            ((test)[methodName]).apply(test, []);
+            this.log.info("    test case " + methodName + " has PASSED");
+            this.passed++;
+        }catch (e) {
+            this.log.error("    test case " + methodName + " has FAILED");
+            this.failed++;
+        }
+    };
+    prototype.isTestCaseProperty = function(test, property) {
+        return (typeof (test)[property]) == "function" && property.startsWith("test");
+    };
+    prototype.isTestExecutionEnabled = function() {
+        var runTests = cwt.BrowserUtil.getUrlParameterMap()["runTests"];
+        return runTests == "true";
+    };
+    prototype.resetStatistics = function() {
+        this.passed = 0;
+        this.failed = 0;
+    };
+}, {log: "cwt.Log"}, {});
 /**
  *  Starter class with main function.
  */
