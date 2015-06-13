@@ -39,7 +39,7 @@ public class TestManagerSystem implements ConstructedClass, SystemStartEvent {
   }
 
   private void callTestMethods(ITest test) {
-    log.info("  start test " + ClassUtil.getClassName(test));
+    log.info("running " + ClassUtil.getClassName(test) + " test");
 
     resetStatistics();
 
@@ -51,18 +51,18 @@ public class TestManagerSystem implements ConstructedClass, SystemStartEvent {
       }
     });
 
-    log.info("  completed test " + ClassUtil.getClassName(test) + " [PASSED:" + passed + " - FAILED:" + failed + "]");
+    log.info("completed " + ClassUtil.getClassName(test) + " test => TEST-CASES:" + (passed + failed) + " PASSED:" + passed + " - FAILED:" + failed);
   }
 
   private void callTestMethod(ITest test, String methodName) {
-    log.info("    running test case " + methodName);
+    log.info("test case " + methodName);
     try {
       JSFunctionAdapter.apply(JSObjectAdapter.$get(test, methodName), test, JSCollections.$array());
-      log.info("    test case " + methodName + " has PASSED");
+      log.info(".. has PASSED");
       passed++;
 
     } catch (Error e) {
-      log.error("    test case " + methodName + " has FAILED");
+      log.error(".. has FAILED");
       failed++;
     }
   }
