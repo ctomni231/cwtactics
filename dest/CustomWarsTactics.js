@@ -2468,7 +2468,7 @@ stjs.extend(cwt.TestManagerSystem, null, [cwt.ConstructedClass, cwt.SystemStartE
         this.log.info("completed tests");
     };
     prototype.callTestMethods = function(test) {
-        this.log.info("  start test " + cwt.ClassUtil.getClassName(test));
+        this.log.info("running " + cwt.ClassUtil.getClassName(test) + " test");
         this.resetStatistics();
         var testProto = ((test).constructor).prototype;
         var properties = cwt.JsUtil.objectKeys(testProto);
@@ -2477,16 +2477,16 @@ stjs.extend(cwt.TestManagerSystem, null, [cwt.ConstructedClass, cwt.SystemStartE
                 this.callTestMethod(test, property);
             }
         }));
-        this.log.info("  completed test " + cwt.ClassUtil.getClassName(test) + " [PASSED:" + this.passed + " - FAILED:" + this.failed + "]");
+        this.log.info("completed " + cwt.ClassUtil.getClassName(test) + " test => TEST-CASES:" + (this.passed + this.failed) + " PASSED:" + this.passed + " - FAILED:" + this.failed);
     };
     prototype.callTestMethod = function(test, methodName) {
-        this.log.info("    running test case " + methodName);
+        this.log.info("test case " + methodName);
         try {
             ((test)[methodName]).apply(test, []);
-            this.log.info("    test case " + methodName + " has PASSED");
+            this.log.info(".. has PASSED");
             this.passed++;
         }catch (e) {
-            this.log.error("    test case " + methodName + " has FAILED");
+            this.log.error(".. has FAILED");
             this.failed++;
         }
     };
