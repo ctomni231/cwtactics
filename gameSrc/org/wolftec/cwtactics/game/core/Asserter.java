@@ -25,7 +25,6 @@ public class Asserter extends Log implements ConstructedObject {
   public Asserter inspectValue(String pName, Object pValue) {
     value = pValue;
     valueName = pName;
-    anAssertionFailed = false;
     return this;
   }
 
@@ -157,6 +156,10 @@ public class Asserter extends Log implements ConstructedObject {
       assertionFailed("to be true");
     }
     return this;
+  }
+
+  public void resetFailureDetection() {
+    anAssertionFailed = false;
   }
 
   public void throwWhenFailureWasDetected() {

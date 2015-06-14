@@ -59,13 +59,22 @@ public class TestManagerSystem implements ConstructedClass, SystemStartEvent {
   private void callTestMethod(ITest test, String methodName) {
     log.info("test case " + methodName);
     try {
-      JSFunctionAdapter.apply(JSObjectAdapter.$get(test, methodName), test, JSCollections.$array());
+      invokeMethod(test, "beforeTest");
+      invokeMethod(test, methodName);
+      invokeMethod(test, "afterTest");
       log.info(".. has PASSED");
       passed++;
 
     } catch (Error e) {
       log.error(".. has FAILED");
       failed++;
+    }
+  }
+
+  private void invokeMethod(ITest test, String methodName) {
+    Object method = JSObjectAdapter.$get(test, methodName);
+    if (JSGlobal.typeof(method) == "function") {
+      JSFunctionAdapter.apply(method, test, JSCollections.$array());
     }
   }
 

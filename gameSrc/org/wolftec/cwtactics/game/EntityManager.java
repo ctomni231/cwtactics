@@ -10,9 +10,12 @@ import org.stjs.javascript.functions.Function1;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.util.ComponentSerializationUtil;
 
 public class EntityManager implements ConstructedClass {
+
+  private Log log;
 
   // TODO cache old entity arrays ?
 
@@ -71,8 +74,14 @@ public class EntityManager implements ConstructedClass {
 
   public <T extends IEntityComponent> T attachEntityComponent(String id, T component) {
     Map<String, IEntityComponent> entityMap = entities.$get(id);
-    entityMap.$put(ClassUtil.getClassName(component), component);
-    return component;
+    if (JSObjectAdapter.hasOwnProperty(entityMap, id)) {
+      log.error("entity contains already a component " + ClassUtil.getClassName(component));
+      return null;
+
+    } else {
+      entityMap.$put(ClassUtil.getClassName(component), component);
+      return component;
+    }
   }
 
   public <T extends IEntityComponent> void detachEntityComponent(String id, T component) {
@@ -217,6 +226,6 @@ public class EntityManager implements ConstructedClass {
   }
 
   public void setEntityPrototype(String entity, String prototype) {
-
+    entityPrototypes.$put(entity, prototype);
   }
 }

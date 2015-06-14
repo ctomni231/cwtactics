@@ -13,6 +13,7 @@ public class ModelCreationSystem implements ConstructedClass, SystemStartEvent {
   @Override
   public void onSystemStartup(Playground gameContainer) {
     em.acquireEntityWithId("*");
+    em.acquireEntityWithId("@ALL");
 
     // for (int i = 0; i < 4; i++) {
     // em.acquireEntityWithId("P" + i);
