@@ -162,7 +162,7 @@ public class Asserter extends Log implements ConstructedObject {
     anAssertionFailed = false;
   }
 
-  public void throwWhenFailureWasDetected() {
+  public void throwErrorWhenFailureDetected() {
     if (anAssertionFailed) {
       JSObjectAdapter.$js("throw new Error('AssertionFailures')");
     }

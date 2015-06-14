@@ -19,7 +19,7 @@ public class ExampleTest implements ITest, ConstructedClass {
   @Override
   public void afterTest() {
     log.info("check assertion faults");
-    asserter.throwWhenFailureWasDetected();
+    asserter.throwErrorWhenFailureDetected();
   }
 
   public void testWhichSucceeds() {
