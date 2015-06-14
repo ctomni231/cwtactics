@@ -2477,7 +2477,8 @@ stjs.extend(cwt.TestManagerSystem, null, [cwt.ConstructedClass, cwt.SystemStartE
                 this.callTestMethod(test, property);
             }
         }));
-        this.log.info("completed " + cwt.ClassUtil.getClassName(test) + " test [TEST-CASES:" + (this.passed + this.failed) + " - PASSED:" + this.passed + " - FAILED:" + this.failed + "]");
+        this.printStatistics();
+        this.log.info("completed " + cwt.ClassUtil.getClassName(test) + " test");
     };
     prototype.callTestMethod = function(test, methodName) {
         this.log.info("test case " + methodName);
@@ -2500,6 +2501,9 @@ stjs.extend(cwt.TestManagerSystem, null, [cwt.ConstructedClass, cwt.SystemStartE
     prototype.resetStatistics = function() {
         this.passed = 0;
         this.failed = 0;
+    };
+    prototype.printStatistics = function() {
+        this.log.info("results: TEST-CASES:" + (this.passed + this.failed) + ", PASSED:" + this.passed + ", FAILED:" + this.failed);
     };
 }, {log: "cwt.Log"}, {});
 /**
