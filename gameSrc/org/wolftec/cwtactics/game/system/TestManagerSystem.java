@@ -16,6 +16,11 @@ import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
 public class TestManagerSystem implements ConstructedClass, SystemStartEvent {
 
+  private static final String TEST_METHOD_START_IDENTIFIER = "test";
+  private static final String RUN_TESTS_PARAMETER = "runTests";
+  private static final String BEFORETEST_METHOD_NAME = "beforeTest";
+  private static final String AFTERTEST_METHOD_NAME = "afterTest";
+
   private Log log;
 
   private int passed;
@@ -59,9 +64,9 @@ public class TestManagerSystem implements ConstructedClass, SystemStartEvent {
   private void callTestMethod(ITest test, String methodName) {
     log.info("test case " + methodName);
     try {
-      invokeMethod(test, "beforeTest");
+      invokeMethod(test, BEFORETEST_METHOD_NAME);
       invokeMethod(test, methodName);
-      invokeMethod(test, "afterTest");
+      invokeMethod(test, AFTERTEST_METHOD_NAME);
       log.info(".. has PASSED");
       passed++;
 
@@ -79,11 +84,11 @@ public class TestManagerSystem implements ConstructedClass, SystemStartEvent {
   }
 
   private boolean isTestCaseProperty(ITest test, String property) {
-    return JSGlobal.typeof(JSObjectAdapter.$get(test, property)) == "function" && property.startsWith("test");
+    return JSGlobal.typeof(JSObjectAdapter.$get(test, property)) == "function" && property.startsWith(TEST_METHOD_START_IDENTIFIER);
   }
 
   private boolean isTestExecutionEnabled() {
-    String runTests = BrowserUtil.getUrlParameterMap().$get("runTests");
+    String runTests = BrowserUtil.getUrlParameterMap().$get(RUN_TESTS_PARAMETER);
     return runTests == "true";
   }
 
