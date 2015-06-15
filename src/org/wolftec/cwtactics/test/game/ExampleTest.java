@@ -1,9 +1,9 @@
-package org.wolftec.cwtactics.test;
+package org.wolftec.cwtactics.test.game;
 
-import org.wolftec.cwtactics.game.ITest;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
+import org.wolftec.cwtactics.test.core.ITest;
 
 public class ExampleTest implements ITest, ConstructedClass {
 

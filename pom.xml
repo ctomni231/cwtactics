@@ -6,9 +6,6 @@
  <artifactId>CustomWarsTactics</artifactId>
  <version>0.40</version>
 
- <properties>
-  <stjs.version>3.1.4</stjs.version>
- </properties>
  <repositories>
   <repository>
    <id>mvnrepository</id>
@@ -22,13 +19,30 @@
   </repository>
  </repositories>
 
-  <!-- Output to jar format -->
-  <packaging>jar</packaging>
-  
+ <properties>
+  <stjs.version>3.1.4</stjs.version>
+   
+    <!-- this resolves to test folder.. drops all tests from build -->
+    <test.exclude.pattern>**/test/**/*.java</test.exclude.pattern>
+ </properties>
+
+ <profiles>
+  <profile>
+   <id>test</id>
+   <properties>
+    <!-- this resolves to nothing.. includes tests -->
+    <test.exclude.pattern>*.__notARealExtension__</test.exclude.pattern>
+   </properties>
+  </profile>
+ </profiles>
+
+ <!-- Output to jar format -->
+ <packaging>jar</packaging>
+
  <build>
-  
-  <sourceDirectory>gameSrc</sourceDirectory>
-  
+
+  <sourceDirectory>src</sourceDirectory>
+
   <pluginManagement>
    <plugins>
 
@@ -37,14 +51,15 @@
      <groupId>org.apache.maven.plugins</groupId>
      <artifactId>maven-compiler-plugin</artifactId>
      <configuration>
-      
+
       <source>1.8</source>
       <target>1.8</target>
-      
+
       <excludes>
-        <exclude>**/gameold/**/*.java</exclude>
+       <exclude>${test.exclude.pattern}</exclude>
+       <exclude>**/gameold/**/*.java</exclude>
       </excludes>
-      
+
      </configuration>
     </plugin>
 
@@ -52,9 +67,9 @@
     <plugin>
 
      <groupId>org.st-js</groupId>
-     
+
      <artifactId>stjs-maven-plugin</artifactId>
-     
+
      <version>${stjs.version}</version>
 
      <dependencies>
@@ -73,26 +88,27 @@
        </goals>
       </execution>
      </executions>
-     
+
      <configuration>
-      
+
       <includes>
        <include>**/*.java</include>
       </includes>
-      
+
       <excludes>
-        <exclude>**/gameold/**/*.java</exclude>
+       <exclude>${test.exclude.pattern}</exclude>
+       <exclude>**/gameold/**/*.java</exclude>
       </excludes>
 
       <pack>true</pack>
-      
+
       <annotations>
       </annotations>
      </configuration>
     </plugin>
 
     <!-- ******************************* ANT ******************************* -->
-    
+
     <plugin>
      <groupId>org.apache.maven.plugins</groupId>
      <artifactId>maven-antrun-plugin</artifactId>
@@ -107,18 +123,20 @@
        <configuration>
         <target>
 
+         <!-- stjs engine -->
          <copy file="${project.build.outputDirectory}/stjs.js"
-               todir="${basedir}/dest" overwrite="true" />
-                              
-         <copy file="${basedir}/gameSrc/org/wolftec/cwtactics/engine/localforage/js/localforage.js"
-               todir="${basedir}/dest" overwrite="true" />
-               
-         <copy file="${basedir}/gameSrc/org/wolftec/cwtactics/engine/playground/js/playground.js"
-               todir="${basedir}/dest" overwrite="true" />
+          todir="${basedir}/dest" overwrite="true" />
 
+         <!-- dependencies -->
+         <concat destfile="${basedir}/dest/deps.js">
+          <fileset dir="${basedir}/src/org/wolftec/cwtactics/engine">
+           <include name="**/*.js" />
+          </fileset>
+         </concat>
+
+         <!-- game -->
          <copy file="${project.build.outputDirectory}/CustomWarsTactics.js"
-               todir="${basedir}/dest" overwrite="true" />
-
+          tofile="${basedir}/dest/game.js" overwrite="true" />
         </target>
        </configuration>
       </execution>
@@ -127,7 +145,7 @@
 
     <!-- ******************************* JAR ******************************* -->
     <!-- put in the manifest file that this is a STJS lib (bridge or not) -->
-    
+
     <plugin>
      <groupId>org.apache.maven.plugins</groupId>
      <artifactId>maven-jar-plugin</artifactId>
@@ -162,6 +180,5 @@
    <artifactId>shared</artifactId>
    <version>${stjs.version}</version>
   </dependency>
-
  </dependencies>
 </project>
