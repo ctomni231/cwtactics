@@ -38,21 +38,24 @@ public class EventEmitter implements ConstructedClass {
       Class<?> classObject = (Class<?>) JSObjectAdapter.$get(namespace, className);
 
       if (isEventClass(classObject)) {
-        Object classPrototype = JSObjectAdapter.$prototype(classObject);
-        Array<String> classFunctions = JsUtil.objectKeys(classPrototype);
-        JsUtil.forEachArrayValue(classFunctions, (index, classFnName) -> {
-          if (!classFnName.startsWith("on")) return;
-
-          if (JSObjectAdapter.hasOwnProperty(eventEmitter, classFnName)) {
-            log.error("event function " + classFnName + " is already registered by an other event class");
-          }
-
-          JSObjectAdapter.$put(eventEmitter, classFnName, createEventEmitterCallback(classFnName));
-
-          log.info("registered event emitter for " + classFnName);
-        });
+        exploreClassEvents(classObject);
       }
     }
+  }
+
+  public void exploreClassEvents(Class<?> classObject) {
+    Object classPrototype = JSObjectAdapter.$prototype(classObject);
+    Array<String> classFunctions = JsUtil.objectKeys(classPrototype);
+    JsUtil.forEachArrayValue(classFunctions, (index, classFnName) -> {
+      if (!classFnName.startsWith("on")) return;
+
+      if (JSObjectAdapter.hasOwnProperty(eventEmitter, classFnName)) {
+        log.error("event function " + classFnName + " is already registered by an other event class");
+      }
+
+      JSObjectAdapter.$put(eventEmitter, classFnName, createEventEmitterCallback(classFnName));
+      log.info("registered event emitter for " + classFnName);
+    });
   }
 
   private boolean isEventClass(Class<?> classObject) {
@@ -97,21 +100,26 @@ public class EventEmitter implements ConstructedClass {
     for (int j = 0; j < classInherits.$length(); j++) {
       Class<?> possibleEventClass = classInherits.$get(j);
       if (isEventClass(possibleEventClass)) {
-        Object classPrototype = JSObjectAdapter.$prototype(possibleEventClass);
-        Array<String> classFunctions = JsUtil.objectKeys(classPrototype);
-        JsUtil.forEachArrayValue(classFunctions, (index, classFnName) -> {
-          if (!classFnName.startsWith("on")) return;
-
-          if (eventListeners.$get(classFnName) == JSGlobal.undefined) {
-            eventListeners.$put(classFnName, JSCollections.$array());
-          }
-
-          eventListeners.$get(classFnName).push(constructedInstance);
-
-          log.info("registered event listener " + className + " for " + classFnName);
-        });
+        exploreSubscriberClass(className, constructedInstance, possibleEventClass);
       }
     }
+  }
+
+  public void exploreSubscriberClass(String className, Object constructedInstance, Class<?> possibleEventClass) {
+    Object classPrototype = JSObjectAdapter.$prototype(possibleEventClass);
+    Array<String> classFunctions = JsUtil.objectKeys(classPrototype);
+    JsUtil.forEachArrayValue(classFunctions, (index, classFnName) -> {
+      if (!classFnName.startsWith("on")) return;
+
+      if (eventListeners.$get(classFnName) == JSGlobal.undefined) {
+        eventListeners.$put(classFnName, JSCollections.$array());
+      }
+
+      if (!JsUtil.isEmptyFunction(JSObjectAdapter.$get(constructedInstance, classFnName))) {
+        eventListeners.$get(classFnName).push(constructedInstance);
+        log.info("registered event listener " + className + " for " + classFnName);
+      }
+    });
   }
 
   public <T extends IEvent> T publish(Class<T> eventClass) {
