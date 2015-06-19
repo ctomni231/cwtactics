@@ -4,7 +4,7 @@ import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.Manpower;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
-import org.wolftec.cwtactics.game.event.GameStartEvent;
+import org.wolftec.cwtactics.game.event.GameroundEvents;
 import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
 
 /**
@@ -14,12 +14,12 @@ import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
  * manpower falls down to zero.
  * 
  */
-public class ManpowerSystem implements ConstructedClass, UnitCreatedEvent, GameStartEvent {
+public class ManpowerSystem implements ConstructedClass, UnitCreatedEvent, GameroundEvents {
 
   private EntityManager em;
 
   @Override
-  public void onGameStart() {
+  public void onGameroundStarts() {
     // TODO give all players at least 1000 manpower :P
   }
 

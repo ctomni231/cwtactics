@@ -6,15 +6,15 @@ import org.wolftec.cwtactics.game.components.Config;
 import org.wolftec.cwtactics.game.components.ValueMetaData;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.GameStartEvent;
+import org.wolftec.cwtactics.game.event.GameroundEvents;
 
-public class ConfigSystem implements ConstructedClass, GameStartEvent {
+public class ConfigSystem implements ConstructedClass, GameroundEvents {
 
   private Log log;
   private EntityManager em;
 
   @Override
-  public void onGameStart() {
+  public void onGameroundStarts() {
     log.info("going to reset all config values");
 
     Array<String> entities = em.getEntitiesWithComponentType(Config.class);
