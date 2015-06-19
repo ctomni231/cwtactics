@@ -1,0 +1,1278 @@
+{
+  "GAMEROUND": {
+    "MapaData": {
+      "mapName": "Cwt testmap small",
+      "width": 30,
+      "height": 30,
+      "players": 3
+    },
+    "TileMapSystem": {
+      "map": [
+        [
+          "PLIN",
+          "PLIN",
+          "MNTN",
+          "FRST",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "FRST",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "FRST",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "FRST",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "FRST",
+          "PLIN",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "MNTN",
+          "MNTN",
+          "PLIN",
+          "MNTN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "FRST",
+          "PLIN",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "FRST",
+          "PLIN",
+          "MNTN",
+          "MNTN",
+          "FRST",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "FRST",
+          "ROAD",
+          "FRST",
+          "PLIN",
+          "FRST",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "WATER",
+          "WATER",
+          "WATER",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "FRST",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "ROAD",
+          "PLIN",
+          "WATER",
+          "WATER",
+          "WATER",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "FRST",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "ROAD",
+          "PLIN",
+          "WATER",
+          "WATER",
+          "WATER",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "MNTN",
+          "MNTN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "FRST",
+          "WATER",
+          "WATER",
+          "PLIN",
+          "FRST",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "FRST",
+          "PLIN",
+          "PLIN",
+          "FRST",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "WATER",
+          "WATER",
+          "WATER",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "WATER",
+          "WATER",
+          "WATER",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "FRST",
+          "ROAD",
+          "FRST",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "ROAD",
+          "ROAD",
+          "ROAD",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ],
+        [
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN",
+          "PLIN"
+        ]
+      ]
+    }
+  },
+  "PL0": {
+    
+  },
+  "PL1": {
+    
+  },
+  "PL2": {
+    
+  },
+  "U0": {
+    "Prototype": "TNTK",
+    "Owner": {
+      "owner": "PL0"
+    },
+    "Living": {
+      "hp": 99
+    },
+    "Position": {
+      "x": 2,
+      "y": 2
+    },
+    "Ammo": {
+      "amount": 1
+    },
+    "Fuel": {
+      "amount": 20
+    }
+  },
+  "U1": {
+    "Prototype": "RECN",
+    "Owner": {
+      "owner": "PL0"
+    },
+    "Living": {
+      "hp": 99
+    },
+    "Position": {
+      "x": 4,
+      "y": 8
+    },
+    "Ammo": {
+      "amount": 1
+    },
+    "Fuel": {
+      "amount": 40
+    }
+  },
+  "U2": {
+    "Prototype": "INFT",
+    "Owner": {
+      "owner": "PL1"
+    },
+    "Living": {
+      "hp": 99
+    },
+    "Position": {
+      "x": 6,
+      "y": 3
+    },
+    "Ammo": {
+      "amount": 0
+    },
+    "Fuel": {
+      "amount": 15
+    }
+  },
+  "U3": {
+    "Prototype": "APCR",
+    "Owner": {
+      "owner": "PL0"
+    },
+    "Living": {
+      "hp": 99
+    },
+    "Position": {
+      "x": 5,
+      "y": 3
+    },
+    "Ammo": {
+      "amount": 0
+    },
+    "Fuel": {
+      "amount": 70
+    }
+  },
+  "U4": {
+    "Prototype": "INFT",
+    "Owner": {
+      "owner": "PL1"
+    },
+    "Living": {
+      "hp": 99
+    },
+    "Position": {
+      "x": 4,
+      "y": 3
+    },
+    "Ammo": {
+      "amount": 0
+    },
+    "Fuel": {
+      "amount": 15
+    }
+  },
+  "U5": {
+    "Prototype": "INFT",
+    "Owner": {
+      "owner": "PL1"
+    },
+    "Living": {
+      "hp": 99
+    },
+    "Position": {
+      "x": 5,
+      "y": 2
+    },
+    "Ammo": {
+      "amount": 0
+    },
+    "Fuel": {
+      "amount": 15
+    }
+  },
+  "U6": {
+    "Prototype": "STLH",
+    "Owner": {
+      "owner": "PL0"
+    },
+    "Living": {
+      "hp": 99
+    },
+    "Position": {
+      "x": 5,
+      "y": 8
+    },
+    "Ammo": {
+      "amount": 0
+    },
+    "Fuel": {
+      "amount": 15
+    }
+  },
+  "U7": {
+    "Prototype": "ACAR",
+    "Owner": {
+      "owner": "PL0"
+    },
+    "Living": {
+      "hp": 99
+    },
+    "Position": {
+      "x": 5,
+      "y": 11
+    },
+    "Ammo": {
+      "amount": 0
+    },
+    "Fuel": {
+      "amount": 15
+    }
+  },
+  "PR0": {
+    "Prototype": "HQTR",
+    "Owner": {
+      "owner": "PL0"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 2,
+      "y": 1
+    }
+  },
+  "PR1": {
+    "Prototype": "BASE",
+    "Owner": {
+      "owner": "PL0"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 2,
+      "y": 4
+    }
+  },
+  "PR2": {
+    "Prototype": "BASE",
+    "Owner": {
+      "owner": "PL0"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 1,
+      "y": 2
+    }
+  },
+  "PR3": {
+    "Prototype": "HQTR",
+    "Owner": {
+      "owner": "PL1"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 7,
+      "y": 7
+    }
+  },
+  "PR4": {
+    "Prototype": "BASE",
+    "Owner": {
+      "owner": "PL1"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 8,
+      "y": 7
+    }
+  },
+  "PR5": {
+    "Prototype": "BASE",
+    "Owner": {
+      "owner": "PL1"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 9,
+      "y": 8
+    }
+  },
+  "PR6": {
+    "Prototype": "HQTR",
+    "Owner": {
+      "owner": "PL2"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 3,
+      "y": 5
+    }
+  },
+  "PR7": {
+    "Prototype": "BASE",
+    "Owner": {
+      "owner": "PL2"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 4,
+      "y": 5
+    }
+  },
+  "PR8": {
+    "Prototype": "APRT",
+    "Owner": {
+      "owner": "PL0"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 1,
+      "y": 3
+    }
+  },
+  "PR9": {
+    "Prototype": "APRT",
+    "Owner": {
+      "owner": "PL1"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 8,
+      "y": 8
+    }
+  },
+  "PR10": {
+    "Prototype": "PORT",
+    "Owner": {
+      "owner": "PL0"
+    },
+    "Capturable": {
+      "points": 20
+    },
+    "Position": {
+      "x": 3,
+      "y": 11
+    }
+  }
+}

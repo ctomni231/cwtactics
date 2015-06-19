@@ -59,6 +59,7 @@ public class EntityManager implements ConstructedClass {
 
   public <T extends IEntityComponent> T tryAcquireComponentFromData(String id, Object data, Class<T> componentClass) {
     // TODO cache components
+    acquireEntityWithId(id);
     T component = ComponentSerializationUtil.parseFromData(data, componentClass);
     if (component != null) attachEntityComponent(id, component);
     return component;

@@ -42,6 +42,8 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
     // loadFolder(gameContainer, "modifications/cwt/cos",
     // LoadEntityEvent.TYPE_CO_DATA);
     loadFolder(gameContainer, "modifications/cwt/armies", LoadEntityEvent.TYPE_ARMY_DATA);
+
+    loadFolder(gameContainer, "modifications/cwt/maps", LoadEntityEvent.TYPE_MAP);
   }
 
   private void loadFolder(Playground gameContainer, String folder, String type) {
@@ -62,6 +64,7 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
   }
 
   private void loadRemoteFolderByContentList(Playground game, String folder, Array<String> content, String type) {
+
     JsUtil.forEachArrayValue(content, (index, id) -> {
       AssetEntry data = game.getAssetEntry(id, folder, "json");
 
@@ -72,10 +75,11 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
       BrowserUtil.requestJsonFile(data.url, (objData, error) -> {
         log.info("parsing and validating " + data.key);
 
-        String entity = em.acquireEntityWithId(JSObjectAdapter.$get(objData, "ID").toString());
+        String entity = JSObjectAdapter.hasOwnProperty(objData, "ID") ? em.acquireEntityWithId(JSObjectAdapter.$get(objData, "ID").toString()) : null;
         ev.publish(LoadEntityEvent.class).onLoadEntity(entity, type, objData);
 
         LocalForage.localforage.setItem(data.key, objData, (err, savedData) -> {
+          log.info("saved data file " + data.key);
           game.loader.success(data.key);
         });
       });

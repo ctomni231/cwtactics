@@ -1,0 +1,24 @@
+package org.wolftec.cwtactics.game.system;
+
+import org.wolftec.cwtactics.Constants;
+import org.wolftec.cwtactics.game.core.CircularBuffer;
+import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.Log;
+import org.wolftec.cwtactics.game.event.network.NetworkMessageEvent;
+
+public class GameCommandSystem implements ConstructedClass, NetworkMessageEvent {
+
+  private CircularBuffer<String> messages;
+  private Log log;
+
+  @Override
+  public void onConstruction() {
+    messages = new CircularBuffer<String>(Constants.COMMAND_BUFFER_SIZE);
+  }
+
+  @Override
+  public void onIncomingMessage(String message) {
+    log.info("incoming network message, parsing command");
+    messages.add(message);
+  }
+}

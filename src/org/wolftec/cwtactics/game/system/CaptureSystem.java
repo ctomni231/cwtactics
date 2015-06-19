@@ -1,5 +1,7 @@
 package org.wolftec.cwtactics.game.system;
 
+import org.stjs.javascript.Map;
+import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.Capturable;
@@ -33,6 +35,14 @@ public class CaptureSystem implements ConstructedClass, ActionInvokedEvent, Load
           asserter.inspectValue("Capturable.looseAfterCaptured of " + entity, capturable.looseAfterCaptured).isBoolean();
           asserter.inspectValue("Capturable.changeIntoAfterCaptured", capturable.changeIntoAfterCaptured).whenNotNull(() -> {
             asserter.isEntityId();
+          });
+        });
+        break;
+
+      case LoadEntityEvent.TYPE_MAP:
+        JsUtil.forEachMapValueByFilteredKey((Map<String, Object>) data, (key) -> key.startsWith("PR"), (key, entityData) -> {
+          em.tryAcquireComponentFromDataSuccessCb(key, entityData, Capturable.class, (capturable) -> {
+            asserter.inspectValue("Capturable.points of " + key, capturable.points).isIntWithinRange(1, 99);
           });
         });
         break;
