@@ -22,6 +22,8 @@ public class Cwt extends Playground implements ConstructedClass, SystemStartEven
   @Override
   public void onConstruction() {
 
+    log.info("initializing cwt core");
+
     // width = Constants.SCREEN_WIDTH_PX;
     // height = Constants.SCREEN_HEIGHT_PX;
     // smoothing = false;
