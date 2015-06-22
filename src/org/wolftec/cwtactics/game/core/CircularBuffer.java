@@ -54,6 +54,20 @@ public class CircularBuffer<T> {
     this.data.$set((this.index + index) % this.maxSize, value);
   }
 
+  public boolean remove(T obj) {
+    int index = indexOf(obj);
+    if (index != -1) {
+      data.$set(index, null);
+      // shift all following elements one index left to prevent a hole
+      while (index + 1 < size && get(index + 1) != null) {
+        data.$set(index, data.$get(index + 1));
+        index++;
+      }
+      size--;
+    }
+    return false;
+  }
+
   public T popFirst() {
     if (this.size == 0) raiseError("buffer is empty");
 
@@ -114,6 +128,10 @@ public class CircularBuffer<T> {
     for (int i = index; i < getSize(); i++) {
       set(i, null);
     }
+  }
+
+  public int indexOf(T obj) {
+    return data.indexOf(obj);
   }
 
   /**

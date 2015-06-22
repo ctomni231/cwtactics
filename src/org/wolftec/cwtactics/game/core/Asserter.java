@@ -158,14 +158,37 @@ public class Asserter extends Log implements ConstructedObject {
     return this;
   }
 
-  public void resetFailureDetection() {
-    anAssertionFailed = false;
+  public Asserter isGreaterEquals(int checkValue) {
+    if ((int) value < checkValue) {
+      assertionFailed("to be greater equals " + checkValue);
+    }
+    return this;
   }
 
-  public void throwErrorWhenFailureDetected() {
+  public Asserter isLowerEquals(int checkValue) {
+    if ((int) value > checkValue) {
+      assertionFailed("to be lower equals " + checkValue);
+    }
+    return this;
+  }
+
+  public Asserter isFalse() {
+    if ((boolean) value == true) {
+      assertionFailed("to be false");
+    }
+    return this;
+  }
+
+  public Asserter resetFailureDetection() {
+    anAssertionFailed = false;
+    return this;
+  }
+
+  public Asserter throwErrorWhenFailureDetected() {
     if (anAssertionFailed) {
       JSObjectAdapter.$js("throw new Error('AssertionFailures')");
     }
+    return this;
   }
 
   private void assertionFailed(String msg) {

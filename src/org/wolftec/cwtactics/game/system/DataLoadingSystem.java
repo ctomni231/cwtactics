@@ -39,8 +39,7 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
     loadFolder(gameContainer, "modifications/cwt/movetypes", LoadEntityEvent.TYPE_MOVETYPE_DATA);
     loadFolder(gameContainer, "modifications/cwt/units", LoadEntityEvent.TYPE_UNIT_DATA);
     loadFolder(gameContainer, "modifications/cwt/weathers", LoadEntityEvent.TYPE_WEATHER_DATA);
-    // loadFolder(gameContainer, "modifications/cwt/cos",
-    // LoadEntityEvent.TYPE_CO_DATA);
+    loadFolder(gameContainer, "modifications/cwt/cos", LoadEntityEvent.TYPE_CO_DATA);
     loadFolder(gameContainer, "modifications/cwt/armies", LoadEntityEvent.TYPE_ARMY_DATA);
 
     loadFolder(gameContainer, "modifications/cwt/maps", LoadEntityEvent.TYPE_MAP);

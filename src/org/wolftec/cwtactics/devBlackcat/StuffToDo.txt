@@ -1,0 +1,41 @@
+Legend
+------
+
+  [ ] Not Started
+  [?] Started, Not Ready
+  [*] Completed
+  [x] Tested
+  [-] Not needed for the next version
+  
+Game Interaction
+----------------
+
+  [ ] Show move map for a given entity
+  [ ] Show attack map for a given entity
+  [ ] Show unload target map
+
+Game Actions
+------------
+
+  [*] Wait
+  [*] Unload
+  [*] Load
+  [ ] Attack
+  [ ] Move
+  [?] Supply
+  [*] Build
+  [ ] FireSilo
+  [*] Hide
+  [*] Unhide
+  [*] Capture
+  [*] Join
+  [*] SendUnit
+  [*] SendProperty
+  [*] SendMoney
+  [?] Explode
+  [*] ActivatePower
+  [*] EndTurn
+  [-] Yield
+  [-] Disband
+  [-] FireMod
+  [-] FireTarget

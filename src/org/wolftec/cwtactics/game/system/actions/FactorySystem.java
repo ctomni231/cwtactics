@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.system;
+package org.wolftec.cwtactics.game.system.actions;
 
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
@@ -9,12 +9,11 @@ import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.ActionInvokedEvent;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.UnitProducedEvent;
+import org.wolftec.cwtactics.game.event.actions.FactoryEvents;
 
-public class FactorySystem implements ConstructedClass, ActionInvokedEvent, LoadEntityEvent {
+public class FactorySystem implements ConstructedClass, FactoryEvents, LoadEntityEvent {
 
   private Log log;
   private EntityManager em;
@@ -62,7 +61,7 @@ public class FactorySystem implements ConstructedClass, ActionInvokedEvent, Load
 
     log.info("produced a unit [ID:" + unit + ", Type: " + type + "]");
 
-    ev.publish(UnitProducedEvent.class).onUnitProduced(factory, unit, type);
+    ev.publish(FactoryEvents.class).onUnitProduced(unit, type, unitPos.x, unitPos.y);
   }
 
   private void checkBuildData(String type, Factory factoryData) {

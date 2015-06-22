@@ -16,9 +16,9 @@ import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.FogEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.UnitDestroyedEvent;
-import org.wolftec.cwtactics.game.event.UnitProducedEvent;
+import org.wolftec.cwtactics.game.event.actions.FactoryEvents;
 
-public class FogSystem implements ConstructedClass, UnitProducedEvent, UnitDestroyedEvent, LoadEntityEvent {
+public class FogSystem implements ConstructedClass, FactoryEvents, UnitDestroyedEvent, LoadEntityEvent {
 
   private EntityManager em;
   private EventEmitter ev;
@@ -54,7 +54,7 @@ public class FogSystem implements ConstructedClass, UnitProducedEvent, UnitDestr
   }
 
   @Override
-  public void onUnitProduced(String factory, String unit, String type) {
+  public void onUnitProduced(String unit, String type, int x, int y) {
     if (!isTurnOwnerObject(unit)) return;
 
     Position pos = em.getComponent(unit, Position.class);

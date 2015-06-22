@@ -1,5 +1,9 @@
 package org.wolftec.cwtactics.game;
 
+import org.stjs.javascript.Array;
+import org.stjs.javascript.JSCollections;
+import org.wolftec.cwtactics.Constants;
+
 public abstract class EntityId {
 
   public static final String GAME_ROUND = "GAME_ROUND";
@@ -16,5 +20,30 @@ public abstract class EntityId {
 
   public static String getTileEntityId(int x, int y) {
     return "TILE_" + x + "_" + y;
+  }
+
+  private static Array<String> playerIds;
+
+  public static boolean isFirstPlayer(String player) {
+    if (playerIds == null) {
+      createPlayerIds();
+    }
+    return playerIds.$get(0) == player;
+  }
+
+  public static String getNextPlayerId(String player) {
+    if (playerIds == null) {
+      createPlayerIds();
+    }
+    int curIndex = playerIds.indexOf(player);
+    if (curIndex == -1) return null; // TODO
+    return playerIds.$get(curIndex < Constants.MAX_PLAYERS - 1 ? curIndex + 1 : 0);
+  }
+
+  private static void createPlayerIds() {
+    playerIds = JSCollections.$array();
+    for (int i = 0; i < Constants.MAX_PLAYERS; i++) {
+      playerIds.push("PL" + i);
+    }
   }
 }

@@ -31,6 +31,10 @@ public class Constants {
    */
   public static final int MAX_SELECTION_RANGE = 15;
 
+  public static final int MAX_TRANSPORTER_LOADS = 5;
+
+  public static final int MAX_PLAYERS = 4;
+
   /**
    * The version of the game build.
    */

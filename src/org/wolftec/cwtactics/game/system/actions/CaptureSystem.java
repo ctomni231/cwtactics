@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.system;
+package org.wolftec.cwtactics.game.system.actions;
 
 import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.engine.util.JsUtil;
@@ -9,11 +9,10 @@ import org.wolftec.cwtactics.game.components.Capturer;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
-import org.wolftec.cwtactics.game.event.ActionInvokedEvent;
-import org.wolftec.cwtactics.game.event.CaptureEvents;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
+import org.wolftec.cwtactics.game.event.actions.CaptureEvents;
 
-public class CaptureSystem implements ConstructedClass, ActionInvokedEvent, LoadEntityEvent {
+public class CaptureSystem implements ConstructedClass, CaptureEvents, LoadEntityEvent {
 
   private EventEmitter ev;
   private EntityManager em;
@@ -50,26 +49,21 @@ public class CaptureSystem implements ConstructedClass, ActionInvokedEvent, Load
   }
 
   @Override
-  public void onInvokeAction(String action, String pstr, int p1, int p2, int p3, int p4, int p5) {
-    if (action == "Capture") {
-      String property = null;
-      String capturer = null;
+  public void onCaptureProperty(String capturer, String property) {
+    Capturable propertyData = em.getComponent(property, Capturable.class);
+    Capturer capturerData = em.getComponent(capturer, Capturer.class);
 
-      Capturable propertyData = em.getComponent(property, Capturable.class);
-      Capturer capturerData = em.getComponent(capturer, Capturer.class);
+    propertyData.points -= capturerData.points;
+    ev.publish(CaptureEvents.class).onLoweredCapturePoints(property, capturerData.points);
 
-      propertyData.points -= capturerData.points;
-      ev.publish(CaptureEvents.class).onLoweredCapturePoints(capturer, property, capturerData.points);
+    if (propertyData.points <= 0) {
 
-      if (propertyData.points <= 0) {
+      Owner propertyOwner = em.getComponent(property, Owner.class);
+      Owner capturerOwner = em.getComponent(capturer, Owner.class);
 
-        Owner propertyOwner = em.getComponent(property, Owner.class);
-        Owner capturerOwner = em.getComponent(capturer, Owner.class);
+      propertyOwner.owner = capturerOwner.owner;
 
-        propertyOwner.owner = capturerOwner.owner;
-
-        ev.publish(CaptureEvents.class).onCapturedProperty(capturer, property);
-      }
+      ev.publish(CaptureEvents.class).onCapturedProperty(capturer, property);
     }
   }
 

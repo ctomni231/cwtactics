@@ -1,18 +1,16 @@
 {
   "ID": "ANDY",
-  "faction": "ORST",
+  "Commander": {
+    "faction": "ORST",
+    "copStars": 3,
+    "scopStars": 3
+  },
   "music": "music/Andy.mp3",
-  "coStars": 3,
-  "scoStars": 3,
-  "effects": 
-  {
-    "COP": 
-    {
+  "effects": {
+    "COP": {
       "POWER": "forEach(unitList(player),repair(20))"
     },
-
-    "SCOP": 
-    {
+    "SCOP": {
       "POWER": "forEach(unitList(player),repair(50))",
       "att": "+(30,value)",
       "def": "+(10,value)",

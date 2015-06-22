@@ -8,7 +8,7 @@ import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
 import org.wolftec.cwtactics.game.event.NextFrameEvent;
-import org.wolftec.cwtactics.game.event.TurnEvents;
+import org.wolftec.cwtactics.game.event.actions.TurnEvents;
 
 /**
  * The {@link GameTimeSystem} adds time limits for the turn and game mechanic.
@@ -31,7 +31,7 @@ public class GameTimeSystem implements ConstructedClass, NextFrameEvent, Gamerou
 
     if (data.turnTime >= data.turnTimeLimit) {
       log.info("ending current turn because turn time limit is reached");
-      ev.publish(TurnEvents.class).onTurnEnd();
+      ev.publish(TurnEvents.class).onClientEndsTurn();
 
     } else if (data.gameTime >= data.gameTimeLimit) {
       log.info("ending game because game time limit is reached");
