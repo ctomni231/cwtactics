@@ -9,7 +9,7 @@ public interface CaptureEvents extends IEvent {
   default void onLoweredCapturePoints(String property, int leftPoints) {
   }
 
-  default void onCapturedProperty(String capturer, String property) {
+  default void onCapturedProperty(String property, String newOwner, String oldOwner) {
 
   }
 }

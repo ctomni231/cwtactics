@@ -13,7 +13,7 @@ import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.MoveEvent;
+import org.wolftec.cwtactics.game.event.actions.MoveEvent;
 
 public class MoveSystem implements ConstructedClass, MoveEvent, LoadEntityEvent {
 

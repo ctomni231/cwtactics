@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.event;
+package org.wolftec.cwtactics.game.event.actions;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.game.IEvent;

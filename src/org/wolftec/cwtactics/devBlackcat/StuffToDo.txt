@@ -7,35 +7,47 @@ Legend
   [x] Tested
   [-] Not needed for the next version
   
-Game Interaction
-----------------
-
-  [ ] Show move map for a given entity
-  [ ] Show attack map for a given entity
-  [ ] Show unload target map
-
 Game Actions
 ------------
 
-  [*] Wait
-  [*] Unload
-  [*] Load
-  [ ] Attack
-  [ ] Move
-  [?] Supply
-  [*] Build
-  [ ] FireSilo
-  [*] Hide
-  [*] Unhide
-  [*] Capture
-  [*] Join
-  [*] SendUnit
-  [*] SendProperty
-  [*] SendMoney
-  [?] Explode
-  [*] ActivatePower
-  [*] EndTurn
-  [-] Yield
-  [-] Disband
-  [-] FireMod
-  [-] FireTarget
+  [ ] Target: 0.4
+    [*] Wait
+    [*] Unload
+      [ ] Show unload target map
+    [*] Load
+    [ ] Attack
+      [*] Fog changes when unit gets destroyed
+      [ ] Show attack map for a given entity
+    [ ] Move
+      [*] Fog changes when unit moves
+      [ ] Show move map for a given entity
+    [?] Supply
+    [*] Build
+      [*] Fog changes when unit gets created
+      [*] Manpower decreases when unit gets created
+    [ ] FireSilo
+    [*] Hide
+    [*] Unhide
+    [*] Capture
+      [*] Fog changes when unit property changes owner
+    [*] Join
+    [*] SendUnit
+    [*] SendProperty
+    [*] SendMoney
+    [?] Explode
+    [*] ActivatePower
+    [*] EndTurn
+      [*] Drain fuel
+      [ ] Drain additional fuel of stealths
+      [ ] Give funds
+      [ ] Resupply units on props
+      [ ] Resupply units beside of suppliers
+      [ ] Repair units on props
+    
+  [ ] Target: 0.41
+    [ ] Yield
+    [ ] Disband
+    [ ] FireCannon
+    [ ] FireMod
+    [ ] FireTarget
+    [ ] FireLaser

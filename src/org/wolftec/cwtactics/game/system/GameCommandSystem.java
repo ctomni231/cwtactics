@@ -4,7 +4,7 @@ import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.core.CircularBuffer;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.network.NetworkMessageEvent;
+import org.wolftec.cwtactics.game.event.system.NetworkMessageEvent;
 
 public class GameCommandSystem implements ConstructedClass, NetworkMessageEvent {
 

@@ -1,42 +1,35 @@
 package org.wolftec.cwtactics.game.system.actions;
 
+import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.components.HideAble;
-import org.wolftec.cwtactics.game.components.Stealth;
+import org.wolftec.cwtactics.game.components.ExplodeAbility;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.actions.StealthEvents;
+import org.wolftec.cwtactics.game.event.actions.ExplodeEvents;
 
-public class ExplodeSystem implements ConstructedClass, StealthEvents, LoadEntityEvent {
+public class ExplodeSystem implements ConstructedClass, LoadEntityEvent, ExplodeEvents {
 
   private EntityManager em;
   private Asserter as;
 
   @Override
+  public void onExplodeSelf(String unit) {
+
+  }
+
+  @Override
   public void onLoadEntity(String entity, String entityType, Object data) {
     switch (entityType) {
       case LoadEntityEvent.TYPE_UNIT_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, HideAble.class, (hideAble) -> {
-          as.inspectValue("HideAble.additionFuelDrain of " + entity, hideAble.additionFuelDrain).isIntWithinRange(0, 99);
+        em.tryAcquireComponentFromDataSuccessCb(entity, data, ExplodeAbility.class, (suicide) -> {
+          as.inspectValue("Suicide.damage of " + entity, suicide.damage).isIntWithinRange(1, Constants.UNIT_HEALTH);
+          as.inspectValue("Suicide.range of " + entity, suicide.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
+          as.inspectValue("Suicide.noDamage of " + entity, suicide.noDamage).forEachArrayValue((target) -> {
+            as.isEntityId();
+          });
         });
         break;
     }
-  }
-
-  @Override
-  public void onHideUnit(String unit) {
-    changeStealth(unit, true);
-  }
-
-  @Override
-  public void onUnhideUnit(String unit) {
-    changeStealth(unit, false);
-  }
-
-  private void changeStealth(String unit, boolean isHidden) {
-    Stealth st = em.getComponent(unit, Stealth.class);
-    as.resetFailureDetection().inspectValue("unit is " + (isHidden ? "not" : "") + " hidden", st.hidden != isHidden).isTrue().throwErrorWhenFailureDetected();
-    st.hidden = isHidden;
   }
 }

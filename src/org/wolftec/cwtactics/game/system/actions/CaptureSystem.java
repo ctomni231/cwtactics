@@ -61,9 +61,9 @@ public class CaptureSystem implements ConstructedClass, CaptureEvents, LoadEntit
       Owner propertyOwner = em.getComponent(property, Owner.class);
       Owner capturerOwner = em.getComponent(capturer, Owner.class);
 
-      propertyOwner.owner = capturerOwner.owner;
+      ev.publish(CaptureEvents.class).onCapturedProperty(property, capturerOwner.owner, propertyOwner.owner);
 
-      ev.publish(CaptureEvents.class).onCapturedProperty(capturer, property);
+      propertyOwner.owner = capturerOwner.owner;
     }
   }
 
