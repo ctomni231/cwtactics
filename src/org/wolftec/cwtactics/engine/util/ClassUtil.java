@@ -15,4 +15,8 @@ public abstract class ClassUtil {
   public static Class<?> getClass(Object object) {
     return (Class<?>) JSObjectAdapter.$constructor(object);
   }
+
+  public static <T> T newInstance(Class<T> clazz) {
+    return JSObjectAdapter.$js("new clazz()");
+  }
 }

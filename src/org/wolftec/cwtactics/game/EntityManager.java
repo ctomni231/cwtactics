@@ -98,14 +98,14 @@ public class EntityManager implements ConstructedClass {
   /**
    * Releases an entity. All connected {@link IEntityComponent} objects will be
    * detached, cached in a pool and reused with the next acquire call.
-   * 
+   *
    * <strong>Be aware (!) </strong> that this manager will not pooling
    * {@link IEntityComponent} objects which extends the
    * {@link IFlyweightComponent} interface. It's suggested to leave at least one
    * entity connected to your object over the whole life time of the game. If
    * you release all connections to your {@link IFlyweightComponent} object then
    * it will be available for remove by the garbage collector.
-   * 
+   *
    * @param id
    */
   public void releaseEntity(String id) {
@@ -115,7 +115,7 @@ public class EntityManager implements ConstructedClass {
 
   /**
    * CAUTION: expensive
-   * 
+   *
    * @param lId
    * @return
    */
@@ -150,7 +150,7 @@ public class EntityManager implements ConstructedClass {
 
   /**
    * Returns a component of an entity.
-   * 
+   *
    * @param id
    *          id of the entity
    * @param lComponentClass
@@ -194,7 +194,7 @@ public class EntityManager implements ConstructedClass {
 
   /**
    * Creates a complete data dump of the internal entity data.
-   * 
+   *
    * @param dataCallback
    */
   public void createEntityDataDump(Callback1<String> dataCallback) {
@@ -204,7 +204,7 @@ public class EntityManager implements ConstructedClass {
   /**
    * Creates a data dump of the internal entity data. The result entities will
    * be selected by the given selector function.
-   * 
+   *
    * @param selector
    *          (string) -> boolean => returns true when a given entityId should
    *          be added to the data dump else false

@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.game.system;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.components.TileMap;
+import org.wolftec.cwtactics.game.components.game.TileMap;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 

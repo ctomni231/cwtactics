@@ -2,8 +2,8 @@ package org.wolftec.cwtactics.game.system;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.components.Config;
-import org.wolftec.cwtactics.game.components.ValueMetaData;
+import org.wolftec.cwtactics.game.components.game.Config;
+import org.wolftec.cwtactics.game.components.game.ValueMetaData;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.GameroundEvents;

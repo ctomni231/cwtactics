@@ -2,11 +2,11 @@ package org.wolftec.cwtactics.game.system.game;
 
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.components.Defense;
-import org.wolftec.cwtactics.game.components.FighterPrimaryWeapon;
-import org.wolftec.cwtactics.game.components.FighterSecondaryWeapon;
-import org.wolftec.cwtactics.game.components.Living;
-import org.wolftec.cwtactics.game.components.RangedFighter;
+import org.wolftec.cwtactics.game.components.game.Defense;
+import org.wolftec.cwtactics.game.components.game.FighterPrimaryWeapon;
+import org.wolftec.cwtactics.game.components.game.FighterSecondaryWeapon;
+import org.wolftec.cwtactics.game.components.game.Living;
+import org.wolftec.cwtactics.game.components.game.RangedFighter;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;

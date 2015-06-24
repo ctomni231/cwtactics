@@ -4,7 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.components.TileMap;
+import org.wolftec.cwtactics.game.components.game.TileMap;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.persistence.MapLoadEvent;

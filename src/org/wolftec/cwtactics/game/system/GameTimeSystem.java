@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.game.system;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.components.TimerData;
+import org.wolftec.cwtactics.game.components.game.TimerData;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.GameroundEvents;

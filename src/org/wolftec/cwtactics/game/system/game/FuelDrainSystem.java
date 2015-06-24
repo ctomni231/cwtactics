@@ -3,8 +3,8 @@ package org.wolftec.cwtactics.game.system.game;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.components.FuelDrain;
-import org.wolftec.cwtactics.game.components.Movable;
+import org.wolftec.cwtactics.game.components.game.FuelDepot;
+import org.wolftec.cwtactics.game.components.game.FuelDrain;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
@@ -36,11 +36,11 @@ public class FuelDrainSystem implements ConstructedClass, LoadEntityEvent, TurnE
   public void onTurnStart(String player, int turn) {
     JsUtil.forEachArrayValue(em.getEntitiesWithComponentType(FuelDrain.class), (index, entity) -> {
       FuelDrain drain = em.getComponent(entity, FuelDrain.class);
-      Movable mover = em.getComponent(entity, Movable.class);
+      FuelDepot fuel = em.getComponent(entity, FuelDepot.class);
 
-      mover.fuel -= drain.daily;
+      fuel.amount -= drain.daily;
 
-      if (mover.fuel <= 0) {
+      if (fuel.amount <= 0) {
         ev.publish(UnitDestroyedEvent.class).onUnitDestroyed(entity);
       }
     });

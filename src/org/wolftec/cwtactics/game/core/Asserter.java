@@ -179,6 +179,13 @@ public class Asserter extends Log implements ConstructedObject {
     return this;
   }
 
+  public Asserter euqals(Object checkObject) {
+    if (value != checkObject) {
+      assertionFailed("to be equal " + JSGlobal.JSON.stringify(checkObject));
+    }
+    return this;
+  }
+
   public Asserter resetFailureDetection() {
     anAssertionFailed = false;
     return this;

@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.system.game;
 
 import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.components.Manpower;
-import org.wolftec.cwtactics.game.components.Owner;
+import org.wolftec.cwtactics.game.components.game.Manpower;
+import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
 import org.wolftec.cwtactics.game.event.UnitCreatedEvent;

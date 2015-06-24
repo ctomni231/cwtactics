@@ -25,12 +25,12 @@ public class EventEmitter implements ConstructedClass {
     eventEmitter = JSObjectAdapter.$js("{}");
     eventListeners = JSCollections.$map();
 
-    createEventEmitter();
-    registerSubriberSystems();
+    Object namespace = JSObjectAdapter.$get(Global.window, Constants.NAMESPACE);
+    createEventEmitter(namespace);
+    registerSubriberSystems(namespace);
   }
 
-  private void createEventEmitter() {
-    Object namespace = JSObjectAdapter.$get(Global.window, Constants.NAMESPACE);
+  protected void createEventEmitter(Object namespace) {
     Array<String> classNames = JsUtil.objectKeys(namespace);
 
     for (int i = 0; i < classNames.$length(); i++) {
@@ -43,7 +43,7 @@ public class EventEmitter implements ConstructedClass {
     }
   }
 
-  public void exploreClassEvents(Class<?> classObject) {
+  private void exploreClassEvents(Class<?> classObject) {
     Object classPrototype = JSObjectAdapter.$prototype(classObject);
     Array<String> classFunctions = JsUtil.objectKeys(classPrototype);
     JsUtil.forEachArrayValue(classFunctions, (index, classFnName) -> {
@@ -63,7 +63,7 @@ public class EventEmitter implements ConstructedClass {
     return inherits.indexOf(IEvent.class) != -1;
   }
 
-  private Callback0 createEventEmitterCallback(String evName) {
+  protected Callback0 createEventEmitterCallback(String evName) {
 
     // we place eventListeners here to prevent the binding of the result
     // function because else we had to use this.
@@ -78,8 +78,7 @@ public class EventEmitter implements ConstructedClass {
     };
   }
 
-  private void registerSubriberSystems() {
-    Object namespace = JSObjectAdapter.$get(Global.window, Constants.NAMESPACE);
+  protected void registerSubriberSystems(Object namespace) {
     Array<String> classNames = JsUtil.objectKeys(namespace);
 
     for (int i = 0; i < classNames.$length(); i++) {
@@ -105,7 +104,7 @@ public class EventEmitter implements ConstructedClass {
     }
   }
 
-  public void exploreSubscriberClass(String className, Object constructedInstance, Class<?> possibleEventClass) {
+  private void exploreSubscriberClass(String className, Object constructedInstance, Class<?> possibleEventClass) {
     Object classPrototype = JSObjectAdapter.$prototype(possibleEventClass);
     Array<String> classFunctions = JsUtil.objectKeys(classPrototype);
     JsUtil.forEachArrayValue(classFunctions, (index, classFnName) -> {

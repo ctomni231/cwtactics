@@ -5,7 +5,6 @@ Legend
   [?] Started, Not Ready
   [*] Completed
   [x] Tested
-  [-] Not needed for the next version
   
 Game Actions
 ------------
@@ -39,7 +38,7 @@ Game Actions
     [*] EndTurn
       [*] Drain fuel
       [ ] Drain additional fuel of stealths
-      [ ] Give funds
+      [*] Give funds
       [ ] Resupply units on props
       [ ] Resupply units beside of suppliers
       [ ] Repair units on props
@@ -47,7 +46,8 @@ Game Actions
   [ ] Target: 0.41
     [ ] Yield
     [ ] Disband
-    [ ] FireCannon
-    [ ] FireMod
-    [ ] FireTarget
-    [ ] FireLaser
+    [ ] Special Weapons
+      [ ] FireCannon
+      [ ] FireMod
+      [ ] FireTarget
+      [ ] FireLaser
