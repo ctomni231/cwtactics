@@ -10,7 +10,7 @@ import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.WeatherChangesEvent;
-import org.wolftec.cwtactics.game.event.actions.TurnEvents;
+import org.wolftec.cwtactics.game.event.game.TurnEvents;
 import org.wolftec.cwtactics.game.util.NumberUtil;
 
 public class WeatherSystem implements ConstructedClass, TurnEvents, WeatherChangesEvent, LoadEntityEvent {

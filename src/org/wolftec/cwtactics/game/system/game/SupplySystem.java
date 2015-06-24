@@ -13,8 +13,8 @@ import org.wolftec.cwtactics.game.components.game.SupplierAbility;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.actions.SupplyEvents;
-import org.wolftec.cwtactics.game.event.actions.TurnEvents;
+import org.wolftec.cwtactics.game.event.game.SupplyEvents;
+import org.wolftec.cwtactics.game.event.game.TurnEvents;
 
 public class SupplySystem implements ConstructedClass, LoadEntityEvent, TurnEvents, SupplyEvents {
 

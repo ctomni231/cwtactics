@@ -11,7 +11,7 @@ import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.actions.FactoryEvents;
+import org.wolftec.cwtactics.game.event.game.FactoryEvents;
 
 public class FactorySystem implements ConstructedClass, FactoryEvents, LoadEntityEvent {
 

@@ -6,7 +6,7 @@ import org.wolftec.cwtactics.game.components.game.Stealth;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.actions.StealthEvents;
+import org.wolftec.cwtactics.game.event.game.StealthEvents;
 
 public class StealthSystem implements ConstructedClass, StealthEvents, LoadEntityEvent {
 

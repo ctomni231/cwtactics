@@ -7,8 +7,8 @@ import org.wolftec.cwtactics.game.components.game.Buyable;
 import org.wolftec.cwtactics.game.components.game.Living;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
-import org.wolftec.cwtactics.game.event.actions.JoinEvents;
-import org.wolftec.cwtactics.game.event.actions.PlayerEvents;
+import org.wolftec.cwtactics.game.event.game.JoinEvents;
+import org.wolftec.cwtactics.game.event.game.PlayerEvents;
 import org.wolftec.cwtactics.game.util.NumberUtil;
 
 public class JoinSystem implements ConstructedClass, JoinEvents {

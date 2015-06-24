@@ -7,7 +7,7 @@ import org.wolftec.cwtactics.game.components.game.TransportContainer;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.actions.TransporterEvents;
+import org.wolftec.cwtactics.game.event.game.TransporterEvents;
 
 public class TransportSystem implements ConstructedClass, LoadEntityEvent, TransporterEvents {
 

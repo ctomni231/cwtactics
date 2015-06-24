@@ -8,7 +8,7 @@ import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
 import org.wolftec.cwtactics.game.event.NextFrameEvent;
-import org.wolftec.cwtactics.game.event.actions.TurnEvents;
+import org.wolftec.cwtactics.game.event.game.TurnEvents;
 
 /**
  * The {@link GameTimeSystem} adds time limits for the turn and game mechanic.

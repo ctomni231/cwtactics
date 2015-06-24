@@ -10,7 +10,7 @@ import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.actions.CaptureEvents;
+import org.wolftec.cwtactics.game.event.game.CaptureEvents;
 
 public class CaptureSystem implements ConstructedClass, CaptureEvents, LoadEntityEvent {
 

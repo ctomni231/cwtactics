@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.event.features;
+package org.wolftec.cwtactics.game.event.game;
 
 import org.wolftec.cwtactics.game.IEvent;
 

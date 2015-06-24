@@ -9,7 +9,7 @@ import org.wolftec.cwtactics.game.components.game.PlayerCommander.PowerLevel;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
-import org.wolftec.cwtactics.game.event.actions.CommanderEvents;
+import org.wolftec.cwtactics.game.event.game.CommanderEvents;
 
 public class CommanderSystem implements ConstructedClass, CommanderEvents, GameroundEvents {
 

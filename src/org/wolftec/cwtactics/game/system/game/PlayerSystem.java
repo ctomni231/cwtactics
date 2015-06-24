@@ -5,7 +5,7 @@ import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.game.Player;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
-import org.wolftec.cwtactics.game.event.actions.PlayerEvents;
+import org.wolftec.cwtactics.game.event.game.PlayerEvents;
 
 public class PlayerSystem implements ConstructedClass, PlayerEvents {
 

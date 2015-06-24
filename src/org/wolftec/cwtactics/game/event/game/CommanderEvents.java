@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.event.actions;
+package org.wolftec.cwtactics.game.event.game;
 
 import org.wolftec.cwtactics.game.IEvent;
 import org.wolftec.cwtactics.game.components.game.PlayerCommander.PowerLevel;

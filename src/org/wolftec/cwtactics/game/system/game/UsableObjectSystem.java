@@ -7,8 +7,8 @@ import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Usable;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.actions.TurnEvents;
-import org.wolftec.cwtactics.game.event.actions.UsabilityEvents;
+import org.wolftec.cwtactics.game.event.game.TurnEvents;
+import org.wolftec.cwtactics.game.event.game.UsabilityEvents;
 
 public class UsableObjectSystem implements ConstructedClass, UsabilityEvents, TurnEvents {
 
