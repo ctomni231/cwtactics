@@ -20,7 +20,7 @@ Game Actions
           [ ] Source Unit - OWN 
           [ ] Source Unit - ALLIED
           [ ] Source Unit - ENEMY
-      [ ] onTriggerAction(String action)
+      [ ] onTriggerAction(String action) // triggered by action syystems
       [ ] onInvokedAction(String action, int sx, int sy, int tx, int ty)
       [ ] onAddAction(String action)
     [ ] Game Features
