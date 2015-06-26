@@ -10,38 +10,52 @@ Game Actions
 ------------
 
   [ ] Target: 0.4
-    [*] Wait
-    [*] Unload
-      [ ] Show unload target map
-    [*] Load
-    [ ] Attack
-      [*] Fog changes when unit gets destroyed
-      [ ] Show attack map for a given entity
-    [ ] Move
-      [*] Fog changes when unit moves
-      [ ] Show move map for a given entity
-    [?] Supply
-    [*] Build
-      [*] Fog changes when unit gets created
-      [*] Manpower decreases when unit gets created
-    [ ] FireSilo
-    [*] Hide
-    [*] Unhide
-    [*] Capture
-      [*] Fog changes when unit property changes owner
-    [*] Join
-    [*] SendUnit
-    [*] SendProperty
-    [*] SendMoney
-    [?] Explode
-    [*] ActivatePower
-    [*] EndTurn
-      [*] Drain fuel
-      [ ] Drain additional fuel of stealths
-      [*] Give funds
-      [ ] Resupply units on props
-      [ ] Resupply units beside of suppliers
-      [ ] Repair units on props
+    [ ] Actions
+      [ ] onCheckActions(int sx, int sy, BitSet actionFlags)
+        [ ] BitSet actionFlags
+          [ ] Source Property - OWN
+          [ ] Source Property - ALLIED
+          [ ] Source Property - ENEMY
+          [ ] Source Property - NONE
+          [ ] Source Unit - OWN 
+          [ ] Source Unit - ALLIED
+          [ ] Source Unit - ENEMY
+      [ ] onTriggerAction(String action)
+      [ ] onInvokedAction(String action, int sx, int sy, int tx, int ty)
+      [ ] onAddAction(String action)
+    [ ] Game Features
+      [*] Wait
+      [*] Unload
+        [ ] Show unload target map
+      [*] Load
+      [ ] Attack
+        [*] Fog changes when unit gets destroyed
+        [ ] Show attack map for a given entity
+      [ ] Move
+        [*] Fog changes when unit moves
+        [ ] Show move map for a given entity
+      [?] Supply
+      [*] Build
+        [*] Fog changes when unit gets created
+        [*] Manpower decreases when unit gets created
+      [ ] FireSilo
+      [*] Hide
+      [*] Unhide
+      [*] Capture
+        [*] Fog changes when unit property changes owner
+      [*] Join
+      [*] SendUnit
+      [*] SendProperty
+      [*] SendMoney
+      [?] Explode
+      [*] ActivatePower
+      [*] EndTurn
+        [*] Drain fuel
+        [ ] Drain additional fuel of stealths
+        [*] Give funds
+        [ ] Resupply units on props
+        [ ] Resupply units beside of suppliers
+        [ ] Repair units on props
     
   [ ] Target: 0.41
     [ ] Yield
