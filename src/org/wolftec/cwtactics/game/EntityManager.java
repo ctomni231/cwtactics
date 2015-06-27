@@ -6,7 +6,9 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function1;
+import org.stjs.javascript.functions.Function3;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
@@ -190,6 +192,49 @@ public class EntityManager implements ConstructedClass {
 
   public <T extends IEntityComponent> boolean hasEntityComponent(String lId, Class<T> lComponentClass) {
     return getComponent(lId, lComponentClass) != null;
+  }
+
+  public <T extends IEntityComponent> T getComponentByFilter(Class<T> componentClass, Function3<EntityManager, String, T, Boolean> filter) {
+    String componentName = ClassUtil.getClassName(componentClass);
+    Array<String> entityNames = JsUtil.objectKeys(entities);
+    for (int i = 0; i < entityNames.$length(); i++) {
+      String entityName = entityNames.$get(i);
+      T c = (T) entities.$get(entityName).$get(componentName);
+      if (filter.$invoke(this, entityName, c)) {
+        return c;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * 
+   * @param componentClass
+   *          component that will be checked
+   * @param filter
+   *          filter function that returns true when a given entity with the
+   *          given component type matches with the criteria, else false
+   * @return first entity that matches the filter criteria
+   */
+  public <T extends IEntityComponent> String getEntityByFilter(Class<T> componentClass, Function3<EntityManager, String, T, Boolean> filter) {
+    String componentName = ClassUtil.getClassName(componentClass);
+    Array<String> entityNames = JsUtil.objectKeys(entities);
+    for (int i = 0; i < entityNames.$length(); i++) {
+      String entityName = entityNames.$get(i);
+      if (filter.$invoke(this, entityName, (T) entities.$get(entityName).$get(componentName))) {
+        return entityName;
+      }
+    }
+    return null;
+  }
+
+  public <T extends IEntityComponent> void forEachComponentOfType(Class<T> componentClass, Callback3<EntityManager, String, T> filter) {
+    String componentName = ClassUtil.getClassName(componentClass);
+    Array<String> entityNames = JsUtil.objectKeys(entities);
+    for (int i = 0; i < entityNames.$length(); i++) {
+      String entityName = entityNames.$get(i);
+      filter.$invoke(this, entityName, (T) entities.$get(entityName).$get(componentName));
+    }
   }
 
   /**

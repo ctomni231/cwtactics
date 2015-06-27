@@ -8,4 +8,7 @@ public interface ErrorEvent extends IEvent {
 
   default void onIllegalArguments(String message) {
   }
+
+  default void onIllegalState(String message) {
+  }
 }
