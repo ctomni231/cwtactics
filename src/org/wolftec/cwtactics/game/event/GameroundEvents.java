@@ -4,7 +4,7 @@ import org.wolftec.cwtactics.game.IEvent;
 
 public interface GameroundEvents extends IEvent {
 
-  default void onGameroundStarts() {
+  default void gameroundStartEvent() {
   }
 
   default void onGameroundEnds() {

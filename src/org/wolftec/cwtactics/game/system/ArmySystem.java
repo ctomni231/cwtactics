@@ -11,12 +11,10 @@ public class ArmySystem implements ConstructedClass, LoadEntityEvent {
   private EntityManager em;
   private Asserter asserter;
 
-  @Override
-  public void onConstruction() {
+  @Override public void onConstruction() {
   }
 
-  @Override
-  public void onLoadEntity(String entity, String entityType, Object data) {
+  @Override public void onLoadEntity(String entity, String entityType, Object data) {
     switch (entityType) {
       case LoadEntityEvent.TYPE_ARMY_DATA:
         em.tryAcquireComponentFromDataSuccessCb(entity, data, Army.class, (army) -> {

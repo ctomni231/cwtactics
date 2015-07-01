@@ -60,4 +60,9 @@ public abstract class JsUtil {
       callback.$invoke(i, array.$get(i));
     }
   }
+
+  public static <T> T throwError(String message) {
+    JSObjectAdapter.$js("throw new Error(message)");
+    return null; // never reached
+  }
 }

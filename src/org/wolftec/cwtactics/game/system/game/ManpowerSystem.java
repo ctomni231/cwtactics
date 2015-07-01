@@ -1,5 +1,6 @@
 package org.wolftec.cwtactics.game.system.game;
 
+import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.Manpower;
 import org.wolftec.cwtactics.game.components.game.Owner;
@@ -18,13 +19,14 @@ public class ManpowerSystem implements ConstructedClass, UnitCreatedEvent, Gamer
 
   private EntityManager em;
 
-  @Override
-  public void onGameroundStarts() {
+  private ComponentHolder<Owner> owners;
+  private ComponentHolder<Manpower> manpowers;
+
+  @Override public void gameroundStartEvent() {
     // TODO give all players at least 1000 manpower :P
   }
 
-  @Override
-  public void onUnitCreated(String unitEntity) {
-    em.getComponent(em.getComponent(unitEntity, Owner.class).owner, Manpower.class).manpower--;
+  @Override public void unitCreatedEvent(String unitEntity) {
+    manpowers.get(owners.get(unitEntity).owner).manpower--;
   }
 }

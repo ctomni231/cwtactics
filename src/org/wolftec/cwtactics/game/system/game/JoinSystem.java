@@ -1,37 +1,37 @@
 package org.wolftec.cwtactics.game.system.game;
 
 import org.wolftec.cwtactics.Constants;
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.EventEmitter;
+import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.components.game.Buyable;
 import org.wolftec.cwtactics.game.components.game.Living;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.event.game.JoinEvents;
+import org.wolftec.cwtactics.game.event.game.LivingEvents;
 import org.wolftec.cwtactics.game.event.game.PlayerEvents;
 import org.wolftec.cwtactics.game.util.NumberUtil;
 
 public class JoinSystem implements ConstructedClass, JoinEvents {
 
-  private EntityManager em;
-  private EventEmitter ev;
+  private ComponentHolder<Living> livings;
+  private ComponentHolder<Buyable> buyables;
+  private ComponentHolder<Owner> owners;
 
-  @Override
-  public void onJoinUnits(String joiner, String joinTarget) {
-    Living targetHp = em.getComponent(joinTarget, Living.class);
-    Living sourceHp = em.getComponent(joiner, Living.class);
+  private PlayerEvents playerEventPush;
+  private LivingEvents livingEventPush;
+
+  @Override public void onJoinUnits(String joiner, String joinTarget) {
+    Living targetHp = livings.get(joinTarget);
+    Living sourceHp = livings.get(joiner);
 
     targetHp.hp += sourceHp.hp;
     if (targetHp.hp > Constants.UNIT_HEALTH) {
 
-      // pay the difference (combined hp - max hp) as money
       int diff = targetHp.hp - Constants.UNIT_HEALTH;
-      diff = NumberUtil.asInt(em.getComponent(joinTarget, Buyable.class).cost * diff / 100);
-      ev.publish(PlayerEvents.class).onChangeGold(em.getComponent(joinTarget, Owner.class).owner, diff);
+      diff = NumberUtil.asInt(buyables.get(joinTarget).cost * diff / 100);
+      playerEventPush.changeGold(owners.get(joinTarget).owner, diff);
 
-      targetHp.hp = Constants.UNIT_HEALTH;
+      livingEventPush.healUnit(joinTarget, diff);
     }
-
-    // TODO heal event?
   }
 }

@@ -14,7 +14,7 @@ public class ConfigSystem implements ConstructedClass, GameroundEvents {
   private EntityManager em;
 
   @Override
-  public void onGameroundStarts() {
+  public void gameroundStartEvent() {
     log.info("going to reset all config values");
 
     Array<String> entities = em.getEntitiesWithComponentType(Config.class);

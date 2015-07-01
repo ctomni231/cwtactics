@@ -85,7 +85,7 @@ public class CommanderSystem implements ConstructedClass, CommanderEvents, Gamer
   }
 
   @Override
-  public void onGameroundStarts() {
+  public void gameroundStartEvent() {
     Array<String> players = em.getEntitiesWithComponentType(PlayerCommander.class);
     JsUtil.forEachArrayValue(players, (index, player) -> {
       PlayerCommander playerCommander = em.getComponent(player, PlayerCommander.class);

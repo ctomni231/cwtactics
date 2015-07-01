@@ -24,7 +24,7 @@ public class BattleSystem implements ConstructedClass, UnitCreatedEvent, LoadEnt
   private Asserter asserter;
 
   @Override
-  public void onUnitCreated(String unitEntity) {
+  public void unitCreatedEvent(String unitEntity) {
     em.getNonNullComponent(unitEntity, Living.class).hp = Constants.UNIT_HEALTH;
   }
 

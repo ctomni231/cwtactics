@@ -9,7 +9,7 @@ public class TestSystem implements ConstructedClass, GameroundEvents {
   private Log log;
 
   @Override
-  public void onGameroundStarts() {
+  public void gameroundStartEvent() {
     log.info("--------------- implemented ---------------");
   }
 }

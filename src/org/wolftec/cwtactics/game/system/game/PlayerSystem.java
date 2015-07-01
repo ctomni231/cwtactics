@@ -13,7 +13,7 @@ public class PlayerSystem implements ConstructedClass, PlayerEvents {
   private EventEmitter ev;
 
   @Override
-  public void onChangeGold(String player, int amount) {
+  public void changeGold(String player, int amount) {
     Player data = em.getComponent(player, Player.class);
     data.gold += amount;
     if (data.gold < 0) ev.publish(ErrorEvent.class).onIllegalGameData("negative player gold value detected");

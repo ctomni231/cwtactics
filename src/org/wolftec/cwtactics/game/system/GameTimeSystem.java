@@ -40,7 +40,7 @@ public class GameTimeSystem implements ConstructedClass, NextFrameEvent, Gamerou
   }
 
   @Override
-  public void onGameroundStarts() {
+  public void gameroundStartEvent() {
     TimerData data = em.getComponent(EntityId.GAME_ROUND, TimerData.class);
     data.gameTime = 0;
     data.turnTime = 0;
