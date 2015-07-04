@@ -15,12 +15,12 @@ import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.UnitDestroyedEvent;
-import org.wolftec.cwtactics.game.event.game.CaptureEvents;
 import org.wolftec.cwtactics.game.event.game.FactoryEvents;
 import org.wolftec.cwtactics.game.event.game.FogEvents;
 import org.wolftec.cwtactics.game.event.game.MoveEvent;
+import org.wolftec.cwtactics.game.event.game.capture.CapturedProperty;
 
-public class FogSystem implements System, FactoryEvents, UnitDestroyedEvent, MoveEvent, CaptureEvents, LoadEntityEvent {
+public class FogSystem implements System, FactoryEvents, UnitDestroyedEvent, MoveEvent, CapturedProperty, LoadEntityEvent {
 
   private EntityManager em;
   private EventEmitter ev;

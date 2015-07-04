@@ -10,13 +10,15 @@ import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
-import org.wolftec.cwtactics.game.event.game.CommanderEvents;
+import org.wolftec.cwtactics.game.event.game.commander.ActivatePowerLevel;
+import org.wolftec.cwtactics.game.event.game.commander.ChangePower;
+import org.wolftec.cwtactics.game.event.game.commander.PowerChanged;
 import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
 import org.wolftec.cwtactics.game.event.ui.action.AddAction;
 import org.wolftec.cwtactics.game.event.ui.action.BuildActions;
 import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
 
-public class CommanderSystem implements System, CommanderEvents, GameroundEvents, BuildActions, InvokeAction {
+public class CommanderSystem implements System, ChangePower, ActivatePowerLevel, GameroundEvents, BuildActions, InvokeAction {
 
   private static final int POWER_PER_STAR = 1000;
 
@@ -26,7 +28,8 @@ public class CommanderSystem implements System, CommanderEvents, GameroundEvents
 
   private AddAction actionEvent;
 
-  private CommanderEvents commanderEvent;
+  private ActivatePowerLevel activatePowerEvent;
+  private PowerChanged powerChangedEvent;
 
   private ErrorEvent errorEvent;
 
@@ -61,7 +64,7 @@ public class CommanderSystem implements System, CommanderEvents, GameroundEvents
       level = PowerLevel.SUPER_POWER;
     }
 
-    commanderEvent.activatePowerLevel(turns.get(EntityId.GAME_ROUND).owner, level);
+    activatePowerEvent.activatePowerLevel(turns.get(EntityId.GAME_ROUND).owner, level);
   }
 
   @Override
@@ -72,7 +75,7 @@ public class CommanderSystem implements System, CommanderEvents, GameroundEvents
       playerCommander.power = 0;
     }
 
-    commanderEvent.powerChanged(player, playerCommander.power);
+    powerChangedEvent.powerChanged(player, playerCommander.power);
   }
 
   @Override
@@ -92,7 +95,7 @@ public class CommanderSystem implements System, CommanderEvents, GameroundEvents
     playerCommander.activeLevel = level;
     playerCommander.power = 0;
 
-    commanderEvent.powerChanged(player, 0);
+    powerChangedEvent.powerChanged(player, 0);
   }
 
   @Override

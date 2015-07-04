@@ -12,13 +12,15 @@ import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.game.CaptureEvents;
+import org.wolftec.cwtactics.game.event.game.capture.CaptureProperty;
+import org.wolftec.cwtactics.game.event.game.capture.CapturedProperty;
+import org.wolftec.cwtactics.game.event.game.capture.LoweredCapturePoints;
 import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
 import org.wolftec.cwtactics.game.event.ui.action.AddAction;
 import org.wolftec.cwtactics.game.event.ui.action.BuildActions;
 import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
 
-public class CaptureSystem implements System, CaptureEvents, LoadEntityEvent, BuildActions, InvokeAction {
+public class CaptureSystem implements System, CaptureProperty, LoadEntityEvent, BuildActions, InvokeAction {
 
   private EntityManager em;
 
@@ -26,7 +28,8 @@ public class CaptureSystem implements System, CaptureEvents, LoadEntityEvent, Bu
 
   private ErrorEvent errors;
   private AddAction addActionEvent;
-  private CaptureEvents captureEvent;
+  private LoweredCapturePoints loweredPointsEvent;
+  private CapturedProperty capturedEvent;
 
   private Components<Owner> owners;
   private Components<Living> livings;
@@ -56,7 +59,7 @@ public class CaptureSystem implements System, CaptureEvents, LoadEntityEvent, Bu
         errors.onIllegalArguments("missing data");
       }
 
-      captureEvent.onCaptureProperty(capturer, property);
+      onCaptureProperty(capturer, property);
     }
   }
 
@@ -67,14 +70,14 @@ public class CaptureSystem implements System, CaptureEvents, LoadEntityEvent, Bu
 
     propertyData.points -= capturerData.points;
 
-    captureEvent.onLoweredCapturePoints(property, capturerData.points);
+    loweredPointsEvent.onLoweredCapturePoints(property, capturerData.points);
 
     if (propertyData.points <= 0) {
 
       Owner propertyOwner = owners.get(property);
       Owner capturerOwner = owners.get(capturer);
 
-      captureEvent.onCapturedProperty(property, capturerOwner.owner, propertyOwner.owner);
+      capturedEvent.onCapturedProperty(property, capturerOwner.owner, propertyOwner.owner);
 
       propertyOwner.owner = capturerOwner.owner;
     }
