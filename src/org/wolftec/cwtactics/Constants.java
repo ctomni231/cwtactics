@@ -40,6 +40,12 @@ public class Constants {
    */
   public static final String NAMESPACE = "cwt";
 
+  public static final String NAMESPACE_COMPONENTS = NAMESPACE + ".components";
+
+  public static final String NAMESPACE_SYSTEMS = NAMESPACE + ".systems";
+
+  public static final String NAMESPACE_EVENTS = NAMESPACE + ".events";
+
   /**
    * Controls the exact length of the logger name field in a log message. The
    * class name will be extended (with spaces) or trimmed to has the exact

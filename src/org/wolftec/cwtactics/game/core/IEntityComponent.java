@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game;
+package org.wolftec.cwtactics.game.core;
 
 
 public interface IEntityComponent {

@@ -11,18 +11,16 @@ public class ArmySystem implements ConstructedClass, LoadEntityEvent {
   private EntityManager em;
   private Asserter asserter;
 
-  @Override public void onConstruction() {
+  @Override
+  public void onConstruction() {
   }
 
-  @Override public void onLoadEntity(String entity, String entityType, Object data) {
-    switch (entityType) {
-      case LoadEntityEvent.TYPE_ARMY_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, Army.class, (army) -> {
-          asserter.inspectValue("Army.name of " + entity, army.name).isString();
-          asserter.inspectValue("Army.music of " + entity, army.music).isString();
-          asserter.inspectValue("Army.color of " + entity, army.color).isIntWithinRange(0, 999);
-        });
-        break;
-    }
+  @Override
+  public void onLoadArmyTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, Army.class, (army) -> {
+      asserter.inspectValue("Army.name of " + entity, army.name).isString();
+      asserter.inspectValue("Army.music of " + entity, army.music).isString();
+      asserter.inspectValue("Army.color of " + entity, army.color).isIntWithinRange(0, 999);
+    });
   }
 }

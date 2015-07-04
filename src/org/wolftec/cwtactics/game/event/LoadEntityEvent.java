@@ -1,21 +1,33 @@
 package org.wolftec.cwtactics.game.event;
 
-import org.wolftec.cwtactics.game.IEvent;
+import org.wolftec.cwtactics.game.core.IEvent;
 
 public interface LoadEntityEvent extends IEvent {
+  default void onLoadUnitTypeEntity(String entity, Object data) {
+  }
 
-  public final String TYPE_UNIT = "UNIT";
-  public final String TYPE_MAP = "MAP";
+  default void onLoadTileTypeEntity(String entity, Object data) {
+  }
 
-  public final String TYPE_UNIT_DATA = "UNIT_TYPE";
-  public final String TYPE_TILE_DATA = "TILE_TYPE";
-  public final String TYPE_PROPERTY_DATA = "PROPERTY_TYPE";
-  public final String TYPE_WEATHER_DATA = "WEATHER_TYPE";
-  public final String TYPE_MOVETYPE_DATA = "MOVETYPE_TYPE";
-  public final String TYPE_CO_DATA = "CO_TYPE";
-  public final String TYPE_ARMY_DATA = "ARMY_TYPE";
+  default void onLoadPropertyTypeEntity(String entity, Object data) {
+  }
 
-  default void onLoadEntity(String entity, String entityType, Object data) {
+  default void onLoadWeatherTypeEntity(String entity, Object data) {
+  }
+
+  default void onLoadMoveTypeEntity(String entity, Object data) {
+  }
+
+  default void onLoadCommanderTypeEntity(String entity, Object data) {
+  }
+
+  default void onLoadArmyTypeEntity(String entity, Object data) {
+  }
+
+  default void onLoadUnitEntity(String entity, Object data) {
+  }
+
+  default void onLoadMapEntity(String entity, Object data) {
   }
 
   default void onLoadedEntity(String entity, String entityType) {

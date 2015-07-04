@@ -39,28 +39,24 @@ public class MoveSystem implements ConstructedClass, MoveEvent, LoadEntityEvent 
   }
 
   @Override
-  public void onLoadEntity(String entity, String entityType, Object data) {
-    switch (entityType) {
+  public void onLoadMoveTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, MovingCosts.class, (costs) -> {
+      asserter.inspectValue("MovingCosts.costs of " + entity, costs.costs).forEachMapKey((key) -> {
+        asserter.isEntityId();
+      });
+      asserter.inspectValue("MovingCosts.costs of " + entity, costs.costs).forEachMapValue((value) -> {
+        asserter.isIntWithinRange(0, 99);
+      });
+    });
+  }
 
-      case LoadEntityEvent.TYPE_UNIT_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, Movable.class, (mdata) -> {
-          asserter.inspectValue("Movable.fuel of " + entity, mdata.fuel).isIntWithinRange(1, 99);
-          asserter.inspectValue("Movable.range of " + entity, mdata.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
-          asserter.inspectValue("Movable.type of " + entity, mdata.type).isEntityId();
-        });
-        break;
-
-      case TYPE_MOVETYPE_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, MovingCosts.class, (costs) -> {
-          asserter.inspectValue("MovingCosts.costs of " + entity, costs.costs).forEachMapKey((key) -> {
-            asserter.isEntityId();
-          });
-          asserter.inspectValue("MovingCosts.costs of " + entity, costs.costs).forEachMapValue((value) -> {
-            asserter.isIntWithinRange(0, 99);
-          });
-        });
-        break;
-    }
+  @Override
+  public void onLoadUnitTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, Movable.class, (mdata) -> {
+      asserter.inspectValue("Movable.fuel of " + entity, mdata.fuel).isIntWithinRange(1, 99);
+      asserter.inspectValue("Movable.range of " + entity, mdata.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
+      asserter.inspectValue("Movable.type of " + entity, mdata.type).isEntityId();
+    });
   }
 
   @Override

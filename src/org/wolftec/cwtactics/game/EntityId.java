@@ -6,6 +6,7 @@ import org.wolftec.cwtactics.Constants;
 
 public abstract class EntityId {
 
+  public static final String NOTHING = "__NOTHING__";
   public static final String GAME_UI = "GAME_UI";
   public static final String GAME_ROUND = "GAME_ROUND";
   public static final String UNIT = "UNIT_";

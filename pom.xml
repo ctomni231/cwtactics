@@ -103,6 +103,7 @@
       <pack>true</pack>
 
       <annotations>
+       <annotation>Handled</annotation>
       </annotations>
      </configuration>
     </plugin>

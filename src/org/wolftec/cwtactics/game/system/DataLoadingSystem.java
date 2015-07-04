@@ -3,6 +3,7 @@ package org.wolftec.cwtactics.game.system;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.localforage.LocalForage;
 import org.wolftec.cwtactics.engine.localforage.LocalForageConfig;
@@ -23,6 +24,8 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
   private EntityManager em;
   private EventEmitter ev;
 
+  private LoadEntityEvent loaderEvent;
+
   @Override
   public void onConstruction() {
     LocalForageConfig config = new LocalForageConfig();
@@ -34,35 +37,35 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
 
   @Override
   public void onSystemStartup(Playground gameContainer) {
-    loadFolder(gameContainer, "modifications/cwt/tiles", LoadEntityEvent.TYPE_TILE_DATA);
-    loadFolder(gameContainer, "modifications/cwt/props", LoadEntityEvent.TYPE_PROPERTY_DATA);
-    loadFolder(gameContainer, "modifications/cwt/movetypes", LoadEntityEvent.TYPE_MOVETYPE_DATA);
-    loadFolder(gameContainer, "modifications/cwt/units", LoadEntityEvent.TYPE_UNIT_DATA);
-    loadFolder(gameContainer, "modifications/cwt/weathers", LoadEntityEvent.TYPE_WEATHER_DATA);
-    loadFolder(gameContainer, "modifications/cwt/cos", LoadEntityEvent.TYPE_CO_DATA);
-    loadFolder(gameContainer, "modifications/cwt/armies", LoadEntityEvent.TYPE_ARMY_DATA);
+    loadFolder(gameContainer, "modifications/cwt/tiles", (entity, data) -> loaderEvent.onLoadTileTypeEntity(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/props", (entity, data) -> loaderEvent.onLoadPropertyTypeEntity(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/movetypes", (entity, data) -> loaderEvent.onLoadMoveTypeEntity(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/units", (entity, data) -> loaderEvent.onLoadUnitTypeEntity(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/weathers", (entity, data) -> loaderEvent.onLoadWeatherTypeEntity(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/cos", (entity, data) -> loaderEvent.onLoadCommanderTypeEntity(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/armies", (entity, data) -> loaderEvent.onLoadArmyTypeEntity(entity, data));
 
-    loadFolder(gameContainer, "modifications/cwt/maps", LoadEntityEvent.TYPE_MAP);
+    loadFolder(gameContainer, "modifications/cwt/maps", (entity, data) -> loaderEvent.onLoadMapEntity(entity, data));
   }
 
-  private void loadFolder(Playground gameContainer, String folder, String type) {
+  private void loadFolder(Playground gameContainer, String folder, Callback2<String, Object> callback) {
     log.info("loading data from folder " + folder);
 
     AssetEntry data = gameContainer.getAssetEntry("__filelist__.json", folder, "json");
     LocalForage.localforage.getItem(data.path, (err, value) -> {
       if (value == null) {
         BrowserUtil.requestJsonFile(data.url, (objData, error) -> {
-          loadRemoteFolderByContentList(gameContainer, folder, (Array<String>) objData, type);
+          loadRemoteFolderByContentList(gameContainer, folder, (Array<String>) objData, callback);
         });
 
       } else {
-        loadCachedFolderByContentList(gameContainer, folder, (Array<String>) value, type);
+        loadCachedFolderByContentList(gameContainer, folder, (Array<String>) value, callback);
         // TODO typecheck
       }
     });
   }
 
-  private void loadRemoteFolderByContentList(Playground game, String folder, Array<String> content, String type) {
+  private void loadRemoteFolderByContentList(Playground game, String folder, Array<String> content, Callback2<String, Object> callback) {
 
     JsUtil.forEachArrayValue(content, (index, id) -> {
       AssetEntry data = game.getAssetEntry(id, folder, "json");
@@ -75,7 +78,7 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
         log.info("parsing and validating " + data.key);
 
         String entity = JSObjectAdapter.hasOwnProperty(objData, "ID") ? em.acquireEntityWithId(JSObjectAdapter.$get(objData, "ID").toString()) : null;
-        ev.publish(LoadEntityEvent.class).onLoadEntity(entity, type, objData);
+        callback.$invoke(entity, objData);
 
         LocalForage.localforage.setItem(data.key, objData, (err, savedData) -> {
           log.info("saved data file " + data.key);
@@ -85,7 +88,7 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
     });
   }
 
-  private void loadCachedFolderByContentList(Playground game, String folder, Array<String> content, String type) {
+  private void loadCachedFolderByContentList(Playground game, String folder, Array<String> content, Callback2<String, Object> callback) {
     JsUtil.forEachArrayValue(content, (index, id) -> {
       AssetEntry data = game.getAssetEntry(id, folder, "json");
 
@@ -95,7 +98,7 @@ public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
         log.info("grabbed value from the cache");
 
         String entity = em.acquireEntityWithId(JSObjectAdapter.$get(value, "ID").toString());
-        ev.publish(LoadEntityEvent.class).onLoadEntity(entity, type, value);
+        callback.$invoke(entity, value);
 
         game.loader.success(data.key);
       });

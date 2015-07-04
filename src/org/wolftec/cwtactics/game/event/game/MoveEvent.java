@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.event.game;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwtactics.game.IEvent;
+import org.wolftec.cwtactics.game.core.IEvent;
 
 public interface MoveEvent extends IEvent {
   default void onUnitMove(String unit, Array<Integer> steps) {

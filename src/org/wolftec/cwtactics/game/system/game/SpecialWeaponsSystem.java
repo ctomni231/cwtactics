@@ -20,20 +20,20 @@ public class SpecialWeaponsSystem implements ConstructedClass, SpecialWeaponsEve
   private EventEmitter ev;
 
   @Override
-  public void onBuildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
+  public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
     if (flags.get(FLAG_SOURCE_UNIT_TO) == 1 && flags.get(FLAG_SOURCE_PROP_NONE) == 1) {
       if (em.hasEntityComponent(property, FireAble.class)) {
         FireAble silo = em.getComponent(property, FireAble.class);
 
         if (em.getComponent(unit, Owner.class).owner == em.getComponent(EntityId.GAME_ROUND, Turn.class).owner && silo.usableBy.indexOf(unit) != -1) {
-          ev.publish(ActionEvents.class).onAddAction("fireSilo", true);
+          ev.publish(ActionEvents.class).addAction("fireSilo", true);
         }
       }
     }
   }
 
   @Override
-  public void onInvokeAction(String action, int x, int y, int tx, int ty) {
+  public void invokeAction(String action, int x, int y, int tx, int ty) {
     if (action == "fireSilo") {
       String silo = em.getEntityByFilter(Position.class, (em, ent, pos) -> !em.hasEntityComponent(ent, Living.class) && pos.x == x && pos.y == y);
       String launcher = em.getEntityByFilter(Position.class, (em, ent, pos) -> em.hasEntityComponent(ent, Living.class) && pos.x == x && pos.y == y);

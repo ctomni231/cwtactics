@@ -90,25 +90,25 @@ public class SupplySystem implements ConstructedClass, LoadEntityEvent, TurnEven
   }
 
   @Override
-  public void onLoadEntity(String entity, String entityType, Object data) {
-    switch (entityType) {
-      case TYPE_UNIT_DATA:
-      case TYPE_PROPERTY_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, SupplierAbility.class, (supplier) -> {
-          asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
-          asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
-            asserter.isEntityId();
-          });
-        });
-        break;
-    }
+  public void onLoadUnitTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, SupplierAbility.class, (supplier) -> {
+      asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
+      asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
+        asserter.isEntityId();
+      });
+    });
+  }
 
-    switch (entityType) {
-      case TYPE_PROPERTY_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, Funds.class, (funds) -> {
-          asserter.inspectValue("Funds.amount of " + entity, funds.amount).isIntWithinRange(0, 999999);
-        });
-        break;
-    }
+  @Override
+  public void onLoadPropertyTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, SupplierAbility.class, (supplier) -> {
+      asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
+      asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
+        asserter.isEntityId();
+      });
+      em.tryAcquireComponentFromDataSuccessCb(entity, data, Funds.class, (funds) -> {
+        asserter.inspectValue("Funds.amount of " + entity, funds.amount).isIntWithinRange(0, 999999);
+      });
+    });
   }
 }

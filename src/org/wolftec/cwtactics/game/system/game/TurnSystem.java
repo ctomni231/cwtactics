@@ -1,8 +1,7 @@
 package org.wolftec.cwtactics.game.system.game;
 
+import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.EntityId;
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.game.Player;
 import org.wolftec.cwtactics.game.components.game.Turn;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
@@ -11,15 +10,18 @@ import org.wolftec.cwtactics.game.event.game.TurnEvents;
 
 public class TurnSystem implements ConstructedClass, TurnEvents {
 
-  private EntityManager em;
-  private EventEmitter ev;
+  private TurnEvents turnEvents;
+  private ErrorEvent errors;
+
+  private ComponentHolder<Turn> turns;
+  private ComponentHolder<Player> players;
 
   @Override
   public void onClientEndsTurn() {
-    Turn data = em.getComponent(EntityId.GAME_ROUND, Turn.class);
+    Turn data = turns.get(EntityId.GAME_ROUND);
 
     String prevTurnOwner = data.owner;
-    ev.publish(TurnEvents.class).onTurnEnd(prevTurnOwner);
+    turnEvents.onTurnEnd(prevTurnOwner);
 
     // search new owner
     do {
@@ -31,15 +33,15 @@ public class TurnSystem implements ConstructedClass, TurnEvents {
       // start a new day with a turn for every player
       if (EntityId.isFirstPlayer(data.owner)) {
         data.day++;
-        ev.publish(TurnEvents.class).onDayStart(data.day);
+        turnEvents.onDayStart(data.day);
       }
 
-      if (em.getComponent(data.owner, Player.class).alive) {
-        ev.publish(TurnEvents.class).onTurnStart(data.owner, data.day);
+      if (players.get(data.owner).alive) {
+        turnEvents.onTurnStart(data.owner, data.day);
         return;
       }
     } while (data.owner != prevTurnOwner);
 
-    ev.publish(ErrorEvent.class).onIllegalGameData("could not select a new turn owner");
+    errors.onIllegalGameData("could not select a new turn owner");
   }
 }

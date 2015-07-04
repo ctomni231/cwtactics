@@ -5,7 +5,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.IEntityComponent;
+import org.wolftec.cwtactics.game.core.IEntityComponent;
 
 public class ComponentSerializationUtil {
 

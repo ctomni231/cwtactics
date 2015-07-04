@@ -22,14 +22,10 @@ public class FuelDrainSystem implements ConstructedClass, LoadEntityEvent, TurnE
   }
 
   @Override
-  public void onLoadEntity(String entity, String entityType, Object data) {
-    switch (entityType) {
-      case LoadEntityEvent.TYPE_UNIT_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, FuelDrain.class, (drain) -> {
-          asserter.inspectValue("FuelDrain.daily of " + entity, drain.daily).isIntWithinRange(1, 99);
-        });
-        break;
-    }
+  public void onLoadUnitTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, FuelDrain.class, (drain) -> {
+      asserter.inspectValue("FuelDrain.daily of " + entity, drain.daily).isIntWithinRange(1, 99);
+    });
   }
 
   @Override

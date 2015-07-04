@@ -12,6 +12,7 @@ import org.stjs.javascript.functions.Function3;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.IEntityComponent;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.util.ComponentSerializationUtil;
 

@@ -12,6 +12,7 @@ import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.ConstructedClass;
 import org.wolftec.cwtactics.game.core.ConstructedFactory;
+import org.wolftec.cwtactics.game.core.IEvent;
 import org.wolftec.cwtactics.game.core.Log;
 
 public class EventEmitter implements ConstructedClass {

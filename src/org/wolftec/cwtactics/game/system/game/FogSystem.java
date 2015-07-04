@@ -63,23 +63,24 @@ public class FogSystem implements ConstructedClass, FactoryEvents, UnitDestroyed
   }
 
   @Override
-  public void onLoadEntity(String entity, String entityType, Object data) {
-    switch (entityType) {
+  public void onLoadUnitEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, Vision.class, (vision) -> {
+      asserter.inspectValue("Vision.range of " + entity, vision.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
+    });
+  }
 
-      case LoadEntityEvent.TYPE_UNIT_DATA:
-      case LoadEntityEvent.TYPE_PROPERTY_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, Vision.class, (vision) -> {
-          asserter.inspectValue("Vision.range of " + entity, vision.range)
-              .isIntWithinRange(entityType == TYPE_UNIT_DATA ? 1 : 0, Constants.MAX_SELECTION_RANGE);
-        });
-        break;
+  @Override
+  public void onLoadPropertyTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, Vision.class, (vision) -> {
+      asserter.inspectValue("Vision.range of " + entity, vision.range).isIntWithinRange(0, Constants.MAX_SELECTION_RANGE);
+    });
+  }
 
-      case LoadEntityEvent.TYPE_TILE_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, Visible.class, (visible) -> {
-          asserter.inspectValue("Visible.blocksVision of " + entity, visible.blocksVision).isBoolean();
-        });
-        break;
-    }
+  @Override
+  public void onLoadTileTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, Visible.class, (visible) -> {
+      asserter.inspectValue("Visible.blocksVision of " + entity, visible.blocksVision).isBoolean();
+    });
   }
 
   @Override

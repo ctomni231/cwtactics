@@ -19,17 +19,13 @@ public class TransportSystem implements ConstructedClass, LoadEntityEvent, Trans
   }
 
   @Override
-  public void onLoadEntity(String entity, String entityType, Object data) {
-    switch (entityType) {
-      case LoadEntityEvent.TYPE_UNIT_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, LoadingAbility.class, (transporter) -> {
-          asserter.inspectValue("Transporter.slots of " + entity, transporter.slots).isIntWithinRange(1, 10);
-          asserter.inspectValue("Transporter.noDamage of " + entity, transporter.loads).forEachArrayValue((target) -> {
-            asserter.isEntityId();
-          });
-        });
-        break;
-    }
+  public void onLoadUnitTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, LoadingAbility.class, (transporter) -> {
+      asserter.inspectValue("Transporter.slots of " + entity, transporter.slots).isIntWithinRange(1, 10);
+      asserter.inspectValue("Transporter.noDamage of " + entity, transporter.loads).forEachArrayValue((target) -> {
+        asserter.isEntityId();
+      });
+    });
   }
 
   @Override

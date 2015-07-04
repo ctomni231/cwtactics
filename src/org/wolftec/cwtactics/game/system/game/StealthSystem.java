@@ -14,14 +14,10 @@ public class StealthSystem implements ConstructedClass, StealthEvents, LoadEntit
   private Asserter as;
 
   @Override
-  public void onLoadEntity(String entity, String entityType, Object data) {
-    switch (entityType) {
-      case LoadEntityEvent.TYPE_UNIT_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, HideAble.class, (hideAble) -> {
-          as.inspectValue("HideAble.additionFuelDrain of " + entity, hideAble.additionFuelDrain).isIntWithinRange(0, 99);
-        });
-        break;
-    }
+  public void onLoadUnitTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, HideAble.class, (hideAble) -> {
+      as.inspectValue("HideAble.additionFuelDrain of " + entity, hideAble.additionFuelDrain).isIntWithinRange(0, 99);
+    });
   }
 
   @Override

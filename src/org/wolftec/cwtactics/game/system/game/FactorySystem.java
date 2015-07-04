@@ -21,22 +21,19 @@ public class FactorySystem implements ConstructedClass, FactoryEvents, LoadEntit
   private Asserter asserter;
 
   @Override
-  public void onLoadEntity(String entity, String entityType, Object data) {
-    switch (entityType) {
-      case LoadEntityEvent.TYPE_UNIT_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, Buyable.class, (buyable) -> {
-          asserter.inspectValue("Buyable.cost of " + entity, buyable.cost).isIntWithinRange(0, 999999);
-        });
-        break;
+  public void onLoadUnitTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, Buyable.class, (buyable) -> {
+      asserter.inspectValue("Buyable.cost of " + entity, buyable.cost).isIntWithinRange(0, 999999);
+    });
+  }
 
-      case LoadEntityEvent.TYPE_PROPERTY_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, Factory.class, (factory) -> {
-          asserter.inspectValue("Factory.builds of " + entity, factory.builds).forEachArrayValue((value) -> {
-            asserter.isEntityId();
-          });
-        });
-        break;
-    }
+  @Override
+  public void onLoadPropertyTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, Factory.class, (factory) -> {
+      asserter.inspectValue("Factory.builds of " + entity, factory.builds).forEachArrayValue((value) -> {
+        asserter.isEntityId();
+      });
+    });
   }
 
   @Override

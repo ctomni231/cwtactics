@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.event.game;
 
-import org.wolftec.cwtactics.game.IEvent;
+import org.wolftec.cwtactics.game.core.IEvent;
 
 public interface CaptureEvents extends IEvent {
   default void onCaptureProperty(String capturer, String property) {

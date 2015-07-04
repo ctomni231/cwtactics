@@ -9,7 +9,7 @@ import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 
-public class ComponentHolder<T> {
+public class ComponentHolder<T> implements KeyMap<T>, InstancePool<T> {
 
   private Class<T> constructor;
   private Map<String, T> components;
@@ -21,11 +21,7 @@ public class ComponentHolder<T> {
     constructor = pConstructor;
   }
 
-  /**
-   * 
-   * @param entity
-   * @return the component of the entity.
-   */
+  @Override
   public T get(String entity) {
     Object component = components.$get(entity);
     if (component != JSGlobal.undefined) {
@@ -34,27 +30,22 @@ public class ComponentHolder<T> {
     return JsUtil.throwError("UnknownEntity");
   }
 
-  /**
-   * 
-   * @param entity
-   * @return true when the entity has a component of this holder else false
-   */
+  @Override
   public boolean has(String entity) {
     return (components.$get(entity) != JSGlobal.undefined);
   }
 
-  /**
-   * Acquires a component for an entity.
-   * 
-   * @param entity
-   * @return
+  /* (non-Javadoc)
+   * @see org.wolftec.cwtactics.game.InstancePool#acquire(java.lang.String)
    */
+  @Override
   public T acquire(String entity) {
     if (has(entity)) {
       return JsUtil.throwError("EntityAlreadyRegistered");
     }
 
-    @SuppressWarnings("unused") Object clazz = constructor;
+    @SuppressWarnings("unused")
+    Object clazz = constructor;
     T instance = JSObjectAdapter.$js("new clazz()");
 
     components.$put(entity, instance);
@@ -63,12 +54,10 @@ public class ComponentHolder<T> {
     return instance;
   }
 
-  /**
-   * Releases a component of an entity.
-   * 
-   * @param entity
-   * @return
+  /* (non-Javadoc)
+   * @see org.wolftec.cwtactics.game.InstancePool#release(java.lang.String)
    */
+  @Override
   public boolean release(String entity) {
     // TODO implement cache
 
@@ -78,12 +67,7 @@ public class ComponentHolder<T> {
     return true;
   }
 
-  /**
-   * Searches the first matching entity.
-   * 
-   * @param filter
-   * @return the entity that matches with the filter
-   */
+  @Override
   public String find(Function2<String, T, Boolean> filter) {
     for (int i = 0; i < entities.$length(); i++) {
       String key = entities.$get(i);
@@ -94,11 +78,7 @@ public class ComponentHolder<T> {
     return JsUtil.throwError("NoMatchFound");
   }
 
-  /**
-   * Iterates through every entity with a connected component of this holder.
-   * 
-   * @param callback
-   */
+  @Override
   public void each(Callback2<String, T> callback) {
     for (int i = 0; i < entities.$length(); i++) {
       String key = entities.$get(i);

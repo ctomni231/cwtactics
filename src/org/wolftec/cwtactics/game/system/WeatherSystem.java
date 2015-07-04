@@ -25,14 +25,10 @@ public class WeatherSystem implements ConstructedClass, TurnEvents, WeatherChang
   }
 
   @Override
-  public void onLoadEntity(String entity, String entityType, Object data) {
-    switch (entityType) {
-      case LoadEntityEvent.TYPE_WEATHER_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, Weather.class, (weather) -> {
-          asserter.inspectValue("Weather.defaultWeather of " + entity, weather.defaultWeather).isBoolean();
-        });
-        break;
-    }
+  public void onLoadWeatherTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, Weather.class, (weather) -> {
+      asserter.inspectValue("Weather.defaultWeather of " + entity, weather.defaultWeather).isBoolean();
+    });
   }
 
   @Override

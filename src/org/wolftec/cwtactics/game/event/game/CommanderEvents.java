@@ -1,17 +1,17 @@
 package org.wolftec.cwtactics.game.event.game;
 
-import org.wolftec.cwtactics.game.IEvent;
 import org.wolftec.cwtactics.game.components.game.PlayerCommander.PowerLevel;
+import org.wolftec.cwtactics.game.core.IEvent;
 
 public interface CommanderEvents extends IEvent {
-  default void onActivatePowerLevel(String player, PowerLevel level) {
+  default void activatePowerLevel(String player, PowerLevel level) {
   }
 
-  default void onChangePower(String player, int amount) {
+  default void changePower(String player, int amount) {
 
   }
 
-  default void onPowerChanged(String player, int currentPower) {
+  default void powerChanged(String player, int currentPower) {
 
   }
 }

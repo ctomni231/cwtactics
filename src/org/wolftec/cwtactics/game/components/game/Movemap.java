@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.components.game;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwtactics.game.IEntityComponent;
+import org.wolftec.cwtactics.game.core.IEntityComponent;
 
 public class Movemap implements IEntityComponent {
   public int top;

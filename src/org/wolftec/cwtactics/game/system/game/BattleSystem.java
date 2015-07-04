@@ -29,31 +29,33 @@ public class BattleSystem implements ConstructedClass, UnitCreatedEvent, LoadEnt
   }
 
   @Override
-  public void onLoadEntity(String entity, String entityType, Object data) {
-    switch (entityType) {
+  public void onLoadUnitTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, FighterPrimaryWeapon.class, (primWp) -> {
+      asserter.inspectValue("FPW.ammo of " + entity, primWp.ammo).isIntWithinRange(0, 10);
+    });
 
-      case TYPE_UNIT_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, FighterPrimaryWeapon.class, (primWp) -> {
-          asserter.inspectValue("FPW.ammo of " + entity, primWp.ammo).isIntWithinRange(0, 10);
-        });
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, FighterSecondaryWeapon.class, (primWp) -> {
+    });
 
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, FighterSecondaryWeapon.class, (primWp) -> {
-        });
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, RangedFighter.class, (rangFig) -> {
+      asserter.inspectValue("RF.minRange of " + entity, rangFig.minRange).isIntWithinRange(0, Constants.MAX_SELECTION_RANGE - 1);
+      asserter.inspectValue("RF.maxrange of " + entity, rangFig.maxRange).isIntWithinRange(rangFig.minRange + 1, Constants.MAX_SELECTION_RANGE);
+      asserter.inspectValue("FPW and RF exists together of " + entity, em.hasEntityComponent(entity, FighterPrimaryWeapon.class)).isTrue();
+    });
+  }
 
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, RangedFighter.class, (rangFig) -> {
-          asserter.inspectValue("RF.minRange of " + entity, rangFig.minRange).isIntWithinRange(0, Constants.MAX_SELECTION_RANGE - 1);
-          asserter.inspectValue("RF.maxrange of " + entity, rangFig.maxRange).isIntWithinRange(rangFig.minRange + 1, Constants.MAX_SELECTION_RANGE);
-          asserter.inspectValue("FPW and RF exists together of " + entity, em.hasEntityComponent(entity, FighterPrimaryWeapon.class)).isTrue();
-        });
-        break;
+  @Override
+  public void onLoadPropertyTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, Defense.class, (defense) -> {
+      asserter.inspectValue("DF.defense of " + entity, defense.defense).isIntWithinRange(0, 9);
+    });
+  }
 
-      case TYPE_PROPERTY_DATA:
-      case TYPE_TILE_DATA:
-        em.tryAcquireComponentFromDataSuccessCb(entity, data, Defense.class, (defense) -> {
-          asserter.inspectValue("DF.defense of " + entity, defense.defense).isIntWithinRange(0, 9);
-        });
-        break;
-    }
+  @Override
+  public void onLoadTileTypeEntity(String entity, Object data) {
+    em.tryAcquireComponentFromDataSuccessCb(entity, data, Defense.class, (defense) -> {
+      asserter.inspectValue("DF.defense of " + entity, defense.defense).isIntWithinRange(0, 9);
+    });
   }
 
   private boolean isDirectFighter(String entity) {

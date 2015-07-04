@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.event.ui;
 
 import org.wolftec.cwtactics.engine.bitset.BitSet;
-import org.wolftec.cwtactics.game.IEvent;
+import org.wolftec.cwtactics.game.core.IEvent;
 
 public interface ActionEvents extends IEvent {
 
@@ -18,7 +18,7 @@ public interface ActionEvents extends IEvent {
 
   public static final int FLAG_UNIT_GAP_START = 5;
 
-  default void onBuildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
+  default void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
 
   }
 
@@ -30,11 +30,11 @@ public interface ActionEvents extends IEvent {
 
   }
 
-  default void onInvokeAction(String action, int x, int y, int tx, int ty) {
+  default void invokeAction(String action, int x, int y, int tx, int ty) {
 
   }
 
-  default void onAddAction(String key, boolean enabled) {
+  default void addAction(String key, boolean enabled) {
 
   }
 }
