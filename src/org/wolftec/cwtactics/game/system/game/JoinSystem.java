@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.system.game;
 
 import org.wolftec.cwtactics.Constants;
-import org.wolftec.cwtactics.game.KeyMap;
+import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.components.game.Buyable;
 import org.wolftec.cwtactics.game.components.game.Living;
 import org.wolftec.cwtactics.game.components.game.Owner;
@@ -13,9 +13,9 @@ import org.wolftec.cwtactics.game.util.NumberUtil;
 
 public class JoinSystem implements System, JoinEvents {
 
-  private KeyMap<Living> livings;
-  private KeyMap<Buyable> buyables;
-  private KeyMap<Owner> owners;
+  private ComponentHolder<Living> livings;
+  private ComponentHolder<Buyable> buyables;
+  private ComponentHolder<Owner> owners;
 
   private PlayerEvents playerEventPush;
   private LivingEvents livingEventPush;

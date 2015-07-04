@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.system.game;
 
-import org.wolftec.cwtactics.game.KeyMap;
+import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.components.game.Manpower;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.core.System;
@@ -16,8 +16,8 @@ import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
  */
 public class ManpowerSystem implements System, UnitCreatedEvent, GameroundEvents {
 
-  private KeyMap<Owner> owners;
-  private KeyMap<Manpower> manpowers;
+  private ComponentHolder<Owner> owners;
+  private ComponentHolder<Manpower> manpowers;
 
   @Override
   public void gameroundStartEvent() {

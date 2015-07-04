@@ -9,7 +9,7 @@ import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 
-public class ComponentHolder<T> implements KeyMap<T>, InstancePool<T> {
+public class ComponentHolder<T> {
 
   private Class<T> constructor;
   private Map<String, T> components;
@@ -21,7 +21,11 @@ public class ComponentHolder<T> implements KeyMap<T>, InstancePool<T> {
     constructor = pConstructor;
   }
 
-  @Override
+  /**
+   * 
+   * @param key
+   * @return the component of the key.
+   */
   public T get(String entity) {
     Object component = components.$get(entity);
     if (component != JSGlobal.undefined) {
@@ -30,15 +34,21 @@ public class ComponentHolder<T> implements KeyMap<T>, InstancePool<T> {
     return JsUtil.throwError("UnknownEntity");
   }
 
-  @Override
+  /**
+   * 
+   * @param key
+   * @return true when the key has a component of this holder else false
+   */
   public boolean has(String entity) {
     return (components.$get(entity) != JSGlobal.undefined);
   }
 
-  /* (non-Javadoc)
-   * @see org.wolftec.cwtactics.game.InstancePool#acquire(java.lang.String)
+  /**
+   * Acquires an object for an key.
+   * 
+   * @param entity
+   * @return
    */
-  @Override
   public T acquire(String entity) {
     if (has(entity)) {
       return JsUtil.throwError("EntityAlreadyRegistered");
@@ -54,10 +64,12 @@ public class ComponentHolder<T> implements KeyMap<T>, InstancePool<T> {
     return instance;
   }
 
-  /* (non-Javadoc)
-   * @see org.wolftec.cwtactics.game.InstancePool#release(java.lang.String)
+  /**
+   * Releases an object T of an key.
+   * 
+   * @param entity
+   * @return
    */
-  @Override
   public boolean release(String entity) {
     // TODO implement cache
 
@@ -67,7 +79,12 @@ public class ComponentHolder<T> implements KeyMap<T>, InstancePool<T> {
     return true;
   }
 
-  @Override
+  /**
+   * Searches the first matching key.
+   * 
+   * @param filter
+   * @return the key that matches with the filter
+   */
   public String find(Function2<String, T, Boolean> filter) {
     for (int i = 0; i < entities.$length(); i++) {
       String key = entities.$get(i);
@@ -78,7 +95,11 @@ public class ComponentHolder<T> implements KeyMap<T>, InstancePool<T> {
     return JsUtil.throwError("NoMatchFound");
   }
 
-  @Override
+  /**
+   * Iterates through every key with a connected component of this holder.
+   * 
+   * @param callback
+   */
   public void each(Callback2<String, T> callback) {
     for (int i = 0; i < entities.$length(); i++) {
       String key = entities.$get(i);

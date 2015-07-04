@@ -1,34 +1,30 @@
 package org.wolftec.cwtactics.game.system.game;
 
 import org.wolftec.cwtactics.engine.bitset.BitSet;
+import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.EntityId;
-import org.wolftec.cwtactics.game.KeyMap;
 import org.wolftec.cwtactics.game.components.game.Commander;
 import org.wolftec.cwtactics.game.components.game.PlayerCommander;
 import org.wolftec.cwtactics.game.components.game.PlayerCommander.PowerLevel;
 import org.wolftec.cwtactics.game.components.game.Turn;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.core.Handled;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
 import org.wolftec.cwtactics.game.event.game.CommanderEvents;
 import org.wolftec.cwtactics.game.event.ui.ActionEvents;
 
-@Handled("system")
 public class CommanderSystem implements System, CommanderEvents, GameroundEvents, ActionEvents {
 
   private static final int POWER_PER_STAR = 1000;
 
-  private KeyMap<Turn> turns;
-  private KeyMap<PlayerCommander> playerCommanders;
-  private KeyMap<Commander> commanders;
+  private ComponentHolder<Turn> turns;
+  private ComponentHolder<PlayerCommander> playerCommanders;
+  private ComponentHolder<Commander> commanders;
 
   private ActionEvents actionEvent;
 
-  @Handled("event-emitter")
   private CommanderEvents commanderEvent;
 
-  @Handled("event-emitter")
   private ErrorEvent errorEvent;
 
   @Override
