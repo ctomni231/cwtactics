@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.core;
 
-public interface ConstructedClass {
+public interface System {
   default void onConstruction() {
 
   }

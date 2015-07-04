@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.event;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface LoadEntityEvent extends IEvent {
+public interface LoadEntityEvent extends SystemEvent {
   default void onLoadUnitTypeEntity(String entity, Object data) {
   }
 

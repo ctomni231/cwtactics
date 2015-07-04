@@ -10,12 +10,12 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.ConstructedFactory;
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 import org.wolftec.cwtactics.game.core.Log;
 
-public class EventEmitter implements ConstructedClass {
+public class EventEmitter implements System {
 
   private Log log;
   private Object eventEmitter;
@@ -61,7 +61,7 @@ public class EventEmitter implements ConstructedClass {
 
   private boolean isEventClass(Class<?> classObject) {
     Array<Class<?>> inherits = (Array<Class<?>>) JSObjectAdapter.$get(classObject, "$inherit");
-    return inherits.indexOf(IEvent.class) != -1;
+    return inherits.indexOf(SystemEvent.class) != -1;
   }
 
   protected Callback0 createEventEmitterCallback(String evName) {
@@ -122,7 +122,7 @@ public class EventEmitter implements ConstructedClass {
     });
   }
 
-  public <T extends IEvent> T publish(Class<T> eventClass) {
+  public <T extends SystemEvent> T publish(Class<T> eventClass) {
     // eventEmitter implements all T's (of course if you don't doing something
     // low level with the IEvent classes)
     return (T) eventEmitter;

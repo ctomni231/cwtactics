@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.event.game;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface StealthEvents extends IEvent {
+public interface StealthEvents extends SystemEvent {
 
   default void onHideUnit(String unit) {
   }

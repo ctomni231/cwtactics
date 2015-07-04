@@ -10,12 +10,12 @@ import org.wolftec.cwtactics.game.components.game.Movemap;
 import org.wolftec.cwtactics.game.components.game.MovingCosts;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.game.MoveEvent;
 
-public class MoveSystem implements ConstructedClass, MoveEvent, LoadEntityEvent {
+public class MoveSystem implements System, MoveEvent, LoadEntityEvent {
 
   private Log log;
   private EntityManager em;

@@ -13,12 +13,12 @@ import org.wolftec.cwtactics.engine.util.BrowserUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
-public class DataLoadingSystem implements ConstructedClass, SystemStartEvent {
+public class DataLoadingSystem implements System, SystemStartEvent {
 
   private Log log;
   private EntityManager em;

@@ -5,11 +5,11 @@ import org.wolftec.cwtactics.game.components.game.LoadingAbility;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.components.game.TransportContainer;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.game.TransporterEvents;
 
-public class TransportSystem implements ConstructedClass, LoadEntityEvent, TransporterEvents {
+public class TransportSystem implements System, LoadEntityEvent, TransporterEvents {
 
   private EntityManager em;
   private Asserter asserter;

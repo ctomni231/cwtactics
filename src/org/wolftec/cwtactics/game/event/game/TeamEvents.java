@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.event.game;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface TeamEvents extends IEvent {
+public interface TeamEvents extends SystemEvent {
 
   default void onSendMoney(String source, String target, int amount) {
 

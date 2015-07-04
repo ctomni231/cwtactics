@@ -4,11 +4,11 @@ import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.Config;
 import org.wolftec.cwtactics.game.components.game.ValueMetaData;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
 
-public class ConfigSystem implements ConstructedClass, GameroundEvents {
+public class ConfigSystem implements System, GameroundEvents {
 
   private Log log;
   private EntityManager em;

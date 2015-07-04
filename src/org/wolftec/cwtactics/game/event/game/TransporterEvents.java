@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.event.game;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface TransporterEvents extends IEvent {
+public interface TransporterEvents extends SystemEvent {
 
   default void onLoadUnit(String transporter, String load) {
 

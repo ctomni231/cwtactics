@@ -6,12 +6,12 @@ import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.game.FuelDepot;
 import org.wolftec.cwtactics.game.components.game.FuelDrain;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.UnitDestroyedEvent;
 import org.wolftec.cwtactics.game.event.game.TurnEvents;
 
-public class FuelDrainSystem implements ConstructedClass, LoadEntityEvent, TurnEvents {
+public class FuelDrainSystem implements System, LoadEntityEvent, TurnEvents {
 
   private EntityManager em;
   private EventEmitter ev;

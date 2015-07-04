@@ -4,10 +4,10 @@ import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.ExplodeAbility;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 
-public class SuicideUnitSystem implements ConstructedClass, LoadEntityEvent {
+public class SuicideUnitSystem implements System, LoadEntityEvent {
 
   private EntityManager em;
   private Asserter asserter;

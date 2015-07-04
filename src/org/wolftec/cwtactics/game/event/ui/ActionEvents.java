@@ -1,9 +1,9 @@
 package org.wolftec.cwtactics.game.event.ui;
 
 import org.wolftec.cwtactics.engine.bitset.BitSet;
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface ActionEvents extends IEvent {
+public interface ActionEvents extends SystemEvent {
 
   public static final int FLAG_SOURCE_PROP_EXISTS = 0;
   public static final int FLAG_SOURCE_PROP_TO = 1;

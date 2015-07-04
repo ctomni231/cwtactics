@@ -7,14 +7,14 @@ import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.components.game.Usable;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.game.TurnEvents;
 import org.wolftec.cwtactics.game.event.game.UsabilityEvents;
 import org.wolftec.cwtactics.game.event.ui.ActionEvents;
 
 @SyntheticType
-public class UsableObjectSystem implements ConstructedClass, UsabilityEvents, TurnEvents, ActionEvents {
+public class UsableObjectSystem implements System, UsabilityEvents, TurnEvents, ActionEvents {
 
   private Log log;
 

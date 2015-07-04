@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.event.game;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface UsabilityEvents extends IEvent {
+public interface UsabilityEvents extends SystemEvent {
 
   default void onWait(String unit) {
 

@@ -4,10 +4,10 @@ import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.FireAble;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 
-public class SpecialWeaponsSystem implements ConstructedClass, LoadEntityEvent {
+public class SpecialWeaponsSystem implements System, LoadEntityEvent {
 
   private EntityManager em;
   private Asserter asserter;

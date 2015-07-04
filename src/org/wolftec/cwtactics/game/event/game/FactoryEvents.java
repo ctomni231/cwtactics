@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.event.game;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface FactoryEvents extends IEvent {
+public interface FactoryEvents extends SystemEvent {
 
   default void onBuildUnit(String factory, String type) {
   }

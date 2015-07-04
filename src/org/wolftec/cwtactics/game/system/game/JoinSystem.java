@@ -5,13 +5,13 @@ import org.wolftec.cwtactics.game.KeyMap;
 import org.wolftec.cwtactics.game.components.game.Buyable;
 import org.wolftec.cwtactics.game.components.game.Living;
 import org.wolftec.cwtactics.game.components.game.Owner;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.game.JoinEvents;
 import org.wolftec.cwtactics.game.event.game.LivingEvents;
 import org.wolftec.cwtactics.game.event.game.PlayerEvents;
 import org.wolftec.cwtactics.game.util.NumberUtil;
 
-public class JoinSystem implements ConstructedClass, JoinEvents {
+public class JoinSystem implements System, JoinEvents {
 
   private KeyMap<Living> livings;
   private KeyMap<Buyable> buyables;

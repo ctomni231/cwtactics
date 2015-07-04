@@ -4,11 +4,11 @@ import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.components.game.Player;
 import org.wolftec.cwtactics.game.components.game.Turn;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.game.TurnEvents;
 
-public class TurnSystem implements ConstructedClass, TurnEvents {
+public class TurnSystem implements System, TurnEvents {
 
   private TurnEvents turnEvents;
   private ErrorEvent errors;

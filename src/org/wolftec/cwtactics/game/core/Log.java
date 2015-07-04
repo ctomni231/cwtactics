@@ -4,12 +4,12 @@ import org.stjs.javascript.Global;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 
-public class Log implements ConstructedObject {
+public class Log implements SystemObject {
 
   private String loggerName;
 
   @Override
-  public void onConstruction(ConstructedClass instance) {
+  public void onConstruction(System instance) {
     loggerName = Log.convertNameToFixedLength(ClassUtil.getClassName(instance));
   }
 

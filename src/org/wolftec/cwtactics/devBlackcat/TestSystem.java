@@ -1,10 +1,10 @@
 package org.wolftec.cwtactics.devBlackcat;
 
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
 
-public class TestSystem implements ConstructedClass, GameroundEvents {
+public class TestSystem implements System, GameroundEvents {
 
   private Log log;
 

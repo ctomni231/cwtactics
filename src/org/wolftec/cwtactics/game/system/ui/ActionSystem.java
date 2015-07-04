@@ -15,12 +15,12 @@ import org.wolftec.cwtactics.game.components.game.Turn;
 import org.wolftec.cwtactics.game.components.ui.ActionBuffer;
 import org.wolftec.cwtactics.game.components.ui.Menu;
 import org.wolftec.cwtactics.game.core.CircularBuffer;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.NextFrameEvent;
 import org.wolftec.cwtactics.game.event.ui.ActionEvents;
 
-public class ActionSystem implements ConstructedClass, ActionEvents, NextFrameEvent {
+public class ActionSystem implements System, ActionEvents, NextFrameEvent {
 
   @SyntheticType
   public class ActionData {

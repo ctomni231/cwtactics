@@ -4,10 +4,10 @@ import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Player;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.game.TeamEvents;
 
-public class TeamSystem implements ConstructedClass, TeamEvents {
+public class TeamSystem implements System, TeamEvents {
 
   private EntityManager em;
   private Asserter as;

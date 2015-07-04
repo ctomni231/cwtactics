@@ -7,13 +7,13 @@ import org.wolftec.cwtactics.engine.playground.PlaygroundGlobal;
 import org.wolftec.cwtactics.engine.playground.PlaygroundState;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.ConstructedFactory;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ClickEvent;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
-public class Cwt extends Playground implements ConstructedClass, SystemStartEvent {
+public class Cwt extends Playground implements System, SystemStartEvent {
 
   private Log log;
   private EntityManager em;

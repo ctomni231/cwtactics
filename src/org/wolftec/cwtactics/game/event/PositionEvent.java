@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.event;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface PositionEvent extends IEvent {
+public interface PositionEvent extends SystemEvent {
 
   void onUnitPlacedAtProperty(String unit, String property);
 

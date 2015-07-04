@@ -4,7 +4,7 @@ import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.game.TimerData;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
 import org.wolftec.cwtactics.game.event.NextFrameEvent;
@@ -16,7 +16,7 @@ import org.wolftec.cwtactics.game.event.game.TurnEvents;
  * the game time limit is reached then the game round will be ended by this
  * system.
  */
-public class GameTimeSystem implements ConstructedClass, NextFrameEvent, GameroundEvents, TurnEvents {
+public class GameTimeSystem implements System, NextFrameEvent, GameroundEvents, TurnEvents {
 
   private Log log;
   private EntityManager em;

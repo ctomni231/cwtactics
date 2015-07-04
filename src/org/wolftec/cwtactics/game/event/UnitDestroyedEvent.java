@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.event;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface UnitDestroyedEvent extends IEvent {
+public interface UnitDestroyedEvent extends SystemEvent {
   void onUnitDestroyed(String unitEntity);
 }

@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.event.game;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface HealthEvents extends IEvent {
+public interface HealthEvents extends SystemEvent {
   default void onDamageUnit(String unit, int amount, int rest) {
   }
 

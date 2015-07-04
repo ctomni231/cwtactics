@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.event;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface GameroundEvents extends IEvent {
+public interface GameroundEvents extends SystemEvent {
 
   default void gameroundStartEvent() {
   }

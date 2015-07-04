@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.event.game;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface TurnEvents extends IEvent {
+public interface TurnEvents extends SystemEvent {
 
   default void onClientEndsTurn() {
 

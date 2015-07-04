@@ -9,13 +9,13 @@ import org.wolftec.cwtactics.game.components.game.Living;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.game.CaptureEvents;
 import org.wolftec.cwtactics.game.event.ui.ActionEvents;
 
-public class CaptureSystem implements ConstructedClass, CaptureEvents, LoadEntityEvent, ActionEvents {
+public class CaptureSystem implements System, CaptureEvents, LoadEntityEvent, ActionEvents {
 
   private EntityManager em;
 

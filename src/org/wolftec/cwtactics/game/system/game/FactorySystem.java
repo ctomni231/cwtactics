@@ -7,13 +7,13 @@ import org.wolftec.cwtactics.game.components.game.Factory;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.game.FactoryEvents;
 
-public class FactorySystem implements ConstructedClass, FactoryEvents, LoadEntityEvent {
+public class FactorySystem implements System, FactoryEvents, LoadEntityEvent {
 
   private Log log;
   private EntityManager em;

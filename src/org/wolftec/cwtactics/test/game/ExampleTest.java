@@ -1,11 +1,11 @@
 package org.wolftec.cwtactics.test.game;
 
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.test.core.ITest;
 
-public class ExampleTest implements ITest, ConstructedClass {
+public class ExampleTest implements ITest, System {
 
   private Log log;
   private Asserter asserter;

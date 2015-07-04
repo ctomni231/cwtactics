@@ -3,10 +3,10 @@ package org.wolftec.cwtactics.game.system;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.Army;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 
-public class ArmySystem implements ConstructedClass, LoadEntityEvent {
+public class ArmySystem implements System, LoadEntityEvent {
 
   private EntityManager em;
   private Asserter asserter;

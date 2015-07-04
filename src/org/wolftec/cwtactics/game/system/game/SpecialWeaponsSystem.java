@@ -9,12 +9,12 @@ import org.wolftec.cwtactics.game.components.game.Living;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.components.game.Turn;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.game.HealthEvents;
 import org.wolftec.cwtactics.game.event.game.SpecialWeaponsEvents;
 import org.wolftec.cwtactics.game.event.ui.ActionEvents;
 
-public class SpecialWeaponsSystem implements ConstructedClass, SpecialWeaponsEvents, ActionEvents {
+public class SpecialWeaponsSystem implements System, SpecialWeaponsEvents, ActionEvents {
 
   private EntityManager em;
   private EventEmitter ev;

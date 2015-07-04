@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.event.system;
 
-import org.wolftec.cwtactics.game.core.IEvent;
+import org.wolftec.cwtactics.game.core.SystemEvent;
 
-public interface NetworkMessageEvent extends IEvent {
+public interface NetworkMessageEvent extends SystemEvent {
   public void onIncomingMessage(String message);
 }

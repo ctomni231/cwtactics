@@ -4,10 +4,10 @@ import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.TileMap;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
 
-public class SerializationSystem implements ConstructedClass {
+public class SerializationSystem implements System {
 
   private Log log;
   private EntityManager em;

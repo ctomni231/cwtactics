@@ -6,10 +6,10 @@ import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.TileMap;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.persistence.MapLoadEvent;
 
-public class TileMapSystem implements ConstructedClass, MapLoadEvent {
+public class TileMapSystem implements System, MapLoadEvent {
 
   private EntityManager em;
   private Asserter asserter;

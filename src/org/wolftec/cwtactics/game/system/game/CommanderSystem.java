@@ -7,7 +7,7 @@ import org.wolftec.cwtactics.game.components.game.Commander;
 import org.wolftec.cwtactics.game.components.game.PlayerCommander;
 import org.wolftec.cwtactics.game.components.game.PlayerCommander.PowerLevel;
 import org.wolftec.cwtactics.game.components.game.Turn;
-import org.wolftec.cwtactics.game.core.ConstructedClass;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Handled;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
@@ -15,7 +15,7 @@ import org.wolftec.cwtactics.game.event.game.CommanderEvents;
 import org.wolftec.cwtactics.game.event.ui.ActionEvents;
 
 @Handled("system")
-public class CommanderSystem implements ConstructedClass, CommanderEvents, GameroundEvents, ActionEvents {
+public class CommanderSystem implements System, CommanderEvents, GameroundEvents, ActionEvents {
 
   private static final int POWER_PER_STAR = 1000;
 

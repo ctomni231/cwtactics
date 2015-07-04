@@ -8,7 +8,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 
-public class Asserter extends Log implements ConstructedObject {
+public class Asserter extends Log implements SystemObject {
 
   private Object value;
   private String valueName;

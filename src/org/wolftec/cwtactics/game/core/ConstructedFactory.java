@@ -18,10 +18,10 @@ import org.wolftec.cwtactics.engine.util.JsUtil;
 public class ConstructedFactory {
 
   private static Log log;
-  private static Map<String, ConstructedClass> instances;
+  private static Map<String, System> instances;
 
   /**
-   * Initializes all classes which extends the {@link ConstructedClass}
+   * Initializes all classes which extends the {@link System}
    * interface.
    */
   public static void initObjects(Array<String> forceConstructed) {
@@ -65,7 +65,7 @@ public class ConstructedFactory {
     if (!JSObjectAdapter.hasOwnProperty(instances, className)) {
       log.info("constructing " + className);
       Object classObject = JSObjectAdapter.$get(namespace, className);
-      ConstructedClass cmp = JSObjectAdapter.$js("new classObject()");
+      System cmp = JSObjectAdapter.$js("new classObject()");
       instances.$put(className, cmp);
     }
   }
@@ -78,7 +78,7 @@ public class ConstructedFactory {
       JsUtil.forEachMapValue(instanceDependencies, (property, dependencyName) -> {
         if (JSGlobal.typeof(dependencyName) == "string") {
           String dependencyClassName = ((String) dependencyName).replace(Constants.NAMESPACE + ".", "");
-          ConstructedClass dependency = instances.$get(dependencyClassName);
+          System dependency = instances.$get(dependencyClassName);
 
           // if the dependency is a constructed class, means it's collected in
           // the instances map, then inject it
@@ -99,16 +99,16 @@ public class ConstructedFactory {
     });
   }
 
-  private static void checkClassConstructedProperties(Object namespace, ConstructedClass instance, Map<String, Object> instanceDependencies) {
+  private static void checkClassConstructedProperties(Object namespace, System instance, Map<String, Object> instanceDependencies) {
     JsUtil.forEachMapValue(instanceDependencies, (property, dependencyName) -> {
       if (JSGlobal.typeof(dependencyName) == "string") {
         String dependencyClassName = ((String) dependencyName).replace(Constants.NAMESPACE + ".", "");
         Class<?> dependencyClass = (Class<?>) JSObjectAdapter.$get(namespace, dependencyClassName);
         if (dependencyClass != JSGlobal.undefined && JSObjectAdapter.hasOwnProperty(dependencyClass, "$typeDescription")) {
           Array<Class<?>> interfaces = (Array<Class<?>>) JSObjectAdapter.$get(dependencyClass, "$inherit");
-          if (interfaces.indexOf(ConstructedObject.class) != -1) {
+          if (interfaces.indexOf(SystemObject.class) != -1) {
             log.info("creating object " + dependencyClassName + " as property " + property + " in " + ClassUtil.getClassName(instance) + " instance");
-            ConstructedObject constructedObject = JSObjectAdapter.$js("new dependencyClass()");
+            SystemObject constructedObject = JSObjectAdapter.$js("new dependencyClass()");
             constructedObject.onConstruction(instance);
             JSObjectAdapter.$put(instance, property, constructedObject);
           }
@@ -139,9 +139,9 @@ public class ConstructedFactory {
   }
 
   /**
-   * Searches for the {@link ConstructedClass} interface in a class hierarchy.
+   * Searches for the {@link System} interface in a class hierarchy.
    * At the moment the class has to implement an interface which extends the
-   * {@link ConstructedClass} interface in it's own hierarchy to be recognized
+   * {@link System} interface in it's own hierarchy to be recognized
    * as constructed class.
    * 
    * @param classObj
@@ -152,7 +152,7 @@ public class ConstructedFactory {
     if (JSObjectAdapter.hasOwnProperty(classObj, "$typeDescription")) {
       Array<Class<?>> interfaces = (Array<Class<?>>) JSObjectAdapter.$get(classObj, "$inherit");
 
-      if (interfaces.indexOf(ConstructedClass.class) != -1) {
+      if (interfaces.indexOf(System.class) != -1) {
         return true;
       }
 
@@ -190,7 +190,7 @@ public class ConstructedFactory {
     Array<String> instanceNames = JsUtil.objectKeys(instances);
     for (int i = 0; i < instanceNames.$length(); i++) {
       String instanceName = instanceNames.$get(i);
-      ConstructedClass instance = instances.$get(instanceName);
+      System instance = instances.$get(instanceName);
       Object classObj = JSObjectAdapter.$constructor(instance);
       Array<Class<?>> interfaces = (Array<Class<?>>) JSObjectAdapter.$get(classObj, "$inherit");
 
