@@ -8,7 +8,7 @@ import org.wolftec.cwtactics.engine.playground.PlaygroundState;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.core.ConstructedFactory;
+import org.wolftec.cwtactics.game.core.CESManager;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ClickEvent;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
@@ -62,7 +62,7 @@ public class Cwt extends Playground implements System, SystemStartEvent {
    * @param stateClass
    */
   public void setStateByClass(Class<? extends PlaygroundState> stateClass) {
-    setState(ConstructedFactory.getObject(stateClass));
+    setState(CESManager.getObject(stateClass));
   }
 
   @Override

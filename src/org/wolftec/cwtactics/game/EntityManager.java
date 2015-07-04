@@ -12,7 +12,7 @@ import org.stjs.javascript.functions.Function3;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.core.IEntityComponent;
+import org.wolftec.cwtactics.game.core.Component;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.util.ComponentSerializationUtil;
 
@@ -23,7 +23,7 @@ public class EntityManager implements System {
   // TODO cache old entity arrays ?
 
   private Map<String, String> entityPrototypes;
-  private Map<String, Map<String, IEntityComponent>> entities;
+  private Map<String, Map<String, Component>> entities;
   private int entityIdCounter;
 
   private Function1<String, Boolean> allSelector;
@@ -55,12 +55,12 @@ public class EntityManager implements System {
     return JSObjectAdapter.hasOwnProperty(entities, id);
   }
 
-  public <T extends IEntityComponent> T acquireEntityComponent(String id, Class<T> componentClass) {
+  public <T extends Component> T acquireEntityComponent(String id, Class<T> componentClass) {
     // TODO cache components
     return attachEntityComponent(id, JSObjectAdapter.$js("new componentClass()"));
   }
 
-  public <T extends IEntityComponent> T tryAcquireComponentFromData(String id, Object data, Class<T> componentClass) {
+  public <T extends Component> T tryAcquireComponentFromData(String id, Object data, Class<T> componentClass) {
     // TODO cache components
     acquireEntityWithId(id);
     T component = ComponentSerializationUtil.parseFromData(data, componentClass);
@@ -68,7 +68,7 @@ public class EntityManager implements System {
     return component;
   }
 
-  public <T extends IEntityComponent> T tryAcquireComponentFromDataSuccessCb(String id, Object data, Class<T> componentClass, Callback1<T> successCb) {
+  public <T extends Component> T tryAcquireComponentFromDataSuccessCb(String id, Object data, Class<T> componentClass, Callback1<T> successCb) {
     T component = tryAcquireComponentFromData(id, data, componentClass);
     if (component != null) {
       successCb.$invoke(component);
@@ -76,8 +76,8 @@ public class EntityManager implements System {
     return component;
   }
 
-  public <T extends IEntityComponent> T attachEntityComponent(String id, T component) {
-    Map<String, IEntityComponent> entityMap = entities.$get(id);
+  public <T extends Component> T attachEntityComponent(String id, T component) {
+    Map<String, Component> entityMap = entities.$get(id);
     if (JSObjectAdapter.hasOwnProperty(entityMap, id)) {
       log.error("entity contains already a component " + ClassUtil.getClassName(component));
       return null;
@@ -88,22 +88,22 @@ public class EntityManager implements System {
     }
   }
 
-  public <T extends IEntityComponent> void detachEntityComponent(String id, T component) {
-    Map<String, IEntityComponent> entityMap = entities.$get(id);
+  public <T extends Component> void detachEntityComponent(String id, T component) {
+    Map<String, Component> entityMap = entities.$get(id);
     entityMap.$delete(ClassUtil.getClassName(component));
   }
 
-  public <T extends IEntityComponent> void detachEntityComponentByClass(String id, Class<T> componentClass) {
-    Map<String, IEntityComponent> entityMap = entities.$get(id);
+  public <T extends Component> void detachEntityComponentByClass(String id, Class<T> componentClass) {
+    Map<String, Component> entityMap = entities.$get(id);
     entityMap.$delete(ClassUtil.getClassName(componentClass));
   }
 
   /**
-   * Releases an entity. All connected {@link IEntityComponent} objects will be
+   * Releases an entity. All connected {@link Component} objects will be
    * detached, cached in a pool and reused with the next acquire call.
    *
    * <strong>Be aware (!) </strong> that this manager will not pooling
-   * {@link IEntityComponent} objects which extends the
+   * {@link Component} objects which extends the
    * {@link IFlyweightComponent} interface. It's suggested to leave at least one
    * entity connected to your object over the whole life time of the game. If
    * you release all connections to your {@link IFlyweightComponent} object then
@@ -122,15 +122,15 @@ public class EntityManager implements System {
    * @param lId
    * @return
    */
-  public Array<IEntityComponent> getEntityComponents(String lId) {
+  public Array<Component> getEntityComponents(String lId) {
 
-    Map<String, IEntityComponent> componentMap = entities.$get(lId);
+    Map<String, Component> componentMap = entities.$get(lId);
     if (componentMap == JSGlobal.undefined) {
       return null;
     }
 
     Array<String> componentKeys = JsUtil.objectKeys(componentMap);
-    Array<IEntityComponent> components = JSCollections.$array();
+    Array<Component> components = JSCollections.$array();
 
     for (int i = 0; i < componentKeys.$length(); i++) {
       components.push(componentMap.$get(componentKeys.$get(i)));
@@ -139,7 +139,7 @@ public class EntityManager implements System {
     return components;
   }
 
-  public <T extends IEntityComponent> Array<String> getEntitiesWithComponentType(Class<T> clazz) {
+  public <T extends Component> Array<String> getEntitiesWithComponentType(Class<T> clazz) {
     Array<String> resultEntities = JSCollections.$array();
     Array<String> entityNames = JsUtil.objectKeys(entities);
     for (int i = 0; i < entityNames.$length(); i++) {
@@ -160,9 +160,9 @@ public class EntityManager implements System {
    *          class of the wanted component
    * @return component object or null
    */
-  public <T extends IEntityComponent> T getComponent(String id, Class<T> lComponentClass) {
+  public <T extends Component> T getComponent(String id, Class<T> lComponentClass) {
 
-    Map<String, IEntityComponent> componentMap = entities.$get(id);
+    Map<String, Component> componentMap = entities.$get(id);
     if (componentMap == JSGlobal.undefined) {
       return null;
     }
@@ -181,7 +181,7 @@ public class EntityManager implements System {
     }
   }
 
-  public <T extends IEntityComponent> T getNonNullComponent(String lId, Class<T> lComponentClass) {
+  public <T extends Component> T getNonNullComponent(String lId, Class<T> lComponentClass) {
     T component;
 
     component = getComponent(lId, lComponentClass);
@@ -191,11 +191,11 @@ public class EntityManager implements System {
     return component;
   }
 
-  public <T extends IEntityComponent> boolean hasEntityComponent(String lId, Class<T> lComponentClass) {
+  public <T extends Component> boolean hasEntityComponent(String lId, Class<T> lComponentClass) {
     return getComponent(lId, lComponentClass) != null;
   }
 
-  public <T extends IEntityComponent> T getComponentByFilter(Class<T> componentClass, Function3<EntityManager, String, T, Boolean> filter) {
+  public <T extends Component> T getComponentByFilter(Class<T> componentClass, Function3<EntityManager, String, T, Boolean> filter) {
     String componentName = ClassUtil.getClassName(componentClass);
     Array<String> entityNames = JsUtil.objectKeys(entities);
     for (int i = 0; i < entityNames.$length(); i++) {
@@ -217,7 +217,7 @@ public class EntityManager implements System {
    *          given component type matches with the criteria, else false
    * @return first entity that matches the filter criteria
    */
-  public <T extends IEntityComponent> String getEntityByFilter(Class<T> componentClass, Function3<EntityManager, String, T, Boolean> filter) {
+  public <T extends Component> String getEntityByFilter(Class<T> componentClass, Function3<EntityManager, String, T, Boolean> filter) {
     String componentName = ClassUtil.getClassName(componentClass);
     Array<String> entityNames = JsUtil.objectKeys(entities);
     for (int i = 0; i < entityNames.$length(); i++) {
@@ -229,7 +229,7 @@ public class EntityManager implements System {
     return null;
   }
 
-  public <T extends IEntityComponent> void forEachComponentOfType(Class<T> componentClass, Callback3<EntityManager, String, T> filter) {
+  public <T extends Component> void forEachComponentOfType(Class<T> componentClass, Callback3<EntityManager, String, T> filter) {
     String componentName = ClassUtil.getClassName(componentClass);
     Array<String> entityNames = JsUtil.objectKeys(entities);
     for (int i = 0; i < entityNames.$length(); i++) {

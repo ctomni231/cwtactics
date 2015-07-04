@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.components.game;
 
-import org.wolftec.cwtactics.game.core.IEntityComponent;
+import org.wolftec.cwtactics.game.core.Component;
 
-public class Capturer implements IEntityComponent {
+public class Capturer implements Component {
   public int points;
 }

@@ -1,5 +1,5 @@
 package org.wolftec.cwtactics.game.core;
 
 
-public interface IEntityComponent {
+public interface Component {
 }

@@ -9,7 +9,7 @@ import org.wolftec.cwtactics.engine.util.BrowserUtil;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.core.ConstructedFactory;
+import org.wolftec.cwtactics.game.core.CESManager;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
@@ -37,7 +37,7 @@ public class TestManagerSystem implements System, SystemStartEvent {
   private void callAllTests() {
     log.info("start tests");
 
-    JsUtil.forEachArrayValue(ConstructedFactory.getObjects(ITest.class), (index, test) -> {
+    JsUtil.forEachArrayValue(CESManager.getObjects(ITest.class), (index, test) -> {
       callTestMethods(test);
     });
 

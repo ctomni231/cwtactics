@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.components.game;
 
-import org.wolftec.cwtactics.game.core.IEntityComponent;
+import org.wolftec.cwtactics.game.core.Component;
 
-public class Config implements IEntityComponent {
+public class Config implements Component {
   public int value;
 }

@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.components.game;
 
-import org.wolftec.cwtactics.game.core.IEntityComponent;
+import org.wolftec.cwtactics.game.core.Component;
 
-public class Capturable implements IEntityComponent {
+public class Capturable implements Component {
   public int points;
   public boolean looseAfterCaptured;
   public String changeIntoAfterCaptured;

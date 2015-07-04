@@ -2,9 +2,9 @@ package org.wolftec.cwtactics.game.components.game;
 
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.core.CircularBuffer;
-import org.wolftec.cwtactics.game.core.IEntityComponent;
+import org.wolftec.cwtactics.game.core.Component;
 
-public class TransportContainer implements IEntityComponent {
+public class TransportContainer implements Component {
   public CircularBuffer<String> loaded;
 
   public TransportContainer() {

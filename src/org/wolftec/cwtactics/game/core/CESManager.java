@@ -15,7 +15,7 @@ import org.wolftec.cwtactics.engine.util.JsUtil;
  * <strong>This class is dynamic, so if you are going to change things here then
  * be careful!</strong>
  */
-public class ConstructedFactory {
+public class CESManager {
 
   private static Log log;
   private static Map<String, System> instances;

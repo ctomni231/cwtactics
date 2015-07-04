@@ -1,10 +1,10 @@
 package org.wolftec.cwtactics.game.components.game;
 
 import org.wolftec.cwtactics.game.core.Handled;
-import org.wolftec.cwtactics.game.core.IEntityComponent;
+import org.wolftec.cwtactics.game.core.Component;
 
 @Handled("component")
-public class Commander implements IEntityComponent {
+public class Commander implements Component {
 
   @Handled("validated:[entity]")
   public String army;

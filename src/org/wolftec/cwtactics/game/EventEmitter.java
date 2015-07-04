@@ -11,7 +11,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.core.ConstructedFactory;
+import org.wolftec.cwtactics.game.core.CESManager;
 import org.wolftec.cwtactics.game.core.SystemEvent;
 import org.wolftec.cwtactics.game.core.Log;
 
@@ -90,7 +90,7 @@ public class EventEmitter implements System {
 
   private void checkClass(Object namespace, String className) {
     Class<?> classObject = (Class<?>) JSObjectAdapter.$get(namespace, className);
-    Object constructedInstance = ConstructedFactory.getObject(classObject);
+    Object constructedInstance = CESManager.getObject(classObject);
 
     if (constructedInstance == null) {
       return;

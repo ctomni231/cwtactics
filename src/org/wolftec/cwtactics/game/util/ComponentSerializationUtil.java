@@ -5,11 +5,11 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.core.IEntityComponent;
+import org.wolftec.cwtactics.game.core.Component;
 
 public class ComponentSerializationUtil {
 
-  public static <T extends IEntityComponent> T parseFromData(Object data, Class<T> componentClass) {
+  public static <T extends Component> T parseFromData(Object data, Class<T> componentClass) {
     String componentClassName = ClassUtil.getClassName(componentClass);
     if (!JSObjectAdapter.hasOwnProperty(data, componentClassName)) return null;
 

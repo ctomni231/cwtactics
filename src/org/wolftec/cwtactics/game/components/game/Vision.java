@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.components.game;
 
-import org.wolftec.cwtactics.game.core.IEntityComponent;
+import org.wolftec.cwtactics.game.core.Component;
 
-public class Vision implements IEntityComponent {
+public class Vision implements Component {
   public int range;
 }

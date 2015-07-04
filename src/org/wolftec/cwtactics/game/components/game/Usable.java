@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.components.game;
 
-import org.wolftec.cwtactics.game.core.IEntityComponent;
+import org.wolftec.cwtactics.game.core.Component;
 
-public class Usable implements IEntityComponent {
+public class Usable implements Component {
   public boolean canAct;
 }

@@ -27,7 +27,7 @@ public class Asserter extends Log implements SystemObject {
     return this;
   }
 
-  public <T extends IEntityComponent> Asserter whenNotNull(Callback0 validationFn) {
+  public <T extends Component> Asserter whenNotNull(Callback0 validationFn) {
     if (value != null) {
       validationFn.$invoke();
     }

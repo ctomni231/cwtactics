@@ -2,10 +2,10 @@ package org.wolftec.cwtactics.game.components.game;
 
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.core.Handled;
-import org.wolftec.cwtactics.game.core.IEntityComponent;
+import org.wolftec.cwtactics.game.core.Component;
 
 @Handled("component")
-public class Turn implements IEntityComponent {
+public class Turn implements Component {
 
   @Handled("validated:[entity, startsWith, PL]")
   public String lastClientOwner;
