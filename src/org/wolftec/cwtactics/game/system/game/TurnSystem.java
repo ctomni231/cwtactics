@@ -6,11 +6,16 @@ import org.wolftec.cwtactics.game.components.game.Turn;
 import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
-import org.wolftec.cwtactics.game.event.game.TurnEvents;
+import org.wolftec.cwtactics.game.event.game.turn.ClientEndsTurn;
+import org.wolftec.cwtactics.game.event.game.turn.DayStart;
+import org.wolftec.cwtactics.game.event.game.turn.TurnEnd;
+import org.wolftec.cwtactics.game.event.game.turn.TurnStart;
 
-public class TurnSystem implements System, TurnEvents {
+public class TurnSystem implements System, ClientEndsTurn {
 
-  private TurnEvents turnEvents;
+  private DayStart dayStartEvent;
+  private TurnEnd endTurnEvent;
+  private TurnStart startTurnEvent;
   private ErrorEvent errors;
 
   private Components<Turn> turns;
@@ -21,7 +26,7 @@ public class TurnSystem implements System, TurnEvents {
     Turn data = turns.get(EntityId.GAME_ROUND);
 
     String prevTurnOwner = data.owner;
-    turnEvents.onTurnEnd(prevTurnOwner);
+    endTurnEvent.onTurnEnd(prevTurnOwner);
 
     // search new owner
     do {
@@ -33,11 +38,11 @@ public class TurnSystem implements System, TurnEvents {
       // start a new day with a turn for every player
       if (EntityId.isFirstPlayer(data.owner)) {
         data.day++;
-        turnEvents.onDayStart(data.day);
+        dayStartEvent.onDayStart(data.day);
       }
 
       if (players.get(data.owner).alive) {
-        turnEvents.onTurnStart(data.owner, data.day);
+        startTurnEvent.onTurnStart(data.owner, data.day);
         return;
       }
     } while (data.owner != prevTurnOwner);

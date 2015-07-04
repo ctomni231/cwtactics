@@ -7,18 +7,21 @@ import org.wolftec.cwtactics.game.components.game.Factory;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.game.FactoryEvents;
+import org.wolftec.cwtactics.game.event.game.factory.BuildUnit;
+import org.wolftec.cwtactics.game.event.game.factory.UnitProduced;
 
-public class FactorySystem implements System, FactoryEvents, LoadEntityEvent {
+public class FactorySystem implements System, BuildUnit, LoadEntityEvent {
 
   private Log log;
   private EntityManager em;
   private EventEmitter ev;
   private Asserter asserter;
+
+  private UnitProduced producedEvent;
 
   @Override
   public void onLoadUnitTypeEntity(String entity, Object data) {
@@ -58,7 +61,7 @@ public class FactorySystem implements System, FactoryEvents, LoadEntityEvent {
 
     log.info("produced a unit [ID:" + unit + ", Type: " + type + "]");
 
-    ev.publish(FactoryEvents.class).onUnitProduced(unit, type, unitPos.x, unitPos.y);
+    producedEvent.onUnitProduced(unit, type, unitPos.x, unitPos.y);
   }
 
   private void checkBuildData(String type, Factory factoryData) {

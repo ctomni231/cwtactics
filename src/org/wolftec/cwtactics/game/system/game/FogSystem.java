@@ -15,12 +15,12 @@ import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.UnitDestroyedEvent;
-import org.wolftec.cwtactics.game.event.game.FactoryEvents;
-import org.wolftec.cwtactics.game.event.game.FogEvents;
-import org.wolftec.cwtactics.game.event.game.MoveEvent;
 import org.wolftec.cwtactics.game.event.game.capture.CapturedProperty;
+import org.wolftec.cwtactics.game.event.game.factory.UnitProduced;
+import org.wolftec.cwtactics.game.event.game.fog.VisibilityChanged;
+import org.wolftec.cwtactics.game.event.game.move.UnitMoved;
 
-public class FogSystem implements System, FactoryEvents, UnitDestroyedEvent, MoveEvent, CapturedProperty, LoadEntityEvent {
+public class FogSystem implements System, UnitProduced, UnitDestroyedEvent, UnitMoved, CapturedProperty, LoadEntityEvent {
 
   private EntityManager em;
   private EventEmitter ev;
@@ -147,10 +147,10 @@ public class FogSystem implements System, FactoryEvents, UnitDestroyedEvent, Mov
 
         if (publishEvents) {
           if (column.$get(y) == 0 && oldVision > 0) {
-            ev.publish(FogEvents.class).onTileVisionChanges(x, y, false);
+            ev.publish(VisibilityChanged.class).onVisibilityChanged(x, y, false);
 
           } else if (column.$get(y) > 0 && oldVision == 0) {
-            ev.publish(FogEvents.class).onTileVisionChanges(x, y, true);
+            ev.publish(VisibilityChanged.class).onVisibilityChanged(x, y, true);
           }
         }
       }

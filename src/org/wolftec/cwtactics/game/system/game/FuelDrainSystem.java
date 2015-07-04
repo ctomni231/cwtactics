@@ -9,9 +9,9 @@ import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.UnitDestroyedEvent;
-import org.wolftec.cwtactics.game.event.game.TurnEvents;
+import org.wolftec.cwtactics.game.event.game.turn.TurnStart;
 
-public class FuelDrainSystem implements System, LoadEntityEvent, TurnEvents {
+public class FuelDrainSystem implements System, LoadEntityEvent, TurnStart {
 
   private EntityManager em;
   private EventEmitter ev;

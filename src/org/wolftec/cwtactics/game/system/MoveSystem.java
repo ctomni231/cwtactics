@@ -10,17 +10,20 @@ import org.wolftec.cwtactics.game.components.game.Movemap;
 import org.wolftec.cwtactics.game.components.game.MovingCosts;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.game.MoveEvent;
+import org.wolftec.cwtactics.game.event.game.move.UnitMove;
+import org.wolftec.cwtactics.game.event.game.move.UnitMoved;
 
-public class MoveSystem implements System, MoveEvent, LoadEntityEvent {
+public class MoveSystem implements System, UnitMove, LoadEntityEvent {
 
   private Log log;
   private EntityManager em;
   private EventEmitter ev;
   private Asserter asserter;
+
+  private UnitMoved movedEvent;
 
   @Override
   public void onConstruction() {
@@ -74,6 +77,6 @@ public class MoveSystem implements System, MoveEvent, LoadEntityEvent {
     position.x = cX;
     position.y = cY;
 
-    ev.publish(MoveEvent.class).onUnitMoved(unit, oX, oY, cX, cY);
+    movedEvent.onUnitMoved(unit, oX, oY, cX, cY);
   }
 }

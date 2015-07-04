@@ -6,9 +6,9 @@ import org.wolftec.cwtactics.game.components.game.ExplodeAbility;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.game.ExplodeEvents;
+import org.wolftec.cwtactics.game.event.game.explode.ExplodeSelf;
 
-public class ExplodeSystem implements System, LoadEntityEvent, ExplodeEvents {
+public class ExplodeSystem implements System, LoadEntityEvent, ExplodeSelf {
 
   private EntityManager em;
   private Asserter as;

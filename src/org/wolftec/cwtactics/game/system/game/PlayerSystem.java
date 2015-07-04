@@ -5,9 +5,9 @@ import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.game.Player;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
-import org.wolftec.cwtactics.game.event.game.PlayerEvents;
+import org.wolftec.cwtactics.game.event.game.player.ChangeGold;
 
-public class PlayerSystem implements System, PlayerEvents {
+public class PlayerSystem implements System, ChangeGold {
 
   private EntityManager em;
   private EventEmitter ev;

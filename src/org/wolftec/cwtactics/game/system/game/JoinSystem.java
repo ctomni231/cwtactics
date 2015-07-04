@@ -6,19 +6,19 @@ import org.wolftec.cwtactics.game.components.game.Living;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.game.JoinEvents;
-import org.wolftec.cwtactics.game.event.game.LivingEvents;
-import org.wolftec.cwtactics.game.event.game.PlayerEvents;
+import org.wolftec.cwtactics.game.event.game.health.HealUnit;
+import org.wolftec.cwtactics.game.event.game.join.JoinUnits;
+import org.wolftec.cwtactics.game.event.game.player.ChangeGold;
 import org.wolftec.cwtactics.game.util.NumberUtil;
 
-public class JoinSystem implements System, JoinEvents {
+public class JoinSystem implements System, JoinUnits {
 
   private Components<Living> livings;
   private Components<Buyable> buyables;
   private Components<Owner> owners;
 
-  private PlayerEvents playerEventPush;
-  private LivingEvents livingEventPush;
+  private ChangeGold playerEventPush;
+  private HealUnit healEvent;
 
   @Override
   public void onJoinUnits(String joiner, String joinTarget) {
@@ -33,7 +33,7 @@ public class JoinSystem implements System, JoinEvents {
       diff = NumberUtil.asInt(buyables.get(joinTarget).cost * diff / 100);
       playerEventPush.changeGold(owners.get(joinTarget).owner, diff);
 
-      livingEventPush.healUnit(joinTarget, diff);
+      healEvent.onHealUnit(joinTarget, diff);
     }
   }
 }

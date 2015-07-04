@@ -6,9 +6,10 @@ import org.wolftec.cwtactics.game.components.game.Stealth;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.game.StealthEvents;
+import org.wolftec.cwtactics.game.event.game.stealth.HideUnit;
+import org.wolftec.cwtactics.game.event.game.stealth.UnhideUnit;
 
-public class StealthSystem implements System, StealthEvents, LoadEntityEvent {
+public class StealthSystem implements System, HideUnit, UnhideUnit, LoadEntityEvent {
 
   private EntityManager em;
   private Asserter as;

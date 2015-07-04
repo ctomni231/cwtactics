@@ -13,10 +13,10 @@ import org.wolftec.cwtactics.game.components.game.SupplierAbility;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.game.SupplyEvents;
-import org.wolftec.cwtactics.game.event.game.TurnEvents;
+import org.wolftec.cwtactics.game.event.game.supply.SupplyNeighbors;
+import org.wolftec.cwtactics.game.event.game.turn.TurnStart;
 
-public class SupplySystem implements System, LoadEntityEvent, TurnEvents, SupplyEvents {
+public class SupplySystem implements System, LoadEntityEvent, TurnStart, SupplyNeighbors {
 
   private EntityManager em;
   private Asserter asserter;

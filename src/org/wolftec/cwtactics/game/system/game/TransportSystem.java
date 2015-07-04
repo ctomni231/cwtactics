@@ -7,9 +7,10 @@ import org.wolftec.cwtactics.game.components.game.TransportContainer;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.game.TransporterEvents;
+import org.wolftec.cwtactics.game.event.game.transporter.LoadUnit;
+import org.wolftec.cwtactics.game.event.game.transporter.UnloadUnit;
 
-public class TransportSystem implements System, LoadEntityEvent, TransporterEvents {
+public class TransportSystem implements System, LoadEntityEvent, LoadUnit, UnloadUnit {
 
   private EntityManager em;
   private Asserter asserter;

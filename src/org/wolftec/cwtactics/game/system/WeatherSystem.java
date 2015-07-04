@@ -6,14 +6,14 @@ import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.Weather;
 import org.wolftec.cwtactics.game.components.game.WeatherData;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.WeatherChangesEvent;
-import org.wolftec.cwtactics.game.event.game.TurnEvents;
+import org.wolftec.cwtactics.game.event.game.turn.DayStart;
 import org.wolftec.cwtactics.game.util.NumberUtil;
 
-public class WeatherSystem implements System, TurnEvents, WeatherChangesEvent, LoadEntityEvent {
+public class WeatherSystem implements System, DayStart, WeatherChangesEvent, LoadEntityEvent {
 
   private Log log;
   private EntityManager em;

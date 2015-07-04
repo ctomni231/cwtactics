@@ -5,9 +5,11 @@ import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Player;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.game.TeamEvents;
+import org.wolftec.cwtactics.game.event.game.team.SendMoney;
+import org.wolftec.cwtactics.game.event.game.team.SendProperty;
+import org.wolftec.cwtactics.game.event.game.team.SendUnit;
 
-public class TeamSystem implements System, TeamEvents {
+public class TeamSystem implements System, SendUnit, SendProperty, SendMoney {
 
   private EntityManager em;
   private Asserter as;

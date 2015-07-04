@@ -10,20 +10,21 @@ import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.components.game.Turn;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.game.HealthEvents;
-import org.wolftec.cwtactics.game.event.game.SpecialWeaponsEvents;
+import org.wolftec.cwtactics.game.event.game.health.DamageUnit;
+import org.wolftec.cwtactics.game.event.game.specialWeapons.FireRocket;
 import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
 import org.wolftec.cwtactics.game.event.ui.action.AddAction;
 import org.wolftec.cwtactics.game.event.ui.action.BuildActions;
 import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
 
-public class SpecialWeaponsSystem implements System, SpecialWeaponsEvents, BuildActions, InvokeAction {
+public class SpecialWeaponsSystem implements System, FireRocket, BuildActions, InvokeAction {
 
   private EntityManager em;
   private EventEmitter ev;
 
   private AddAction actionEv;
-  private SpecialWeaponsEvents specialEv;
+  private FireRocket specialEv;
+  private DamageUnit damageEvent;
 
   @Override
   public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
@@ -57,7 +58,7 @@ public class SpecialWeaponsSystem implements System, SpecialWeaponsEvents, Build
         int diffX = Math.abs(pos.x - tx);
         int diffY = Math.abs(pos.y - ty);
         if (diffX + diffY <= fireAble.range) {
-          ev.publish(HealthEvents.class).onDamageUnit(entity, fireAble.damage, 10);
+          damageEvent.onDamageUnit(entity, fireAble.damage, 10);
         }
       }
     });
