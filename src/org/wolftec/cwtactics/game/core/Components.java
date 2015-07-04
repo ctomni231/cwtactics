@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game;
+package org.wolftec.cwtactics.game.core;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -9,13 +9,13 @@ import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 
-public class ComponentHolder<T> {
+public class Components<T> {
 
   private Class<T> constructor;
   private Map<String, T> components;
   private Array<String> entities;
 
-  public ComponentHolder(Class<T> pConstructor) {
+  public Components(Class<T> pConstructor) {
     components = JSCollections.$map();
     entities = JSCollections.$array();
     constructor = pConstructor;

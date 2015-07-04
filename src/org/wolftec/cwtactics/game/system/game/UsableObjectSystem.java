@@ -2,32 +2,35 @@ package org.wolftec.cwtactics.game.system.game;
 
 import org.stjs.javascript.annotation.SyntheticType;
 import org.wolftec.cwtactics.engine.bitset.BitSet;
-import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.components.game.Usable;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.Log;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.game.TurnEvents;
 import org.wolftec.cwtactics.game.event.game.UsabilityEvents;
-import org.wolftec.cwtactics.game.event.ui.ActionEvents;
+import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
+import org.wolftec.cwtactics.game.event.ui.action.AddAction;
+import org.wolftec.cwtactics.game.event.ui.action.BuildActions;
+import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
 
 @SyntheticType
-public class UsableObjectSystem implements System, UsabilityEvents, TurnEvents, ActionEvents {
+public class UsableObjectSystem implements System, UsabilityEvents, TurnEvents, BuildActions, InvokeAction {
 
   private Log log;
 
   private UsabilityEvents usabilityEvents;
-  private ActionEvents actionEvents;
+  private AddAction actionEvents;
 
-  private ComponentHolder<Owner> owners;
-  private ComponentHolder<Usable> usables;
-  private ComponentHolder<Position> positions;
+  private Components<Owner> owners;
+  private Components<Usable> usables;
+  private Components<Position> positions;
 
   @Override
   public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
-    if (flags.get(FLAG_SOURCE_UNIT_TO) == 1) {
+    if (flags.get(ActionFlags.FLAG_SOURCE_UNIT_TO) == 1) {
       actionEvents.addAction("wait", true);
     }
   }

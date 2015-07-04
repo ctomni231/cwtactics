@@ -1,7 +1,6 @@
 package org.wolftec.cwtactics.game.system.game;
 
 import org.wolftec.cwtactics.engine.bitset.BitSet;
-import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.Capturable;
 import org.wolftec.cwtactics.game.components.game.Capturer;
@@ -9,34 +8,38 @@ import org.wolftec.cwtactics.game.components.game.Living;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
+import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.game.CaptureEvents;
-import org.wolftec.cwtactics.game.event.ui.ActionEvents;
+import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
+import org.wolftec.cwtactics.game.event.ui.action.AddAction;
+import org.wolftec.cwtactics.game.event.ui.action.BuildActions;
+import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
 
-public class CaptureSystem implements System, CaptureEvents, LoadEntityEvent, ActionEvents {
+public class CaptureSystem implements System, CaptureEvents, LoadEntityEvent, BuildActions, InvokeAction {
 
   private EntityManager em;
 
   private Asserter asserter;
 
   private ErrorEvent errors;
-  private ActionEvents actionEvents;
+  private AddAction addActionEvent;
   private CaptureEvents captureEvent;
 
-  private ComponentHolder<Owner> owners;
-  private ComponentHolder<Living> livings;
-  private ComponentHolder<Capturer> capturers;
-  private ComponentHolder<Position> positions;
-  private ComponentHolder<Capturable> capturables;
+  private Components<Owner> owners;
+  private Components<Living> livings;
+  private Components<Capturer> capturers;
+  private Components<Position> positions;
+  private Components<Capturable> capturables;
 
   @Override
   public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
-    boolean capturableFlag = flags.get(FLAG_SOURCE_PROP_TO_ENEMY) == 1 || flags.get(FLAG_SOURCE_PROP_NONE) == 1;
-    if (flags.get(FLAG_SOURCE_UNIT_TO) == 1 && capturableFlag) {
+    boolean capturableFlag = flags.get(ActionFlags.FLAG_SOURCE_PROP_TO_ENEMY) == 1 || flags.get(ActionFlags.FLAG_SOURCE_PROP_NONE) == 1;
+    if (flags.get(ActionFlags.FLAG_SOURCE_UNIT_TO) == 1 && capturableFlag) {
       if (capturables.has(property)) {
-        actionEvents.addAction("capture", true);
+        addActionEvent.addAction("capture", true);
       }
     }
   }

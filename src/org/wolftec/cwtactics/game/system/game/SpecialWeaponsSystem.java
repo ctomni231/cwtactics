@@ -12,21 +12,27 @@ import org.wolftec.cwtactics.game.components.game.Turn;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.game.HealthEvents;
 import org.wolftec.cwtactics.game.event.game.SpecialWeaponsEvents;
-import org.wolftec.cwtactics.game.event.ui.ActionEvents;
+import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
+import org.wolftec.cwtactics.game.event.ui.action.AddAction;
+import org.wolftec.cwtactics.game.event.ui.action.BuildActions;
+import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
 
-public class SpecialWeaponsSystem implements System, SpecialWeaponsEvents, ActionEvents {
+public class SpecialWeaponsSystem implements System, SpecialWeaponsEvents, BuildActions, InvokeAction {
 
   private EntityManager em;
   private EventEmitter ev;
 
+  private AddAction actionEv;
+  private SpecialWeaponsEvents specialEv;
+
   @Override
   public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
-    if (flags.get(FLAG_SOURCE_UNIT_TO) == 1 && flags.get(FLAG_SOURCE_PROP_NONE) == 1) {
+    if (flags.get(ActionFlags.FLAG_SOURCE_UNIT_TO) == 1 && flags.get(ActionFlags.FLAG_SOURCE_PROP_NONE) == 1) {
       if (em.hasEntityComponent(property, FireAble.class)) {
         FireAble silo = em.getComponent(property, FireAble.class);
 
         if (em.getComponent(unit, Owner.class).owner == em.getComponent(EntityId.GAME_ROUND, Turn.class).owner && silo.usableBy.indexOf(unit) != -1) {
-          ev.publish(ActionEvents.class).addAction("fireSilo", true);
+          actionEv.addAction("fireSilo", true);
         }
       }
     }
@@ -38,7 +44,7 @@ public class SpecialWeaponsSystem implements System, SpecialWeaponsEvents, Actio
       String silo = em.getEntityByFilter(Position.class, (em, ent, pos) -> !em.hasEntityComponent(ent, Living.class) && pos.x == x && pos.y == y);
       String launcher = em.getEntityByFilter(Position.class, (em, ent, pos) -> em.hasEntityComponent(ent, Living.class) && pos.x == x && pos.y == y);
 
-      ev.publish(SpecialWeaponsEvents.class).onFireRocket(silo, launcher, tx, ty);
+      specialEv.onFireRocket(silo, launcher, tx, ty);
     }
   }
 

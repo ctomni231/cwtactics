@@ -1,27 +1,30 @@
 package org.wolftec.cwtactics.game.system.game;
 
 import org.wolftec.cwtactics.engine.bitset.BitSet;
-import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.components.game.Commander;
 import org.wolftec.cwtactics.game.components.game.PlayerCommander;
 import org.wolftec.cwtactics.game.components.game.PlayerCommander.PowerLevel;
 import org.wolftec.cwtactics.game.components.game.Turn;
+import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.GameroundEvents;
 import org.wolftec.cwtactics.game.event.game.CommanderEvents;
-import org.wolftec.cwtactics.game.event.ui.ActionEvents;
+import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
+import org.wolftec.cwtactics.game.event.ui.action.AddAction;
+import org.wolftec.cwtactics.game.event.ui.action.BuildActions;
+import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
 
-public class CommanderSystem implements System, CommanderEvents, GameroundEvents, ActionEvents {
+public class CommanderSystem implements System, CommanderEvents, GameroundEvents, BuildActions, InvokeAction {
 
   private static final int POWER_PER_STAR = 1000;
 
-  private ComponentHolder<Turn> turns;
-  private ComponentHolder<PlayerCommander> playerCommanders;
-  private ComponentHolder<Commander> commanders;
+  private Components<Turn> turns;
+  private Components<PlayerCommander> playerCommanders;
+  private Components<Commander> commanders;
 
-  private ActionEvents actionEvent;
+  private AddAction actionEvent;
 
   private CommanderEvents commanderEvent;
 
@@ -29,7 +32,7 @@ public class CommanderSystem implements System, CommanderEvents, GameroundEvents
 
   @Override
   public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
-    if (flags.get(FLAG_SOURCE_PROP_TO) == 0 && flags.get(FLAG_SOURCE_UNIT_TO) == 0) {
+    if (flags.get(ActionFlags.FLAG_SOURCE_PROP_TO) == 0 && flags.get(ActionFlags.FLAG_SOURCE_UNIT_TO) == 0) {
 
       String turnOwner = turns.get(EntityId.GAME_ROUND).owner;
 

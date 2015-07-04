@@ -5,7 +5,6 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.SyntheticType;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.bitset.BitSet;
-import org.wolftec.cwtactics.game.ComponentHolder;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.components.game.Capturable;
 import org.wolftec.cwtactics.game.components.game.Owner;
@@ -15,12 +14,17 @@ import org.wolftec.cwtactics.game.components.game.Turn;
 import org.wolftec.cwtactics.game.components.ui.ActionBuffer;
 import org.wolftec.cwtactics.game.components.ui.Menu;
 import org.wolftec.cwtactics.game.core.CircularBuffer;
+import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.NextFrameEvent;
-import org.wolftec.cwtactics.game.event.ui.ActionEvents;
+import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
+import org.wolftec.cwtactics.game.event.ui.action.AddAction;
+import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
+import org.wolftec.cwtactics.game.event.ui.action.TriggerAction;
+import org.wolftec.cwtactics.game.event.ui.action.TriggerActionGeneration;
 
-public class ActionSystem implements System, ActionEvents, NextFrameEvent {
+public class ActionSystem implements System, AddAction, TriggerAction, TriggerActionGeneration, NextFrameEvent {
 
   @SyntheticType
   public class ActionData {
@@ -34,15 +38,15 @@ public class ActionSystem implements System, ActionEvents, NextFrameEvent {
   private BitSet flags;
 
   private ErrorEvent errors;
-  private ActionEvents actions;
+  private InvokeAction actionEv;
 
-  private ComponentHolder<Menu> menus;
-  private ComponentHolder<Turn> turns;
-  private ComponentHolder<Owner> owners;
-  private ComponentHolder<Player> players;
-  private ComponentHolder<Position> positions;
-  private ComponentHolder<Capturable> capturables;
-  private ComponentHolder<ActionBuffer> buffers;
+  private Components<Menu> menus;
+  private Components<Turn> turns;
+  private Components<Owner> owners;
+  private Components<Player> players;
+  private Components<Position> positions;
+  private Components<Capturable> capturables;
+  private Components<ActionBuffer> buffers;
 
   @Override
   public void onConstruction() {
@@ -72,7 +76,7 @@ public class ActionSystem implements System, ActionEvents, NextFrameEvent {
     CircularBuffer<String> buffer = buffers.get(EntityId.GAME_UI).buffer;
     if (!buffer.isEmpty()) {
       ActionData data = (ActionData) JSGlobal.JSON.parse(buffer.popFirst());
-      actions.invokeAction(data.command, data.sx, data.sy, data.tx, data.ty);
+      actionEv.invokeAction(data.command, data.sx, data.sy, data.tx, data.ty);
     }
   }
 
@@ -85,7 +89,7 @@ public class ActionSystem implements System, ActionEvents, NextFrameEvent {
 
     // localize instance vars to improve performance
     BitSet accFlags = this.flags;
-    ComponentHolder<Owner> owners = this.owners;
+    Components<Owner> owners = this.owners;
     // localize instance vars to improve performance
 
     flags = null;
@@ -96,23 +100,23 @@ public class ActionSystem implements System, ActionEvents, NextFrameEvent {
         Owner owner = owners.get(entity);
 
         if (owner == null) {
-          accFlags.set(FLAG_SOURCE_PROP_NONE);
+          accFlags.set(ActionFlags.FLAG_SOURCE_PROP_NONE);
 
         } else {
           Turn turn = turns.get(EntityId.GAME_ROUND);
-          int gap = capturables.has(entity) ? 0 : FLAG_UNIT_GAP_START;
+          int gap = capturables.has(entity) ? 0 : ActionFlags.FLAG_UNIT_GAP_START;
 
           /* show found object type (property or unit) */
           accFlags.set(gap);
 
           if (owner.owner == turn.owner) {
-            accFlags.set(FLAG_SOURCE_PROP_TO + gap);
+            accFlags.set(ActionFlags.FLAG_SOURCE_PROP_TO + gap);
 
           } else if (players.get(owner.owner).team == players.get(turn.owner).team) {
-            accFlags.set(FLAG_SOURCE_PROP_TO_ALLIED + gap);
+            accFlags.set(ActionFlags.FLAG_SOURCE_PROP_TO_ALLIED + gap);
 
           } else {
-            accFlags.set(FLAG_SOURCE_PROP_TO_ENEMY + gap);
+            accFlags.set(ActionFlags.FLAG_SOURCE_PROP_TO_ENEMY + gap);
           }
         }
       }
