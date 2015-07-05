@@ -19,12 +19,12 @@ import org.wolftec.cwtactics.game.event.TurnStart;
  */
 public class GameTimeSystem implements System, FrameTick, GameroundStart, TurnStart {
 
-  Log log;
-  EntityManager em;
-  EventEmitter ev;
+  Log            log;
+  EntityManager  em;
+  EventEmitter   ev;
 
   ClientEndsTurn endTurnEvent;
-  GameroundEnd gameroundEndEvent;
+  GameroundEnd   gameroundEndEvent;
 
   @Override
   public void onNextTick(int delta) {

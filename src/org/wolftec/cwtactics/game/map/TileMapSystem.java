@@ -11,7 +11,7 @@ import org.wolftec.cwtactics.game.event.LoadMap;
 public class TileMapSystem implements System, LoadMap {
 
   private EntityManager em;
-  private Asserter asserter;
+  private Asserter      asserter;
 
   @Override
   public void onLoadMap(String entity, Object rawData) {
@@ -19,6 +19,7 @@ public class TileMapSystem implements System, LoadMap {
 
     em.detachEntityComponentByClass(Entities.GAME_ROUND, TileMap.class);
     em.tryAcquireComponentFromDataSuccessCb(Entities.GAME_ROUND, data, TileMap.class, (map) -> {
+
       for (int x = 0; x < map.tiles.$length(); x++) {
         Array<String> column = map.tiles.$get(x);
         for (int y = 0; y < column.$length(); y++) {

@@ -13,9 +13,9 @@ import org.wolftec.cwtactics.game.util.NumberUtil;
 
 public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeatherType {
 
-  private Log log;
+  private Log           log;
   private EntityManager em;
-  private Asserter asserter;
+  private Asserter      asserter;
 
   @Override
   public void onLoadWeatherType(String entity, Object data) {

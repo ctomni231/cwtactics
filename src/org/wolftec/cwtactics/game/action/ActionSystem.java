@@ -27,23 +27,23 @@ public class ActionSystem implements System, AddAction, TriggerAction, TriggerAc
   @SyntheticType
   public class ActionData {
     String command;
-    int sx;
-    int sy;
-    int tx;
-    int ty;
+    int    sx;
+    int    sy;
+    int    tx;
+    int    ty;
   }
 
-  private BitSet flags;
+  private BitSet                   flags;
 
-  private IllegalState illegalStateExc;
-  private InvokeAction actionEv;
+  private IllegalState             illegalStateExc;
+  private InvokeAction             actionEv;
 
-  private Components<Menu> menus;
-  private Components<Turn> turns;
-  private Components<Owner> owners;
-  private Components<Player> players;
-  private Components<Position> positions;
-  private Components<Capturable> capturables;
+  private Components<Menu>         menus;
+  private Components<Turn>         turns;
+  private Components<Owner>        owners;
+  private Components<Player>       players;
+  private Components<Position>     positions;
+  private Components<Capturable>   capturables;
   private Components<ActionBuffer> buffers;
 
   @Override
@@ -102,6 +102,7 @@ public class ActionSystem implements System, AddAction, TriggerAction, TriggerAc
 
         } else {
           Turn turn = turns.get(Entities.GAME_ROUND);
+
           int gap = capturables.has(entity) ? 0 : ActionFlags.FLAG_UNIT_GAP_START;
 
           /* show found object type (property or unit) */

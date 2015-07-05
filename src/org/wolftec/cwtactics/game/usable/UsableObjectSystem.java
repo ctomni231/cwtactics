@@ -21,16 +21,16 @@ import org.wolftec.cwtactics.game.player.Owner;
 @SyntheticType
 public class UsableObjectSystem implements System, Wait, TurnEnd, TurnStart, BuildActions, InvokeAction {
 
-  private Log log;
+  private Log                  log;
 
-  private UnitGettingUnusable beUnusableEvent;
-  private UnitGettingUsable beUsableEvent;
-  private Wait waitEvent;
+  private UnitGettingUnusable  beUnusableEvent;
+  private UnitGettingUsable    beUsableEvent;
+  private Wait                 waitEvent;
 
-  private AddAction actionEvents;
+  private AddAction            actionEvents;
 
-  private Components<Owner> owners;
-  private Components<Usable> usables;
+  private Components<Owner>    owners;
+  private Components<Usable>   usables;
   private Components<Position> positions;
 
   @Override

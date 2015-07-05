@@ -18,18 +18,18 @@ import org.wolftec.cwtactics.game.turn.Turn;
 
 public class CommanderSystem implements System, ChangePower, ActivatePowerLevel, GameroundStart, BuildActions, InvokeAction {
 
-  private static final int POWER_PER_STAR = 1000;
+  private static final int            POWER_PER_STAR = 1000;
 
-  private Components<Turn> turns;
+  private Components<Turn>            turns;
   private Components<PlayerCommander> playerCommanders;
-  private Components<Commander> commanders;
+  private Components<Commander>       commanders;
 
-  private AddAction actionEvent;
+  private AddAction                   actionEvent;
 
-  private ActivatePowerLevel activatePowerEvent;
-  private PowerChanged powerChangedEvent;
+  private ActivatePowerLevel          activatePowerEvent;
+  private PowerChanged                powerChangedEvent;
 
-  private IllegalArguments illegalArgumentsExc;
+  private IllegalArguments            illegalArgumentsExc;
 
   @Override
   public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {

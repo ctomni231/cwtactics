@@ -22,9 +22,9 @@ import org.wolftec.cwtactics.game.turn.Turn;
 
 public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved, CapturedProperty, LoadTileType, LoadPropertyType, LoadUnitType {
 
-  private EntityManager em;
-  private EventEmitter ev;
-  private Asserter asserter;
+  private EntityManager         em;
+  private EventEmitter          ev;
+  private Asserter              asserter;
 
   private Array<Array<Integer>> turnOwnerData;
   private Array<Array<Integer>> clientOwnerData;

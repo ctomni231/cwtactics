@@ -22,12 +22,12 @@ import org.wolftec.cwtactics.game.turn.Turn;
 public class SpecialWeaponsSystem implements System, FireRocket, BuildActions, InvokeAction, LoadPropertyType {
 
   private EntityManager em;
-  private EventEmitter ev;
-  private Asserter asserter;
+  private EventEmitter  ev;
+  private Asserter      asserter;
 
-  private AddAction actionEv;
-  private FireRocket specialEv;
-  private DamageUnit damageEvent;
+  private AddAction     actionEv;
+  private FireRocket    specialEv;
+  private DamageUnit    damageEvent;
 
   @Override
   public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {

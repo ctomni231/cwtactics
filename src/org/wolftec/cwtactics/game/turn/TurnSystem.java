@@ -12,12 +12,12 @@ import org.wolftec.cwtactics.game.player.Player;
 
 public class TurnSystem implements System, ClientEndsTurn {
 
-  private DayStart dayStartEvent;
-  private TurnEnd endTurnEvent;
-  private TurnStart startTurnEvent;
-  private IllegalGameData illegalGameDataExc;
+  private DayStart           dayStartEvent;
+  private TurnEnd            endTurnEvent;
+  private TurnStart          startTurnEvent;
+  private IllegalGameData    illegalGameDataExc;
 
-  private Components<Turn> turns;
+  private Components<Turn>   turns;
   private Components<Player> players;
 
   @Override
