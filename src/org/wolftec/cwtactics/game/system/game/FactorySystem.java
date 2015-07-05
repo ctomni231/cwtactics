@@ -9,12 +9,13 @@ import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.error.IllegalGameData;
 import org.wolftec.cwtactics.game.event.game.factory.BuildUnit;
 import org.wolftec.cwtactics.game.event.game.factory.UnitProduced;
+import org.wolftec.cwtactics.game.event.persistence.LoadPropertyType;
+import org.wolftec.cwtactics.game.event.persistence.LoadUnitType;
 
-public class FactorySystem implements System, BuildUnit, LoadEntityEvent {
+public class FactorySystem implements System, BuildUnit, LoadUnitType, LoadPropertyType {
 
   private Log log;
   private EntityManager em;
@@ -26,14 +27,14 @@ public class FactorySystem implements System, BuildUnit, LoadEntityEvent {
   UnitProduced producedEvent;
 
   @Override
-  public void onLoadUnitTypeEntity(String entity, Object data) {
+  public void onLoadUnitType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Buyable.class, (buyable) -> {
       asserter.inspectValue("Buyable.cost of " + entity, buyable.cost).isIntWithinRange(0, 999999);
     });
   }
 
   @Override
-  public void onLoadPropertyTypeEntity(String entity, Object data) {
+  public void onLoadPropertyType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Factory.class, (factory) -> {
       asserter.inspectValue("Factory.builds of " + entity, factory.builds).forEachArrayValue((value) -> {
         asserter.isEntityId();

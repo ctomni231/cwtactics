@@ -10,17 +10,19 @@ import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.error.IllegalArguments;
 import org.wolftec.cwtactics.game.event.game.capture.CaptureProperty;
 import org.wolftec.cwtactics.game.event.game.capture.CapturedProperty;
 import org.wolftec.cwtactics.game.event.game.capture.LoweredCapturePoints;
+import org.wolftec.cwtactics.game.event.persistence.LoadMap;
+import org.wolftec.cwtactics.game.event.persistence.LoadPropertyType;
+import org.wolftec.cwtactics.game.event.persistence.LoadUnitType;
 import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
 import org.wolftec.cwtactics.game.event.ui.action.AddAction;
 import org.wolftec.cwtactics.game.event.ui.action.BuildActions;
 import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
 
-public class CaptureSystem implements System, CaptureProperty, LoadEntityEvent, BuildActions, InvokeAction {
+public class CaptureSystem implements System, CaptureProperty, LoadMap, LoadPropertyType, LoadUnitType, BuildActions, InvokeAction {
 
   private EntityManager em;
 
@@ -84,7 +86,7 @@ public class CaptureSystem implements System, CaptureProperty, LoadEntityEvent, 
   }
 
   @Override
-  public void onLoadUnitTypeEntity(String entity, Object data) {
+  public void onLoadUnitType(String entity, Object data) {
 
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Capturer.class, (capturer) -> {
       asserter.inspectValue("Capturer.points of " + entity, capturer.points).isIntWithinRange(1, 99);
@@ -92,7 +94,7 @@ public class CaptureSystem implements System, CaptureProperty, LoadEntityEvent, 
   }
 
   @Override
-  public void onLoadPropertyTypeEntity(String entity, Object data) {
+  public void onLoadPropertyType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Capturable.class, (capturable) -> {
       asserter.inspectValue("Capturable.points of " + entity, capturable.points).isIntWithinRange(1, 99);
       asserter.inspectValue("Capturable.looseAfterCaptured of " + entity, capturable.looseAfterCaptured).isBoolean();
@@ -103,7 +105,7 @@ public class CaptureSystem implements System, CaptureProperty, LoadEntityEvent, 
   }
 
   @Override
-  public void onLoadMapEntity(String entity, Object data) {
+  public void onLoadMap(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Capturable.class, (capturable) -> {
       asserter.inspectValue("Capturable.points of " + entity, capturable.points).isIntWithinRange(1, 99);
     });

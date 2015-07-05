@@ -12,11 +12,12 @@ import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.game.move.UnitMove;
 import org.wolftec.cwtactics.game.event.game.move.UnitMoved;
+import org.wolftec.cwtactics.game.event.persistence.LoadMoveType;
+import org.wolftec.cwtactics.game.event.persistence.LoadUnitType;
 
-public class MoveSystem implements System, UnitMove, LoadEntityEvent {
+public class MoveSystem implements System, UnitMove, LoadUnitType, LoadMoveType {
 
   private Log log;
   private EntityManager em;
@@ -42,7 +43,7 @@ public class MoveSystem implements System, UnitMove, LoadEntityEvent {
   }
 
   @Override
-  public void onLoadMoveTypeEntity(String entity, Object data) {
+  public void onLoadMoveType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, MovingCosts.class, (costs) -> {
       asserter.inspectValue("MovingCosts.costs of " + entity, costs.costs).forEachMapKey((key) -> {
         asserter.isEntityId();
@@ -54,7 +55,7 @@ public class MoveSystem implements System, UnitMove, LoadEntityEvent {
   }
 
   @Override
-  public void onLoadUnitTypeEntity(String entity, Object data) {
+  public void onLoadUnitType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Movable.class, (mdata) -> {
       asserter.inspectValue("Movable.fuel of " + entity, mdata.fuel).isIntWithinRange(1, 99);
       asserter.inspectValue("Movable.range of " + entity, mdata.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);

@@ -4,9 +4,9 @@ import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.Army;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
+import org.wolftec.cwtactics.game.event.persistence.LoadArmyType;
 
-public class ArmySystem implements System, LoadEntityEvent {
+public class ArmySystem implements System, LoadArmyType {
 
   private EntityManager em;
   private Asserter asserter;
@@ -16,7 +16,7 @@ public class ArmySystem implements System, LoadEntityEvent {
   }
 
   @Override
-  public void onLoadArmyTypeEntity(String entity, Object data) {
+  public void onLoadArmyType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Army.class, (army) -> {
       asserter.inspectValue("Army.name of " + entity, army.name).isString();
       asserter.inspectValue("Army.music of " + entity, army.music).isString();

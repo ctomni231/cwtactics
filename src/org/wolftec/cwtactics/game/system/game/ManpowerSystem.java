@@ -4,8 +4,8 @@ import org.wolftec.cwtactics.game.components.game.Manpower;
 import org.wolftec.cwtactics.game.components.game.Owner;
 import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
 import org.wolftec.cwtactics.game.event.game.gameround.GameroundStart;
+import org.wolftec.cwtactics.game.event.game.lifecycle.UnitCreated;
 
 /**
  * The {@link ManpowerSystem} gives players the restriction to pay an additional
@@ -14,7 +14,7 @@ import org.wolftec.cwtactics.game.event.game.gameround.GameroundStart;
  * manpower falls down to zero.
  * 
  */
-public class ManpowerSystem implements System, UnitCreatedEvent, GameroundStart {
+public class ManpowerSystem implements System, UnitCreated, GameroundStart {
 
   private Components<Owner> owners;
   private Components<Manpower> manpowers;
@@ -25,7 +25,7 @@ public class ManpowerSystem implements System, UnitCreatedEvent, GameroundStart 
   }
 
   @Override
-  public void unitCreatedEvent(String unitEntity) {
+  public void onUnitCreated(String unitEntity) {
     manpowers.get(owners.get(unitEntity).owner).manpower--;
   }
 }

@@ -12,11 +12,12 @@ import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.components.game.SupplierAbility;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.game.supply.SupplyNeighbors;
 import org.wolftec.cwtactics.game.event.game.turn.TurnStart;
+import org.wolftec.cwtactics.game.event.persistence.LoadPropertyType;
+import org.wolftec.cwtactics.game.event.persistence.LoadUnitType;
 
-public class SupplySystem implements System, LoadEntityEvent, TurnStart, SupplyNeighbors {
+public class SupplySystem implements System, LoadUnitType, LoadPropertyType, TurnStart, SupplyNeighbors {
 
   private EntityManager em;
   private Asserter asserter;
@@ -90,7 +91,7 @@ public class SupplySystem implements System, LoadEntityEvent, TurnStart, SupplyN
   }
 
   @Override
-  public void onLoadUnitTypeEntity(String entity, Object data) {
+  public void onLoadUnitType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, SupplierAbility.class, (supplier) -> {
       asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
       asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
@@ -100,7 +101,7 @@ public class SupplySystem implements System, LoadEntityEvent, TurnStart, SupplyN
   }
 
   @Override
-  public void onLoadPropertyTypeEntity(String entity, Object data) {
+  public void onLoadPropertyType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, SupplierAbility.class, (supplier) -> {
       asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
       asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {

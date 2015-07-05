@@ -8,28 +8,30 @@ import org.wolftec.cwtactics.game.components.game.FighterSecondaryWeapon;
 import org.wolftec.cwtactics.game.components.game.Living;
 import org.wolftec.cwtactics.game.components.game.RangedFighter;
 import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.UnitCreatedEvent;
+import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.event.game.lifecycle.UnitCreated;
+import org.wolftec.cwtactics.game.event.persistence.LoadPropertyType;
+import org.wolftec.cwtactics.game.event.persistence.LoadTileType;
+import org.wolftec.cwtactics.game.event.persistence.LoadUnitType;
 
 /**
  * The {@link BattleSystem} allows players to use units with the battle ability
  * to fight against other entities with the living ability.
  */
-public class BattleSystem implements System, UnitCreatedEvent, LoadEntityEvent {
+public class BattleSystem implements System, UnitCreated, LoadUnitType, LoadPropertyType, LoadTileType {
 
   private Log log;
   private EntityManager em;
   private Asserter asserter;
 
   @Override
-  public void unitCreatedEvent(String unitEntity) {
+  public void onUnitCreated(String unitEntity) {
     em.getNonNullComponent(unitEntity, Living.class).hp = Constants.UNIT_HEALTH;
   }
 
   @Override
-  public void onLoadUnitTypeEntity(String entity, Object data) {
+  public void onLoadUnitType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, FighterPrimaryWeapon.class, (primWp) -> {
       asserter.inspectValue("FPW.ammo of " + entity, primWp.ammo).isIntWithinRange(0, 10);
     });
@@ -45,14 +47,14 @@ public class BattleSystem implements System, UnitCreatedEvent, LoadEntityEvent {
   }
 
   @Override
-  public void onLoadPropertyTypeEntity(String entity, Object data) {
+  public void onLoadPropertyType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Defense.class, (defense) -> {
       asserter.inspectValue("DF.defense of " + entity, defense.defense).isIntWithinRange(0, 9);
     });
   }
 
   @Override
-  public void onLoadTileTypeEntity(String entity, Object data) {
+  public void onLoadTileType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Defense.class, (defense) -> {
       asserter.inspectValue("DF.defense of " + entity, defense.defense).isIntWithinRange(0, 9);
     });

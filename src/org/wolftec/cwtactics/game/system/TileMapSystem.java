@@ -7,15 +7,17 @@ import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.TileMap;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.persistence.MapLoadEvent;
+import org.wolftec.cwtactics.game.event.persistence.LoadMap;
 
-public class TileMapSystem implements System, MapLoadEvent {
+public class TileMapSystem implements System, LoadMap {
 
   private EntityManager em;
   private Asserter asserter;
 
   @Override
-  public void onMapLoad(Map<String, Object> data) {
+  public void onLoadMap(String entity, Object rawData) {
+    Map<String, Object> data = (Map<String, Object>) rawData;
+
     em.detachEntityComponentByClass(EntityId.GAME_ROUND, TileMap.class);
     em.tryAcquireComponentFromDataSuccessCb(EntityId.GAME_ROUND, data, TileMap.class, (map) -> {
       for (int x = 0; x < map.tiles.$length(); x++) {

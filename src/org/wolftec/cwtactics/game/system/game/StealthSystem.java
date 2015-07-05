@@ -5,17 +5,17 @@ import org.wolftec.cwtactics.game.components.game.HideAble;
 import org.wolftec.cwtactics.game.components.game.Stealth;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.game.stealth.HideUnit;
 import org.wolftec.cwtactics.game.event.game.stealth.UnhideUnit;
+import org.wolftec.cwtactics.game.event.persistence.LoadUnitType;
 
-public class StealthSystem implements System, HideUnit, UnhideUnit, LoadEntityEvent {
+public class StealthSystem implements System, HideUnit, UnhideUnit, LoadUnitType {
 
   private EntityManager em;
   private Asserter as;
 
   @Override
-  public void onLoadUnitTypeEntity(String entity, Object data) {
+  public void onLoadUnitType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, HideAble.class, (hideAble) -> {
       as.inspectValue("HideAble.additionFuelDrain of " + entity, hideAble.additionFuelDrain).isIntWithinRange(0, 99);
     });

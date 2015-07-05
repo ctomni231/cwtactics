@@ -13,18 +13,32 @@ import org.wolftec.cwtactics.engine.util.BrowserUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
+import org.wolftec.cwtactics.game.event.persistence.LoadArmyType;
+import org.wolftec.cwtactics.game.event.persistence.LoadCommanderType;
+import org.wolftec.cwtactics.game.event.persistence.LoadMap;
+import org.wolftec.cwtactics.game.event.persistence.LoadMoveType;
+import org.wolftec.cwtactics.game.event.persistence.LoadPropertyType;
+import org.wolftec.cwtactics.game.event.persistence.LoadTileType;
+import org.wolftec.cwtactics.game.event.persistence.LoadUnitType;
+import org.wolftec.cwtactics.game.event.persistence.LoadWeatherType;
 
 public class DataLoadingSystem implements System, SystemStartEvent {
 
-  private Log log;
+  private Log           log;
   private EntityManager em;
-  private EventEmitter ev;
+  private EventEmitter  ev;
 
-  private LoadEntityEvent loaderEvent;
+  LoadArmyType          armyLoadEvent;
+  LoadPropertyType      propertyLoadEvent;
+  LoadTileType          tileLoadEvent;
+  LoadUnitType          unitLoadEvent;
+  LoadMoveType          moveLoadEvent;
+  LoadWeatherType       weatherLoadEvent;
+  LoadCommanderType     commanderLoadEvent;
+  LoadMap               mapLoadEvent;
 
   @Override
   public void onConstruction() {
@@ -37,15 +51,15 @@ public class DataLoadingSystem implements System, SystemStartEvent {
 
   @Override
   public void onSystemStartup(Playground gameContainer) {
-    loadFolder(gameContainer, "modifications/cwt/tiles", (entity, data) -> loaderEvent.onLoadTileTypeEntity(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/props", (entity, data) -> loaderEvent.onLoadPropertyTypeEntity(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/movetypes", (entity, data) -> loaderEvent.onLoadMoveTypeEntity(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/units", (entity, data) -> loaderEvent.onLoadUnitTypeEntity(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/weathers", (entity, data) -> loaderEvent.onLoadWeatherTypeEntity(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/cos", (entity, data) -> loaderEvent.onLoadCommanderTypeEntity(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/armies", (entity, data) -> loaderEvent.onLoadArmyTypeEntity(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/tiles", (entity, data) -> tileLoadEvent.onLoadTileType(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/props", (entity, data) -> propertyLoadEvent.onLoadPropertyType(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/movetypes", (entity, data) -> moveLoadEvent.onLoadMoveType(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/units", (entity, data) -> unitLoadEvent.onLoadUnitType(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/weathers", (entity, data) -> weatherLoadEvent.onLoadWeatherType(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/cos", (entity, data) -> commanderLoadEvent.onLoadCommanderType(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/armies", (entity, data) -> armyLoadEvent.onLoadArmyType(entity, data));
 
-    loadFolder(gameContainer, "modifications/cwt/maps", (entity, data) -> loaderEvent.onLoadMapEntity(entity, data));
+    loadFolder(gameContainer, "modifications/cwt/maps", (entity, data) -> mapLoadEvent.onLoadMap(entity, data));
   }
 
   private void loadFolder(Playground gameContainer, String folder, Callback2<String, Object> callback) {

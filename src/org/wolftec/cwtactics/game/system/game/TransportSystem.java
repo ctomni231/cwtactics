@@ -6,11 +6,11 @@ import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.components.game.TransportContainer;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
 import org.wolftec.cwtactics.game.event.game.transporter.LoadUnit;
 import org.wolftec.cwtactics.game.event.game.transporter.UnloadUnit;
+import org.wolftec.cwtactics.game.event.persistence.LoadUnitType;
 
-public class TransportSystem implements System, LoadEntityEvent, LoadUnit, UnloadUnit {
+public class TransportSystem implements System, LoadUnitType, LoadUnit, UnloadUnit {
 
   private EntityManager em;
   private Asserter asserter;
@@ -20,7 +20,7 @@ public class TransportSystem implements System, LoadEntityEvent, LoadUnit, Unloa
   }
 
   @Override
-  public void onLoadUnitTypeEntity(String entity, Object data) {
+  public void onLoadUnitType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, LoadingAbility.class, (transporter) -> {
       asserter.inspectValue("Transporter.slots of " + entity, transporter.slots).isIntWithinRange(1, 10);
       asserter.inspectValue("Transporter.noDamage of " + entity, transporter.loads).forEachArrayValue((target) -> {

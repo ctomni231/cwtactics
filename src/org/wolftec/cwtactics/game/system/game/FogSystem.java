@@ -13,14 +13,16 @@ import org.wolftec.cwtactics.game.components.game.Visible;
 import org.wolftec.cwtactics.game.components.game.Vision;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.UnitDestroyedEvent;
 import org.wolftec.cwtactics.game.event.game.capture.CapturedProperty;
 import org.wolftec.cwtactics.game.event.game.factory.UnitProduced;
 import org.wolftec.cwtactics.game.event.game.fog.VisibilityChanged;
+import org.wolftec.cwtactics.game.event.game.lifecycle.UnitDestroyed;
 import org.wolftec.cwtactics.game.event.game.move.UnitMoved;
+import org.wolftec.cwtactics.game.event.persistence.LoadPropertyType;
+import org.wolftec.cwtactics.game.event.persistence.LoadTileType;
+import org.wolftec.cwtactics.game.event.persistence.LoadUnitType;
 
-public class FogSystem implements System, UnitProduced, UnitDestroyedEvent, UnitMoved, CapturedProperty, LoadEntityEvent {
+public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved, CapturedProperty, LoadTileType, LoadPropertyType, LoadUnitType {
 
   private EntityManager em;
   private EventEmitter ev;
@@ -63,21 +65,21 @@ public class FogSystem implements System, UnitProduced, UnitDestroyedEvent, Unit
   }
 
   @Override
-  public void onLoadUnitEntity(String entity, Object data) {
+  public void onLoadUnitType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Vision.class, (vision) -> {
       asserter.inspectValue("Vision.range of " + entity, vision.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
     });
   }
 
   @Override
-  public void onLoadPropertyTypeEntity(String entity, Object data) {
+  public void onLoadPropertyType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Vision.class, (vision) -> {
       asserter.inspectValue("Vision.range of " + entity, vision.range).isIntWithinRange(0, Constants.MAX_SELECTION_RANGE);
     });
   }
 
   @Override
-  public void onLoadTileTypeEntity(String entity, Object data) {
+  public void onLoadTileType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Visible.class, (visible) -> {
       asserter.inspectValue("Visible.blocksVision of " + entity, visible.blocksVision).isBoolean();
     });

@@ -8,19 +8,19 @@ import org.wolftec.cwtactics.game.components.game.WeatherData;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.LoadEntityEvent;
-import org.wolftec.cwtactics.game.event.WeatherChangesEvent;
 import org.wolftec.cwtactics.game.event.game.turn.DayStart;
+import org.wolftec.cwtactics.game.event.game.weather.WeatherChanges;
+import org.wolftec.cwtactics.game.event.persistence.LoadWeatherType;
 import org.wolftec.cwtactics.game.util.NumberUtil;
 
-public class WeatherSystem implements System, DayStart, WeatherChangesEvent, LoadEntityEvent {
+public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeatherType {
 
   private Log log;
   private EntityManager em;
   private Asserter asserter;
 
   @Override
-  public void onLoadWeatherTypeEntity(String entity, Object data) {
+  public void onLoadWeatherType(String entity, Object data) {
     em.tryAcquireComponentFromDataSuccessCb(entity, data, Weather.class, (weather) -> {
       asserter.inspectValue("Weather.defaultWeather of " + entity, weather.defaultWeather).isBoolean();
     });
