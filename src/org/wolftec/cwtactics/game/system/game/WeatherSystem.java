@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.system;
+package org.wolftec.cwtactics.game.system.game;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.game.EntityId;
@@ -18,11 +18,6 @@ public class WeatherSystem implements System, DayStart, WeatherChangesEvent, Loa
   private Log log;
   private EntityManager em;
   private Asserter asserter;
-
-  @Override
-  public void onConstruction() {
-    log.info("created");
-  }
 
   @Override
   public void onLoadWeatherTypeEntity(String entity, Object data) {

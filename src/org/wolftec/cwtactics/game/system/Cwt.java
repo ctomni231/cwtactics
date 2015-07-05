@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game;
+package org.wolftec.cwtactics.game.system;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
@@ -7,6 +7,8 @@ import org.wolftec.cwtactics.engine.playground.PlaygroundGlobal;
 import org.wolftec.cwtactics.engine.playground.PlaygroundState;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
+import org.wolftec.cwtactics.game.EntityManager;
+import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.CESManager;
 import org.wolftec.cwtactics.game.core.Log;

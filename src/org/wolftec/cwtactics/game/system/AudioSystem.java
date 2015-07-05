@@ -1,15 +1,9 @@
 package org.wolftec.cwtactics.game.system;
 
-import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.ClickEvent;
+import org.wolftec.cwtactics.game.core.System;
 
-public class AudioSystem implements System, ClickEvent {
+public class AudioSystem implements System {
 
   private Log log;
-
-  @Override
-  public void onClick(String type, int x, int y) {
-    log.info("GOT A CLICK => " + type);
-  }
 }

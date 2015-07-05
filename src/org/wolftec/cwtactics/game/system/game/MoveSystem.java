@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.system;
+package org.wolftec.cwtactics.game.system.game;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

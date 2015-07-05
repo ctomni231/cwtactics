@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.system;
+package org.wolftec.cwtactics.game.system.game;
 
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.EntityManager;
