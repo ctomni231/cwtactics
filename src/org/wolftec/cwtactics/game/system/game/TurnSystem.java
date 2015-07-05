@@ -5,7 +5,7 @@ import org.wolftec.cwtactics.game.components.game.Player;
 import org.wolftec.cwtactics.game.components.game.Turn;
 import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.ErrorEvent;
+import org.wolftec.cwtactics.game.event.error.IllegalGameData;
 import org.wolftec.cwtactics.game.event.game.turn.ClientEndsTurn;
 import org.wolftec.cwtactics.game.event.game.turn.DayStart;
 import org.wolftec.cwtactics.game.event.game.turn.TurnEnd;
@@ -16,7 +16,7 @@ public class TurnSystem implements System, ClientEndsTurn {
   private DayStart dayStartEvent;
   private TurnEnd endTurnEvent;
   private TurnStart startTurnEvent;
-  private ErrorEvent errors;
+  private IllegalGameData illegalGameDataExc;
 
   private Components<Turn> turns;
   private Components<Player> players;
@@ -47,6 +47,6 @@ public class TurnSystem implements System, ClientEndsTurn {
       }
     } while (data.owner != prevTurnOwner);
 
-    errors.onIllegalGameData("could not select a new turn owner");
+    illegalGameDataExc.onIllegalGameData("could not select a new turn owner");
   }
 }

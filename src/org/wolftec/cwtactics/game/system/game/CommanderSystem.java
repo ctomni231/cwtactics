@@ -8,17 +8,17 @@ import org.wolftec.cwtactics.game.components.game.PlayerCommander.PowerLevel;
 import org.wolftec.cwtactics.game.components.game.Turn;
 import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.ErrorEvent;
-import org.wolftec.cwtactics.game.event.GameroundEvents;
+import org.wolftec.cwtactics.game.event.error.IllegalArguments;
 import org.wolftec.cwtactics.game.event.game.commander.ActivatePowerLevel;
 import org.wolftec.cwtactics.game.event.game.commander.ChangePower;
 import org.wolftec.cwtactics.game.event.game.commander.PowerChanged;
+import org.wolftec.cwtactics.game.event.game.gameround.GameroundStart;
 import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
 import org.wolftec.cwtactics.game.event.ui.action.AddAction;
 import org.wolftec.cwtactics.game.event.ui.action.BuildActions;
 import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
 
-public class CommanderSystem implements System, ChangePower, ActivatePowerLevel, GameroundEvents, BuildActions, InvokeAction {
+public class CommanderSystem implements System, ChangePower, ActivatePowerLevel, GameroundStart, BuildActions, InvokeAction {
 
   private static final int POWER_PER_STAR = 1000;
 
@@ -31,7 +31,7 @@ public class CommanderSystem implements System, ChangePower, ActivatePowerLevel,
   private ActivatePowerLevel activatePowerEvent;
   private PowerChanged powerChangedEvent;
 
-  private ErrorEvent errorEvent;
+  private IllegalArguments illegalArgumentsExc;
 
   @Override
   public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
@@ -82,14 +82,14 @@ public class CommanderSystem implements System, ChangePower, ActivatePowerLevel,
   public void activatePowerLevel(String player, PowerLevel level) {
     // TODO generic avoid of null in the system
     if (level == null) {
-      errorEvent.onIllegalArguments("powerlevel is null");
+      illegalArgumentsExc.onIllegalArguments("powerlevel is null");
     }
 
     PlayerCommander playerCommander = playerCommanders.get(player);
 
     if ((level != PowerLevel.NONE && playerCommander.activeLevel != PowerLevel.NONE)
         || (level == PowerLevel.NONE && playerCommander.activeLevel == PowerLevel.NONE)) {
-      errorEvent.onIllegalArguments("player can change from none to a given level or from level to none");
+      illegalArgumentsExc.onIllegalArguments("player can change from none to a given level or from level to none");
     }
 
     playerCommander.activeLevel = level;
@@ -99,7 +99,7 @@ public class CommanderSystem implements System, ChangePower, ActivatePowerLevel,
   }
 
   @Override
-  public void gameroundStartEvent() {
+  public void gameroundStart() {
     playerCommanders.each((entity, playerCommander) -> {
       playerCommander.activeLevel = PowerLevel.NONE;
       playerCommander.power = 0;

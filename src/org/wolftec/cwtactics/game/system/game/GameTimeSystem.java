@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.system;
+package org.wolftec.cwtactics.game.system.game;
 
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
@@ -6,10 +6,11 @@ import org.wolftec.cwtactics.game.EventEmitter;
 import org.wolftec.cwtactics.game.components.game.TimerData;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.GameroundEvents;
-import org.wolftec.cwtactics.game.event.NextFrameEvent;
+import org.wolftec.cwtactics.game.event.game.gameround.GameroundEnd;
+import org.wolftec.cwtactics.game.event.game.gameround.GameroundStart;
 import org.wolftec.cwtactics.game.event.game.turn.ClientEndsTurn;
 import org.wolftec.cwtactics.game.event.game.turn.TurnStart;
+import org.wolftec.cwtactics.game.event.system.FrameTick;
 
 /**
  * The {@link GameTimeSystem} adds time limits for the turn and game mechanic.
@@ -17,16 +18,17 @@ import org.wolftec.cwtactics.game.event.game.turn.TurnStart;
  * the game time limit is reached then the game round will be ended by this
  * system.
  */
-public class GameTimeSystem implements System, NextFrameEvent, GameroundEvents, TurnStart {
+public class GameTimeSystem implements System, FrameTick, GameroundStart, TurnStart {
 
-  private Log log;
-  private EntityManager em;
-  private EventEmitter ev;
+  Log log;
+  EntityManager em;
+  EventEmitter ev;
 
-  private ClientEndsTurn endTurnEvent;
+  ClientEndsTurn endTurnEvent;
+  GameroundEnd gameroundEndEvent;
 
   @Override
-  public void onNextFrame(int delta) {
+  public void onNextTick(int delta) {
     TimerData data = em.getComponent(EntityId.GAME_ROUND, TimerData.class);
 
     data.gameTime += delta;
@@ -38,12 +40,12 @@ public class GameTimeSystem implements System, NextFrameEvent, GameroundEvents, 
 
     } else if (data.gameTime >= data.gameTimeLimit) {
       log.info("ending game because game time limit is reached");
-      ev.publish(GameroundEvents.class).onGameroundEnds();
+      gameroundEndEvent.onGameroundEnd();
     }
   }
 
   @Override
-  public void gameroundStartEvent() {
+  public void gameroundStart() {
     TimerData data = em.getComponent(EntityId.GAME_ROUND, TimerData.class);
     data.gameTime = 0;
     data.turnTime = 0;

@@ -10,8 +10,8 @@ import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
+import org.wolftec.cwtactics.game.event.error.IllegalArguments;
 import org.wolftec.cwtactics.game.event.game.capture.CaptureProperty;
 import org.wolftec.cwtactics.game.event.game.capture.CapturedProperty;
 import org.wolftec.cwtactics.game.event.game.capture.LoweredCapturePoints;
@@ -26,16 +26,16 @@ public class CaptureSystem implements System, CaptureProperty, LoadEntityEvent, 
 
   private Asserter asserter;
 
-  private ErrorEvent errors;
-  private AddAction addActionEvent;
-  private LoweredCapturePoints loweredPointsEvent;
-  private CapturedProperty capturedEvent;
+  IllegalArguments illegalArgumentsExc;
+  AddAction addActionEvent;
+  LoweredCapturePoints loweredPointsEvent;
+  CapturedProperty capturedEvent;
 
-  private Components<Owner> owners;
-  private Components<Living> livings;
-  private Components<Capturer> capturers;
-  private Components<Position> positions;
-  private Components<Capturable> capturables;
+  Components<Owner> owners;
+  Components<Living> livings;
+  Components<Capturer> capturers;
+  Components<Position> positions;
+  Components<Capturable> capturables;
 
   @Override
   public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {
@@ -56,7 +56,7 @@ public class CaptureSystem implements System, CaptureProperty, LoadEntityEvent, 
       String property = positions.find((entity, pos) -> capturables.has(entity) && pos.x == tx && pos.y == tx);
 
       if (capturer == null || property == null) {
-        errors.onIllegalArguments("missing data");
+        illegalArgumentsExc.onIllegalArguments("missing data");
       }
 
       onCaptureProperty(capturer, property);

@@ -4,17 +4,17 @@ import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.components.game.Config;
 import org.wolftec.cwtactics.game.components.game.ValueMetaData;
-import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.GameroundEvents;
+import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.event.game.gameround.GameroundStart;
 
-public class ConfigSystem implements System, GameroundEvents {
+public class ConfigSystem implements System, GameroundStart {
 
   private Log log;
   private EntityManager em;
 
   @Override
-  public void gameroundStartEvent() {
+  public void gameroundStart() {
     log.info("going to reset all config values");
 
     Array<String> entities = em.getEntitiesWithComponentType(Config.class);

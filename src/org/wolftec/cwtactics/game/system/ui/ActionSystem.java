@@ -16,15 +16,15 @@ import org.wolftec.cwtactics.game.components.ui.Menu;
 import org.wolftec.cwtactics.game.core.CircularBuffer;
 import org.wolftec.cwtactics.game.core.Components;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.ErrorEvent;
-import org.wolftec.cwtactics.game.event.NextFrameEvent;
+import org.wolftec.cwtactics.game.event.error.IllegalState;
+import org.wolftec.cwtactics.game.event.system.FrameTick;
 import org.wolftec.cwtactics.game.event.ui.action.ActionFlags;
 import org.wolftec.cwtactics.game.event.ui.action.AddAction;
 import org.wolftec.cwtactics.game.event.ui.action.InvokeAction;
 import org.wolftec.cwtactics.game.event.ui.action.TriggerAction;
 import org.wolftec.cwtactics.game.event.ui.action.TriggerActionGeneration;
 
-public class ActionSystem implements System, AddAction, TriggerAction, TriggerActionGeneration, NextFrameEvent {
+public class ActionSystem implements System, AddAction, TriggerAction, TriggerActionGeneration, FrameTick {
 
   @SyntheticType
   public class ActionData {
@@ -37,7 +37,7 @@ public class ActionSystem implements System, AddAction, TriggerAction, TriggerAc
 
   private BitSet flags;
 
-  private ErrorEvent errors;
+  private IllegalState illegalStateExc;
   private InvokeAction actionEv;
 
   private Components<Menu> menus;
@@ -72,7 +72,7 @@ public class ActionSystem implements System, AddAction, TriggerAction, TriggerAc
   }
 
   @Override
-  public void onNextFrame(int delta) {
+  public void onNextTick(int delta) {
     CircularBuffer<String> buffer = buffers.get(EntityId.GAME_UI).buffer;
     if (!buffer.isEmpty()) {
       ActionData data = (ActionData) JSGlobal.JSON.parse(buffer.popFirst());
@@ -83,7 +83,7 @@ public class ActionSystem implements System, AddAction, TriggerAction, TriggerAc
   @Override
   public void onTriggerActionGeneration(int x, int y) {
     if (flags == null) {
-      errors.onIllegalState("cannot trigger menu generation twice at the same time");
+      illegalStateExc.onIllegalState("cannot trigger menu generation twice at the same time");
       return;
     }
 

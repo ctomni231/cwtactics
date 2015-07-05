@@ -9,8 +9,8 @@ import org.wolftec.cwtactics.game.components.game.Position;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.ErrorEvent;
 import org.wolftec.cwtactics.game.event.LoadEntityEvent;
+import org.wolftec.cwtactics.game.event.error.IllegalGameData;
 import org.wolftec.cwtactics.game.event.game.factory.BuildUnit;
 import org.wolftec.cwtactics.game.event.game.factory.UnitProduced;
 
@@ -21,7 +21,9 @@ public class FactorySystem implements System, BuildUnit, LoadEntityEvent {
   private EventEmitter ev;
   private Asserter asserter;
 
-  private UnitProduced producedEvent;
+  IllegalGameData illegalGameDataExc;
+
+  UnitProduced producedEvent;
 
   @Override
   public void onLoadUnitTypeEntity(String entity, Object data) {
@@ -66,10 +68,10 @@ public class FactorySystem implements System, BuildUnit, LoadEntityEvent {
 
   private void checkBuildData(String type, Factory factoryData) {
     if (factoryData == null) {
-      ev.publish(ErrorEvent.class).onIllegalGameData("NotAFactory");
+      illegalGameDataExc.onIllegalGameData("NotAFactory");
 
     } else if (factoryData.builds.indexOf(type) == -1) {
-      ev.publish(ErrorEvent.class).onIllegalGameData("TypeIsNotProcuceAble");
+      illegalGameDataExc.onIllegalGameData("TypeIsNotProcuceAble");
     }
   }
 }

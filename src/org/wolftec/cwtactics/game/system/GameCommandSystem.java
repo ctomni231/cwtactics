@@ -4,9 +4,9 @@ import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.core.CircularBuffer;
 import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.system.NetworkMessageEvent;
+import org.wolftec.cwtactics.game.event.system.IncomingMessage;
 
-public class GameCommandSystem implements System, NetworkMessageEvent {
+public class GameCommandSystem implements System, IncomingMessage {
 
   private CircularBuffer<String> messages;
   private Log log;

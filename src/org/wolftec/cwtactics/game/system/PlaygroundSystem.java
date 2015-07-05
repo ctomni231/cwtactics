@@ -9,17 +9,19 @@ import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.core.CESManager;
 import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.event.ClickEvent;
+import org.wolftec.cwtactics.game.core.System;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
+import org.wolftec.cwtactics.game.event.system.RawInput;
 
 public class PlaygroundSystem extends Playground implements System, SystemStartEvent {
 
   private Log log;
   private EntityManager em;
   private EventEmitter evem;
+
+  private RawInput inputEvent;
 
   @Override
   public void onConstruction() {
@@ -74,12 +76,12 @@ public class PlaygroundSystem extends Playground implements System, SystemStartE
 
   @Override
   public void keydown(KeyboardEvent ev) {
-    evem.publish(ClickEvent.class).onClick(ev.key + "", 0, 0);
+    inputEvent.onRawInput("KEYBOARD", ev.key, 0, 0);
   }
 
   @Override
   public void mousedown(MouseEvent ev) {
-    evem.publish(ClickEvent.class).onClick(ev.original.which + "", 0, 0);
+    inputEvent.onRawInput("MOUSE", ev.original.which, 0, 0);
   }
 
   @Override
