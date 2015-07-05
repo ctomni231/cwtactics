@@ -108,4 +108,9 @@ public abstract class BrowserUtil {
     }
     return urlParameters;
   }
+
+  public static String getUrlParameter(String param) {
+    String value = getUrlParameterMap().$get(param);
+    return value != JSGlobal.undefined ? value : null;
+  }
 }

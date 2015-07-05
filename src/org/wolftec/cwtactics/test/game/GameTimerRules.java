@@ -3,12 +3,12 @@ package org.wolftec.cwtactics.test.game;
 import org.wolftec.cwtactics.game.EntityId;
 import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.components.game.TimerData;
-import org.wolftec.cwtactics.game.components.game.Turn;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.event.system.FrameTick;
+import org.wolftec.cwtactics.game.event.FrameTick;
+import org.wolftec.cwtactics.game.timer.TimerData;
+import org.wolftec.cwtactics.game.turn.Turn;
 import org.wolftec.cwtactics.test.core.ITest;
 
 public class GameTimerRules implements ITest, System {

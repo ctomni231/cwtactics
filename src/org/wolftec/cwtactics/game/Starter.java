@@ -1,11 +1,10 @@
 package org.wolftec.cwtactics.game;
 
 import org.stjs.javascript.Array;
-import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSStringAdapter;
 import org.wolftec.cwtactics.engine.util.BrowserUtil;
 import org.wolftec.cwtactics.game.core.CESManager;
+import org.wolftec.cwtactics.game.core.CheckedValue;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
 /**
@@ -13,9 +12,11 @@ import org.wolftec.cwtactics.game.event.SystemStartEvent;
  */
 public class Starter {
   public static void main(String[] args) {
-    String forcedParam = BrowserUtil.getUrlParameterMap().$get("forcedConstruction");
-    Array<String> forcedConst = forcedParam != JSGlobal.undefined ? JSStringAdapter.split(forcedParam, ",") : JSCollections.$array();
-    CESManager.initObjects(forcedConst);
+    CESManager.initObjects(grabForcedSystems());
     CESManager.getObject(EventEmitter.class).publish(SystemStartEvent.class).onSystemInitialized();
+  }
+
+  public static Array<String> grabForcedSystems() {
+    return JSStringAdapter.split(CheckedValue.of(BrowserUtil.getUrlParameter("forcedConstruction")).getOrElse(""), ",");
   }
 }
