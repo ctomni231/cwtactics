@@ -15,7 +15,7 @@ import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.event.ClickEvent;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
-public class Cwt extends Playground implements System, SystemStartEvent {
+public class PlaygroundSystem extends Playground implements System, SystemStartEvent {
 
   private Log log;
   private EntityManager em;
