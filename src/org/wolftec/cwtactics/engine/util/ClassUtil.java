@@ -2,6 +2,7 @@ package org.wolftec.cwtactics.engine.util;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.Map;
 
 public abstract class ClassUtil {
 
@@ -18,5 +19,15 @@ public abstract class ClassUtil {
 
   public static <T> T newInstance(Class<T> clazz) {
     return JSObjectAdapter.$js("new clazz()");
+  }
+
+  public static void forEachPrototypeProperty(Object obj) {
+    Object constructor = JSObjectAdapter.$constructor(obj);
+    Map<String, Object> prototype = JSObjectAdapter.$prototype(obj);
+    Object types = JSObjectAdapter.$get(constructor, "$typeDescription");
+
+    JsUtil.forEachMapValue(prototype, (property, value) -> {
+      Object typeData = JSObjectAdapter.$get(types, property);
+    });
   }
 }

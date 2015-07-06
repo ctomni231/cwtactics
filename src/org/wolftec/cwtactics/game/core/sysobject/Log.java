@@ -1,8 +1,9 @@
-package org.wolftec.cwtactics.game.core;
+package org.wolftec.cwtactics.game.core.sysobject;
 
 import org.stjs.javascript.Global;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
+import org.wolftec.cwtactics.game.core.systems.System;
 
 public class Log implements SystemObject {
 

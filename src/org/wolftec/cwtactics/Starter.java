@@ -3,9 +3,9 @@ package org.wolftec.cwtactics;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSStringAdapter;
 import org.wolftec.cwtactics.engine.util.BrowserUtil;
-import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.core.CESManager;
+import org.wolftec.cwtactics.game.core.CesKernel;
 import org.wolftec.cwtactics.game.core.CheckedValue;
+import org.wolftec.cwtactics.game.core.sysevent.SystemEventManager;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
 /**
@@ -13,8 +13,8 @@ import org.wolftec.cwtactics.game.event.SystemStartEvent;
  */
 public class Starter {
   public static void main(String[] args) {
-    CESManager.initObjects(grabForcedSystems());
-    CESManager.getObject(EventEmitter.class).publish(SystemStartEvent.class).onSystemInitialized();
+    CesKernel.initObjects(grabForcedSystems());
+    CesKernel.getObject(SystemEventManager.class).publish(SystemStartEvent.class).onSystemInitialized();
   }
 
   public static Array<String> grabForcedSystems() {

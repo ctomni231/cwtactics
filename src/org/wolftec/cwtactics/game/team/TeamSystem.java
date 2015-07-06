@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.team;
 
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.sysobject.Asserter;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.SendMoney;
 import org.wolftec.cwtactics.game.event.SendProperty;
 import org.wolftec.cwtactics.game.event.SendUnit;
@@ -11,15 +11,17 @@ import org.wolftec.cwtactics.game.player.Player;
 
 public class TeamSystem implements System, SendUnit, SendProperty, SendMoney {
 
-  private EntityManager em;
-  private Asserter as;
+  private Asserter           as;
+
+  private Components<Player> players;
+  private Components<Owner>  owners;
 
   @Override
   public void onSendMoney(String source, String target, int amount) {
     as.resetFailureDetection();
 
-    Player sOwner = em.getComponent(source, Player.class);
-    Player tOwner = em.getComponent(target, Player.class);
+    Player sOwner = players.get(source);
+    Player tOwner = players.get(target);
 
     as.inspectValue("send money gold", amount).isIntWithinRange(1000, 1000000);
 
@@ -43,9 +45,10 @@ public class TeamSystem implements System, SendUnit, SendProperty, SendMoney {
 
   private void changeOwner(String entity, String targetEntity) {
     as.resetFailureDetection();
-    as.inspectValue("entity owner exists", em.hasEntityComponent(entity, Owner.class)).isTrue();
+    as.inspectValue("entity owner exists", owners.has(entity)).isTrue();
+    as.inspectValue("target entity is a player", players.has(targetEntity)).isTrue();
     as.throwErrorWhenFailureDetected();
 
-    em.getComponent(entity, Owner.class).owner = targetEntity;
+    owners.get(entity).owner = targetEntity;
   }
 }

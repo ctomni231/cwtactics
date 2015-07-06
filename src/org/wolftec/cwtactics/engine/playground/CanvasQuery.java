@@ -16,27 +16,27 @@ public class CanvasQuery {
   @STJSBridge
   public static class Atlas {
     public Array<AtlasFrame> frames;
-    public Canvas image;
+    public Canvas            image;
   }
 
   @STJSBridge
   public static class AtlasFrame {
-    public int height;
+    public int            height;
     public Array<Integer> offset;
     public Array<Integer> region;
-    public int width;
+    public int            width;
   }
 
   @STJSBridge
   public static class BordersData {
-    public Array<Object> bottom; // x,y,w,h,mode
+    public Array<Object> bottom;     // x,y,w,h,mode
     public Array<Object> bottomLeft; // x,y,w,h,mode
     public Array<Object> bottomRight; // x,y,w,h,mode
-    public Array<Object> left; // x,y,w,h,mode
-    public Array<Object> right; // x,y,w,h,mode
-    public Array<Object> top; // x,y,w,h,mode
-    public Array<Object> topLeft; // x,y,w,h,mode
-    public Array<Object> topRight; // x,y,w,h,mode
+    public Array<Object> left;       // x,y,w,h,mode
+    public Array<Object> right;      // x,y,w,h,mode
+    public Array<Object> top;        // x,y,w,h,mode
+    public Array<Object> topLeft;    // x,y,w,h,mode
+    public Array<Object> topRight;   // x,y,w,h,mode
   }
 
   @STJSBridge
@@ -61,7 +61,7 @@ public class CanvasQuery {
     public int top;
   }
 
-  public Canvas canvas;
+  public Canvas                   canvas;
 
   public CanvasRenderingContext2D context;
 

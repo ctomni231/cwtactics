@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.core;
+package org.wolftec.cwtactics.game.core.syscomponent;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -7,13 +7,16 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
+import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
+import org.wolftec.cwtactics.game.core.CheckedValue;
+import org.wolftec.cwtactics.game.util.NumberUtil;
 
 public class Components<T> {
 
-  private Class<T> constructor;
+  private Class<T>       constructor;
   private Map<String, T> components;
-  private Array<String> entities;
+  private Array<String>  entities;
 
   public Components(Class<T> pConstructor) {
     components = JSCollections.$map();
@@ -36,6 +39,36 @@ public class Components<T> {
 
   /**
    * 
+   * @param forbidden
+   * @return
+   */
+  public String getRandomEntity(Array<String> forbidden) {
+    int randomIndex = NumberUtil.getRandomInt(entities.$length());
+    int firstIndex = randomIndex;
+    while (true) {
+      String entity = entities.$get(randomIndex);
+
+      // check next index entry when entity is in the forbidden entities array
+      if (forbidden.indexOf(entity) != -1) {
+        randomIndex++;
+        if (randomIndex == entities.$length()) {
+          randomIndex = 0;
+        }
+
+        // maybe it's no suitable element in the list -> throw error
+        if (randomIndex == firstIndex) {
+          return JsUtil.throwError("NoRandomEventPossible");
+        }
+
+        continue;
+      }
+
+      return entity;
+    }
+  }
+
+  /**
+   * 
    * @param key
    * @return true when the key has a component of this holder else false
    */
@@ -44,7 +77,7 @@ public class Components<T> {
   }
 
   /**
-   * Acquires an object for an key.
+   * Acquires an object for a key.
    * 
    * @param entity
    * @return
@@ -62,6 +95,43 @@ public class Components<T> {
     entities.push(entity);
 
     return instance;
+  }
+
+  /**
+   * Acquires an object for a key and data.
+   * 
+   * @param entity
+   * @return
+   */
+  public T acquireWithData(String entity, Object data) {
+    return parseFromData(data, acquire(entity));
+  }
+
+  /**
+   * Acquires an object for a key and data.
+   * 
+   * @param entity
+   * @return
+   */
+  public T acquireWithRootData(String entity, Object data) {
+    return acquireWithData(entity, JSObjectAdapter.$get(data, ClassUtil.getClassName(constructor)));
+  }
+
+  private T parseFromData(Object data, T component) {
+    if (CheckedValue.of(component).isPresent()) {
+      Object componentPrototype = JSObjectAdapter.$prototype(constructor);
+      Array<String> componentPrototypeProperties = JsUtil.objectKeys(componentPrototype);
+
+      JsUtil.forEachArrayValue(componentPrototypeProperties, (index, property) -> {
+        if (JSGlobal.typeof(JSObjectAdapter.$get(componentPrototype, property)) == "function") return;
+        if (property.startsWith("__")) return;
+
+        if (JSObjectAdapter.hasOwnProperty(data, property)) {
+          JSObjectAdapter.$put(component, property, JSObjectAdapter.$get(data, property));
+        }
+      });
+    }
+    return component;
   }
 
   /**

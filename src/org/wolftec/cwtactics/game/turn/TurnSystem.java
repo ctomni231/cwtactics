@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.turn;
 
 import org.wolftec.cwtactics.Entities;
-import org.wolftec.cwtactics.game.core.Components;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.ClientEndsTurn;
 import org.wolftec.cwtactics.game.event.DayStart;
 import org.wolftec.cwtactics.game.event.IllegalGameData;

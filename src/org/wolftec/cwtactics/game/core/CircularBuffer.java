@@ -14,10 +14,10 @@ public class CircularBuffer<T> {
 
   public static final int DEFAULT_SIZE = 32;
 
-  private int index;
-  private int size;
-  private Array<T> data;
-  private int maxSize;
+  private int             index;
+  private int             size;
+  private Array<T>        data;
+  private int             maxSize;
 
   @SuppressWarnings("unchecked")
   public CircularBuffer(int lMaxSize) {

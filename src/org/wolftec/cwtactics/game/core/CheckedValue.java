@@ -11,8 +11,12 @@ public class CheckedValue<T> {
     i_value = value;
   }
 
+  public boolean isPresent() {
+    return i_value != null && i_value == JSGlobal.undefined;
+  }
+
   public T get() {
-    if (i_value == null || i_value == JSGlobal.undefined) {
+    if (!isPresent()) {
       return JsUtil.throwError("ElementNotDefined");
 
     } else {
@@ -21,7 +25,7 @@ public class CheckedValue<T> {
   }
 
   public T getOrElse(T value) {
-    if (i_value == null || i_value == JSGlobal.undefined) {
+    if (!isPresent()) {
       if (value == null || value == JSGlobal.undefined) {
         return JsUtil.throwError("IllegalArgument");
 
@@ -34,7 +38,7 @@ public class CheckedValue<T> {
   }
 
   public T getOrThrow(String error) {
-    if (i_value == null || i_value == JSGlobal.undefined) {
+    if (!isPresent()) {
       return JsUtil.throwError(error);
 
     } else {

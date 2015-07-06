@@ -4,10 +4,9 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.Entities;
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.sysobject.Asserter;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.CapturedProperty;
 import org.wolftec.cwtactics.game.event.LoadPropertyType;
 import org.wolftec.cwtactics.game.event.LoadTileType;
@@ -22,9 +21,15 @@ import org.wolftec.cwtactics.game.turn.Turn;
 
 public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved, CapturedProperty, LoadTileType, LoadPropertyType, LoadUnitType {
 
-  private EntityManager         em;
-  private EventEmitter          ev;
   private Asserter              asserter;
+
+  private VisibilityChanged     visibilityChangedEvent;
+
+  private Components<Vision>    visioners;
+  private Components<Visible>   visibles;
+  private Components<Position>  positions;
+  private Components<Turn>      turns;
+  private Components<Owner>     owners;
 
   private Array<Array<Integer>> turnOwnerData;
   private Array<Array<Integer>> clientOwnerData;
@@ -64,23 +69,20 @@ public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
-    em.tryAcquireComponentFromDataSuccessCb(entity, data, Vision.class, (vision) -> {
-      asserter.inspectValue("Vision.range of " + entity, vision.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
-    });
+    Vision vision = visioners.acquireWithRootData(entity, data);
+    asserter.inspectValue("Vision.range of " + entity, vision.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
   }
 
   @Override
   public void onLoadPropertyType(String entity, Object data) {
-    em.tryAcquireComponentFromDataSuccessCb(entity, data, Vision.class, (vision) -> {
-      asserter.inspectValue("Vision.range of " + entity, vision.range).isIntWithinRange(0, Constants.MAX_SELECTION_RANGE);
-    });
+    Vision vision = visioners.acquireWithRootData(entity, data);
+    asserter.inspectValue("Vision.range of " + entity, vision.range).isIntWithinRange(0, Constants.MAX_SELECTION_RANGE);
   }
 
   @Override
   public void onLoadTileType(String entity, Object data) {
-    em.tryAcquireComponentFromDataSuccessCb(entity, data, Visible.class, (visible) -> {
-      asserter.inspectValue("Visible.blocksVision of " + entity, visible.blocksVision).isBoolean();
-    });
+    Visible visible = visibles.acquireWithRootData(entity, data);
+    asserter.inspectValue("Visible.blocksVision of " + entity, visible.blocksVision).isBoolean();
   }
 
   @Override
@@ -111,14 +113,14 @@ public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved
   private void changeEntityVision(String entity, boolean turnOwnerAffect, boolean clientOwnerAffect, int change) {
     if (!turnOwnerAffect && !clientOwnerAffect) return;
 
-    Position pos = em.getComponent(entity, Position.class);
+    Position pos = positions.get(entity);
     changeEntityVisionByPosition(entity, turnOwnerAffect, clientOwnerAffect, pos.x, pos.y, change);
   }
 
   private void changeEntityVisionByPosition(String entity, boolean turnOwnerAffect, boolean clientOwnerAffect, int x, int y, int change) {
     if (!turnOwnerAffect && !clientOwnerAffect) return;
 
-    Vision vision = em.getComponent(entity, Vision.class);
+    Vision vision = visioners.get(entity);
     if (turnOwnerAffect) changeVision(turnOwnerData, x, y, vision.range, change, true);
     if (clientOwnerAffect) changeVision(clientOwnerData, x, y, vision.range, change, false);
   }
@@ -147,10 +149,10 @@ public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved
 
         if (publishEvents) {
           if (column.$get(y) == 0 && oldVision > 0) {
-            ev.publish(VisibilityChanged.class).onVisibilityChanged(x, y, false);
+            visibilityChangedEvent.onVisibilityChanged(x, y, false);
 
           } else if (column.$get(y) > 0 && oldVision == 0) {
-            ev.publish(VisibilityChanged.class).onVisibilityChanged(x, y, true);
+            visibilityChangedEvent.onVisibilityChanged(x, y, true);
           }
         }
       }
@@ -163,7 +165,7 @@ public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved
    * @return unit owner
    */
   private String unitOwner(String unit) {
-    return em.getComponent(unit, Owner.class).owner;
+    return owners.get(unit).owner;
   }
 
   /**
@@ -172,7 +174,7 @@ public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved
    * @return true when the given owner is the turn owner
    */
   private boolean isTurnOwner(String owner) {
-    return (owner == em.getComponent(Entities.GAME_ROUND, Turn.class).owner);
+    return (owner == turns.get(Entities.GAME_ROUND).owner);
   }
 
   /**
@@ -181,6 +183,6 @@ public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved
    * @return true when the given owner is the client visible player
    */
   private boolean isClientOwner(String owner) {
-    return (owner == em.getComponent(Entities.GAME_ROUND, Turn.class).lastClientOwner);
+    return (owner == turns.get(Entities.GAME_ROUND).lastClientOwner);
   }
 }

@@ -1,32 +1,25 @@
-package org.wolftec.cwtactics.game;
+package org.wolftec.cwtactics.game.core.sysevent;
 
 import org.stjs.javascript.Array;
-import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSFunctionAdapter;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.core.CESManager;
-import org.wolftec.cwtactics.game.core.SystemEvent;
-import org.wolftec.cwtactics.game.core.Log;
+import org.wolftec.cwtactics.game.core.CesKernel;
+import org.wolftec.cwtactics.game.core.sysobject.Log;
 
-public class EventEmitter implements System {
+public class SystemEventManager {
 
-  private Log log;
-  private Object eventEmitter;
+  private Log                        log;
+  private Object                     eventEmitter;
   private Map<String, Array<Object>> eventListeners;
 
-  @Override
-  public void onConstruction() {
+  public SystemEventManager(Object namespace) {
     eventEmitter = JSObjectAdapter.$js("{}");
     eventListeners = JSCollections.$map();
-
-    Object namespace = JSObjectAdapter.$get(Global.window, Constants.NAMESPACE);
     createEventEmitter(namespace);
     registerSubriberSystems(namespace);
   }
@@ -90,7 +83,7 @@ public class EventEmitter implements System {
 
   private void checkClass(Object namespace, String className) {
     Class<?> classObject = (Class<?>) JSObjectAdapter.$get(namespace, className);
-    Object constructedInstance = CESManager.getObject(classObject);
+    Object constructedInstance = CesKernel.getObject(classObject);
 
     if (constructedInstance == null) {
       return;

@@ -1,10 +1,9 @@
 package org.wolftec.cwtactics.game.timer;
 
 import org.wolftec.cwtactics.Entities;
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.ClientEndsTurn;
 import org.wolftec.cwtactics.game.event.FrameTick;
 import org.wolftec.cwtactics.game.event.GameroundEnd;
@@ -19,16 +18,16 @@ import org.wolftec.cwtactics.game.event.TurnStart;
  */
 public class GameTimeSystem implements System, FrameTick, GameroundStart, TurnStart {
 
-  Log            log;
-  EntityManager  em;
-  EventEmitter   ev;
+  private Log                   log;
 
-  ClientEndsTurn endTurnEvent;
-  GameroundEnd   gameroundEndEvent;
+  private ClientEndsTurn        endTurnEvent;
+  private GameroundEnd          gameroundEndEvent;
+
+  private Components<TimerData> timers;
 
   @Override
   public void onNextTick(int delta) {
-    TimerData data = em.getComponent(Entities.GAME_ROUND, TimerData.class);
+    TimerData data = getGameroundTimer();
 
     data.gameTime += delta;
     data.turnTime += delta;
@@ -45,14 +44,19 @@ public class GameTimeSystem implements System, FrameTick, GameroundStart, TurnSt
 
   @Override
   public void gameroundStart() {
-    TimerData data = em.getComponent(Entities.GAME_ROUND, TimerData.class);
+    TimerData data = getGameroundTimer();
     data.gameTime = 0;
     data.turnTime = 0;
   }
 
   @Override
   public void onTurnStart(String player, int turn) {
-    TimerData data = em.getComponent(Entities.GAME_ROUND, TimerData.class);
+    TimerData data = getGameroundTimer();
     data.turnTime = 0;
+  }
+
+  private TimerData getGameroundTimer() {
+    TimerData data = timers.get(Entities.GAME_ROUND);
+    return data;
   }
 }

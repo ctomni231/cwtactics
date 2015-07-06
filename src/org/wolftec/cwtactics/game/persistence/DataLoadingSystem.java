@@ -11,10 +11,9 @@ import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.Playground.AssetEntry;
 import org.wolftec.cwtactics.engine.util.BrowserUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.sysevent.SystemEventManager;
+import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.LoadArmyType;
 import org.wolftec.cwtactics.game.event.LoadCommanderType;
 import org.wolftec.cwtactics.game.event.LoadMap;
@@ -27,18 +26,17 @@ import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
 public class DataLoadingSystem implements System, SystemStartEvent {
 
-  private Log           log;
-  private EntityManager em;
-  private EventEmitter  ev;
+  private Log               log;
+  private SystemEventManager      ev;
 
-  LoadArmyType          armyLoadEvent;
-  LoadPropertyType      propertyLoadEvent;
-  LoadTileType          tileLoadEvent;
-  LoadUnitType          unitLoadEvent;
-  LoadMoveType          moveLoadEvent;
-  LoadWeatherType       weatherLoadEvent;
-  LoadCommanderType     commanderLoadEvent;
-  LoadMap               mapLoadEvent;
+  private LoadArmyType      armyLoadEvent;
+  private LoadPropertyType  propertyLoadEvent;
+  private LoadTileType      tileLoadEvent;
+  private LoadUnitType      unitLoadEvent;
+  private LoadMoveType      moveLoadEvent;
+  private LoadWeatherType   weatherLoadEvent;
+  private LoadCommanderType commanderLoadEvent;
+  private LoadMap           mapLoadEvent;
 
   @Override
   public void onConstruction() {

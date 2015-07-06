@@ -8,24 +8,24 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwtactics.engine.util.BrowserUtil;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.core.CESManager;
-import org.wolftec.cwtactics.game.core.Log;
+import org.wolftec.cwtactics.game.core.CesKernel;
+import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
 public class TestManagerSystem implements System, SystemStartEvent {
 
   private static final String TEST_METHOD_START_IDENTIFIER = "test";
 
-  private static final String DISABLE_TESTS_PARAMETER = "noTestExecution";
+  private static final String DISABLE_TESTS_PARAMETER      = "noTestExecution";
 
-  private static final String BEFORETEST_METHOD_NAME = "beforeTest";
-  private static final String AFTERTEST_METHOD_NAME = "afterTest";
+  private static final String BEFORETEST_METHOD_NAME       = "beforeTest";
+  private static final String AFTERTEST_METHOD_NAME        = "afterTest";
 
-  private Log log;
+  private Log                 log;
 
-  private int passed;
-  private int failed;
+  private int                 passed;
+  private int                 failed;
 
   @Override
   public void onSystemInitialized() {
@@ -37,7 +37,7 @@ public class TestManagerSystem implements System, SystemStartEvent {
   private void callAllTests() {
     log.info("start tests");
 
-    JsUtil.forEachArrayValue(CESManager.getObjects(ITest.class), (index, test) -> {
+    JsUtil.forEachArrayValue(CesKernel.getObjects(ITest.class), (index, test) -> {
       callTestMethods(test);
     });
 

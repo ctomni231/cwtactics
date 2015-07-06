@@ -4,24 +4,20 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.PlaygroundGlobal;
-import org.wolftec.cwtactics.engine.playground.PlaygroundState;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.core.CESManager;
-import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.RawInput;
+import org.wolftec.cwtactics.game.event.SystemInitializedEvent;
 import org.wolftec.cwtactics.game.event.SystemStartEvent;
 
-public class PlaygroundSystem extends Playground implements System, SystemStartEvent {
+public class PlaygroundSystem extends Playground implements System, SystemInitializedEvent {
 
-  private Log           log;
-  private EntityManager em;
-  private EventEmitter  evem;
+  private Log              log;
 
-  RawInput              inputEvent;
+  private SystemStartEvent systemStartEvent;
+  private RawInput         inputEvent;
 
   @Override
   public void onConstruction() {
@@ -44,7 +40,7 @@ public class PlaygroundSystem extends Playground implements System, SystemStartE
   @Override
   public void preload() {
     loader.on("error", (error) -> log.error("Failed to load asset => " + error));
-    evem.publish(SystemStartEvent.class).onSystemStartup(this);
+    systemStartEvent.onSystemStartup(this);
   }
 
   @Override
@@ -57,16 +53,6 @@ public class PlaygroundSystem extends Playground implements System, SystemStartE
 
   @Override
   public void render() {
-  }
-
-  /**
-   * Sets a state by it's class. The class needs to be a {@link Constructed}
-   * class.
-   *
-   * @param stateClass
-   */
-  public void setStateByClass(Class<? extends PlaygroundState> stateClass) {
-    setState(CESManager.getObject(stateClass));
   }
 
   @Override

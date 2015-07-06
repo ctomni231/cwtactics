@@ -2,8 +2,8 @@ package org.wolftec.cwtactics.game.commander;
 
 import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.engine.bitset.BitSet;
-import org.wolftec.cwtactics.game.core.Components;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.ActionFlags;
 import org.wolftec.cwtactics.game.event.ActivatePowerLevel;
 import org.wolftec.cwtactics.game.event.AddAction;

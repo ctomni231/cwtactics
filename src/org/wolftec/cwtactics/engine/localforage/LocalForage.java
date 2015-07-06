@@ -11,9 +11,9 @@ import org.stjs.javascript.functions.Function3;
 @STJSBridge
 public class LocalForage {
 
-  public Integer LOCALSTORAGE;
-  public Integer WEBSQL;
-  public Integer INDEXEDDB;
+  public Integer            LOCALSTORAGE;
+  public Integer            WEBSQL;
+  public Integer            INDEXEDDB;
 
   public static LocalForage localforage;
 

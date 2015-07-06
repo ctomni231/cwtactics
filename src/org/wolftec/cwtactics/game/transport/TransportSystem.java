@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.transport;
 
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.sysobject.Asserter;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.LoadUnit;
 import org.wolftec.cwtactics.game.event.LoadUnitType;
 import org.wolftec.cwtactics.game.event.UnloadUnit;
@@ -10,20 +10,18 @@ import org.wolftec.cwtactics.game.map.Position;
 
 public class TransportSystem implements System, LoadUnitType, LoadUnit, UnloadUnit {
 
-  private EntityManager em;
-  private Asserter asserter;
+  private Asserter                       asserter;
 
-  @Override
-  public void onConstruction() {
-  }
+  private Components<LoadingAbility>     loaders;
+  private Components<Position>           positions;
+  private Components<TransportContainer> containers;
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
-    em.tryAcquireComponentFromDataSuccessCb(entity, data, LoadingAbility.class, (transporter) -> {
-      asserter.inspectValue("Transporter.slots of " + entity, transporter.slots).isIntWithinRange(1, 10);
-      asserter.inspectValue("Transporter.noDamage of " + entity, transporter.loads).forEachArrayValue((target) -> {
-        asserter.isEntityId();
-      });
+    LoadingAbility transporter = loaders.acquireWithRootData(entity, data);
+    asserter.inspectValue("Transporter.slots of " + entity, transporter.slots).isIntWithinRange(1, 10);
+    asserter.inspectValue("Transporter.noDamage of " + entity, transporter.loads).forEachArrayValue((target) -> {
+      asserter.isEntityId();
     });
   }
 
@@ -31,10 +29,10 @@ public class TransportSystem implements System, LoadUnitType, LoadUnit, UnloadUn
   public void onLoadUnit(String transporter, String load) {
 
     // TODO this should be done by the move system
-    em.detachEntityComponentByClass(load, Position.class);
+    positions.release(load);
 
-    TransportContainer tc = em.getComponent(transporter, TransportContainer.class);
-    LoadingAbility tAbility = em.getComponent(transporter, LoadingAbility.class);
+    TransportContainer tc = containers.get(transporter);
+    LoadingAbility tAbility = loaders.get(transporter);
 
     // --> TODO not so good because this prepare and throw when looks ugly :/
     asserter.resetFailureDetection();
@@ -48,8 +46,7 @@ public class TransportSystem implements System, LoadUnitType, LoadUnit, UnloadUn
 
   @Override
   public void onUnloadUnit(String transporter, String load, int atX, int atY) {
-
-    TransportContainer tc = em.getComponent(transporter, TransportContainer.class);
+    TransportContainer tc = containers.get(transporter);
 
     // --> TODO not so good because this prepare and throw when looks ugly :/
     asserter.resetFailureDetection();
@@ -60,7 +57,7 @@ public class TransportSystem implements System, LoadUnitType, LoadUnit, UnloadUn
     tc.loaded.remove(load);
 
     // TODO this should be done by the move system
-    Position loadPos = em.acquireEntityComponent(load, Position.class);
+    Position loadPos = positions.acquire(load);
     loadPos.x = atX;
     loadPos.y = atY;
   }

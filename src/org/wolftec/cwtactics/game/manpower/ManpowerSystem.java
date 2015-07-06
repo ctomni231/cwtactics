@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.manpower;
 
-import org.wolftec.cwtactics.game.core.Components;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.GameroundStart;
 import org.wolftec.cwtactics.game.event.UnitCreated;
 import org.wolftec.cwtactics.game.player.Owner;
@@ -15,7 +15,7 @@ import org.wolftec.cwtactics.game.player.Owner;
  */
 public class ManpowerSystem implements System, UnitCreated, GameroundStart {
 
-  private Components<Owner> owners;
+  private Components<Owner>    owners;
   private Components<Manpower> manpowers;
 
   @Override

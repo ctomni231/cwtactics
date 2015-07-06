@@ -2,14 +2,14 @@ package org.wolftec.cwtactics.game.action;
 
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.core.CircularBuffer;
-import org.wolftec.cwtactics.game.core.System;
-import org.wolftec.cwtactics.game.core.Log;
+import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.IncomingMessage;
 
 public class GameCommandSystem implements System, IncomingMessage {
 
   private CircularBuffer<String> messages;
-  private Log log;
+  private Log                    log;
 
   @Override
   public void onConstruction() {

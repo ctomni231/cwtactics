@@ -1,60 +1,55 @@
 package org.wolftec.cwtactics.game.weather;
 
-import org.stjs.javascript.Array;
+import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Entities;
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.sysobject.Asserter;
+import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.DayStart;
 import org.wolftec.cwtactics.game.event.LoadWeatherType;
+import org.wolftec.cwtactics.game.event.SystemStartEvent;
 import org.wolftec.cwtactics.game.event.WeatherChanges;
-import org.wolftec.cwtactics.game.util.NumberUtil;
 
-public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeatherType {
+public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeatherType, SystemStartEvent {
 
-  private Log           log;
-  private EntityManager em;
-  private Asserter      asserter;
+  private Log                     log;
+  private Asserter                asserter;
+
+  private Components<Weather>     weathers;
+  private Components<WeatherData> weathersData;
+
+  @Override
+  public void onSystemInitialized() {
+    weathersData.acquire(Entities.GAME_ROUND);
+  }
 
   @Override
   public void onLoadWeatherType(String entity, Object data) {
-    em.tryAcquireComponentFromDataSuccessCb(entity, data, Weather.class, (weather) -> {
-      asserter.inspectValue("Weather.defaultWeather of " + entity, weather.defaultWeather).isBoolean();
-    });
+    Weather weather = weathers.acquireWithRootData(entity, data);
+    asserter.inspectValue("Weather.defaultWeather of " + entity, weather.defaultWeather).isBoolean();
   }
 
   @Override
   public void onWeatherChanges(String weather, int duration) {
-    WeatherData data = em.getNonNullComponent(Entities.GAME_ROUND, WeatherData.class);
+    WeatherData data = weathersData.get(Entities.GAME_ROUND);
     data.days = duration;
     data.weather = weather;
   }
 
   @Override
   public void onDayStart(int day) {
-    WeatherData data = em.getComponent(Entities.GAME_ROUND, WeatherData.class);
-    Weather currentWeather = em.getComponent(data.weather, Weather.class);
+    WeatherData data = weathersData.get(Entities.GAME_ROUND);
 
     data.days--;
     if (data.days == 0) {
       log.info("changing weather..");
 
-      Array<String> weatherTypes = em.getEntitiesWithComponentType(Weather.class);
-      String newWeatherEntity;
-
-      while (true) {
-        newWeatherEntity = weatherTypes.$get(NumberUtil.getRandomInt(weatherTypes.$length()));
-        // TODO this looks very ugly :(
-        if (newWeatherEntity != Entities.GAME_ROUND && currentWeather != em.getComponent(newWeatherEntity, Weather.class)) {
-          break;
-        }
-      }
-
-      Weather newWeather = em.getComponent(newWeatherEntity, Weather.class);
+      String newWeatherName = weathers.getRandomEntity(JSCollections.$array(data.weather));
+      Weather newWeather = weathers.get(newWeatherName);
       int newDuration = newWeather.defaultWeather ? 1 : generateRandomDuration();
 
-      log.info("..to " + newWeatherEntity + " for " + newDuration + " days");
+      log.info("..to " + newWeatherName + " for " + newDuration + " days");
       // TODO action invocation
     }
   }

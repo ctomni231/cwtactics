@@ -1,10 +1,10 @@
 package org.wolftec.cwtactics.game.supply;
 
-import org.wolftec.cwtactics.game.EntityManager;
 import org.wolftec.cwtactics.game.battle.AmmoDepot;
 import org.wolftec.cwtactics.game.battle.FighterPrimaryWeapon;
-import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.sysobject.Asserter;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.LoadPropertyType;
 import org.wolftec.cwtactics.game.event.LoadUnitType;
 import org.wolftec.cwtactics.game.event.SupplyNeighbors;
@@ -17,13 +17,22 @@ import org.wolftec.cwtactics.game.player.Player;
 
 public class SupplySystem implements System, LoadUnitType, LoadPropertyType, TurnStart, SupplyNeighbors {
 
-  private EntityManager em;
-  private Asserter asserter;
+  private Asserter                         asserter;
+
+  private Components<Owner>                owners;
+  private Components<Funds>                funds;
+  private Components<Player>               players;
+  private Components<Position>             positions;
+  private Components<SupplierAbility>      suppliers;
+  private Components<Movable>              movables;
+  private Components<FuelDepot>            fuelOwners;
+  private Components<AmmoDepot>            ammoOwners;
+  private Components<FighterPrimaryWeapon> primaryWeapons;
 
   @Override
   public void onSupplyNeighbors(String supplier) {
-    String player = em.getComponent(supplier, Owner.class).owner;
-    Position supplierPos = em.getComponent(supplier, Position.class);
+    String player = owners.get(supplier).owner;
+    Position supplierPos = positions.get(supplier);
 
     supplyNeightbors(player, supplier, supplierPos);
   }
@@ -35,25 +44,22 @@ public class SupplySystem implements System, LoadUnitType, LoadPropertyType, Tur
   }
 
   private void doGiveFunds(String player) {
-    Player playerData = em.getComponent(player, Player.class);
-    em.getEntitiesWithComponentType(Funds.class).$forEach((prop) -> {
-      Funds funds = em.getComponent(prop, Funds.class);
-      playerData.gold += funds.amount;
-    });
+    Player playerData = players.get(player);
+    funds.each((entity, funds) -> playerData.gold += funds.amount);
   }
 
   private void doResupply(String player) {
-    em.getEntitiesWithComponentType(SupplierAbility.class).$forEach((supplier) -> {
-      Position supplierPos = em.getComponent(supplier, Position.class);
+    suppliers.each((entity, supplier) -> {
+      Position supplierPos = positions.get(entity);
+      if (movables.has(entity)) {
 
-      if (em.hasEntityComponent(supplier, Movable.class)) {
         // movable things are units
-        supplyNeightbors(player, supplier, supplierPos);
+        supplyNeightbors(player, entity, supplierPos);
 
       } else {
 
         // non movable things are properties
-        resupplyUnitAt(supplierPos.x, supplierPos.y, supplier, player);
+        resupplyUnitAt(supplierPos.x, supplierPos.y, entity, player);
       }
     });
   }
@@ -67,22 +73,18 @@ public class SupplySystem implements System, LoadUnitType, LoadPropertyType, Tur
 
   private void resupplyUnitAt(int x, int y, String supplier, String expectedOwner) {
     // TODO better search!
-    em.getEntitiesWithComponentType(Movable.class).$forEach((unit) -> {
-      Position unitPos = em.getComponent(unit, Position.class);
+    movables.each((entity, unit) -> {
+
+      Position unitPos = positions.get(entity);
       if (unitPos.x == x && unitPos.y == y) {
-        SupplierAbility supAb = em.getComponent(supplier, SupplierAbility.class);
+        SupplierAbility supAb = suppliers.get(supplier);
 
         if (supAb.refillLoads) {
 
-          FighterPrimaryWeapon primWp = em.getComponent(unit, FighterPrimaryWeapon.class);
-          if (primWp != null) {
-            AmmoDepot ammo = em.getComponent(unit, AmmoDepot.class);
-            ammo.amount = primWp.ammo;
+          if (primaryWeapons.has(entity)) {
+            ammoOwners.get(entity).amount = primaryWeapons.get(entity).ammo;
           }
-
-          Movable movable = em.getComponent(unit, Movable.class);
-          FuelDepot fuel = em.getComponent(unit, FuelDepot.class);
-          fuel.amount = movable.fuel;
+          fuelOwners.get(entity).amount = movables.get(entity).fuel;
         }
       }
     });
@@ -90,24 +92,22 @@ public class SupplySystem implements System, LoadUnitType, LoadPropertyType, Tur
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
-    em.tryAcquireComponentFromDataSuccessCb(entity, data, SupplierAbility.class, (supplier) -> {
-      asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
-      asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
-        asserter.isEntityId();
-      });
+    SupplierAbility supplier = suppliers.acquireWithRootData(entity, data);
+    asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
+    asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
+      asserter.isEntityId();
     });
   }
 
   @Override
   public void onLoadPropertyType(String entity, Object data) {
-    em.tryAcquireComponentFromDataSuccessCb(entity, data, SupplierAbility.class, (supplier) -> {
-      asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
-      asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
-        asserter.isEntityId();
-      });
-      em.tryAcquireComponentFromDataSuccessCb(entity, data, Funds.class, (funds) -> {
-        asserter.inspectValue("Funds.amount of " + entity, funds.amount).isIntWithinRange(0, 999999);
-      });
+    SupplierAbility supplier = suppliers.acquireWithRootData(entity, data);
+    asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
+    asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
+      asserter.isEntityId();
     });
+
+    Funds funder = funds.acquireWithRootData(entity, data);
+    asserter.inspectValue("Funds.amount of " + entity, funder.amount).isIntWithinRange(0, 999999);
   }
 }

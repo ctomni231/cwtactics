@@ -22,14 +22,14 @@ public class LocalForageConfig {
    * 
    * Default: <code>localforage</code>
    */
-  public String name;
+  public String         name;
 
   /**
    * The size of the database in bytes. Used only in WebSQL for now.
    * 
    * Default: <code>4980736</code>
    */
-  public int size;
+  public int            size;
 
   /**
    * The name of the datastore. In IndexedDB this is the dataStore, in WebSQL
@@ -39,7 +39,7 @@ public class LocalForageConfig {
    * 
    * Default: <code>keyvaluepairs</code>
    */
-  public String storeName;
+  public String         storeName;
 
   /**
    * The version of your database. May be used for upgrades in the future;
@@ -47,13 +47,13 @@ public class LocalForageConfig {
    * 
    * Default: <code>1.0</code>
    */
-  public String version;
+  public String         version;
 
   /**
    * A description of the database, essentially for developer usage.
    * 
    * Default: <code>""</code>
    */
-  public String description;
+  public String         description;
 
 }

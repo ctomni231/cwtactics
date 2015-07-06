@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.join;
 
 import org.wolftec.cwtactics.Constants;
-import org.wolftec.cwtactics.game.core.Components;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.ChangeGold;
 import org.wolftec.cwtactics.game.event.HealUnit;
 import org.wolftec.cwtactics.game.event.JoinUnits;
@@ -13,12 +13,12 @@ import org.wolftec.cwtactics.game.util.NumberUtil;
 
 public class JoinSystem implements System, JoinUnits {
 
-  private Components<Living> livings;
+  private Components<Living>  livings;
   private Components<Buyable> buyables;
-  private Components<Owner> owners;
+  private Components<Owner>   owners;
 
-  private ChangeGold playerEventPush;
-  private HealUnit healEvent;
+  private ChangeGold          playerEventPush;
+  private HealUnit            healEvent;
 
   @Override
   public void onJoinUnits(String joiner, String joinTarget) {

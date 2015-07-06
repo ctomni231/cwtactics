@@ -48,7 +48,7 @@ public class Playground {
   @SyntheticType
   public static class GamepadEvent {
     public String button;
-    public int gamepad;
+    public int    gamepad;
   }
 
   @SyntheticType
@@ -99,8 +99,8 @@ public class Playground {
   @SyntheticType
   public static class MouseEvent {
     public DOMEvent original;
-    public int x;
-    public int y;
+    public int      x;
+    public int      y;
   }
 
   @SyntheticType
@@ -108,8 +108,8 @@ public class Playground {
     public boolean left;
     public boolean middle;
     public boolean right;
-    public int x;
-    public int y;
+    public int     x;
+    public int     y;
 
     public native void lock();
 
@@ -118,16 +118,16 @@ public class Playground {
 
   @SyntheticType
   public static class PointerEvent {
-    public String button;
-    public int delta;
-    public int id;
-    public boolean mouse;
+    public String   button;
+    public int      delta;
+    public int      id;
+    public boolean  mouse;
     public DOMEvent original;
 
-    public boolean touch;
+    public boolean  touch;
 
-    public int x;
-    public int y;
+    public int      x;
+    public int      y;
   }
 
   @SyntheticType
@@ -165,10 +165,10 @@ public class Playground {
 
   @SyntheticType
   public static class TouchEvent {
-    public int id;
+    public int      id;
     public DOMEvent original;
-    public int x;
-    public int y;
+    public int      x;
+    public int      y;
   }
 
   @SyntheticType
@@ -212,57 +212,57 @@ public class Playground {
   @SyntheticType
   public static class Tweenable {
     public String background;
-    public int height;
-    public int rotation;
+    public int    height;
+    public int    rotation;
     public double scale;
-    public int width;
-    public int x;
-    public int y;
+    public int    width;
+    public int    x;
+    public int    y;
   }
 
   @SyntheticType
   public static class TweenData extends Tweenable {
   }
 
-  public Map<String, Atlas> atlases;
+  public Map<String, Atlas>  atlases;
 
-  public Element container;
+  public Element             container;
 
   public Map<String, Object> data;
 
-  public int height;
+  public int                 height;
 
   public Map<String, Canvas> images;
 
-  public KeyboardStatus keyboard;
+  public KeyboardStatus      keyboard;
 
-  public CanvasQuery layer;
+  public CanvasQuery         layer;
 
-  public int lifetime;
+  public int                 lifetime;
 
-  public Loader loader;
+  public Loader              loader;
 
-  public MouseStatus mouse;
+  public MouseStatus         mouse;
 
-  public SoundActions music;
+  public SoundActions        music;
 
-  public ResourcePaths paths;
+  public ResourcePaths       paths;
 
   public Array<PointerEvent> pointers;
 
-  public String preferedAudioFormat;
+  public String              preferedAudioFormat;
 
-  public double scale;
+  public double              scale;
 
-  public boolean smoothing;
+  public boolean             smoothing;
 
-  public SoundActions sound;
+  public SoundActions        sound;
 
-  public TouchStatus touch;
+  public TouchStatus         touch;
 
-  public int width;
+  public int                 width;
 
-  public PlaygroundState state;
+  public PlaygroundState     state;
 
   public void create() {
   }

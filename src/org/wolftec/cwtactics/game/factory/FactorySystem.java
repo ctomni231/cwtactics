@@ -1,10 +1,9 @@
 package org.wolftec.cwtactics.game.factory;
 
-import org.wolftec.cwtactics.game.EntityManager;
-import org.wolftec.cwtactics.game.EventEmitter;
-import org.wolftec.cwtactics.game.core.Asserter;
-import org.wolftec.cwtactics.game.core.Log;
-import org.wolftec.cwtactics.game.core.System;
+import org.wolftec.cwtactics.game.core.syscomponent.Components;
+import org.wolftec.cwtactics.game.core.sysobject.Asserter;
+import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.BuildUnit;
 import org.wolftec.cwtactics.game.event.IllegalGameData;
 import org.wolftec.cwtactics.game.event.LoadPropertyType;
@@ -15,50 +14,49 @@ import org.wolftec.cwtactics.game.player.Owner;
 
 public class FactorySystem implements System, BuildUnit, LoadUnitType, LoadPropertyType {
 
-  private Log log;
-  private EntityManager em;
-  private EventEmitter ev;
-  private Asserter asserter;
+  Log                  log;
+  Asserter             asserter;
 
-  IllegalGameData illegalGameDataExc;
+  IllegalGameData      illegalGameDataExc;
+  UnitProduced         producedEvent;
 
-  UnitProduced producedEvent;
+  Components<Buyable>  buyables;
+  Components<Factory>  factories;
+  Components<Owner>    owners;
+  Components<Position> positions;
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
-    em.tryAcquireComponentFromDataSuccessCb(entity, data, Buyable.class, (buyable) -> {
-      asserter.inspectValue("Buyable.cost of " + entity, buyable.cost).isIntWithinRange(0, 999999);
-    });
+    Buyable buyable = buyables.acquireWithRootData(entity, data);
+    asserter.inspectValue("Buyable.cost of " + entity, buyable.cost).isIntWithinRange(0, 999999);
   }
 
   @Override
   public void onLoadPropertyType(String entity, Object data) {
-    em.tryAcquireComponentFromDataSuccessCb(entity, data, Factory.class, (factory) -> {
-      asserter.inspectValue("Factory.builds of " + entity, factory.builds).forEachArrayValue((value) -> {
-        asserter.isEntityId();
-      });
+    Factory factory = factories.acquireWithRootData(entity, data);
+    asserter.inspectValue("Factory.builds of " + entity, factory.builds).forEachArrayValue((value) -> {
+      asserter.isEntityId();
     });
   }
 
   @Override
   public void onBuildUnit(String factory, String type) {
-    Factory factoryData = em.getComponent(factory, Factory.class);
+    Factory factoryData = factories.get(factory);
 
     checkBuildData(type, factoryData);
 
-    String unit = em.acquireEntity();
+    String unit = "XYSAS"; // TODO FIIIIIIIX IT !!!!
 
-    Owner unitOwner = em.getNonNullComponent(unit, Owner.class);
-    Position unitPos = em.getNonNullComponent(unit, Position.class);
-
-    Owner factoryOwner = em.getComponent(factory, Owner.class);
-    Position factoryPos = em.getComponent(factory, Position.class);
+    Owner unitOwner = owners.acquire(unit);
+    Owner factoryOwner = owners.get(factory);
+    Position unitPos = positions.acquire(unit);
+    Position factoryPos = positions.get(factory);
 
     unitOwner.owner = factoryOwner.owner;
     unitPos.x = factoryPos.x;
     unitPos.y = factoryPos.y;
 
-    em.setEntityPrototype(unit, type);
+    em.setEntityPrototype(unit, type); // TODO FIIIIIIIX IT !!!!
 
     log.info("produced a unit [ID:" + unit + ", Type: " + type + "]");
 

@@ -5,11 +5,11 @@ import org.stjs.javascript.JSCollections;
 
 public abstract class Entities {
 
-  public static final String NOTHING = "__NOTHING__";
-  public static final String GAME_UI = "GAME_UI";
+  public static final String NOTHING    = "__NOTHING__";
+  public static final String GAME_UI    = "GAME_UI";
   public static final String GAME_ROUND = "GAME_ROUND";
-  public static final String UNIT = "UNIT_";
-  public static final String PROPERTY = "PROPERTY_";
+  public static final String UNIT       = "UNIT_";
+  public static final String PROPERTY   = "PROPERTY_";
 
   public static String getUnitEntityId(int number) {
     return UNIT + number;
