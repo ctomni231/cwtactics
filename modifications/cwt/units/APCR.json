@@ -11,17 +11,17 @@
   "Vision": {
     "range": 1
   },
-  "Transporter": {
+  "LoadingAbility": {
     "slots": 1,
     "loads": [
-      "MV_INFT",
-      "MV_MECH"
+      "MVIN",
+      "MVME"
     ]
   },
-  "Supplier": {
+  "SupplierAbility": {
     "refillLoads": false,
     "supplies": [
-      "*"
+      "@ALL"
     ]
   },
   "TODO_Renderable": {

@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.stealth;
 
+import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysobject.Asserter;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.HideUnit;
 import org.wolftec.cwtactics.game.event.LoadUnitType;
@@ -16,8 +16,10 @@ public class StealthSystem implements System, HideUnit, UnhideUnit, LoadUnitType
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
-    HidingAbility hideAble = hidables.acquireWithRootData(entity, data);
-    as.inspectValue("HideAble.additionFuelDrain of " + entity, hideAble.additionFuelDrain).isIntWithinRange(0, 99);
+    if (hidables.isComponentInRootData(data)) {
+      HidingAbility hideAble = hidables.acquireWithRootData(entity, data);
+      as.inspectValue("HideAble.additionFuelDrain of " + entity, hideAble.additionFuelDrain).isIntWithinRange(0, 99);
+    }
   }
 
   @Override

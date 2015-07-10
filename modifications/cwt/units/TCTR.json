@@ -6,7 +6,7 @@
   "Movable": {
     "range": 6,
     "fuel": 99,
-    "type": "COPTER"
+    "type": "MVCP"
   },
   "Vision": {
     "range": 2
@@ -14,11 +14,11 @@
   "FuelDrain": {
     "daily": 2
   },
-  "Transporter": {
+  "LoadingAbility": {
     "slots": 1,
     "loads": [
-      "MV_INFT",
-      "MV_MECH"
+      "MVIN",
+      "MVME"
     ]
   }
 }

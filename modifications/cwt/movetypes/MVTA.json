@@ -4,11 +4,11 @@
     "costs": {
       "PLIN": 2,
       "FRST": 3,
-      "MNTN": -1,
-      "RIVR": -1,
-      "WATR": -1,
-      "REEF": -1,
-      "*": 1
+      "MNTN": 0,
+      "RIVR": 0,
+      "WATR": 0,
+      "REEF": 0,
+      "@ALL": 1
     }
   }
 }

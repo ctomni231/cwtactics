@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.fuelDrain;
 
+import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysobject.Asserter;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.LoadUnitType;
 import org.wolftec.cwtactics.game.event.TurnStart;
@@ -23,8 +23,10 @@ public class FuelDrainSystem implements System, LoadUnitType, TurnStart {
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
-    FuelDrain drain = drainers.acquireWithRootData(entity, data);
-    asserter.inspectValue("FuelDrain.daily of " + entity, drain.daily).isIntWithinRange(1, 99);
+    if (drainers.isComponentInRootData(data)) {
+      FuelDrain drain = drainers.acquireWithRootData(entity, data);
+      asserter.inspectValue("FuelDrain.daily of " + entity, drain.daily).isIntWithinRange(1, 99);
+    }
   }
 
   @Override

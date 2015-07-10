@@ -4,8 +4,8 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.Entities;
+import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysobject.Asserter;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.CapturedProperty;
 import org.wolftec.cwtactics.game.event.LoadPropertyType;
@@ -81,8 +81,10 @@ public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved
 
   @Override
   public void onLoadTileType(String entity, Object data) {
-    Visible visible = visibles.acquireWithRootData(entity, data);
-    asserter.inspectValue("Visible.blocksVision of " + entity, visible.blocksVision).isBoolean();
+    if (visibles.isComponentInRootData(data)) {
+      Visible visible = visibles.acquireWithRootData(entity, data);
+      asserter.inspectValue("Visible.blocksVision of " + entity, visible.blocksVision).isBoolean();
+    }
   }
 
   @Override

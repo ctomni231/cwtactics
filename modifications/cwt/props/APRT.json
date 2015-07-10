@@ -14,18 +14,18 @@
   },
   "Supplier": {
     "supplies": [
-      "AIR"
+      "MVAR"
     ]
   },
   "Repairer": {
     "amount": 2,
     "targets": [
-      "AIR"
+      "MVAR"
     ]
   },
   "Factory": {
     "builds": [
-      "AIR"
+      "MVAR"
     ]
   }
 }

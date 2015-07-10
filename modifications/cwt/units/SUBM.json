@@ -14,7 +14,7 @@
   "FuelDrain": {
     "daily": 1
   },
-  "HideAble": {
+  "HidingAbility": {
     "additionFuelDrain": 4
   },
   "FighterPrimaryWeapon": {

@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.transport;
 
+import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysobject.Asserter;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.LoadUnit;
 import org.wolftec.cwtactics.game.event.LoadUnitType;
@@ -18,11 +18,13 @@ public class TransportSystem implements System, LoadUnitType, LoadUnit, UnloadUn
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
-    LoadingAbility transporter = loaders.acquireWithRootData(entity, data);
-    asserter.inspectValue("Transporter.slots of " + entity, transporter.slots).isIntWithinRange(1, 10);
-    asserter.inspectValue("Transporter.noDamage of " + entity, transporter.loads).forEachArrayValue((target) -> {
-      asserter.isEntityId();
-    });
+    if (loaders.isComponentInRootData(data)) {
+      LoadingAbility transporter = loaders.acquireWithRootData(entity, data);
+      asserter.inspectValue("Transporter.slots of " + entity, transporter.slots).isIntWithinRange(1, 10);
+      asserter.inspectValue("Transporter.noDamage of " + entity, transporter.loads).forEachArrayValue((target) -> {
+        asserter.isEntityId();
+      });
+    }
   }
 
   @Override

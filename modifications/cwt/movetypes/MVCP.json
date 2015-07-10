@@ -2,7 +2,7 @@
   "ID": "MVCP",
   "MovingCosts": {
     "costs": {
-      "*": 1
+      "@ALL": 1
     }
   }
 }

@@ -2,8 +2,8 @@ package org.wolftec.cwtactics.game.supply;
 
 import org.wolftec.cwtactics.game.battle.AmmoDepot;
 import org.wolftec.cwtactics.game.battle.FighterPrimaryWeapon;
+import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysobject.Asserter;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.LoadPropertyType;
 import org.wolftec.cwtactics.game.event.LoadUnitType;
@@ -92,22 +92,26 @@ public class SupplySystem implements System, LoadUnitType, LoadPropertyType, Tur
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
-    SupplierAbility supplier = suppliers.acquireWithRootData(entity, data);
-    asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
-    asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
-      asserter.isEntityId();
-    });
+    if (suppliers.isComponentInRootData(data)) {
+      SupplierAbility supplier = suppliers.acquireWithRootData(entity, data);
+      asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
+      asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
+        asserter.isEntityId();
+      });
+    }
   }
 
   @Override
   public void onLoadPropertyType(String entity, Object data) {
-    SupplierAbility supplier = suppliers.acquireWithRootData(entity, data);
-    asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
-    asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
-      asserter.isEntityId();
-    });
+    if (suppliers.isComponentInRootData(data)) {
+      SupplierAbility supplier = suppliers.acquireWithRootData(entity, data);
+      asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
+      asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
+        asserter.isEntityId();
+      });
 
-    Funds funder = funds.acquireWithRootData(entity, data);
-    asserter.inspectValue("Funds.amount of " + entity, funder.amount).isIntWithinRange(0, 999999);
+      Funds funder = funds.acquireWithRootData(entity, data);
+      asserter.inspectValue("Funds.amount of " + entity, funder.amount).isIntWithinRange(0, 999999);
+    }
   }
 }

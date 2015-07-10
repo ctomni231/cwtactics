@@ -11,8 +11,8 @@ import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.Playground.AssetEntry;
 import org.wolftec.cwtactics.engine.util.BrowserUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.core.sysevent.SystemEventManager;
-import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.CheckedValue;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.LoadArmyType;
 import org.wolftec.cwtactics.game.event.LoadCommanderType;
@@ -27,7 +27,6 @@ import org.wolftec.cwtactics.game.event.SystemStartEvent;
 public class DataLoadingSystem implements System, SystemStartEvent {
 
   private Log               log;
-  private SystemEventManager      ev;
 
   private LoadArmyType      armyLoadEvent;
   private LoadPropertyType  propertyLoadEvent;
@@ -49,15 +48,15 @@ public class DataLoadingSystem implements System, SystemStartEvent {
 
   @Override
   public void onSystemStartup(Playground gameContainer) {
-    loadFolder(gameContainer, "modifications/cwt/tiles", (entity, data) -> tileLoadEvent.onLoadTileType(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/props", (entity, data) -> propertyLoadEvent.onLoadPropertyType(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/movetypes", (entity, data) -> moveLoadEvent.onLoadMoveType(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/units", (entity, data) -> unitLoadEvent.onLoadUnitType(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/weathers", (entity, data) -> weatherLoadEvent.onLoadWeatherType(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/cos", (entity, data) -> commanderLoadEvent.onLoadCommanderType(entity, data));
-    loadFolder(gameContainer, "modifications/cwt/armies", (entity, data) -> armyLoadEvent.onLoadArmyType(entity, data));
+    loadFolder(gameContainer, "../modifications/cwt/tiles", (entity, data) -> tileLoadEvent.onLoadTileType(entity, data));
+    loadFolder(gameContainer, "../modifications/cwt/props", (entity, data) -> propertyLoadEvent.onLoadPropertyType(entity, data));
+    loadFolder(gameContainer, "../modifications/cwt/movetypes", (entity, data) -> moveLoadEvent.onLoadMoveType(entity, data));
+    loadFolder(gameContainer, "../modifications/cwt/units", (entity, data) -> unitLoadEvent.onLoadUnitType(entity, data));
+    loadFolder(gameContainer, "../modifications/cwt/weathers", (entity, data) -> weatherLoadEvent.onLoadWeatherType(entity, data));
+    loadFolder(gameContainer, "../modifications/cwt/cos", (entity, data) -> commanderLoadEvent.onLoadCommanderType(entity, data));
+    loadFolder(gameContainer, "../modifications/cwt/armies", (entity, data) -> armyLoadEvent.onLoadArmyType(entity, data));
 
-    loadFolder(gameContainer, "modifications/cwt/maps", (entity, data) -> mapLoadEvent.onLoadMap(entity, data));
+    loadFolder(gameContainer, "../modifications/cwt/maps", (entity, data) -> mapLoadEvent.onLoadMap(entity, data));
   }
 
   private void loadFolder(Playground gameContainer, String folder, Callback2<String, Object> callback) {
@@ -89,7 +88,7 @@ public class DataLoadingSystem implements System, SystemStartEvent {
       BrowserUtil.requestJsonFile(data.url, (objData, error) -> {
         log.info("parsing and validating " + data.key);
 
-        String entity = JSObjectAdapter.hasOwnProperty(objData, "ID") ? em.acquireEntityWithId(JSObjectAdapter.$get(objData, "ID").toString()) : null;
+        String entity = CheckedValue.of((String) JSObjectAdapter.$get(objData, "ID")).getOrElse(data.key);
         callback.$invoke(entity, objData);
 
         LocalForage.localforage.setItem(data.key, objData, (err, savedData) -> {
@@ -109,7 +108,7 @@ public class DataLoadingSystem implements System, SystemStartEvent {
       LocalForage.localforage.getItem(data.key, (err, value) -> {
         log.info("grabbed value from the cache");
 
-        String entity = em.acquireEntityWithId(JSObjectAdapter.$get(value, "ID").toString());
+        String entity = CheckedValue.of((String) JSObjectAdapter.$get(value, "ID")).getOrElse(data.key);
         callback.$invoke(entity, value);
 
         game.loader.success(data.key);

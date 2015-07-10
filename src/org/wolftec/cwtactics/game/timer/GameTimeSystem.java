@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.timer;
 
 import org.wolftec.cwtactics.Entities;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysobject.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.ClientEndsTurn;
 import org.wolftec.cwtactics.game.event.FrameTick;

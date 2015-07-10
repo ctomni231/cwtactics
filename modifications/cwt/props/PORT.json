@@ -14,21 +14,21 @@
   },
   "Supplier": {
     "supplies": [
-      "SHIP",
-      "WATER_TRANSPORT"
+      "MVSP",
+      "MVWT"
     ]
   },
   "Repairer": {
     "amount": 2,
     "targets": [
-      "SHIP",
-      "WATER_TRANSPORT"
+      "MVSP",
+      "MVWT"
     ]
   },
   "Factory": {
     "builds": [
-      "SHIP",
-      "WATER_TRANSPORT"
+      "MVSP",
+      "MVWT"
     ]
   }
 }

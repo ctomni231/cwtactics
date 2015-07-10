@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.game.action;
 
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.core.CircularBuffer;
-import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.IncomingMessage;
 

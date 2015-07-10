@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.core.sysobject;
+package org.wolftec.cwtactics.game.core;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
@@ -8,6 +8,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.syscomponent.Component;
+import org.wolftec.cwtactics.game.core.sysobject.SystemObject;
 
 public class Asserter extends Log implements SystemObject {
 

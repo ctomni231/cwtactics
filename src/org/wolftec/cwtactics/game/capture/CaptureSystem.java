@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.capture;
 
 import org.wolftec.cwtactics.engine.bitset.BitSet;
+import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysobject.Asserter;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.ActionFlags;
 import org.wolftec.cwtactics.game.event.AddAction;
@@ -11,7 +11,6 @@ import org.wolftec.cwtactics.game.event.CaptureProperty;
 import org.wolftec.cwtactics.game.event.CapturedProperty;
 import org.wolftec.cwtactics.game.event.IllegalArguments;
 import org.wolftec.cwtactics.game.event.InvokeAction;
-import org.wolftec.cwtactics.game.event.LoadMap;
 import org.wolftec.cwtactics.game.event.LoadPropertyType;
 import org.wolftec.cwtactics.game.event.LoadUnitType;
 import org.wolftec.cwtactics.game.event.LoweredCapturePoints;
@@ -19,7 +18,7 @@ import org.wolftec.cwtactics.game.living.Living;
 import org.wolftec.cwtactics.game.map.Position;
 import org.wolftec.cwtactics.game.player.Owner;
 
-public class CaptureSystem implements System, CaptureProperty, LoadMap, LoadPropertyType, LoadUnitType, BuildActions, InvokeAction {
+public class CaptureSystem implements System, CaptureProperty, LoadPropertyType, LoadUnitType, BuildActions, InvokeAction {
 
   private Asserter               asserter;
 
@@ -82,23 +81,21 @@ public class CaptureSystem implements System, CaptureProperty, LoadMap, LoadProp
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
-    Capturer capturer = capturers.acquireWithRootData(entity, data);
-    asserter.inspectValue("Capturer.points of " + entity, capturer.points).isIntWithinRange(1, 99);
+    if (capturers.isComponentInRootData(data)) {
+      Capturer capturer = capturers.acquireWithRootData(entity, data);
+      asserter.inspectValue("Capturer.points of " + entity, capturer.points).isIntWithinRange(1, 99);
+    }
   }
 
   @Override
   public void onLoadPropertyType(String entity, Object data) {
-    Capturable capturable = capturables.acquireWithRootData(entity, data);
-    asserter.inspectValue("Capturable.points of " + entity, capturable.points).isIntWithinRange(1, 99);
-    asserter.inspectValue("Capturable.looseAfterCaptured of " + entity, capturable.looseAfterCaptured).isBoolean();
-    asserter.inspectValue("Capturable.changeIntoAfterCaptured", capturable.changeIntoAfterCaptured).whenNotNull(() -> {
-      asserter.isEntityId();
-    });
-  }
-
-  @Override
-  public void onLoadMap(String entity, Object data) {
-    Capturable capturable = capturables.acquireWithRootData(entity, data);
-    asserter.inspectValue("Capturable.points of " + entity, capturable.points).isIntWithinRange(1, 99);
+    if (capturables.isComponentInRootData(data)) {
+      Capturable capturable = capturables.acquireWithRootData(entity, data);
+      asserter.inspectValue("Capturable.points of " + entity, capturable.points).isIntWithinRange(1, 99);
+      asserter.inspectValue("Capturable.looseAfterCaptured of " + entity, capturable.looseAfterCaptured).isBoolean();
+      asserter.inspectValue("Capturable.changeIntoAfterCaptured", capturable.changeIntoAfterCaptured).whenNotNull(() -> {
+        asserter.isEntityId();
+      });
+    }
   }
 }

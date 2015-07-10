@@ -14,14 +14,14 @@ import org.wolftec.cwtactics.game.util.NumberUtil;
 
 public class Components<T> {
 
-  private Class<T>       constructor;
+  private Class<T>       componentClass;
   private Map<String, T> components;
   private Array<String>  entities;
 
-  public Components(Class<T> pConstructor) {
+  public Components(Class<T> clazz) {
     components = JSCollections.$map();
     entities = JSCollections.$array();
-    constructor = pConstructor;
+    componentClass = clazz;
   }
 
   /**
@@ -88,7 +88,7 @@ public class Components<T> {
     }
 
     @SuppressWarnings("unused")
-    Object clazz = constructor;
+    Object clazz = componentClass;
     T instance = JSObjectAdapter.$js("new clazz()");
 
     components.$put(entity, instance);
@@ -107,6 +107,11 @@ public class Components<T> {
     return parseFromData(data, acquire(entity));
   }
 
+  public boolean isComponentInRootData(Object data) {
+    String componentClassName = ClassUtil.getClassName(componentClass);
+    return CheckedValue.of((T) JSObjectAdapter.$get(data, componentClassName)).isPresent();
+  }
+
   /**
    * Acquires an object for a key and data.
    * 
@@ -114,12 +119,17 @@ public class Components<T> {
    * @return
    */
   public T acquireWithRootData(String entity, Object data) {
-    return acquireWithData(entity, JSObjectAdapter.$get(data, ClassUtil.getClassName(constructor)));
+    if (!isComponentInRootData(data)) {
+      return JsUtil.throwError("ComponentIsntInData");
+    }
+    String componentClassName = ClassUtil.getClassName(componentClass);
+    T component = CheckedValue.of((T) JSObjectAdapter.$get(data, componentClassName)).getOrElseByProvider(() -> JSObjectAdapter.$js("{}"));
+    return acquireWithData(entity, component);
   }
 
-  private T parseFromData(Object data, T component) {
+  public T parseFromData(Object data, T component) {
     if (CheckedValue.of(component).isPresent()) {
-      Object componentPrototype = JSObjectAdapter.$prototype(constructor);
+      Object componentPrototype = JSObjectAdapter.$prototype(componentClass);
       Array<String> componentPrototypeProperties = JsUtil.objectKeys(componentPrototype);
 
       JsUtil.forEachArrayValue(componentPrototypeProperties, (index, property) -> {

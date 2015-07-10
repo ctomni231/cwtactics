@@ -6,7 +6,7 @@
   "Movable": {
     "range": 2,
     "fuel": 70,
-    "type": "MV_MECH"
+    "type": "MVME"
   },
   "Vision": {
     "range": 2

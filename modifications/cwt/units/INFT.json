@@ -6,7 +6,7 @@
   "Movable": {
     "range": 3,
     "fuel": 99,
-    "type": "MV_INFT"
+    "type": "MVIN"
   },
   "Vision": {
     "range": 2

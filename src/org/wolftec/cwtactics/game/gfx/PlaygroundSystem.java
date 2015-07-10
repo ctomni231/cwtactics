@@ -6,7 +6,7 @@ import org.wolftec.cwtactics.engine.playground.Playground;
 import org.wolftec.cwtactics.engine.playground.PlaygroundGlobal;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
-import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.RawInput;
 import org.wolftec.cwtactics.game.event.SystemInitializedEvent;

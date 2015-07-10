@@ -6,7 +6,7 @@
   "Movable": {
     "range": 9,
     "fuel": 99,
-    "type": "AIR"
+    "type": "MVAR"
   },
   "Vision": {
     "range": 2

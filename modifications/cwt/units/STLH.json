@@ -6,7 +6,7 @@
   "Movable": {
     "range": 6,
     "fuel": 60,
-    "type": "AIR"
+    "type": "MVAR"
   },
   "Vision": {
     "range": 4
@@ -14,7 +14,7 @@
   "FuelDrain": {
     "daily": 5
   },
-  "HideAble": {
+  "HidingAbility": {
     "additionFuelDrain": 3
   },
   "FighterPrimaryWeapon": {

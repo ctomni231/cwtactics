@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.team;
 
+import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysobject.Asserter;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.SendMoney;
 import org.wolftec.cwtactics.game.event.SendProperty;
