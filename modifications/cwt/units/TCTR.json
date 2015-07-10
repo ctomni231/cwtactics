@@ -6,7 +6,7 @@
   "Movable": {
     "range": 6,
     "fuel": 99,
-    "type": "COPTER"
+    "type": "MVCP"
   },
   "Vision": {
     "range": 2

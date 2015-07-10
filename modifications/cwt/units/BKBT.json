@@ -6,7 +6,7 @@
   "Movable": {
     "range": 7,
     "fuel": 60,
-    "type": "WATER_TRANSPORT"
+    "type": "MVWT"
   },
   "Vision": {
     "range": 1

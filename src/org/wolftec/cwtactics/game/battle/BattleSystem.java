@@ -1,9 +1,9 @@
 package org.wolftec.cwtactics.game.battle;
 
 import org.wolftec.cwtactics.Constants;
+import org.wolftec.cwtactics.game.core.Asserter;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysobject.Asserter;
-import org.wolftec.cwtactics.game.core.sysobject.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.LoadPropertyType;
 import org.wolftec.cwtactics.game.event.LoadTileType;
@@ -39,16 +39,21 @@ public class BattleSystem implements System, UnitCreated, UnitDestroyed, LoadUni
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
+    if (primaryWeapons.isComponentInRootData(data)) {
+      FighterPrimaryWeapon primWp = primaryWeapons.acquireWithRootData(entity, data);
+      asserter.inspectValue("FPW.ammo of " + entity, primWp.ammo).isIntWithinRange(0, 10);
+    }
 
-    FighterPrimaryWeapon primWp = primaryWeapons.acquireWithRootData(entity, data);
-    asserter.inspectValue("FPW.ammo of " + entity, primWp.ammo).isIntWithinRange(0, 10);
+    if (rangedFigthers.isComponentInRootData(data)) {
+      RangedFighter rangFig = rangedFigthers.acquireWithRootData(entity, data);
+      asserter.inspectValue("RF.minRange of " + entity, rangFig.minRange).isIntWithinRange(0, Constants.MAX_SELECTION_RANGE - 1);
+      asserter.inspectValue("RF.maxrange of " + entity, rangFig.maxRange).isIntWithinRange(rangFig.minRange + 1, Constants.MAX_SELECTION_RANGE);
+      asserter.inspectValue("FPW and RF exists together of " + entity, primaryWeapons.has(entity)).isTrue();
+    }
 
-    secondaryWeapons.acquireWithRootData(entity, data);
-
-    RangedFighter rangFig = rangedFigthers.acquireWithRootData(entity, data);
-    asserter.inspectValue("RF.minRange of " + entity, rangFig.minRange).isIntWithinRange(0, Constants.MAX_SELECTION_RANGE - 1);
-    asserter.inspectValue("RF.maxrange of " + entity, rangFig.maxRange).isIntWithinRange(rangFig.minRange + 1, Constants.MAX_SELECTION_RANGE);
-    asserter.inspectValue("FPW and RF exists together of " + entity, primaryWeapons.has(entity)).isTrue();
+    if (secondaryWeapons.isComponentInRootData(data)) {
+      secondaryWeapons.acquireWithRootData(entity, data);
+    }
   }
 
   @Override

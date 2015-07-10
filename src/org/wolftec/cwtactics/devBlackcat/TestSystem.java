@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.devBlackcat;
 
-import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.GameroundStart;
 

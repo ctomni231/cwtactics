@@ -2,16 +2,16 @@ package org.wolftec.cwtactics.game.weather;
 
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Entities;
+import org.wolftec.cwtactics.game.core.Asserter;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysobject.Asserter;
-import org.wolftec.cwtactics.game.core.sysobject.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.DayStart;
 import org.wolftec.cwtactics.game.event.LoadWeatherType;
-import org.wolftec.cwtactics.game.event.SystemStartEvent;
+import org.wolftec.cwtactics.game.event.SystemInitializedEvent;
 import org.wolftec.cwtactics.game.event.WeatherChanges;
 
-public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeatherType, SystemStartEvent {
+public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeatherType, SystemInitializedEvent {
 
   private Log                     log;
   private Asserter                asserter;

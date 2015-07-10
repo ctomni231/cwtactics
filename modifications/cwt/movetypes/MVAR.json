@@ -2,7 +2,7 @@
   "ID": "MVAR",
   "MovingCosts": {
     "costs": {
-      "*": 1
+      "@ALL": 1
     }
   }
 }

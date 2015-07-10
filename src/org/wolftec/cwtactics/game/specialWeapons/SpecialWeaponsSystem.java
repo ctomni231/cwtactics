@@ -3,9 +3,9 @@ package org.wolftec.cwtactics.game.specialWeapons;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.engine.bitset.BitSet;
+import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
-import org.wolftec.cwtactics.game.core.sysevent.SystemEventManager;
-import org.wolftec.cwtactics.game.core.sysobject.Asserter;
+import org.wolftec.cwtactics.game.core.sysevent.SystemEventsManager;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.ActionFlags;
 import org.wolftec.cwtactics.game.event.AddAction;
@@ -21,7 +21,7 @@ import org.wolftec.cwtactics.game.turn.Turn;
 
 public class SpecialWeaponsSystem implements System, FireRocket, BuildActions, InvokeAction, LoadPropertyType {
 
-  private SystemEventManager         ev;
+  private SystemEventsManager  ev;
   private Asserter             asserter;
 
   private AddAction            actionEv;
@@ -74,11 +74,13 @@ public class SpecialWeaponsSystem implements System, FireRocket, BuildActions, I
 
   @Override
   public void onLoadPropertyType(String entity, Object data) {
-    FireAble suicide = firables.acquireWithRootData(entity, data);
-    asserter.inspectValue("FireAble.damage of " + entity, suicide.damage).isIntWithinRange(1, Constants.UNIT_HEALTH);
-    asserter.inspectValue("FireAble.range of " + entity, suicide.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
-    asserter.inspectValue("FireAble.changesType of " + entity, suicide.changesType).whenNotNull(() -> {
-      asserter.isEntityId();
-    });
+    if (firables.isComponentInRootData(data)) {
+      FireAble suicide = firables.acquireWithRootData(entity, data);
+      asserter.inspectValue("FireAble.damage of " + entity, suicide.damage).isIntWithinRange(1, Constants.UNIT_HEALTH);
+      asserter.inspectValue("FireAble.range of " + entity, suicide.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
+      asserter.inspectValue("FireAble.changesType of " + entity, suicide.changesType).whenNotNull(() -> {
+        asserter.isEntityId();
+      });
+    }
   }
 }

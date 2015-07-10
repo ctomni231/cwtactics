@@ -6,7 +6,7 @@
   "Movable": {
     "range": 4,
     "fuel": 50,
-    "type": "TIRE_A"
+    "type": "MVTA"
   },
   "Vision": {
     "range": 5

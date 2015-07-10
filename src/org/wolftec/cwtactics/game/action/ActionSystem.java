@@ -6,6 +6,7 @@ import org.stjs.javascript.annotation.SyntheticType;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.engine.bitset.BitSet;
+import org.wolftec.cwtactics.engine.bitset.BitSetFactory;
 import org.wolftec.cwtactics.game.capture.Capturable;
 import org.wolftec.cwtactics.game.core.CircularBuffer;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
@@ -48,8 +49,8 @@ public class ActionSystem implements System, AddAction, TriggerAction, TriggerAc
 
   @Override
   public void onConstruction() {
-    flags = new BitSet();
-    buffers.get(Entities.GAME_UI).buffer = new CircularBuffer<String>(Constants.COMMAND_BUFFER_SIZE);
+    flags = BitSetFactory.create();
+    buffers.acquire(Entities.GAME_UI).buffer = new CircularBuffer<String>(Constants.COMMAND_BUFFER_SIZE);
   }
 
   @Override

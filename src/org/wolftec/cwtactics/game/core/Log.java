@@ -1,8 +1,9 @@
-package org.wolftec.cwtactics.game.core.sysobject;
+package org.wolftec.cwtactics.game.core;
 
 import org.stjs.javascript.Global;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
+import org.wolftec.cwtactics.game.core.sysobject.SystemObject;
 import org.wolftec.cwtactics.game.core.systems.System;
 
 public class Log implements SystemObject {
@@ -11,7 +12,11 @@ public class Log implements SystemObject {
 
   @Override
   public void onConstruction(System instance) {
-    loggerName = Log.convertNameToFixedLength(ClassUtil.getClassName(instance));
+    initByObject(instance);
+  }
+
+  public void initByObject(Object obj) {
+    loggerName = Log.convertNameToFixedLength(ClassUtil.getClassName(obj));
   }
 
   public void info(String msg) {

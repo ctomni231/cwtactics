@@ -8,12 +8,11 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwtactics.engine.util.BrowserUtil;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
-import org.wolftec.cwtactics.game.core.CesKernel;
-import org.wolftec.cwtactics.game.core.sysobject.Log;
+import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.SystemStartEvent;
+import org.wolftec.cwtactics.game.event.SystemInitializedEvent;
 
-public class TestManagerSystem implements System, SystemStartEvent {
+public class TestManagerSystem implements System, SystemInitializedEvent {
 
   private static final String TEST_METHOD_START_IDENTIFIER = "test";
 
@@ -37,9 +36,10 @@ public class TestManagerSystem implements System, SystemStartEvent {
   private void callAllTests() {
     log.info("start tests");
 
-    JsUtil.forEachArrayValue(CesKernel.getObjects(ITest.class), (index, test) -> {
-      callTestMethods(test);
-    });
+    // JsUtil.forEachArrayValue(Kernel.getObjects(ITest.class), (index, test) ->
+    // {
+    // callTestMethods(test);
+    // });
 
     log.info("completed tests");
   }

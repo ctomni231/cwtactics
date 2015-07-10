@@ -14,30 +14,30 @@
   },
   "Supplier": {
     "supplies": [
-      "MV_INFT",
-      "MV_MECH",
-      "TIRE_A",
-      "TIRE_B",
-      "TANK"
+      "MVIN",
+      "MVME",
+      "MVTA",
+      "MVTB",
+      "MVTK"
     ]
   },
   "Repairer": {
     "amount": 2,
     "targets": [
-      "MV_INFT",
-      "MV_MECH",
-      "TIRE_A",
-      "TIRE_B",
-      "TANK"
+      "MVIN",
+      "MVME",
+      "MVTA",
+      "MVTB",
+      "MVTK"
     ]
   },
   "Factory": {
     "builds": [
-      "MV_INFT",
-      "MV_MECH",
-      "TIRE_A",
-      "TIRE_B",
-      "TANK"
+      "MVIN",
+      "MVME",
+      "MVTA",
+      "MVTB",
+      "MVTK"
     ]
   }
 }
