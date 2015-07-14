@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.persistence;
+package org.wolftec.cwtactics.game.loading;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;

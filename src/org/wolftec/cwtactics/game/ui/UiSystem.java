@@ -3,15 +3,15 @@ package org.wolftec.cwtactics.game.ui;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.system.RawInput;
-import org.wolftec.cwtactics.game.event.ui.TriggerAction;
+import org.wolftec.cwtactics.game.event.ui.InvokeAction;
 
 public class UiSystem implements System, RawInput {
 
-  private Log           log;
+  private Log          log;
 
-  private TriggerAction triggerAction;
+  private InvokeAction triggerAction;
 
-  private GameState     appState;
+  private GameState    appState;
 
   @Override
   public void onRawInput(String device, int type, int screenX, int screenY) {
@@ -21,7 +21,6 @@ public class UiSystem implements System, RawInput {
 
       case MENU:
         if (isButtonA(device, type)) {
-          triggerAction.onTriggerAction("TODO");
         }
         break;
 

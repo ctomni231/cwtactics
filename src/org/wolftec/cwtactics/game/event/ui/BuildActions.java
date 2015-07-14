@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.game.event.gameround;
+package org.wolftec.cwtactics.game.event.ui;
 
 import org.wolftec.cwtactics.engine.bitset.BitSet;
 import org.wolftec.cwtactics.game.core.sysevent.SystemEvent;

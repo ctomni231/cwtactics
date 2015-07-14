@@ -1,29 +1,22 @@
 package org.wolftec.cwtactics.game.action;
 
-import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.SyntheticType;
-import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.engine.bitset.BitSet;
-import org.wolftec.cwtactics.engine.bitset.BitSetFactory;
 import org.wolftec.cwtactics.game.capture.Capturable;
-import org.wolftec.cwtactics.game.core.CircularBuffer;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.error.IllegalState;
 import org.wolftec.cwtactics.game.event.system.FrameTick;
 import org.wolftec.cwtactics.game.event.ui.ActionFlags;
-import org.wolftec.cwtactics.game.event.ui.AddAction;
+import org.wolftec.cwtactics.game.event.ui.GenerateActions;
 import org.wolftec.cwtactics.game.event.ui.InvokeAction;
-import org.wolftec.cwtactics.game.event.ui.TriggerAction;
-import org.wolftec.cwtactics.game.event.ui.TriggerActionGeneration;
 import org.wolftec.cwtactics.game.map.Position;
 import org.wolftec.cwtactics.game.player.Owner;
 import org.wolftec.cwtactics.game.player.Player;
 import org.wolftec.cwtactics.game.turn.Turn;
 
-public class ActionSystem implements System, AddAction, TriggerAction, TriggerActionGeneration, FrameTick {
+public class ActionSystem implements System, InvokeAction, GenerateActions, FrameTick {
 
   @SyntheticType
   public class ActionData {
@@ -34,53 +27,56 @@ public class ActionSystem implements System, AddAction, TriggerAction, TriggerAc
     int    ty;
   }
 
-  private BitSet                   flags;
+  private BitSet                 flags;
 
-  private IllegalState             illegalStateExc;
-  private InvokeAction             actionEv;
+  private IllegalState           illegalStateExc;
+  private InvokeAction           actionEv;
 
-  private Components<Menu>         menus;
-  private Components<Turn>         turns;
-  private Components<Owner>        owners;
-  private Components<Player>       players;
-  private Components<Position>     positions;
-  private Components<Capturable>   capturables;
-  private Components<ActionBuffer> buffers;
+  // private Components<Menu> menus;
+  private Components<Turn>       turns;
+  private Components<Owner>      owners;
+  private Components<Player>     players;
+  private Components<Position>   positions;
+  private Components<Capturable> capturables;
 
+  // private Components<ActionBuffer> buffers;
+  //
+  // @Override
+  // public void onConstruction() {
+  // flags = BitSetFactory.create();
+  // buffers.acquire(Entities.GAME_UI).buffer = new
+  // CircularBuffer<String>(Constants.COMMAND_BUFFER_SIZE);
+  // }
+  //
+  // @Override
+  // public void onTriggerAction(String action) {
+  // // TODO not enough here to invoke actions later
+  // ActionData data = (ActionData) JSObjectAdapter.$js("{}");
+  // data.command = action;
+  // data.sx = 0;
+  // data.sy = 0;
+  // data.tx = 0;
+  // data.ty = 0;
+  // buffers.get(Entities.GAME_UI).buffer.add(JSGlobal.JSON.stringify(data));
+  // }
+  //
   @Override
-  public void onConstruction() {
-    flags = BitSetFactory.create();
-    buffers.acquire(Entities.GAME_UI).buffer = new CircularBuffer<String>(Constants.COMMAND_BUFFER_SIZE);
-  }
-
-  @Override
-  public void addAction(String key, boolean enabled) {
-    menus.get(Entities.GAME_UI).menu.add(key);
-  }
-
-  @Override
-  public void onTriggerAction(String action) {
-    // TODO not enough here to invoke actions later
-    ActionData data = (ActionData) JSObjectAdapter.$js("{}");
-    data.command = action;
-    data.sx = 0;
-    data.sy = 0;
-    data.tx = 0;
-    data.ty = 0;
-    buffers.get(Entities.GAME_UI).buffer.add(JSGlobal.JSON.stringify(data));
+  public void invokeAction(String action, int x, int y, int tx, int ty) {
+    // TODO Auto-generated method stub
+    //
   }
 
   @Override
   public void onNextTick(int delta) {
-    CircularBuffer<String> buffer = buffers.get(Entities.GAME_UI).buffer;
-    if (!buffer.isEmpty()) {
-      ActionData data = (ActionData) JSGlobal.JSON.parse(buffer.popFirst());
-      actionEv.invokeAction(data.command, data.sx, data.sy, data.tx, data.ty);
-    }
+    // CircularBuffer<String> buffer = buffers.get(Entities.GAME_UI).buffer;
+    // if (!buffer.isEmpty()) {
+    // ActionData data = (ActionData) JSGlobal.JSON.parse(buffer.popFirst());
+    // actionEv.invokeAction(data.command, data.sx, data.sy, data.tx, data.ty);
+    // }
   }
 
   @Override
-  public void onTriggerActionGeneration(int x, int y) {
+  public void onGenerateActions(int x, int y) {
     if (flags == null) {
       illegalStateExc.onIllegalState("cannot trigger menu generation twice at the same time");
       return;

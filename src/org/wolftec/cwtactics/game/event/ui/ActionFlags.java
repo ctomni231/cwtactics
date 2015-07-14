@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.event.ui;
 
-public interface ActionFlags {
+public final class ActionFlags {
 
   public static final int FLAG_SOURCE_PROP_EXISTS    = 0;
   public static final int FLAG_SOURCE_PROP_TO        = 1;

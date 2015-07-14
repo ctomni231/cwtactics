@@ -1,7 +1,6 @@
-package org.wolftec.cwtactics.game.event.ui;
+package org.wolftec.cwtactics.game.event.gameround;
 
 import org.wolftec.cwtactics.game.core.sysevent.SystemEvent;
-import org.wolftec.cwtactics.game.event.gameround.PowerLevel;
 
 public interface ActivatePowerLevel extends SystemEvent {
   void activatePowerLevel(String player, PowerLevel level);
