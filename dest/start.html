@@ -6,9 +6,16 @@
     <script>stjs.mainCallDisabled = true;</script>
     <script type="text/javascript" src="deps.js" ></script>
     <script type="text/javascript" src="game.js" ></script>
+    
+    <script type="text/javascript">
+      function __start__() {
+        cwt.Starter.main();
+      }
+    </script>
+    
   </head>
   
-  <body onload="cwt.Starter.main();">
+  <body onload="/*__start__();*/">
     <div id="game" ></div>
   </body>
 </html>
