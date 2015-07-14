@@ -1,7 +1,7 @@
 package org.wolftec.cwtactics.game.commander;
 
 import org.wolftec.cwtactics.game.core.syscomponent.Component;
-import org.wolftec.cwtactics.game.event.PowerLevel;
+import org.wolftec.cwtactics.game.event.gameround.PowerLevel;
 
 public class PlayerCommander implements Component {
 

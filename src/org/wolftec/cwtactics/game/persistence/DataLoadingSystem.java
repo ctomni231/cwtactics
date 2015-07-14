@@ -14,15 +14,15 @@ import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.CheckedValue;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.LoadArmyType;
-import org.wolftec.cwtactics.game.event.LoadCommanderType;
-import org.wolftec.cwtactics.game.event.LoadMap;
-import org.wolftec.cwtactics.game.event.LoadMoveType;
-import org.wolftec.cwtactics.game.event.LoadPropertyType;
-import org.wolftec.cwtactics.game.event.LoadTileType;
-import org.wolftec.cwtactics.game.event.LoadUnitType;
-import org.wolftec.cwtactics.game.event.LoadWeatherType;
-import org.wolftec.cwtactics.game.event.SystemStartEvent;
+import org.wolftec.cwtactics.game.event.loading.LoadArmyType;
+import org.wolftec.cwtactics.game.event.loading.LoadCommanderType;
+import org.wolftec.cwtactics.game.event.loading.LoadMap;
+import org.wolftec.cwtactics.game.event.loading.LoadMoveType;
+import org.wolftec.cwtactics.game.event.loading.LoadPropertyType;
+import org.wolftec.cwtactics.game.event.loading.LoadTileType;
+import org.wolftec.cwtactics.game.event.loading.LoadUnitType;
+import org.wolftec.cwtactics.game.event.loading.LoadWeatherType;
+import org.wolftec.cwtactics.game.event.system.SystemStartEvent;
 
 public class DataLoadingSystem implements System, SystemStartEvent {
 

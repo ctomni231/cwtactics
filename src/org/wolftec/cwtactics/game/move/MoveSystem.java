@@ -8,10 +8,10 @@ import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.LoadMoveType;
-import org.wolftec.cwtactics.game.event.LoadUnitType;
-import org.wolftec.cwtactics.game.event.UnitMove;
-import org.wolftec.cwtactics.game.event.UnitMoved;
+import org.wolftec.cwtactics.game.event.gameround.UnitMove;
+import org.wolftec.cwtactics.game.event.gameround.UnitMoved;
+import org.wolftec.cwtactics.game.event.loading.LoadMoveType;
+import org.wolftec.cwtactics.game.event.loading.LoadUnitType;
 import org.wolftec.cwtactics.game.map.Position;
 
 public class MoveSystem implements System, UnitMove, LoadUnitType, LoadMoveType {

@@ -4,11 +4,11 @@ import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.BuildUnit;
-import org.wolftec.cwtactics.game.event.IllegalGameData;
-import org.wolftec.cwtactics.game.event.LoadPropertyType;
-import org.wolftec.cwtactics.game.event.LoadUnitType;
-import org.wolftec.cwtactics.game.event.UnitProduced;
+import org.wolftec.cwtactics.game.event.error.IllegalGameData;
+import org.wolftec.cwtactics.game.event.gameround.BuildUnit;
+import org.wolftec.cwtactics.game.event.gameround.UnitProduced;
+import org.wolftec.cwtactics.game.event.loading.LoadPropertyType;
+import org.wolftec.cwtactics.game.event.loading.LoadUnitType;
 import org.wolftec.cwtactics.game.map.Position;
 import org.wolftec.cwtactics.game.player.Owner;
 

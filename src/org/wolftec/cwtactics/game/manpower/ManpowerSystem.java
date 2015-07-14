@@ -2,8 +2,8 @@ package org.wolftec.cwtactics.game.manpower;
 
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.GameroundStart;
-import org.wolftec.cwtactics.game.event.UnitCreated;
+import org.wolftec.cwtactics.game.event.gameround.GameroundStart;
+import org.wolftec.cwtactics.game.event.gameround.UnitCreated;
 import org.wolftec.cwtactics.game.player.Owner;
 
 /**

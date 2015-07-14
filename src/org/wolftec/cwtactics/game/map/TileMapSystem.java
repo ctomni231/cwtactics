@@ -9,7 +9,7 @@ import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.LoadMap;
+import org.wolftec.cwtactics.game.event.loading.LoadMap;
 
 public class TileMapSystem implements System, LoadMap {
 

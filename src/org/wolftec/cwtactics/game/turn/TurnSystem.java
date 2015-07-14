@@ -3,11 +3,11 @@ package org.wolftec.cwtactics.game.turn;
 import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.ClientEndsTurn;
-import org.wolftec.cwtactics.game.event.DayStart;
-import org.wolftec.cwtactics.game.event.IllegalGameData;
-import org.wolftec.cwtactics.game.event.TurnEnd;
-import org.wolftec.cwtactics.game.event.TurnStart;
+import org.wolftec.cwtactics.game.event.error.IllegalGameData;
+import org.wolftec.cwtactics.game.event.gameround.ClientEndsTurn;
+import org.wolftec.cwtactics.game.event.gameround.DayStart;
+import org.wolftec.cwtactics.game.event.gameround.TurnEnd;
+import org.wolftec.cwtactics.game.event.gameround.TurnStart;
 import org.wolftec.cwtactics.game.player.Player;
 
 public class TurnSystem implements System, ClientEndsTurn {

@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.game.config;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.GameroundStart;
+import org.wolftec.cwtactics.game.event.gameround.GameroundStart;
 
 public class ConfigSystem implements System, GameroundStart {
 

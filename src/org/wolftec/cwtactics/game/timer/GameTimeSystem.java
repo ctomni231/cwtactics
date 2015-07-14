@@ -4,11 +4,11 @@ import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.ClientEndsTurn;
-import org.wolftec.cwtactics.game.event.FrameTick;
-import org.wolftec.cwtactics.game.event.GameroundEnd;
-import org.wolftec.cwtactics.game.event.GameroundStart;
-import org.wolftec.cwtactics.game.event.TurnStart;
+import org.wolftec.cwtactics.game.event.gameround.ClientEndsTurn;
+import org.wolftec.cwtactics.game.event.gameround.GameroundEnd;
+import org.wolftec.cwtactics.game.event.gameround.GameroundStart;
+import org.wolftec.cwtactics.game.event.gameround.TurnStart;
+import org.wolftec.cwtactics.game.event.system.FrameTick;
 
 /**
  * The {@link GameTimeSystem} adds time limits for the turn and game mechanic.

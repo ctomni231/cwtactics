@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.game.army;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.LoadArmyType;
+import org.wolftec.cwtactics.game.event.loading.LoadArmyType;
 
 public class ArmySystem implements System, LoadArmyType {
 

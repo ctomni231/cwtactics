@@ -4,16 +4,16 @@ import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.engine.bitset.BitSet;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.ActionFlags;
-import org.wolftec.cwtactics.game.event.ActivatePowerLevel;
-import org.wolftec.cwtactics.game.event.AddAction;
-import org.wolftec.cwtactics.game.event.BuildActions;
-import org.wolftec.cwtactics.game.event.ChangePower;
-import org.wolftec.cwtactics.game.event.GameroundStart;
-import org.wolftec.cwtactics.game.event.IllegalArguments;
-import org.wolftec.cwtactics.game.event.InvokeAction;
-import org.wolftec.cwtactics.game.event.PowerChanged;
-import org.wolftec.cwtactics.game.event.PowerLevel;
+import org.wolftec.cwtactics.game.event.error.IllegalArguments;
+import org.wolftec.cwtactics.game.event.gameround.BuildActions;
+import org.wolftec.cwtactics.game.event.gameround.ChangePower;
+import org.wolftec.cwtactics.game.event.gameround.GameroundStart;
+import org.wolftec.cwtactics.game.event.gameround.PowerChanged;
+import org.wolftec.cwtactics.game.event.gameround.PowerLevel;
+import org.wolftec.cwtactics.game.event.ui.ActionFlags;
+import org.wolftec.cwtactics.game.event.ui.ActivatePowerLevel;
+import org.wolftec.cwtactics.game.event.ui.AddAction;
+import org.wolftec.cwtactics.game.event.ui.InvokeAction;
 import org.wolftec.cwtactics.game.turn.Turn;
 
 public class CommanderSystem implements System, ChangePower, ActivatePowerLevel, GameroundStart, BuildActions, InvokeAction {

@@ -4,7 +4,7 @@ import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.LoadUnitType;
+import org.wolftec.cwtactics.game.event.loading.LoadUnitType;
 
 public class RepairSystem implements System, LoadUnitType {
 

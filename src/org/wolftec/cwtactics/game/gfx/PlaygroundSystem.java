@@ -8,9 +8,9 @@ import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.PlaygroundUtil;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.RawInput;
-import org.wolftec.cwtactics.game.event.SystemInitializedEvent;
-import org.wolftec.cwtactics.game.event.SystemStartEvent;
+import org.wolftec.cwtactics.game.event.system.RawInput;
+import org.wolftec.cwtactics.game.event.system.SystemInitializedEvent;
+import org.wolftec.cwtactics.game.event.system.SystemStartEvent;
 
 public class PlaygroundSystem extends Playground implements System, SystemInitializedEvent {
 

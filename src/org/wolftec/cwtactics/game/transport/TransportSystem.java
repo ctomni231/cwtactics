@@ -3,9 +3,9 @@ package org.wolftec.cwtactics.game.transport;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.LoadUnit;
-import org.wolftec.cwtactics.game.event.LoadUnitType;
-import org.wolftec.cwtactics.game.event.UnloadUnit;
+import org.wolftec.cwtactics.game.event.gameround.UnloadUnit;
+import org.wolftec.cwtactics.game.event.loading.LoadUnit;
+import org.wolftec.cwtactics.game.event.loading.LoadUnitType;
 import org.wolftec.cwtactics.game.map.Position;
 
 public class TransportSystem implements System, LoadUnitType, LoadUnit, UnloadUnit {

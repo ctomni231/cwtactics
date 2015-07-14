@@ -4,7 +4,7 @@ import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.game.core.CircularBuffer;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.IncomingMessage;
+import org.wolftec.cwtactics.game.event.ui.IncomingMessage;
 
 public class GameCommandSystem implements System, IncomingMessage {
 

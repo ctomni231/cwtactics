@@ -6,10 +6,10 @@ import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.DayStart;
-import org.wolftec.cwtactics.game.event.LoadWeatherType;
-import org.wolftec.cwtactics.game.event.SystemInitializedEvent;
-import org.wolftec.cwtactics.game.event.WeatherChanges;
+import org.wolftec.cwtactics.game.event.gameround.DayStart;
+import org.wolftec.cwtactics.game.event.gameround.WeatherChanges;
+import org.wolftec.cwtactics.game.event.loading.LoadWeatherType;
+import org.wolftec.cwtactics.game.event.system.SystemInitializedEvent;
 
 public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeatherType, SystemInitializedEvent {
 

@@ -3,9 +3,9 @@ package org.wolftec.cwtactics.game.fuelDrain;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.LoadUnitType;
-import org.wolftec.cwtactics.game.event.TurnStart;
-import org.wolftec.cwtactics.game.event.UnitDestroyed;
+import org.wolftec.cwtactics.game.event.gameround.TurnStart;
+import org.wolftec.cwtactics.game.event.gameround.UnitDestroyed;
+import org.wolftec.cwtactics.game.event.loading.LoadUnitType;
 import org.wolftec.cwtactics.game.move.FuelDepot;
 
 public class FuelDrainSystem implements System, LoadUnitType, TurnStart {

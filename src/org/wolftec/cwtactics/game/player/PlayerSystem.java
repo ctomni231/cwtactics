@@ -2,8 +2,8 @@ package org.wolftec.cwtactics.game.player;
 
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.ChangeGold;
-import org.wolftec.cwtactics.game.event.IllegalGameData;
+import org.wolftec.cwtactics.game.event.error.IllegalGameData;
+import org.wolftec.cwtactics.game.event.gameround.ChangeGold;
 
 public class PlayerSystem implements System, ChangeGold {
 

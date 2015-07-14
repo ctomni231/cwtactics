@@ -3,9 +3,9 @@ package org.wolftec.cwtactics.game.stealth;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.HideUnit;
-import org.wolftec.cwtactics.game.event.LoadUnitType;
-import org.wolftec.cwtactics.game.event.UnhideUnit;
+import org.wolftec.cwtactics.game.event.gameround.HideUnit;
+import org.wolftec.cwtactics.game.event.gameround.UnhideUnit;
+import org.wolftec.cwtactics.game.event.loading.LoadUnitType;
 
 public class StealthSystem implements System, HideUnit, UnhideUnit, LoadUnitType {
 
