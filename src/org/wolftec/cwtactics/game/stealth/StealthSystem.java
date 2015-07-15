@@ -5,9 +5,11 @@ import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.event.gameround.HideUnit;
 import org.wolftec.cwtactics.game.event.gameround.UnhideUnit;
+import org.wolftec.cwtactics.game.event.gameround.UnitProduced;
 import org.wolftec.cwtactics.game.event.loading.LoadUnitType;
+import org.wolftec.cwtactics.game.event.system.ValidateDataEvent;
 
-public class StealthSystem implements System, HideUnit, UnhideUnit, LoadUnitType {
+public class StealthSystem implements System, HideUnit, UnhideUnit, LoadUnitType, UnitProduced, ValidateDataEvent {
 
   private Asserter                  as;
 
@@ -17,8 +19,21 @@ public class StealthSystem implements System, HideUnit, UnhideUnit, LoadUnitType
   @Override
   public void onLoadUnitType(String entity, Object data) {
     if (hidables.isComponentInRootData(data)) {
-      HidingAbility hideAble = hidables.acquireWithRootData(entity, data);
-      as.inspectValue("HideAble.additionFuelDrain of " + entity, hideAble.additionFuelDrain).isIntWithinRange(0, 99);
+      hidables.acquireWithRootData(entity, data);
+    }
+  }
+
+  @Override
+  public void onValidation() {
+    hidables.each((entity, hideAble) -> as.inspectValue("hideAble [" + entity + "]", hideAble.additionFuelDrain).isIntWithinRange(0, 99));
+    stealths.each((entity, stealth) -> as.inspectValue("stealth [" + entity + "]", stealth).isBoolean());
+  }
+
+  @Override
+  public void onUnitProduced(String unit, String type, int x, int y) {
+    if (hidables.has(type)) {
+      Stealth data = stealths.acquire(unit);
+      data.hidden = false;
     }
   }
 
