@@ -1,16 +1,17 @@
 package org.wolftec.cwtactics.game.components;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwtactics.game.core.DataDescriptor;
 import org.wolftec.cwtactics.game.core.syscomponent.Component;
 
-public class Factory implements Component {
-  public Array<String> builds;
+public class StealthAbility implements Component {
+  public int additionFuelDrain;
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("builds")
-        .list()
-        .values((valData) -> valData.componentEntity(Buyable.class));
+    data.desc("additionFuelDrain")
+        .integer()
+        .def(0)
+        .ge(0)
+        .le(100);
   }
 }

@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.systems;
 
-import org.wolftec.cwtactics.game.components.LoadingAbility;
+import org.wolftec.cwtactics.game.components.TransportAbility;
 import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.components.TransportContainer;
 import org.wolftec.cwtactics.game.core.Asserter;
@@ -14,14 +14,14 @@ public class TransportSystem implements System, LoadUnitType, LoadUnit, UnloadUn
 
   private Asserter                       asserter;
 
-  private Components<LoadingAbility>     loaders;
+  private Components<TransportAbility>     loaders;
   private Components<Position>           positions;
   private Components<TransportContainer> containers;
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
     if (loaders.isComponentInRootData(data)) {
-      LoadingAbility transporter = loaders.acquireWithRootData(entity, data);
+      TransportAbility transporter = loaders.acquireWithRootData(entity, data);
       asserter.inspectValue("Transporter.slots of " + entity, transporter.slots).isIntWithinRange(1, 10);
       asserter.inspectValue("Transporter.noDamage of " + entity, transporter.loads).forEachArrayValue((target) -> {
         asserter.isEntityId();
@@ -36,7 +36,7 @@ public class TransportSystem implements System, LoadUnitType, LoadUnit, UnloadUn
     positions.release(load);
 
     TransportContainer tc = containers.get(transporter);
-    LoadingAbility tAbility = loaders.get(transporter);
+    TransportAbility tAbility = loaders.get(transporter);
 
     // --> TODO not so good because this prepare and throw when looks ugly :/
     asserter.resetFailureDetection();

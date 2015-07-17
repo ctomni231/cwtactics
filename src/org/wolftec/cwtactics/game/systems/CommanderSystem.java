@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.systems;
 
-import org.wolftec.cwtactics.game.components.PlayerCommander;
+import org.wolftec.cwtactics.game.components.CommanderInUse;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.events.error.IllegalArguments;
@@ -12,14 +12,14 @@ import org.wolftec.cwtactics.game.events.gameround.PowerLevel;
 
 public class CommanderSystem implements System, ChangePower, ActivatedPowerLevel, GameroundStart {
 
-  private Components<PlayerCommander> playerCommanders;
+  private Components<CommanderInUse> playerCommanders;
 
   private PowerChanged                powerChangedEvent;
   private IllegalArguments            illegalArgumentsExc;
 
   @Override
   public void changePower(String player, int amount) {
-    PlayerCommander playerCommander = playerCommanders.get(player);
+    CommanderInUse playerCommander = playerCommanders.get(player);
     playerCommander.power += amount;
     if (playerCommander.power < 0) {
       playerCommander.power = 0;
@@ -35,7 +35,7 @@ public class CommanderSystem implements System, ChangePower, ActivatedPowerLevel
       illegalArgumentsExc.onIllegalArguments("powerlevel is null");
     }
 
-    PlayerCommander playerCommander = playerCommanders.get(player);
+    CommanderInUse playerCommander = playerCommanders.get(player);
 
     if ((level != PowerLevel.NONE && playerCommander.activeLevel != PowerLevel.NONE)
         || (level == PowerLevel.NONE && playerCommander.activeLevel == PowerLevel.NONE)) {

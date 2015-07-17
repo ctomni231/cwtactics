@@ -2,6 +2,7 @@ package org.wolftec.cwtactics;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.wolftec.cwtactics.engine.util.JsUtil;
 
 public abstract class Entities {
 
@@ -10,6 +11,16 @@ public abstract class Entities {
   public static final String GAME_ROUND = "GAME_ROUND";
   public static final String UNIT       = "UNIT_";
   public static final String PROPERTY   = "PROPERTY_";
+
+  public static String createEntity(String type, String id) {
+    if (id.length() != 4) {
+      return JsUtil.throwError("IllegalEntityId");
+    }
+    if (type.length() != 4) {
+      return JsUtil.throwError("IllegalEntityType");
+    }
+    return type + id;
+  }
 
   public static String getUnitEntityId(int number) {
     return UNIT + number;

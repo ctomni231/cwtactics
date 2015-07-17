@@ -4,7 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Constants;
 import org.wolftec.cwtactics.Entities;
-import org.wolftec.cwtactics.game.components.Movable;
+import org.wolftec.cwtactics.game.components.MovingAbility;
 import org.wolftec.cwtactics.game.components.Movemap;
 import org.wolftec.cwtactics.game.components.MovingCosts;
 import org.wolftec.cwtactics.game.components.Position;
@@ -24,7 +24,7 @@ public class MoveSystem implements System, UnitMove, LoadUnitType, LoadMoveType 
 
   private UnitMoved               movedEvent;
 
-  private Components<Movable>     movables;
+  private Components<MovingAbility>     movables;
   private Components<Movemap>     movemaps;
   private Components<MovingCosts> movecosts;
   private Components<Position>    positions;
@@ -67,7 +67,7 @@ public class MoveSystem implements System, UnitMove, LoadUnitType, LoadMoveType 
 
   @Override
   public void onLoadUnitType(String entity, Object data) {
-    Movable mdata = movables.acquireWithRootData(entity, data);
+    MovingAbility mdata = movables.acquireWithRootData(entity, data);
     asserter.inspectValue("Movable.fuel of " + entity, mdata.fuel).isIntWithinRange(1, 99);
     asserter.inspectValue("Movable.range of " + entity, mdata.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
     asserter.inspectValue("Movable.type of " + entity, mdata.type).isEntityId();

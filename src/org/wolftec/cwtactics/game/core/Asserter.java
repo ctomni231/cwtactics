@@ -180,6 +180,11 @@ public class Asserter extends Log implements SystemObject {
     return this;
   }
 
+  public Asserter beginsWith(String str) {
+    // TODO
+    return this;
+  }
+
   public Asserter euqals(Object checkObject) {
     if (value != checkObject) {
       assertionFailed("to be equal " + JSGlobal.JSON.stringify(checkObject));

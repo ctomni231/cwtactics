@@ -1,10 +1,10 @@
 package org.wolftec.cwtactics.game.systems;
 
-import org.wolftec.cwtactics.game.components.AmmoDepot;
+import org.wolftec.cwtactics.game.components.BattleSupplies;
 import org.wolftec.cwtactics.game.components.FighterPrimaryWeapon;
-import org.wolftec.cwtactics.game.components.FuelDepot;
+import org.wolftec.cwtactics.game.components.MovingSupplies;
 import org.wolftec.cwtactics.game.components.Funds;
-import org.wolftec.cwtactics.game.components.Movable;
+import org.wolftec.cwtactics.game.components.MovingAbility;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Player;
 import org.wolftec.cwtactics.game.components.Position;
@@ -26,9 +26,9 @@ public class SupplySystem implements System, LoadUnitType, LoadPropertyType, Tur
   private Components<Player>               players;
   private Components<Position>             positions;
   private Components<SupplierAbility>      suppliers;
-  private Components<Movable>              movables;
-  private Components<FuelDepot>            fuelOwners;
-  private Components<AmmoDepot>            ammoOwners;
+  private Components<MovingAbility>              movables;
+  private Components<MovingSupplies>            fuelOwners;
+  private Components<BattleSupplies>            ammoOwners;
   private Components<FighterPrimaryWeapon> primaryWeapons;
 
   @Override
@@ -86,7 +86,7 @@ public class SupplySystem implements System, LoadUnitType, LoadPropertyType, Tur
           if (primaryWeapons.has(entity)) {
             ammoOwners.get(entity).amount = primaryWeapons.get(entity).ammo;
           }
-          fuelOwners.get(entity).amount = movables.get(entity).fuel;
+          fuelOwners.get(entity).fuel = movables.get(entity).fuel;
         }
       }
     });

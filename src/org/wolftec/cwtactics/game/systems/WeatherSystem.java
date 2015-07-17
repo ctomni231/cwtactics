@@ -35,7 +35,7 @@ public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeat
   @Override
   public void onWeatherChanges(String weather, int duration) {
     WeatherData data = weathersData.get(Entities.GAME_ROUND);
-    data.days = duration;
+    data.leftDays = duration;
     data.weather = weather;
   }
 
@@ -43,8 +43,8 @@ public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeat
   public void onDayStart(int day) {
     WeatherData data = weathersData.get(Entities.GAME_ROUND);
 
-    data.days--;
-    if (data.days == 0) {
+    data.leftDays--;
+    if (data.leftDays == 0) {
       log.info("changing weather..");
 
       String newWeatherName = weathers.getRandomEntity(JSCollections.$array(data.weather));

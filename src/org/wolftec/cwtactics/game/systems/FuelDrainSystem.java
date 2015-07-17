@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.systems;
 
-import org.wolftec.cwtactics.game.components.FuelDepot;
+import org.wolftec.cwtactics.game.components.MovingSupplies;
 import org.wolftec.cwtactics.game.components.FuelDrain;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
@@ -16,7 +16,7 @@ public class FuelDrainSystem implements System, LoadUnitType, TurnStarts {
   private UnitDestroyed         destroyEvent;
 
   private Components<FuelDrain> drainers;
-  private Components<FuelDepot> fuels;
+  private Components<MovingSupplies> fuels;
 
   @Override
   public void onConstruction() {
@@ -33,10 +33,10 @@ public class FuelDrainSystem implements System, LoadUnitType, TurnStarts {
   @Override
   public void onTurnStarts(String player, int turn) {
     drainers.each((entity, drain) -> {
-      FuelDepot fuel = fuels.get(entity);
+      MovingSupplies fuel = fuels.get(entity);
 
-      fuel.amount -= drain.daily;
-      if (fuel.amount <= 0) {
+      fuel.fuel -= drain.daily;
+      if (fuel.fuel <= 0) {
         destroyEvent.onUnitDestroyed(entity);
       }
     });

@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.systems;
 
-import org.wolftec.cwtactics.game.components.HidingAbility;
+import org.wolftec.cwtactics.game.components.StealthAbility;
 import org.wolftec.cwtactics.game.components.Stealth;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
@@ -15,7 +15,7 @@ public class StealthSystem implements System, HideUnit, UnhideUnit, LoadUnitType
 
   private Asserter                  as;
 
-  private Components<HidingAbility> hidables;
+  private Components<StealthAbility> hidables;
   private Components<Stealth>       stealths;
 
   @Override

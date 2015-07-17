@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.game.systems;
 import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.engine.bitset.BitSet;
 import org.wolftec.cwtactics.game.components.Commander;
-import org.wolftec.cwtactics.game.components.PlayerCommander;
+import org.wolftec.cwtactics.game.components.CommanderInUse;
 import org.wolftec.cwtactics.game.components.Turn;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
@@ -19,7 +19,7 @@ public class CommanderActions implements System, BuildActions, InvokeAction {
   private static final int            POWER_PER_STAR = 1000;
 
   private Components<Turn>            turns;
-  private Components<PlayerCommander> playerCommanders;
+  private Components<CommanderInUse> playerCommanders;
   private Components<Commander>       commanders;
 
   private AddAction                   actionEvent;
@@ -31,7 +31,7 @@ public class CommanderActions implements System, BuildActions, InvokeAction {
 
       String turnOwner = turns.get(Entities.GAME_ROUND).owner;
 
-      PlayerCommander player = playerCommanders.get(turnOwner);
+      CommanderInUse player = playerCommanders.get(turnOwner);
       if (player.activeLevel != PowerLevel.NONE) return;
 
       Commander commander = commanders.get(turnOwner);
