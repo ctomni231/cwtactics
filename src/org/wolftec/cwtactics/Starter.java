@@ -8,7 +8,7 @@ import org.stjs.javascript.JSStringAdapter;
 import org.wolftec.cwtactics.engine.util.BrowserUtil;
 import org.wolftec.cwtactics.game.core.CheckedValue;
 import org.wolftec.cwtactics.game.core.Kernel;
-import org.wolftec.cwtactics.game.event.system.SystemInitializedEvent;
+import org.wolftec.cwtactics.game.events.system.SystemInitializedEvent;
 
 /**
  * Starter class with main function.

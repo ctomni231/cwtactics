@@ -1,3 +1,16 @@
+NOT SO GOOD
+-----------
+
+P: Multiple actions per key possible
+S: Action System with onRegisterActions(...) event
+
+P: Too much events
+S: Action -> Method directly --> leads into an event
+
+P: Configs and Scripts
+S: ValueTagSystem with component bases scripting
+
+
 Legend
 ------
 
@@ -5,7 +18,7 @@ Legend
   [?] Started, Not Ready
   [*] Completed
   [x] Tested
-  
+
 Game Actions
 ------------
 
@@ -17,7 +30,7 @@ Game Actions
           [*] Source Property - ALLIED
           [*] Source Property - ENEMY
           [*] Source Property - NONE
-          [*] Source Unit - OWN 
+          [*] Source Unit - OWN
           [*] Source Unit - ALLIED
           [*] Source Unit - ENEMY
       [*] onTriggerAction(String action) // triggered by action systems
@@ -56,7 +69,7 @@ Game Actions
         [ ] Resupply units on props
         [ ] Resupply units beside of suppliers
         [ ] Repair units on props
-    
+
   [ ] Target: 0.41
     [ ] Yield
     [ ] Disband

@@ -10,7 +10,7 @@ import org.wolftec.cwtactics.engine.util.ClassUtil;
 import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.system.SystemInitializedEvent;
+import org.wolftec.cwtactics.game.events.system.SystemInitializedEvent;
 
 public class TestManagerSystem implements System, SystemInitializedEvent {
 

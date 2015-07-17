@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.devBlackcat;
 
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
-import org.wolftec.cwtactics.game.event.gameround.GameroundStart;
+import org.wolftec.cwtactics.game.events.gameround.GameroundStart;
 
 public class TestSystem implements System, GameroundStart {
 
