@@ -7,9 +7,7 @@ import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.components.Turn;
-import org.wolftec.cwtactics.game.components.Visible;
 import org.wolftec.cwtactics.game.components.Vision;
-import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.events.gameround.CapturedProperty;
@@ -17,18 +15,12 @@ import org.wolftec.cwtactics.game.events.gameround.UnitDestroyed;
 import org.wolftec.cwtactics.game.events.gameround.UnitMoved;
 import org.wolftec.cwtactics.game.events.gameround.UnitProduced;
 import org.wolftec.cwtactics.game.events.gameround.VisibilityChanged;
-import org.wolftec.cwtactics.game.events.loading.LoadPropertyType;
-import org.wolftec.cwtactics.game.events.loading.LoadTileType;
-import org.wolftec.cwtactics.game.events.loading.LoadUnitType;
 
-public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved, CapturedProperty, LoadTileType, LoadPropertyType, LoadUnitType {
-
-  private Asserter              asserter;
+public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved, CapturedProperty {
 
   private VisibilityChanged     visibilityChangedEvent;
 
   private Components<Vision>    visioners;
-  private Components<Visible>   visibles;
   private Components<Position>  positions;
   private Components<Turn>      turns;
   private Components<Owner>     owners;
@@ -66,26 +58,6 @@ public class FogSystem implements System, UnitProduced, UnitDestroyed, UnitMoved
         turnOwnerData.$get(x).$set(y, 0);
         clientOwnerData.$get(x).$set(y, 0);
       }
-    }
-  }
-
-  @Override
-  public void onLoadUnitType(String entity, Object data) {
-    Vision vision = visioners.acquireWithRootData(entity, data);
-    asserter.inspectValue("Vision.range of " + entity, vision.range).isIntWithinRange(1, Constants.MAX_SELECTION_RANGE);
-  }
-
-  @Override
-  public void onLoadPropertyType(String entity, Object data) {
-    Vision vision = visioners.acquireWithRootData(entity, data);
-    asserter.inspectValue("Vision.range of " + entity, vision.range).isIntWithinRange(0, Constants.MAX_SELECTION_RANGE);
-  }
-
-  @Override
-  public void onLoadTileType(String entity, Object data) {
-    if (visibles.isComponentInRootData(data)) {
-      Visible visible = visibles.acquireWithRootData(entity, data);
-      asserter.inspectValue("Visible.blocksVision of " + entity, visible.blocksVision).isBoolean();
     }
   }
 

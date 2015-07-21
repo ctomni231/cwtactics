@@ -12,24 +12,12 @@ public class TimerData implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("turnTime")
-        .integer()
-        .ge(0)
-        .le(3600);
+    data.desc("turnTime").integer().ge(0).le(3600);
 
-    data.desc("gameTime")
-        .integer()
-        .ge(0)
-        .le(1000000);
+    data.desc("gameTime").integer().ge(0).le(1000000);
 
-    data.desc("turnTimeLimit")
-        .integer()
-        .ge(0)
-        .le(3600);
+    data.desc("turnTimeLimit").integer().ge(0).le(3600);
 
-    data.desc("gameTimeLimit")
-        .integer()
-        .ge(0)
-        .le(1000000);
+    data.desc("gameTimeLimit").integer().ge(0).le(1000000);
   }
 }

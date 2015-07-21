@@ -8,9 +8,6 @@ public class Defense implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("defense")
-        .integer()
-        .ge(0)
-        .le(10);
+    data.desc("defense").integer().ge(0).le(10);
   }
 }

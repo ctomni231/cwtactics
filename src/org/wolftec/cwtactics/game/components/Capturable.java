@@ -11,15 +11,10 @@ public class Capturable implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("points")
-        .integer()
-        .def(20);
-    data.desc("looseAfterCaptured")
-        .bool()
-        .def(false);
-    data.desc("changeIntoAfterCaptured")
-        .isString()
-        .def("UTNONE")
-        .pattern("UT[A-Z]{4}");
+    data.desc("points").integer().def(20);
+
+    data.desc("looseAfterCaptured").bool().def(false);
+
+    data.desc("changeIntoAfterCaptured").isString().def("UTNONE").pattern("UT[A-Z]{4}");
   }
 }

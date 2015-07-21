@@ -21,11 +21,11 @@ public class ManpowerSystem implements System, UnitCreated, GameroundStart {
 
   @Override
   public void gameroundStart() {
-    manpowers.each((entity, mp) -> mp.manpower = 100000);
+    manpowers.each((entity, mp) -> mp.amount = 100000);
   }
 
   @Override
-  public void onUnitCreated(String unitEntity) {
-    manpowers.get(owners.get(unitEntity).owner).manpower--;
+  public void onUnitCreated(String unit) {
+    manpowers.get(owners.get(unit).owner).amount--;
   }
 }

@@ -11,15 +11,8 @@ public class Commander implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("army")
-        .componentEntity(Army.class);
-    data.desc("powerStars")
-        .integer()
-        .ge(1)
-        .le(5);
-    data.desc("superPowerStars")
-        .integer()
-        .ge(1)
-        .le(5);
+    data.desc("army").componentEntity(Army.class);
+    data.desc("powerStars").integer().ge(1).le(5);
+    data.desc("superPowerStars").integer().ge(1).le(5);
   }
 }

@@ -4,19 +4,16 @@ import org.stjs.javascript.JSCollections;
 import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.game.components.Weather;
 import org.wolftec.cwtactics.game.components.WeatherData;
-import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.events.gameround.DayStart;
 import org.wolftec.cwtactics.game.events.gameround.WeatherChanges;
-import org.wolftec.cwtactics.game.events.loading.LoadWeatherType;
 import org.wolftec.cwtactics.game.events.system.SystemInitializedEvent;
 
-public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeatherType, SystemInitializedEvent {
+public class WeatherSystem implements System, DayStart, WeatherChanges, SystemInitializedEvent {
 
   private Log                     log;
-  private Asserter                asserter;
 
   private Components<Weather>     weathers;
   private Components<WeatherData> weathersData;
@@ -24,12 +21,6 @@ public class WeatherSystem implements System, DayStart, WeatherChanges, LoadWeat
   @Override
   public void onSystemInitialized() {
     weathersData.acquire(Entities.GAME_ROUND);
-  }
-
-  @Override
-  public void onLoadWeatherType(String entity, Object data) {
-    Weather weather = weathers.acquireWithRootData(entity, data);
-    asserter.inspectValue("Weather.defaultWeather of " + entity, weather.defaultWeather).isBoolean();
   }
 
   @Override

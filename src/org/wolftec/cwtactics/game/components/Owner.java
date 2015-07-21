@@ -8,7 +8,6 @@ public class Owner implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("owner")
-        .componentEntity(Player.class);
+    data.desc("owner").componentEntity(Player.class);
   }
 }

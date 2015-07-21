@@ -8,7 +8,6 @@ public class Stealth implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("hidden")
-        .bool();
+    data.desc("hidden").bool();
   }
 }

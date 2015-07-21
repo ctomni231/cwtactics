@@ -12,12 +12,8 @@ public class Repairer implements Component {
   @Override
   public void describe(DataDescriptor data) {
 
-    data.desc("amount")
-        .integer()
-        .ge(10)
-        .le(100);
+    data.desc("amount").integer().ge(10).le(100);
 
-    data.desc("targets")
-        .componentEntity(Living.class);
+    data.desc("targets").componentEntity(Living.class);
   }
 }

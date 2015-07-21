@@ -8,9 +8,6 @@ public class Living implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("hp")
-        .integer()
-        .ge(0)
-        .le(99);
+    data.desc("hp").integer().ge(0).le(99);
   }
 }

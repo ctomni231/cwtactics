@@ -15,37 +15,14 @@ public class BattleAbility implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("ammo")
-        .integer()
-        .def(-1)
-        .ge(-1)
-        .le(10);
+    data.desc("ammo").integer().def(-1).ge(-1).le(10);
 
-    data.desc("minRange")
-        .integer()
-        .def(1)
-        .ge(1)
-        .le(10);
+    data.desc("minRange").integer().def(1).ge(1).le(10);
 
-    data.desc("maxRange")
-        .integer()
-        .def(1)
-        .ge(1)
-        .le(10);
+    data.desc("maxRange").integer().def(1).ge(1).le(10);
 
-    data.desc("primaryDamage")
-        .map()
-        .def(JSCollections.$map())
-        .keys((keyDesc) -> keyDesc.componentEntity(Buyable.class))
-        .values((valDesc) -> valDesc.integer()
-                                    .ge(0)
-                                    .le(1000));
+    data.desc("primaryDamage").map().def(JSCollections.$map()).keys((keyDesc) -> keyDesc.componentEntity(Buyable.class)).values((valDesc) -> valDesc.integer().ge(0).le(1000));
 
-    data.desc("secondayDamage")
-        .map()
-        .keys((keyDesc) -> keyDesc.componentEntity(Buyable.class))
-        .values((valDesc) -> valDesc.integer()
-                                    .ge(0)
-                                    .le(1000));
+    data.desc("secondayDamage").map().keys((keyDesc) -> keyDesc.componentEntity(Buyable.class)).values((valDesc) -> valDesc.integer().ge(0).le(1000));
   }
 }

@@ -1,33 +1,21 @@
 package org.wolftec.cwtactics.game.systems;
 
-import org.wolftec.cwtactics.game.components.TransportAbility;
 import org.wolftec.cwtactics.game.components.Position;
+import org.wolftec.cwtactics.game.components.TransportAbility;
 import org.wolftec.cwtactics.game.components.TransportContainer;
 import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.events.gameround.UnloadUnit;
 import org.wolftec.cwtactics.game.events.loading.LoadUnit;
-import org.wolftec.cwtactics.game.events.loading.LoadUnitType;
 
-public class TransportSystem implements System, LoadUnitType, LoadUnit, UnloadUnit {
+public class TransportSystem implements System, LoadUnit, UnloadUnit {
 
   private Asserter                       asserter;
 
-  private Components<TransportAbility>     loaders;
+  private Components<TransportAbility>   loaders;
   private Components<Position>           positions;
   private Components<TransportContainer> containers;
-
-  @Override
-  public void onLoadUnitType(String entity, Object data) {
-    if (loaders.isComponentInRootData(data)) {
-      TransportAbility transporter = loaders.acquireWithRootData(entity, data);
-      asserter.inspectValue("Transporter.slots of " + entity, transporter.slots).isIntWithinRange(1, 10);
-      asserter.inspectValue("Transporter.noDamage of " + entity, transporter.loads).forEachArrayValue((target) -> {
-        asserter.isEntityId();
-      });
-    }
-  }
 
   @Override
   public void onLoadUnit(String transporter, String load) {

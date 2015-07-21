@@ -8,7 +8,6 @@ public class Usable implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("canAct")
-        .bool();
+    data.desc("canAct").bool();
   }
 }

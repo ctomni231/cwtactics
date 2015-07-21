@@ -10,14 +10,8 @@ public class MovingAbility implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("range")
-        .integer()
-        .ge(1)
-        .le(10);
+    data.desc("range").integer().ge(1).le(10);
 
-    data.desc("fuel")
-        .integer()
-        .ge(1)
-        .le(100);
+    data.desc("fuel").integer().ge(1).le(100);
   }
 }

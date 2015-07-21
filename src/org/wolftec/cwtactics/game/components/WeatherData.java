@@ -10,11 +10,8 @@ public class WeatherData implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("leftDays")
-        .integer()
-        .ge(0);
+    data.desc("leftDays").integer().ge(0);
 
-    data.desc("weather")
-        .componentEntity(Weather.class);
+    data.desc("weather").componentEntity(Weather.class);
   }
 }

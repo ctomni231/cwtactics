@@ -12,22 +12,12 @@ public class MapData implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("mapName")
-        .pattern("[a-zA-Z0-9]{4,10}");
+    data.desc("mapName").pattern("[a-zA-Z0-9]{4,10}");
 
-    data.desc("width")
-        .integer()
-        .ge(15)
-        .le(50);
+    data.desc("width").integer().ge(15).le(50);
 
-    data.desc("height")
-        .integer()
-        .ge(15)
-        .le(50);
+    data.desc("height").integer().ge(15).le(50);
 
-    data.desc("players")
-        .integer()
-        .ge(2)
-        .le(4);
+    data.desc("players").integer().ge(2).le(4);
   }
 }

@@ -8,9 +8,6 @@ public class MovingSupplies implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("fuel")
-        .integer()
-        .ge(0)
-        .le(100);
+    data.desc("fuel").integer().ge(0).le(100);
   }
 }

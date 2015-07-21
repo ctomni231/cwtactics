@@ -8,8 +8,6 @@ public class Weather implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("defaultWeather")
-        .bool()
-        .def(false);
+    data.desc("defaultWeather").bool().def(false);
   }
 }

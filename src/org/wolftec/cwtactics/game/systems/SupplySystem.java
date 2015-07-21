@@ -1,35 +1,30 @@
 package org.wolftec.cwtactics.game.systems;
 
+import org.wolftec.cwtactics.game.components.BattleAbility;
 import org.wolftec.cwtactics.game.components.BattleSupplies;
-import org.wolftec.cwtactics.game.components.FighterPrimaryWeapon;
-import org.wolftec.cwtactics.game.components.MovingSupplies;
 import org.wolftec.cwtactics.game.components.Funds;
 import org.wolftec.cwtactics.game.components.MovingAbility;
+import org.wolftec.cwtactics.game.components.MovingSupplies;
 import org.wolftec.cwtactics.game.components.Owner;
 import org.wolftec.cwtactics.game.components.Player;
 import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.components.SupplierAbility;
-import org.wolftec.cwtactics.game.core.Asserter;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.events.gameround.SupplyNeighbors;
 import org.wolftec.cwtactics.game.events.gameround.TurnStarts;
-import org.wolftec.cwtactics.game.events.loading.LoadPropertyType;
-import org.wolftec.cwtactics.game.events.loading.LoadUnitType;
 
-public class SupplySystem implements System, LoadUnitType, LoadPropertyType, TurnStarts, SupplyNeighbors {
+public class SupplySystem implements System, TurnStarts, SupplyNeighbors {
 
-  private Asserter                         asserter;
-
-  private Components<Owner>                owners;
-  private Components<Funds>                funds;
-  private Components<Player>               players;
-  private Components<Position>             positions;
-  private Components<SupplierAbility>      suppliers;
-  private Components<MovingAbility>              movables;
-  private Components<MovingSupplies>            fuelOwners;
-  private Components<BattleSupplies>            ammoOwners;
-  private Components<FighterPrimaryWeapon> primaryWeapons;
+  private Components<Owner>           owners;
+  private Components<Funds>           funds;
+  private Components<Player>          players;
+  private Components<Position>        positions;
+  private Components<SupplierAbility> suppliers;
+  private Components<MovingAbility>   movables;
+  private Components<MovingSupplies>  fuelOwners;
+  private Components<BattleSupplies>  ammoOwners;
+  private Components<BattleAbility>   fighters;
 
   @Override
   public void onSupplyNeighbors(String supplier) {
@@ -83,37 +78,12 @@ public class SupplySystem implements System, LoadUnitType, LoadPropertyType, Tur
 
         if (supAb.refillLoads) {
 
-          if (primaryWeapons.has(entity)) {
-            ammoOwners.get(entity).amount = primaryWeapons.get(entity).ammo;
+          if (fighters.has(entity) && fighters.get(entity).ammo != -1) {
+            ammoOwners.get(entity).amount = fighters.get(entity).ammo;
           }
           fuelOwners.get(entity).fuel = movables.get(entity).fuel;
         }
       }
     });
-  }
-
-  @Override
-  public void onLoadUnitType(String entity, Object data) {
-    if (suppliers.isComponentInRootData(data)) {
-      SupplierAbility supplier = suppliers.acquireWithRootData(entity, data);
-      asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
-      asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
-        asserter.isEntityId();
-      });
-    }
-  }
-
-  @Override
-  public void onLoadPropertyType(String entity, Object data) {
-    if (suppliers.isComponentInRootData(data)) {
-      SupplierAbility supplier = suppliers.acquireWithRootData(entity, data);
-      asserter.inspectValue("Supplier.refillLoads of " + entity, supplier.refillLoads).isBoolean();
-      asserter.inspectValue("Supplier.supplies of " + entity, supplier.supplies).forEachArrayValue((target) -> {
-        asserter.isEntityId();
-      });
-
-      Funds funder = funds.acquireWithRootData(entity, data);
-      asserter.inspectValue("Funds.amount of " + entity, funder.amount).isIntWithinRange(0, 999999);
-    }
   }
 }

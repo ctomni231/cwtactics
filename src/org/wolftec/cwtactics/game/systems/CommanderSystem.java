@@ -14,8 +14,8 @@ public class CommanderSystem implements System, ChangePower, ActivatedPowerLevel
 
   private Components<CommanderInUse> playerCommanders;
 
-  private PowerChanged                powerChangedEvent;
-  private IllegalArguments            illegalArgumentsExc;
+  private PowerChanged               powerChangedEvent;
+  private IllegalArguments           illegalArgumentsExc;
 
   @Override
   public void changePower(String player, int amount) {

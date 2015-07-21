@@ -12,12 +12,8 @@ public class SupplierAbility implements Component {
   @Override
   public void describe(DataDescriptor data) {
 
-    data.desc("refillLoads")
-        .bool()
-        .def(false);
+    data.desc("refillLoads").bool().def(false);
 
-    data.desc("supplies")
-        .list()
-        .values((valData) -> valData.isString());
+    data.desc("supplies").list().values((valData) -> valData.isString());
   }
 }

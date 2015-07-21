@@ -9,9 +9,6 @@ public class Buyable implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("cost")
-        .integer()
-        .ge(1)
-        .le(999999);
+    data.desc("cost").integer().ge(1).le(999999);
   }
 }

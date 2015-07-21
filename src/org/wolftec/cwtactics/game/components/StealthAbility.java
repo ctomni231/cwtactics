@@ -8,10 +8,6 @@ public class StealthAbility implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("additionFuelDrain")
-        .integer()
-        .def(0)
-        .ge(0)
-        .le(100);
+    data.desc("additionFuelDrain").integer().def(0).ge(0).le(100);
   }
 }

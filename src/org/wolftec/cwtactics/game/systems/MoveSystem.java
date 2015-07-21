@@ -19,15 +19,15 @@ import org.wolftec.cwtactics.game.events.loading.LoadUnitType;
 
 public class MoveSystem implements System, UnitMove, LoadUnitType, LoadMoveType {
 
-  private Log                     log;
-  private Asserter                asserter;
+  private Log                       log;
+  private Asserter                  asserter;
 
-  private UnitMoved               movedEvent;
+  private UnitMoved                 movedEvent;
 
-  private Components<MovingAbility>     movables;
-  private Components<Movemap>     movemaps;
-  private Components<MovingCosts> movecosts;
-  private Components<Position>    positions;
+  private Components<MovingAbility> movables;
+  private Components<Movemap>       movemaps;
+  private Components<MovingCosts>   movecosts;
+  private Components<Position>      positions;
 
   @Override
   public void onConstruction() {

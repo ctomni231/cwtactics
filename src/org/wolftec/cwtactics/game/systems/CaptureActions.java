@@ -17,7 +17,7 @@ public class CaptureActions implements System, BuildActions, InvokeAction {
 
   private IllegalArguments       illegalArgumentsExc;
   private AddAction              addActionEvent;
-  private UnitCapturesProperty        captureEvent;
+  private UnitCapturesProperty   captureEvent;
 
   private Components<Living>     livings;
   private Components<Position>   positions;

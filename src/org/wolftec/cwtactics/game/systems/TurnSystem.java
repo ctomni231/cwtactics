@@ -15,7 +15,7 @@ public class TurnSystem implements System, ClientEndsTurn {
 
   private DayStart           dayStartEvent;
   private TurnEnd            endTurnEvent;
-  private TurnStarts          startTurnEvent;
+  private TurnStarts         startTurnEvent;
   private IllegalGameData    illegalGameDataExc;
 
   private Components<Turn>   turns;

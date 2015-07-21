@@ -15,12 +15,7 @@ public class CommanderInUse implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("power")
-        .integer()
-        .ge(0)
-        .le(100000);
-
-    data.desc("activeLevel")
-        .oneOf(NO_POWER, POWER, SUPER_POWER, TAG_POWER);
+    data.desc("power").integer().ge(0).le(100000);
+    data.desc("activeLevel").oneOf(NO_POWER, POWER, SUPER_POWER, TAG_POWER);
   }
 }

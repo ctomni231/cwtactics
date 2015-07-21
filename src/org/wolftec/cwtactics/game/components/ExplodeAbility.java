@@ -12,18 +12,10 @@ public class ExplodeAbility implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("damage")
-        .integer()
-        .ge(10)
-        .le(100);
+    data.desc("damage").integer().ge(10).le(100);
 
-    data.desc("range")
-        .integer()
-        .ge(2)
-        .le(10);
+    data.desc("range").integer().ge(2).le(10);
 
-    data.desc("noDamage")
-        .list()
-        .values((valDesc) -> valDesc.componentEntity(Living.class));
+    data.desc("noDamage").list().values((valDesc) -> valDesc.componentEntity(Living.class));
   }
 }

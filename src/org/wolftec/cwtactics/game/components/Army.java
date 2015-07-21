@@ -12,15 +12,10 @@ public class Army implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("name")
-        .pattern("AR[a-zA-Z0-9]{4,10}");
+    data.desc("name").pattern("AR[a-zA-Z0-9]{4,10}");
 
-    data.desc("music")
-        .pattern("MS[.]{4}");
+    data.desc("music").pattern("MS[.]{4}");
 
-    data.desc("color")
-        .integer()
-        .ge(0)
-        .le(6);
+    data.desc("color").integer().ge(0).le(6);
   }
 }

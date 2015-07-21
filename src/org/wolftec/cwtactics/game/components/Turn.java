@@ -12,15 +12,10 @@ public class Turn implements Component {
   @Override
   public void describe(DataDescriptor data) {
 
-    data.desc("lastClientOwner")
-        .componentEntity(Player.class);
+    data.desc("lastClientOwner").componentEntity(Player.class);
 
-    data.desc("owner")
-        .componentEntity(Player.class);
+    data.desc("owner").componentEntity(Player.class);
 
-    data.desc("day")
-        .integer()
-        .ge(0)
-        .le(1000000);
+    data.desc("day").integer().ge(0).le(1000000);
   }
 }

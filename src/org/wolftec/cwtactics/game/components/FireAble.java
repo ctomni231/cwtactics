@@ -13,22 +13,12 @@ public class FireAble implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("usableBy")
-        .list()
-        .values((sdata) -> sdata.componentEntity(Living.class));
+    data.desc("usableBy").list().values((sdata) -> sdata.componentEntity(Living.class));
 
-    data.desc("damage")
-        .integer()
-        .ge(10)
-        .le(100);
+    data.desc("damage").integer().ge(10).le(100);
 
-    data.desc("range")
-        .integer()
-        .ge(1)
-        .le(10);
+    data.desc("range").integer().ge(1).le(10);
 
-    data.desc("changesType")
-        .isString()
-        .def("");
+    data.desc("changesType").isString().def("");
   }
 }

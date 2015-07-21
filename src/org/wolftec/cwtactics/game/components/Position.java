@@ -9,14 +9,8 @@ public class Position implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("x")
-        .integer()
-        .ge(0)
-        .lt(50);
+    data.desc("x").integer().ge(0).lt(50);
 
-    data.desc("y")
-        .integer()
-        .ge(0)
-        .lt(50);
+    data.desc("y").integer().ge(0).lt(50);
   }
 }

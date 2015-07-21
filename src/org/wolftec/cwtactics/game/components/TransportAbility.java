@@ -10,13 +10,8 @@ public class TransportAbility implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("slots")
-        .integer()
-        .ge(1)
-        .le(3); // slotA, slotB, slotC
+    data.desc("slots").integer().ge(1).le(3); // slotA, slotB, slotC
 
-    data.desc("loads")
-        .list()
-        .values((valData) -> valData.componentEntity(MovingAbility.class));
+    data.desc("loads").list().values((valData) -> valData.componentEntity(MovingAbility.class));
   }
 }

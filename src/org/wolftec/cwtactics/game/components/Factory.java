@@ -9,8 +9,6 @@ public class Factory implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("builds")
-        .list()
-        .values((valData) -> valData.componentEntity(Buyable.class));
+    data.desc("builds").list().values((valData) -> valData.componentEntity(Buyable.class));
   }
 }

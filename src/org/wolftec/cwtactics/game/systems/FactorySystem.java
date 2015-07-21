@@ -11,10 +11,8 @@ import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.events.error.IllegalGameData;
 import org.wolftec.cwtactics.game.events.gameround.BuildUnit;
 import org.wolftec.cwtactics.game.events.gameround.UnitProduced;
-import org.wolftec.cwtactics.game.events.loading.LoadPropertyType;
-import org.wolftec.cwtactics.game.events.loading.LoadUnitType;
 
-public class FactorySystem implements System, BuildUnit, LoadUnitType, LoadPropertyType {
+public class FactorySystem implements System, BuildUnit {
 
   private Log                  log;
   private Asserter             asserter;
@@ -26,24 +24,6 @@ public class FactorySystem implements System, BuildUnit, LoadUnitType, LoadPrope
   private Components<Factory>  factories;
   private Components<Owner>    owners;
   private Components<Position> positions;
-
-  @Override
-  public void onLoadUnitType(String entity, Object data) {
-    if (buyables.isComponentInRootData(data)) {
-      Buyable buyable = buyables.acquireWithRootData(entity, data);
-      asserter.inspectValue("Buyable.cost of " + entity, buyable.cost).isIntWithinRange(0, 999999);
-    }
-  }
-
-  @Override
-  public void onLoadPropertyType(String entity, Object data) {
-    if (factories.isComponentInRootData(data)) {
-      Factory factory = factories.acquireWithRootData(entity, data);
-      asserter.inspectValue("Factory.builds of " + entity, factory.builds).forEachArrayValue((value) -> {
-        asserter.isEntityId();
-      });
-    }
-  }
 
   @Override
   public void onBuildUnit(String factory, String type) {

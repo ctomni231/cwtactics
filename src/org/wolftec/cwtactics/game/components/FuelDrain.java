@@ -8,9 +8,6 @@ public class FuelDrain implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("daily")
-        .integer()
-        .ge(1)
-        .le(100);
+    data.desc("daily").integer().ge(1).le(100);
   }
 }

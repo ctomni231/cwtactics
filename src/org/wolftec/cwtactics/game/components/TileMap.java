@@ -8,8 +8,7 @@ public class TileMap implements Component {
   public Array<Array<String>> tiles;
 
   public String getTileAt(int x, int y) {
-    return tiles.$get(x)
-                .$get(y);
+    return tiles.$get(x).$get(y);
   }
 
   @Override

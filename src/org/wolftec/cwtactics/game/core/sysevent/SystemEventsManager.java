@@ -5,25 +5,40 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSFunctionAdapter;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.stjs.javascript.annotation.SyntheticType;
+import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwtactics.engine.util.ClassUtil;
+import org.wolftec.cwtactics.engine.util.JsUtil;
 import org.wolftec.cwtactics.game.core.CheckedValue;
 import org.wolftec.cwtactics.game.core.SystemInstanceHandler;
 import org.wolftec.cwtactics.game.core.SystemPropertyHandler;
 import org.wolftec.cwtactics.game.core.systems.System;
 
-public class SystemEventsManager implements SystemPropertyHandler, SystemInstanceHandler {
+public class SystemEventsManager implements SystemPropertyHandler, SystemInstanceHandler, SharedEventCallHandler {
 
-  @SyntheticType
   private class ListenerHolder {
-    Array<Object> __listeners__;
+
+    public void emit(String method, Array<?> args) {
+      for (int i = 0; i < listeners.$length(); i++) {
+        Object listener = listeners.$get(i);
+        JSFunctionAdapter.apply(JSObjectAdapter.$get(listener, method), listener, args);
+      }
+    };
+
+    Array<Object> listeners;
   }
 
   private Map<String, ListenerHolder> events;
+  private Map<String, Object>         emitters;
+  private EventDistributor            eventDistributor;
 
   public SystemEventsManager() {
     events = JSCollections.$map();
+  }
+
+  @Override
+  public void onSharedCall(String eventClass, String eventFunction, Array<?> args) {
+    events.$get(eventClass).emit(eventFunction, JSObjectAdapter.$js("arguments"));
   }
 
   @Override
@@ -39,6 +54,13 @@ public class SystemEventsManager implements SystemPropertyHandler, SystemInstanc
 
   @Override
   public void handleSystemInstance(System system) {
+    if (ClassUtil.classImplementsInterface(ClassUtil.getClass(system), EventDistributor.class)) {
+      if (eventDistributor != null) {
+        JsUtil.throwError("AlredyRegisteredEventDistributor");
+      }
+      eventDistributor = (EventDistributor) system;
+    }
+
     ClassUtil.forEachInterface(ClassUtil.getClass(system), (interfaceObj) -> {
       if (ClassUtil.classImplementsInterface(interfaceObj, SystemEvent.class)) {
         registerEventListener(system, (Class<? extends SystemEvent>) interfaceObj);
@@ -56,9 +78,8 @@ public class SystemEventsManager implements SystemPropertyHandler, SystemInstanc
     String eventName = ClassUtil.getClassName(eventClass);
 
     return CheckedValue.of(events.$get(eventName)).getOrElseByProvider(() -> {
-      ListenerHolder eventNode = createEventNode(eventClass);
-      events.$put(eventName, eventNode);
-      return eventNode;
+      createEventNode(eventName, eventClass);
+      return events.$get(eventName);
     });
   }
 
@@ -72,19 +93,22 @@ public class SystemEventsManager implements SystemPropertyHandler, SystemInstanc
    * @param eventClass
    * @return event node
    */
-  public ListenerHolder createEventNode(Class<? extends SystemEvent> eventClass) {
+  public void createEventNode(String eventName, Class<? extends SystemEvent> eventClass) {
+    Object emitter = JSObjectAdapter.$js("{}");
     ListenerHolder event = JSObjectAdapter.$js("{}");
-    event.__listeners__ = JSCollections.$array();
+    event.listeners = JSCollections.$array();
 
+    boolean shared = ClassUtil.classImplementsInterface(eventClass, SharedSystemEvent.class);
     ClassUtil.forEachClassProperty(eventClass, (prop, value) -> {
       if (prop.startsWith("__") || prop == "equals") {
         return;
       }
 
-      createMethodHandler(event, prop);
+      createMethodHandler(eventName, event, emitter, prop, shared);
     });
 
-    return event;
+    emitters.$put(eventName, emitter);
+    events.$put(eventName, event);
   }
 
   /**
@@ -93,18 +117,26 @@ public class SystemEventsManager implements SystemPropertyHandler, SystemInstanc
    * {@link ListenerHolder} listeners as target.
    * 
    * @param event
-   *          object which holds all listeners for the given event
+   * @param emitter
    * @param prop
-   *          event name
+   * @param sharedEvent
    */
-  private void createMethodHandler(final ListenerHolder event, String prop) {
-    JSObjectAdapter.$put(event, prop, (Callback0) () -> {
-      Array<?> arguments = JSObjectAdapter.$js("arguments");
-      for (int i = 0; i < event.__listeners__.$length(); i++) {
-        Object listener = event.__listeners__.$get(i);
-        JSFunctionAdapter.apply(JSObjectAdapter.$get(listener, prop), listener, arguments);
-      }
-    });
+  private void createMethodHandler(String eventName, ListenerHolder event, Object emitter, String prop, boolean sharedEvent) {
+
+    Callback eventInvoker;
+    if (sharedEvent) {
+      eventInvoker = (Callback0) () -> {
+        eventDistributor.pushEventCall(eventName, prop, JSObjectAdapter.$js("arguments"));
+        event.emit(prop, JSObjectAdapter.$js("arguments"));
+      };
+
+    } else {
+      eventInvoker = (Callback0) () -> {
+        event.emit(prop, JSObjectAdapter.$js("arguments"));
+      };
+    }
+
+    JSObjectAdapter.$put(emitter, prop, eventInvoker);
   }
 
   /**
@@ -115,6 +147,6 @@ public class SystemEventsManager implements SystemPropertyHandler, SystemInstanc
    */
   public void registerEventListener(Object listener, Class<? extends SystemEvent> eventClass) {
     ListenerHolder eventNode = getEventNode(eventClass);
-    eventNode.__listeners__.push(listener);
+    eventNode.listeners.push(listener);
   }
 }

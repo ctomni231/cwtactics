@@ -11,13 +11,10 @@ public class TransportContainer implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("slotA")
-        .isString();
+    data.desc("slotA").isString();
 
-    data.desc("slotB")
-        .isString();
+    data.desc("slotB").isString();
 
-    data.desc("slotC")
-        .isString();
+    data.desc("slotC").isString();
   }
 }

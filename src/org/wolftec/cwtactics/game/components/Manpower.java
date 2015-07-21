@@ -8,9 +8,6 @@ public class Manpower implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("amount")
-        .integer()
-        .ge(0)
-        .le(1000000);
+    data.desc("amount").integer().ge(0).le(1000000);
   }
 }

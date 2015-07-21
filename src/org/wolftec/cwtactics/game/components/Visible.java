@@ -8,7 +8,6 @@ public class Visible implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("blocksVision")
-        .bool();
+    data.desc("blocksVision").bool();
   }
 }

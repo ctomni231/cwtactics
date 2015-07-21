@@ -9,11 +9,6 @@ public class MovingCosts implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("costs")
-        .map()
-        .keys((keyData) -> keyData.pattern("(\\@ALL|MT[A-Z]{4})"))
-        .values((valData) -> valData.integer()
-                                    .ge(0)
-                                    .le(10));
+    data.desc("costs").map().keys((keyData) -> keyData.pattern("(\\@ALL|MT[A-Z]{4})")).values((valData) -> valData.integer().ge(0).le(10));
   }
 }

@@ -3,15 +3,16 @@ package org.wolftec.cwtactics.game.systems;
 import org.wolftec.cwtactics.game.core.Log;
 import org.wolftec.cwtactics.game.core.systems.System;
 import org.wolftec.cwtactics.game.events.system.RawInput;
-import org.wolftec.cwtactics.game.events.ui.InvokeAction;
 
 public class UiSystem implements System, RawInput {
 
-  private Log          log;
+  enum GameState {
+    MENU, GAMEROUND
+  }
 
-  private InvokeAction triggerAction;
+  private Log       log;
 
-  private GameState    appState;
+  private GameState appState;
 
   @Override
   public void onRawInput(String device, int type, int screenX, int screenY) {

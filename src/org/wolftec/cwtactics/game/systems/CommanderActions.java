@@ -16,14 +16,14 @@ import org.wolftec.cwtactics.game.events.ui.InvokeAction;
 
 public class CommanderActions implements System, BuildActions, InvokeAction {
 
-  private static final int            POWER_PER_STAR = 1000;
+  private static final int           POWER_PER_STAR = 1000;
 
-  private Components<Turn>            turns;
+  private Components<Turn>           turns;
   private Components<CommanderInUse> playerCommanders;
-  private Components<Commander>       commanders;
+  private Components<Commander>      commanders;
 
-  private AddAction                   actionEvent;
-  private ActivatedPowerLevel          activatePowerEvent;
+  private AddAction                  actionEvent;
+  private ActivatedPowerLevel        activatePowerEvent;
 
   @Override
   public void buildActions(int x, int y, String tile, String property, String unit, BitSet flags) {

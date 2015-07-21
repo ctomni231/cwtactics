@@ -8,9 +8,6 @@ public class Funds implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("amount")
-        .integer()
-        .ge(1)
-        .le(100000);
+    data.desc("amount").integer().ge(1).le(100000);
   }
 }

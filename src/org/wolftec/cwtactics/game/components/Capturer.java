@@ -8,10 +8,6 @@ public class Capturer implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("points")
-        .integer()
-        .def(10)
-        .ge(1)
-        .le(100);
+    data.desc("points").integer().def(10).ge(1).le(100);
   }
 }

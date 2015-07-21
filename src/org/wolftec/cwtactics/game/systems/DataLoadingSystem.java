@@ -72,8 +72,8 @@ public class DataLoadingSystem implements System, SystemStartEvent {
       } else {
         loadCachedFolderByContentList(gameContainer, folder, (Array<String>) value, callback);
         // TODO typecheck
-      }
-    });
+                                  }
+                                });
   }
 
   private void loadRemoteFolderByContentList(Playground game, String folder, Array<String> content, Callback2<String, Object> callback) {

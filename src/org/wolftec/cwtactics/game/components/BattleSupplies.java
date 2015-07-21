@@ -8,9 +8,6 @@ public class BattleSupplies implements Component {
 
   @Override
   public void describe(DataDescriptor data) {
-    data.desc("amount")
-        .integer()
-        .ge(0)
-        .le(10);
+    data.desc("amount").integer().ge(0).le(10);
   }
 }
