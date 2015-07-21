@@ -54,7 +54,8 @@ public class CheckedValue<T> {
   public T getOrElseByProviders(Array<Function0<T>> providers) {
     if (!isPresent()) {
       for (int i = 0; i < providers.$length(); i++) {
-        T value = providers.$get(i).$invoke();
+        T value = providers.$get(i)
+                           .$invoke();
         if (value != null) {
           return value;
         }

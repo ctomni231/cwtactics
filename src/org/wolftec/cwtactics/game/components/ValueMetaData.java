@@ -13,11 +13,8 @@ public class ValueMetaData implements Component {
   @Override
   public void describe(DataDescriptor data) {
     data.desc("lowerBound").integer();
-
     data.desc("upperBound").integer();
-
     data.desc("changeValue").integer().def(1);
-
     data.desc("defaultValue").integer();
   }
 }
