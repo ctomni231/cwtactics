@@ -14,9 +14,11 @@ public class Capturable implements Component {
     data.desc("points")
         .integer()
         .def(20);
+
     data.desc("looseAfterCaptured")
         .bool()
         .def(false);
+
     data.desc("changeIntoAfterCaptured")
         .isString()
         .def("UTNONE")

@@ -43,10 +43,19 @@ public class CheckedValue<T> {
     return !isPresent() ? provider.$invoke() : i_value;
   }
 
+  /**
+   * Throws an error when the checked value isn‘t defined and no provider
+   * returns a value.
+   * 
+   * @param providers
+   * @return value of the {@link CheckedValue} object or a value of the given
+   *         provider functions
+   */
   public T getOrElseByProviders(Array<Function0<T>> providers) {
     if (!isPresent()) {
       for (int i = 0; i < providers.$length(); i++) {
-        T value = providers.$get(i).$invoke();
+        T value = providers.$get(i)
+                           .$invoke();
         if (value != null) {
           return value;
         }
@@ -57,6 +66,12 @@ public class CheckedValue<T> {
     return i_value;
   }
 
+  /**
+   * 
+   * @param error
+   *          that will be raised when the checked value is null or undefined
+   * @return checked value
+   */
   public T getOrThrow(String error) {
     if (!isPresent()) {
       return JsUtil.throwError(error);
@@ -66,6 +81,11 @@ public class CheckedValue<T> {
     }
   }
 
+  /**
+   * 
+   * @param value
+   * @return {@link CheckedValue} object of the given value
+   */
   public static <T> CheckedValue<T> of(T value) {
     return new CheckedValue<T>(value);
   }
