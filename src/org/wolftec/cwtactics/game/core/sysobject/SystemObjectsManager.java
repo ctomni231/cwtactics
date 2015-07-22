@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.core.sysobject;
 
-import org.wolftec.cwtactics.engine.util.ClassUtil;
+import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwtactics.game.core.SystemPropertyHandler;
 import org.wolftec.cwtactics.game.core.systems.System;
 

@@ -4,8 +4,8 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
-import org.wolftec.cwtactics.engine.util.ClassUtil;
-import org.wolftec.cwtactics.engine.util.JsUtil;
+import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwtactics.game.core.CheckedValue;
 import org.wolftec.cwtactics.game.core.SystemPropertyHandler;
 

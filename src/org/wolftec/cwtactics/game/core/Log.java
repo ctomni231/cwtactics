@@ -1,8 +1,8 @@
 package org.wolftec.cwtactics.game.core;
 
 import org.stjs.javascript.Global;
-import org.wolftec.cwtactics.Constants;
-import org.wolftec.cwtactics.engine.util.ClassUtil;
+import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwtactics.game.core.sysobject.SystemObject;
 import org.wolftec.cwtactics.game.core.systems.System;
 

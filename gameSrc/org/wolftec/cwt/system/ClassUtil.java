@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.engine.util;
+package org.wolftec.cwt.system;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
@@ -7,6 +7,7 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
+import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwtactics.game.core.CheckedValue;
 
 public abstract class ClassUtil {

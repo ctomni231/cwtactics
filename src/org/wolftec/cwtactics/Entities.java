@@ -2,7 +2,8 @@ package org.wolftec.cwtactics;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwtactics.engine.util.JsUtil;
+import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.JsUtil;
 
 public abstract class Entities {
 

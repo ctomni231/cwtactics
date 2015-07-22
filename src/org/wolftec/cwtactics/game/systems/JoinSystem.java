@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.game.systems;
 
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback3;
-import org.wolftec.cwtactics.Constants;
+import org.wolftec.cwt.Constants;
 import org.wolftec.cwtactics.game.components.Buyable;
 import org.wolftec.cwtactics.game.components.Living;
 import org.wolftec.cwtactics.game.components.Owner;

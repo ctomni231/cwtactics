@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.engine.util;
+package org.wolftec.cwt.core;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;

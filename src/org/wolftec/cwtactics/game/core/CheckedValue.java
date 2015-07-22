@@ -3,7 +3,7 @@ package org.wolftec.cwtactics.game.core;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.functions.Function0;
-import org.wolftec.cwtactics.engine.util.JsUtil;
+import org.wolftec.cwt.core.JsUtil;
 
 public class CheckedValue<T> {
 

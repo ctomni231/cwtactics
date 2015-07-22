@@ -6,7 +6,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwtactics.engine.util.JsUtil;
+import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwtactics.game.core.syscomponent.Component;
 
 public class DataDescriptor {

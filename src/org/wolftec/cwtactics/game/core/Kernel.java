@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.game.core;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwtactics.engine.util.ClassUtil;
+import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwtactics.game.core.syscomponent.SystemComponentsManager;
 import org.wolftec.cwtactics.game.core.sysevent.SystemEventsManager;
 import org.wolftec.cwtactics.game.core.sysobject.SystemObjectsManager;

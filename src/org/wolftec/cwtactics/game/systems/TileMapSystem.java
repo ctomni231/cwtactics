@@ -2,7 +2,7 @@ package org.wolftec.cwtactics.game.systems;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolftec.cwtactics.Constants;
+import org.wolftec.cwt.Constants;
 import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.game.components.MapData;
 import org.wolftec.cwtactics.game.components.TileMap;

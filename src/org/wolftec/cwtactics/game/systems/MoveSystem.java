@@ -2,10 +2,10 @@ package org.wolftec.cwtactics.game.systems;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwtactics.Constants;
+import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.game.components.Movemap;
 import org.wolftec.cwtactics.Entities;
 import org.wolftec.cwtactics.game.components.MovingAbility;
-import org.wolftec.cwtactics.game.components.Movemap;
 import org.wolftec.cwtactics.game.components.MovingCosts;
 import org.wolftec.cwtactics.game.components.Position;
 import org.wolftec.cwtactics.game.core.Asserter;

@@ -1,6 +1,6 @@
 package org.wolftec.cwtactics.game.systems;
 
-import org.wolftec.cwtactics.Constants;
+import org.wolftec.cwt.Constants;
 import org.wolftec.cwtactics.game.components.BattleAbility;
 import org.wolftec.cwtactics.game.components.Living;
 import org.wolftec.cwtactics.game.core.syscomponent.Components;

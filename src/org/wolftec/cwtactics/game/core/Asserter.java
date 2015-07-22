@@ -5,8 +5,8 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwtactics.Constants;
-import org.wolftec.cwtactics.engine.util.JsUtil;
+import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwtactics.game.core.syscomponent.Component;
 import org.wolftec.cwtactics.game.core.sysobject.SystemObject;
 
