@@ -2,6 +2,10 @@ package org.wolftec.cwt.sheets;
 
 import org.stjs.javascript.Array;
 
+/**
+ * 
+ *
+ */
 public class PropertyType extends SheetType {
   public int           defense;
   public int           capturePoints;
