@@ -2,6 +2,7 @@ package org.wolftec.cwt.model;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.sheets.CommanderType;
 
 /**
  * Player class which holds all parameters of a army owner.
@@ -9,25 +10,25 @@ import org.wolftec.cwt.Constants;
  */
 public class Player {
 
-  public int       id;
+  public int           id;
 
-  public int       team;
-  public String    name;
+  public int           team;
+  public String        name;
 
-  public Commander coA;
-  public int       activePower;
-  public int       power;
-  public int       powerUsed;
+  public CommanderType coA;
+  public int           activePower;
+  public int           power;
+  public int           powerUsed;
 
-  public int       gold;
-  public int       manpower;
+  public int           gold;
+  public int           manpower;
 
-  public int       numberOfUnits;
-  public int       numberOfProperties;
+  public int           numberOfUnits;
+  public int           numberOfProperties;
 
-  public boolean   turnOwnerVisible;
-  public boolean   clientVisible;
-  public boolean   clientControlled;
+  public boolean       turnOwnerVisible;
+  public boolean       clientVisible;
+  public boolean       clientControlled;
 
   public Player() {
     id = -1;
