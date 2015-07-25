@@ -12,6 +12,7 @@ public class UnitType extends SheetType {
   public int           dailyFuelDrainHidden;
   public Array<String> canload;
   public String        movetype;
+  public SuicideType   suicide;
   public int           maxloads;
   public int           captures;
 }

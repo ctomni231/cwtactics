@@ -1,8 +1,3 @@
-"use strict";
-
-var constants = require("../constants");
-var assert = require("../system/functions").assert;
-var model = require("../model");
 
 // Means two objects are the same object (so there is only one object).
 //

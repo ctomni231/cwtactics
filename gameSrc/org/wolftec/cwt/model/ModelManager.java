@@ -2,8 +2,10 @@ package org.wolftec.cwt.model;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSFunctionAdapter;
 import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback3;
+import org.stjs.javascript.functions.Function4;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.GameOptions;
 import org.wolftec.cwt.core.Injectable;
@@ -252,21 +254,21 @@ public class ModelManager implements Injectable {
     return null;
   }
 
-  public void searchProperty(Property property, Callback cb, Object cbThis, Object arg) {
+  public void searchProperty(Property property, Callback3<Integer, Integer, Property> cb) {
     for (int x = 0, xe = mapWidth; x < xe; x++) {
       for (int y = 0, ye = mapHeight; y < ye; y++) {
         if (map.$get(x).$get(y).property == property) {
-          cb.call(cbThis, x, y, property, arg);
+          cb.$invoke(x, y, property);
         }
       }
     }
   }
 
-  public void searchUnit(Unit unit, Callback cb, Object cbThis, Object arg) {
+  public void searchUnit(Unit unit, Callback3<Integer, Integer, Unit> cb) {
     for (int x = 0, xe = mapWidth; x < xe; x++) {
       for (int y = 0, ye = mapHeight; y < ye; y++) {
         if (map.$get(x).$get(y).unit == unit) {
-          cb.call(cbThis, x, y, unit, arg);
+          cb.$invoke(x, y, unit);
         }
       }
     }
@@ -305,7 +307,7 @@ public class ModelManager implements Injectable {
    * @param cb
    * @param arg
    */
-  public void doInRange(int x, int y, int range, Callback cb, Object arg) {
+  public void doInRange(int x, int y, int range, Function4<Integer, Integer, Tile, Integer, Boolean> cb) {
     int lX;
     int hX;
     int lY = y - range;
@@ -323,8 +325,11 @@ public class ModelManager implements Injectable {
 
         // invoke the callback on all tiles in range
         // if a callback returns `false` then the process will be stopped
-        if (cb.$invoke(lX, lY, map.$get(lX).$get(lY), arg, Math.abs(lX - x) + disY) == false) return;
-
+        if (JSFunctionAdapter.call(cb, receiver, p1, p2, p3, p4);
+            
+            cb.$invoke(lX, lY, getTile(lX, lY), Math.abs(lX - x) + disY) == false) {
+          return;
+        }
       }
     }
   }
