@@ -49,21 +49,21 @@ public class PositionData {
    * @param px
    * @param py
    */
-  public void set(int px, int py) {
+  public void set(ModelManager manager, int px, int py) {
     this.clean();
 
     x = px;
     y = py;
-    tile = exports.mapData[px][py];
+    tile = manager.getTile(x, y);
 
-    if (tile.visionTurnOwner > 0 && this.tile.unit) {
+    if (tile.visionTurnOwner > 0 && this.tile.unit != null) {
       this.unit = this.tile.unit;
-      this.unitId = exports.units.indexOf(this.tile.unit);
+      this.unitId = manager.getUnitId(unit);
     }
 
-    if (tile.property) {
+    if (tile.property != null) {
       property = tile.property;
-      propertyId = exports.properties.indexOf(this.tile.property);
+      propertyId = manager.getPropertyId(tile.property);
     }
   }
 }

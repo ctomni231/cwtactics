@@ -154,6 +154,10 @@ public class ModelManager implements Injectable {
     return units.$get(id);
   }
 
+  public int getUnitId(Unit unit) {
+    return units.indexOf(unit);
+  }
+
   public boolean isValidUnitId(int id) {
     return (id >= 0 && id < units.$length());
   }
@@ -164,6 +168,10 @@ public class ModelManager implements Injectable {
     } // TODO
 
     return properties.$get(id);
+  }
+
+  public int getPropertyId(Property obj) {
+    return properties.indexOf(obj);
   }
 
   public boolean isValidPropertyId(int id) {

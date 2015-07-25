@@ -93,5 +93,5 @@ public interface Action {
   /**
    * Invokes the action with a given set of arguments.
    */
-  void invoke();
+  void invoke(int p1, int p2, int p3, int p4, int p5);
 }

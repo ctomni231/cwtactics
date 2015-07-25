@@ -1,18 +1,19 @@
 package org.wolftec.cwt.model;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.sheets.UnitType;
 import org.wolftec.cwt.system.NumberUtil;
 
 public class Unit {
 
-  public int     hp;
-  public int     ammo;
-  public int     fuel;
-  public boolean hidden;
-  public int     loadedIn;
-  public String  type;
-  public boolean canAct;
-  public Player  owner;
+  public int      hp;
+  public int      ammo;
+  public int      fuel;
+  public boolean  hidden;
+  public int      loadedIn;
+  public UnitType type;
+  public boolean  canAct;
+  public Player   owner;
 
   public Unit() {
 
@@ -32,7 +33,7 @@ public class Unit {
    *
    * @param type
    */
-  public void initByType(Object type) {
+  public void initByType(UnitType type) {
     this.type = type;
     this.hp = 99;
     this.ammo = type.ammo;
@@ -80,7 +81,7 @@ public class Unit {
       // unit owners gold depot
       if (diffAsGold) {
         int diff = this.hp - 99;
-        this.owner.gold += parseInt((this.type.cost * diff) / 100, 10);
+        this.owner.gold += NumberUtil.asInt((type.costs * diff) / 100);
       }
 
       this.hp = 99;

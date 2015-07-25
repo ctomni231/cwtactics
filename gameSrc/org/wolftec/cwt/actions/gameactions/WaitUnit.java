@@ -3,8 +3,11 @@ package org.wolftec.cwt.actions.gameactions;
 import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
 import org.wolftec.cwt.actions.ActionType;
+import org.wolftec.cwt.model.ModelManager;
 
 public class WaitUnit implements Action {
+
+  ModelManager model;
 
   @Override
   public String key() {
@@ -35,8 +38,7 @@ public class WaitUnit implements Action {
   }
 
   @Override
-  public void invoke() {
-    // TODO Auto-generated method stub
+  public void invoke(int p1, int p2, int p3, int p4, int p5) {
 
   }
 

@@ -4,6 +4,7 @@ import org.wolftec.cwt.GameOptions;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.sheets.SheetManager;
+import org.wolftec.cwt.sheets.WeatherType;
 import org.wolftec.cwt.system.NumberUtil;
 
 public class WeatherLogic implements Injectable {
@@ -17,17 +18,17 @@ public class WeatherLogic implements Injectable {
    * @return
    */
   public String pickRandomWeatherId() {
+    WeatherType defWather = sheets.weathers.filterFirst((key, weather) -> weather.defaultWeather);
 
     // Search a random weather if the last weather was `null` or the default
     // weather type
-    var newTp;
-    if (model.weather && model.weather == sheets.defaultWeather) {
-      var list = sheets.weathers.types;
-      newTp = selectRandom(list, model.weather.ID);
+    WeatherType newTp;
+    if (model.weather != null && model.weather == defWather) { // TODO
+      newTp = sheets.weathers.random(model.weather);
 
     } else {
       // Take default weather and calculate a random amount of days
-      newTp = sheets.defaultWeather;
+      newTp = defWather;
     }
 
     return newTp.ID;
@@ -37,7 +38,9 @@ public class WeatherLogic implements Injectable {
    * Picks a random duration for a given weather type.
    */
   public int pickRandomWeatherTime(Object type) {
-    return (type == sheets.defaultWeather.ID) ? 1 : (GameOptions.weatherMinDays.value + NumberUtil.asInt(GameOptions.weatherRandomDays.value * Math.random()));
+    WeatherType defWather = sheets.weathers.filterFirst((key, weather) -> weather.defaultWeather);
+
+    return (type == defWather.ID) ? 1 : (GameOptions.weatherMinDays.value + NumberUtil.asInt(GameOptions.weatherRandomDays.value * Math.random()));
   }
 
   /**
