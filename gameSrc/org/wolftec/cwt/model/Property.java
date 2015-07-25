@@ -1,5 +1,7 @@
 package org.wolftec.cwt.model;
 
+import org.wolftec.cwt.sheets.PropertyType;
+
 public class Property {
 
   public static final int CAPTURE_POINTS = 20; // TODO
@@ -7,7 +9,7 @@ public class Property {
 
   public int              points         = 20;
   public Player           owner;
-  public String           type;
+  public PropertyType     type;
 
   public Property() {
     this.points = 20;
