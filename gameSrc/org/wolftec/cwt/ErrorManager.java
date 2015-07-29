@@ -2,7 +2,7 @@ package org.wolftec.cwt;
 
 import org.wolftec.cwt.core.Injectable;
 
-public class ErrorHandler implements Injectable {
+public class ErrorManager implements Injectable {
 
   public Object stateMachine;
   public Object errorState;

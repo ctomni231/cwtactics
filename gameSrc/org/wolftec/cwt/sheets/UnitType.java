@@ -13,6 +13,8 @@ public class UnitType extends SheetType {
   public Array<String> canload;
   public String        movetype;
   public SuicideType   suicide;
+  public AttackType    attack;
   public int           maxloads;
   public int           captures;
+  public SupplierType  supply;
 }

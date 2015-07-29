@@ -2,8 +2,6 @@ package org.wolftec.cwt.model;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.JSFunctionAdapter;
-import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function4;
 import org.wolftec.cwt.Constants;
@@ -325,9 +323,7 @@ public class ModelManager implements Injectable {
 
         // invoke the callback on all tiles in range
         // if a callback returns `false` then the process will be stopped
-        if (JSFunctionAdapter.call(cb, receiver, p1, p2, p3, p4);
-            
-            cb.$invoke(lX, lY, getTile(lX, lY), Math.abs(lX - x) + disY) == false) {
+        if (cb.$invoke(lX, lY, getTile(lX, lY), Math.abs(lX - x) + disY) == false) {
           return;
         }
       }

@@ -13,11 +13,11 @@ public class GameLoopManager implements Injectable {
   private StateManager        sm;
   private Log                 log;
 
-  private boolean             started;
+  private boolean             active;
 
   @Override
   public void onConstruction() {
-    started = false;
+    active = false;
   }
 
   /**
@@ -57,8 +57,8 @@ public class GameLoopManager implements Injectable {
   // Starts the game state machine.
   //
   public void start() {
-    if (started) throw Error("already started");
-    started = true;
+    if (active) throw Error("already started");
+    active = true;
 
     log.info("starting game state machine");
 
@@ -75,7 +75,9 @@ public class GameLoopManager implements Injectable {
       update(delta);
 
       // acquire next frame
-      requestAnimationFrame(gameLoop);
+      if (!active) {
+        requestAnimationFrame(gameLoop);
+      }
     };
 
     // inject loading states
@@ -87,5 +89,9 @@ public class GameLoopManager implements Injectable {
 
     // enter the loop
     requestAnimationFrame(gameLoop);
+  }
+
+  public void stop() {
+    active = false;
   }
 }

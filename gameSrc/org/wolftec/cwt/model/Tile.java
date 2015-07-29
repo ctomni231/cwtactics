@@ -1,8 +1,10 @@
 package org.wolftec.cwt.model;
 
+import org.wolftec.cwt.sheets.TileType;
+
 public class Tile {
 
-  public String   type;
+  public TileType type;
   public Unit     unit;
   public Property property;
 

@@ -40,7 +40,7 @@ public class Player {
   }
 
   public boolean isInactive() {
-    return team != Constants.INACTIVE;
+    return team == Constants.INACTIVE;
   }
 
   public void deactivate() {

@@ -8,7 +8,7 @@ import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.Map;
 
 public class UrlParameterUtil {
-
+  // TODO realize as managed object
   private static Map<String, String> urlParameters;
 
   public static Map<String, String> getUrlParameterMap() {
