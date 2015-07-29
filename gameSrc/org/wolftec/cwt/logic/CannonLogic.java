@@ -14,7 +14,6 @@ import org.wolftec.cwt.system.Nullable;
 public class CannonLogic implements Injectable {
 
   public static final String CANNON_UNIT_ID = "CANU";
-  public static final String LASER_UNIT_ID  = "LASU";
 
   private ModelManager       model;
 

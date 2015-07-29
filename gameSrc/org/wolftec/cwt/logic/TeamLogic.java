@@ -13,6 +13,7 @@ public class TeamLogic implements Injectable {
 
   private ModelManager         model;
   private TransportLogic       transport;
+  private FogLogic             fog;
 
   /**
    * Different available money transfer steps.
@@ -43,10 +44,10 @@ public class TeamLogic implements Injectable {
    * @param player
    * @param menuObject
    */
-  public void getTransferMoneyTargets(Player player, Object menuObject) { // TODO
+  public void getTransferMoneyTargets(Player player, InformationList info) { // TODO
     for (int i = 0, e = MONEY_TRANSFER_STEPS.$length(); i < e; i++) {
       if (player.gold >= MONEY_TRANSFER_STEPS.$get(i)) {
-        menuObject.addEntry(MONEY_TRANSFER_STEPS.$get(i));
+        info.addInfo(MONEY_TRANSFER_STEPS.$get(i) + "", true);
       }
     }
   }
@@ -70,7 +71,7 @@ public class TeamLogic implements Injectable {
     return !transport.hasLoads(unit);
   }
 
-  public void getUnitTransferTargets(Player player, Object menu) { // TODO
+  public void getUnitTransferTargets(Player player, InformationList info) { // TODO
     int origI = player.id;
     for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
       if (i == origI) {
@@ -79,7 +80,7 @@ public class TeamLogic implements Injectable {
 
       player = model.getPlayer(i);
       if (!player.isInactive() && player.numberOfUnits < Constants.MAX_UNITS) {
-        menu.addEntry(i, true);
+        info.addInfo(i + "", true);
       }
     }
   }
@@ -96,8 +97,8 @@ public class TeamLogic implements Injectable {
     // remove vision when unit transfers to an enemy team
     if (origPlayer.team != player.team) {
       model.searchUnit(unit, (cx, cy, cunit) -> {
-        cwt.Fog.removeUnitVision(cx, cy, origPlayer);
-        cwt.Fog.addUnitVision(cx, cy, cunit.owner);
+        fog.removeUnitVision(cx, cy, origPlayer);
+        fog.addUnitVision(cx, cy, cunit.owner);
       });
     }
   }
@@ -106,7 +107,7 @@ public class TeamLogic implements Injectable {
     return (property.type.notTransferable != true);
   }
 
-  public void getPropertyTransferTargets(Player player, Object menu) { // TODO
+  public void getPropertyTransferTargets(Player player, InformationList info) { // TODO
     int origI = player.id;
     for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
       if (i == origI) {
@@ -115,7 +116,7 @@ public class TeamLogic implements Injectable {
 
       player = model.getPlayer(i);
       if (!player.isInactive()) {
-        menu.addEntry(i, true);
+        info.addInfo(i + "", true);
       }
     }
   }
@@ -126,11 +127,10 @@ public class TeamLogic implements Injectable {
 
     // remove vision when unit transfers to an enemy team
     if (origPlayer.team != player.team) {
-      // TODO
       model.searchProperty(property, (cx, cy, cproperty) -> {
-        cwt.Fog.removePropertyVision(cx, cy, origPlayer);
-        cwt.Fog.addPropertyVision(cx, cy, cproperty.owner);
-      }, null, origPlayer);
+        fog.removePropertyVision(cx, cy, origPlayer);
+        fog.addPropertyVision(cx, cy, cproperty.owner);
+      });
     }
   };
 }

@@ -1,5 +1,6 @@
 package org.wolftec.cwt.logic;
 
+import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.model.Tile;
@@ -90,8 +91,9 @@ public class RelationshipLogic {
       return RELATION_SAME_THING;
     }
 
-    Player playerA = (objectA instanceof Player) ? (Player) objectA : objectA.owner;
-    Player playerB = (objectB instanceof Player) ? (Player) objectB : objectB.owner;
+    // TODO type unsafe
+    Player playerA = (objectA instanceof Player) ? (Player) objectA : (Player) JSObjectAdapter.$get(objectA, "owner");
+    Player playerB = (objectB instanceof Player) ? (Player) objectB : (Player) JSObjectAdapter.$get(objectB, "owner");
 
     // one of the owners is inactive or not set (e.g. neutral properties)
     if (playerA == null || playerB == null || playerA.team == -1 || playerB.team == -1) {

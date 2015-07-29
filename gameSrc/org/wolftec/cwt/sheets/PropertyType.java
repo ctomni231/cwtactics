@@ -18,4 +18,5 @@ public class PropertyType extends TileType {
   public int           repairAmount;
   public boolean       looseAfterCaptured;
   public boolean       notTransferable;
+  public String        changeAfterCaptured;
 }

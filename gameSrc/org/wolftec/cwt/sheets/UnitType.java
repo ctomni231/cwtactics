@@ -17,4 +17,5 @@ public class UnitType extends SheetType {
   public int           maxloads;
   public int           captures;
   public SupplierType  supply;
+  public boolean       blocked;
 }

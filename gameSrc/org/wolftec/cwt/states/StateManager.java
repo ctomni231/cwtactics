@@ -1,6 +1,7 @@
 package org.wolftec.cwt.states;
 
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.Injectable;
 
 public class StateManager implements Injectable {
@@ -32,10 +33,8 @@ public class StateManager implements Injectable {
    * @param stateId
    */
   public void changeState(String stateId) {
-    if (exports.activeState) {
-      if (exports.activeState.exit) {
-        exports.activeState.exit();
-      }
+    if (activeState != null) {
+      activeState.exit();
     }
 
     // enter new state

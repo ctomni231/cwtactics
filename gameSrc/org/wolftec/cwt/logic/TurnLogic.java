@@ -66,7 +66,7 @@ public class TurnLogic implements Injectable {
         // TODO: into action
         int round_dayLimit = GameOptions.round_dayLimit.value;
         if (round_dayLimit > 0 && model.day >= round_dayLimit) {
-          cwt.Update.endGameRound();
+          // cwt.Update.endGameRound();
           // TODO
         }
       }

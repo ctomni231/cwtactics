@@ -2,7 +2,6 @@ package org.wolftec.cwt.system;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.util.JSU;
 
 /**
  * An implementation of the concept of a circular buffer. Internally a circular
@@ -10,14 +9,14 @@ import org.wolftec.util.JSU;
  *
  * @param <T>
  */
-public class CircularBuffer<T> implements List<T> {
+public class CircularBuffer<T> {
 
   public static final int DEFAULT_SIZE = 32;
 
-  private int index;
-  private int size;
-  private Array<T> data;
-  private int maxSize;
+  private int             index;
+  private int             size;
+  private Array<T>        data;
+  private int             maxSize;
 
   @SuppressWarnings("unchecked")
   public CircularBuffer(int lMaxSize) {
@@ -31,35 +30,29 @@ public class CircularBuffer<T> implements List<T> {
     clear();
   }
 
-  @Override
   public int getSize() {
     return this.size;
   }
 
-  @Override
   public boolean isEmpty() {
     return this.size == 0;
   }
 
-  @Override
   public boolean isFull() {
     return this.size == this.maxSize;
   }
 
-  @Override
   public T get(int index) {
     if (index < 0 || index >= this.size) JSU.raiseError("illegal index");
 
     return this.data.$get((this.index + index) % this.maxSize);
   }
 
-  @Override
   public void set(int index, T value) {
     if (index < 0 || index >= this.size) JSU.raiseError("illegal index");
     this.data.$set((this.index + index) % this.maxSize, value);
   }
 
-  @Override
   public T popFirst() {
     if (this.size == 0) JSU.raiseError("buffer is empty");
 
@@ -75,7 +68,6 @@ public class CircularBuffer<T> implements List<T> {
     return obj;
   }
 
-  @Override
   public T popLast() {
     if (this.size == 0) JSU.raiseError("buffer is empty");
 
@@ -89,7 +81,6 @@ public class CircularBuffer<T> implements List<T> {
     return obj;
   }
 
-  @Override
   public void push(T el) {
     if (this.size == this.maxSize) JSU.raiseError("buffer is full");
 
@@ -97,7 +88,6 @@ public class CircularBuffer<T> implements List<T> {
     this.size++;
   }
 
-  @Override
   public void pushInFront(T el) {
     if (this.size == this.maxSize) JSU.raiseError("buffer is full");
 
@@ -109,7 +99,6 @@ public class CircularBuffer<T> implements List<T> {
     this.size++;
   }
 
-  @Override
   public void clear() {
     this.index = 0;
     this.size = 0;
@@ -120,7 +109,6 @@ public class CircularBuffer<T> implements List<T> {
     }
   }
 
-  @Override
   public void clearFromIndex(int index) { // TODO this buffer is not good
     for (int i = index; i < getSize(); i++) {
       set(i, null);

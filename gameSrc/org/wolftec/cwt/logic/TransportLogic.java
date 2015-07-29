@@ -5,12 +5,14 @@ import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Unit;
+import org.wolftec.cwt.sheets.MoveType;
 import org.wolftec.cwt.sheets.SheetManager;
 
 public class TransportLogic implements Injectable {
 
   private ModelManager model;
   private SheetManager sheets;
+  private MoveLogic    move;
 
   /**
    * @param {Unit} unit
@@ -84,32 +86,32 @@ public class TransportLogic implements Injectable {
 
   /**
    * Returns true if a transporter unit can unload one of it's loads at a given
-   * position. This functions understands the given pos as possible position for
-   * the transporter.
+   * position. This functions understands the given position as possible
+   * position for the transporter.
    *
    * @param {Unit} transporter
    * @param {Number} x
    * @param {Number} y
    * @return {boolean}
    */
-  public boolean canUnloadSomethingAt (Unit transporter, int x, int y) {
-  var pid = transporter.owner;
-  var unit;
+  public boolean canUnloadSomethingAt(Unit transporter, int x, int y) {
+    int pid = transporter.owner.id;
+    int tid = model.getUnitId(transporter);
+    Unit unit;
 
-  if (constants.DEBUG) assert(exports.isTransportUnit(transporter));
-  for (var i = 0, e = model.units.length; i < e; i++) {
+    for (int i = 0, e = Constants.MAX_UNITS * Constants.MAX_PLAYER; i < e; i++) {
 
-    unit = model.units[i];
-    if (unit.loadedIn === transporter) {
-      var moveType = sheets.getSheet(sheets.TYPE_MOVETYPE, unit.type.movetype);
+      unit = model.getUnit(i);
+      if (unit.loadedIn == tid) {
+        MoveType moveType = sheets.movetypes.get(unit.type.movetype);
 
-      if (move.canTypeMoveTo(moveType, x - 1, y)) return true;
-      if (move.canTypeMoveTo(moveType, x + 1, y)) return true;
-      if (move.canTypeMoveTo(moveType, x, y - 1)) return true;
-      if (move.canTypeMoveTo(moveType, x, y + 1)) return true;
+        if (move.canTypeMoveTo(moveType, x - 1, y)) return true;
+        if (move.canTypeMoveTo(moveType, x + 1, y)) return true;
+        if (move.canTypeMoveTo(moveType, x, y - 1)) return true;
+        if (move.canTypeMoveTo(moveType, x, y + 1)) return true;
+      }
     }
-  }
 
-  return false;
-}
+    return false;
+  }
 }

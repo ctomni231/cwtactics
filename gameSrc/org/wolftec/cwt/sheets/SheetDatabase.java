@@ -3,6 +3,7 @@ package org.wolftec.cwt.sheets;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
+import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
 import org.wolftec.cwt.core.JsUtil;
 
@@ -34,6 +35,12 @@ public class SheetDatabase<T extends SheetType> {
 
     sheets.$put(sheet.ID, sheet);
     types.push(sheet.ID);
+  }
+
+  public void forEach(Callback2<String, T> iterator) {
+    for (int i = 0; i < types.$length(); i++) {
+      iterator.$invoke(types.$get(i), sheets.$get(types.$get(i)));
+    }
   }
 
   public T filterFirst(Function2<String, T, Boolean> filter) {

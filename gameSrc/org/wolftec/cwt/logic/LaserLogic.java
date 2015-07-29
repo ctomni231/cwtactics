@@ -7,13 +7,15 @@ import org.wolftec.cwt.model.Unit;
 
 public class LaserLogic implements Injectable {
 
-  private ModelManager model;
+  public static final String LASER_UNIT_ID = "LASU";
+
+  private ModelManager       model;
 
   // Returns **true** when the given **unit** is the mechanical laser trigger,
   // else **false**.
   //
   public boolean isLaser(Unit unit) {
-    return (unit.type.ID == sheets.LASER_UNIT_INV);
+    return (unit.type.ID == LASER_UNIT_ID);
   }
 
   // Fires a laser at a given position (**x**,**y**).

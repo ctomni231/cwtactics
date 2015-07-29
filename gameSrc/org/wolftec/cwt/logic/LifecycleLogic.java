@@ -5,6 +5,7 @@ import org.wolftec.cwt.GameOptions;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Player;
+import org.wolftec.cwt.model.Property;
 import org.wolftec.cwt.model.Tile;
 import org.wolftec.cwt.model.Unit;
 import org.wolftec.cwt.sheets.SheetManager;
@@ -13,6 +14,7 @@ public class LifecycleLogic implements Injectable {
 
   private ModelManager model;
   private SheetManager sheets;
+  private FogLogic     fog;
 
   //
   // Returns an inactive **unit object** or **null** if every slot in the unit
@@ -82,32 +84,32 @@ public class LifecycleLogic implements Injectable {
    * 
    * @param player
    */
-  public void deactivatePlayer (Player player) {
-  for (var i = 0, e = model.units.length; i < e; i++) {
-    var unit = model.units[i];
-    if (unit.owner === player) {
+  public void deactivatePlayer(Player player) {
+    for (int i = 0, e = Constants.MAX_UNITS * Constants.MAX_PLAYER; i < e; i++) {
+      Unit unit = model.getUnit(i);
+      if (unit.owner == player) {
+        // TODO
+      }
+    }
+
+    // drop properties
+    for (int i = 0, e = Constants.MAX_PROPERTIES; i < e; i++) {
+      Property prop = model.getProperty(i);
+      if (prop.owner == player) {
+        prop.makeNeutral();
+
+        // TODO: change type when the property is a changing type property
+        String changeType = prop.type.changeAfterCaptured;
+      }
+    }
+
+    player.deactivate();
+
+    // when no opposite teams are found then the game has ended
+    if (!model.areEnemyTeamsLeft()) {
       // TODO
     }
   }
-
-  // drop properties
-  for (var i = 0, e = model.properties.length; i < e; i++) {
-    var prop = model.properties[i];
-    if (prop.owner === player) {
-      prop.makeNeutral();
-
-      // TODO: change type when the property is a changing type property
-      var changeType = prop.type.changeAfterCaptured;
-    }
-  }
-
-  player.deactivate();
-
-  // when no opposite teams are found then the game has ended
-  if (!model.areEnemyTeamsLeft()) {
-    // TODO
-  }
-}
 
   //
   //
