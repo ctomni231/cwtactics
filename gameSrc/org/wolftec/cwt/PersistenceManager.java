@@ -46,17 +46,18 @@ public class PersistenceManager implements Injectable {
   public void set(String key, Object value, Callback2<String, Object> callback) {
     LocalForage.localforage.setItem(key, value, (error, res) -> {
 
-      // try a second time when fail at the first time because on ios the
-      // question
-      // for more storage invokes an error => we don't want to need to reload
-      // then
-                                    if (error != null) {
-                                      LocalForage.localforage.setItem(key, value, callback);
+      /*
+       * try a second time when fail at the first time because on ios the
+       * question for more storage invokes an error => we don't want to need to
+       * reload then
+       */
+      if (error != null) {
+        LocalForage.localforage.setItem(key, value, callback);
 
-                                    } else {
-                                      callback.$invoke(error, res);
-                                    }
-                                  });
+      } else {
+        callback.$invoke(error, res);
+      }
+    });
   }
 
   /**

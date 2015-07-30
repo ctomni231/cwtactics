@@ -3,8 +3,11 @@ package org.wolftec.cwt.states;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.system.Log;
 
 public class StateManager implements Injectable {
+
+  private Log                log;
 
   /**
    * Holds all registered game states.
@@ -14,12 +17,20 @@ public class StateManager implements Injectable {
   /**
    * The id of the active game state.
    */
-  public String              activeStateId;
+  private String             activeStateId;
 
   /**
    * The active game state.
    */
-  public State               activeState;
+  private State              activeState;
+
+  public String getActiveStateId() {
+    return activeStateId;
+  }
+
+  public State getActiveState() {
+    return activeState;
+  }
 
   @Override
   public void onConstruction() {
@@ -38,7 +49,7 @@ public class StateManager implements Injectable {
     }
 
     // enter new state
-    this.setState(stateId, true);
+    setState(stateId, true);
   }
 
   /**
@@ -49,15 +60,14 @@ public class StateManager implements Injectable {
    * @param fireEvent
    */
   public void setState(String stateId, boolean fireEvent) {
-    if (constants.DEBUG) {
-      console.log("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
-    }
+    log.info("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
 
-    exports.activeState = states[stateId];
-    exports.activeStateId = stateId;
+    activeState = states.$get(stateId);
+    activeStateId = stateId;
 
+    // TODO prevent that ?
     if (fireEvent != false) {
-      exports.activeState.enter();
+      activeState.enter();
     }
   }
 }

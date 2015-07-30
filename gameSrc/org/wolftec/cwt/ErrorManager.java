@@ -1,11 +1,12 @@
 package org.wolftec.cwt;
 
 import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.states.StateManager;
 
 public class ErrorManager implements Injectable {
 
-  public Object stateMachine;
-  public Object errorState;
+  private StateManager state;
+  public Object        errorState;
 
   /**
    *
@@ -13,9 +14,7 @@ public class ErrorManager implements Injectable {
    * @param where
    */
   public void raiseError(String message, String where) {
-    // TODO
-    // set state
-    // stateMachine.changeState("ERROR_SCREEN");
+    state.changeState("ERROR_SCREEN");
 
     // set meta data
     // errorState.setErrorData(message, where)

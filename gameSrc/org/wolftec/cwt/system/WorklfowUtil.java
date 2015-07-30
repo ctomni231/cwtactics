@@ -8,6 +8,11 @@ import org.wolftec.cwtactics.game.core.CheckedValue;
 
 public abstract class WorklfowUtil {
 
+  private static class WorkflowData {
+    int       completed;
+    Callback0 mainCb;
+  }
+
   /**
    * Calls functions in a sequence. The execution of the functions will be
    * stopped when one of the functions throws an error.
@@ -23,27 +28,28 @@ public abstract class WorklfowUtil {
       JsUtil.throwError("IllegalArgumentException: function list cannot be empty");
     }
 
-    int completed = 0;
+    WorkflowData data = new WorkflowData();
+    data.completed = 0;
 
     /**
      * Evaluates the current (completed acts as pointer) function in the
      * function list
      */
     Callback1<Callback0> iterate = (nextCallback) -> {
-      functionList.$get(completed).$invoke(nextCallback);
+      functionList.$get(data.completed).$invoke(nextCallback);
     };
 
-    Callback0 callbackFunction = () -> {
-      completed++;
-      if (completed == functionList.$length()) {
+    data.mainCb = () -> {
+      data.completed++;
+      if (data.completed == functionList.$length()) {
         if (CheckedValue.of(callback).isPresent()) {
           callback.$invoke();
         }
       } else {
-        iterate.$invoke(callbackFunction);
+        iterate.$invoke(data.mainCb);
       }
     };
 
-    iterate.$invoke(callbackFunction);
+    iterate.$invoke(data.mainCb);
   }
 }
