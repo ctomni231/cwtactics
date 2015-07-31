@@ -12,10 +12,10 @@ import org.wolftec.cwt.sheets.SheetManager;
 
 public class LifecycleLogic implements Injectable {
 
-  private OptionsManager  options;
-  private ModelManager model;
-  private SheetManager sheets;
-  private FogLogic     fog;
+  private OptionsManager options;
+  private ModelManager   model;
+  private SheetManager   sheets;
+  private FogLogic       fog;
 
   //
   // Returns an inactive **unit object** or **null** if every slot in the unit

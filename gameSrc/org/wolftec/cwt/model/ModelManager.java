@@ -15,6 +15,8 @@ public class ModelManager implements Injectable {
 
   private OptionsManager        options;
 
+  private GameOptions        options;
+
   public Player              lastClientPlayer;
 
   /**

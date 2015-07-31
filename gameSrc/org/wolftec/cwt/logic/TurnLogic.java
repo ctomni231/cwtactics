@@ -8,8 +8,8 @@ import org.wolftec.cwt.model.Player;
 
 public class TurnLogic implements Injectable {
 
-  private OptionsManager  options;
-  private ModelManager model;
+  private OptionsManager options;
+  private ModelManager   model;
 
   /**
    * 

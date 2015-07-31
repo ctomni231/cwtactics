@@ -9,9 +9,9 @@ import org.wolftec.cwt.system.NumberUtil;
 
 public class WeatherLogic implements Injectable {
 
-  private OptionsManager  options;
-  private SheetManager sheets;
-  private ModelManager model;
+  private OptionsManager options;
+  private SheetManager   sheets;
+  private ModelManager   model;
 
   /**
    * Picks a random weather id in relation to the current action weather.

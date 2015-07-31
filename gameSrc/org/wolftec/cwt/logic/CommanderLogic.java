@@ -12,6 +12,8 @@ public class CommanderLogic implements Injectable {
 
   private OptionsManager     options;
 
+  private GameOptions     options;
+
   //
   // Power level of normal CO power.
   //

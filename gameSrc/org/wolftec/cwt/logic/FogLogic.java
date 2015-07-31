@@ -11,8 +11,8 @@ import org.wolftec.cwt.system.Nullable;
 
 public class FogLogic implements Injectable {
 
-  private OptionsManager  options;
-  private ModelManager model;
+  private OptionsManager options;
+  private ModelManager   model;
 
   /**
    * Modifies a vision at a given position and player id.

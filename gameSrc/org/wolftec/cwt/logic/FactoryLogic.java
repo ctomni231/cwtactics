@@ -12,7 +12,7 @@ import org.wolftec.cwt.sheets.UnitType;
 
 public class FactoryLogic implements Injectable {
 
-  private OptionsManager    options;
+  private OptionsManager options;
   private LifecycleLogic lifecycle;
   private SheetManager   sheets;
   private ModelManager   model;
