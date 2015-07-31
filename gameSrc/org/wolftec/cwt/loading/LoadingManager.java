@@ -1,4 +1,4 @@
-package org.wolftec.cwt.dl;
+package org.wolftec.cwt.loading;
 
 import org.stjs.javascript.functions.Callback;
 import org.stjs.javascript.functions.Callback0;

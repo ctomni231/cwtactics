@@ -1,4 +1,4 @@
-package org.wolftec.cwtactics.engine.localforage;
+package org.wolftec.cwt.system;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.GlobalScope;

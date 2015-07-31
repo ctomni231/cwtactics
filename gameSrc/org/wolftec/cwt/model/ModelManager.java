@@ -13,6 +13,8 @@ import org.wolftec.cwt.system.Functions;
 
 public class ModelManager implements Injectable {
 
+  private GameOptions        options;
+
   public Player              lastClientPlayer;
 
   /**
@@ -208,7 +210,7 @@ public class ModelManager implements Injectable {
    * @return true when the game is in the peace phase, else false
    */
   public boolean inPeacePhase() {
-    return (day < GameOptions.daysOfPeace.value);
+    return (day < options.daysOfPeace.value);
   }
 
   public boolean isTurnOwnerObject(Ownable obj) {

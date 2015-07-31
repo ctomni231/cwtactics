@@ -1,24 +1,29 @@
-package org.wolftec.cwt.dl;
+package org.wolftec.cwt.loading;
 
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.logic.CannonLogic;
+import org.wolftec.cwt.logic.LaserLogic;
 import org.wolftec.cwt.sheets.MoveType;
 import org.wolftec.cwt.sheets.PropertyType;
 import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.sheets.UnitType;
+import org.wolftec.cwt.system.Log;
 
 public class DefaultTypes implements Injectable, Loader {
 
   private SheetManager sheets;
+  private Log          log;
 
   @Override
   public int priority() {
-    return 9;
+    return 0;
   }
 
   @Override
-  public void onLoad() {
+  public void onLoad(Callback0 done) {
+    log.info("adding internal object types");
 
     MoveType noMove = new MoveType();
     noMove.ID = "NOMV";
@@ -45,7 +50,7 @@ public class DefaultTypes implements Injectable, Loader {
     sheets.units.registerSheet(invisibleUnit);
 
     UnitType laserUnit = new UnitType();
-    laserUnit.ID = CannonLogic.LASER_UNIT_ID;
+    laserUnit.ID = LaserLogic.LASER_UNIT_ID;
     laserUnit.costs = -1;
     laserUnit.range = 0;
     laserUnit.movetype = "NOMV";
@@ -63,5 +68,7 @@ public class DefaultTypes implements Injectable, Loader {
     cannonUnit.fuel = 0;
     cannonUnit.ammo = 0;
     sheets.units.registerSheet(cannonUnit);
+
+    done.$invoke();
   }
 }

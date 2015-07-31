@@ -1,4 +1,4 @@
-package org.wolftec.cwt.dt;
+package org.wolftec.cwt.dataGrabber;
 
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.PersistenceManager;

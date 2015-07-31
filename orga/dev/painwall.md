@@ -1,2 +1,0 @@
-# THE WALL OF PAIN
-

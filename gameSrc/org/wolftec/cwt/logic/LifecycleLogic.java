@@ -12,6 +12,7 @@ import org.wolftec.cwt.sheets.SheetManager;
 
 public class LifecycleLogic implements Injectable {
 
+  private GameOptions  options;
   private ModelManager model;
   private SheetManager sheets;
   private FogLogic     fog;
@@ -72,7 +73,7 @@ public class LifecycleLogic implements Injectable {
     tile.unit = null;
 
     // end game when the player does not have any unit left
-    if (GameOptions.noUnitsLeftLoose.value == 1 && owner.numberOfUnits == 0) {
+    if (options.noUnitsLeftLoose.value == 1 && owner.numberOfUnits == 0) {
       deactivatePlayer(owner);
     }
   }

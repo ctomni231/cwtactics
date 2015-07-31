@@ -5,8 +5,8 @@ import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.system.Features;
-import org.wolftec.cwtactics.engine.localforage.LocalForage;
-import org.wolftec.cwtactics.engine.localforage.LocalForageConfig;
+import org.wolftec.cwt.system.LocalForage;
+import org.wolftec.cwt.system.LocalForageConfig;
 
 public class PersistenceManager implements Injectable {
 
@@ -24,16 +24,21 @@ public class PersistenceManager implements Injectable {
    */
   public static final int DEFAULT_DB_SIZE         = 50;
 
+  private Features        features;
+
   @Override
   public void onConstruction() {
     LocalForageConfig config = new LocalForageConfig();
     config.name = "CWT_DATABASE";
-    config.size = (Features.iosWebSQLFix ? IOS7_WEBSQL_BUGFIX_SIZE : DEFAULT_DB_SIZE) * 1024 * 1024;
+    config.size = (features.iosWebSQLFix ? IOS7_WEBSQL_BUGFIX_SIZE : DEFAULT_DB_SIZE) * 1024 * 1024;
     LocalForage.localforage.config(config);
   }
 
   /**
    * The given callback will be invoked with the value saved by the given key.
+   * 
+   * @param key
+   * @param callback
    */
   public void get(String key, Callback2<String, Object> callback) {
     LocalForage.localforage.getItem(key, callback);
@@ -42,6 +47,10 @@ public class PersistenceManager implements Injectable {
   /**
    * Saves a value with a given key. If the key exists, then the old value will
    * be overwritten. After the save process, the callback will be invoked.
+   * 
+   * @param key
+   * @param value
+   * @param callback
    */
   public void set(String key, Object value, Callback2<String, Object> callback) {
     LocalForage.localforage.setItem(key, value, (error, res) -> {
@@ -63,6 +72,8 @@ public class PersistenceManager implements Injectable {
   /**
    * The given callback will be invoked with a list of all keys that are saved
    * in the storage.
+   * 
+   * @param callback
    */
   public void keys(Callback2<String, Array<String>> callback) {
     LocalForage.localforage.keys(callback);
@@ -71,6 +82,8 @@ public class PersistenceManager implements Injectable {
   /**
    * Clears all values from the storage. The given callback will be invoked
    * afterwards.
+   * 
+   * @param callback
    */
   public void clear(Callback1<String> callback) {
     LocalForage.localforage.clear(callback);
@@ -79,6 +92,9 @@ public class PersistenceManager implements Injectable {
   /**
    * Removes a key including the saved value from the storage. The given
    * callback will be invoked afterwards.
+   * 
+   * @param key
+   * @param callback
    */
   public void remove(String key, Callback1<String> callback) {
     LocalForage.localforage.removeItem(key, callback);

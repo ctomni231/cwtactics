@@ -11,6 +11,7 @@ import org.wolftec.cwt.system.Nullable;
 
 public class FogLogic implements Injectable {
 
+  private GameOptions  options;
   private ModelManager model;
 
   /**
@@ -29,7 +30,7 @@ public class FogLogic implements Injectable {
       return;
     }
 
-    if (GameOptions.fogEnabled.value == 0) {
+    if (options.fogEnabled.value == 0) {
       return;
     }
 
@@ -87,7 +88,7 @@ public class FogLogic implements Injectable {
     int y;
     int xe = model.mapWidth;
     int ye = model.mapHeight;
-    boolean fogEnabled = (GameOptions.fogEnabled.value == 1);
+    boolean fogEnabled = (options.fogEnabled.value == 1);
 
     // 1. reset fog maps
     for (x = 0; x < xe; x++) {

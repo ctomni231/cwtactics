@@ -1,5 +1,6 @@
-package org.wolftec.cwt;
+package org.wolftec.cwt.network;
 
+import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.core.JsUtil;
 

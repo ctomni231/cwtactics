@@ -1,4 +1,4 @@
-package org.wolftec.cwt;
+package org.wolftec.cwt.config;
 
 import org.stjs.javascript.annotation.Native;
 import org.wolftec.cwt.core.JsUtil;
@@ -24,7 +24,7 @@ public class Config {
     this.max = max;
     this.def = defaultValue;
     this.step = CheckedValue.of(step).getOrElse(1);
-    this.resetValue();
+    resetValue();
   }
 
   /**
@@ -35,11 +35,11 @@ public class Config {
   public void setValue(int value) {
 
     // check value bounds
-    if (value < this.min) value = this.min;
-    if (value > this.max) value = this.max;
+    if (value < min) value = min;
+    if (value > max) value = max;
 
     // check steps
-    if ((value - this.min) % this.step != 0) {
+    if ((value - min) % step != 0) {
       JsUtil.throwError("StepCriteriaBrokenException");
     }
 
@@ -50,20 +50,20 @@ public class Config {
    * Decreases the value by one step.
    */
   public void decreaseValue() {
-    this.setValue(this.value - this.step);
+    setValue(value - step);
   }
 
   /**
    * Increases the value by one step.
    */
   public void increaseValue() {
-    this.setValue(this.value + this.step);
+    setValue(value + step);
   }
 
   /**
    * Resets the value of the parameter back to the default value.
    */
   public void resetValue() {
-    this.value = this.def;
+    value = def;
   }
 }

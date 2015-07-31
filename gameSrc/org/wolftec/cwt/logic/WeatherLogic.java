@@ -9,6 +9,7 @@ import org.wolftec.cwt.system.NumberUtil;
 
 public class WeatherLogic implements Injectable {
 
+  private GameOptions  options;
   private SheetManager sheets;
   private ModelManager model;
 
@@ -40,7 +41,7 @@ public class WeatherLogic implements Injectable {
   public int pickRandomWeatherTime(Object type) {
     WeatherType defWather = sheets.weathers.filterFirst((key, weather) -> weather.defaultWeather);
 
-    return (type == defWather.ID) ? 1 : (GameOptions.weatherMinDays.value + NumberUtil.asInt(GameOptions.weatherRandomDays.value * Math.random()));
+    return (type == defWather.ID) ? 1 : (options.weatherMinDays.value + NumberUtil.asInt(options.weatherRandomDays.value * Math.random()));
   }
 
   /**

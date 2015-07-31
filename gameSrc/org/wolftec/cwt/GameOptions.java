@@ -1,30 +1,42 @@
 package org.wolftec.cwt;
 
-public abstract class GameOptions {
+import org.stjs.javascript.Array;
+import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSObjectAdapter;
+import org.wolftec.cwt.config.Config;
+import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.JsUtil;
+
+public abstract class GameOptions implements Injectable {
 
   // game configs
-  public static final Config fogEnabled;
-  public static final Config daysOfPeace;
-  public static final Config weatherMinDays;
-  public static final Config weatherRandomDays;
-  public static final Config round_dayLimit;
-  public static final Config noUnitsLeftLoose;
-  public static final Config autoSupplyAtTurnStart;
-  public static final Config unitLimit;
-  public static final Config captureLimit;
-  public static final Config timer_turnTimeLimit;
-  public static final Config timer_gameTimeLimit;
-  public static final Config co_getStarCost;
-  public static final Config co_getStarCostIncrease;
-  public static final Config co_getStarCostIncreaseSteps;
-  public static final Config co_enabledCoPower;
+  public final Config        fogEnabled;
+  public final Config        daysOfPeace;
+  public final Config        weatherMinDays;
+  public final Config        weatherRandomDays;
+  public final Config        round_dayLimit;
+  public final Config        noUnitsLeftLoose;
+  public final Config        autoSupplyAtTurnStart;
+  public final Config        unitLimit;
+  public final Config        captureLimit;
+  public final Config        timer_turnTimeLimit;
+  public final Config        timer_gameTimeLimit;
+  public final Config        co_getStarCost;
+  public final Config        co_getStarCostIncrease;
+  public final Config        co_getStarCostIncreaseSteps;
+  public final Config        co_enabledCoPower;
 
   // app configs
-  public static final Config fastClickMode;
-  public static final Config forceTouch;
-  public static final Config animatedTiles;
+  public final Config        fastClickMode;
+  public final Config        forceTouch;
+  public final Config        animatedTiles;
 
-  static {
+  /**
+   * List of registered configuration keys.
+   */
+  public final Array<String> gameConfigNames;
+
+  public GameOptions() {
     fogEnabled = new Config(0, 1, 1);
     daysOfPeace = new Config(0, 50, 0);
     weatherMinDays = new Config(1, 5, 1);
@@ -43,44 +55,28 @@ public abstract class GameOptions {
     fastClickMode = new Config(0, 1, 0);
     forceTouch = new Config(0, 1, 0);
     animatedTiles = new Config(0, 1, 1);
+
+    gameConfigNames = JSCollections.$array();
+    // TODO names
   }
 
+  /**
+   *
+   * @param name
+   * @return {exports.Config}
+   */
+  public Config getConfig(String name) {
+    Config cfg = (Config) JSObjectAdapter.$get(this, name);
+    if (!(cfg instanceof Config)) {
+      return JsUtil.throwError("no config parameter");
+    }
+    return cfg;
+  };
 
-/**
- * List of registered configuration keys.
- *
- * @constant
- */
-exports.gameConfigNames = Object.seal(Object.keys(options));
-
-/**
- *
- * @param name
- * @return {Number}
- */
-exports.getValue = function (name) {
-  return exports.getConfig(name).value;
-};
-
-/**
- *
- * @param name
- * @return {exports.Config}
- */
-exports.getConfig = function (name) {
-  if (!options.hasOwnProperty(name)) {
-    throw new Error("there is no configuration object with key '" + name + "'");
+  /**
+   * Resets all registered configuration objects to their default value.
+   */
+  public void resetOptions() {
+    JsUtil.forEachArrayValue(gameConfigNames, (i, cfgName) -> getConfig(cfgName).resetValue());
   }
-
-  return options[name];
-};
-
-/**
- * Resets all registered configuration objects to their default value.
- */
-exports.resetValues = function () {
-  Object.keys(options).forEach(function (cfg) {
-    options[cfg].resetValue();
-  });
-};
 }
