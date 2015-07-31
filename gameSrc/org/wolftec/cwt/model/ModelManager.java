@@ -5,13 +5,15 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function4;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.GameOptions;
+import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.sheets.WeatherType;
 import org.wolftec.cwt.system.Functions;
 
 public class ModelManager implements Injectable {
+
+  private OptionsManager        options;
 
   public Player              lastClientPlayer;
 
@@ -208,7 +210,7 @@ public class ModelManager implements Injectable {
    * @return true when the game is in the peace phase, else false
    */
   public boolean inPeacePhase() {
-    return (day < GameOptions.daysOfPeace.value);
+    return (day < options.daysOfPeace.value);
   }
 
   public boolean isTurnOwnerObject(Ownable obj) {

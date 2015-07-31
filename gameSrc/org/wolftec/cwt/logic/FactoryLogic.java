@@ -3,7 +3,7 @@ package org.wolftec.cwt.logic;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.GameOptions;
+import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Property;
@@ -12,6 +12,7 @@ import org.wolftec.cwt.sheets.UnitType;
 
 public class FactoryLogic implements Injectable {
 
+  private OptionsManager    options;
   private LifecycleLogic lifecycle;
   private SheetManager   sheets;
   private ModelManager   model;
@@ -36,7 +37,7 @@ public class FactoryLogic implements Injectable {
 
     // check unit limit and left slots
     int count = property.owner.numberOfUnits;
-    int uLimit = JSGlobal.$or(GameOptions.unitLimit.value, 9999999);
+    int uLimit = JSGlobal.$or(options.unitLimit.value, 9999999);
     if (count >= uLimit || count >= Constants.MAX_UNITS) {
       return false;
     }

@@ -1,7 +1,7 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.GameOptions;
+import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.model.GameMode;
 import org.wolftec.cwt.model.ModelManager;
@@ -9,6 +9,8 @@ import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.sheets.CommanderType;
 
 public class CommanderLogic implements Injectable {
+
+  private OptionsManager     options;
 
   //
   // Power level of normal CO power.
@@ -39,7 +41,7 @@ public class CommanderLogic implements Injectable {
   // situation.
   //
   public boolean canActivatePower(Player player, int powerLevel) {
-    if (GameOptions.co_enabledCoPower.value == 0) {
+    if (options.co_enabledCoPower.value == 0) {
       return false;
     }
 
@@ -89,15 +91,15 @@ public class CommanderLogic implements Injectable {
   // @param {cwt.Player} player
   //
   public int getStarCost(Player player) {
-    int cost = GameOptions.co_getStarCost.value;
+    int cost = options.co_getStarCost.value;
     int used = player.powerUsed;
 
     // if usage counter is greater than max usage counter then use
     // only the maximum increase counter for calculation
-    int maxUsed = GameOptions.co_getStarCostIncreaseSteps.value;
+    int maxUsed = options.co_getStarCostIncreaseSteps.value;
     if (used > maxUsed) used = maxUsed;
 
-    cost += used * GameOptions.co_getStarCostIncrease.value;
+    cost += used * options.co_getStarCostIncrease.value;
 
     return cost;
   }

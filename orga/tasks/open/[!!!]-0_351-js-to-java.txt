@@ -1,0 +1,7 @@
+[ ] Core
+[x] Model
+[x] Logic
+[ ] Rendering
+[ ] Actions
+[ ] States
+ 

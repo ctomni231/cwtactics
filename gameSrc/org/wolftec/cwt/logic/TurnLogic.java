@@ -1,13 +1,14 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.GameOptions;
+import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Player;
 
 public class TurnLogic implements Injectable {
 
+  private OptionsManager  options;
   private ModelManager model;
 
   /**
@@ -64,7 +65,7 @@ public class TurnLogic implements Injectable {
         model.weatherLeftDays--;
 
         // TODO: into action
-        int round_dayLimit = GameOptions.round_dayLimit.value;
+        int round_dayLimit = options.round_dayLimit.value;
         if (round_dayLimit > 0 && model.day >= round_dayLimit) {
           // cwt.Update.endGameRound();
           // TODO

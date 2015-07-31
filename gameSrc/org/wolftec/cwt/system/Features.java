@@ -1,112 +1,79 @@
 package org.wolftec.cwt.system;
 
 import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.annotation.STJSBridge;
+import org.wolftec.cwt.core.Injectable;
 
-public class Features {
-  
-/**
-* Controls the availability of audio effects.
-*/
-  public static final boolean audioSFX;
+public class Features implements Injectable {
 
-/**
-* Controls the availability of music.
-*/
-public static final boolean audioMusic;
+  /**
+   * Controls the availability of audio effects.
+   */
+  public boolean audioSFX;
 
-/**
-* Controls the availability of game-pad input.
-*/
-public static final boolean gamePad;
+  /**
+   * Controls the availability of music.
+   */
+  public boolean audioMusic;
 
-/**
-* Controls the availability of computer keyboard input.
-*/
-public static final boolean keyboard;
+  /**
+   * Controls the availability of game-pad input.
+   */
+  public boolean gamePad;
 
-/**
-* Controls the availability of mouse input.
-*/
-public static final boolean mouse;
+  /**
+   * Controls the availability of computer keyboard input.
+   */
+  public boolean keyboard;
 
-/**
-* Controls the availability of touch input.
-*/
-public static final boolean touch;
+  /**
+   * Controls the availability of mouse input.
+   */
+  public boolean mouse;
 
-/**
-*  Signals a official supported environment. If false then it doesn't mean the environment cannot run the game,
-*  but the status is not official tested. As result the game may runs fine; laggy or is completely broken.
-*/
-public static final boolean supported;
+  /**
+   * Controls the availability of touch input.
+   */
+  public boolean touch;
 
-/**
-* Controls the usage of the workaround for the iOS7 WebSQL DB bug.
-*/
-public static final boolean iosWebSQLFix;
+  /**
+   * Signals a official supported environment. If false then it doesn't mean the
+   * environment cannot run the game, but the status is not official tested. As
+   * result the game may runs fine; laggy or is completely broken.
+   */
+  public boolean supported;
 
-static {
+  /**
+   * Controls the usage of the workaround for the iOS7 WebSQL DB bug.
+   */
+  public boolean iosWebSQLFix;
 
-//browser type & version
-String ua     = JSObjectAdapter.$js("window.navigator.userAgent.toLowerCase()");
-boolean mobile = JSObjectAdapter.$js("/mobile|android|kindle|silk|midp|(windows nt 6\\.2.+arm|touch)/.test(ua)");
+  @STJSBridge
+  static class Browser {
+    String  name;
+    int     version;
+    boolean mobile;
+    boolean chrome;
+    boolean android;
+    boolean ie;
+    boolean ff;
+    boolean ios;
+    boolean safari;
+  }
 
-//http://www.zytrax.com/tech/web/browser_ids.htm
-//http://www.zytrax.com/tech/web/mobile_ids.dom
-String[]  data  =  /(chrome|firefox)[ \/]([\w.]+)/.exec(ua) ||                  // Chrome & Firefox
-     /(iphone|ipad|ipod)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||  // Mobile IOS
-     /(android)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||           // Mobile Webkit
-     /(webkit|opera)(?:.*version)?[ \/]([\w.]+)/.exec(ua) ||      // Safari & Opera
-     /(msie) ([\w.]+)/.exec(ua) || [];                            // Internet Explorer
+  public Features() {
+    Browser browser = JSObjectAdapter.$js("Browser");
 
-String browser = data[1],
-String version = parseFloat(data[2]);
+    supported = browser.chrome || browser.safari || browser.ios || browser.android;
 
-switch (browser) {
- case 'msie':
-   browser = 'ie';
-   version = doc.documentMode || version;
-   break;
+    audioSFX = browser.chrome || browser.safari || (browser.ios && browser.version >= 6);
+    audioMusic = browser.chrome || browser.safari;
 
- case 'firefox':
-   browser = 'ff';
-   break;
+    gamePad = browser.chrome && browser.version >= 40;
+    keyboard = !browser.mobile;
+    mouse = !browser.mobile;
+    touch = browser.mobile;
 
- case 'ipod':
- case 'ipad':
- case 'iphone':
-   browser = 'ios';
-   break;
-
- case 'webkit':
-   browser = 'safari';
-   break;
-}
-
-//Browser vendor and version
-var Browser = {
- name   : browser,
- mobile : mobile,
- version: version
-};
-
-//Shortcut
-Browser[browser] = true;
-
-audioSFX = ((Browser.chrome || Browser.safari || (Browser.ios && Browser.version >= 6)) === true);
-
-audioMusic = ((Browser.chrome || Browser.safari) === true);
-
-gamePad = ((Browser.chrome && !!navigator.webkitGetGamepads) === true);
-
-exports.keyboard = (Browser.mobile !== true);
-
-mouse = (Browser.mobile !== true);
-
-touch = (Browser.mobile === true);
-
-supported = ((Browser.chrome || Browser.safari || Browser.ios || Browser.android) === true);
- iosWebSQLFix = ((Browser.ios && Browser.version == 7) == true);
-}
-
+    iosWebSQLFix = browser.ios && browser.version == 7;
+  }
 }
