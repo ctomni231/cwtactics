@@ -10,10 +10,6 @@ import org.wolftec.cwt.sheets.CommanderType;
 
 public class CommanderLogic implements Injectable {
 
-  private OptionsManager     options;
-
-  private GameOptions     options;
-
   //
   // Power level of normal CO power.
   //
@@ -24,6 +20,7 @@ public class CommanderLogic implements Injectable {
   //
   public final static int POWER_LEVEL_SCOP = 1;
 
+  private OptionsManager  options;
   private ModelManager    model;
 
   //

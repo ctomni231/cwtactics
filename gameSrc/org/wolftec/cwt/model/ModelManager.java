@@ -13,9 +13,7 @@ import org.wolftec.cwt.system.Functions;
 
 public class ModelManager implements Injectable {
 
-  private OptionsManager        options;
-
-  private GameOptions        options;
+  private OptionsManager     options;
 
   public Player              lastClientPlayer;
 
