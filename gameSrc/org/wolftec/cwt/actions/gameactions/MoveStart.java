@@ -1,10 +1,13 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
+import org.wolftec.cwt.actions.UserInteractionData;
 
 public class MoveStart implements Action {
+
+  private MoveActionData moveDto;
 
   @Override
   public String key() {
@@ -17,27 +20,17 @@ public class MoveStart implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
-
+  public void fillData(UserInteractionData positionData, ActionData actionData) {
+    actionData.p1 = positionData.source.unitId;
+    actionData.p2 = positionData.source.x;
+    actionData.p3 = positionData.source.y;
   }
 
   @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
+  public void invoke(ActionData data) {
+    moveDto.movePath.clear();
+    moveDto.unitId = data.p1;
+    moveDto.x = data.p2;
+    moveDto.y = data.p3;
   }
-
-  @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void invoke() {
-    // TODO Auto-generated method stub
-
-  }
-
 }

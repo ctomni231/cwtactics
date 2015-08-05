@@ -1,10 +1,17 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
+import org.wolftec.cwt.actions.UserInteractionData;
+import org.wolftec.cwt.logic.FogLogic;
+import org.wolftec.cwt.logic.WeatherLogic;
+import org.wolftec.cwt.system.StringNumberConverter;
 
 public class ChangeWeather implements Action {
+
+  private FogLogic     fog;
+  private WeatherLogic weather;
 
   @Override
   public String key() {
@@ -17,27 +24,15 @@ public class ChangeWeather implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
-
+  public void fillData(UserInteractionData positionData, ActionData actionData) {
+    actionData.p1 = StringNumberConverter.toInt(weather.pickRandomWeatherId());
+    actionData.p2 = weather.pickRandomWeatherTime(null); // TODO
   }
 
   @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void invoke() {
-    // TODO Auto-generated method stub
-
+  public void invoke(ActionData data) {
+    weather.changeWeather(StringNumberConverter.toId(data.p1), data.p2);
+    fog.fullRecalculation();
   }
 
 }

@@ -1,10 +1,17 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
+import org.wolftec.cwt.actions.PositionCheck;
+import org.wolftec.cwt.actions.UserInteractionData;
+import org.wolftec.cwt.logic.CaptureLogic;
+import org.wolftec.cwt.model.ModelManager;
 
 public class CaptureProperty implements Action {
+
+  private CaptureLogic capture;
+  private ModelManager model;
 
   @Override
   public String key() {
@@ -17,27 +24,24 @@ public class CaptureProperty implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
-
+  public boolean checkTarget(PositionCheck unitFlag, PositionCheck propertyFlag) {
+    return unitFlag == PositionCheck.EMPTY && (propertyFlag == PositionCheck.ENEMY || propertyFlag == PositionCheck.EMPTY);
   }
 
   @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean condition(UserInteractionData data) {
+    return capture.canCapture(data.source.unit) && capture.canBeCaptured(data.target.property);
   }
 
   @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
+  public void fillData(UserInteractionData positionData, ActionData actionData) {
+    actionData.p1 = positionData.target.propertyId;
+    actionData.p2 = positionData.source.unitId;
   }
 
   @Override
-  public void invoke() {
-    // TODO Auto-generated method stub
-
+  public void invoke(ActionData data) {
+    capture.captureProperty(model.getProperty(data.p1), model.getUnit(data.p2));
   }
 
 }

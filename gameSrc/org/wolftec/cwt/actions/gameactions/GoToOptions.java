@@ -1,10 +1,13 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
+import org.wolftec.cwt.states.StateManager;
 
 public class GoToOptions implements Action {
+
+  private StateManager state;
 
   @Override
   public String key() {
@@ -17,27 +20,9 @@ public class GoToOptions implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void invoke() {
-    // TODO Auto-generated method stub
-
+  public void invoke(ActionData data) {
+    stateData.fromIngameToOptions = true;
+    state.changeState("MENU_OPTIONS");
   }
 
 }

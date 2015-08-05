@@ -1,10 +1,17 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
+import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
+import org.wolftec.cwt.logic.MoveLogic;
+import org.wolftec.cwt.model.ModelManager;
 
 public class MoveEnd implements Action {
+
+  private MoveLogic      move;
+  private ModelManager   model;
+  private MoveActionData moveDto;
 
   @Override
   public String key() {
@@ -17,27 +24,16 @@ public class MoveEnd implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
+  public void invoke(ActionData data) {
+    move.move(model.getUnit(moveDto.unitId), moveDto.x, moveDto.y, moveDto.movePath, false, preventOldPosUpd, preventNewPosUpd);
 
-  }
+    statemachine.changeState("ANIMATION_MOVE");
+    moveState.prepareMove(uid, x, y, moveBuffer);
 
-  @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void invoke() {
-    // TODO Auto-generated method stub
-
+    // reset variables
+    moveDto.unitId = Constants.INACTIVE;
+    moveDto.x = Constants.INACTIVE;
+    moveDto.y = Constants.INACTIVE;
   }
 
 }

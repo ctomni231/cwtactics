@@ -1,8 +1,9 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
+import org.wolftec.cwt.actions.UserInteractionData;
 import org.wolftec.cwt.model.ModelManager;
 
 public class WaitUnit implements Action {
@@ -20,26 +21,19 @@ public class WaitUnit implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
-
+  public boolean condition(UserInteractionData data) {
+    return data.source.unit.canAct;
   }
 
   @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
+  public void fillData(UserInteractionData positionData, ActionData actionData) {
+    actionData.p1 = positionData.source.unitId;
   }
 
   @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void invoke(int p1, int p2, int p3, int p4, int p5) {
-
+  public void invoke(ActionData data) {
+    model.getUnit(data.p1).setActable(false);
+    // TODO renderer.renderUnitsOnScreen();
   }
 
 }

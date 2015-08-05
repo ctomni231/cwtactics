@@ -61,7 +61,8 @@ public class Features implements Injectable {
     boolean safari;
   }
 
-  public Features() {
+  @Override
+  public void onConstruction() {
     Browser browser = JSObjectAdapter.$js("Browser");
 
     supported = browser.chrome || browser.safari || browser.ios || browser.android;
