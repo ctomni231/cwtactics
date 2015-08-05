@@ -1,10 +1,16 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
+import org.wolftec.cwt.actions.UserInteractionData;
+import org.wolftec.cwt.logic.TeamLogic;
+import org.wolftec.cwt.model.ModelManager;
 
 public class TransferProperty implements Action {
+
+  private TeamLogic    team;
+  private ModelManager model;
 
   @Override
   public String key() {
@@ -17,27 +23,29 @@ public class TransferProperty implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
-
+  public boolean condition(UserInteractionData data) {
+    return team.canTransferProperty(data.source.property);
   }
 
   @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean hasSubMenu() {
+    return true;
   }
 
   @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
+  public void prepareMenu(UserInteractionData data) {
+    team.getPropertyTransferTargets(data.source.property.owner, data);
   }
 
   @Override
-  public void invoke() {
-    // TODO Auto-generated method stub
+  public void fillData(UserInteractionData interactionData, ActionData actionData) {
+    actionData.p1 = interactionData.source.propertyId;
+    actionData.p2 = interactionData.actionDataCode;
+  }
 
+  @Override
+  public void invoke(ActionData data) {
+    team.transferPropertyToPlayer(model.getProperty(data.p1), model.getPlayer(data.p2));
   }
 
 }

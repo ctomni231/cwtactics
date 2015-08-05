@@ -1,13 +1,12 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
 
 public class UnloadUnit implements Action {
 
-  @Override
-  public String key() {
+  private @Override public String key() {
     return "unloadUnit";
   }
 
@@ -17,25 +16,7 @@ public class UnloadUnit implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void invoke() {
+  public void invoke(ActionData data) {
     // TODO Auto-generated method stub
 
   }

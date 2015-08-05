@@ -1,10 +1,19 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
+import org.wolftec.cwt.actions.UserInteractionData;
+import org.wolftec.cwt.logic.FactoryLogic;
+import org.wolftec.cwt.logic.FogLogic;
+import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.system.StringNumberConverter;
 
 public class BuildUnit implements Action {
+
+  private ModelManager model;
+  private FactoryLogic factory;
+  private FogLogic     fog;
 
   @Override
   public String key() {
@@ -17,27 +26,31 @@ public class BuildUnit implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
-
+  public boolean condition(UserInteractionData data) {
+    return factory.isFactory(data.source.property) && factory.canProduce(data.source.property);
   }
 
   @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean hasSubMenu() {
+    return true;
   }
 
   @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
+  public void prepareMenu(UserInteractionData data) {
+    factory.generateBuildMenu(data.source.property, data, true);
   }
 
   @Override
-  public void invoke() {
-    // TODO Auto-generated method stub
+  public void fillData(UserInteractionData interactionData, ActionData actionData) {
+    actionData.p1 = interactionData.source.propertyId;
+    actionData.p2 = interactionData.actionDataCode;
+  }
 
+  @Override
+  public void invoke(ActionData data) {
+    factory.buildUnit(model.getProperty(data.p1), StringNumberConverter.toId(data.p2));
+    renderer.renderUnitsOnScreen();
+    fog.fullRecalculation();
   }
 
 }

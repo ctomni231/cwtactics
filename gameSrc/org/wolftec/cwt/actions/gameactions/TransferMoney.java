@@ -1,10 +1,16 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
+import org.wolftec.cwt.actions.UserInteractionData;
+import org.wolftec.cwt.logic.TeamLogic;
+import org.wolftec.cwt.model.ModelManager;
 
 public class TransferMoney implements Action {
+
+  private TeamLogic    team;
+  private ModelManager model;
 
   @Override
   public String key() {
@@ -17,27 +23,29 @@ public class TransferMoney implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
-
+  public boolean hasSubMenu() {
+    return true;
   }
 
   @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
+  public boolean condition(UserInteractionData data) {
+    return team.canTransferMoney(data.source.property.owner, data.source.x, data.source.y);
   }
 
   @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
+  public void prepareMenu(UserInteractionData data) {
+    team.getTransferMoneyTargets(data.source.property.owner, data);
   }
 
   @Override
-  public void invoke() {
-    // TODO Auto-generated method stub
-
+  public void fillData(UserInteractionData interactionData, ActionData actionData) {
+    actionData.p1 = interactionData.actor.id;
+    actionData.p2 = interactionData.source.property.owner.id;
+    actionData.p3 = interactionData.actionDataCode;
   }
 
+  @Override
+  public void invoke(ActionData data) {
+    team.transferMoney(model.getPlayer(data.p1), model.getPlayer(data.p2), data.p3);
+  }
 }

@@ -40,13 +40,6 @@ var invokeActionByData = function () {
       p2 = exports.action.selectedSubEntry;
       break;
 
-    case "explode":
-      p1 = exports.source.x;
-      p2 = exports.source.y;
-      p3 = explode.getSuicideRange(exports.source.unit);
-      p4 = explode.getExplosionDamage(exports.source.unit);
-      break;
-
     case "unloadUnit":
       p1 = exports.source.unitId;
       p2 = exports.action.selectedSubEntry;
@@ -58,11 +51,6 @@ var invokeActionByData = function () {
     case "loadUnit":
       p1 = exports.target.unitId;
       p2 = exports.source.unitId;
-      break;
-
-    case "transferUnit":
-      p1 = exports.source.unitId;
-      p2 = exports.selectedSubEntry;
       break;
 
     case "transferProperty":

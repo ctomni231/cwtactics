@@ -1,7 +1,7 @@
 package org.wolftec.cwt.actions.gameactions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
+import org.wolftec.cwt.actions.ActionData;
 import org.wolftec.cwt.actions.ActionType;
 
 public class LoadUnit implements Action {
@@ -17,27 +17,8 @@ public class LoadUnit implements Action {
   }
 
   @Override
-  public void action() {
+  public void invoke(ActionData data) {
     // TODO Auto-generated method stub
-
+xycyxcs
   }
-
-  @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void invoke() {
-    // TODO Auto-generated method stub
-
-  }
-
 }

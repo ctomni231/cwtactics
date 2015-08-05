@@ -23,23 +23,27 @@ public interface Action {
     return true;
   }
 
+  default boolean hasSubMenu() {
+    return false;
+  }
+
   /**
    * Prepares the menu for a given state data.
    */
-  default void prepareMenu() {
+  default void prepareMenu(UserInteractionData data) {
   }
 
   /**
    * Checks the correctness of a given target position.
    */
-  default boolean isTargetValid() {
+  default boolean isTargetValid(UserInteractionData data) {
     return false;
   }
 
   /**
    * Adds all possible targets into the state selection.
    */
-  default void prepareTargets() {
+  default void prepareTargets(UserInteractionData data) {
   }
 
   /**
@@ -52,7 +56,7 @@ public interface Action {
   /**
    * Prepares the selection.
    */
-  default void prepareSelection() {
+  default void prepareSelection(UserInteractionData data) {
 
   }
 
@@ -105,7 +109,7 @@ public interface Action {
     return unitFlag == PositionCheck.EMPTY;
   }
 
-  default void fillData(UserInteractionData positionData, ActionData actionData) {
+  default void fillData(UserInteractionData interactionData, ActionData actionData) {
 
   }
 
