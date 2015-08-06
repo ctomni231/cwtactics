@@ -1,4 +1,4 @@
-package org.wolftec.cwt.actions.gameactions;
+package org.wolftec.cwt.states.actions;
 
 import org.wolftec.cwt.actions.Action;
 import org.wolftec.cwt.actions.ActionData;

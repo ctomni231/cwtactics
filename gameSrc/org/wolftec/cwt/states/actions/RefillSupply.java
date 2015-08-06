@@ -1,19 +1,19 @@
-package org.wolftec.cwt.actions.gameactions;
+package org.wolftec.cwt.states.actions;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
 import org.wolftec.cwt.actions.ActionType;
 
-public class UnhideUnit implements Action {
+public class RefillSupply implements Action {
 
   @Override
   public String key() {
-    return "unitUnhide";
+    return "refillSupply";
   }
 
   @Override
   public ActionType type() {
-    return ActionType.UNIT_ACTION;
+    return ActionType.ENGINE_ACTION;
   }
 
   @Override

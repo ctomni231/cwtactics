@@ -50,7 +50,8 @@ public interface Action {
    * Marks the kind of the action. Multistep actions can flush more than one
    * command into the command stack.
    */
-  default void multiStepAction() {
+  default boolean multiStepAction() {
+    return false;
   }
 
   /**

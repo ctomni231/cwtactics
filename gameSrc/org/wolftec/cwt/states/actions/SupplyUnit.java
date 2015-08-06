@@ -1,19 +1,19 @@
-package org.wolftec.cwt.actions.gameactions;
+package org.wolftec.cwt.states.actions;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
 import org.wolftec.cwt.actions.ActionType;
 
-public class HealUnit implements Action {
+public class SupplyUnit implements Action {
 
   @Override
   public String key() {
-    return "healUnit";
+    return "supplyUnit";
   }
 
   @Override
   public ActionType type() {
-    return ActionType.ENGINE_ACTION;
+    return ActionType.UNIT_ACTION;
   }
 
   @Override

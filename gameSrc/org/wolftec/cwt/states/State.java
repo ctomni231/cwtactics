@@ -3,25 +3,25 @@ package org.wolftec.cwt.states;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.input.InputData;
 
-public class State implements Injectable {
+public interface State extends Injectable {
 
-  public void init() {
-
-  }
-
-  public void exit() {
+  default void init() {
 
   }
 
-  public void enter() {
+  default void exit() {
 
   }
 
-  public void update(int delta, InputData lastInput) {
+  default void enter() {
 
   }
 
-  public void render(int delta) {
+  default Class<? extends State> update(int delta, InputData lastInput) {
+    return null;
+  }
+
+  default void render(int delta) {
 
   }
 }

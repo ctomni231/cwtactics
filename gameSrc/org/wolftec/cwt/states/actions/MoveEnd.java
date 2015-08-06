@@ -1,4 +1,4 @@
-package org.wolftec.cwt.actions.gameactions;
+package org.wolftec.cwt.states.actions;
 
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.actions.Action;
@@ -25,7 +25,7 @@ public class MoveEnd implements Action {
 
   @Override
   public void invoke(ActionData data) {
-    move.move(model.getUnit(moveDto.unitId), moveDto.x, moveDto.y, moveDto.movePath, false, preventOldPosUpd, preventNewPosUpd);
+    move.move(model.getUnit(moveDto.unitId), moveDto.x, moveDto.y, moveDto.movePath, false, data.p1 == 1, data.p2 == 1);
 
     statemachine.changeState("ANIMATION_MOVE");
     moveState.prepareMove(uid, x, y, moveBuffer);

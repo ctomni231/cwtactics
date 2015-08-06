@@ -1,14 +1,14 @@
-package org.wolftec.cwt.actions.gameactions;
+package org.wolftec.cwt.states.actions;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwt.actions.Action;
 import org.wolftec.cwt.actions.ActionType;
 
-public class HideUnit implements Action {
+public class AttackUnit implements Action {
 
   @Override
   public String key() {
-    return "unitHide";
+    return "attack";
   }
 
   @Override

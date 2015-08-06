@@ -175,7 +175,7 @@ public class ActionManager implements Injectable {
     log.info("evaluating action data object " + data);
 
     Action actionObj = actions.$get(data.id);
-    actionObj.invoke(data.p1, data.p2, data.p3, data.p4, data.p5);
+    actionObj.invoke(data);
 
     // pool used object
     data.reset();
