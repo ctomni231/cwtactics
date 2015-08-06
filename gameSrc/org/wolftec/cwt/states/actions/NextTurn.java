@@ -5,6 +5,7 @@ import org.wolftec.cwt.network.NetworkManager;
 import org.wolftec.cwt.states.Action;
 import org.wolftec.cwt.states.ActionData;
 import org.wolftec.cwt.states.ActionType;
+
 import org.wolftec.cwt.states.StateManager;
 
 public class NextTurn implements Action {
