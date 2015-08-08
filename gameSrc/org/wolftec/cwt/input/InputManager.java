@@ -70,7 +70,24 @@ public class InputManager implements Injectable {
   }
 
   public void setButtonMapping(String button, String action) {
-    buttonMapping.$put(Nullable.getOrThrow(button, "IllegalButtonKey"), Nullable.getOrThrow(action, "IllegalActionKey"));
+    Nullable.getOrThrow(button, "IllegalButtonKey");
+    Nullable.getOrThrow(action, "IllegalActionKey");
+
+    boolean pressed = Nullable.getOrElse(buttonState.$get(button), false);
+
+    /*
+     * deactivate the button here to decrease the action counter of the previous
+     * mapped action
+     */
+    if (pressed) {
+      changeStatus(button, false);
+    }
+
+    buttonMapping.$put(button, action);
+
+    if (pressed) {
+      changeStatus(button, true);
+    }
   }
 
   public void releaseButtonMapping(String button) {
