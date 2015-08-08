@@ -1,7 +1,7 @@
 package org.wolftec.cwt.states.actions;
 
-import org.stjs.javascript.Array;
 import org.wolftec.cwt.states.Action;
+import org.wolftec.cwt.states.ActionData;
 import org.wolftec.cwt.states.ActionType;
 
 public class HealUnit implements Action {
@@ -17,25 +17,7 @@ public class HealUnit implements Action {
   }
 
   @Override
-  public void action() {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public boolean condition() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public Array<Integer> relationToProp() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public void invoke() {
+  public void invoke(ActionData data) {
     // TODO Auto-generated method stub
 
   }

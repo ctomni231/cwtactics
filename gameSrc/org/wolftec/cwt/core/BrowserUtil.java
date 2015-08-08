@@ -17,6 +17,12 @@ import org.stjs.javascript.functions.Callback2;
  */
 public abstract class BrowserUtil {
 
+  /**
+   * 
+   * @param path
+   * @param callback
+   *          (data, error)
+   */
   public static void requestJsonFile(String path, Callback2<Object, Object> callback) {
     doXmlHttpRequest(path, null, (data, error) -> {
       Object dataMap = null;

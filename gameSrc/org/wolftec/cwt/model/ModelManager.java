@@ -108,7 +108,7 @@ public class ModelManager implements Injectable {
 
   public Tile getTile(int x, int y) {
     if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) {
-      throw new Error("InvalidMapPositionException");
+      JsUtil.throwError("InvalidMapPositionException");
     }
 
     return map.$get(x).$get(y);
@@ -138,7 +138,7 @@ public class ModelManager implements Injectable {
 
   public Player getPlayer(int id) {
     if (id < 0 || id >= players.$length()) {
-      throw new Error("InvalidPlayerIdException");
+      JsUtil.throwError("InvalidPlayerIdException");
     } // TODO
 
     return players.$get(id);
@@ -150,7 +150,7 @@ public class ModelManager implements Injectable {
 
   public Unit getUnit(int id) {
     if (id < 0 || id >= units.$length()) {
-      throw new Error("InvalidUnitIdException");
+      JsUtil.throwError("InvalidUnitIdException");
     } // TODO
 
     return units.$get(id);
@@ -166,7 +166,7 @@ public class ModelManager implements Injectable {
 
   public Property getProperty(int id) {
     if (id < 0 || id > properties.$length()) {
-      throw new Error("InvalidPropertyIdException");
+      JsUtil.throwError("InvalidPropertyIdException");
     } // TODO
 
     return properties.$get(id);

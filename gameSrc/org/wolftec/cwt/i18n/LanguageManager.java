@@ -32,7 +32,7 @@ public class LanguageManager implements Injectable {
     Nullable.getOrThrow(obj, "IllegalArgumentException: NoData");
 
     if (Nullable.isPresent(languages.$get(key))) {
-      throw new Error("IllegalArgumentException: KeyAlreadyRegistered");
+      JsUtil.throwError("IllegalArgumentException: KeyAlreadyRegistered");
     }
 
     Map<String, String> newLang = JSCollections.$map();

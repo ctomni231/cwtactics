@@ -49,7 +49,6 @@ public class BuildUnit implements Action {
   @Override
   public void invoke(ActionData data) {
     factory.buildUnit(model.getProperty(data.p1), StringNumberConverter.toId(data.p2));
-    renderer.renderUnitsOnScreen();
     fog.fullRecalculation();
   }
 

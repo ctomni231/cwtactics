@@ -6,6 +6,7 @@ import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.model.PositionData;
@@ -76,7 +77,8 @@ public class MoveLogic implements Injectable {
   }
 
   public int codeFromAtoB(int sx, int sy, int tx, int ty) {
-    int code = Constants.INACTIVE;
+    int code = 0;
+
     if (sx < tx) {
       code = MOVE_CODES_RIGHT;
 
@@ -88,9 +90,11 @@ public class MoveLogic implements Injectable {
 
     } else if (sy > ty) {
       code = MOVE_CODES_UP;
+
+    } else {
+      JsUtil.throwError("IllegalMoveCode");
     }
 
-    assert code != Constants.INACTIVE;
     return code;
   }
 
@@ -101,7 +105,9 @@ public class MoveLogic implements Injectable {
    * @return move cost to move with a given move type on a given tile type
    */
   public int getMoveCosts(MoveType movetype, int x, int y) {
-    assert model.isValidPosition(x, y);
+    if (!model.isValidPosition(x, y)) {
+      JsUtil.throwError("IllegalPosition");
+    }
 
     int v;
     Tile tile = model.getTile(x, y);

@@ -4,6 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.model.Property;
@@ -64,7 +65,9 @@ public class TeamLogic implements Injectable {
     playerB.gold += money;
 
     // the amount of gold cannot be lower 0 after the transfer
-    assert playerA.gold >= 0;
+    if (playerA.gold < 0) {
+      JsUtil.throwError("IllegalGameState");
+    }
   }
 
   public boolean canTransferUnit(Unit unit) {
@@ -88,7 +91,9 @@ public class TeamLogic implements Injectable {
   public void transferUnitToPlayer(Unit unit, Player player) {
     Player origPlayer = unit.owner;
 
-    assert player.numberOfUnits < Constants.MAX_UNITS;
+    if (player.numberOfUnits >= Constants.MAX_UNITS) {
+      JsUtil.throwError("IllegalGameState");
+    }
 
     origPlayer.numberOfUnits--;
     unit.owner = player;

@@ -41,8 +41,7 @@
 
  <build>
 
-<sourceDirectory>stjsTestSrc</sourceDirectory>
-  <!-- <sourceDirectory>src</sourceDirectory> -->
+<sourceDirectory>gameSrc</sourceDirectory>
 
   <pluginManagement>
    <plugins>

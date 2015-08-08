@@ -1,6 +1,6 @@
 package org.wolftec.cwt.states.actions;
 
-import org.wolftec.cwt.input.InputData;
+import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.Action;
@@ -39,7 +39,7 @@ public class WaitUnit implements Action {
   }
 
   @Override
-  public Class<? extends State> update(int delta, InputData lastInput) {
+  public Class<? extends State> update(int delta, InputManager input) {
     return null;
   }
 

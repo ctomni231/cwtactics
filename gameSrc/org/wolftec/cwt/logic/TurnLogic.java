@@ -3,6 +3,7 @@ package org.wolftec.cwt.logic;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Player;
 
@@ -81,7 +82,9 @@ public class TurnLogic implements Injectable {
 
     // If the new player id is the same as the old
     // player id then the game aw2 is corrupted
-    if (Constants.DEBUG) assert (pid != oid);
+    if (pid == oid) {
+      JsUtil.throwError("IllegalGameState");
+    }
 
     // Do end/start turn logic
     model.turnOwner = model.getPlayer(pid);

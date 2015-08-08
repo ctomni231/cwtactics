@@ -22,20 +22,18 @@ public class GameLoopManager implements Injectable {
     native static void requestAnimationFrame(Callback0 handler);
   }
 
-  private static final String NOW_AS_MILLIES = "new Date().getTime()";
+  private StateManager   sm;
+  private InputManager   input;
+  private Log            log;
 
-  private StateManager        sm;
-  private InputManager        input;
-  private Log                 log;
+  private ActionManager  actions;
+  private GamepadInput   gamepad;
+  private GraphicManager gfx;
 
-  private ActionManager       actions;
-  private GamepadInput        gamepad;
-  private GraphicManager      gfx;
+  private boolean        active;
 
-  private boolean             active;
-
-  private int                 oldTime;
-  private Callback0           loopFunction;
+  private int            oldTime;
+  private Callback0      loopFunction;
 
   @Override
   public void onConstruction() {
@@ -47,10 +45,10 @@ public class GameLoopManager implements Injectable {
      */
     final GameLoopManager that = this;
 
-    oldTime = JSObjectAdapter.$js(NOW_AS_MILLIES);
+    oldTime = JSObjectAdapter.$js("new Date().getTime()");
     loopFunction = () -> {
 
-      int now = JSObjectAdapter.$js(NOW_AS_MILLIES);
+      int now = JSObjectAdapter.$js("new Date().getTime()");
       int delta = now - that.oldTime;
       that.oldTime = now;
 

@@ -23,9 +23,9 @@ public class ActionManager implements Injectable {
   /**
    * Pool for holding ActionData objects when they aren't in the buffer.
    */
-  private CircularBuffer<ActionData> pool        = new CircularBuffer<ActionData>(BUFFER_SIZE);
+  private CircularBuffer<ActionData> pool;
 
-  private CircularBuffer<ActionData> buffer      = new CircularBuffer<ActionData>(BUFFER_SIZE);
+  private CircularBuffer<ActionData> buffer;
 
   /**
    * List of all available actions.
@@ -42,6 +42,9 @@ public class ActionManager implements Injectable {
     actions = JSCollections.$array();
     actionIds = JSCollections.$map();
     Functions.repeat(BUFFER_SIZE, (i) -> pool.push(new ActionData()));
+
+    pool = new CircularBuffer<ActionData>(BUFFER_SIZE);
+    buffer = new CircularBuffer<ActionData>(BUFFER_SIZE);
   }
 
   /**
@@ -77,7 +80,7 @@ public class ActionManager implements Injectable {
    *          the action will be inserted as head (called as next command) if
    *          true, else as tail (called at last)
    */
-  private void localAction(String key, int p1, int p2, int p3, int p4, int p5, boolean asHead) {
+  private void insertLocalAction(String key, int p1, int p2, int p3, int p4, int p5, boolean asHead) {
     ActionData actionData = pool.popLast();
 
     // insert data into the action object
@@ -115,11 +118,11 @@ public class ActionManager implements Injectable {
    * @param p5
    */
   public void localAction(String key, int p1, int p2, int p3, int p4, int p5) {
-    localAction(key, p1, p2, p3, p4, p5, false);
+    insertLocalAction(key, p1, p2, p3, p4, p5, false);
   }
 
   public void localActionLIFO(String key, int p1, int p2, int p3, int p4, int p5) {
-    localAction(key, p1, p2, p3, p4, p5, true);
+    insertLocalAction(key, p1, p2, p3, p4, p5, true);
   }
 
   /**

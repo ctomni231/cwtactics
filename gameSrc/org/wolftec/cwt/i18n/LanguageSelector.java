@@ -2,13 +2,16 @@ package org.wolftec.cwt.i18n;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.PersistenceManager;
 import org.wolftec.cwt.loading.Loader;
 import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.Nullable;
 
 public class LanguageSelector implements Loader {
 
-  private Log          log;
-  private LanguageManager i18n;
+  private Log                log;
+  private LanguageManager    i18n;
+  private PersistenceManager storage;
 
   @Override
   public int priority() {
@@ -19,29 +22,29 @@ public class LanguageSelector implements Loader {
   public void onLoad(Callback0 done) {
     log.info("automatical select language by environment settings");
 
-    // TODO recognize custom user selected language
+    storage.get("cfg.language", (key, keyValue) -> {
+      Nullable.ifPresentOrElse(keyValue, (value) -> {
+        i18n.selectLanguage((String) value);
+        done.$invoke();
 
-    String language = JSObjectAdapter.$js("window.navigator.userLanguage || window.navigator.language");
-    String key;
+      }, () -> {
+        switch ((String) JSObjectAdapter.$js("window.navigator.userLanguage || window.navigator.language")) {
 
-    switch (language) {
+          case "de":
+          case "de-de":
+          case "de-De":
+          case "german":
+          case "Deutsch":
+            i18n.selectLanguage("de");
+            break;
 
-      case "de":
-      case "de-de":
-      case "de-De":
-      case "german":
-      case "Deutsch":
-        key = "de";
-        break;
-
-      case "en":
-      default:
-        key = "en";
-        break;
-    }
-
-    i18n.selectLanguage(key);
-
-    done.$invoke();
+          case "en":
+          default:
+            i18n.selectLanguage("en");
+            break;
+        }
+        done.$invoke();
+      });
+    });
   }
 }
