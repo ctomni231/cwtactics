@@ -2,8 +2,8 @@ package org.wolftec.cwt.loading;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.PersistenceManager;
 import org.wolftec.cwt.core.BrowserUtil;
+import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 

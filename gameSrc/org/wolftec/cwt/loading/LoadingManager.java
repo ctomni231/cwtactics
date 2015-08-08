@@ -1,6 +1,6 @@
 package org.wolftec.cwt.loading;
 
-import org.wolftec.cwt.PersistenceManager;
+import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Log;
 
 public class LoadingManager {
