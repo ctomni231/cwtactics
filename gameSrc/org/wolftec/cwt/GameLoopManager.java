@@ -54,7 +54,7 @@ public class GameLoopManager implements Injectable {
 
       that.update(delta);
 
-      if (active) {
+      if (that.active) {
         RequestAnimationFrameGlobal.requestAnimationFrame(that.loopFunction);
       }
     };
