@@ -2,6 +2,7 @@ package org.wolftec.cwt.input;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
+import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.system.Nullable;
@@ -88,6 +89,10 @@ public class InputManager implements Injectable {
     if (pressed) {
       changeStatus(button, true);
     }
+  }
+
+  public void forEachButtonMapping(Callback2<String, String> itCb) {
+    JsUtil.forEachMapValue(buttonMapping, itCb);
   }
 
   public void releaseButtonMapping(String button) {

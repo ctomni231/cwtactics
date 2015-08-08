@@ -12,4 +12,8 @@ public class NumberUtil {
   public static int asInt(Number value) {
     return JSGlobal.parseInt(value, 10);
   }
+
+  public static int stringAsInt(String value) {
+    return JSGlobal.parseInt(value, 10);
+  }
 }

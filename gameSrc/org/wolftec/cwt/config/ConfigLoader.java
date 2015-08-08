@@ -1,9 +1,11 @@
-package org.wolftec.cwt.save;
+package org.wolftec.cwt.config;
 
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.config.OptionsManager;
+import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.save.AppHandler;
+import org.wolftec.cwt.save.GameHandler;
 
-public class ConfigSaver implements AppHandler<Map<String, Integer>>, GameHandler<Map<String, Integer>> {
+public class ConfigLoader implements Injectable, AppHandler<Map<String, Integer>>, GameHandler<Map<String, Integer>> {
 
   private OptionsManager options;
 
@@ -58,5 +60,4 @@ public class ConfigSaver implements AppHandler<Map<String, Integer>>, GameHandle
     options.co_getStarCostIncreaseSteps.setValue(data.$get("co_getStarCostIncreaseSteps"));
     options.co_enabledCoPower.setValue(data.$get("co_enabledCoPower"));
   }
-
 }
