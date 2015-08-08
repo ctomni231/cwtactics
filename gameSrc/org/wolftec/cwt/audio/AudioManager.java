@@ -1,4 +1,4 @@
-package org.wolftec.cwt;
+package org.wolftec.cwt.audio;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
@@ -6,6 +6,7 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.PersistenceManager;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Features;
@@ -17,12 +18,12 @@ public class AudioManager implements Injectable {
   /* ---------------- START OF WEB AUDIO API ---------------- */
   @GlobalScope
   @STJSBridge
-  private static class Window {
+  static class Window {
     static Class<AudioContext> AudioContext;
   }
 
   @STJSBridge
-  private static class AudioContext {
+  static class AudioContext {
 
     native GainNode createGain();
 
@@ -36,29 +37,29 @@ public class AudioManager implements Injectable {
   }
 
   @STJSBridge
-  private static class AudioNode {
+  static class AudioNode {
     native void connect(AudioNode node);
 
     native void disconnect();
   }
 
   @STJSBridge
-  private static class GainNode extends AudioNode {
+  static class GainNode extends AudioNode {
     AudioGain gain;
 
   }
 
   @STJSBridge
-  private static class AudioDestinationNode extends AudioNode {
+  static class AudioDestinationNode extends AudioNode {
   }
 
   @STJSBridge
-  private static class AudioGain {
+  static class AudioGain {
     float value;
   }
 
   @STJSBridge
-  private static class AudioBufferSourceNode extends AudioNode {
+  static class AudioBufferSourceNode extends AudioNode {
     boolean     loop;
     double      loopStart;
     double      loopEnd;
@@ -73,7 +74,7 @@ public class AudioManager implements Injectable {
   }
 
   @STJSBridge
-  private static class AudioBuffer {
+  static class AudioBuffer {
 
   }
 

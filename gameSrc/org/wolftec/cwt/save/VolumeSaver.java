@@ -1,7 +1,7 @@
 package org.wolftec.cwt.save;
 
 import org.stjs.javascript.annotation.STJSBridge;
-import org.wolftec.cwt.AudioManager;
+import org.wolftec.cwt.audio.AudioManager;
 import org.wolftec.cwt.save.VolumeSaver.VolumeData;
 import org.wolftec.cwt.system.Nullable;
 

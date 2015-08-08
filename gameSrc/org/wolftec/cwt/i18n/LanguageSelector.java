@@ -28,7 +28,7 @@ public class LanguageSelector implements Loader {
         done.$invoke();
 
       }, () -> {
-        switch ((String) JSObjectAdapter.$js("window.navigator.userLanguage || window.navigator.language")) {
+        switch (Nullable.getOrElse(browserLanguage(), "en")) {
 
           case "de":
           case "de-de":
@@ -46,5 +46,9 @@ public class LanguageSelector implements Loader {
         done.$invoke();
       });
     });
+  }
+
+  private String browserLanguage() {
+    return (String) JSObjectAdapter.$js("window.navigator.userLanguage || window.navigator.language");
   }
 }

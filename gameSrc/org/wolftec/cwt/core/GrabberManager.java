@@ -1,9 +1,8 @@
-package org.wolftec.cwt.dataGrabber;
+package org.wolftec.cwt.core;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.PersistenceManager;
-import org.wolftec.cwt.core.Injectable;
 
 public class GrabberManager implements Injectable {
 

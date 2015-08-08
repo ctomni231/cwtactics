@@ -1,7 +1,5 @@
-package org.wolftec.cwt.i18n;
+package org.wolftec.cwt.audio;
 
-import org.stjs.javascript.Global;
-import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.PersistenceManager;
 import org.wolftec.cwt.core.BrowserUtil;
@@ -9,18 +7,16 @@ import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.core.Grabber;
 import org.wolftec.cwt.core.Injectable;
 
-public class LanguageDataLoader implements Injectable, Grabber {
-
-  private LanguageManager lang;
+public class MusicLoader implements Injectable, Grabber {
 
   @Override
   public String forPath() {
-    return "languages\\";
+    return "audio\\music\\";
   }
 
   @Override
   public void grabData(PersistenceManager pm, FileDescriptor file, Callback0 completeCb) {
-    BrowserUtil.doXmlHttpRequest(file.path, null, (data, error) -> {
+    BrowserUtil.doXmlHttpRequest(file.path, "arraybuffer", (data, err) -> {
       pm.set(file.path, data, (saveErr, saveData) -> {
         completeCb.$invoke();
       });
@@ -29,10 +25,6 @@ public class LanguageDataLoader implements Injectable, Grabber {
 
   @Override
   public void loadData(PersistenceManager pm, FileDescriptor file, Callback0 completeCb) {
-    pm.get(file.path, (err, data) -> {
-      lang.registerLanguage(file.fileName, (Map<String, String>) Global.JSON.parse(data.toString()));
-      completeCb.$invoke();
-    });
+    /* we load music files when we need them to save RAM :) */
   }
-
 }

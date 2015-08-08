@@ -1,4 +1,4 @@
-package org.wolftec.cwt.dataGrabber;
+package org.wolftec.cwt.core;
 
 public class FileDescriptor {
   public String fileName;
