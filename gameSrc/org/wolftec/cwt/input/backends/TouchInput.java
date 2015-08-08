@@ -69,7 +69,6 @@ public class TouchInput implements Injectable, Deactivatable {
 
   // drag data
   private int          dragDiff;
-  private boolean      isDrag;
 
   private void handleTouchStart(DOMEvent origEvent) {
     TouchEvent event = (TouchEvent) origEvent;
@@ -94,7 +93,6 @@ public class TouchInput implements Injectable, Deactivatable {
     sy = event.touches.$get(0).clientY;
     ex = sx;
     ey = sy;
-    isDrag = false;
 
     // IF A SECOND FINGER IS ON THE SCREEN THEN REMEMBER ITS POSITION
     if (event.touches.$length() == 2) {
@@ -153,7 +151,6 @@ public class TouchInput implements Injectable, Deactivatable {
 
       if (timeDiff > 300) {
 
-        isDrag = true;
         if (dragDiff > 75) {
 
           String button;

@@ -1,9 +1,9 @@
 package org.wolftec.cwt.sheets;
 
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.PersistenceManager;
 import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.core.Grabber;
+import org.wolftec.cwt.persistence.PersistenceManager;
 
 public class SheetDataLoader implements Grabber {
 

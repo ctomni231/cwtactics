@@ -3,11 +3,11 @@ package org.wolftec.cwt.i18n;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.PersistenceManager;
 import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.core.Grabber;
 import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.persistence.PersistenceManager;
 
 public class LanguageLoader implements Injectable, Grabber {
 

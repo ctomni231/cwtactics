@@ -1,7 +1,6 @@
 package org.wolftec.cwt.config;
 
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.PersistenceManager;
 import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.loading.Loader;
 import org.wolftec.cwt.system.Log;
@@ -16,7 +15,6 @@ public class UrlConfigReader implements Loader {
 
   private Log                log;
   private OptionsManager     options;
-  private PersistenceManager pm;
 
   @Override
   public int priority() {

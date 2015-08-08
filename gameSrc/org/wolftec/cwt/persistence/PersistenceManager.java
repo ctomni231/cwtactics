@@ -1,12 +1,10 @@
-package org.wolftec.cwt;
+package org.wolftec.cwt.persistence;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.system.Features;
-import org.wolftec.cwt.system.LocalForage;
-import org.wolftec.cwt.system.LocalForageConfig;
 
 public class PersistenceManager implements Injectable {
 
