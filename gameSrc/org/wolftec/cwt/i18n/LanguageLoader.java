@@ -9,7 +9,7 @@ import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.core.Grabber;
 import org.wolftec.cwt.core.Injectable;
 
-public class LanguageDataLoader implements Injectable, Grabber {
+public class LanguageLoader implements Injectable, Grabber {
 
   private LanguageManager lang;
 
@@ -20,7 +20,7 @@ public class LanguageDataLoader implements Injectable, Grabber {
 
   @Override
   public void grabData(PersistenceManager pm, FileDescriptor file, Callback0 completeCb) {
-    BrowserUtil.doXmlHttpRequest(file.path, null, (data, error) -> {
+    BrowserUtil.requestJsonFile(file.path, (data, error) -> {
       pm.set(file.path, data, (saveErr, saveData) -> {
         completeCb.$invoke();
       });
