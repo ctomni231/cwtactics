@@ -3,7 +3,6 @@ package org.wolftec.cwt.network;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwt.system.RequestUtil;
 
 public class NetworkManager implements Injectable {
 
@@ -50,7 +49,6 @@ public class NetworkManager implements Injectable {
    */
   public void sendMessage(String actionData) {
     JsUtil.throwError("NotImplementedYetException");
-    RequestUtil.doXmlHttpRequest(path, specialType, callback);
   }
 
   // var targetURL = null;

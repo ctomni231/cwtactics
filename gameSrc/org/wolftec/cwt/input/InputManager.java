@@ -1,312 +1,80 @@
 package org.wolftec.cwt.input;
 
-import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwt.Constants;
+import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.Injectable;
-import org.wolftec.cwt.system.CircularBuffer;
-import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.system.Nullable;
 
 public class InputManager implements Injectable {
 
-  public static final int TYPE_LEFT      = 1;
-  public static final int TYPE_RIGHT     = 2;
-  public static final int TYPE_UP        = 3;
-  public static final int TYPE_DOWN      = 4;
-  public static final int TYPE_ACTION    = 5;
-  public static final int TYPE_CANCEL    = 6;
-  public static final int TYPE_HOVER     = 7;
-  public static final int TYPE_SET_INPUT = 8;
+  private Map<String, Integer> actionState;
+  private Map<String, Boolean> buttonState;
+  private Map<String, String>  buttonMapping;
 
-  private Log                       log;
-
-  private CircularBuffer<InputData> stack        = new CircularBuffer(10);
-
-  private CircularBuffer<InputData> pool         = new CircularBuffer(10);
-
-  /**
-   * If true, then every user input will be blocked.
-   */
-  private boolean                   blocked      = false;
-
-  private boolean                   genericInput = false;
+  public int                   lastX;
+  public int                   lastY;
 
   @Override
   public void onConstruction() {
-    for (int i = 0; i < pool.getSize(); i++) {
-      pool.push(new InputData());
-    }
-  }
-
-  /**
-   * Returns **true** when the input system wants a generic input (raw codes)
-   * from input backends like keyboards and game pads.
-   * 
-   * @return
-   */
-  public boolean wantsGenericInput() {
-    return genericInput;
-  }
-
-  /**
-   * Requests an input block. All further input calls will be dropped after
-   * calling this.
-   */
-  public void requestBlock() {
-    blocked = true;
-  }
-
-  /**
-   * Releases an input block. Input calls will be registered in the game machine
-   * after calling this.
-   * 
-   */
-  public void releaseBlock() {
-    blocked = false;
-  }
-
-  // Pushes an input **key** into the input stack. The parameters **d1** and
-  // **d2** has to be integers.
-  //
-  public void pushAction(int key, int d1, int d2) {
-    if (blocked || pool.isEmpty()) {
-      return;
-    }
-
-    if (Constants.DEBUG) {
-      log.info("adding input data " + key + ", " + d1 + ", " + d2);
-    }
-
-    InputData cmd = pool.popFirst();
-    cmd.d1 = Nullable.getOrElse(d1, Constants.INACTIVE);
-    cmd.d2 = Nullable.getOrElse(d2, Constants.INACTIVE);
-    cmd.key = key;
-
-    stack.push(cmd);
+    actionState = JSCollections.$map();
+    buttonState = JSCollections.$map();
+    buttonMapping = JSCollections.$map();
   }
 
   /**
    * 
-   * @return
+   * @param action
+   * @return true if the given action is pressed, else false
    */
-  public InputData popAction() {
-    if (stack.isEmpty()) {
-      return null;
-    }
-    return stack.popFirst();
+  public boolean isActionPressed(String action) {
+    return Nullable.getOrElse(actionState.$get(action), 0) > 0;
   }
 
-  public void releaseAction(InputData inp) {
-    pool.push(inp);
+  /**
+   * 
+   * @param button
+   * @return true if the given button is pressed, else false
+   */
+  public boolean isButtonPressed(String button) {
+    return Nullable.getOrElse(buttonState.$get(button), false);
   }
 
-  // Returns the character for a key code.
-  //
-  public String codeToChar(int charCode) {
-    if (charCode == Constants.INACTIVE) {
-      return null;
-    }
+  /**
+   * 
+   * @param button
+   */
+  public void pressButton(String button) {
+    changeStatus(button, true);
+  }
 
-    String value = JSObjectAdapter.$js("String.fromCharCode(charCode)");
-    switch (charCode) {
-      case 6:
-        value = "Mac";
-        break;
-      case 8:
-        value = "Backspace";
-        break;
-      case 9:
-        value = "Tab";
-        break;
-      case 13:
-        value = "Enter";
-        break;
-      case 16:
-        value = "Shift";
-        break;
-      case 17:
-        value = "CTRL";
-        break;
-      case 18:
-        value = "ALT";
-        break;
-      case 19:
-        value = "Pause/Break";
-        break;
-      case 20:
-        value = "Caps Lock";
-        break;
-      case 27:
-        value = "ESC";
-        break;
-      case 32:
-        value = "Space";
-        break;
-      case 33:
-        value = "Page Up";
-        break;
-      case 34:
-        value = "Page Down";
-        break;
-      case 35:
-        value = "End";
-        break;
-      case 36:
-        value = "Home";
-        break;
-      case 37:
-        value = "Arrow Left";
-        break;
-      case 38:
-        value = "Arrow Up";
-        break;
-      case 39:
-        value = "Arrow Right";
-        break;
-      case 40:
-        value = "Arrow Down";
-        break;
-      case 43:
-        value = "Plus";
-        break;
-      case 45:
-        value = "Insert";
-        break;
-      case 46:
-        value = "Delete";
-        break;
-      case 91:
-        value = "Left Window Key";
-        break;
-      case 92:
-        value = "Right Window Key";
-        break;
-      case 93:
-        value = "Select Key";
-        break;
-      case 96:
-        value = "Numpad 0";
-        break;
-      case 97:
-        value = "Numpad 1";
-        break;
-      case 98:
-        value = "Numpad 2";
-        break;
-      case 99:
-        value = "Numpad 3";
-        break;
-      case 100:
-        value = "Numpad 4";
-        break;
-      case 101:
-        value = "Numpad 5";
-        break;
-      case 102:
-        value = "Numpad 6";
-        break;
-      case 103:
-        value = "Numpad 7";
-        break;
-      case 104:
-        value = "Numpad 8";
-        break;
-      case 105:
-        value = "Numpad 9";
-        break;
-      case 106:
-        value = "*";
-        break;
-      case 107:
-        value = "+";
-        break;
-      case 109:
-        value = "-";
-        break;
-      case 110:
-        value = ";";
-        break;
-      case 111:
-        value = "/";
-        break;
-      case 112:
-        value = "F1";
-        break;
-      case 113:
-        value = "F2";
-        break;
-      case 114:
-        value = "F3";
-        break;
-      case 115:
-        value = "F4";
-        break;
-      case 116:
-        value = "F5";
-        break;
-      case 117:
-        value = "F6";
-        break;
-      case 118:
-        value = "F7";
-        break;
-      case 119:
-        value = "F8";
-        break;
-      case 120:
-        value = "F9";
-        break;
-      case 121:
-        value = "F10";
-        break;
-      case 122:
-        value = "F11";
-        break;
-      case 123:
-        value = "F12";
-        break;
-      case 144:
-        value = "Num Lock";
-        break;
-      case 145:
-        value = "Scroll Lock";
-        break;
-      case 186:
-        value = ";";
-        break;
-      case 187:
-        value = "=";
-        break;
-      case 188:
-        value = ",";
-        break;
-      case 189:
-        value = "-";
-        break;
-      case 190:
-        value = ".";
-        break;
-      case 191:
-        value = "/";
-        break;
-      case 192:
-        value = "`";
-        break;
-      case 219:
-        value = "[";
-        break;
-      case 220:
-        value = "\\";
-        break;
-      case 221:
-        value = "]";
-        break;
-      case 222:
-        value = "'";
-        break;
-    }
+  /**
+   * @param button
+   */
+  public void releaseButton(String button) {
+    changeStatus(button, false);
+  }
 
-    return value;
+  private void changeStatus(String button, boolean status) {
+    if (buttonState.$get(button) != status) {
+      buttonState.$put(button, status);
+
+      String action = buttonMapping.$get(button);
+      if (Nullable.isPresent(action)) {
+        actionState.$put(action, Nullable.getOrElse(actionState.$get(action), 0) + (status ? 1 : -1));
+        if (actionState.$get(action) < 0) {
+          JsUtil.throwError("IllegalActionState: negative action counter detected");
+        }
+      }
+    }
+  }
+
+  public void setButtonMapping(String button, String action) {
+    buttonMapping.$put(Nullable.getOrThrow(button, "IllegalButtonKey"), Nullable.getOrThrow(action, "IllegalActionKey"));
+  }
+
+  public void releaseButtonMapping(String button) {
+    setButtonMapping(button, "NONE");
   }
 
 }

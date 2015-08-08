@@ -1,26 +1,29 @@
 package org.wolftec.cwt.states.start;
 
-import org.wolftec.cwt.input.InputData;
+import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.input.InputManager;
+import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.State;
 
 public class NoneState implements State {
 
-  private boolean backgroundDrawn;
-
   @Override
-  public Class<? extends State> update(int delta, InputData lastInput) {
-    return backgroundDrawn ? LoadingState.class : null;
+  public Class<? extends State> update(int delta, InputManager input) {
+    return LoadingState.class;
   }
 
   @Override
-  public void render(int delta) {
-    if (!backgroundDrawn) {
-      var ctx = renderer.layerBG.getContext(constants.INACTIVE);
+  public void render(int delta, GraphicManager graphic) {
+    CanvasRenderingContext2D ctx = graphic.mainCtx;
 
-      ctx.fillStyle = "gray";
-      ctx.fillRect(0, 0, renderer.screenWidth, renderer.screenHeight);
+    ctx.fillStyle = "green";
+    ctx.fillRect(0, 0, graphic.absoluteScreenWidth(), graphic.absoluteScreenHeight());
 
-      backgroundDrawn = true;
-    }
+    ctx.strokeStyle = "black";
+    ctx.strokeText("CustomWars: Tactics (" + Constants.VERSION + ")", 10, 10, 400);
+
+    ctx.strokeStyle = "red";
+    ctx.strokeText("-! Development Version !-", 10, 30, 400);
   }
 }

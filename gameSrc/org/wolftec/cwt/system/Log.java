@@ -1,10 +1,9 @@
 package org.wolftec.cwt.system;
 
 import org.stjs.javascript.Global;
-import org.wolftec.cwtactics.game.core.sysobject.SystemObject;
-import org.wolftec.cwtactics.game.core.systems.System;
+import org.wolftec.cwt.core.Injectable;
 
-public class Log implements SystemObject {
+public class Log implements Constructable {
 
   /**
    * Controls the exact length of the logger name field in a log message. The
@@ -24,12 +23,8 @@ public class Log implements SystemObject {
   private String             loggerName;
 
   @Override
-  public void onConstruction(System instance) {
-    initByObject(instance);
-  }
-
-  public void initByObject(Object obj) {
-    loggerName = Log.convertNameToFixedLength(ClassUtil.getClassName(obj));
+  public void onConstruction(Injectable instance) {
+    loggerName = Log.convertNameToFixedLength(ClassUtil.getClassName(instance));
   }
 
   public void info(String msg) {

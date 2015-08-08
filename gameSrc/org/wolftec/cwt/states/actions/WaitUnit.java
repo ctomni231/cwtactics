@@ -2,6 +2,7 @@ package org.wolftec.cwt.states.actions;
 
 import org.wolftec.cwt.input.InputData;
 import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.Action;
 import org.wolftec.cwt.states.ActionData;
 import org.wolftec.cwt.states.ActionType;
@@ -10,7 +11,7 @@ import org.wolftec.cwt.states.UserInteractionData;
 
 public class WaitUnit implements Action {
 
-  ModelManager model;
+  private ModelManager model;
 
   @Override
   public String key() {
@@ -43,8 +44,6 @@ public class WaitUnit implements Action {
   }
 
   @Override
-  public void render(int delta) {
-    /* TODO I think we should render the unit status here. */
+  public void render(int delta, GraphicManager canvas) {
   }
-
 }

@@ -2,6 +2,7 @@ package org.wolftec.cwt.system;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.wolftec.cwt.core.JsUtil;
 
 /**
  * An implementation of the concept of a circular buffer. Internally a circular
@@ -20,7 +21,9 @@ public class CircularBuffer<T> {
 
   @SuppressWarnings("unchecked")
   public CircularBuffer(int lMaxSize) {
-    if (lMaxSize <= 0) JSU.raiseError("size cannot be 0 or lower");
+    if (lMaxSize <= 0) {
+      JsUtil.throwError("size cannot be 0 or lower");
+    }
 
     index = 0;
     size = 0;
@@ -43,18 +46,24 @@ public class CircularBuffer<T> {
   }
 
   public T get(int index) {
-    if (index < 0 || index >= this.size) JSU.raiseError("illegal index");
+    if (index < 0 || index >= this.size) {
+      return JsUtil.throwError("illegal index");
+    }
 
     return this.data.$get((this.index + index) % this.maxSize);
   }
 
   public void set(int index, T value) {
-    if (index < 0 || index >= this.size) JSU.raiseError("illegal index");
+    if (index < 0 || index >= this.size) {
+      JsUtil.throwError("illegal index");
+    }
     this.data.$set((this.index + index) % this.maxSize, value);
   }
 
   public T popFirst() {
-    if (this.size == 0) JSU.raiseError("buffer is empty");
+    if (this.size == 0) {
+      return JsUtil.throwError("buffer is empty");
+    }
 
     T obj = this.data.$get(this.index);
 
@@ -69,7 +78,9 @@ public class CircularBuffer<T> {
   }
 
   public T popLast() {
-    if (this.size == 0) JSU.raiseError("buffer is empty");
+    if (this.size == 0) {
+      JsUtil.throwError("buffer is empty");
+    }
 
     int index = (this.index + this.size - 1) % this.maxSize;
     T obj = this.data.$get(index);
@@ -82,14 +93,18 @@ public class CircularBuffer<T> {
   }
 
   public void push(T el) {
-    if (this.size == this.maxSize) JSU.raiseError("buffer is full");
+    if (this.size == this.maxSize) {
+      JsUtil.throwError("buffer is full");
+    }
 
     this.data.$set((this.index + this.size) % this.maxSize, el);
     this.size++;
   }
 
   public void pushInFront(T el) {
-    if (this.size == this.maxSize) JSU.raiseError("buffer is full");
+    if (this.size == this.maxSize) {
+      JsUtil.throwError("buffer is full");
+    }
 
     int index = this.index - 1;
     if (index < 0) index = this.maxSize - 1;
@@ -122,7 +137,9 @@ public class CircularBuffer<T> {
    * @param <M>
    */
   public static <M> void copyBuffer(CircularBuffer<M> source, CircularBuffer<M> target) {
-    if (target.maxSize != source.maxSize) JSU.raiseError("same size required");
+    if (target.maxSize != source.maxSize) {
+      JsUtil.throwError("same size required");
+    }
 
     target.clear();
     for (int i = 0, e = source.size; i < e; i++) {

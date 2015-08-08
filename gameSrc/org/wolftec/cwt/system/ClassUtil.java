@@ -8,14 +8,24 @@ import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwtactics.game.core.CheckedValue;
 
+/**
+ * Utility class to handle several low level stuff with stjs based objects.
+ */
 public abstract class ClassUtil {
 
   private static final String PARAM_INHERIT          = "$inherit";
   private static final String PARAM_TYPE_DESCRIPTION = "$typeDescription";
   private static final String PROPERTY_CLASS_NAME    = "__className__";
 
+  /**
+   * Initializes the class names by putting a special hidden variable into the
+   * constructor as well into the class itself. After that the names of the
+   * classes of the given namespace can be read with the getClassName(object)
+   * method.
+   * 
+   * @param namespace
+   */
   public static void initClassNames(Object namespace) {
     forEachClassOfNamespace(namespace, (className, constructor) -> {
       if (getClassName(constructor) == null) {
@@ -25,6 +35,13 @@ public abstract class ClassUtil {
     });
   }
 
+  /**
+   * Calls the callback for each property of a object.
+   * 
+   * @param object
+   * @param callback
+   *          (object, propertyName)
+   */
   public static void forEachClassInstanceProperty(Object object, Callback2<String, Object> callback) {
     JsUtil.forEachMapValue(JSObjectAdapter.$prototype(JSObjectAdapter.$constructor(object)), (prop, defValue) -> {
 
@@ -37,6 +54,13 @@ public abstract class ClassUtil {
     });
   }
 
+  /**
+   * Calls the callback for each property of a given class.
+   * 
+   * @param clazz
+   * @param callback
+   *          (class, propertyName)
+   */
   public static void forEachClassProperty(Class<?> clazz, Callback2<String, Object> callback) {
     JsUtil.forEachMapValue(JSObjectAdapter.$prototype(clazz), (prop, defValue) -> {
 
@@ -56,16 +80,33 @@ public abstract class ClassUtil {
     return (String) JSObjectAdapter.$get(object, PROPERTY_CLASS_NAME);
   }
 
+  /**
+   * 
+   * @param object
+   * @return the class of a given object
+   */
   public static Class<?> getClass(Object object) {
     return (Class<?>) JSObjectAdapter.$constructor(object);
   }
 
+  /**
+   * 
+   * @param clazz
+   * @return a new instance of the given class
+   */
   public static <T> T newInstance(Class<T> clazz) {
     return JSObjectAdapter.$js("new clazz()");
   }
 
-  public static void forEachInterface(Class<?> classObj, Callback1<Class<?>> callback) {
-    JsUtil.forEachArrayValue((Array<Class<?>>) JSObjectAdapter.$get(classObj, PARAM_INHERIT), (index, interfaceObj) -> {
+  /**
+   * Calls the callback for each interface of a given class object.
+   * 
+   * @param clazz
+   * @param callback
+   *          (interface)
+   */
+  public static void forEachInterface(Class<?> clazz, Callback1<Class<?>> callback) {
+    JsUtil.forEachArrayValue((Array<Class<?>>) JSObjectAdapter.$get(clazz, PARAM_INHERIT), (index, interfaceObj) -> {
       callback.$invoke(interfaceObj);
     });
   }
@@ -100,8 +141,14 @@ public abstract class ClassUtil {
     return false;
   }
 
-  public static Class<?> getClassPropertyType(Class<?> classObject, String property) {
-    Object classDesc = JSObjectAdapter.$get(classObject, PARAM_TYPE_DESCRIPTION);
+  /**
+   * 
+   * @param clazz
+   * @param property
+   * @return the type of the given property of the given class
+   */
+  public static Class<?> getClassPropertyType(Class<?> clazz, String property) {
+    Object classDesc = JSObjectAdapter.$get(clazz, PARAM_TYPE_DESCRIPTION);
     String typeName = (String) JSObjectAdapter.$get(classDesc, property);
 
     if (JSGlobal.typeof(typeName) != "string") {
@@ -112,6 +159,14 @@ public abstract class ClassUtil {
     return getTypeByNamespace(namePieces);
   }
 
+  /**
+   * Returns the type of a given property from a given class. This only works
+   * with complex type properties (no primitives).
+   * 
+   * @param classObject
+   * @param property
+   * @return type of the given property
+   */
   public static Class<?> getClassPropertySubType(Class<?> classObject, String property) {
     Object classDesc = JSObjectAdapter.$get(classObject, PARAM_TYPE_DESCRIPTION);
     String typeName = (String) JSObjectAdapter.$get(classDesc, property);
@@ -124,12 +179,19 @@ public abstract class ClassUtil {
     return getTypeByNamespace(JSStringAdapter.split(typeName, "."));
   }
 
+  /**
+   * 
+   * @param namePieces
+   *          parts of a string based namespace (e.g. com.my.package.ClassA) as
+   *          string array
+   * @return class object
+   */
   private static Class<?> getTypeByNamespace(Array<String> namePieces) {
     Object result = Global.window;
 
     for (int i = 0; i < namePieces.$length(); i++) {
       result = JSObjectAdapter.$get(result, namePieces.$get(i));
-      if (!CheckedValue.of(result).isPresent()) {
+      if (!Nullable.isPresent(result)) {
         return JsUtil.throwError("UnknownPropertyType");
       }
     }
@@ -137,10 +199,17 @@ public abstract class ClassUtil {
     return (Class<?>) result;
   }
 
+  /**
+   * Calls the callback for each stjs class in the given namespace.
+   * 
+   * @param namespace
+   * @param callback
+   *          (className, class)
+   */
   public static void forEachClassOfNamespace(Object namespace, Callback2<String, Class<?>> callback) {
     JsUtil.forEachArrayValue(JsUtil.objectKeys(namespace), (index, className) -> {
       Class<?> classObject = (Class<?>) JSObjectAdapter.$get(namespace, className);
-      if (CheckedValue.of(JSObjectAdapter.$get(classObject, PARAM_TYPE_DESCRIPTION)).isPresent()) {
+      if (Nullable.isPresent(JSObjectAdapter.$get(classObject, PARAM_TYPE_DESCRIPTION))) {
         callback.$invoke(className, classObject);
       }
     });

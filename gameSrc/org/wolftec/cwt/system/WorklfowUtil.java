@@ -4,7 +4,6 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwtactics.game.core.CheckedValue;
 
 public abstract class WorklfowUtil {
 
@@ -24,6 +23,8 @@ public abstract class WorklfowUtil {
    *          been called
    */
   public static void sequence(Array<Callback1<Callback0>> functionList, Callback0 callback) {
+    Nullable.getOrThrow(callback, "MissingParameter: callback");
+
     if (functionList.$length() == 0) {
       JsUtil.throwError("IllegalArgumentException: function list cannot be empty");
     }
@@ -42,9 +43,7 @@ public abstract class WorklfowUtil {
     data.mainCb = () -> {
       data.completed++;
       if (data.completed == functionList.$length()) {
-        if (CheckedValue.of(callback).isPresent()) {
-          callback.$invoke();
-        }
+        callback.$invoke();
       } else {
         iterate.$invoke(data.mainCb);
       }

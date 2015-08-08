@@ -1,134 +1,93 @@
 package org.wolftec.cwt.input;
 
-import org.stjs.javascript.Map;
+import org.stjs.javascript.Array;
+import org.stjs.javascript.annotation.GlobalScope;
+import org.stjs.javascript.annotation.STJSBridge;
+import org.wolftec.cwt.core.Deactivatable;
+import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.system.Nullable;
 
-public class GamepadInput implements InputBackend {
+public class GamepadInput implements Injectable, Deactivatable {
 
+  @STJSBridge
+  @GlobalScope
+  static class GlobalGamepad {
+    native static Array<Gamedpad> webkitGetGamepads();
+  }
 
-var MAPPING = {
-  ACTION: 0,
-  CANCEL: 1
-};
+  @STJSBridge
+  static class Gamedpad {
+    int            timestamp;
 
-var prevTimestamps = [];
+    // TODO new specification shows different API
+    // https://developer.mozilla.org/en-US/docs/Web/Guide/API/Gamepad
+    Array<Integer> buttons;
 
-var UPDATER_FUNCTION = function () {
-  var gamePads = navigator.webkitGetGamepads();
+    Array<Integer> axes;
+  }
 
-  var i, e;
-  for (i = 0, e = 4; i < e; i++) {
-    var gamePad = gamePads[i];
-    if (gamePad) {
+  private InputManager   input;
 
-      // check timestamp
-      if (prevTimestamps[i] && (gamePad.timestamp === prevTimestamps[i])) continue;
-      prevTimestamps[i] = gamePad.timestamp;
+  private boolean        enabled;
+  private Array<Integer> prevTimestamps;
 
-      // in key mapping
-      if (input.wantsGenericInput()) {
-        if (state.activeState.mode !== 1) {
-          return;
-        }
+  private void checkButton(Gamedpad gamepad, int id) {
+    String button = "GAMEPAD_" + id;
 
-        var code = -1;
-
-        // grab key code of the pressed button
-        if (gamePad.elements[0] === 1) {
-          code = 0;
-        } else if (gamePad.elements[1] === 1) {
-          code = 1;
-        } else if (gamePad.elements[2] === 1) {
-          code = 2;
-        } else if (gamePad.elements[3] === 1) {
-          code = 3;
-        } else if (gamePad.elements[4] === 1) {
-          code = 4;
-        } else if (gamePad.elements[5] === 1) {
-          code = 5;
-        } else if (gamePad.elements[6] === 1) {
-          code = 6;
-        } else if (gamePad.elements[7] === 1) {
-          code = 7;
-        } else if (gamePad.elements[8] === 1) {
-          code = 8;
-        } else if (gamePad.elements[9] === 1) {
-          code = 9;
-        } else if (gamePad.elements[10] === 1) {
-          code = 10;
-        } else if (gamePad.elements[11] === 1) {
-          code = 11;
-        } else if (gamePad.elements[12] === 1) {
-          code = 12;
-        } else if (gamePad.elements[13] === 1) {
-          code = 13;
-        }
-
-        if (code > -1) {
-          state.activeState.genericInput(code);
-        }
-      } else {
-        var key = null;
-
-        // try to extract key
-        if (gamePad.buttons[MAPPING.ACTION] === 1) {
-          key = input.TYPE_ACTION;
-
-        } else if (gamePad.buttons[MAPPING.CANCEL] === 1) {
-          key = input.TYPE_CANCEL;
-
-        } else if (gamePad.axes[1] < -0.5) {
-          key = input.TYPE_UP;
-
-        } else if (gamePad.axes[1] > +0.5) {
-          key = input.TYPE_DOWN;
-
-        } else if (gamePad.axes[0] < -0.5) {
-          key = input.TYPE_LEFT;
-
-        } else if (gamePad.axes[0] > +0.5) {
-          key = input.TYPE_RIGHT;
-        }
-
-        // invoke input event when a known key was pressed
-        if (key) {
-          input.pushAction(key, constants.INACTIVE, constants.INACTIVE);
-        }
-      }
+    if (gamepad.buttons.$get(id) == 1) {
+      input.pressButton(button);
+    } else {
+      input.releaseButton(button);
     }
   }
-};
 
-exports.backend = new input.InputBackend(
-  MAPPING,
+  private void checkAxis(Gamedpad gamepad, int id, String negativeButton, String positiveButton) {
+    Integer value = gamepad.axes.$get(id);
+    if (value < -0.5) {
+      input.releaseButton(positiveButton);
+      input.pressButton(negativeButton);
 
-  function () {
-    debug.logInfo("enable game pad module");
-    exports.update = UPDATER_FUNCTION;
-  },
+    } else if (value > +0.5) {
+      input.releaseButton(negativeButton);
+      input.pressButton(positiveButton);
 
-  function () {
-    exports.update = emptyFunc;
+    } else {
+      input.releaseButton(negativeButton);
+      input.releaseButton(positiveButton);
+    }
   }
-);
 
-exports.update = emptyFunc;
+  public void checkData() {
+    if (!enabled) {
+      return;
+    }
+
+    Array<Gamedpad> gamepads = GlobalGamepad.webkitGetGamepads();
+
+    for (int i = 0; i < 4; i++) {
+      Gamedpad gamepad = gamepads.$get(i);
+      if (!Nullable.isPresent(gamepad)) continue;
+
+      if (Nullable.getOrElse(prevTimestamps.$get(i), 0) == gamepad.timestamp) continue;
+      prevTimestamps.$set(i, gamepad.timestamp);
+
+      checkButton(gamepad, 0);
+      checkButton(gamepad, 1);
+      checkButton(gamepad, 2);
+      checkButton(gamepad, 3);
+      checkAxis(gamepad, 0, "GAMEPAD_LEFT", "GAMEPAD_RIGHT");
+      checkAxis(gamepad, 1, "GAMEPAD_UP", "GAMEPAD_DOWN");
+    }
+  }
 
   @Override
   public void enable() {
-    // TODO Auto-generated method stub
-    
+    enabled = true;
   }
 
   @Override
   public void disable() {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  public Map<String, Integer> getMapping() {
-    // TODO Auto-generated method stub
-    return null;
+    enabled = false;
   }
 
 }
