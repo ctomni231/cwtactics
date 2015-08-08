@@ -1,2 +1,0 @@
-We should use one single API (like the official WebAudio API) instead of multiple 
-outdated API's which tries to enable one purpose.
