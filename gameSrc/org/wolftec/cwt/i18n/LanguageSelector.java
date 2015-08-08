@@ -1,14 +1,14 @@
-package org.wolftec.cwt.loading;
+package org.wolftec.cwt.i18n;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.system.Localization;
+import org.wolftec.cwt.loading.Loader;
 import org.wolftec.cwt.system.Log;
 
 public class LanguageSelector implements Loader {
 
   private Log          log;
-  private Localization i18n;
+  private LanguageManager i18n;
 
   @Override
   public int priority() {
@@ -19,7 +19,7 @@ public class LanguageSelector implements Loader {
   public void onLoad(Callback0 done) {
     log.info("automatical select language by environment settings");
 
-    // todo: recognize custom user selected language
+    // TODO recognize custom user selected language
 
     String language = JSObjectAdapter.$js("window.navigator.userLanguage || window.navigator.language");
     String key;

@@ -6,19 +6,19 @@ import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwt.input.InputData;
+import org.wolftec.cwt.input.GamepadInput;
 import org.wolftec.cwt.input.InputManager;
+import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.ActionManager;
 import org.wolftec.cwt.states.State;
 import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.system.Features;
 import org.wolftec.cwt.system.Log;
 
 public class GameLoopManager implements Injectable {
 
   @GlobalScope
   @STJSBridge
-  static class Raf {
+  static class RequestAnimationFrameGlobal {
     native static void requestAnimationFrame(Callback0 handler);
   }
 
@@ -27,14 +27,39 @@ public class GameLoopManager implements Injectable {
   private StateManager        sm;
   private InputManager        input;
   private Log                 log;
-  private Features            features;
+
   private ActionManager       actions;
+  private GamepadInput        gamepad;
+  private GraphicManager      gfx;
 
   private boolean             active;
+
+  private int                 oldTime;
+  private Callback0           loopFunction;
 
   @Override
   public void onConstruction() {
     active = false;
+
+    /*
+     * accessing the object with that is faster because loopFunction has not to
+     * be bind against the loop object
+     */
+    final GameLoopManager that = this;
+
+    oldTime = JSObjectAdapter.$js(NOW_AS_MILLIES);
+    loopFunction = () -> {
+
+      int now = JSObjectAdapter.$js(NOW_AS_MILLIES);
+      int delta = now - that.oldTime;
+      that.oldTime = now;
+
+      that.update(delta);
+
+      if (active) {
+        RequestAnimationFrameGlobal.requestAnimationFrame(that.loopFunction);
+      }
+    };
   }
 
   /**
@@ -42,39 +67,22 @@ public class GameLoopManager implements Injectable {
    * @param delta
    */
   public void update(int delta) {
-    State activeState = sm.getActiveState();
+    gamepad.checkData();
 
-    InputData inp = input.popAction();
-
-    if (activeState.animation) {
-      activeState.update(delta, inp);
-      activeState.render(delta);
-      return;
-    }
-
-    // try to evaluate commands first
+    // TODO commands into states
     if (actions.hasData()) {
       actions.invokeNext();
       return;
     }
 
-    // update game-pad controls
-    if (features.gamePad && gamePad.update) {
-      gamePad.update();
-    }
-
-    // state update
-    activeState.update(delta, inp);
-    activeState.render(delta);
-
-    // release input data object
-    if (inp != null) {
-      input.releaseAction(inp);
-    }
+    State activeState = sm.getActiveState();
+    activeState.update(delta, input);
+    activeState.render(delta, gfx);
   }
 
-  // Starts the game state machine.
-  //
+  /**
+   * Starts the game state machine.
+   */
   public void start() {
     if (active) {
       JsUtil.throwError("IllegalState");
@@ -82,34 +90,13 @@ public class GameLoopManager implements Injectable {
     }
 
     active = true;
-    log.info("starting game state machine");
+    log.info("starting game loop");
 
-    // faster because no bind necessary in the game loop
-    GameLoopManager thisAccess = this;
-
-    int oldTime = JSObjectAdapter.$js(NOW_AS_MILLIES);
-
-    Callback0 gameLoop = () -> {
-
-      int now = JSObjectAdapter.$js(NOW_AS_MILLIES);
-      int delta = now - oldTime;
-      oldTime = now;
-
-      thisAccess.update(delta);
-
-      if (!active) {
-        Raf.requestAnimationFrame(gameLoop);
-      }
-    };
-
-    // set start state
-    sm.setState("NONE", false);
-
-    // enter the loop
-    Raf.requestAnimationFrame(gameLoop);
+    RequestAnimationFrameGlobal.requestAnimationFrame(loopFunction);
   }
 
   public void stop() {
     active = false;
+    log.info("stopping game loop");
   }
 }
