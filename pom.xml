@@ -20,7 +20,7 @@
  </repositories>
 
  <properties>
-  <stjs.version>3.1.4</stjs.version>
+  <stjs.version>3.1.5</stjs.version>
    
     <!-- this resolves to test folder.. drops all tests from build -->
     <test.exclude.pattern>**/test/**/*.java</test.exclude.pattern>
@@ -125,19 +125,27 @@
         <target>
 
          <!-- stjs engine -->
-         <copy file="${project.build.outputDirectory}/stjs.js"
-          todir="${basedir}/dest" overwrite="true" />
+         <copy  file="${project.build.outputDirectory}/stjs.js"
+                todir="${basedir}/dest" 
+                overwrite="true" />
 
          <!-- dependencies -->
-         <concat destfile="${basedir}/dest/deps.js">
-          <fileset dir="${basedir}/src/org/wolftec/cwtactics/engine">
-           <include name="**/*.js" />
+         <concat      destfile="${basedir}/dest/deps.js">
+          <fileset    dir="${basedir}/gameSrc/org/wolftec/cwt">
+           <include   name="**/js/*.js" />
           </fileset>
          </concat>
+         
+         <!-- html -->
+         
+         <copy file="${basedir}/gameSrc/org/wolftec/cwt/html/body.html"
+               tofile="${basedir}/dest/start.html" 
+               overwrite="true" />
 
          <!-- game -->
          <copy file="${project.build.outputDirectory}/CustomWarsTactics.js"
-          tofile="${basedir}/dest/game.js" overwrite="true" />
+               tofile="${basedir}/dest/game.js" 
+               overwrite="true" />
         </target>
        </configuration>
       </execution>

@@ -5,6 +5,7 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.JSStringAdapter;
+import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.core.JsUtil;
@@ -147,16 +148,21 @@ public abstract class ClassUtil {
    * @param property
    * @return the type of the given property of the given class
    */
-  public static Class<?> getClassPropertyType(Class<?> clazz, String property) {
+  public static void searchClassPropertyType(Class<?> clazz, String property, Callback1<Class<?>> foundCb, Callback0 notFoundCb) {
     Object classDesc = JSObjectAdapter.$get(clazz, PARAM_TYPE_DESCRIPTION);
     String typeName = (String) JSObjectAdapter.$get(classDesc, property);
 
-    if (JSGlobal.typeof(typeName) != "string") {
-      typeName = (String) JSObjectAdapter.$get(typeName, "name");
-    }
+    if (Nullable.isPresent(typeName)) {
+      if (JSGlobal.typeof(typeName) != "string") {
+        typeName = (String) JSObjectAdapter.$get(typeName, "name");
+      }
 
-    Array<String> namePieces = JSStringAdapter.split(typeName, ".");
-    return getTypeByNamespace(namePieces);
+      Array<String> namePieces = JSStringAdapter.split(typeName, ".");
+      getTypeByNamespace(namePieces, foundCb, notFoundCb);
+
+    } else {
+      notFoundCb.$invoke();
+    }
   }
 
   /**
@@ -167,16 +173,17 @@ public abstract class ClassUtil {
    * @param property
    * @return type of the given property
    */
-  public static Class<?> getClassPropertySubType(Class<?> classObject, String property) {
+  public static void getClassPropertySubType(Class<?> classObject, String property, Callback1<Class<?>> foundCb, Callback0 notFoundCb) {
     Object classDesc = JSObjectAdapter.$get(classObject, PARAM_TYPE_DESCRIPTION);
     String typeName = (String) JSObjectAdapter.$get(classDesc, property);
 
     if (JSGlobal.typeof(typeName) == "string") {
-      return JsUtil.throwError("NoSubType");
-    }
+      notFoundCb.$invoke();
 
-    typeName = ((Array<String>) JSObjectAdapter.$get(typeName, "arguments")).$get(0);
-    return getTypeByNamespace(JSStringAdapter.split(typeName, "."));
+    } else {
+      typeName = ((Array<String>) JSObjectAdapter.$get(typeName, "arguments")).$get(0);
+      getTypeByNamespace(JSStringAdapter.split(typeName, "."), foundCb, notFoundCb);
+    }
   }
 
   /**
@@ -186,17 +193,18 @@ public abstract class ClassUtil {
    *          string array
    * @return class object
    */
-  private static Class<?> getTypeByNamespace(Array<String> namePieces) {
+  private static void getTypeByNamespace(Array<String> namePieces, Callback1<Class<?>> foundCb, Callback0 notFoundCb) {
     Object result = Global.window;
 
     for (int i = 0; i < namePieces.$length(); i++) {
       result = JSObjectAdapter.$get(result, namePieces.$get(i));
       if (!Nullable.isPresent(result)) {
-        return JsUtil.throwError("UnknownPropertyType");
+        notFoundCb.$invoke();
+        return;
       }
     }
 
-    return (Class<?>) result;
+    foundCb.$invoke((Class<?>) result);
   }
 
   /**

@@ -119,4 +119,8 @@ public abstract class BrowserUtil {
     String value = getUrlParameterMap().$get(param);
     return value != JSGlobal.undefined ? value : null;
   }
+
+  public static long getTimestamp() {
+    return JSObjectAdapter.$js("new Date().getTime()");
+  }
 }

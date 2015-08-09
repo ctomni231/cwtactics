@@ -2,7 +2,7 @@ package org.wolftec.cwt.input.backends;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
-import org.stjs.javascript.annotation.STJSBridge;
+import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.dom.DOMEvent;
 import org.wolftec.cwt.core.Deactivatable;
 import org.wolftec.cwt.core.ioc.Injectable;
@@ -35,14 +35,17 @@ public class TouchInput implements Injectable, Deactivatable {
 
   public static final String TOUCH_DRAG_LEFT   = "TOUCH_DRAG_LEFT";
 
-  @STJSBridge
-  static class TouchEvent extends DOMEvent {
+  // @STJSBridge TODO readd when stjs 3.2.0 is fixed
+  @SyntheticType
+  static class TouchEvent {
     native void preventDefault();
 
     Array<TouchPosition> touches;
+    long                 timeStamp;
   }
 
-  @STJSBridge
+  // @STJSBridge TODO readd when stjs 3.2.0 is fixed
+  @SyntheticType
   static class TouchPosition {
     int clientX;
     int clientY;
@@ -71,7 +74,7 @@ public class TouchInput implements Injectable, Deactivatable {
   private int          dragDiff;
 
   private void handleTouchStart(DOMEvent origEvent) {
-    TouchEvent event = (TouchEvent) origEvent;
+    TouchEvent event = (TouchEvent) ((Object) origEvent);
 
     event.preventDefault();
 
@@ -116,7 +119,7 @@ public class TouchInput implements Injectable, Deactivatable {
   }
 
   private void handleTouchMove(DOMEvent origEvent) {
-    TouchEvent event = (TouchEvent) origEvent;
+    TouchEvent event = (TouchEvent) ((Object) origEvent);
     event.preventDefault();
 
     int dx;
@@ -174,7 +177,7 @@ public class TouchInput implements Injectable, Deactivatable {
   }
 
   private void handleTouchEnd(DOMEvent origEvent) {
-    TouchEvent event = (TouchEvent) origEvent;
+    TouchEvent event = (TouchEvent) ((Object) origEvent);
     event.preventDefault();
 
     // CALCULATE DISTANCE AND TIME GAP BETWEEN START AND END EVENT

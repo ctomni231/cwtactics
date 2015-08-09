@@ -26,20 +26,30 @@ public class IoCContainer {
 
     createManagedObjects(config);
     handleManagedDependencies();
+    callConstructionEvent();
+  }
+
+  private void callConstructionEvent() {
+    JsUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
+      instance.onConstruction();
+    });
   }
 
   private void handleManagedDependencies() {
     JsUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
       ClassUtil.forEachClassInstanceProperty(instance, (prop, value) -> {
-        Class<?> propertyType = ClassUtil.getClassPropertyType(ClassUtil.getClass(instance), prop);
+        ClassUtil.searchClassPropertyType(ClassUtil.getClass(instance), prop, (propertyType) -> {
+          if (tryInjectManagedObject(instance, prop, propertyType)) {
+            return;
+          }
 
-        if (tryInjectManagedObject(instance, prop, propertyType)) {
-          return;
-        }
+          if (tryInjectConstructedObject(instance, prop, propertyType)) {
+            return;
+          }
 
-        if (tryInjectConstructedObject(instance, prop, propertyType)) {
-          return;
-        }
+        }, () -> {
+          /* leave property as it is because it seems not to be managed or known */
+        });
       });
     });
   }

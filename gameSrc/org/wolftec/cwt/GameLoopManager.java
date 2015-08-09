@@ -1,9 +1,9 @@
 package org.wolftec.cwt;
 
-import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
@@ -32,7 +32,7 @@ public class GameLoopManager implements Injectable {
 
   private boolean        active;
 
-  private int            oldTime;
+  private long           oldTime;
   private Callback0      loopFunction;
 
   @Override
@@ -45,11 +45,11 @@ public class GameLoopManager implements Injectable {
      */
     final GameLoopManager that = this;
 
-    oldTime = JSObjectAdapter.$js("new Date().getTime()");
+    oldTime = BrowserUtil.getTimestamp();
     loopFunction = () -> {
 
-      int now = JSObjectAdapter.$js("new Date().getTime()");
-      int delta = now - that.oldTime;
+      long now = BrowserUtil.getTimestamp();
+      int delta = (int) (now - that.oldTime);
       that.oldTime = now;
 
       that.update(delta);

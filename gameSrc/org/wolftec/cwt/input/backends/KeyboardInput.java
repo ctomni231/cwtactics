@@ -2,7 +2,7 @@ package org.wolftec.cwt.input.backends;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
-import org.stjs.javascript.annotation.STJSBridge;
+import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.Deactivatable;
 import org.wolftec.cwt.core.ioc.Injectable;
@@ -11,7 +11,8 @@ import org.wolftec.cwt.system.Nullable;
 
 public class KeyboardInput implements Injectable, Deactivatable {
 
-  @STJSBridge
+  // @STJSBridge TODO readd when stjs 3.2.0 is fixed
+  @SyntheticType
   static class KeyEvent {
     int keyCode;
   }

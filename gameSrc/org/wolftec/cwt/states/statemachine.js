@@ -1,3 +1,5 @@
+
+/*
 //
 //
 // @param desc
@@ -212,3 +214,5 @@ exports.addStates = function() {
   addAnimationState(require("./states/ingame_anim_nextTurn").state);
   addAnimationState(require("./states/ingame_anim_trapWait").state);
 };
+
+*/

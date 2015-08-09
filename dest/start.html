@@ -1,21 +1,49 @@
-<html>
-  
+<!DOCTYPE HTML>
+<html manifest="cache.manifest">
+
   <head>
-    
-    <script type="text/javascript" src="stjs.js" ></script>
-    <script>stjs.mainCallDisabled = true;</script>
-    <script type="text/javascript" src="deps.js" ></script>
-    <script type="text/javascript" src="game.js" ></script>
-    
-    <script type="text/javascript">
-      function __start__() {
-        cwt.Starter.main();
+
+    <title>Custom Wars: Tactics</title>
+
+    <meta content="yes"
+          name="apple-mobile-web-app-capable"/>
+
+    <meta name="viewport"
+          content="width=device-width,
+                     minimal-ui,
+                     initial-scale=1.0,
+                     maximum-scale=1,
+                     user-scalable=no"/>
+
+    <style>
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
       }
-    </script>
-    
+
+      #gameCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+      }
+
+    </style>
   </head>
-  
-  <body onload="/*__start__();*/">
-    <div id="game" ></div>
+
+  <body oncontextmenu="return false;">
+    <canvas width="320" height="160" id="gameCanvas"></canvas>
   </body>
+
+  <script type='application/javascript' src='stjs.js'>
+    stjs.mainCallDisabled = true;
+  </script>
+  <script type='application/javascript' src='deps.js'></script>
+  <script type='application/javascript' src='game.js'></script>
+
 </html>
