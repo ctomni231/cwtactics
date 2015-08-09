@@ -46,15 +46,25 @@ public class IoCContainer {
     JsUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
       ClassUtil.forEachClassInstanceProperty(instance, (prop, value) -> {
         ClassUtil.searchClassPropertyType(ClassUtil.getClass(instance), prop, (propertyType) -> {
+
           if (propertyType == Array.class) {
-            log.warn("ARRAY in " + instanceName + "." + prop + "");
+            tryInjectArrayOfManagedObjects(instance, prop);
+            return;
+
+          }
+
+          if (propertyType == Map.class) {
+            tryInjectMapOfManagedObjects(instance, prop);
+            return;
           }
 
           if (tryInjectManagedObject(instance, prop, propertyType)) {
+            log.info("Injecting instance of " + ClassUtil.getClassName(propertyType) + " into " + instanceName + "." + prop);
             return;
           }
 
           if (tryInjectConstructedObject(instance, prop, propertyType)) {
+            log.info("Injecting instance of " + ClassUtil.getClassName(propertyType) + " into " + instanceName + "." + prop);
             return;
           }
 
@@ -62,6 +72,42 @@ public class IoCContainer {
           /* leave property as it is because it seems not to be managed or known */
         });
       });
+    });
+  }
+
+  private void tryInjectArrayOfManagedObjects(Injectable instance, String prop) {
+    ClassUtil.searchClassPropertySubType(ClassUtil.getClass(instance), prop, 0, (propertyGenericType) -> {
+      Array<Injectable> list = JSCollections.$array();
+      JsUtil.forEachMapValue(managedObjects, (subInstanceName, subInstance) -> {
+        if (ClassUtil.classImplementsInterface(ClassUtil.getClass(subInstance), propertyGenericType)) {
+          log.info("Injecting instance of " + subInstanceName + " into the list " + ClassUtil.getClassName(instance) + "." + prop);
+          list.push(subInstance);
+        }
+      });
+      JSObjectAdapter.$put(instance, prop, list);
+    }, () -> {
+
+      /*
+       * leave property as it is because it seems not to be managed or known
+       */
+    });
+  }
+
+  private void tryInjectMapOfManagedObjects(Injectable instance, String prop) {
+    ClassUtil.searchClassPropertySubType(ClassUtil.getClass(instance), prop, 1, (propertyGenericType) -> {
+      Map<String, Injectable> map = JSCollections.$map();
+      JsUtil.forEachMapValue(managedObjects, (subInstanceName, subInstance) -> {
+        if (ClassUtil.classImplementsInterface(ClassUtil.getClass(subInstance), propertyGenericType)) {
+          log.info("Injecting instance of " + subInstanceName + " into the map " + ClassUtil.getClassName(instance) + "." + prop);
+          map.$put(subInstanceName, subInstance);
+        }
+      });
+      JSObjectAdapter.$put(instance, prop, map);
+    }, () -> {
+
+      /*
+       * leave property as it is because it seems not to be managed or known
+       */
     });
   }
 
@@ -108,5 +154,10 @@ public class IoCContainer {
         }
       });
     });
+  }
+
+  public <T extends Injectable> T getManagedObjectByType(Class<T> clazz) {
+    String className = ClassUtil.getClassName(clazz);
+    return Nullable.getOrThrow((T) managedObjects.$get(className), "UnknownState: " + className);
   }
 }

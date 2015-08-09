@@ -17,13 +17,15 @@ public class NoneState implements State {
   public void render(int delta, GraphicManager graphic) {
     CanvasRenderingContext2D ctx = graphic.mainCtx;
 
-    ctx.fillStyle = "green";
+    ctx.font = "24pt Arial";
+
+    ctx.fillStyle = "#CEF6D8";
     ctx.fillRect(0, 0, graphic.absoluteScreenWidth(), graphic.absoluteScreenHeight());
 
-    ctx.strokeStyle = "black";
-    ctx.strokeText("CustomWars: Tactics (" + Constants.VERSION + ")", 10, 10, 400);
+    ctx.fillStyle = "#1C1C1C";
+    ctx.fillText("CustomWars: Tactics (" + Constants.VERSION + ")", 30, 60, 400);
 
-    ctx.strokeStyle = "red";
-    ctx.strokeText("-! Development Version !-", 10, 30, 400);
+    ctx.fillStyle = "#610B0B";
+    ctx.fillText("- Development Version -", 40, 100, 400);
   }
 }

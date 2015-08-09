@@ -1,8 +1,8 @@
 package org.wolftec.cwt.states;
 
-import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
 
 public class StateManager implements Injectable {
@@ -34,7 +34,6 @@ public class StateManager implements Injectable {
 
   @Override
   public void onConstruction() {
-    states = JSCollections.$map();
   }
 
   /**
@@ -50,6 +49,10 @@ public class StateManager implements Injectable {
 
     // enter new state
     setState(stateId, true);
+  }
+
+  public void setStateByType(Class<?> stateClass, boolean fireEvent) {
+    setState(ClassUtil.getClassName(stateClass), fireEvent);
   }
 
   /**

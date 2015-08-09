@@ -6,6 +6,8 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.ioc.IoCConfiguration;
 import org.wolftec.cwt.core.ioc.IoCContainer;
+import org.wolftec.cwt.states.StateManager;
+import org.wolftec.cwt.states.start.NoneState;
 
 public class Main {
 
@@ -13,19 +15,21 @@ public class Main {
     long ts;
 
     ts = BrowserUtil.getTimestamp();
-    createIocContainer();
-    // TODO init statemachine
+    IoCContainer ioc = createIocContainer();
+    ioc.getManagedObjectByType(StateManager.class).setStateByType(NoneState.class, true);
+    ioc.getManagedObjectByType(GameLoopManager.class).start();
     ts = BrowserUtil.getTimestamp() - ts;
 
     Global.console.log("STARTUP " + ts + "ms");
   }
 
-  private static void createIocContainer() {
+  private static IoCContainer createIocContainer() {
     IoCContainer ct = new IoCContainer();
     ct.initByConfig(createIoCConfig());
     if (Constants.DEBUG) {
       JSObjectAdapter.$put(Global.window, "__ioc__", ct);
     }
+    return ct;
   }
 
   private static IoCConfiguration createIoCConfig() {

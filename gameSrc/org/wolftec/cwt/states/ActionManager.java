@@ -39,7 +39,6 @@ public class ActionManager implements Injectable {
 
   @Override
   public void onConstruction() {
-    actions = JSCollections.$array();
     actionIds = JSCollections.$map();
 
     pool = new CircularBuffer<ActionData>(BUFFER_SIZE);

@@ -96,6 +96,8 @@ public class ModelManager implements Injectable {
     properties = Functions.createListByClass(Property.class, Constants.MAX_PROPERTIES);
     units = Functions.createListByClass(Unit.class, Constants.MAX_PLAYER * Constants.MAX_UNITS);
 
+    map = JSCollections.$array();
+
     for (int x = 0, xe = Constants.MAX_MAP_WIDTH; x < xe; x++) {
       map.push(JSCollections.$array());
       for (int y = 0, ye = Constants.MAX_MAP_HEIGHT; y < ye; y++) {

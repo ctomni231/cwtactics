@@ -173,16 +173,22 @@ public abstract class ClassUtil {
    * @param property
    * @return type of the given property
    */
-  public static void getClassPropertySubType(Class<?> classObject, String property, Callback1<Class<?>> foundCb, Callback0 notFoundCb) {
+  public static void searchClassPropertySubType(Class<?> classObject, String property, int genericTypeIndex, Callback1<Class<?>> foundCb, Callback0 notFoundCb) {
     Object classDesc = JSObjectAdapter.$get(classObject, PARAM_TYPE_DESCRIPTION);
     String typeName = (String) JSObjectAdapter.$get(classDesc, property);
 
-    if (JSGlobal.typeof(typeName) == "string") {
-      notFoundCb.$invoke();
+    if (Nullable.isPresent(typeName) || JSGlobal.typeof(typeName) == "string") {
+      Array<String> generics = (Array<String>) JSObjectAdapter.$get(typeName, "arguments");
+      typeName = generics.$get(genericTypeIndex);
+      if (JSGlobal.typeof(typeName) == "string") {
+        getTypeByNamespace(JSStringAdapter.split(typeName, "."), foundCb, notFoundCb);
 
+      } else {
+        /* type is too complex -> not supported yet */
+        notFoundCb.$invoke();
+      }
     } else {
-      typeName = ((Array<String>) JSObjectAdapter.$get(typeName, "arguments")).$get(0);
-      getTypeByNamespace(JSStringAdapter.split(typeName, "."), foundCb, notFoundCb);
+      notFoundCb.$invoke();
     }
   }
 
