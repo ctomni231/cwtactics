@@ -1,4 +1,4 @@
-package org.wolftec.cwt.loading;
+package org.wolftec.cwt.core;
 
 import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Log;

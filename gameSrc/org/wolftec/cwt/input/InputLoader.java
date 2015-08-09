@@ -1,6 +1,7 @@
-package org.wolftec.cwt.loading;
+package org.wolftec.cwt.input;
 
 import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.core.Loader;
 import org.wolftec.cwt.input.backends.GamepadInput;
 import org.wolftec.cwt.input.backends.KeyboardInput;
 import org.wolftec.cwt.input.backends.MouseInput;

@@ -1,6 +1,6 @@
 package org.wolftec.cwt.states;
 
-import org.wolftec.cwt.logic.InformationList;
+import org.wolftec.cwt.core.InformationList;
 import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.model.PositionData;
 import org.wolftec.cwt.system.CircularBuffer;

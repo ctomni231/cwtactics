@@ -4,6 +4,7 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.config.OptionsManager;
+import org.wolftec.cwt.core.InformationList;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Property;

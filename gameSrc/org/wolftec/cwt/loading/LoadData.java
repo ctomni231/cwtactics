@@ -1,6 +1,7 @@
 package org.wolftec.cwt.loading;
 
 import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.core.Loader;
 
 public class LoadData implements Loader {
 

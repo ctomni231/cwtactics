@@ -19,6 +19,7 @@ public class SfxLoader implements Injectable, Grabber {
 
   @Override
   public void grabData(PersistenceManager pm, FileDescriptor file, Callback0 completeCb) {
+    /* TODO check features before */
     BrowserUtil.doXmlHttpRequest(file.path, "arraybuffer", (data, err) -> {
       pm.set(file.path, data, (saveErr, saveData) -> {
         completeCb.$invoke();

@@ -1,7 +1,8 @@
-package org.wolftec.cwt.loading;
+package org.wolftec.cwt.environment;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.core.Loader;
 import org.wolftec.cwt.system.Features;
 import org.wolftec.cwt.system.Log;
 

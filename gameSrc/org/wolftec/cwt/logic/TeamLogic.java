@@ -3,6 +3,7 @@ package org.wolftec.cwt.logic;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.InformationList;
 import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.model.ModelManager;
