@@ -3,7 +3,7 @@ package org.wolftec.cwt.renderer;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.Log;
 
 /**

@@ -1,7 +1,7 @@
 package org.wolftec.cwt.config;
 
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.save.AppHandler;
 import org.wolftec.cwt.save.GameHandler;
 

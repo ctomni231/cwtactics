@@ -6,7 +6,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.core.Grabber;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.persistence.PersistenceManager;
 
 public class LanguageLoader implements Injectable, Grabber {

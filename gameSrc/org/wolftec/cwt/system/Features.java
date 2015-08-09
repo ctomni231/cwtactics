@@ -2,7 +2,7 @@ package org.wolftec.cwt.system;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.STJSBridge;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 
 public class Features implements Injectable {
 

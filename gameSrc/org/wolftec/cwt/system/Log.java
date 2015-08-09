@@ -1,7 +1,8 @@
 package org.wolftec.cwt.system;
 
 import org.stjs.javascript.Global;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Constructable;
+import org.wolftec.cwt.core.ioc.Injectable;
 
 public class Log implements Constructable {
 

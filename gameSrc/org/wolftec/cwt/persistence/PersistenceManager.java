@@ -3,7 +3,7 @@ package org.wolftec.cwt.persistence;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.Features;
 
 public class PersistenceManager implements Injectable {

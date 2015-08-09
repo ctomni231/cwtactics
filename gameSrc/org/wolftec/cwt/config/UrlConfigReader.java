@@ -2,7 +2,7 @@ package org.wolftec.cwt.config;
 
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.BrowserUtil;
-import org.wolftec.cwt.loading.Loader;
+import org.wolftec.cwt.core.Loader;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 import org.wolftec.cwt.system.NumberUtil;

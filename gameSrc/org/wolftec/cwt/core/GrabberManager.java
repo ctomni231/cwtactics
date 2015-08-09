@@ -2,6 +2,7 @@ package org.wolftec.cwt.core;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.persistence.PersistenceManager;
 
 public class GrabberManager implements Injectable {

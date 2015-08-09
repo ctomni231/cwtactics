@@ -1,8 +1,8 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Unit;
 import org.wolftec.cwt.sheets.MoveType;

@@ -2,7 +2,7 @@ package org.wolftec.cwt.i18n;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.loading.Loader;
+import org.wolftec.cwt.core.Loader;
 import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;

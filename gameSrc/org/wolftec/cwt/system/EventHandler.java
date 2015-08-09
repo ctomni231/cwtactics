@@ -6,7 +6,7 @@ import org.stjs.javascript.JSFunctionAdapter;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 
 public class EventHandler implements Injectable {
 

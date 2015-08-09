@@ -4,7 +4,7 @@ import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
 import org.wolftec.cwt.core.Deactivatable;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.system.Nullable;

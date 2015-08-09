@@ -5,7 +5,7 @@ import org.wolftec.cwt.audio.AudioManager.AudioBuffer;
 import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.core.Grabber;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.persistence.PersistenceManager;
 
 public class SfxLoader implements Injectable, Grabber {
@@ -19,6 +19,7 @@ public class SfxLoader implements Injectable, Grabber {
 
   @Override
   public void grabData(PersistenceManager pm, FileDescriptor file, Callback0 completeCb) {
+    /* TODO check features before */
     BrowserUtil.doXmlHttpRequest(file.path, "arraybuffer", (data, err) -> {
       pm.set(file.path, data, (saveErr, saveData) -> {
         completeCb.$invoke();

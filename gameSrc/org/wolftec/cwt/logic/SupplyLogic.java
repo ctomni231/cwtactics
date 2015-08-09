@@ -1,6 +1,6 @@
 package org.wolftec.cwt.logic;
 
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Property;
 import org.wolftec.cwt.model.Tile;

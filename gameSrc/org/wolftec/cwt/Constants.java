@@ -3,6 +3,9 @@ package org.wolftec.cwt;
 public class Constants {
 
   public static final String  VERSION             = "0.36";
+
+  public static final String  NAMESPACE           = "cwt";
+
   /**
    * Determines the debug mode. Can be changed at runtime to enable/disable
    * runtime assertions and debug outputs.

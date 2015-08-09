@@ -2,7 +2,7 @@ package org.wolftec.cwt.save;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 
 public class SaveManager implements Injectable {
 

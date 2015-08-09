@@ -1,7 +1,7 @@
 package org.wolftec.cwt.states.actions;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.CircularBuffer;
 
 public class MoveActionData implements Injectable {

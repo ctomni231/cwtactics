@@ -2,8 +2,8 @@ package org.wolftec.cwt.config;
 
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.ioc.Injectable;
 
 public abstract class OptionsManager implements Injectable {
 

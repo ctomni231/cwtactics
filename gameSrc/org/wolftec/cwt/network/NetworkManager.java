@@ -1,8 +1,8 @@
 package org.wolftec.cwt.network;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.Injectable;
 import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.ioc.Injectable;
 
 public class NetworkManager implements Injectable {
 

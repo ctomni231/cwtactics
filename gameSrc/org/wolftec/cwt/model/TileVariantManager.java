@@ -3,7 +3,7 @@ package org.wolftec.cwt.model;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.Nullable;
 
 public class TileVariantManager implements Injectable {

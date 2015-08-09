@@ -1,6 +1,6 @@
 package org.wolftec.cwt;
 
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.states.StateManager;
 
 public class ErrorManager implements Injectable {

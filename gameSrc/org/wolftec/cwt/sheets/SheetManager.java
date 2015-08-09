@@ -1,6 +1,6 @@
 package org.wolftec.cwt.sheets;
 
-import org.wolftec.cwt.core.Injectable;
+import org.wolftec.cwt.core.ioc.Injectable;
 
 public class SheetManager implements Injectable {
 
