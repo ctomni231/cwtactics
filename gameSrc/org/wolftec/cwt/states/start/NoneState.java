@@ -5,12 +5,13 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.State;
+import org.wolftec.cwt.system.Maybe;
 
 public class NoneState implements State {
 
   @Override
-  public Class<? extends State> update(int delta, InputManager input) {
-    return LoadingState.class;
+  public Maybe<Class<? extends State>> update(int delta, InputManager input) {
+    return Maybe.of(LoadingState.class);
   }
 
   @Override

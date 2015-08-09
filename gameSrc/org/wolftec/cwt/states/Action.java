@@ -3,7 +3,7 @@ package org.wolftec.cwt.states;
 /**
  * Action class which represents an action which is usable by engine objects.
  */
-public interface Action extends State {
+public interface Action {
 
   /**
    * Key ID of the action.

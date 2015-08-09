@@ -3,8 +3,11 @@ package org.wolftec.cwt.states;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.renderer.GraphicManager;
+import org.wolftec.cwt.system.Maybe;
 
 public interface State extends Injectable {
+
+  public static final Maybe<Class<? extends State>> NO_TRANSITION = Maybe.of(null);
 
   /**
    * Called when the state will be leaved.
@@ -30,8 +33,8 @@ public interface State extends Injectable {
    *          buttons
    * @return
    */
-  default Class<? extends State> update(int delta, InputManager input) {
-    return null;
+  default Maybe<Class<? extends State>> update(int delta, InputManager input) {
+    return NO_TRANSITION;
   }
 
   /**

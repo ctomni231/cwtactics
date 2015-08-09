@@ -1,12 +1,9 @@
 package org.wolftec.cwt.states.actions;
 
-import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.Action;
 import org.wolftec.cwt.states.ActionData;
 import org.wolftec.cwt.states.ActionType;
-import org.wolftec.cwt.states.State;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class WaitUnit implements Action {
@@ -36,14 +33,5 @@ public class WaitUnit implements Action {
   @Override
   public void invoke(ActionData data) {
     model.getUnit(data.p1).setActable(false);
-  }
-
-  @Override
-  public Class<? extends State> update(int delta, InputManager input) {
-    return null;
-  }
-
-  @Override
-  public void render(int delta, GraphicManager canvas) {
   }
 }

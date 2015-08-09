@@ -14,7 +14,7 @@ public class ErrorManager implements Injectable {
    * @param where
    */
   public void raiseError(String message, String where) {
-    state.changeState("ERROR_SCREEN");
+    // state.changeState("ERROR_SCREEN");
 
     // set meta data
     // errorState.setErrorData(message, where)

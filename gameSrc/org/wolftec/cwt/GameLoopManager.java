@@ -13,6 +13,7 @@ import org.wolftec.cwt.states.ActionManager;
 import org.wolftec.cwt.states.State;
 import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.Maybe;
 
 public class GameLoopManager implements Injectable {
 
@@ -74,8 +75,12 @@ public class GameLoopManager implements Injectable {
     }
 
     State activeState = sm.getActiveState();
-    activeState.update(delta, input);
+    Maybe<Class<? extends State>> nexState = activeState.update(delta, input);
     activeState.render(delta, gfx);
+
+    if (nexState.isPresent()) {
+      sm.changeState(nexState.get());
+    }
   }
 
   /**

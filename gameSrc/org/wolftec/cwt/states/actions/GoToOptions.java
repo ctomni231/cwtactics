@@ -22,7 +22,7 @@ public class GoToOptions implements Action {
   @Override
   public void invoke(ActionData data) {
     // stateData.fromIngameToOptions = true;
-    state.changeState("MENU_OPTIONS");
+    // state.changeState("MENU_OPTIONS");
   }
 
 }

@@ -16,7 +16,7 @@ public class Main {
 
     ts = BrowserUtil.getTimestamp();
     IoCContainer ioc = createIocContainer();
-    ioc.getManagedObjectByType(StateManager.class).setStateByType(NoneState.class, true);
+    ioc.getManagedObjectByType(StateManager.class).setState(NoneState.class, true);
     ioc.getManagedObjectByType(GameLoopManager.class).start();
     ts = BrowserUtil.getTimestamp() - ts;
 

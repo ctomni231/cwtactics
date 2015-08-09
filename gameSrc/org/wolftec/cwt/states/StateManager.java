@@ -42,17 +42,13 @@ public class StateManager implements Injectable {
    * 
    * @param stateId
    */
-  public void changeState(String stateId) {
+  public void changeState(Class<? extends State> state) {
     if (activeState != null) {
       activeState.exit();
     }
 
     // enter new state
-    setState(stateId, true);
-  }
-
-  public void setStateByType(Class<?> stateClass, boolean fireEvent) {
-    setState(ClassUtil.getClassName(stateClass), fireEvent);
+    setState(state, true);
   }
 
   /**
@@ -62,7 +58,9 @@ public class StateManager implements Injectable {
    * @param stateId
    * @param fireEvent
    */
-  public void setState(String stateId, boolean fireEvent) {
+  public void setState(Class<?> state, boolean fireEvent) {
+    String stateId = ClassUtil.getClassName(state);
+
     log.info("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
 
     activeState = states.$get(stateId);
