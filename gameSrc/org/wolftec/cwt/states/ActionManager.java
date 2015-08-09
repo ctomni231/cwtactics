@@ -41,10 +41,11 @@ public class ActionManager implements Injectable {
   public void onConstruction() {
     actions = JSCollections.$array();
     actionIds = JSCollections.$map();
-    Functions.repeat(BUFFER_SIZE, (i) -> pool.push(new ActionData()));
 
     pool = new CircularBuffer<ActionData>(BUFFER_SIZE);
     buffer = new CircularBuffer<ActionData>(BUFFER_SIZE);
+
+    Functions.repeat(BUFFER_SIZE, (i) -> pool.push(new ActionData()));
   }
 
   /**

@@ -25,7 +25,11 @@ public class Log implements Constructable {
 
   @Override
   public void onConstruction(Injectable instance) {
-    loggerName = Log.convertNameToFixedLength(ClassUtil.getClassName(instance));
+    initByName(ClassUtil.getClassName(instance));
+  }
+
+  private void initByName(String name) {
+    loggerName = Log.convertNameToFixedLength(name);
   }
 
   public void info(String msg) {

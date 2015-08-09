@@ -1,14 +1,18 @@
 package org.wolftec.cwt.core.ioc;
 
+import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.system.ClassUtil;
+import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 
 public class IoCContainer {
+
+  private Log                     log;
 
   private Map<String, Injectable> managedObjects;
 
@@ -23,6 +27,9 @@ public class IoCContainer {
      * with injected class names... else our IoC container would not work
      */
     prepareNamespaces(config);
+
+    log = new Log();
+    log.onConstruction((Injectable) this);
 
     createManagedObjects(config);
     handleManagedDependencies();
@@ -39,6 +46,10 @@ public class IoCContainer {
     JsUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
       ClassUtil.forEachClassInstanceProperty(instance, (prop, value) -> {
         ClassUtil.searchClassPropertyType(ClassUtil.getClass(instance), prop, (propertyType) -> {
+          if (propertyType == Array.class) {
+            log.warn("ARRAY in " + instanceName + "." + prop + "");
+          }
+
           if (tryInjectManagedObject(instance, prop, propertyType)) {
             return;
           }

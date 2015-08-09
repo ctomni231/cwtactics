@@ -101,7 +101,9 @@
       </excludes>
 
       <pack>true</pack>
-
+      
+      <generateSourceMap>true</generateSourceMap>
+      
       <annotations>
        <annotation>Handled</annotation>
       </annotations>
@@ -146,6 +148,20 @@
          <copy file="${project.build.outputDirectory}/CustomWarsTactics.js"
                tofile="${basedir}/dest/game.js" 
                overwrite="true" />
+               
+         <copy file="${project.build.outputDirectory}/CustomWarsTactics.map"
+               tofile="${basedir}/dest/CustomWarsTactics.map" 
+               overwrite="true" />
+               
+         <replace file="${basedir}/dest/CustomWarsTactics.map">
+           <replacetoken><![CDATA[
+             "names":[] 
+           ]]></replacetoken>
+           <replacevalue><![CDATA[
+             "names":[], 
+             "sourceRoot":"http://localhost/gameSrc"
+           ]]></replacevalue>
+         </replace>
         </target>
        </configuration>
       </execution>
