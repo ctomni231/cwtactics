@@ -1,8 +1,6 @@
-package org.wolftec.cwt.input.backends;
+package org.wolftec.cwt.input.backends.gamepad;
 
 import org.stjs.javascript.Array;
-import org.stjs.javascript.annotation.GlobalScope;
-import org.stjs.javascript.annotation.STJSBridge;
 import org.wolftec.cwt.core.Deactivatable;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
@@ -10,27 +8,12 @@ import org.wolftec.cwt.system.Nullable;
 
 public class GamepadInput implements Injectable, Deactivatable {
 
-  @STJSBridge
-  @GlobalScope
-  static class GlobalGamepad {
-    native static Array<Gamedpad> webkitGetGamepads();
-  }
-
-  @STJSBridge
-  static class Gamedpad {
-    int            timestamp;
-
-    // TODO new specification shows different API
-    // https://developer.mozilla.org/en-US/docs/Web/Guide/API/Gamepad
-    Array<Integer> buttons;
-
-    Array<Integer> axes;
-  }
-
   private InputManager   input;
 
   private boolean        enabled;
   private Array<Integer> prevTimestamps;
+
+  /* TODO move API classes back into this when stjs 3.2.0 bug is fixed */
 
   private void checkButton(Gamedpad gamepad, int id) {
     String button = "GAMEPAD_" + id;
@@ -63,7 +46,7 @@ public class GamepadInput implements Injectable, Deactivatable {
       return;
     }
 
-    Array<Gamedpad> gamepads = GlobalGamepad.webkitGetGamepads();
+    Array<Gamedpad> gamepads = Global.navigator.getGamepads();
 
     for (int i = 0; i < 4; i++) {
       Gamedpad gamepad = gamepads.$get(i);

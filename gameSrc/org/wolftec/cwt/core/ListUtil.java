@@ -1,32 +1,21 @@
-package org.wolftec.cwt.system;
+package org.wolftec.cwt.core;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.JsUtil;
+import org.stjs.javascript.functions.Callback3;
+import org.wolftec.cwt.system.Nullable;
 
-@Deprecated
-public abstract class WorklfowUtil {
-
+public class ListUtil {
   private static class WorkflowData {
     int       completed;
     Callback0 mainCb;
   }
 
-  /**
-   * Calls functions in a sequence. The execution of the functions will be
-   * stopped when one of the functions throws an error.
-   *
-   * @param functionList
-   *          list of functions that will be called in a sequence
-   * @param callback
-   *          callback that will be called after every function in the list has
-   *          been called
-   */
-  public static void sequence(Array<Callback1<Callback0>> functionList, Callback0 callback) {
+  public static <T> void forEachArrayValueAsync(Array<T> array, Callback3<Integer, T, Callback0> callback, Callback0 doneCb) {
     Nullable.getOrThrow(callback, "MissingParameter: callback");
 
-    if (functionList.$length() == 0) {
+    if (array.$length() == 0) {
       JsUtil.throwError("IllegalArgumentException: function list cannot be empty");
     }
 
@@ -38,13 +27,13 @@ public abstract class WorklfowUtil {
      * function list
      */
     Callback1<Callback0> iterate = (nextCallback) -> {
-      functionList.$get(data.completed).$invoke(nextCallback);
+      callback.$invoke(data.completed, array.$get(data.completed), nextCallback);
     };
 
     data.mainCb = () -> {
       data.completed++;
-      if (data.completed == functionList.$length()) {
-        callback.$invoke();
+      if (data.completed == array.$length()) {
+        doneCb.$invoke();
       } else {
         iterate.$invoke(data.mainCb);
       }

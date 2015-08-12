@@ -7,7 +7,7 @@ import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
-import org.wolftec.cwt.input.backends.GamepadInput;
+import org.wolftec.cwt.input.backends.gamepad.GamepadInput;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.ActionManager;
 import org.wolftec.cwt.states.State;

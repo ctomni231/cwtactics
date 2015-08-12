@@ -22,7 +22,7 @@ public class ResetSystem implements Loader {
 
   @Override
   public void onLoad(Callback0 done) {
-    Nullable.ifPresent(BrowserUtil.getUrlParameter(PARAM_WIPEOUT), (value) -> {
+    Nullable.ifPresentOrElse(BrowserUtil.getUrlParameter(PARAM_WIPEOUT), (value) -> {
       if (!(value == "1" || value == "true")) {
         log.warn("IllegalUrlParameter: " + PARAM_WIPEOUT + "can only true or 1");
         return;
@@ -31,7 +31,7 @@ public class ResetSystem implements Loader {
       pm.clear((error) -> {
         Global.window.document.location.reload();
       });
-    });
+    }, () -> done.$invoke());
   }
 
 }

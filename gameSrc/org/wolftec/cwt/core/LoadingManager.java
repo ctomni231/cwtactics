@@ -1,80 +1,40 @@
 package org.wolftec.cwt.core;
 
-import org.wolftec.cwt.persistence.PersistenceManager;
+import org.stjs.javascript.Array;
+import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
 
-public class LoadingManager {
+public class LoadingManager implements Injectable {
 
-  private static final String PARAM_HAS_CACHE = "__hasCache__";
+  private Log           log;
 
-  private Log                 log;
-  private PersistenceManager  persistence;
+  private Array<Loader> loaders;
 
-  private boolean             hasCachedData;
+  @Override
+  public void onConstruction() {
+    loaders.sort((a, b) -> {
+      if (a.priority() < b.priority()) {
+        return -1;
+      } else if (a.priority() == b.priority()) {
+        return 0;
+      } else {
+        return +1;
+      }
+    });
+  }
 
-  // /**
-  // * Starts the loading process. After the loading process the loading stuff
-  // * will be removed. The Loading namespace will remain with a property with
-  // * value true as marker. This property will be named deInitialized.
-  // *
-  // * @param setProcess
-  // * @param callback
-  // */
-  // public void startProcess(Callback1<Integer> setProcess, Callback0 callback)
-  // {
-  //
-  // Function1<Integer, Callback1<Callback0>> setProgress = (i) -> {
-  // return (next) -> {
-  // setProcess.$invoke(i);
-  // next.$invoke();
-  // };
-  // };
-  //
-  // function setLoader(mod) {
-  // return function (next) {
-  // mod.loader(next, hasCachedData);
-  // };
-  // }
-  //
-  // log.info("start loading game data");
-  // storage.get(PARAM_HAS_CACHE, (value) -> {
-  // hasCachedData = value;
-  // workflow.sequence([
-  // setLoader(require("./loading/checkSystem")),
-  // setProgress(5),
-  // setLoader(require("./loading/startParameters")),
-  // setProgress(10),
-  // setLoader(require("./loading/loadMod")),
-  // setProgress(15),
-  // setLoader(require("./loading/injectMod")),
-  // setProgress(20),
-  // setLoader(require("./loading/language")),
-  // setProgress(25),
-  // setLoader(require("./loading/imageLoad")),
-  // setProgress(50),
-  // setLoader(require("./loading/audioInit")),
-  // setProgress(75),
-  // setLoader(require("./loading/inputInit")),
-  // setProgress(80),
-  // setLoader(require("./loading/loadMaps")),
-  // setProgress(90),
-  // setLoader(require("./loading/portraitCheck")),
-  // setProgress(95),
-  // setLoader(require("./loading/addStates")),
-  // setProgress(100),
-  // function (next){
-  // // release cached modification
-  // require("./dataTransfer/mod").clearCachedMod();
-  // next();
-  // }
-  // ],
-  // () -> {
-  // if (callback) {
-  // log.info("finished loading game data");
-  // persistence.set(PARAM_HAS_CACHE, true, callback);
-  // }
-  // }
-  // );
-  // });
-  // }
+  /**
+   * Loads all data into the system by invoking the onLoad method on all
+   * loaders.
+   * 
+   * @param doneCb
+   */
+  public void loadData(Callback0 doneCb) {
+    ListUtil.forEachArrayValueAsync(loaders, (index, loader, next) -> {
+      log.info("Invoking loading method of " + ClassUtil.getClassName(loader));
+      loader.onLoad(next);
+    }, doneCb);
+  }
 }

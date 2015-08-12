@@ -41,14 +41,23 @@ public class LanguageManager implements Injectable {
     });
 
     languages.$put(key, newLang);
-  };
+  }
+
+  /**
+   * 
+   * @param key
+   * @return true if a language with the given key is loaded, else false
+   */
+  public boolean hasLanguage(String key) {
+    return Nullable.isPresent(languages.$get(key));
+  }
 
   /**
    * Selects a language by it's key.
    */
   public void selectLanguage(String key) {
     selected = Nullable.getOrThrow(languages.$get(key), "UnknownLanguage");
-  };
+  }
 
   /**
    * Returns the localized string of a given identifier.

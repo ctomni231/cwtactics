@@ -18,13 +18,18 @@ public class LanguageSelector implements Loader {
     return 10;
   }
 
+  private void tryToSelectLanguage(String key) {
+    if (i18n.hasLanguage(key)) {
+      log.info("select language " + key);
+      i18n.selectLanguage(key);
+    }
+  }
+
   @Override
   public void onLoad(Callback0 done) {
-    log.info("automatical select language by environment settings");
-
     storage.get("cfg.language", (key, keyValue) -> {
       Nullable.ifPresentOrElse(keyValue, (value) -> {
-        i18n.selectLanguage((String) value);
+        tryToSelectLanguage((String) value);
         done.$invoke();
 
       }, () -> {
@@ -35,14 +40,15 @@ public class LanguageSelector implements Loader {
           case "de-De":
           case "german":
           case "Deutsch":
-            i18n.selectLanguage("de");
+            tryToSelectLanguage("de");
             break;
 
           case "en":
           default:
-            i18n.selectLanguage("en");
+            tryToSelectLanguage("en");
             break;
         }
+
         done.$invoke();
       });
     });

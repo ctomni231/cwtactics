@@ -1,10 +1,11 @@
 package org.wolftec.cwt.core;
 
 import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.core.ioc.Injectable;
 
-public interface Loader {
+public interface Loader extends Injectable {
   default int priority() {
-    return 1;
+    return 10;
   }
 
   /**
