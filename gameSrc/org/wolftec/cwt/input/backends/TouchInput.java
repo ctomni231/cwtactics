@@ -7,6 +7,7 @@ import org.stjs.javascript.dom.DOMEvent;
 import org.wolftec.cwt.core.Deactivatable;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
+import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.NumberUtil;
 
 public class TouchInput implements Injectable, Deactivatable {
@@ -50,6 +51,8 @@ public class TouchInput implements Injectable, Deactivatable {
     int clientX;
     int clientY;
   }
+
+  private Log          log;
 
   private InputManager input;
 
@@ -217,6 +220,7 @@ public class TouchInput implements Injectable, Deactivatable {
 
   @Override
   public void enable() {
+    log.info("activating touch input");
     Global.window.document.addEventListener("touchstart", this::handleTouchStart, false);
     Global.window.document.addEventListener("touchmove", this::handleTouchMove, false);
     Global.window.document.addEventListener("touchend", this::handleTouchEnd, false);
@@ -224,6 +228,7 @@ public class TouchInput implements Injectable, Deactivatable {
 
   @Override
   public void disable() {
+    log.info("deactivating touch input");
     Global.window.document.removeEventListener("touchstart", this::handleTouchStart, false);
     Global.window.document.removeEventListener("touchmove", this::handleTouchMove, false);
     Global.window.document.removeEventListener("touchend", this::handleTouchEnd, false);

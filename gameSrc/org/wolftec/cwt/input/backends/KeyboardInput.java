@@ -7,6 +7,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.Deactivatable;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
+import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 
 public class KeyboardInput implements Injectable, Deactivatable {
@@ -17,6 +18,7 @@ public class KeyboardInput implements Injectable, Deactivatable {
     int keyCode;
   }
 
+  private Log          log;
   private InputManager input;
 
   public void handleKeyDown(KeyEvent ev) {
@@ -29,12 +31,14 @@ public class KeyboardInput implements Injectable, Deactivatable {
 
   @Override
   public void enable() {
+    log.info("activating keyboard input");
     JSObjectAdapter.$put(Global.window.document, "onkeydown", (Callback1<KeyEvent>) this::handleKeyDown);
     JSObjectAdapter.$put(Global.window.document, "onkeyup", (Callback1<KeyEvent>) this::handleKeyUp);
   }
 
   @Override
   public void disable() {
+    log.info("deactivating keyboard input");
     JSObjectAdapter.$put(Global.window.document, "onkeydown", null);
     JSObjectAdapter.$put(Global.window.document, "onkeyup", null);
   }

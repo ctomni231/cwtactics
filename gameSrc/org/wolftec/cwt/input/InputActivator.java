@@ -9,7 +9,7 @@ import org.wolftec.cwt.input.backends.gamepad.GamepadInput;
 import org.wolftec.cwt.system.Features;
 import org.wolftec.cwt.system.Log;
 
-public class InputLoader implements Loader {
+public class InputActivator implements Loader {
 
   private Log           log;
   private Features      features;
@@ -21,13 +21,10 @@ public class InputLoader implements Loader {
 
   @Override
   public void onLoad(Callback0 done) {
-    log.info("activating input backends");
-
     if (features.keyboard) keyboard.enable();
     if (features.gamePad) gamepad.enable();
     if (features.mouse) mouse.enable();
     if (features.touch) touch.enable();
-
     done.$invoke();
   }
 

@@ -33,7 +33,7 @@ public class LoadingManager implements Injectable {
    */
   public void loadData(Callback0 doneCb) {
     ListUtil.forEachArrayValueAsync(loaders, (index, loader, next) -> {
-      log.info("Invoking loading method of " + ClassUtil.getClassName(loader));
+      log.info("Invoking " + ClassUtil.getClassName(loader));
       loader.onLoad(next);
     }, doneCb);
   }

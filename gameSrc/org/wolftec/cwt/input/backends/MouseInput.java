@@ -7,6 +7,7 @@ import org.wolftec.cwt.core.Deactivatable;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.renderer.GraphicManager;
+import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 
 public class MouseInput implements Injectable, Deactivatable {
@@ -20,6 +21,7 @@ public class MouseInput implements Injectable, Deactivatable {
     int layerY;
   }
 
+  private Log            log;
   private GraphicManager gfx;
   private InputManager   input;
 
@@ -66,6 +68,7 @@ public class MouseInput implements Injectable, Deactivatable {
 
   @Override
   public void enable() {
+    log.info("activating mouse input");
     gfx.mainCanvas.onmousemove = (Function1<DOMEvent, Boolean>) this::handleMoveEvent;
     gfx.mainCanvas.onmousedown = (Function1<DOMEvent, Boolean>) this::handleDownEvent;
     gfx.mainCanvas.onmouseup = (Function1<DOMEvent, Boolean>) this::handleUpEvent;
@@ -73,6 +76,7 @@ public class MouseInput implements Injectable, Deactivatable {
 
   @Override
   public void disable() {
+    log.info("deactivating mouse input");
     gfx.mainCanvas.onmousemove = null;
     gfx.mainCanvas.onmousedown = null;
     gfx.mainCanvas.onmouseup = null;

@@ -13,7 +13,7 @@ public class CheckSystem implements Loader {
 
   @Override
   public int priority() {
-    return 999;
+    return -998;
   }
 
   @Override

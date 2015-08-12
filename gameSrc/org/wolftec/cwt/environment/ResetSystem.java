@@ -17,7 +17,7 @@ public class ResetSystem implements Loader {
 
   @Override
   public int priority() {
-    return 1000;
+    return -999;
   }
 
   @Override

@@ -4,10 +4,12 @@ import org.stjs.javascript.Array;
 import org.wolftec.cwt.core.Deactivatable;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
+import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 
 public class GamepadInput implements Injectable, Deactivatable {
 
+  private Log            log;
   private InputManager   input;
 
   private boolean        enabled;
@@ -66,11 +68,13 @@ public class GamepadInput implements Injectable, Deactivatable {
 
   @Override
   public void enable() {
+    log.info("activating gamepad input");
     enabled = true;
   }
 
   @Override
   public void disable() {
+    log.info("deactivating gamepad input");
     enabled = false;
   }
 

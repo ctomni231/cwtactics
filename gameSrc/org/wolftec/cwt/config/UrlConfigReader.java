@@ -18,7 +18,7 @@ public class UrlConfigReader implements Loader {
 
   @Override
   public int priority() {
-    return 0;
+    return 10;
   }
 
   private void grabConfigFromUrl(String paramName, Config cfg) {
