@@ -7,6 +7,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
@@ -43,7 +44,7 @@ public class TestManagerSystem implements Injectable {
 
     Object testProto = JSObjectAdapter.$prototype(JSObjectAdapter.$constructor(test));
     Array<String> properties = JsUtil.objectKeys(testProto);
-    JsUtil.forEachArrayValue(properties, (index, property) -> {
+    ListUtil.forEachArrayValue(properties, (index, property) -> {
       if (isTestCaseProperty(test, property)) {
         callTestMethod(test, property);
       }

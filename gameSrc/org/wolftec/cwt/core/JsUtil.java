@@ -55,12 +55,6 @@ public abstract class JsUtil {
     forEachObjectValueByFilteredKey(obj, filter, callback);
   }
 
-  public static <T> void forEachArrayValue(Array<T> array, Callback2<Integer, T> callback) {
-    for (int i = 0; i < array.$length(); i++) {
-      callback.$invoke(i, array.$get(i));
-    }
-  }
-
   public static <T> T throwError(String message) {
     JSObjectAdapter.$js("throw new Error(message)");
     return null; // never reached

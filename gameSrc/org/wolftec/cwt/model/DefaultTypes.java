@@ -2,7 +2,7 @@ package org.wolftec.cwt.model;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.Loader;
+import org.wolftec.cwt.core.GameLoader;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.logic.CannonLogic;
 import org.wolftec.cwt.logic.LaserLogic;
@@ -12,7 +12,7 @@ import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.sheets.UnitType;
 import org.wolftec.cwt.system.Log;
 
-public class DefaultTypes implements Injectable, Loader {
+public class DefaultTypes implements Injectable, GameLoader {
 
   private SheetManager sheets;
   private Log          log;

@@ -6,6 +6,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
@@ -131,13 +132,13 @@ public class IoCContainer {
   }
 
   private void prepareNamespaces(IoCConfiguration config) {
-    JsUtil.forEachArrayValue(config.namespaces, (nsIndex, nsName) -> {
+    ListUtil.forEachArrayValue(config.namespaces, (nsIndex, nsName) -> {
       ClassUtil.initClassNames(JSObjectAdapter.$get(Global.window, nsName));
     });
   }
 
   private void createManagedObjects(IoCConfiguration config) {
-    JsUtil.forEachArrayValue(config.namespaces, (nsIndex, nsName) -> {
+    ListUtil.forEachArrayValue(config.namespaces, (nsIndex, nsName) -> {
       Object namespace = JSObjectAdapter.$get(Global.window, nsName);
 
       ClassUtil.forEachClassOfNamespace(namespace, (className, classObject) -> {

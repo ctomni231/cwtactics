@@ -6,11 +6,11 @@ import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
 
-public class LoadingManager implements Injectable {
+public class GameLoadingManager implements Injectable {
 
   private Log           log;
 
-  private Array<Loader> loaders;
+  private Array<GameLoader> loaders;
 
   @Override
   public void onConstruction() {

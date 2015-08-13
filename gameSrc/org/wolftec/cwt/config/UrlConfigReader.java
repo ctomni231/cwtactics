@@ -2,12 +2,12 @@ package org.wolftec.cwt.config;
 
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.BrowserUtil;
-import org.wolftec.cwt.core.Loader;
+import org.wolftec.cwt.core.GameLoader;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 import org.wolftec.cwt.system.NumberUtil;
 
-public class UrlConfigReader implements Loader {
+public class UrlConfigReader implements GameLoader {
 
   public static final String PARAM_FORCE_TOUCH     = "forceTouch";
   public static final String PARAM_ANIMATED_TILES  = "animatedTiles";

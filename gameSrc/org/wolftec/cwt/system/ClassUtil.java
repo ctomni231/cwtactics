@@ -9,6 +9,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.ListUtil;
 
 /**
  * Utility class to handle several low level stuff with stjs based objects.
@@ -107,7 +108,7 @@ public abstract class ClassUtil {
    *          (interface)
    */
   public static void forEachInterface(Class<?> clazz, Callback1<Class<?>> callback) {
-    JsUtil.forEachArrayValue((Array<Class<?>>) JSObjectAdapter.$get(clazz, PARAM_INHERIT), (index, interfaceObj) -> {
+    ListUtil.forEachArrayValue((Array<Class<?>>) JSObjectAdapter.$get(clazz, PARAM_INHERIT), (index, interfaceObj) -> {
       callback.$invoke(interfaceObj);
     });
   }
@@ -221,7 +222,7 @@ public abstract class ClassUtil {
    *          (className, class)
    */
   public static void forEachClassOfNamespace(Object namespace, Callback2<String, Class<?>> callback) {
-    JsUtil.forEachArrayValue(JsUtil.objectKeys(namespace), (index, className) -> {
+    ListUtil.forEachArrayValue(JsUtil.objectKeys(namespace), (index, className) -> {
       Class<?> classObject = (Class<?>) JSObjectAdapter.$get(namespace, className);
       if (Nullable.isPresent(JSObjectAdapter.$get(classObject, PARAM_TYPE_DESCRIPTION))) {
         callback.$invoke(className, classObject);

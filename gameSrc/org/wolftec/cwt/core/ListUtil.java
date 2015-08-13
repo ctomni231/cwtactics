@@ -3,6 +3,7 @@ package org.wolftec.cwt.core;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Callback3;
 import org.wolftec.cwt.system.Nullable;
 
@@ -40,5 +41,11 @@ public class ListUtil {
     };
 
     iterate.$invoke(data.mainCb);
+  }
+
+  public static <T> void forEachArrayValue(Array<T> array, Callback2<Integer, T> callback) {
+    for (int i = 0; i < array.$length(); i++) {
+      callback.$invoke(i, array.$get(i));
+    }
   }
 }

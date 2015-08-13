@@ -1,9 +1,11 @@
 package org.wolftec.cwt.system;
 
+import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.XMLHttpRequest;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback0;
+import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 
 /**
@@ -16,6 +18,50 @@ public abstract class RequestUtil {
 
   }
 
+  public static class ResponseData<T> {
+    public Maybe<T>      data;
+    public Maybe<String> error;
+  }
+
+  /**
+   * 
+   * @param path
+   * @param callback
+   *          (data, error)
+   */
+  public static <T> void getJSON(String path, Callback1<ResponseData<T>> callback) {
+    final XMLHttpRequest request = new XMLHttpRequest();
+
+    request.onreadystatechange = () -> {
+      if (request.readyState == 4) {
+        ResponseData<T> response = new ResponseData<T>();
+
+        String err = null;
+        T data = null;
+
+        if (request.readyState == 4 && request.status == 200) {
+          try {
+            data = (T) Global.JSON.parse(request.responseText);
+          } catch (Exception e) {
+            err = e.toString();
+          }
+        } else {
+          err = request.statusText;
+        }
+
+        response.data = Maybe.of(data);
+        response.error = Maybe.of(err);
+
+        callback.$invoke(response);
+      }
+    };
+
+    // create a randomized parameter for the URL to make sure it won't be cached
+    request.open("get", path, true);
+
+    request.send();
+  }
+
   /**
    * Invokes a XmlHttpRequest.
    * 
@@ -26,6 +72,7 @@ public abstract class RequestUtil {
    *          callback will be invoked with two parameters => object data and
    *          error message (both aren't not null at the same time)
    */
+  @Deprecated
   public static void doXmlHttpRequest(String path, String specialType, Callback2<Object, String> callback) {
 
     final XMLHttpRequest request = new XMLHttpRequest();

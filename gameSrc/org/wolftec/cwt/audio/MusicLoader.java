@@ -1,31 +1,29 @@
 package org.wolftec.cwt.audio;
 
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.BrowserUtil;
+import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.core.DataLoader;
 import org.wolftec.cwt.core.FileDescriptor;
-import org.wolftec.cwt.core.Grabber;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.persistence.PersistenceManager;
+import org.wolftec.cwt.system.Maybe;
 
-public class MusicLoader implements Injectable, Grabber {
+public class MusicLoader implements Injectable, DataLoader {
 
   @Override
   public String forPath() {
-    return "audio\\music\\";
+    return "audio/music";
   }
 
   @Override
-  public void grabData(PersistenceManager pm, FileDescriptor file, Callback0 completeCb) {
-    /* TODO check features before */
-    BrowserUtil.doXmlHttpRequest(file.path, "arraybuffer", (data, err) -> {
-      pm.set(file.path, data, (saveErr, saveData) -> {
-        completeCb.$invoke();
-      });
-    });
+  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Maybe<Object>> doneCb) {
+    // TODO Auto-generated method stub
+
   }
 
   @Override
-  public void loadData(PersistenceManager pm, FileDescriptor file, Callback0 completeCb) {
-    /* we load music files when we need them to save RAM :) */
+  public void handlerFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
+    // TODO Auto-generated method stub
+
   }
+
 }

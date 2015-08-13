@@ -4,14 +4,15 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.BrowserUtil;
+import org.wolftec.cwt.core.DataLoader;
 import org.wolftec.cwt.core.FileDescriptor;
-import org.wolftec.cwt.core.Grabber;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.persistence.PersistenceManager;
+import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.RequestUtil;
 
-public class MapManager implements Injectable, Grabber {
+public class MapManager implements Injectable, DataLoader {
 
   private PersistenceManager pm;
 
@@ -24,14 +25,7 @@ public class MapManager implements Injectable, Grabber {
 
   @Override
   public String forPath() {
-    return "maps\\";
-  }
-
-  @Override
-  public void grabData(PersistenceManager pm, FileDescriptor file, Callback0 completeCb) {
-    BrowserUtil.doXmlHttpRequest(file.path, null, (err, data) -> {
-      pm.set(file.path, data, (saveErr, saveData) -> completeCb.$invoke());
-    });
+    return "maps";
   }
 
   /**
@@ -50,8 +44,13 @@ public class MapManager implements Injectable, Grabber {
   }
 
   @Override
-  public void loadData(PersistenceManager pm, FileDescriptor file, Callback0 completeCb) {
-    maps.push(file.path);
+  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Maybe<Object>> doneCb) {
+    RequestUtil.getJSON(entryDesc.path, (response) -> doneCb.$invoke(response.data));
+  }
+
+  @Override
+  public void handlerFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
+    maps.push(entryDesc.path);
   }
 
 }

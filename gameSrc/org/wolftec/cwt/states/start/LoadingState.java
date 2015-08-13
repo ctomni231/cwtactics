@@ -1,6 +1,6 @@
 package org.wolftec.cwt.states.start;
 
-import org.wolftec.cwt.core.LoadingManager;
+import org.wolftec.cwt.core.GameLoadingManager;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.State;
@@ -10,7 +10,7 @@ import org.wolftec.cwt.system.Maybe;
 public class LoadingState implements State {
 
   private Log                           log;
-  private LoadingManager                loading;
+  private GameLoadingManager                loading;
 
   private Maybe<Class<? extends State>> next;
 

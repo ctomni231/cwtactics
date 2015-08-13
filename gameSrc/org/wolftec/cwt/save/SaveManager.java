@@ -4,14 +4,14 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwt.core.Loader;
+import org.wolftec.cwt.core.GameLoader;
+import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 
-public class SaveManager implements Loader {
+public class SaveManager implements GameLoader {
 
   private static final String CONFIG_APP_JSON = "config/app.json";
 
@@ -51,7 +51,7 @@ public class SaveManager implements Loader {
     log.info("saving application config from game storage");
 
     Object data = JSObjectAdapter.$js("{}");
-    JsUtil.forEachArrayValue(appHandlers, (index, appHandler) -> {
+    ListUtil.forEachArrayValue(appHandlers, (index, appHandler) -> {
       Object handlerData = JSObjectAdapter.$js("{}");
       appHandler.onAppSave(data);
       JSObjectAdapter.$put(data, ClassUtil.getClassName(appHandler), handlerData);
@@ -71,7 +71,7 @@ public class SaveManager implements Loader {
       if (Nullable.isPresent(data)) {
         log.info("loading application config from game storage");
 
-        JsUtil.forEachArrayValue(appHandlers, (index, appHandler) -> {
+        ListUtil.forEachArrayValue(appHandlers, (index, appHandler) -> {
           Nullable.ifPresent(JSObjectAdapter.$get(data, ClassUtil.getClassName(appHandler)), (handlerData) -> {
             appHandler.onAppLoad(data);
           });

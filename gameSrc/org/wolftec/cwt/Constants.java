@@ -26,8 +26,9 @@ public class Constants {
    * URL of the active server where the game was downloaded from. This server
    * will be used to grab the game data.
    */
-  // TODO: rename to SERVER_PATH
-  public static final String  MOD_PATH            = "http://localhost:8000/";
+  public static final String  SERVER_PATH         = "http://localhost:80";
+
+  public static final String  DEF_MOD_PATH        = "/modifications/cwt";
 
   /**
    * URL of the active modification where the game will download the active game

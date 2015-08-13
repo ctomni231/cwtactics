@@ -7,6 +7,7 @@ import org.stjs.javascript.functions.Function4;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.sheets.WeatherType;
 import org.wolftec.cwt.system.Functions;
@@ -105,7 +106,7 @@ public class ModelManager implements Injectable {
       }
     }
 
-    JsUtil.forEachArrayValue(players, (i, player) -> player.id = i);
+    ListUtil.forEachArrayValue(players, (i, player) -> player.id = i);
   }
 
   public Tile getTile(int x, int y) {
