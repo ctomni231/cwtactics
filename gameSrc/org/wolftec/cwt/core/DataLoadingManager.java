@@ -23,9 +23,7 @@ public class DataLoadingManager implements GameLoader {
   }
 
   private void downloadFolderFile(DataLoader loader, String path, String file, Callback0 next) {
-    FileDescriptor entryDesc = new FileDescriptor();
-    entryDesc.fileName = file;
-    entryDesc.path = path + "/" + file;
+    FileDescriptor entryDesc = new FileDescriptor(path + "/" + file);
 
     log.info("downloading " + entryDesc.fileName);
 
@@ -67,17 +65,39 @@ public class DataLoadingManager implements GameLoader {
     ListUtil.forEachArrayValueAsync(loaders, this::downloadFolderData, doneCb);
   }
 
+  private void handleFolderFile(DataLoader loader, String file, Callback0 next) {
+    FileDescriptor entryDesc = new FileDescriptor(file);
+
+    log.info("handle " + entryDesc.fileName);
+    storage.get(entryDesc.path, (err, value) -> {
+      loader.handleFolderEntry(entryDesc, value, next);
+    });
+  }
+
+  private void handleFolderData(int index, DataLoader loader, Callback0 next) {
+    String path = Constants.SERVER_PATH + Constants.DEF_MOD_PATH + "/" + loader.forPath();
+
+    log.info("iterating folder data " + loader.forPath());
+    storage.keys((err, keys) -> {
+      ListUtil.forEachArrayValueAsync(keys, (findex, file, fnext) -> {
+        if (file.startsWith(path)) {
+          handleFolderFile(loader, file, fnext);
+        } else {
+          fnext.$invoke();
+        }
+      }, next);
+    });
+  }
+
+  private void handleData(Callback0 doneCb) {
+    log.info("handle game data from game storage");
+    ListUtil.forEachArrayValueAsync(loaders, this::handleFolderData, doneCb);
+  }
+
   @Override
   public void onLoad(Callback0 done) {
     storage.get(DATA_FILE, (err, data) -> {
-      Nullable.ifPresentOrElse(data, (saveData) -> {
-        log.info("going to use game data from game storage");
-        done.$invoke();
-
-      }, () -> {
-        log.info("going to grab game data from remote");
-        downloadData(done);
-      });
+      Nullable.ifPresentOrElse(data, (saveData) -> handleData(done), () -> downloadData(() -> handleData(done)));
     });
   }
 }

@@ -49,8 +49,9 @@ public class MapManager implements Injectable, DataLoader {
   }
 
   @Override
-  public void handlerFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
-    maps.push(entryDesc.path);
+  public void handleFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
+    maps.push(entryDesc.fileName);
+    doneCb.$invoke();
   }
 
 }

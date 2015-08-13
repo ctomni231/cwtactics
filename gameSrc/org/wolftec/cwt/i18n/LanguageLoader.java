@@ -1,6 +1,5 @@
 package org.wolftec.cwt.i18n;
 
-import org.stjs.javascript.Global;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
@@ -25,8 +24,8 @@ public class LanguageLoader implements Injectable, DataLoader {
   }
 
   @Override
-  public void handlerFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
-    lang.registerLanguage(entryDesc.fileName, (Map<String, String>) Global.JSON.parse(entry.toString()));
+  public void handleFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
+    lang.registerLanguage(entryDesc.fileNameWithoutExtension, (Map<String, String>) entry);
     doneCb.$invoke();
   }
 

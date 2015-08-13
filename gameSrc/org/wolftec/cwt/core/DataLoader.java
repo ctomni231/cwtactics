@@ -23,5 +23,5 @@ public interface DataLoader {
    * @param entry
    * @param doneCb
    */
-  void handlerFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb);
+  void handleFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb);
 }

@@ -1,6 +1,22 @@
 package org.wolftec.cwt.core;
 
 public class FileDescriptor {
-  public String fileName;
-  public String path;
+
+  public final String fileName;
+  public final String fileNameWithoutExtension;
+  public final String extension;
+  public final String path;
+
+  public FileDescriptor(String pPath) {
+    int index;
+
+    path = pPath;
+
+    index = pPath.lastIndexOf("/");
+    fileName = pPath.substring(index + 1);
+
+    index = fileName.lastIndexOf(".");
+    fileNameWithoutExtension = fileName.substring(0, index);
+    extension = fileName.substring(index + 1);
+  }
 }

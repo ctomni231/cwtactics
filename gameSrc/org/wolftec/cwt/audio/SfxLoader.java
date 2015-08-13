@@ -23,7 +23,7 @@ public class SfxLoader implements Injectable, DataLoader {
   }
 
   @Override
-  public void handlerFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
+  public void handleFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
     // TODO Auto-generated method stub
 
   }
