@@ -1,10 +1,7 @@
 {
-  "ID": "MAXX",
-  "Commander": {
-    "faction": "BLMN",
-    "coStars": 3,
-    "scoStars": 3
-  },
+  "faction": "BLMN",
+  "coStars": 3,
+  "scoStars": 3,
   "music": "music/Max.mp3",
   "effects": {
     "D2D": {

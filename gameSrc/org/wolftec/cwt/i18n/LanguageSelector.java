@@ -15,7 +15,7 @@ public class LanguageSelector implements GameLoader {
 
   @Override
   public int priority() {
-    return 10;
+    return 1;
   }
 
   private void tryToSelectLanguage(String key) {

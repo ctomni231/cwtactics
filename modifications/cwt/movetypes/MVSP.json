@@ -1,11 +1,8 @@
 {
-  "ID": "MVSP",
-  "MovingCosts": {
-    "costs": {
-      "WATR": 1,
-      "PORT": 1,
-      "REEF": 2,
-      "@ALL": 0
-    }
+  "costs": {
+    "WATR": 1,
+    "PORT": 1,
+    "REEF": 2,
+    "@ALL": 0
   }
 }

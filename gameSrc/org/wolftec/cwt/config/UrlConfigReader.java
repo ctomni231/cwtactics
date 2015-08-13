@@ -18,7 +18,7 @@ public class UrlConfigReader implements GameLoader {
 
   @Override
   public int priority() {
-    return 10;
+    return 1;
   }
 
   private void grabConfigFromUrl(String paramName, Config cfg) {

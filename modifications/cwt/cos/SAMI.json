@@ -1,10 +1,7 @@
 {
-  "ID": "SAMI",
-  "Commander": {
-    "faction": "ORST",
-    "copStars": 3,
-    "scopStars": 5
-  },
+  "faction": "ORST",
+  "copStars": 3,
+  "scopStars": 5,
   "music": "music/sami.mp3",
   "effects": {
     "D2D": {

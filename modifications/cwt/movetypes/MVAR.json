@@ -1,8 +1,5 @@
 {
-  "ID": "MVAR",
-  "MovingCosts": {
-    "costs": {
-      "@ALL": 1
-    }
+  "costs": {
+    "@ALL": 1
   }
 }

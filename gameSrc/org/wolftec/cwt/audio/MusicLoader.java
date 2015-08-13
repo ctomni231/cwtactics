@@ -4,10 +4,9 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.DataLoader;
 import org.wolftec.cwt.core.FileDescriptor;
-import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.Maybe;
 
-public class MusicLoader implements Injectable, DataLoader {
+public class MusicLoader implements DataLoader {
 
   @Override
   public String forPath() {

@@ -1,9 +1,4 @@
 {
-  "ID": "FRST",
-  "Defense": {
-    "defense": 2
-  },
-  "Visible": {
-    "blocksVision": true
-  }
+  "defense": 2,
+  "visionBlocker": true
 }

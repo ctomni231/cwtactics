@@ -8,14 +8,14 @@ import org.wolftec.cwt.system.Log;
 
 public class GameLoadingManager implements Injectable {
 
-  private Log           log;
+  private Log               log;
 
   private Array<GameLoader> loaders;
 
   @Override
   public void onConstruction() {
     loaders.sort((a, b) -> {
-      if (a.priority() < b.priority()) {
+      if (a.priority() > b.priority()) {
         return -1;
       } else if (a.priority() == b.priority()) {
         return 0;

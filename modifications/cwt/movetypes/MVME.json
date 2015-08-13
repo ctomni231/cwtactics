@@ -1,10 +1,7 @@
 {
-  "ID": "MVME",
-  "MovingCosts": {
-    "costs": {
-      "WATR": 0,
-      "REEF": 0,
-      "@ALL": 1
-    }
+  "costs": {
+    "WATR": 0,
+    "REEF": 0,
+    "@ALL": 1
   }
 }

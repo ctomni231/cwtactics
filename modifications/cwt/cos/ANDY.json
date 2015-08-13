@@ -1,10 +1,7 @@
 {
-  "ID": "ANDY",
-  "Commander": {
-    "faction": "ORST",
-    "copStars": 3,
-    "scopStars": 3
-  },
+  "faction": "ORST",
+  "copStars": 3,
+  "scopStars": 3,
   "music": "music/Andy.mp3",
   "effects": {
     "COP": {

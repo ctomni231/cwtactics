@@ -7,12 +7,11 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.DataLoader;
 import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Maybe;
 import org.wolftec.cwt.system.RequestUtil;
 
-public class MapManager implements Injectable, DataLoader {
+public class MapManager implements DataLoader {
 
   private PersistenceManager pm;
 

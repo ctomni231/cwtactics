@@ -1,10 +1,10 @@
 [
-  "MVAR",
-  "MVCP",
-  "MVIN",
-  "MVME",
-  "MVSP",
-  "MVTA",
-  "MVTK",
-  "MVWT"
+  "MVAR.json",
+  "MVCP.json",
+  "MVIN.json",
+  "MVME.json",
+  "MVSP.json",
+  "MVTA.json",
+  "MVTK.json",
+  "MVWT.json"
 ]

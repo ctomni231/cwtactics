@@ -13,7 +13,7 @@ public class CheckSystem implements GameLoader {
 
   @Override
   public int priority() {
-    return -998;
+    return +998;
   }
 
   @Override

@@ -1,8 +1,5 @@
 {
-  "ID": "BLMN",
-  "Army": {
-    "name": "Blue Moon",
-    "color": 1,
-    "music": "music/BlueMoonTheme.mp3"
-  }
+  "name": "Blue Moon",
+  "color": 1,
+  "music": "music/BlueMoonTheme.mp3"
 }

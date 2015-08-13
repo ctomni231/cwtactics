@@ -1,43 +1,20 @@
 {
-  "ID": "BASE",
-  "Vision": {
-    "range": 0
-  },
-  "Defense": {
-    "defense": 3
-  },
-  "Capturable": {
-    "points": 20
-  },
-  "Funds": {
-    "amount": 1000
-  },
-  "Supplier": {
-    "supplies": [
-      "MVIN",
-      "MVME",
-      "MVTA",
-      "MVTB",
-      "MVTK"
-    ]
-  },
-  "Repairer": {
-    "amount": 2,
-    "targets": [
-      "MVIN",
-      "MVME",
-      "MVTA",
-      "MVTB",
-      "MVTK"
-    ]
-  },
-  "Factory": {
-    "builds": [
-      "MVIN",
-      "MVME",
-      "MVTA",
-      "MVTB",
-      "MVTK"
-    ]
-  }
+  "vision": 0,
+  "defense": 3,
+  "capturePoints": 20,
+  "funds": 1000,
+  "repairs": [
+    "MVIN",
+    "MVME",
+    "MVTA",
+    "MVTB",
+    "MVTK"
+  ],
+  "builds": [
+    "MVIN",
+    "MVME",
+    "MVTA",
+    "MVTB",
+    "MVTK"
+  ]
 }

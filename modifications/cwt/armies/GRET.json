@@ -1,8 +1,5 @@
 {
-  "ID": "GRET",
-  "Army": {
-    "name": "Green Earth",
-    "color": 2,
-    "music": "music/GreenEarthTheme.mp3"
-  }
+  "name": "Green Earth",
+  "color": 2,
+  "music": "music/GreenEarthTheme.mp3"
 }
