@@ -1,11 +1,11 @@
 [
-  "PLIN",
-  "MNTN",
-  "FRST",
-  "ROAD",
-  "BRDG",
-  "RIVR",
-  "WATR",
-  "SHOL",
-  "REEF"
+  "PLIN.json",
+  "MNTN.json",
+  "FRST.json",
+  "ROAD.json",
+  "BRDG.json",
+  "RIVR.json",
+  "WATR.json",
+  "SHOL.json",
+  "REEF.json"
 ]

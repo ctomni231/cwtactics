@@ -1,12 +1,12 @@
 [
-  "APRT",
-  "BASE",
-  "CITY",
-  "HQTR",
-  "PORT",
-  "RADR",
-  "RUIB",
-  "RUIS",
-  "SILE",
-  "SILO"
+  "APRT.json",
+  "BASE.json",
+  "CITY.json",
+  "HQTR.json",
+  "PORT.json",
+  "RADR.json",
+  "RUIB.json",
+  "RUIS.json",
+  "SILE.json",
+  "SILO.json"
 ]

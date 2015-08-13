@@ -21,6 +21,11 @@ public class SaveManager implements GameLoader {
   private Array<GameHandler>  gameHandlers;
   private Array<AppHandler>   appHandlers;
 
+  @Override
+  public int priority() {
+    return 1;
+  }
+
   /**
    * 
    * @param saveName

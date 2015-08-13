@@ -17,7 +17,7 @@ public class ResetSystem implements GameLoader {
 
   @Override
   public int priority() {
-    return -999;
+    return +999;
   }
 
   @Override
@@ -29,7 +29,8 @@ public class ResetSystem implements GameLoader {
       }
 
       pm.clear((error) -> {
-        Global.window.document.location.reload();
+        String href = Global.window.document.location.href;
+        Global.window.document.location.replace(href.substring(0, href.indexOf("?")));
       });
     }, () -> done.$invoke());
   }

@@ -5,7 +5,7 @@ import org.wolftec.cwt.core.ioc.Injectable;
 
 public interface GameLoader extends Injectable {
   default int priority() {
-    return 10;
+    return 5;
   }
 
   /**

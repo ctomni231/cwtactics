@@ -17,11 +17,6 @@ public class DataLoadingManager implements GameLoader {
   private Array<DataLoader>     loaders;
   private Array<LoadingWatcher> watchers;
 
-  @Override
-  public int priority() {
-    return 5;
-  }
-
   private void downloadFolderFile(DataLoader loader, String path, String file, Callback0 next) {
     FileDescriptor entryDesc = new FileDescriptor(path + "/" + file);
 
@@ -62,7 +57,11 @@ public class DataLoadingManager implements GameLoader {
 
   private void downloadData(Callback0 doneCb) {
     log.info("downloading game data from location " + Constants.SERVER_PATH + Constants.DEF_MOD_PATH);
-    ListUtil.forEachArrayValueAsync(loaders, this::downloadFolderData, doneCb);
+    ListUtil.forEachArrayValueAsync(loaders, this::downloadFolderData, () -> {
+      storage.set(DATA_FILE, true, (err, data) -> {
+        doneCb.$invoke();
+      });
+    });
   }
 
   private void handleFolderFile(DataLoader loader, String file, Callback0 next) {
