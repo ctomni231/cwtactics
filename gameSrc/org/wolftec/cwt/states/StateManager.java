@@ -32,10 +32,6 @@ public class StateManager implements Injectable {
     return activeState;
   }
 
-  @Override
-  public void onConstruction() {
-  }
-
   /**
    * Changes the active state. The **exit event** will be fired during the
    * change process in the old state and the **enter event** in the new state.

@@ -26,7 +26,7 @@ public class KeyboardInput implements Injectable, Deactivatable {
   }
 
   public void handleKeyUp(KeyEvent ev) {
-    input.pressButton(codeToChar(ev.keyCode));
+    input.releaseButton(codeToChar(ev.keyCode));
   }
 
   @Override
