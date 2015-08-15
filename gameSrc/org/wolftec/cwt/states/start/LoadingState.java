@@ -15,7 +15,7 @@ public class LoadingState implements State {
   private Maybe<Class<? extends State>> next;
 
   @Override
-  public void enter() {
+  public void onEnter() {
     loading.loadData(() -> {
       log.info("done");
       next = Maybe.of(StartScreenState.class);

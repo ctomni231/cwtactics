@@ -14,14 +14,14 @@ public interface State extends Injectable {
   /**
    * Called when the state will be leaved.
    */
-  default void exit() {
+  default void onExit() {
 
   }
 
   /**
    * Called when the state will be entered.
    */
-  default void enter() {
+  default void onEnter() {
 
   }
 

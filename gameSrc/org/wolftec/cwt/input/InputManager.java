@@ -15,12 +15,12 @@ public class InputManager implements Injectable {
 
   public int                   lastX;
   public int                   lastY;
+  private int                  lockedFor;
 
   @Override
   public void onConstruction() {
     actionState = JSCollections.$map();
     buttonState = JSCollections.$map();
-    buttonMapping = JSCollections.$map();
   }
 
   /**

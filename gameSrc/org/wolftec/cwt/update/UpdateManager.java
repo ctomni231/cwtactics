@@ -18,7 +18,12 @@ public class UpdateManager implements Injectable {
   public void doNecessaryUpdates(Callback0 doneCb) {
     pm.get("system/version", (err, data) -> {
       if (Nullable.isPresent(data)) {
-        ListUtil.forEachArrayValueAsync(updates, this::checkPossibleUpdate, doneCb);
+        ListUtil.forEachArrayValueAsync(updates, this::checkPossibleUpdate, () -> {
+
+          /* TODO show update notification */
+
+          doneCb.$invoke();
+        });
 
       } else {
         doneCb.$invoke();

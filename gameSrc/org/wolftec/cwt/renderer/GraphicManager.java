@@ -20,12 +20,18 @@ public class GraphicManager implements Injectable {
   public Canvas                   mainCanvas;
   public CanvasRenderingContext2D mainCtx;
 
+  public Canvas                   bufferCanvas;
+  public CanvasRenderingContext2D bufferCtx;
+
   @Override
   public void onConstruction() {
     log.info("constructing canvas manager");
 
     mainCanvas = (Canvas) Global.window.document.getElementById(CANVAS_ID);
     mainCtx = mainCanvas.getContext(CANVAS_RENDER_CONTEXT);
+
+    bufferCanvas = (Canvas) Global.window.document.createElement("canvas");
+    bufferCtx = bufferCanvas.getContext(CANVAS_RENDER_CONTEXT);
   }
 
   public int absoluteScreenHeight() {
@@ -38,5 +44,12 @@ public class GraphicManager implements Injectable {
 
   public int convertPointToTile(int point) {
     return 0; // TODO
+  }
+
+  /**
+   * Copies the content of the buffer canvas into the main canvas.
+   */
+  public void flushBuffer() {
+    mainCtx.drawImage(bufferCanvas, 0, 0, absoluteScreenWidth(), absoluteScreenHeight());
   }
 }
