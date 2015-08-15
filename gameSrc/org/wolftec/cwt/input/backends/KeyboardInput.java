@@ -252,6 +252,6 @@ public class KeyboardInput implements Injectable, Deactivatable {
         value = Nullable.getOrElse(JSObjectAdapter.$js("String.fromCharCode(charCode)"), "UNKNOWN");
     }
 
-    return value;
+    return value.toUpperCase();
   }
 }

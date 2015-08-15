@@ -1,19 +1,19 @@
-package org.wolftec.cwt.states.actions;
+package org.wolftec.cwt.states.ingame.actions;
 
 import org.wolftec.cwt.states.Action;
 import org.wolftec.cwt.states.ActionData;
 import org.wolftec.cwt.states.ActionType;
 
-public class SupplyUnit implements Action {
+public class HealUnit implements Action {
 
   @Override
   public String key() {
-    return "supplyUnit";
+    return "healUnit";
   }
 
   @Override
   public ActionType type() {
-    return ActionType.UNIT_ACTION;
+    return ActionType.ENGINE_ACTION;
   }
 
   @Override
@@ -21,4 +21,5 @@ public class SupplyUnit implements Action {
     // TODO Auto-generated method stub
 
   }
+
 }

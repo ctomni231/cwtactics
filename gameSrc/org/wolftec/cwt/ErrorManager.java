@@ -6,9 +6,8 @@ import org.wolftec.cwt.system.Log;
 
 public class ErrorManager implements Injectable {
 
-  private Log             log;
-  private StateManager    state;
-  private GameLoopManager gameloop;
+  private Log          log;
+  private StateManager state;
 
   /**
    *
@@ -16,10 +15,9 @@ public class ErrorManager implements Injectable {
    * @param where
    */
   public void raiseError(String message, String where) {
-    log.error("got error from game engine [" + message + ", " + where + "] -> stopping game loop");
+    log.error("got error from game engine [" + message + ", " + where + "] ");
 
     // state.changeState("ERROR_SCREEN");
-    gameloop.stop();
 
     // set meta data
     // errorState.setErrorData(message, where)

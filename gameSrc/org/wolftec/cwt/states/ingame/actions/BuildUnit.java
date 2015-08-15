@@ -1,20 +1,23 @@
-package org.wolftec.cwt.states.actions;
+package org.wolftec.cwt.states.ingame.actions;
 
-import org.wolftec.cwt.logic.TeamLogic;
+import org.wolftec.cwt.logic.FactoryLogic;
+import org.wolftec.cwt.logic.FogLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.Action;
 import org.wolftec.cwt.states.ActionData;
 import org.wolftec.cwt.states.ActionType;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.system.StringNumberConverter;
 
-public class TransferProperty implements Action {
+public class BuildUnit implements Action {
 
-  private TeamLogic    team;
   private ModelManager model;
+  private FactoryLogic factory;
+  private FogLogic     fog;
 
   @Override
   public String key() {
-    return "transferProperty";
+    return "buildUnit";
   }
 
   @Override
@@ -24,7 +27,7 @@ public class TransferProperty implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return team.canTransferProperty(data.source.property);
+    return factory.isFactory(data.source.property) && factory.canProduce(data.source.property);
   }
 
   @Override
@@ -34,7 +37,7 @@ public class TransferProperty implements Action {
 
   @Override
   public void prepareMenu(UserInteractionData data) {
-    team.getPropertyTransferTargets(data.source.property.owner, data);
+    factory.generateBuildMenu(data.source.property, data, true);
   }
 
   @Override
@@ -45,7 +48,8 @@ public class TransferProperty implements Action {
 
   @Override
   public void invoke(ActionData data) {
-    team.transferPropertyToPlayer(model.getProperty(data.p1), model.getPlayer(data.p2));
+    factory.buildUnit(model.getProperty(data.p1), StringNumberConverter.toId(data.p2));
+    fog.fullRecalculation();
   }
 
 }

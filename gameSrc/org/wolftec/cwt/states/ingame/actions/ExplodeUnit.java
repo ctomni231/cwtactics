@@ -1,4 +1,4 @@
-package org.wolftec.cwt.states.actions;
+package org.wolftec.cwt.states.ingame.actions;
 
 import org.wolftec.cwt.logic.ExplodeLogic;
 import org.wolftec.cwt.states.Action;

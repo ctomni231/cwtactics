@@ -1,8 +1,10 @@
 package org.wolftec.cwt.states;
 
+import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.renderer.GraphicManager;
+import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Maybe;
 
 public interface State extends Injectable {
@@ -46,6 +48,13 @@ public interface State extends Injectable {
    *          graphic manager instance which gives access to the game canvas
    */
   default void render(int delta, GraphicManager graphic) {
+    CanvasRenderingContext2D ctx = graphic.mainCtx;
 
+    ctx.fillStyle = "#CEF6D8";
+    ctx.fillRect(0, 0, graphic.absoluteScreenWidth(), graphic.absoluteScreenHeight());
+
+    ctx.font = "24pt Arial";
+    ctx.fillStyle = "#1C1C1C";
+    ctx.fillText("STATE: " + ClassUtil.getClassName(this), 30, 60, 400);
   }
 }

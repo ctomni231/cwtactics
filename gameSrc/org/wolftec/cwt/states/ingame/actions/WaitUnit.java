@@ -1,36 +1,37 @@
-package org.wolftec.cwt.states.actions;
+package org.wolftec.cwt.states.ingame.actions;
 
+import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.Action;
 import org.wolftec.cwt.states.ActionData;
 import org.wolftec.cwt.states.ActionType;
 import org.wolftec.cwt.states.UserInteractionData;
 
-public class MoveStart implements Action {
+public class WaitUnit implements Action {
 
-  private MoveActionData moveDto;
+  private ModelManager model;
 
   @Override
   public String key() {
-    return "moveStart";
+    return "wait";
   }
 
   @Override
   public ActionType type() {
-    return ActionType.ENGINE_ACTION;
+    return ActionType.UNIT_ACTION;
+  }
+
+  @Override
+  public boolean condition(UserInteractionData data) {
+    return data.source.unit.canAct;
   }
 
   @Override
   public void fillData(UserInteractionData positionData, ActionData actionData) {
     actionData.p1 = positionData.source.unitId;
-    actionData.p2 = positionData.source.x;
-    actionData.p3 = positionData.source.y;
   }
 
   @Override
   public void invoke(ActionData data) {
-    moveDto.movePath.clear();
-    moveDto.unitId = data.p1;
-    moveDto.x = data.p2;
-    moveDto.y = data.p3;
+    model.getUnit(data.p1).setActable(false);
   }
 }

@@ -20,7 +20,12 @@ public abstract class SheetLoader<T extends SheetType> implements DataLoader {
   @Override
   public void handleFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
     /* TODO validate data */
-    getDatabase().registerSheet((T) entry);
+
+    /* we inject the ID by the file name to prevent to set the id name twice */
+    T data = (T) entry;
+    data.ID = entryDesc.fileNameWithoutExtension;
+
+    getDatabase().registerSheet(data);
     doneCb.$invoke();
   }
 }
