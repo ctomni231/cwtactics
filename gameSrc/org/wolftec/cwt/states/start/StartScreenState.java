@@ -13,7 +13,7 @@ public class StartScreenState implements State {
   private InputManager input;
 
   @Override
-  public void onEnter() {
+  public void onEnter(Maybe<Class<? extends State>> previous) {
     setupDevKeys();
   }
 

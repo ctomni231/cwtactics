@@ -21,7 +21,7 @@ public interface State extends Injectable {
   /**
    * Called when the state will be entered.
    */
-  default void onEnter() {
+  default void onEnter(Maybe<Class<? extends State>> previous) {
 
   }
 

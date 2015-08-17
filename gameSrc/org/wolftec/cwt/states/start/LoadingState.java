@@ -10,12 +10,12 @@ import org.wolftec.cwt.system.Maybe;
 public class LoadingState implements State {
 
   private Log                           log;
-  private GameLoadingManager                loading;
+  private GameLoadingManager            loading;
 
   private Maybe<Class<? extends State>> next;
 
   @Override
-  public void onEnter() {
+  public void onEnter(Maybe<Class<? extends State>> previous) {
     loading.loadData(() -> {
       log.info("done");
       next = Maybe.of(StartScreenState.class);

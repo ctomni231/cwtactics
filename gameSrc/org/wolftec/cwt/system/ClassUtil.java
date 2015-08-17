@@ -87,8 +87,8 @@ public abstract class ClassUtil {
    * @param object
    * @return the class of a given object
    */
-  public static Class<?> getClass(Object object) {
-    return (Class<?>) JSObjectAdapter.$constructor(object);
+  public static <T> Class<T> getClass(T object) {
+    return (Class<T>) JSObjectAdapter.$constructor(object);
   }
 
   /**

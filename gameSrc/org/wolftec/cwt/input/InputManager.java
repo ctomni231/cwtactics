@@ -21,6 +21,7 @@ public class InputManager implements Injectable {
   public void onConstruction() {
     actionState = JSCollections.$map();
     buttonState = JSCollections.$map();
+    buttonMapping = JSCollections.$map();
   }
 
   /**

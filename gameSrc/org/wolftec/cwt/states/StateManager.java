@@ -4,6 +4,7 @@ import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.Maybe;
 
 public class StateManager implements Injectable {
 
@@ -59,12 +60,13 @@ public class StateManager implements Injectable {
 
     log.info("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
 
+    Class<? extends State> current = activeState != null ? ClassUtil.getClass(activeState) : null;
     activeState = states.$get(stateId);
     activeStateId = stateId;
 
     // TODO prevent that ?
     if (fireEvent != false) {
-      activeState.onEnter();
+      activeState.onEnter(Maybe.of(current));
     }
   }
 }

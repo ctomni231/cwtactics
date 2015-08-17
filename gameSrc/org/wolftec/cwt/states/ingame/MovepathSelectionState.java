@@ -10,9 +10,8 @@ public class MovepathSelectionState implements State {
   private UserInteractionData data;
 
   @Override
-  public void onEnter() {
-    // TODO Auto-generated method stub
-    State.super.onEnter();
+  public void onEnter(Maybe<Class<? extends State>> previous) {
+
   }
 
   @Override
