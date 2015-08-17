@@ -46,6 +46,10 @@ public class GraphicManager implements Injectable {
     return 0; // TODO
   }
 
+  public void clearBuffer() {
+    bufferCtx.clearRect(0, 0, absoluteScreenWidth(), absoluteScreenHeight());
+  }
+
   /**
    * Copies the content of the buffer canvas into the main canvas.
    */

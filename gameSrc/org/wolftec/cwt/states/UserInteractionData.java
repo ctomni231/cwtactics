@@ -26,6 +26,9 @@ public class UserInteractionData implements Injectable, InformationList {
 
   public MoveableMatrix          targets;
 
+  public int                     cursorX;
+  public int                     cursorY;
+
   @Override
   public void onConstruction() {
     source = new PositionData();
@@ -33,6 +36,8 @@ public class UserInteractionData implements Injectable, InformationList {
     actionTarget = new PositionData();
 
     movePath = new CircularBuffer<>(Constants.MAX_SELECTION_RANGE);
+
+    targets = new MoveableMatrix(Constants.MAX_SELECTION_RANGE);
   }
 
   @Override
