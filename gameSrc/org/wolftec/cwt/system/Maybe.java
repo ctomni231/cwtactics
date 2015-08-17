@@ -1,6 +1,9 @@
 package org.wolftec.cwt.system;
 
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.functions.Callback0;
+import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Function0;
 import org.wolftec.cwt.core.JsUtil;
 
 public class Maybe<T> {
@@ -20,6 +23,40 @@ public class Maybe<T> {
   public T get() {
     if (!isPresent()) {
       return JsUtil.throwError("Maybe contains no value");
+    }
+    return value;
+  }
+
+  public void ifPresent(Callback1<T> thenCb) {
+    if (isPresent()) {
+      thenCb.$invoke(value);
+    }
+  }
+
+  public T orElse(T elseValue) {
+    if (!isPresent()) {
+      return elseValue;
+    }
+    return value;
+  }
+
+  public T orElseThrow(String error) {
+    if (!isPresent()) {
+      return JsUtil.throwError(error);
+    }
+    return value;
+  }
+
+  public T orElseByProvider(Function0<T> provider) {
+    if (!isPresent()) {
+      return provider.$invoke();
+    }
+    return value;
+  }
+
+  public T orElseDo(Callback0 doCb) {
+    if (!isPresent()) {
+      doCb.$invoke();
     }
     return value;
   }

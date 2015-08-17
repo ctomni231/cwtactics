@@ -1,7 +1,7 @@
 {
   "faction": "BLMN",
-  "coStars": 3,
-  "scoStars": 3,
+  "copStars": 3,
+  "scopStars": 3,
   "music": "music/Max.mp3",
   "effects": {
     "D2D": {
