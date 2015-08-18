@@ -6,7 +6,7 @@ import org.wolftec.cwt.sheets.SheetDatabase;
 import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.sheets.WeatherType;
 
-public class WeatherTypeLoader extends SheetLoader<WeatherType> {
+public class WeatherTypeLoader extends AbstractSheetLoader<WeatherType> {
 
   SheetManager db;
   ErrorManager errors;

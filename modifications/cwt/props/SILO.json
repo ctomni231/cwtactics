@@ -7,7 +7,7 @@
       "MECH"
     ],
     "range": 2,
-    "damage": 3
-  },
-  "changeTo": "SILO_EMPTY"
+    "damage": 3,
+    "changeTo": "SILE"
+  }
 }

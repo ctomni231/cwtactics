@@ -3,15 +3,12 @@ package org.wolftec.cwt.sheets.loaders;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.ErrorManager;
-import org.wolftec.cwt.sheets.CannonType;
-import org.wolftec.cwt.sheets.LaserType;
 import org.wolftec.cwt.sheets.PropertyType;
 import org.wolftec.cwt.sheets.SheetDatabase;
 import org.wolftec.cwt.sheets.SheetManager;
-import org.wolftec.cwt.sheets.SiloType;
 import org.wolftec.cwt.system.Maybe;
 
-public class PropertyTypeLoader extends SheetLoader<PropertyType> {
+public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
 
   SheetManager db;
   ErrorManager errors;
@@ -47,30 +44,38 @@ public class PropertyTypeLoader extends SheetLoader<PropertyType> {
     sheet.capturePoints = readNullable(data, "capturePoints", 20); /* TODO */
     sheet.changeAfterCaptured = readNullable(data, "changeAfterCaptured", sheet.ID);
 
-    sheet.laser = new LaserType();
-    Maybe.of(data.$get("laser")).ifPresent((laserData) -> {
+    Maybe.of(data.$get("laser")).ifPresentOrElseDo((laserData) -> {
       Map<String, Object> laserDataMap = (Map<String, Object>) laserData;
 
       sheet.laser.damage = read(laserDataMap, "damage");
+    }, () -> {
+      sheet.laser.damage = 0;
     });
 
-    sheet.cannon = new CannonType();
-    Maybe.of(data.$get("laser")).ifPresent((cannonData) -> {
+    Maybe.of(data.$get("cannon")).ifPresentOrElseDo((cannonData) -> {
       Map<String, Object> cannonDataMap = (Map<String, Object>) cannonData;
 
       sheet.cannon.damage = read(cannonDataMap, "damage");
       sheet.cannon.direction = read(cannonDataMap, "direction");
       sheet.cannon.range = read(cannonDataMap, "range");
+    }, () -> {
+      sheet.cannon.damage = 0;
+      sheet.cannon.direction = "";
+      sheet.cannon.range = 0;
     });
 
-    sheet.rocketsilo = new SiloType();
-    Maybe.of(data.$get("laser")).ifPresent((siloData) -> {
+    Maybe.of(data.$get("rocketsilo")).ifPresentOrElseDo((siloData) -> {
       Map<String, Object> siloDataMap = (Map<String, Object>) siloData;
 
       sheet.rocketsilo.changeTo = read(siloDataMap, "changeTo");
       sheet.rocketsilo.damage = read(siloDataMap, "damage");
       sheet.rocketsilo.range = read(siloDataMap, "range");
       sheet.rocketsilo.fireable = read(siloDataMap, "fireable");
+    }, () -> {
+      sheet.rocketsilo.changeTo = "";
+      sheet.rocketsilo.damage = 0;
+      sheet.rocketsilo.range = 0;
+      sheet.rocketsilo.fireable = JSCollections.$array();
     });
   }
 }

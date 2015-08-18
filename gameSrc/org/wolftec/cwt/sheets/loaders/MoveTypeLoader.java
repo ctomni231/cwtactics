@@ -6,7 +6,7 @@ import org.wolftec.cwt.sheets.MoveType;
 import org.wolftec.cwt.sheets.SheetDatabase;
 import org.wolftec.cwt.sheets.SheetManager;
 
-public class MoveTypeLoader extends SheetLoader<MoveType> {
+public class MoveTypeLoader extends AbstractSheetLoader<MoveType> {
 
   SheetManager db;
   ErrorManager errors;

@@ -18,4 +18,10 @@ public class UnitType extends SheetType {
   public int           captures;
   public SupplierType  supply;
   public boolean       blocked;
+
+  public UnitType() {
+    supply = new SupplierType();
+    attack = new AttackType();
+    suicide = new SuicideType();
+  }
 }

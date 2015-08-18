@@ -4,15 +4,12 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.ErrorManager;
-import org.wolftec.cwt.sheets.AttackType;
 import org.wolftec.cwt.sheets.SheetDatabase;
 import org.wolftec.cwt.sheets.SheetManager;
-import org.wolftec.cwt.sheets.SuicideType;
-import org.wolftec.cwt.sheets.SupplierType;
 import org.wolftec.cwt.sheets.UnitType;
 import org.wolftec.cwt.system.Maybe;
 
-public class UnitTypeLoader extends SheetLoader<UnitType> {
+public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
 
   SheetManager db;
   ErrorManager errors;
@@ -48,26 +45,32 @@ public class UnitTypeLoader extends SheetLoader<UnitType> {
     sheet.dailyFuelDrainHidden = readNullable(data, "dailyFuelDrainHidden", 0);
     sheet.canload = readNullable(data, "canload", JSCollections.$array());
 
-    sheet.suicide = new SuicideType();
-    Maybe.of(data.$get("laser")).ifPresent((subData) -> {
+    Maybe.of(data.$get("suicide")).ifPresentOrElseDo((subData) -> {
       Map<String, Object> subDataMap = (Map<String, Object>) subData;
 
       sheet.suicide.damage = read(subDataMap, "damage");
       sheet.suicide.range = read(subDataMap, "range");
+    }, () -> {
+      sheet.suicide.damage = 0;
+      sheet.suicide.range = 0;
     });
 
-    sheet.attack = new AttackType();
-    Maybe.of(data.$get("laser")).ifPresent((subData) -> {
+    Maybe.of(data.$get("attack")).ifPresentOrElseDo((subData) -> {
       Map<String, Object> subDataMap = (Map<String, Object>) subData;
 
       sheet.attack.main_wp = readNullable(subDataMap, "maxrange", JSCollections.$map());
       sheet.attack.sec_wp = readNullable(subDataMap, "maxrange", JSCollections.$map());
       sheet.attack.minrange = readNullable(subDataMap, "minrange", 1);
       sheet.attack.maxrange = readNullable(subDataMap, "maxrange", 1);
+
+    }, () -> {
+      sheet.attack.main_wp = JSCollections.$map();
+      sheet.attack.sec_wp = JSCollections.$map();
+      sheet.attack.minrange = 1;
+      sheet.attack.maxrange = 1;
     });
 
-    sheet.supply = new SupplierType();
-    Maybe.of(data.$get("laser")).ifPresent((subData) -> {
+    Maybe.of(data.$get("supply")).ifPresent((subData) -> {
     });
   }
 }

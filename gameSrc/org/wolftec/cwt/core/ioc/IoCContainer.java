@@ -13,6 +13,8 @@ import org.wolftec.cwt.system.Nullable;
 
 public class IoCContainer {
 
+  private static final String     NON_IOC_CANDIDATE_CLASSNAMEPART = "Abstract";
+
   private Log                     log;
 
   private Map<String, Injectable> managedObjects;
@@ -143,8 +145,9 @@ public class IoCContainer {
 
       ClassUtil.forEachClassOfNamespace(namespace, (className, classObject) -> {
         boolean isManaged = ClassUtil.classImplementsInterface(classObject, Injectable.class);
+        boolean isAbstract = ClassUtil.getClassName(classObject).startsWith(NON_IOC_CANDIDATE_CLASSNAMEPART);
 
-        if (isManaged) {
+        if (isManaged && !isAbstract) {
           Nullable.ifPresent(managedObjects.$get(className), (value) -> JsUtil.throwError("ClassAlreadyManaged: " + className));
 
           /*

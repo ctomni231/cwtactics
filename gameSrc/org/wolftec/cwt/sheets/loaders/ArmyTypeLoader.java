@@ -6,7 +6,7 @@ import org.wolftec.cwt.sheets.ArmyType;
 import org.wolftec.cwt.sheets.SheetDatabase;
 import org.wolftec.cwt.sheets.SheetManager;
 
-public class ArmyTypeLoader extends SheetLoader<ArmyType> {
+public class ArmyTypeLoader extends AbstractSheetLoader<ArmyType> {
 
   SheetManager db;
   ErrorManager errors;

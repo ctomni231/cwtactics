@@ -33,6 +33,14 @@ public class Maybe<T> {
     }
   }
 
+  public void ifPresentOrElseDo(Callback1<T> thenCb, Callback0 elseCb) {
+    if (isPresent()) {
+      thenCb.$invoke(value);
+    } else {
+      elseCb.$invoke();
+    }
+  }
+
   public T orElse(T elseValue) {
     if (!isPresent()) {
       return elseValue;

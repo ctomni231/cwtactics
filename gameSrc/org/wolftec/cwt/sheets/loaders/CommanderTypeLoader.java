@@ -6,7 +6,7 @@ import org.wolftec.cwt.sheets.CommanderType;
 import org.wolftec.cwt.sheets.SheetDatabase;
 import org.wolftec.cwt.sheets.SheetManager;
 
-public class CommanderTypeLoader extends SheetLoader<CommanderType> {
+public class CommanderTypeLoader extends AbstractSheetLoader<CommanderType> {
 
   SheetManager db;
   ErrorManager errors;

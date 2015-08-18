@@ -19,4 +19,10 @@ public class PropertyType extends TileType {
   public boolean       looseAfterCaptured;
   public boolean       notTransferable;
   public String        changeAfterCaptured;
+
+  public PropertyType() {
+    laser = new LaserType();
+    cannon = new CannonType();
+    rocketsilo = new SiloType();
+  }
 }

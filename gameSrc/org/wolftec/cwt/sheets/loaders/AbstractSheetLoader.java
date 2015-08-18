@@ -13,7 +13,7 @@ import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Maybe;
 import org.wolftec.cwt.system.RequestUtil;
 
-public abstract class SheetLoader<T extends SheetType> implements DataLoader {
+public abstract class AbstractSheetLoader<T extends SheetType> implements DataLoader {
 
   // SheetManager db;
   // ErrorManager errors;

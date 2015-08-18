@@ -6,7 +6,7 @@ import org.wolftec.cwt.sheets.SheetDatabase;
 import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.sheets.TileType;
 
-public class TileTypeLoader extends SheetLoader<TileType> {
+public class TileTypeLoader extends AbstractSheetLoader<TileType> {
 
   SheetManager db;
   ErrorManager errors;
