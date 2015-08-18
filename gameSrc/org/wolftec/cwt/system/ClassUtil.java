@@ -5,6 +5,7 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.JSStringAdapter;
+import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
@@ -45,7 +46,8 @@ public abstract class ClassUtil {
    *          (object, propertyName)
    */
   public static void forEachClassInstanceProperty(Object object, Callback2<String, Object> callback) {
-    JsUtil.forEachMapValue(JSObjectAdapter.$prototype(JSObjectAdapter.$constructor(object)), (prop, defValue) -> {
+    Map<String, Object> mainClassMap = JSObjectAdapter.$prototype(JSObjectAdapter.$constructor(object));
+    JsUtil.forEachMapValue(mainClassMap, (prop, defValue) -> {
 
       /*
        * normal iteration through the class prototype object map will return the
@@ -53,6 +55,21 @@ public abstract class ClassUtil {
        * with the actual object values
        */
       callback.$invoke(prop, JSObjectAdapter.$get(object, prop));
+    });
+
+    ClassUtil.forEachInterface((Class<?>) JSObjectAdapter.$constructor(object), (interf) -> {
+      JsUtil.forEachMapValue(JSObjectAdapter.$prototype(interf), (prop, defValue) -> {
+
+        if (!JSObjectAdapter.hasOwnProperty(mainClassMap, prop)) {
+
+          /*
+           * normal iteration through the class prototype object map will return
+           * the default prototype property values, but we need to call the
+           * callback with the actual object values
+           */
+          callback.$invoke(prop, JSObjectAdapter.$get(object, prop));
+        }
+      });
     });
   }
 

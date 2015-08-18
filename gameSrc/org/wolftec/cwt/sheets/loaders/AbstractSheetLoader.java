@@ -1,6 +1,5 @@
 package org.wolftec.cwt.sheets.loaders;
 
-import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
@@ -8,6 +7,7 @@ import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.DataLoader;
 import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.sheets.SheetDatabase;
+import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.sheets.SheetType;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Maybe;
@@ -15,12 +15,8 @@ import org.wolftec.cwt.system.RequestUtil;
 
 public abstract class AbstractSheetLoader<T extends SheetType> implements DataLoader {
 
-  // SheetManager db;
-  // ErrorManager errors;
-
-  ErrorManager errorManager() {
-    return (ErrorManager) JSObjectAdapter.$get(this, "errors");
-  }
+  protected SheetManager db;
+  private ErrorManager   errors;
 
   <M> M read(Map<String, Object> data, String property) {
     return Maybe.of((M) data.$get(property)).orElseThrow(property + " is missing in data map");
@@ -63,7 +59,7 @@ public abstract class AbstractSheetLoader<T extends SheetType> implements DataLo
       doneCb.$invoke();
 
     } catch (Exception e) {
-      errorManager().raiseError("could not hydrate data for " + entryDesc.fileNameWithoutExtension + " because of " + e, "sheet loading");
+      errors.raiseError("could not hydrate data for " + entryDesc.fileNameWithoutExtension + " because of " + e, "sheet loading");
     }
   }
 }

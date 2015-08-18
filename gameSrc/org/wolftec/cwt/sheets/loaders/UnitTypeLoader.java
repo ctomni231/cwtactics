@@ -3,16 +3,11 @@ package org.wolftec.cwt.sheets.loaders;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.sheets.SheetDatabase;
-import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.sheets.UnitType;
 import org.wolftec.cwt.system.Maybe;
 
 public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
-
-  SheetManager db;
-  ErrorManager errors;
 
   @Override
   public String forPath() {
