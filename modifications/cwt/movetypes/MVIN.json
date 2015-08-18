@@ -1,8 +1,9 @@
 {
+  "sound": null,
   "costs": {
     "MNTN": 2,
-    "WATR": 0,
-    "REEF": 0,
-    "@ALL": 1
+    "WATER": -1,
+    "REEF": -1,
+    "*": 1
   }
 }

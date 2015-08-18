@@ -1,34 +1,18 @@
 {
-  "ID": "PORT",
-  "Vision": {
-    "range": 0
+  "vision": 0,
+  "defense": 3,
+  "capturePoints": 20,
+  "funds": 1000,
+  "supply": [
+    "SHIP",
+    "WATER_TRANSPORT"
+  ],
+  "repairs": {
+    "SHIP": 2,
+    "WATER_TRANSPORT": 2
   },
-  "Defense": {
-    "defense": 3
-  },
-  "Capturable": {
-    "points": 20
-  },
-  "Funds": {
-    "amount": 1000
-  },
-  "Supplier": {
-    "supplies": [
-      "MVSP",
-      "MVWT"
-    ]
-  },
-  "Repairer": {
-    "amount": 2,
-    "targets": [
-      "MVSP",
-      "MVWT"
-    ]
-  },
-  "Factory": {
-    "builds": [
-      "MVSP",
-      "MVWT"
-    ]
-  }
+  "builds": [
+    "SHIP",
+    "WATER_TRANSPORT"
+  ]
 }

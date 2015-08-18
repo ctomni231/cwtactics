@@ -1,12 +1,5 @@
 {
-  "ID": "RADR",
-  "Vision": {
-    "range": 4
-  },
-  "Defense": {
-    "defense": 3
-  },
-  "Capturable": {
-    "points": 20
-  }
+  "vision": 4,
+  "defense": 3,
+  "points": 20
 }

@@ -1,5 +1,6 @@
 {
+  "sound": null,
   "costs": {
-    "@ALL": 1
+    "*": 1
   }
 }

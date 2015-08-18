@@ -1,18 +1,13 @@
 {
-  "ID": "SILO",
-  "Vision": {
-    "range": 0
-  },
-  "Defense": {
-    "defense": 3
-  },
-  "FireAble": {
-    "range": 2,
-    "damage": 3,
-    "usableBy": [
+  "defense": 3,
+  "vision": 0,
+  "rocketsilo": {
+    "fireable": [
       "INFT",
       "MECH"
     ],
-    "changesType": "SILE"
-  }
+    "range": 2,
+    "damage": 3
+  },
+  "changeTo": "SILO_EMPTY"
 }

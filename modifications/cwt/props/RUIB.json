@@ -1,9 +1,4 @@
 {
-  "ID": "RUIB",
-  "Vision": {
-    "range": 0
-  },
-  "Defense": {
-    "defense": 0
-  }
+  "defense": 0,
+  "vision": 0
 }

@@ -1,10 +1,11 @@
 {
+  "sound": null,
   "costs": {
     "FRST": 2,
-    "MNTN": 0,
-    "RIVR": 0,
-    "WATR": 0,
-    "REEF": 0,
-    "@ALL": 1
+    "MNTN": -1,
+    "RIVER": -1,
+    "WATER": -1,
+    "REEF": -1,
+    "*": 1
   }
 }
