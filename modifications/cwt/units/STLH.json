@@ -1,25 +1,15 @@
 {
-  "ID": "STLH",
-  "Buyable": {
-    "cost": 24000
-  },
-  "Movable": {
-    "range": 6,
-    "fuel": 60,
-    "type": "MVAR"
-  },
-  "Vision": {
-    "range": 4
-  },
-  "FuelDrain": {
-    "daily": 5
-  },
-  "HidingAbility": {
-    "additionFuelDrain": 3
-  },
-  "FighterPrimaryWeapon": {
-    "ammo": 6,
-    "damage": {
+  "cost": 24000,
+  "range": 6,
+  "movetype": "AIR",
+  "vision": 4,
+  "fuel": 60,
+  "ammo": 6,
+  "dailyFuelDrain": 5,
+  "dailyFuelDrainHidden": 8,
+  "stealth": true,
+  "attack": {
+    "main_wp": {
       "INFT": 90,
       "MECH": 90,
       "RECN": 85,

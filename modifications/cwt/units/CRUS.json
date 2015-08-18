@@ -1,32 +1,21 @@
 {
-  "ID": "CRUS",
-  "Buyable": {
-    "cost": 18000
-  },
-  "Movable": {
-    "range": 6,
-    "fuel": 99,
-    "type": "SHIP"
-  },
-  "Vision": {
-    "range": 3
-  },
-  "FuelDrain": {
-    "daily": 1
-  },
-  "FighterPrimaryWeapon": {
-    "ammo": 9,
-    "damage": {
+  "cost": 18000,
+  "range": 6,
+  "movetype": "SHIP",
+  "vision": 3,
+  "fuel": 99,
+  "ammo": 9,
+  "dailyFuelDrain": 1,
+  "attack": {
+    "main_wp": {
       "CRUS": 25,
       "SUBM": 90,
       "BSHP": 5,
       "ACAR": 5,
       "LNDR": 25,
       "BLBT": 25
-    }
-  },
-  "FighterSecondaryWeapon": {
-    "damage": {
+    },
+    "sec_wp": {
       "FGTR": 85,
       "BMBR": 100,
       "STLH": 100,
@@ -35,10 +24,8 @@
       "BKBM": 120
     }
   },
-  "Transporter": {
-    "slots": 2,
-    "loads": [
-      "AIR"
-    ]
-  }
+  "maxloads": 2,
+  "canload": [
+    "AIR"
+  ]
 }

@@ -1,41 +1,26 @@
 {
-  "ID": "ACAR",
-  "Buyable": {
-    "cost": 30000
-  },
-  "Movable": {
-    "range": 5,
-    "fuel": 99,
-    "type": "SHIP"
-  },
-  "Vision": {
-    "range": 4
-  },
-  "FighterPrimaryWeapon": {
-    "ammo": 9,
-    "damage": {
+  "cost": 30000,
+  "range": 5,
+  "movetype": "SHIP",
+  "vision": 4,
+  "fuel": 99,
+  "dailyFuelDrain": 1,
+  "ammo": 9,
+  "maxloads": 2,
+  "suppliesloads": true,
+  "canload": [
+    "AIR"
+  ],
+  "attack": {
+    "main_wp": {
       "FGTR": 100,
       "BMBR": 100,
       "STLH": 100,
       "BCTR": 115,
       "TCTR": 115,
       "BKBM": 120
-    }
-  },
-  "RangedFighter": {
-    "minRange": 3,
-    "maxRange": 8
-  },
-  "FuelDrain": {
-    "daily": 1
-  },
-  "Transporter": {
-    "slots": 2,
-    "loads": [
-      "AIR"
-    ]
-  },
-  "Supplier": {
-    "refillLoads": true
+    },
+    "minrange": 3,
+    "maxrange": 8
   }
 }

@@ -1,11 +1,12 @@
 {
-  "ID": "AAIR",
-  "Buyable": {
-    "cost": 8000
-  },
-  "FighterPrimaryWeapon": {
-    "ammo": 9,
-    "damage": {
+  "cost": 8000,
+  "range": 6,
+  "movetype": "TANK",
+  "vision": 2,
+  "fuel": 60,
+  "ammo": 9,
+  "attack": {
+    "main_wp": {
       "INFT": 105,
       "MECH": 105,
       "RECN": 60,
@@ -28,18 +29,9 @@
       "BKBM": 120
     }
   },
-  "Movable": {
-    "range": 6,
-    "fuel": 60,
-    "type": "MVTK"
-  },
-  "Vision": {
-    "range": 2
-  },
-  "TODO_Renderable": {
-    "sprite": "CWT_AAIR"
-  },
-  "TODO_NoiseMaking:": {
-    "primaryAttack": "HEAVY_MG"
+  "assets": {
+    "gfx": "cwt_anim/units/CWT_AAIR.png",
+    "pri_att_sound": "mg.wav",
+    "sec_att_sound": "mg.wav"
   }
 }

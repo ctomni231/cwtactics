@@ -1,22 +1,13 @@
 {
-  "ID": "MECH",
-  "Buyable": {
-    "cost": 3000
-  },
-  "Movable": {
-    "range": 2,
-    "fuel": 70,
-    "type": "MVME"
-  },
-  "Vision": {
-    "range": 2
-  },
-  "Capturer": {
-    "points": 10
-  },
-  "FighterPrimaryWeapon": {
-    "ammo": 3,
-    "damage": {
+  "cost": 3000,
+  "range": 2,
+  "movetype": "MV_MECH",
+  "vision": 2,
+  "fuel": 70,
+  "captures": 10,
+  "ammo": 3,
+  "attack": {
+    "main_wp": {
       "RECN": 85,
       "TNTK": 55,
       "MDTK": 15,
@@ -29,10 +20,8 @@
       "MISS": 85,
       "PIPR": 55,
       "OOZM": 30
-    }
-  },
-  "FighterSecondaryWeapon": {
-    "damage": {
+    },
+    "sec_wp": {
       "INFT": 65,
       "MECH": 55,
       "RECN": 18,

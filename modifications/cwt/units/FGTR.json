@@ -1,22 +1,13 @@
 {
-  "ID": "FGTR",
-  "Buyable": {
-    "cost": 20000
-  },
-  "Movable": {
-    "range": 9,
-    "fuel": 99,
-    "type": "MVAR"
-  },
-  "Vision": {
-    "range": 2
-  },
-  "FuelDrain": {
-    "daily": 5
-  },
-  "FighterPrimaryWeapon": {
-    "ammo": 9,
-    "damage": {
+  "cost": 20000,
+  "range": 9,
+  "movetype": "AIR",
+  "vision": 2,
+  "fuel": 99,
+  "dailyFuelDrain": 5,
+  "ammo": 9,
+  "attack": {
+    "main_wp": {
       "FGTR": 55,
       "BMBR": 100,
       "STLH": 85,

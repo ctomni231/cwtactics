@@ -1,22 +1,13 @@
 {
-  "ID": "BSHP",
-  "Buyable": {
-    "cost": 28000
-  },
-  "Movable": {
-    "range": 5,
-    "fuel": 99,
-    "type": "SHIP"
-  },
-  "Vision": {
-    "range": 2
-  },
-  "FuelDrain": {
-    "daily": 1
-  },
-  "FighterPrimaryWeapon": {
-    "ammo": 9,
-    "damage": {
+  "cost": 28000,
+  "range": 5,
+  "movetype": "SHIP",
+  "vision": 2,
+  "fuel": 99,
+  "dailyFuelDrain": 1,
+  "ammo": 9,
+  "attack": {
+    "main_wp": {
       "INFT": 95,
       "MECH": 90,
       "RECN": 90,
@@ -37,10 +28,8 @@
       "ACAR": 60,
       "LNDR": 95,
       "BLBT": 95
-    }
-  },
-  "RangedFighter": {
-    "minRange": 2,
-    "maxRange": 6
+    },
+    "minrange": 2,
+    "maxrange": 6
   }
 }

@@ -1,22 +1,13 @@
 {
-  "ID": "BMBR",
-  "Buyable": {
-    "cost": 22000
-  },
-  "Movable": {
-    "range": 7,
-    "fuel": 99,
-    "type": "MVAR"
-  },
-  "Vision": {
-    "range": 3
-  },
-  "FuelDrain": {
-    "daily": 5
-  },
-  "FighterPrimaryWeapon": {
-    "ammo": 9,
-    "damage": {
+  "cost": 22000,
+  "range": 7,
+  "movetype": "AIR",
+  "dailyFuelDrain": 5,
+  "vision": 3,
+  "fuel": 99,
+  "ammo": 9,
+  "attack": {
+    "main_wp": {
       "INFT": 110,
       "MECH": 110,
       "RECN": 105,

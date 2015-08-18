@@ -1,22 +1,14 @@
 {
-  "ID": "BCTR",
-  "Buyable": {
-    "cost": 9000
-  },
-  "Movable": {
-    "range": 6,
-    "fuel": 99,
-    "type": "MVCP"
-  },
-  "Vision": {
-    "range": 3
-  },
-  "FuelDrain": {
-    "daily": 2
-  },
-  "FighterPrimaryWeapon": {
-    "ammo": 6,
-    "damage": {
+  "cost": 9000,
+  "range": 6,
+  "movetype": "COPTER",
+  "copter": true,
+  "dailyFuelDrain": 2,
+  "vision": 3,
+  "fuel": 99,
+  "ammo": 6,
+  "attack": {
+    "main_wp": {
       "RECN": 55,
       "TNTK": 55,
       "MDTK": 25,
@@ -35,10 +27,8 @@
       "ACAR": 25,
       "LNDR": 25,
       "BLBT": 25
-    }
-  },
-  "FighterSecondaryWeapon": {
-    "damage": {
+    },
+    "sec_wp": {
       "INFT": 75,
       "MECH": 75,
       "RECN": 30,

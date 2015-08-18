@@ -1,19 +1,12 @@
 {
-  "ID": "ARTY",
-  "Buyable": {
-    "cost": 6000
-  },
-  "Movable": {
-    "range": 5,
-    "fuel": 50,
-    "type": "TANK"
-  },
-  "Vision": {
-    "range": 1
-  },
-  "FighterPrimaryWeapon": {
-    "ammo": 6,
-    "damage": {
+  "cost": 6000,
+  "range": 5,
+  "movetype": "TANK",
+  "vision": 1,
+  "fuel": 50,
+  "ammo": 6,
+  "attack": {
+    "main_wp": {
       "INFT": 90,
       "MECH": 85,
       "RECN": 80,
@@ -34,10 +27,8 @@
       "ACAR": 45,
       "LNDR": 55,
       "BLBT": 55
-    }
-  },
-  "RangedFighter": {
-    "minRange": 2,
-    "maxRange": 3
+    },
+    "minrange": 2,
+    "maxrange": 3
   }
 }

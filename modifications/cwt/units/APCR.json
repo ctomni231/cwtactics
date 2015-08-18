@@ -1,30 +1,19 @@
 {
-  "ID": "APCR",
-  "Buyable": {
-    "cost": 5000
-  },
-  "Movable": {
-    "range": 6,
-    "fuel": 70,
-    "type": "TANK"
-  },
-  "Vision": {
-    "range": 1
-  },
-  "LoadingAbility": {
-    "slots": 1,
-    "loads": [
-      "MVIN",
-      "MVME"
-    ]
-  },
-  "SupplierAbility": {
-    "refillLoads": false,
-    "supplies": [
-      "@ALL"
-    ]
-  },
-  "TODO_Renderable": {
-    "sprite": "CWT_APCR"
+  "cost": 5000,
+  "range": 6,
+  "movetype": "TANK",
+  "vision": 1,
+  "fuel": 70,
+  "ammo": 0,
+  "maxloads": 1,
+  "canload": [
+    "MV_INFT",
+    "MV_MECH"
+  ],
+  "supply": [
+    "*"
+  ],
+  "assets": {
+    "gfx": "cwt_anim/units/CWT_APCR.png"
   }
 }
