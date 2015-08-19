@@ -5,7 +5,7 @@ import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.State;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.states.UserInteractionMap;
-import org.wolftec.cwt.states.ingame.IdleState;
+import org.wolftec.cwt.states.ingame.IngameEnter;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Maybe;
 
@@ -35,6 +35,6 @@ public class MapSelectionState implements State {
       log.info("new input state " + mapping.getState());
     }
 
-    return Maybe.of(IdleState.class);
+    return Maybe.of(IngameEnter.class);
   }
 }

@@ -2,6 +2,7 @@ package org.wolftec.cwt.sheets;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
@@ -57,7 +58,9 @@ public class SheetDatabase<T extends SheetType> {
   }
 
   public T get(String key) {
-    // TODO
+    if (!JSObjectAdapter.hasOwnProperty(sheets, key)) {
+      return JsUtil.throwError("UnknownSheetId: " + key);
+    }
     return sheets.$get(key);
   }
 

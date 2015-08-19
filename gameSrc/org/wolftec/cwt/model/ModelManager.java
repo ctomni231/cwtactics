@@ -2,6 +2,7 @@ package org.wolftec.cwt.model;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function4;
 import org.wolftec.cwt.Constants;
@@ -273,6 +274,32 @@ public class ModelManager implements Injectable {
         if (map.$get(x).$get(y).unit == unit) {
           cb.$invoke(x, y, unit);
         }
+      }
+    }
+  }
+
+  public void forEachUnit(Callback2<Integer, Unit> cb) {
+    for (int i = 0; i < units.$length(); i++) {
+      cb.$invoke(i, units.$get(i));
+    }
+  }
+
+  public void forEachProperty(Callback2<Integer, Property> cb) {
+    for (int i = 0; i < properties.$length(); i++) {
+      cb.$invoke(i, properties.$get(i));
+    }
+  }
+
+  public void forEachPlayer(Callback2<Integer, Player> cb) {
+    for (int i = 0; i < players.$length(); i++) {
+      cb.$invoke(i, players.$get(i));
+    }
+  }
+
+  public void forEachTile(Callback3<Integer, Integer, Tile> cb) {
+    for (int x = 0, xe = mapWidth; x < xe; x++) {
+      for (int y = 0, ye = mapHeight; y < ye; y++) {
+        cb.$invoke(x, y, map.$get(x).$get(y));
       }
     }
   }

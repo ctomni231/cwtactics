@@ -13,9 +13,9 @@ import org.wolftec.cwt.system.RequestUtil;
 
 public class MapManager implements DataLoader {
 
-  private PersistenceManager pm;
+  private PersistenceManager    pm;
 
-  private Array<String>      maps;
+  private Array<FileDescriptor> maps;
 
   @Override
   public void onConstruction() {
@@ -32,14 +32,19 @@ public class MapManager implements DataLoader {
    * @param path
    * @param cb
    */
-  public void loadMap(String path, Callback1<String> cb) {
-    if (maps.indexOf(path) != -1) {
-      pm.get(path, (err, data) -> {
-        /* TODO */
-      });
-    }
+  public void loadMap(String mapName, Callback1<MapData> cb) {
+    pm.get(getDescriptor(mapName).path, (err, data) -> {
+      cb.$invoke((MapData) data);
+    });
+  }
 
-    JsUtil.throwError("UnknownFile");
+  private FileDescriptor getDescriptor(String mapName) {
+    for (int i = 0; i < maps.$length(); i++) {
+      if (maps.$get(i).fileName == mapName) {
+        return maps.$get(i);
+      }
+    }
+    return JsUtil.throwError("UnknownMap:" + mapName);
   }
 
   @Override
@@ -49,7 +54,7 @@ public class MapManager implements DataLoader {
 
   @Override
   public void handleFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
-    maps.push(entryDesc.fileName);
+    maps.push(entryDesc.clone());
     doneCb.$invoke();
   }
 

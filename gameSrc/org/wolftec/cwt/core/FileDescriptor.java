@@ -19,4 +19,9 @@ public class FileDescriptor {
     fileNameWithoutExtension = fileName.substring(0, index);
     extension = fileName.substring(index + 1);
   }
+
+  @Override
+  public FileDescriptor clone() {
+    return new FileDescriptor(path);
+  }
 }

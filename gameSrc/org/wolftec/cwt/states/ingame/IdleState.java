@@ -1,5 +1,6 @@
 package org.wolftec.cwt.states.ingame;
 
+import org.wolftec.cwt.core.ActionManager;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.logic.BattleLogic;
 import org.wolftec.cwt.model.ModelManager;
@@ -13,6 +14,7 @@ public class IdleState implements State {
   private UserInteractionData data;
   private ModelManager        model;
   private BattleLogic         battle;
+  private ActionManager       actions;
 
   @Override
   public void onEnter(Maybe<Class<? extends State>> previous) {
@@ -23,6 +25,15 @@ public class IdleState implements State {
 
   @Override
   public Maybe<Class<? extends State>> update(int delta, InputManager input) {
+
+    /*
+     * We move out of this state directly here when we have actions in the
+     * actions buffer.
+     */
+    if (actions.hasData()) {
+      /* TODO move into the state */
+    }
+
     if (input.isActionPressed(GameActions.BUTTON_B)) {
       return Maybe.of(ShowAttackRangeState.class);
     }

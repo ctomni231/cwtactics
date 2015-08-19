@@ -1,0 +1,37 @@
+package org.wolftec.cwt.actions;
+
+import org.wolftec.cwt.core.Action;
+import org.wolftec.cwt.core.ActionData;
+import org.wolftec.cwt.core.ActionType;
+import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.states.UserInteractionData;
+
+public class WaitUnit implements Action {
+
+  private ModelManager model;
+
+  @Override
+  public String key() {
+    return "wait";
+  }
+
+  @Override
+  public ActionType type() {
+    return ActionType.UNIT_ACTION;
+  }
+
+  @Override
+  public boolean condition(UserInteractionData data) {
+    return data.source.unit.canAct;
+  }
+
+  @Override
+  public void fillData(UserInteractionData positionData, ActionData actionData) {
+    actionData.p1 = positionData.source.unitId;
+  }
+
+  @Override
+  public void invoke(ActionData data) {
+    model.getUnit(data.p1).setActable(false);
+  }
+}

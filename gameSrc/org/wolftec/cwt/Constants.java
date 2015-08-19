@@ -74,7 +74,7 @@ public class Constants {
   /**
    * Maximum height of a map.
    */
-  public static final int     MAX_MAP_HEIGHT      = 40;
+  public static final int     MAX_MAP_HEIGHT      = 60;
 
   /**
    * Maximum range of a move action.
