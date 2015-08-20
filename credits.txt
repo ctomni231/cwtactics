@@ -19,6 +19,7 @@ MaraSargon
 x0_000
 Freelance_Fox
 Retsej
+viscram
  
 <DESIGN DEVELOPERS - WIKI>
 MarinePower
@@ -34,6 +35,7 @@ Veggie
 Kosheh
 Destin Artea
 Halo Capella
+Wensleydale_Gaming
  
 <MAIN CONTRIBUTORS>
 Urusan
@@ -42,11 +44,11 @@ Ace.Stef569
 MarinePower
 MaraSargon
 theether
+St Johnston
  
 <MINOR CONTRIBUTORS>
 amarriner
 MoogleGunner
-St Johnston
 Islip
 Robosturm
 Eagle
