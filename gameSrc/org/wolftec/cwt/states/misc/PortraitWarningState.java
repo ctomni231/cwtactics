@@ -1,13 +1,12 @@
 package org.wolftec.cwt.states.misc;
 
-import org.wolftec.cwt.input.InputManager;
-import org.wolftec.cwt.states.State;
+import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.system.Maybe;
 
-public class PortraitWarningState implements State {
+public class PortraitWarningState extends AbstractState {
 
   @Override
-  public Maybe<Class<? extends State>> update(int delta, InputManager input) {
+  public Maybe<Class<? extends AbstractState>> update(int delta) {
     return NO_TRANSITION;
   }
 }

@@ -1,15 +1,14 @@
 package org.wolftec.cwt.states.menu;
 
-import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.State;
+import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.states.UserInteractionMap;
 import org.wolftec.cwt.states.ingame.IngameEnter;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Maybe;
 
-public class MapSelectionState implements State {
+public class MapSelectionState extends AbstractState {
 
   private Log                 log;
   private UserInteractionData data;
@@ -25,7 +24,7 @@ public class MapSelectionState implements State {
   }
 
   @Override
-  public Maybe<Class<? extends State>> update(int delta, InputManager input) {
+  public Maybe<Class<? extends AbstractState>> update(int delta) {
 
     if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
       mapping.event(GameActions.BUTTON_LEFT);

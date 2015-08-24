@@ -45,31 +45,21 @@ public abstract class ClassUtil {
    * @param callback
    *          (object, propertyName)
    */
-  public static void forEachClassInstanceProperty(Object object, Callback2<String, Object> callback) {
-    Map<String, Object> mainClassMap = JSObjectAdapter.$prototype(JSObjectAdapter.$constructor(object));
-    JsUtil.forEachMapValue(mainClassMap, (prop, defValue) -> {
+  public static void forEachComplexPropertyOfInstance(Object object, Callback2<String, Object> callback) {
+    Map<String, ?> types = (Map<String, ?>) JSObjectAdapter.$get(JSObjectAdapter.$constructor(object), PARAM_TYPE_DESCRIPTION);
+
+    JsUtil.forEachMapValue(types, (prop, typeData) -> {
 
       /*
-       * normal iteration through the class prototype object map will return the
-       * default prototype property values, but we need to call the callback
-       * with the actual object values
+       * Because STJS collects static class members in the type description
+       * we're assume that all members with a upper case name are statics (which
+       * is a common accepted pattern).
        */
-      callback.$invoke(prop, JSObjectAdapter.$get(object, prop));
-    });
+      boolean isPossibleStaticProperty = prop.toUpperCase() == prop;
 
-    ClassUtil.forEachInterface((Class<?>) JSObjectAdapter.$constructor(object), (interf) -> {
-      JsUtil.forEachMapValue(JSObjectAdapter.$prototype(interf), (prop, defValue) -> {
-
-        if (!JSObjectAdapter.hasOwnProperty(mainClassMap, prop)) {
-
-          /*
-           * normal iteration through the class prototype object map will return
-           * the default prototype property values, but we need to call the
-           * callback with the actual object values
-           */
-          callback.$invoke(prop, JSObjectAdapter.$get(object, prop));
-        }
-      });
+      if (!isPossibleStaticProperty) {
+        callback.$invoke(prop, typeData);
+      }
     });
   }
 

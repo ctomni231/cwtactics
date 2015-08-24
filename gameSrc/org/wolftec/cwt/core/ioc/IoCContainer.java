@@ -47,7 +47,7 @@ public class IoCContainer {
 
   private void handleManagedDependencies() {
     JsUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
-      ClassUtil.forEachClassInstanceProperty(instance, (prop, value) -> {
+      ClassUtil.forEachComplexPropertyOfInstance(instance, (prop, _ignored) -> {
         ClassUtil.searchClassPropertyType(ClassUtil.getClass(instance), prop, (propertyType) -> {
 
           if (propertyType == Array.class) {

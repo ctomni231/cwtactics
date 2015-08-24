@@ -11,6 +11,7 @@ import org.wolftec.cwt.system.CircularBuffer;
 import org.wolftec.cwt.system.Functions;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.system.StringUtil;
 
 public class ActionManager implements Injectable {
 
@@ -44,6 +45,23 @@ public class ActionManager implements Injectable {
     buffer = new CircularBuffer<ActionData>(BUFFER_SIZE);
 
     Functions.repeat(BUFFER_SIZE, (i) -> pool.push(new ActionData()));
+
+    /*
+     * we sort the actions by their hash values. This results into same order of
+     * the actions in the actions array in every environment.
+     */
+    actions.sort((a, b) -> {
+      int aHash = StringUtil.stringToHash(a.key());
+      int bHash = StringUtil.stringToHash(b.key());
+
+      if (aHash < bHash) {
+        return -1;
+      } else if (aHash > bHash) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
 
     ListUtil.forEachArrayValue(actions, (index, action) -> {
       actionIds.$put(action.key(), index);

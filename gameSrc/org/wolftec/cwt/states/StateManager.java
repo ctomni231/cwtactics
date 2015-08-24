@@ -8,29 +8,24 @@ import org.wolftec.cwt.system.Maybe;
 
 public class StateManager implements Injectable {
 
-  private Log                log;
+  private Log                        log;
 
   /**
    * Holds all registered game states.
    */
-  private Map<String, State> states;
+  private Map<String, AbstractState> states;
 
   /**
    * The id of the active game state.
    */
-  private String             activeStateId;
-
-  /**
-   * The active game state.
-   */
-  private State              activeState;
+  private String                     activeStateId;
 
   public String getActiveStateId() {
     return activeStateId;
   }
 
-  public State getActiveState() {
-    return activeState;
+  public AbstractState getActiveState() {
+    return states.$get(activeStateId);
   }
 
   /**
@@ -39,9 +34,9 @@ public class StateManager implements Injectable {
    * 
    * @param stateId
    */
-  public void changeState(Class<? extends State> state) {
-    if (activeState != null) {
-      activeState.onExit();
+  public void changeState(Class<? extends AbstractState> state) {
+    if (activeStateId != null) {
+      getActiveState().onExit();
     }
 
     // enter new state
@@ -60,13 +55,12 @@ public class StateManager implements Injectable {
 
     log.info("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
 
-    Class<? extends State> current = activeState != null ? ClassUtil.getClass(activeState) : null;
-    activeState = states.$get(stateId);
+    Class<? extends AbstractState> current = activeStateId != null ? ClassUtil.getClass(getActiveState()) : null;
     activeStateId = stateId;
 
     // TODO prevent that ?
     if (fireEvent != false) {
-      activeState.onEnter(Maybe.of(current));
+      getActiveState().onEnter(Maybe.of(current));
     }
   }
 }

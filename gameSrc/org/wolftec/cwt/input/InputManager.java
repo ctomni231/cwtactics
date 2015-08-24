@@ -9,13 +9,13 @@ import org.wolftec.cwt.system.Nullable;
 
 public class InputManager implements Injectable {
 
+  private static final String NOTHING_MAPPED = "NONE";
   private Map<String, Integer> actionState;
   private Map<String, Boolean> buttonState;
   private Map<String, String>  buttonMapping;
 
   public int                   lastX;
   public int                   lastY;
-  private int                  lockedFor;
 
   @Override
   public void onConstruction() {
@@ -97,7 +97,7 @@ public class InputManager implements Injectable {
   }
 
   public void releaseButtonMapping(String button) {
-    setButtonMapping(button, "NONE");
+    setButtonMapping(button, NOTHING_MAPPED);
   }
 
 }

@@ -4,26 +4,24 @@ import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.Action;
 import org.wolftec.cwt.core.ActionData;
 import org.wolftec.cwt.core.ActionManager;
-import org.wolftec.cwt.input.InputManager;
-import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.cwt.states.State;
+import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.system.Maybe;
 
 /**
  * The action evaluation state evaluates an action with the first data entry
  * from the action manager.
  */
-public class ActionEvalState implements State {
+public class ActionEvalState extends AbstractState {
 
   private ErrorManager           errors;
   private ActionManager          actions;
 
-  private Class<? extends State> lastState;
+  private Class<? extends AbstractState> lastState;
   private Action                 activeAction;
   private ActionData             activeData;
 
   @Override
-  public void onEnter(Maybe<Class<? extends State>> previous) {
+  public void onEnter(Maybe<Class<? extends AbstractState>> previous) {
     if (!actions.hasData()) {
       errors.raiseError("no action data available", "ActionEval");
     }
@@ -42,7 +40,7 @@ public class ActionEvalState implements State {
   }
 
   @Override
-  public Maybe<Class<? extends State>> update(int delta, InputManager input) {
+  public Maybe<Class<? extends AbstractState>> update(int delta) {
     activeAction.evaluateByData(delta, activeData);
 
     /*
@@ -55,7 +53,7 @@ public class ActionEvalState implements State {
   }
 
   @Override
-  public void render(int delta, GraphicManager graphic) {
-    activeAction.renderByData(delta, graphic, activeData);
+  public void render(int delta) {
+    activeAction.renderByData(delta, gfx, activeData);
   }
 }

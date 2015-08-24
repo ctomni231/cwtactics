@@ -1,8 +1,10 @@
 package org.wolftec.cwt.states;
 
+import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
+import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.core.ioc.Constructable;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.Nullable;
@@ -26,6 +28,10 @@ public class UserInteractionMap implements Constructable {
 
   public void register(String from, String event, String to) {
     getStateDesc(from).$put(event, to);
+  }
+
+  public void registerMulti(String from, Array<String> events, String to) {
+    ListUtil.forEachArrayValue(events, (index, event) -> register(from, event, to));
   }
 
   public void event(String event) {

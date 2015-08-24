@@ -1,16 +1,15 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.model.GameMode;
 import org.wolftec.cwt.model.MapManager;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.sheets.SheetManager;
-import org.wolftec.cwt.states.State;
+import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.system.Maybe;
 
-public class IngameEnter implements State {
+public class IngameEnter extends AbstractState {
 
   private ModelManager model;
   private StateManager states;
@@ -18,7 +17,7 @@ public class IngameEnter implements State {
   private MapManager   maps;
 
   @Override
-  public void onEnter(Maybe<Class<? extends State>> previous) {
+  public void onEnter(Maybe<Class<? extends AbstractState>> previous) {
     maps.loadMap("testmap.json", (mapData) -> {
 
       model.day = 0;
@@ -75,7 +74,7 @@ public class IngameEnter implements State {
   }
 
   @Override
-  public Maybe<Class<? extends State>> update(int delta, InputManager input) {
+  public Maybe<Class<? extends AbstractState>> update(int delta) {
     return NO_TRANSITION;
   }
 }

@@ -6,10 +6,8 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.input.backends.gamepad.GamepadInput;
-import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.cwt.states.State;
+import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Maybe;
@@ -22,17 +20,15 @@ public class GameLoopManager implements Injectable {
     native static void requestAnimationFrame(Callback0 handler);
   }
 
-  private StateManager   sm;
-  private InputManager   input;
-  private Log            log;
+  private StateManager sm;
+  private Log          log;
 
-  private GamepadInput   gamepad;
-  private GraphicManager gfx;
+  private GamepadInput gamepad;
 
-  private boolean        active;
+  private boolean      active;
 
-  private long           oldTime;
-  private Callback0      loopFunction;
+  private long         oldTime;
+  private Callback0    loopFunction;
 
   @Override
   public void onConstruction() {
@@ -66,9 +62,9 @@ public class GameLoopManager implements Injectable {
   public void update(int delta) {
     gamepad.checkData();
 
-    State activeState = sm.getActiveState();
-    Maybe<Class<? extends State>> nexState = activeState.update(delta, input);
-    activeState.render(delta, gfx);
+    AbstractState activeState = sm.getActiveState();
+    Maybe<Class<? extends AbstractState>> nexState = activeState.update(delta);
+    activeState.render(delta);
 
     if (nexState.isPresent()) {
       sm.changeState(nexState.get());

@@ -2,26 +2,24 @@ package org.wolftec.cwt.states.start;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.input.InputManager;
-import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.cwt.states.State;
+import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.system.Maybe;
 
-public class NoneState implements State {
+public class NoneState extends AbstractState {
 
   @Override
-  public Maybe<Class<? extends State>> update(int delta, InputManager input) {
+  public Maybe<Class<? extends AbstractState>> update(int delta) {
     return Maybe.of(LoadingState.class);
   }
 
   @Override
-  public void render(int delta, GraphicManager graphic) {
-    CanvasRenderingContext2D ctx = graphic.mainCtx;
+  public void render(int delta) {
+    CanvasRenderingContext2D ctx = gfx.mainCtx;
 
     ctx.font = "24pt Arial";
 
     ctx.fillStyle = "#CEF6D8";
-    ctx.fillRect(0, 0, graphic.absoluteScreenWidth(), graphic.absoluteScreenHeight());
+    ctx.fillRect(0, 0, gfx.absoluteScreenWidth(), gfx.absoluteScreenHeight());
 
     ctx.fillStyle = "#1C1C1C";
     ctx.fillText("CustomWars: Tactics (" + Constants.VERSION + ")", 30, 60, 400);

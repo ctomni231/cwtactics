@@ -11,11 +11,6 @@ public class TestAction implements Action {
   private Log log;
 
   @Override
-  public String key() {
-    return "testAction";
-  }
-
-  @Override
   public ActionType type() {
     return ActionType.ENGINE_ACTION;
   }

@@ -6,7 +6,7 @@ import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.GameLoader;
-import org.wolftec.cwt.states.State;
+import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.states.misc.PortraitWarningState;
 import org.wolftec.cwt.system.Log;
@@ -17,13 +17,13 @@ public class PortraitWatcher implements GameLoader {
   private Log                    log;
   private StateManager           statemachine;
 
-  private Class<? extends State> lastState;
+  private Class<? extends AbstractState> lastState;
 
   @Override
   public void onLoad(Callback0 done) {
     Nullable.ifPresent(grabOrientationData(), (orientation) -> {
       Callback1<DOMEvent> doOnOrientationChange = (event) -> {
-        Class<? extends State> currentState = (Class<? extends State>) JSObjectAdapter.$constructor(statemachine.getActiveState());
+        Class<? extends AbstractState> currentState = (Class<? extends AbstractState>) JSObjectAdapter.$constructor(statemachine.getActiveState());
 
         switch ((int) grabOrientationData()) {
           case -90:

@@ -5,6 +5,7 @@ import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.PositionCheck;
 import org.wolftec.cwt.states.PositionUpdateMode;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.system.ClassUtil;
 
 /**
  * Action class which represents an action which is usable by engine objects.
@@ -14,7 +15,9 @@ public interface Action extends Injectable {
   /**
    * Key ID of the action.
    */
-  String key();
+  default String key() {
+    return ClassUtil.getClassName(this);
+  }
 
   /**
    * Type of the action.

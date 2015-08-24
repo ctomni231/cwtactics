@@ -2,18 +2,18 @@ package org.wolftec.cwt.states.start;
 
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.State;
+import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.menu.MainMenuState;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Maybe;
 
-public class StartScreenState implements State {
+public class StartScreenState extends AbstractState {
 
   private Log          log;
   private InputManager input;
 
   @Override
-  public void onEnter(Maybe<Class<? extends State>> previous) {
+  public void onEnter(Maybe<Class<? extends AbstractState>> previous) {
     setupDevKeys();
   }
 
@@ -28,7 +28,7 @@ public class StartScreenState implements State {
   }
 
   @Override
-  public Maybe<Class<? extends State>> update(int delta, InputManager input) {
+  public Maybe<Class<? extends AbstractState>> update(int delta) {
     return input.isActionPressed(GameActions.BUTTON_A) ? Maybe.of(MainMenuState.class) : NO_TRANSITION;
   }
 }
