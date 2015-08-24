@@ -27,7 +27,7 @@ public class MoveStart implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     moveDto.movePath.clear();
     moveDto.unitId = data.p1;
     moveDto.x = data.p2;

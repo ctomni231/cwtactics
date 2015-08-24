@@ -61,6 +61,16 @@ public class ActionManager implements Injectable {
   }
 
   /**
+   * Returns the action which has the given numeric ID.
+   * 
+   * @param id
+   * @return
+   */
+  public Action getActionByNumericId(int id) {
+    return actions.$get(id);
+  }
+
+  /**
    * Gets the numeric ID of an action object.
    */
   public int getActionId(String key) {
@@ -166,6 +176,13 @@ public class ActionManager implements Injectable {
     return !buffer.isEmpty();
   }
 
+  public ActionData popData() {
+    if (!hasData()) {
+      return JsUtil.throwError("CannotPullFromEmptyBuffer");
+    }
+    return buffer.popFirst();
+  }
+
   /**
    * Invokes the next command in the command stack. Throws an error when the
    * command stack is empty.
@@ -177,9 +194,12 @@ public class ActionManager implements Injectable {
     log.info("evaluating action data object " + data);
 
     Action actionObj = actions.$get(data.id);
-    actionObj.invoke(data);
+    // actionObj.evaluateByData(data);
 
-    // pool used object
+    releaseData(data);
+  }
+
+  public void releaseData(ActionData data) {
     data.reset();
     pool.push(data);
   }

@@ -29,6 +29,10 @@ JavalikeEquals = function(value){
 	return this === value;
 };
 
+JavalikeGetClass = function(){
+	return this.constructor;
+};
+
 /* String */
 if (!String.prototype.equals) {
 	String.prototype.equals=JavalikeEquals;
@@ -137,6 +141,15 @@ if (!String.prototype.regionMatches){
 	}
 }
 
+if(!String.prototype.contains){
+	String.prototype.contains=function(it){
+		return this.indexOf(it)>=0;
+	};
+}
+
+if(!String.prototype.getClass){
+	String.prototype.getClass=JavalikeGetClass;
+}
 
 
 //force valueof to match the Java's behavior
@@ -217,6 +230,9 @@ if (!Number.prototype.isNaN) {
 if (!Number.prototype.equals) {
 	Number.prototype.equals=JavalikeEquals;
 }
+if(!Number.prototype.getClass){
+	Number.prototype.getClass=JavalikeGetClass;
+}
 
 //force valueof to match approximately the Java's behavior (for Integer.valueOf it returns in fact a double)
 Number.valueOf=function(value){
@@ -226,6 +242,9 @@ Number.valueOf=function(value){
 /* Boolean */
 if (!Boolean.prototype.equals) {
 	Boolean.prototype.equals=JavalikeEquals;
+}
+if(!Boolean.prototype.getClass){
+	Boolean.prototype.getClass=JavalikeGetClass;
 }
 
 //force valueof to match the Java's behavior
@@ -316,8 +335,13 @@ stjs.extend=function(_constructor, _super, _implements, _initializer, _typeDescr
 	_constructor.$annotations = _annotations;
 
 	// add the default equals method if it is not present yet, and we don't have a superclass
-	if(_super == null && !_constructor.prototype.equals){
-		_constructor.prototype.equals = JavalikeEquals;
+	if(_super == null){
+		if(!_constructor.prototype.equals) {
+			_constructor.prototype.equals = JavalikeEquals;
+		}
+		if(!_constructor.prototype.getClass) {
+			_constructor.prototype.getClass = JavalikeGetClass;
+		}
 	}
 
 	// build package and assign
@@ -347,6 +371,7 @@ stjs.extend12=function( _constructor,  _super, _implements){
 	// with 1.3 requires it
 	if(_super == null){
 		_constructor.prototype.equals = JavalikeEquals;
+		_constructor.prototype.getClass = JavalikeGetClass;
 	}
 
 	// build package and assign
@@ -782,6 +807,7 @@ stjs.typefy=function(obj, cls){
 	  }
 	  return ret;
 };
+stjs.hydrate=stjs.typefy
 
 stjs.stringify=function(obj, cls){
 	 if (obj == null)

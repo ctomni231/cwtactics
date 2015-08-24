@@ -34,7 +34,7 @@ public class ExplodeUnit implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     explode.explode(data.p1, data.p2, data.p3, data.p4);
   }
 

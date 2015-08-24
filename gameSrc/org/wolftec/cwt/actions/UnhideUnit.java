@@ -28,7 +28,7 @@ public class UnhideUnit implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     hide.unhide(model.getUnit(data.p1));
   }
 

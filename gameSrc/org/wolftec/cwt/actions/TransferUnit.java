@@ -46,7 +46,7 @@ public class TransferUnit implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     team.transferUnitToPlayer(model.getUnit(data.p1), model.getPlayer(data.p2));
   }
 

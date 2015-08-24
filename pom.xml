@@ -20,7 +20,7 @@
  </repositories>
 
  <properties>
-  <stjs.version>3.1.5</stjs.version>
+  <stjs.version>3.2.1</stjs.version>
    
     <!-- this resolves to test folder.. drops all tests from build -->
     <test.exclude.pattern>**/test/**/*.java</test.exclude.pattern>

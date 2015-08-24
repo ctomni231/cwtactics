@@ -94,7 +94,7 @@ public class UnloadUnit implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     Unit load = model.getUnit(data.p2);
     Unit transporter = model.getUnit(data.p1);
 

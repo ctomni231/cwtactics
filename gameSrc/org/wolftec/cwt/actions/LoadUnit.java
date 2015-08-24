@@ -46,7 +46,7 @@ public class LoadUnit implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     transport.load(model.getUnit(data.p1), model.getUnit(data.p2));
   }
 }

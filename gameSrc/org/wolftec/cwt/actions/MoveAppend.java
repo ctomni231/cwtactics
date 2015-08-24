@@ -26,7 +26,7 @@ public class MoveAppend implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     if (data.p1 != Constants.INACTIVE) moveDto.movePath.push(data.p1);
     if (data.p2 != Constants.INACTIVE) moveDto.movePath.push(data.p2);
     if (data.p3 != Constants.INACTIVE) moveDto.movePath.push(data.p3);

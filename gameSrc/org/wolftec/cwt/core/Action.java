@@ -1,9 +1,9 @@
 package org.wolftec.cwt.core;
 
+import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.PositionCheck;
 import org.wolftec.cwt.states.PositionUpdateMode;
 import org.wolftec.cwt.states.UserInteractionData;
-
 
 /**
  * Action class which represents an action which is usable by engine objects.
@@ -122,5 +122,13 @@ public interface Action {
   /**
    * Invokes the action with a given set of arguments.
    */
-  void invoke(ActionData data);
+  void evaluateByData(int delta, ActionData data);
+
+  default boolean isDataEvaluationCompleted(ActionData data) {
+    return true;
+  }
+
+  default void renderByData(int delta, GraphicManager gfx, ActionData data) {
+
+  }
 }

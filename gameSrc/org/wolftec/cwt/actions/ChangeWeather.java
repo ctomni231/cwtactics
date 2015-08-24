@@ -31,7 +31,7 @@ public class ChangeWeather implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     weather.changeWeather(StringNumberConverter.toId(data.p1), data.p2);
     fog.fullRecalculation();
   }

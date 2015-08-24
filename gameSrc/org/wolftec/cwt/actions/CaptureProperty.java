@@ -40,7 +40,7 @@ public class CaptureProperty implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     capture.captureProperty(model.getProperty(data.p1), model.getUnit(data.p2));
   }
 

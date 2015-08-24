@@ -46,7 +46,7 @@ public class JoinUnit implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     join.join(model.getUnit(data.p1), data.p2, data.p3);
   }
 

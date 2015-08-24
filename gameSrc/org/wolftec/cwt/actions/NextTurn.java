@@ -52,7 +52,7 @@ public class NextTurn implements Action {
   // }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
 
     // // special variable for the first turn -> we need the turn start actions
     // after starting the game without

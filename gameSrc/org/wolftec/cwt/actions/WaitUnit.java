@@ -31,7 +31,7 @@ public class WaitUnit implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     model.getUnit(data.p1).setActable(false);
   }
 }

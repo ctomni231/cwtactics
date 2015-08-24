@@ -31,7 +31,7 @@ public class IdleState implements State {
      * actions buffer.
      */
     if (actions.hasData()) {
-      /* TODO move into the state */
+      return Maybe.of(ActionEvalState.class);
     }
 
     if (input.isActionPressed(GameActions.BUTTON_B)) {

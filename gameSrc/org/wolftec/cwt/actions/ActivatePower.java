@@ -48,7 +48,7 @@ public class ActivatePower implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     co.activatePower(model.getPlayer(data.p1), data.p2);
   }
 

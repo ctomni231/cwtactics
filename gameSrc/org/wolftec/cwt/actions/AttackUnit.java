@@ -17,7 +17,7 @@ public class AttackUnit implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     // TODO Auto-generated method stub
 
   }

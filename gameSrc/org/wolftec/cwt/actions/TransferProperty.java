@@ -44,7 +44,7 @@ public class TransferProperty implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     team.transferPropertyToPlayer(model.getProperty(data.p1), model.getPlayer(data.p2));
   }
 

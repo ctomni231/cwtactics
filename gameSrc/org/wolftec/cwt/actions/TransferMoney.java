@@ -45,7 +45,7 @@ public class TransferMoney implements Action {
   }
 
   @Override
-  public void invoke(ActionData data) {
+  public void evaluateByData(int delta, ActionData data) {
     team.transferMoney(model.getPlayer(data.p1), model.getPlayer(data.p2), data.p3);
   }
 }
