@@ -44,6 +44,10 @@ public class ActionManager implements Injectable {
     buffer = new CircularBuffer<ActionData>(BUFFER_SIZE);
 
     Functions.repeat(BUFFER_SIZE, (i) -> pool.push(new ActionData()));
+
+    ListUtil.forEachArrayValue(actions, (index, action) -> {
+      actionIds.$put(action.key(), index);
+    });
   }
 
   /**

@@ -3,7 +3,6 @@ package org.wolftec.cwt;
 import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.ActionManager;
 import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
@@ -27,7 +26,6 @@ public class GameLoopManager implements Injectable {
   private InputManager   input;
   private Log            log;
 
-  private ActionManager  actions;
   private GamepadInput   gamepad;
   private GraphicManager gfx;
 
@@ -67,12 +65,6 @@ public class GameLoopManager implements Injectable {
    */
   public void update(int delta) {
     gamepad.checkData();
-
-    // TODO commands into states
-    if (actions.hasData()) {
-      actions.invokeNext();
-      return;
-    }
 
     State activeState = sm.getActiveState();
     Maybe<Class<? extends State>> nexState = activeState.update(delta, input);

@@ -1,5 +1,6 @@
 package org.wolftec.cwt.core;
 
+import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.PositionCheck;
 import org.wolftec.cwt.states.PositionUpdateMode;
@@ -8,7 +9,7 @@ import org.wolftec.cwt.states.UserInteractionData;
 /**
  * Action class which represents an action which is usable by engine objects.
  */
-public interface Action {
+public interface Action extends Injectable {
 
   /**
    * Key ID of the action.

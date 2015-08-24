@@ -15,17 +15,20 @@ import org.wolftec.cwt.system.Maybe;
  */
 public class ActionEvalState implements State {
 
-  private ErrorManager  errors;
-  private ActionManager actions;
+  private ErrorManager           errors;
+  private ActionManager          actions;
 
-  private Action        activeAction;
-  private ActionData    activeData;
+  private Class<? extends State> lastState;
+  private Action                 activeAction;
+  private ActionData             activeData;
 
   @Override
   public void onEnter(Maybe<Class<? extends State>> previous) {
     if (!actions.hasData()) {
       errors.raiseError("no action data available", "ActionEval");
     }
+
+    lastState = previous.get();
 
     activeData = actions.popData();
     activeAction = actions.getActionByNumericId(activeData.id);
@@ -48,7 +51,7 @@ public class ActionEvalState implements State {
      * action evaluation state to recall the update and render function as long
      * the action evaluation isn't completed.
      */
-    return activeAction.isDataEvaluationCompleted(activeData) ? Maybe.of(IdleState.class) : NO_TRANSITION;
+    return activeAction.isDataEvaluationCompleted(activeData) ? Maybe.of(lastState) : NO_TRANSITION;
   }
 
   @Override
