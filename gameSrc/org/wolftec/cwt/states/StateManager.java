@@ -4,7 +4,7 @@ import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class StateManager implements Injectable {
 
@@ -60,7 +60,7 @@ public class StateManager implements Injectable {
 
     // TODO prevent that ?
     if (fireEvent != false) {
-      getActiveState().onEnter(Maybe.of(current));
+      getActiveState().onEnter(Option.ofNullable(current));
     }
   }
 }

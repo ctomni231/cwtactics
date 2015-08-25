@@ -10,7 +10,7 @@ import org.wolftec.cwt.input.backends.gamepad.GamepadInput;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class GameLoopManager implements Injectable {
 
@@ -63,7 +63,7 @@ public class GameLoopManager implements Injectable {
     gamepad.checkData();
 
     AbstractState activeState = sm.getActiveState();
-    Maybe<Class<? extends AbstractState>> nexState = activeState.update(delta);
+    Option<Class<? extends AbstractState>> nexState = activeState.update(delta);
     activeState.render(delta);
 
     if (nexState.isPresent()) {

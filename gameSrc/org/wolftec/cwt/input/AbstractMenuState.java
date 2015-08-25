@@ -4,7 +4,7 @@ import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.UserInteractionMap;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class AbstractMenuState extends AbstractState {
 
@@ -12,7 +12,7 @@ public class AbstractMenuState extends AbstractState {
   protected UserInteractionMap ui;
 
   @Override
-  public Maybe<Class<? extends AbstractState>> update(int delta) {
+  public Option<Class<? extends AbstractState>> update(int delta) {
 
     if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
       ui.event(GameActions.BUTTON_LEFT);
@@ -46,11 +46,11 @@ public class AbstractMenuState extends AbstractState {
     return NO_TRANSITION;
   }
 
-  public Maybe<Class<? extends AbstractState>> handleButtonA(int delta, String currentUiState) {
+  public Option<Class<? extends AbstractState>> handleButtonA(int delta, String currentUiState) {
     return NO_TRANSITION;
   }
 
-  public Maybe<Class<? extends AbstractState>> handleButtonB(int delta, String currentUiState) {
+  public Option<Class<? extends AbstractState>> handleButtonB(int delta, String currentUiState) {
     return NO_TRANSITION;
   }
 }

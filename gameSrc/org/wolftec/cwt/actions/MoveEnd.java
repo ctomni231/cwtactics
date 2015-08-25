@@ -1,9 +1,9 @@
 package org.wolftec.cwt.actions;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.Action;
-import org.wolftec.cwt.core.ActionData;
-import org.wolftec.cwt.core.ActionType;
+import org.wolftec.cwt.core.action.Action;
+import org.wolftec.cwt.core.action.ActionData;
+import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.ModelManager;
 

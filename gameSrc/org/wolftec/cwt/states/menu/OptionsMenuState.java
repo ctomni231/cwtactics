@@ -4,7 +4,7 @@ import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.input.AbstractMenuState;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class OptionsMenuState extends AbstractMenuState {
 
@@ -61,15 +61,15 @@ public class OptionsMenuState extends AbstractMenuState {
   }
 
   @Override
-  public void onEnter(Maybe<Class<? extends AbstractState>> previous) {
+  public void onEnter(Option<Class<? extends AbstractState>> previous) {
     last = previous.get();
     ui.setState(UIC_DECREASE_SFX);
   }
 
   @Override
-  public Maybe<Class<? extends AbstractState>> handleButtonA(int delta, String currentUiState) {
+  public Option<Class<? extends AbstractState>> handleButtonA(int delta, String currentUiState) {
     if (currentUiState == UIC_BACK) {
-      return Maybe.of(last);
+      return Option.of(last);
     }
     return NO_TRANSITION;
   }

@@ -1,11 +1,11 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.ErrorManager;
-import org.wolftec.cwt.core.Action;
-import org.wolftec.cwt.core.ActionData;
-import org.wolftec.cwt.core.ActionManager;
+import org.wolftec.cwt.core.action.Action;
+import org.wolftec.cwt.core.action.ActionData;
+import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 /**
  * The action evaluation state evaluates an action with the first data entry
@@ -13,15 +13,15 @@ import org.wolftec.cwt.system.Maybe;
  */
 public class ActionEvalState extends AbstractState {
 
-  private ErrorManager           errors;
-  private ActionManager          actions;
+  private ErrorManager                   errors;
+  private ActionManager                  actions;
 
   private Class<? extends AbstractState> lastState;
-  private Action                 activeAction;
-  private ActionData             activeData;
+  private Action                         activeAction;
+  private ActionData                     activeData;
 
   @Override
-  public void onEnter(Maybe<Class<? extends AbstractState>> previous) {
+  public void onEnter(Option<Class<? extends AbstractState>> previous) {
     if (!actions.hasData()) {
       errors.raiseError("no action data available", "ActionEval");
     }
@@ -40,7 +40,7 @@ public class ActionEvalState extends AbstractState {
   }
 
   @Override
-  public Maybe<Class<? extends AbstractState>> update(int delta) {
+  public Option<Class<? extends AbstractState>> update(int delta) {
     activeAction.evaluateByData(delta, activeData);
 
     /*
@@ -49,7 +49,7 @@ public class ActionEvalState extends AbstractState {
      * action evaluation state to recall the update and render function as long
      * the action evaluation isn't completed.
      */
-    return activeAction.isDataEvaluationCompleted(activeData) ? Maybe.of(lastState) : NO_TRANSITION;
+    return activeAction.isDataEvaluationCompleted(activeData) ? Option.of(lastState) : NO_TRANSITION;
   }
 
   @Override

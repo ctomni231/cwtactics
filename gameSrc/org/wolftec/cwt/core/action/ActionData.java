@@ -1,4 +1,4 @@
-package org.wolftec.cwt.core;
+package org.wolftec.cwt.core.action;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;

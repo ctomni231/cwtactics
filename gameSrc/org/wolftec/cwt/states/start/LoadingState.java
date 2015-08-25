@@ -4,26 +4,26 @@ import org.wolftec.cwt.core.GameLoadingManager;
 import org.wolftec.cwt.core.LoadingWatcher;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class LoadingState extends AbstractState implements LoadingWatcher {
 
-  private Log                           log;
-  private GameLoadingManager            loading;
+  private Log                                    log;
+  private GameLoadingManager                     loading;
 
-  private Maybe<Class<? extends AbstractState>> next;
+  private Option<Class<? extends AbstractState>> next;
 
   @Override
-  public void onEnter(Maybe<Class<? extends AbstractState>> previous) {
+  public void onEnter(Option<Class<? extends AbstractState>> previous) {
     loading.loadData(() -> {
       log.info("done");
-      next = Maybe.of(StartScreenState.class);
+      next = Option.of(StartScreenState.class);
     });
     next = NO_TRANSITION;
   }
 
   @Override
-  public Maybe<Class<? extends AbstractState>> update(int delta) {
+  public Option<Class<? extends AbstractState>> update(int delta) {
     return next;
   }
 

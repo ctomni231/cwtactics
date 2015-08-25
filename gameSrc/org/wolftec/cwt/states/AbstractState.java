@@ -5,14 +5,14 @@ import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.system.ClassUtil;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class AbstractState implements Injectable {
 
-  public static final Maybe<Class<? extends AbstractState>> NO_TRANSITION = Maybe.of(null);
+  public static final Option<Class<? extends AbstractState>> NO_TRANSITION = Option.empty();
 
-  protected InputManager                            input;
-  protected GraphicManager                          gfx;
+  protected InputManager                                     input;
+  protected GraphicManager                                   gfx;
 
   /**
    * Called when the state will be leaved.
@@ -24,7 +24,7 @@ public class AbstractState implements Injectable {
   /**
    * Called when the state will be entered.
    */
-  public void onEnter(Maybe<Class<? extends AbstractState>> previous) {
+  public void onEnter(Option<Class<? extends AbstractState>> previous) {
 
   }
 
@@ -38,7 +38,7 @@ public class AbstractState implements Injectable {
    *          buttons
    * @return
    */
-  public Maybe<Class<? extends AbstractState>> update(int delta) {
+  public Option<Class<? extends AbstractState>> update(int delta) {
     return NO_TRANSITION;
   }
 

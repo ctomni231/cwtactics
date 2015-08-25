@@ -1,15 +1,15 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.states.GameActions;
+import org.wolftec.cwt.system.Option;
 
 public class ShowAttackRangeState extends AbstractState {
 
   private Class<? extends AbstractState> idle;
 
   @Override
-  public void onEnter(Maybe<Class<? extends AbstractState>> previous) {
+  public void onEnter(Option<Class<? extends AbstractState>> previous) {
     idle = previous.get();
   }
 
@@ -19,7 +19,7 @@ public class ShowAttackRangeState extends AbstractState {
   }
 
   @Override
-  public Maybe<Class<? extends AbstractState>> update(int delta) {
-    return input.isActionPressed(GameActions.BUTTON_B) ? NO_TRANSITION : Maybe.of(idle);
+  public Option<Class<? extends AbstractState>> update(int delta) {
+    return input.isActionPressed(GameActions.BUTTON_B) ? NO_TRANSITION : Option.of(idle);
   }
 }

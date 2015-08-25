@@ -11,6 +11,7 @@ import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Features;
 import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.system.Option;
 import org.wolftec.cwt.system.RequestUtil.ArrayBufferRespone;
 
 public class AudioManager implements Injectable {
@@ -140,11 +141,11 @@ public class AudioManager implements Injectable {
   }
 
   public float getSfxVolume() {
-    return Nullable.getOrElse(sfxNode, nullNode).gain.value;
+    return Option.ofNullable(sfxNode).orElse(nullNode).gain.value;
   }
 
   public float getMusicVolume() {
-    return Nullable.getOrElse(musicNode, nullNode).gain.value;
+    return Option.ofNullable(musicNode).orElse(nullNode).gain.value;
   }
 
   // TODO use channel enumeration here

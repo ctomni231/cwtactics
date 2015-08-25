@@ -1,12 +1,12 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.core.ActionManager;
+import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.logic.BattleLogic;
 import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class IdleState extends AbstractState {
 
@@ -16,32 +16,32 @@ public class IdleState extends AbstractState {
   private ActionManager       actions;
 
   @Override
-  public void onEnter(Maybe<Class<? extends AbstractState>> previous) {
+  public void onEnter(Option<Class<? extends AbstractState>> previous) {
     data.source.clean();
     data.target.clean();
     data.actionTarget.clean();
   }
 
   @Override
-  public Maybe<Class<? extends AbstractState>> update(int delta) {
+  public Option<Class<? extends AbstractState>> update(int delta) {
 
     /*
      * We move out of this state directly here when we have actions in the
      * actions buffer.
      */
     if (actions.hasData()) {
-      return Maybe.of(ActionEvalState.class);
+      return Option.of(ActionEvalState.class);
     }
 
     if (input.isActionPressed(GameActions.BUTTON_B)) {
-      return Maybe.of(ShowAttackRangeState.class);
+      return Option.of(ShowAttackRangeState.class);
 
     }
 
     if (input.isActionPressed(GameActions.BUTTON_A)) {
       data.source.set(model, input.lastX, input.lastY);
       data.target.set(model, input.lastX, input.lastY);
-      return Maybe.of(MovepathSelectionState.class);
+      return Option.of(MovepathSelectionState.class);
     }
 
     //

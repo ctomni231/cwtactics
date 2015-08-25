@@ -7,7 +7,7 @@ import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class IngameEnter extends AbstractState {
 
@@ -17,7 +17,7 @@ public class IngameEnter extends AbstractState {
   private MapManager   maps;
 
   @Override
-  public void onEnter(Maybe<Class<? extends AbstractState>> previous) {
+  public void onEnter(Option<Class<? extends AbstractState>> previous) {
     maps.loadMap("testmap.json", (mapData) -> {
 
       model.day = 0;
@@ -74,7 +74,7 @@ public class IngameEnter extends AbstractState {
   }
 
   @Override
-  public Maybe<Class<? extends AbstractState>> update(int delta) {
+  public Option<Class<? extends AbstractState>> update(int delta) {
     return NO_TRANSITION;
   }
 }

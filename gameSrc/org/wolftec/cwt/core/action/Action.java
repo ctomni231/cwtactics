@@ -1,4 +1,4 @@
-package org.wolftec.cwt.core;
+package org.wolftec.cwt.core.action;
 
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.renderer.GraphicManager;

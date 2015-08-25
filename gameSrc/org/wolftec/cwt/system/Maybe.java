@@ -6,6 +6,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Function0;
 import org.wolftec.cwt.core.JsUtil;
 
+@Deprecated
 public class Maybe<T> {
 
   public static final Maybe<Object> NOTHING = new Maybe<Object>(null);

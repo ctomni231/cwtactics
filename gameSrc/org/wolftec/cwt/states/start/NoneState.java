@@ -3,13 +3,13 @@ package org.wolftec.cwt.states.start;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class NoneState extends AbstractState {
 
   @Override
-  public Maybe<Class<? extends AbstractState>> update(int delta) {
-    return Maybe.of(LoadingState.class);
+  public Option<Class<? extends AbstractState>> update(int delta) {
+    return Option.of(LoadingState.class);
   }
 
   @Override

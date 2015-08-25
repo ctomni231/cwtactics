@@ -8,9 +8,13 @@ import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.Map;
 
 public class UrlParameterUtil {
-  // TODO realize as managed object
+
   private static Map<String, String> urlParameters;
 
+  /**
+   * 
+   * @return a map with parameters
+   */
   public static Map<String, String> getUrlParameterMap() {
     if (urlParameters == null) {
       urlParameters = JSCollections.$map();
@@ -27,6 +31,12 @@ public class UrlParameterUtil {
     return urlParameters;
   }
 
+  /**
+   * 
+   * @param param
+   *          the parameter key
+   * @return the value for the given parameter
+   */
   public static String getUrlParameter(String param) {
     String value = getUrlParameterMap().$get(param);
     return value != JSGlobal.undefined ? value : null;

@@ -2,10 +2,10 @@ package org.wolftec.cwt.states.misc;
 
 import org.stjs.javascript.Global;
 import org.wolftec.cwt.environment.ResetSystem;
-import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.UserInteractionMap;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class ErrorState extends AbstractState {
 
@@ -24,7 +24,7 @@ public class ErrorState extends AbstractState {
   }
 
   @Override
-  public Maybe<Class<? extends AbstractState>> update(int delta) {
+  public Option<Class<? extends AbstractState>> update(int delta) {
     if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
       mapping.event(GameActions.BUTTON_LEFT);
     } else if (input.isActionPressed(GameActions.BUTTON_RIGHT)) {
