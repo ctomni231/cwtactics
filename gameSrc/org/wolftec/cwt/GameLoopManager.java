@@ -1,12 +1,13 @@
 package org.wolftec.cwt;
 
+import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.BrowserUtil;
+import org.wolftec.cwt.core.FrameTickListener;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.input.backends.gamepad.GamepadInput;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.system.Log;
@@ -20,15 +21,15 @@ public class GameLoopManager implements Injectable {
     native static void requestAnimationFrame(Callback0 handler);
   }
 
-  private StateManager sm;
-  private Log          log;
+  private StateManager             sm;
+  private Log                      log;
 
-  private GamepadInput gamepad;
+  private Array<FrameTickListener> frameWatchers;
 
-  private boolean      active;
+  private boolean                  active;
 
-  private long         oldTime;
-  private Callback0    loopFunction;
+  private long                     oldTime;
+  private Callback0                loopFunction;
 
   @Override
   public void onConstruction() {
@@ -60,7 +61,9 @@ public class GameLoopManager implements Injectable {
    * @param delta
    */
   public void update(int delta) {
-    gamepad.checkData();
+    for (int i = 0; i < frameWatchers.$length(); i++) {
+      frameWatchers.$get(i).onFrameTick(delta);
+    }
 
     AbstractState activeState = sm.getActiveState();
     Option<Class<? extends AbstractState>> nexState = activeState.update(delta);

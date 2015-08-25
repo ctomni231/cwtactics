@@ -2,12 +2,13 @@ package org.wolftec.cwt.input.backends.gamepad;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwt.core.Deactivatable;
+import org.wolftec.cwt.core.FrameTickListener;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 
-public class GamepadInput implements Injectable, Deactivatable {
+public class GamepadInput implements Injectable, Deactivatable, FrameTickListener {
 
   private Log            log;
   private InputManager   input;
@@ -43,7 +44,8 @@ public class GamepadInput implements Injectable, Deactivatable {
     }
   }
 
-  public void checkData() {
+  @Override
+  public void onFrameTick(int delta) {
     if (!enabled) {
       return;
     }

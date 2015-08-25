@@ -17,8 +17,8 @@ public abstract class RequestUtil {
   }
 
   public static class ResponseData<T> {
-    public Maybe<T>      data;
-    public Maybe<String> error;
+    public Option<T>      data;
+    public Option<String> error;
   }
 
   /**
@@ -42,8 +42,8 @@ public abstract class RequestUtil {
           err = request.statusText;
         }
 
-        response.data = Maybe.of(data);
-        response.error = Maybe.of(err);
+        response.data = Option.ofNullable(data);
+        response.error = Option.ofNullable(err);
 
         callback.$invoke(response);
       }
@@ -80,8 +80,8 @@ public abstract class RequestUtil {
           err = request.statusText;
         }
 
-        response.data = Maybe.of(data);
-        response.error = Maybe.of(err);
+        response.data = Option.ofNullable(data);
+        response.error = Option.ofNullable(err);
 
         callback.$invoke(response);
       }
@@ -115,8 +115,8 @@ public abstract class RequestUtil {
           err = request.statusText;
         }
 
-        response.data = Maybe.of(data);
-        response.error = Maybe.of(err);
+        response.data = Option.ofNullable(data);
+        response.error = Option.ofNullable(err);
 
         callback.$invoke(response);
       }

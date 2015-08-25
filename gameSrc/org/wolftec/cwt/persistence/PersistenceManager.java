@@ -5,6 +5,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.Features;
+import org.wolftec.cwt.system.Option;
 
 public class PersistenceManager implements Injectable {
 
@@ -40,6 +41,12 @@ public class PersistenceManager implements Injectable {
    */
   public void get(String key, Callback2<String, Object> callback) {
     LocalForage.localforage.getItem(key, callback);
+  }
+
+  public <T> void getItem(String key, Callback2<String, Option<T>> callback) {
+    LocalForage.localforage.getItem(key, (rErr, rData) -> {
+      callback.$invoke(rErr, Option.ofNullable((T) rData));
+    });
   }
 
   /**
