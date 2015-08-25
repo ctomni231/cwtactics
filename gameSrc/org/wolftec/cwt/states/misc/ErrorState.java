@@ -1,44 +1,37 @@
 package org.wolftec.cwt.states.misc;
 
 import org.stjs.javascript.Global;
+import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.environment.ResetSystem;
+import org.wolftec.cwt.input.AbstractMenuState;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.UserInteractionMap;
 import org.wolftec.cwt.system.Option;
 
-public class ErrorState extends AbstractState {
+public class ErrorState extends AbstractMenuState {
 
-  public String             message;
-  public String             where;
+  private static final String UIC_RELOAD  = "RELOAD";
+  private static final String UIC_WIPEOUT = "WIPEOUT";
+  public String               message;
+  public String               where;
 
-  public UserInteractionMap mapping;
+  public UserInteractionMap   mapping;
 
   @Override
   public void onConstruction() {
-    mapping.register("WIPEOUT", GameActions.BUTTON_LEFT, "RELOAD");
-    mapping.register("WIPEOUT", GameActions.BUTTON_RIGHT, "RELOAD");
-    mapping.register("RELOAD", GameActions.BUTTON_LEFT, "WIPEOUT");
-    mapping.register("RELOAD", GameActions.BUTTON_RIGHT, "WIPEOUT");
-    mapping.setState("RELOAD");
+    mapping.registerMulti(UIC_WIPEOUT, JSCollections.$array(GameActions.BUTTON_LEFT, GameActions.BUTTON_RIGHT), UIC_RELOAD);
+    mapping.registerMulti(UIC_RELOAD, JSCollections.$array(GameActions.BUTTON_LEFT, GameActions.BUTTON_RIGHT), UIC_WIPEOUT);
+    mapping.setState(UIC_RELOAD);
   }
 
   @Override
-  public Option<Class<? extends AbstractState>> update(int delta) {
-    if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
-      mapping.event(GameActions.BUTTON_LEFT);
-    } else if (input.isActionPressed(GameActions.BUTTON_RIGHT)) {
-      mapping.event(GameActions.BUTTON_RIGHT);
+  public Option<Class<? extends AbstractState>> handleButtonA(int delta, String currentUiState) {
+    if (mapping.getState() == UIC_RELOAD) {
+      reloadWithoutWipe();
+    } else {
+      reloadWithWipe();
     }
-
-    if (input.isActionPressed(GameActions.BUTTON_A)) {
-      if (mapping.getState() == "RELOAD") {
-        reloadWithoutWipe();
-      } else {
-        reloadWithWipe();
-      }
-    }
-
     return NO_TRANSITION;
   }
 

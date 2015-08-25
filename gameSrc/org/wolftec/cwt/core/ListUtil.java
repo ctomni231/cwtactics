@@ -17,7 +17,8 @@ public class ListUtil {
     Nullable.getOrThrow(callback, "MissingParameter: callback");
 
     if (array.$length() == 0) {
-      JsUtil.throwError("IllegalArgumentException: function list cannot be empty");
+      doneCb.$invoke();
+      return;
     }
 
     WorkflowData data = new WorkflowData();

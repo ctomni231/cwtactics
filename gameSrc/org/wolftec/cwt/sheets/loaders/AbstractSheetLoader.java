@@ -11,6 +11,7 @@ import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.sheets.SheetType;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 import org.wolftec.cwt.system.RequestUtil;
 
 public abstract class AbstractSheetLoader<T extends SheetType> implements DataLoader {
@@ -19,11 +20,11 @@ public abstract class AbstractSheetLoader<T extends SheetType> implements DataLo
   private ErrorManager   errors;
 
   <M> M read(Map<String, Object> data, String property) {
-    return Maybe.of((M) data.$get(property)).orElseThrow(property + " is missing in data map");
+    return Option.ofNullable((M) data.$get(property)).orElseThrow(property + " is missing in data map");
   }
 
   <M> M readNullable(Map<String, Object> data, String property, M defaultValue) {
-    return Maybe.of((M) data.$get(property)).orElse(defaultValue);
+    return Option.ofNullable((M) data.$get(property)).orElse(defaultValue);
   }
 
   @Override
@@ -37,7 +38,7 @@ public abstract class AbstractSheetLoader<T extends SheetType> implements DataLo
 
   @Override
   public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Maybe<Object>> doneCb) {
-    RequestUtil.getJSON(entryDesc.path, (response) -> doneCb.$invoke(response.data));
+    RequestUtil.getJSON(entryDesc.path, (response) -> doneCb.$invoke(Maybe.of(response.data.orElse(null))));
   }
 
   @Override

@@ -49,7 +49,7 @@ public class MapManager implements DataLoader {
 
   @Override
   public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Maybe<Object>> doneCb) {
-    RequestUtil.getJSON(entryDesc.path, (response) -> doneCb.$invoke(response.data));
+    RequestUtil.getJSON(entryDesc.path, (response) -> doneCb.$invoke(Maybe.of(response.data.orElse(null))));
   }
 
   @Override
