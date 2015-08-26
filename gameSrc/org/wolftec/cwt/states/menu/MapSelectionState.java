@@ -2,11 +2,11 @@ package org.wolftec.cwt.states.menu;
 
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.states.UserInteractionMap;
 import org.wolftec.cwt.states.ingame.IngameEnter;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Option;
 
 public class MapSelectionState extends AbstractState {
 
@@ -24,7 +24,7 @@ public class MapSelectionState extends AbstractState {
   }
 
   @Override
-  public Option<Class<? extends AbstractState>> update(int delta) {
+  public void update(StateTransition transition, int delta) {
 
     if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
       mapping.event(GameActions.BUTTON_LEFT);
@@ -34,6 +34,6 @@ public class MapSelectionState extends AbstractState {
       log.info("new input state " + mapping.getState());
     }
 
-    return Option.of(IngameEnter.class);
+    transition.setTransitionTo(IngameEnter.class);
   }
 }

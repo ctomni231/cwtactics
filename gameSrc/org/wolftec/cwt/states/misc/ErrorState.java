@@ -4,10 +4,9 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.environment.ResetSystem;
 import org.wolftec.cwt.input.AbstractMenuState;
-import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionMap;
-import org.wolftec.cwt.system.Option;
 
 public class ErrorState extends AbstractMenuState {
 
@@ -26,13 +25,12 @@ public class ErrorState extends AbstractMenuState {
   }
 
   @Override
-  public Option<Class<? extends AbstractState>> handleButtonA(int delta, String currentUiState) {
+  public void handleButtonA(StateTransition transition, int delta, String currentUiState) {
     if (mapping.getState() == UIC_RELOAD) {
       reloadWithoutWipe();
     } else {
       reloadWithWipe();
     }
-    return NO_TRANSITION;
   }
 
   private void reloadWithoutWipe() {

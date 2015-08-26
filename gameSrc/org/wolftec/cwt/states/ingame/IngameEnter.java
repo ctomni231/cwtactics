@@ -6,18 +6,16 @@ import org.wolftec.cwt.model.MapManager;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.system.Option;
+import org.wolftec.cwt.states.StateTransition;
 
 public class IngameEnter extends AbstractState {
 
   private ModelManager model;
-  private StateManager states;
   private SheetManager sheets;
   private MapManager   maps;
 
   @Override
-  public void onEnter(Option<Class<? extends AbstractState>> previous) {
+  public void onEnter(StateTransition transition) {
     maps.loadMap("testmap.json", (mapData) -> {
 
       model.day = 0;
@@ -69,12 +67,7 @@ public class IngameEnter extends AbstractState {
         }
       });
 
-      states.changeState(IdleState.class);
+      transition.setTransitionTo(IdleState.class);
     });
-  }
-
-  @Override
-  public Option<Class<? extends AbstractState>> update(int delta) {
-    return NO_TRANSITION;
   }
 }

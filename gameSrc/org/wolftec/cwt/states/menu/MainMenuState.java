@@ -2,16 +2,13 @@ package org.wolftec.cwt.states.menu;
 
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.input.AbstractMenuState;
-import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.system.Option;
+import org.wolftec.cwt.states.StateTransition;
 
 public class MainMenuState extends AbstractMenuState {
 
-  private static final String            UIC_OPTIONS  = "OPTIONS";
-  private static final String            UIC_SKIRMISH = "SKIRMISH";
-
-  private Class<? extends AbstractState> last;
+  private static final String UIC_OPTIONS  = "OPTIONS";
+  private static final String UIC_SKIRMISH = "SKIRMISH";
 
   @Override
   public void onConstruction() {
@@ -20,21 +17,21 @@ public class MainMenuState extends AbstractMenuState {
   }
 
   @Override
-  public void onEnter(Option<Class<? extends AbstractState>> previous) {
+  public void onEnter(StateTransition transition) {
     ui.setState(UIC_SKIRMISH);
-    last = previous.get();
   }
 
   @Override
-  public Option<Class<? extends AbstractState>> handleButtonA(int delta, String currentUiState) {
+  public void handleButtonA(StateTransition transition, int delta, String currentUiState) {
     switch (ui.getState()) {
 
       case UIC_OPTIONS:
-        return Option.of(OptionsMenuState.class);
+        transition.setTransitionTo(OptionsMenuState.class);
+        break;
 
       case UIC_SKIRMISH:
-        return Option.of(MapSelectionState.class);
+        transition.setTransitionTo(MapSelectionState.class);
+        break;
     }
-    return NO_TRANSITION;
   }
 }

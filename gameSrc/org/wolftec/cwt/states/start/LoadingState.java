@@ -3,28 +3,22 @@ package org.wolftec.cwt.states.start;
 import org.wolftec.cwt.core.GameLoadingManager;
 import org.wolftec.cwt.core.LoadingWatcher;
 import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Option;
 
 public class LoadingState extends AbstractState implements LoadingWatcher {
 
-  private Log                                    log;
-  private GameLoadingManager                     loading;
-
-  private Option<Class<? extends AbstractState>> next;
+  private Log                log;
+  private GameLoadingManager loading;
 
   @Override
-  public void onEnter(Option<Class<? extends AbstractState>> previous) {
-    loading.loadData(() -> {
-      log.info("done");
-      next = Option.of(StartScreenState.class);
-    });
-    next = NO_TRANSITION;
-  }
-
-  @Override
-  public Option<Class<? extends AbstractState>> update(int delta) {
-    return next;
+  public void update(StateTransition transition, int delta) {
+    if (!loading.isStarted()) {
+      loading.loadData(() -> {
+        log.info("done");
+        transition.setTransitionTo(StartScreenState.class);
+      });
+    }
   }
 
   @Override

@@ -5,7 +5,7 @@ import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.system.Option;
+import org.wolftec.cwt.states.StateTransition;
 
 /**
  * The action evaluation state evaluates an action with the first data entry
@@ -13,34 +13,31 @@ import org.wolftec.cwt.system.Option;
  */
 public class ActionEvalState extends AbstractState {
 
-  private ErrorManager                   errors;
-  private ActionManager                  actions;
+  private ErrorManager  errors;
+  private ActionManager actions;
 
-  private Class<? extends AbstractState> lastState;
-  private Action                         activeAction;
-  private ActionData                     activeData;
+  private Action        activeAction;
+  private ActionData    activeData;
 
   @Override
-  public void onEnter(Option<Class<? extends AbstractState>> previous) {
+  public void onEnter(StateTransition transition) {
     if (!actions.hasData()) {
       errors.raiseError("no action data available", "ActionEval");
     }
-
-    lastState = previous.get();
 
     activeData = actions.popData();
     activeAction = actions.getActionByNumericId(activeData.id);
   }
 
   @Override
-  public void onExit() {
+  public void onExit(StateTransition transition) {
     actions.releaseData(activeData);
     activeData = null;
     activeAction = null;
   }
 
   @Override
-  public Option<Class<? extends AbstractState>> update(int delta) {
+  public void update(StateTransition transition, int delta) {
     activeAction.evaluateByData(delta, activeData);
 
     /*
@@ -49,7 +46,9 @@ public class ActionEvalState extends AbstractState {
      * action evaluation state to recall the update and render function as long
      * the action evaluation isn't completed.
      */
-    return activeAction.isDataEvaluationCompleted(activeData) ? Option.of(lastState) : NO_TRANSITION;
+    if (activeAction.isDataEvaluationCompleted(activeData)) {
+      transition.setTransitionTo(transition.getPreviousState().get());
+    }
   }
 
   @Override

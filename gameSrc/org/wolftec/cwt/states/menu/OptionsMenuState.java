@@ -2,24 +2,21 @@ package org.wolftec.cwt.states.menu;
 
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.input.AbstractMenuState;
-import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.system.Option;
+import org.wolftec.cwt.states.StateTransition;
 
 public class OptionsMenuState extends AbstractMenuState {
 
-  private static final String            UIC_WIPEOUT                 = "WIPEOUT";
-  private static final String            UIC_BACK                    = "BACK";
-  private static final String            UIC_REMAP_GAMEPAD           = "REMAP_GAMEPAD";
-  private static final String            UIC_REMAP_KEYBOARD          = "REMAP_KEYBOARD";
-  private static final String            UIC_CHECKBOX_FORCE_TOUCH    = "CHECKBOX_FORCE_TOUCH";
-  private static final String            UIC_CHECKBOX_ANIMATED_TILES = "CHECKBOX_ANIMATED_TILES";
-  private static final String            UIC_INCREASE_SFX            = "INCREASE_SFX";
-  private static final String            UIC_INCREASE_MUSIC          = "INCREASE_MUSIC";
-  private static final String            UIC_DECREASE_MUSIC          = "DECREASE_MUSIC";
-  private static final String            UIC_DECREASE_SFX            = "DECREASE_SFX";
-
-  private Class<? extends AbstractState> last;
+  private static final String UIC_WIPEOUT                 = "WIPEOUT";
+  private static final String UIC_BACK                    = "BACK";
+  private static final String UIC_REMAP_GAMEPAD           = "REMAP_GAMEPAD";
+  private static final String UIC_REMAP_KEYBOARD          = "REMAP_KEYBOARD";
+  private static final String UIC_CHECKBOX_FORCE_TOUCH    = "CHECKBOX_FORCE_TOUCH";
+  private static final String UIC_CHECKBOX_ANIMATED_TILES = "CHECKBOX_ANIMATED_TILES";
+  private static final String UIC_INCREASE_SFX            = "INCREASE_SFX";
+  private static final String UIC_INCREASE_MUSIC          = "INCREASE_MUSIC";
+  private static final String UIC_DECREASE_MUSIC          = "DECREASE_MUSIC";
+  private static final String UIC_DECREASE_SFX            = "DECREASE_SFX";
 
   @Override
   public void onConstruction() {
@@ -61,17 +58,15 @@ public class OptionsMenuState extends AbstractMenuState {
   }
 
   @Override
-  public void onEnter(Option<Class<? extends AbstractState>> previous) {
-    last = previous.get();
+  public void onEnter(StateTransition transition) {
     ui.setState(UIC_DECREASE_SFX);
   }
 
   @Override
-  public Option<Class<? extends AbstractState>> handleButtonA(int delta, String currentUiState) {
+  public void handleButtonA(StateTransition transition, int delta, String currentUiState) {
     if (currentUiState == UIC_BACK) {
-      return Option.of(last);
+      transition.setTransitionTo(transition.getPreviousState().get());
     }
-    return NO_TRANSITION;
   }
 
 }

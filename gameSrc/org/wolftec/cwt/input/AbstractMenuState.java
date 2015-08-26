@@ -2,9 +2,9 @@ package org.wolftec.cwt.input;
 
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionMap;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Option;
 
 public class AbstractMenuState extends AbstractState {
 
@@ -12,7 +12,7 @@ public class AbstractMenuState extends AbstractState {
   protected UserInteractionMap ui;
 
   @Override
-  public Option<Class<? extends AbstractState>> update(int delta) {
+  public void update(StateTransition transition, int delta) {
 
     if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
       ui.event(GameActions.BUTTON_LEFT);
@@ -36,21 +36,17 @@ public class AbstractMenuState extends AbstractState {
     }
 
     if (input.isActionPressed(GameActions.BUTTON_A)) {
-      return handleButtonA(delta, ui.getState());
+      handleButtonA(transition, delta, ui.getState());
     }
 
     if (input.isActionPressed(GameActions.BUTTON_B)) {
-      return handleButtonB(delta, ui.getState());
+      handleButtonB(transition, delta, ui.getState());
     }
-
-    return NO_TRANSITION;
   }
 
-  public Option<Class<? extends AbstractState>> handleButtonA(int delta, String currentUiState) {
-    return NO_TRANSITION;
+  public void handleButtonA(StateTransition transition, int delta, String currentUiState) {
   }
 
-  public Option<Class<? extends AbstractState>> handleButtonB(int delta, String currentUiState) {
-    return NO_TRANSITION;
+  public void handleButtonB(StateTransition transition, int delta, String currentUiState) {
   }
 }
