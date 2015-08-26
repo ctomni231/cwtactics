@@ -3,9 +3,9 @@ package org.wolftec.cwt.states.start;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.menu.MainMenuState;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Option;
 
 public class StartScreenState extends AbstractState {
 
@@ -13,7 +13,7 @@ public class StartScreenState extends AbstractState {
   private InputManager input;
 
   @Override
-  public void onEnter(Option<Class<? extends AbstractState>> previous) {
+  public void onEnter(StateTransition transition) {
     setupDevKeys();
   }
 
@@ -28,7 +28,9 @@ public class StartScreenState extends AbstractState {
   }
 
   @Override
-  public Option<Class<? extends AbstractState>> update(int delta) {
-    return input.isActionPressed(GameActions.BUTTON_A) ? Option.of(MainMenuState.class) : NO_TRANSITION;
+  public void update(StateTransition transition, int delta) {
+    if (input.isActionPressed(GameActions.BUTTON_A)) {
+      transition.setTransitionTo(MainMenuState.class);
+    }
   }
 }

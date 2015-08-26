@@ -10,6 +10,7 @@ import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateManager;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Option;
 
@@ -26,6 +27,8 @@ public class GameLoopManager implements Injectable {
 
   private Array<FrameTickListener> frameWatchers;
 
+  private StateTransition          transitionData;
+
   private boolean                  active;
 
   private long                     oldTime;
@@ -34,6 +37,8 @@ public class GameLoopManager implements Injectable {
   @Override
   public void onConstruction() {
     active = false;
+
+    transitionData = new StateTransition();
 
     /*
      * accessing the object with that is faster because loopFunction has not to
@@ -66,11 +71,14 @@ public class GameLoopManager implements Injectable {
     }
 
     AbstractState activeState = sm.getActiveState();
-    Option<Class<? extends AbstractState>> nexState = activeState.update(delta);
+
+    activeState.update(transitionData, delta);
     activeState.render(delta);
 
-    if (nexState.isPresent()) {
-      sm.changeState(nexState.get());
+    Option<Class<? extends AbstractState>> nextState = transitionData.getNextState();
+    if (nextState.isPresent()) {
+      sm.changeState(nextState.get());
+      transitionData.flushTransitionTo();
     }
   }
 

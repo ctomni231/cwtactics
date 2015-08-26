@@ -12,8 +12,11 @@ public class GameLoadingManager implements Injectable {
 
   private Array<GameLoader> loaders;
 
+  private boolean           started;
+
   @Override
   public void onConstruction() {
+    started = false;
     loaders.sort((a, b) -> {
       if (a.priority() > b.priority()) {
         return -1;
@@ -32,9 +35,14 @@ public class GameLoadingManager implements Injectable {
    * @param doneCb
    */
   public void loadData(Callback0 doneCb) {
+    started = true;
     ListUtil.forEachArrayValueAsync(loaders, (index, loader, next) -> {
       log.info("Invoking " + ClassUtil.getClassName(loader));
       loader.onLoad(next);
     }, doneCb);
+  }
+
+  public boolean isStarted() {
+    return started;
   }
 }

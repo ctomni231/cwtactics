@@ -3,13 +3,13 @@ package org.wolftec.cwt.states.start;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.system.Option;
+import org.wolftec.cwt.states.StateTransition;
 
 public class NoneState extends AbstractState {
 
   @Override
-  public Option<Class<? extends AbstractState>> update(int delta) {
-    return Option.of(LoadingState.class);
+  public void update(StateTransition transition, int delta) {
+    transition.setTransitionTo(LoadingState.class);
   }
 
   @Override

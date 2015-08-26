@@ -6,18 +6,16 @@ import org.wolftec.cwt.model.MapManager;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.system.Option;
+import org.wolftec.cwt.states.StateTransition;
 
-public class IngameEnter extends AbstractState {
+public class IngameEnterState extends AbstractState {
 
   private ModelManager model;
-  private StateManager states;
   private SheetManager sheets;
   private MapManager   maps;
 
   @Override
-  public void onEnter(Option<Class<? extends AbstractState>> previous) {
+  public void onEnter(StateTransition transition) {
     maps.loadMap("testmap.json", (mapData) -> {
 
       model.day = 0;
@@ -69,12 +67,36 @@ public class IngameEnter extends AbstractState {
         }
       });
 
-      states.changeState(IdleState.class);
-    });
-  }
+      transition.setTransitionTo(IngameIdleState.class);
 
-  @Override
-  public Option<Class<? extends AbstractState>> update(int delta) {
-    return NO_TRANSITION;
+      /*
+       * stateData.inGameRound = true; renderer.hideNativeCursor();
+       * 
+       * if (constants.DEBUG) console.log("entering game round");
+       * 
+       * var that = this;
+       * 
+       * // 1. load map gamePers.initMap(roundDTO.getSelectMap(),false, function
+       * () { roundDTO.selectMap(null);
+       * 
+       * // 2. change game data by the given configuration
+       * roundDTO.postProcess(); fog.fullRecalculation();
+       * turn.startsTurn(model.turnOwner);
+       * 
+       * // 3. update screen renderer.layerUI.clear();
+       * tileVariants.updateTileSprites();
+       * 
+       * // 4. render screen renderer.renderScreen(); renderer.renderCursor();
+       * 
+       * actions.localAction("nextTurn", 1); });
+       * 
+       * controller.commandStack_resetData();
+       * 
+       * // start first turn if (model.round_turnOwner === -1) {
+       * model.events.gameround_start();
+       * controller.commandStack_localInvokement("nextTurn_invoked"); if
+       * (controller.network_isHost()) model.events.weather_calculateNext(); }
+       */
+    });
   }
 }

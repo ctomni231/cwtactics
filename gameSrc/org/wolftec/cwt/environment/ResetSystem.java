@@ -28,11 +28,15 @@ public class ResetSystem implements GameLoader {
         return;
       }
 
-      pm.clear((error) -> {
-        String href = Global.window.document.location.href;
-        Global.window.document.location.replace(href.substring(0, href.indexOf("?")));
-      });
+      wipeAndReload();
     }, () -> done.$invoke());
+  }
+
+  public void wipeAndReload() {
+    pm.clear((error) -> {
+      String href = Global.window.document.location.href;
+      Global.window.document.location.replace(href.substring(0, href.indexOf("?")));
+    });
   }
 
 }

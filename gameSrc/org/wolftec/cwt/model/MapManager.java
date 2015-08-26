@@ -58,4 +58,12 @@ public class MapManager implements DataLoader {
     doneCb.$invoke();
   }
 
+  public FileDescriptor getMapName(int id) {
+    return maps.$get(id);
+  }
+
+  public int getNumberOfMaps() {
+    return maps.$length();
+  }
+
 }

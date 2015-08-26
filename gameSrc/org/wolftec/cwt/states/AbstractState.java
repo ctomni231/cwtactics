@@ -16,30 +16,33 @@ public class AbstractState implements Injectable {
 
   /**
    * Called when the state will be leaved.
+   * 
+   * @param transition
+   *          transition data
    */
-  public void onExit() {
+  public void onExit(StateTransition transition) {
 
   }
 
   /**
    * Called when the state will be entered.
+   * 
+   * @param transition
+   *          transition data
    */
-  public void onEnter(Option<Class<? extends AbstractState>> previous) {
+  public void onEnter(StateTransition transition) {
 
   }
 
   /**
    * Called at first in a new frame.
    * 
+   * @param transition
+   *          transition data
    * @param delta
    *          time since the last frame
-   * @param input
-   *          input manager which allows access to the currently pressed input
-   *          buttons
-   * @return
    */
-  public Option<Class<? extends AbstractState>> update(int delta) {
-    return NO_TRANSITION;
+  public void update(StateTransition transition, int delta) {
   }
 
   /**
@@ -47,8 +50,6 @@ public class AbstractState implements Injectable {
    * 
    * @param delta
    *          time since the last frame
-   * @param canvas
-   *          graphic manager instance which gives access to the game canvas
    */
   public void render(int delta) {
     CanvasRenderingContext2D ctx = gfx.mainCtx;

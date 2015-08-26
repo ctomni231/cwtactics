@@ -25,4 +25,8 @@ public class ErrorManager implements Injectable {
 
     stateMachine.changeState(ClassUtil.getClass(errorState));
   }
+
+  public void raiseWarning(String message, String where) {
+
+  }
 }

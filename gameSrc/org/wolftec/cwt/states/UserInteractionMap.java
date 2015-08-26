@@ -4,10 +4,10 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
+import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.core.ioc.Constructable;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.system.Nullable;
 
 public class UserInteractionMap implements Constructable {
 
@@ -36,7 +36,7 @@ public class UserInteractionMap implements Constructable {
 
   public void event(String event) {
     Map<String, String> desc = getStateDesc(active);
-    if (Nullable.isPresent(desc.$get(event))) {
+    if (JSObjectAdapter.hasOwnProperty(desc, event)) {
       active = desc.$get(event);
     }
   }
@@ -46,7 +46,9 @@ public class UserInteractionMap implements Constructable {
   }
 
   public void setState(String state) {
-    Nullable.getOrThrow(states.$get(state), "UnknownState");
+    if (!JSObjectAdapter.hasOwnProperty(states, state)) {
+      JsUtil.throwError("UnknownState");
+    }
     active = state;
   }
 }

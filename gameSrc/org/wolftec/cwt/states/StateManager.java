@@ -4,11 +4,12 @@ import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Option;
 
 public class StateManager implements Injectable {
 
   private Log                        log;
+
+  private StateTransition            transition;
 
   /**
    * Holds all registered game states.
@@ -19,6 +20,11 @@ public class StateManager implements Injectable {
    * The id of the active game state.
    */
   private String                     activeStateId;
+
+  @Override
+  public void onConstruction() {
+    transition = new StateTransition();
+  }
 
   public String getActiveStateId() {
     return activeStateId;
@@ -36,7 +42,7 @@ public class StateManager implements Injectable {
    */
   public void changeState(Class<? extends AbstractState> state) {
     if (activeStateId != null) {
-      getActiveState().onExit();
+      getActiveState().onExit(transition);
     }
 
     // enter new state
@@ -54,13 +60,11 @@ public class StateManager implements Injectable {
     String stateId = ClassUtil.getClassName(state);
 
     log.info("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
-
-    Class<? extends AbstractState> current = activeStateId != null ? ClassUtil.getClass(getActiveState()) : null;
     activeStateId = stateId;
 
     // TODO prevent that ?
     if (fireEvent != false) {
-      getActiveState().onEnter(Option.ofNullable(current));
+      getActiveState().onEnter(transition);
     }
   }
 }

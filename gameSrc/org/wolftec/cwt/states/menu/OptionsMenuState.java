@@ -1,25 +1,29 @@
 package org.wolftec.cwt.states.menu;
 
 import org.stjs.javascript.JSCollections;
+import org.wolftec.cwt.ErrorManager;
+import org.wolftec.cwt.audio.AudioManager;
 import org.wolftec.cwt.input.AbstractMenuState;
-import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.save.SaveManager;
 import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.system.Option;
+import org.wolftec.cwt.states.StateTransition;
 
 public class OptionsMenuState extends AbstractMenuState {
 
-  private static final String            UIC_WIPEOUT                 = "WIPEOUT";
-  private static final String            UIC_BACK                    = "BACK";
-  private static final String            UIC_REMAP_GAMEPAD           = "REMAP_GAMEPAD";
-  private static final String            UIC_REMAP_KEYBOARD          = "REMAP_KEYBOARD";
-  private static final String            UIC_CHECKBOX_FORCE_TOUCH    = "CHECKBOX_FORCE_TOUCH";
-  private static final String            UIC_CHECKBOX_ANIMATED_TILES = "CHECKBOX_ANIMATED_TILES";
-  private static final String            UIC_INCREASE_SFX            = "INCREASE_SFX";
-  private static final String            UIC_INCREASE_MUSIC          = "INCREASE_MUSIC";
-  private static final String            UIC_DECREASE_MUSIC          = "DECREASE_MUSIC";
-  private static final String            UIC_DECREASE_SFX            = "DECREASE_SFX";
+  private static final String UIC_WIPEOUT                 = "WIPEOUT";
+  private static final String UIC_BACK                    = "BACK";
+  private static final String UIC_REMAP_GAMEPAD           = "REMAP_GAMEPAD";
+  private static final String UIC_REMAP_KEYBOARD          = "REMAP_KEYBOARD";
+  private static final String UIC_CHECKBOX_FORCE_TOUCH    = "CHECKBOX_FORCE_TOUCH";
+  private static final String UIC_CHECKBOX_ANIMATED_TILES = "CHECKBOX_ANIMATED_TILES";
+  private static final String UIC_INCREASE_SFX            = "INCREASE_SFX";
+  private static final String UIC_INCREASE_MUSIC          = "INCREASE_MUSIC";
+  private static final String UIC_DECREASE_MUSIC          = "DECREASE_MUSIC";
+  private static final String UIC_DECREASE_SFX            = "DECREASE_SFX";
 
-  private Class<? extends AbstractState> last;
+  private AudioManager        audio;
+  private ErrorManager        error;
+  private SaveManager         saving;
 
   @Override
   public void onConstruction() {
@@ -61,17 +65,48 @@ public class OptionsMenuState extends AbstractMenuState {
   }
 
   @Override
-  public void onEnter(Option<Class<? extends AbstractState>> previous) {
-    last = previous.get();
+  public void onEnter(StateTransition transition) {
     ui.setState(UIC_DECREASE_SFX);
   }
 
   @Override
-  public Option<Class<? extends AbstractState>> handleButtonA(int delta, String currentUiState) {
-    if (currentUiState == UIC_BACK) {
-      return Option.of(last);
+  public void handleButtonA(StateTransition transition, int delta, String currentUiState) {
+
+    switch (currentUiState) {
+
+      case UIC_DECREASE_SFX:
+        audio.setSfxVolume(audio.getSfxVolume() - 0.05f);
+        break;
+
+      case UIC_INCREASE_SFX:
+        audio.setSfxVolume(audio.getSfxVolume() + 0.05f);
+        break;
+
+      case UIC_DECREASE_MUSIC:
+        audio.setMusicVolume(audio.getMusicVolume() - 0.05f);
+        break;
+
+      case UIC_INCREASE_MUSIC:
+        audio.setMusicVolume(audio.getMusicVolume() + 0.05f);
+        break;
+
+      case UIC_CHECKBOX_ANIMATED_TILES:
+      case UIC_CHECKBOX_FORCE_TOUCH:
+      case UIC_REMAP_KEYBOARD:
+      case UIC_REMAP_GAMEPAD:
+        error.raiseWarning("NotImplementedYet", "OptionsMain");
+        break;
+
+      case UIC_WIPEOUT:
+        transition.setTransitionTo(WipeoutConfirmMenuState.class);
+        break;
+
+      case UIC_BACK:
+        saving.saveAppData((saveError) -> {
+          transition.setTransitionTo(transition.getPreviousState().get());
+        });
+        break;
     }
-    return NO_TRANSITION;
   }
 
 }
