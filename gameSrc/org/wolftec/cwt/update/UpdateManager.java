@@ -72,7 +72,6 @@ public class UpdateManager implements GameLoader {
           } catch (Exception e) {
             error.raiseError("could not evaluate update for " + ClassUtil.getClassName(update), ClassUtil.getClassName(this));
           }
-
         } else {
           next.$invoke();
         }
