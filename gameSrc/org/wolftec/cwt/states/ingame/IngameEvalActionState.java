@@ -11,7 +11,7 @@ import org.wolftec.cwt.states.StateTransition;
  * The action evaluation state evaluates an action with the first data entry
  * from the action manager.
  */
-public class ActionEvalState extends AbstractState {
+public class IngameEvalActionState extends AbstractState {
 
   private ErrorManager  errors;
   private ActionManager actions;

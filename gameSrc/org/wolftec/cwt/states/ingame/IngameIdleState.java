@@ -30,7 +30,7 @@ public class IngameIdleState extends AbstractState {
      * actions buffer.
      */
     if (actions.hasData()) {
-      transition.setTransitionTo(ActionEvalState.class);
+      transition.setTransitionTo(IngameEvalActionState.class);
       return;
     }
 
