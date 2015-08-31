@@ -4,7 +4,6 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.GameLoader;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Nullable;
 import org.wolftec.cwt.system.NumberUtil;
 
 public class UrlConfigReader implements GameLoader {
@@ -22,7 +21,7 @@ public class UrlConfigReader implements GameLoader {
   }
 
   private void grabConfigFromUrl(String paramName, Config cfg) {
-    Nullable.ifPresent(BrowserUtil.getUrlParameter(paramName), (value) -> {
+    BrowserUtil.getUrlParameter(paramName).ifPresent((value) -> {
       if (value != "0" && value != "1") {
         log.warn("IllegalUrlParameter: " + paramName + " will be ignored");
         return;

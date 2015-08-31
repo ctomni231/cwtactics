@@ -6,7 +6,6 @@ import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.GameLoader;
 import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Nullable;
 
 public class ResetSystem implements GameLoader {
 
@@ -22,14 +21,14 @@ public class ResetSystem implements GameLoader {
 
   @Override
   public void onLoad(Callback0 done) {
-    Nullable.ifPresentOrElse(BrowserUtil.getUrlParameter(PARAM_WIPEOUT), (value) -> {
+    BrowserUtil.getUrlParameter(PARAM_WIPEOUT).ifPresent((value) -> {
       if (!(value == "1" || value == "true")) {
         log.warn("IllegalUrlParameter: " + PARAM_WIPEOUT + "can only true or 1");
         return;
       }
 
       wipeAndReload();
-    }, () -> done.$invoke());
+    });
   }
 
   public void wipeAndReload() {

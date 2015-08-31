@@ -22,17 +22,17 @@ public class GameLoopManager implements Injectable {
     native static void requestAnimationFrame(Callback0 handler);
   }
 
-  private StateManager             sm;
-  private Log                      log;
+  private StateManager sm;
+  private Log          log;
 
   private Array<FrameTickListener> frameWatchers;
 
-  private StateTransition          transitionData;
+  private StateTransition transitionData;
 
-  private boolean                  active;
+  private boolean active;
 
-  private long                     oldTime;
-  private Callback0                loopFunction;
+  private long      oldTime;
+  private Callback0 loopFunction;
 
   @Override
   public void onConstruction() {

@@ -11,6 +11,7 @@ import org.stjs.javascript.XMLHttpRequest;
 import org.stjs.javascript.dom.Element;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback2;
+import org.wolftec.cwt.system.Option;
 
 /**
  * Utility class which contains a lot of browser environment related functions.
@@ -115,9 +116,9 @@ public abstract class BrowserUtil {
     return urlParameters;
   }
 
-  public static String getUrlParameter(String param) {
+  public static Option<String> getUrlParameter(String param) {
     String value = getUrlParameterMap().$get(param);
-    return value != JSGlobal.undefined ? value : null;
+    return Option.ofNullable(value != JSGlobal.undefined ? value : null);
   }
 
   public static long getTimestamp() {
