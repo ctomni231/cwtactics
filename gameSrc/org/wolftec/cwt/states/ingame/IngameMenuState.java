@@ -1,11 +1,12 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.UserInteractionData;
 
-public class IngameMenuState extends AbstractState {
+public class IngameMenuState extends AbstractIngameState {
 
-  private Class<? extends AbstractState> lastState;
+  private UserInteractionData data;
 
   private void updateMenuData() {
     // stateData.menu.selectedIndex = renderer.getMenuIndex();
@@ -15,13 +16,11 @@ public class IngameMenuState extends AbstractState {
 
   @Override
   public void onEnter(StateTransition transition) {
-    // lastState = previous.get();
-    //
-    // renderer.showNativeCursor();
-    //
+
+    // TODO
     // stateData.menu.clean();
     // stateData.menu.generate();
-    //
+
     // // go back when no entries exists
     // if (stateData.menu.getSize() === 0) {
     // this.changeState("INGAME_IDLE");

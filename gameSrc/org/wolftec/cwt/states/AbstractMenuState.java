@@ -1,9 +1,5 @@
-package org.wolftec.cwt.input;
+package org.wolftec.cwt.states;
 
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.StateTransition;
-import org.wolftec.cwt.states.UserInteractionMap;
 import org.wolftec.cwt.system.Log;
 
 public class AbstractMenuState extends AbstractState {

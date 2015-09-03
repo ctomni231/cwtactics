@@ -1,6 +1,6 @@
 package org.wolftec.cwt.states.menu;
 
-import org.wolftec.cwt.input.AbstractMenuState;
+import org.wolftec.cwt.states.AbstractMenuState;
 import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.ingame.IngameEnterState;
 

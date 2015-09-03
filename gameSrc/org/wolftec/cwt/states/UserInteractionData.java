@@ -10,24 +10,26 @@ import org.wolftec.cwt.system.MoveableMatrix;
 
 public class UserInteractionData implements Injectable, InformationList {
 
-  public Player                  actor;
+  public Player actor;
 
-  public PositionData            source;
-  public PositionData            target;
-  public PositionData            actionTarget;
+  public PositionData source;
+  public PositionData target;
+  public PositionData actionTarget;
 
   public CircularBuffer<Integer> movePath;
 
-  public String                  action;
-  public int                     actionCode;
+  public String action;
+  public int    actionCode;
 
-  public String                  actionData;
-  public int                     actionDataCode;
+  public String actionData;
+  public int    actionDataCode;
 
-  public MoveableMatrix          targets;
+  public MoveableMatrix targets;
 
-  public int                     cursorX;
-  public int                     cursorY;
+  public int cursorX;
+  public int cursorY;
+
+  public boolean preventMovepathGeneration;
 
   @Override
   public void onConstruction() {

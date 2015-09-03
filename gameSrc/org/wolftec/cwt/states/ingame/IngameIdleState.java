@@ -1,19 +1,17 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.logic.BattleLogic;
 import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.GameActions;
+import org.wolftec.cwt.model.Unit;
+import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionData;
 
-public class IngameIdleState extends AbstractState {
+public class IngameIdleState extends AbstractIngameState {
 
   private UserInteractionData data;
   private ModelManager        model;
   private BattleLogic         battle;
-  private ActionManager       actions;
 
   @Override
   public void onEnter(StateTransition transition) {
@@ -23,37 +21,18 @@ public class IngameIdleState extends AbstractState {
   }
 
   @Override
-  public void update(StateTransition transition, int delta) {
+  public void handleButtonA(StateTransition transition, int delta) {
+    data.source.set(model, input.lastX, input.lastY);
+    data.target.set(model, input.lastX, input.lastY);
+    transition.setTransitionTo(IngameMovepathSelectionState.class);
+  }
 
-    /*
-     * We move out of this state directly here when we have actions in the
-     * actions buffer.
-     */
-    if (actions.hasData()) {
-      transition.setTransitionTo(IngameEvalActionState.class);
-      return;
-    }
-
-    if (input.isActionPressed(GameActions.BUTTON_B)) {
+  @Override
+  public void handleButtonB(StateTransition transition, int delta) {
+    data.source.set(model, input.lastX, input.lastY);
+    Unit sourceUnit = data.source.unit;
+    if (sourceUnit != null && (battle.hasMainWeapon(sourceUnit) || battle.hasSecondaryWeapon(sourceUnit))) {
       transition.setTransitionTo(IngameShowAttackRangeState.class);
-      return;
     }
-
-    if (input.isActionPressed(GameActions.BUTTON_A)) {
-      data.source.set(model, input.lastX, input.lastY);
-      data.target.set(model, input.lastX, input.lastY);
-      transition.setTransitionTo(IngameMovepathSelectionState.class);
-      return;
-    }
-
-    //
-    // if (input.isActionPressed(GameActions.BUTTON_B)) {
-    // data.source.set(model, input.lastX, input.lastY);
-    // Unit unit = data.source.unit;
-    // if (unit != null && (battle.hasMainWeapon(unit) ||
-    // battle.hasSecondaryWeapon(unit))) {
-    // return Maybe.of(ShowAttackRangeState.class);
-    // }
-    // }
   }
 }

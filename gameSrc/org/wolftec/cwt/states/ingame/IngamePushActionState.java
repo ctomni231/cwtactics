@@ -1,6 +1,15 @@
 package org.wolftec.cwt.states.ingame;
 
-public class IngamePushActionState {
+import org.wolftec.cwt.states.AbstractIngameState;
+import org.wolftec.cwt.states.StateTransition;
+
+public class IngamePushActionState extends AbstractIngameState {
+
+  @Override
+  public void update(StateTransition transition, int delta) {
+
+  }
+
   // var trapped = stateData.buildFromData();
   // var next = null;
   //

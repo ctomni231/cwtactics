@@ -1,28 +1,31 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.logic.BattleLogic;
+import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.UserInteractionData;
 
-public class IngameShowAttackRangeState extends AbstractState {
+public class IngameShowAttackRangeState extends AbstractIngameState {
 
-  // enter: function () {
-  // stateData.focusMode = image.Sprite.FOCUS_ATTACK;
-  // attack.fillRangeMap(stateData.source.unit, stateData.source.x,
-  // stateData.source.y, stateData.selection);
-  // renderer.renderFocusOnScreen();
-  // },
-  //
-  // exit: function () {
-  // renderer.layerEffects.clear();
-  // renderer.layerFocus.clearAll();
-  // stateData.selection.clear();
-  // },
-  //
-  // CANCEL: function () {
-  // stateData.focusMode = constants.INACTIVE;
-  // this.changeState("INGAME_IDLE");
-  // }
+  private UserInteractionData data;
+
+  private BattleLogic attack;
+
+  @Override
+  public void onEnter(StateTransition transition) {
+    attack.fillRangeMap(data.source.unit, data.source.x, data.source.y, data.targets);
+  }
+
+  @Override
+  public void onExit(StateTransition transition) {
+    data.targets.reset();
+  }
+
+  @Override
+  public void handleButtonB(StateTransition transition, int delta) {
+    transition.setTransitionTo(IngameIdleState.class);
+  }
 
   @Override
   public void update(StateTransition transition, int delta) {
