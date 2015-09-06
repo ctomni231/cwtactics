@@ -48,20 +48,17 @@ public class UserInteractionData implements Injectable, InformationList {
 
   }
 
-  //
-  // /**
-  // * X coordinate of the cursor.
-  // *
-  // * @type {number}
-  // */
-  // exports.cursorX = 0;
-  //
-  // /**
-  // * Y coordinate of the cursor.
-  // *
-  // * @type {number}
-  // */
-  // exports.cursorY = 0;
+  @Override
+  public void cleanInfos() {
+    // TODO Auto-generated method stub
+  }
+
+  @Override
+  public int getNumberOfInfos() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
   //
   // /** */
   // exports.fromIngameToOptions = false;
@@ -71,37 +68,6 @@ public class UserInteractionData implements Injectable, InformationList {
   //
   // /** */
   // exports.multiStepActive = false;
-  //
-  // /**
-  // * Position object with rich information about the selected position by an
-  // action and some relations.
-  // *
-  // * @type {exports.PositionData}
-  // */
-  // exports.source = new model.PositionData();
-  //
-  // /**
-  // * Position object with rich information about the selected position by an
-  // action and some relations.
-  // *
-  // * @type {exports.PositionData}
-  // */
-  // exports.target = new model.PositionData();
-  //
-  // /**
-  // * Position object with rich information about the selected position by an
-  // action and some relations.
-  // *
-  // * @type {exports.PositionData}
-  // */
-  // exports.targetselection = new model.PositionData();
-  //
-  // /**
-  // *
-  // * @type {exports.CircularBuffer}
-  // */
-  // exports.movePath = new
-  // circularBuffer.CircularBuffer(constants.MAX_MOVE_LENGTH);
   //
   // /**
   // *

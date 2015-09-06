@@ -5,17 +5,17 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.system.Option;
 
 public class InputManager implements Injectable {
 
-  private static final String NOTHING_MAPPED = "NONE";
+  private static final String  NOTHING_MAPPED = "NONE";
   private Map<String, Integer> actionState;
   private Map<String, Boolean> buttonState;
   private Map<String, String>  buttonMapping;
 
-  public int                   lastX;
-  public int                   lastY;
+  public int lastX;
+  public int lastY;
 
   @Override
   public void onConstruction() {
@@ -30,7 +30,7 @@ public class InputManager implements Injectable {
    * @return true if the given action is pressed, else false
    */
   public boolean isActionPressed(String action) {
-    return Nullable.getOrElse(actionState.$get(action), 0) > 0;
+    return Option.ofNullable(actionState.$get(action)).orElse(0) > 0;
   }
 
   /**
@@ -39,7 +39,7 @@ public class InputManager implements Injectable {
    * @return true if the given button is pressed, else false
    */
   public boolean isButtonPressed(String button) {
-    return Nullable.getOrElse(buttonState.$get(button), false);
+    return Option.ofNullable(buttonState.$get(button)).orElse(false);
   }
 
   /**
@@ -62,8 +62,8 @@ public class InputManager implements Injectable {
       buttonState.$put(button, status);
 
       String action = buttonMapping.$get(button);
-      if (Nullable.isPresent(action)) {
-        actionState.$put(action, Nullable.getOrElse(actionState.$get(action), 0) + (status ? 1 : -1));
+      if (action != null) {
+        actionState.$put(action, Option.ofNullable(actionState.$get(action)).orElse(0) + (status ? 1 : -1));
         if (actionState.$get(action) < 0) {
           JsUtil.throwError("IllegalActionState: negative action counter detected");
         }
@@ -72,14 +72,15 @@ public class InputManager implements Injectable {
   }
 
   public void setButtonMapping(String button, String action) {
-    Nullable.getOrThrow(button, "IllegalButtonKey");
-    Nullable.getOrThrow(action, "IllegalActionKey");
+    if (action == null || button == null) {
+      JsUtil.throwError("IllegalArgumentException: null");
+    }
 
-    boolean pressed = Nullable.getOrElse(buttonState.$get(button), false);
+    boolean pressed = Option.ofNullable(buttonState.$get(button)).orElse(false);
 
     /*
      * deactivate the button here to decrease the action counter of the previous
-     * mapped action
+     * mapped action.
      */
     if (pressed) {
       changeStatus(button, false);

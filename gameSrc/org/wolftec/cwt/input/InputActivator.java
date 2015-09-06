@@ -11,8 +11,8 @@ import org.wolftec.cwt.system.Log;
 
 public class InputActivator implements GameLoader {
 
-  private Log           log;
-  private Features      features;
+  private Log      $log;
+  private Features features;
 
   private KeyboardInput keyboard;
   private GamepadInput  gamepad;
@@ -21,6 +21,8 @@ public class InputActivator implements GameLoader {
 
   @Override
   public void onLoad(Callback0 done) {
+    $log.info("activating input backends");
+
     if (features.keyboard) keyboard.enable();
     if (features.gamePad) gamepad.enable();
     if (features.mouse) mouse.enable();

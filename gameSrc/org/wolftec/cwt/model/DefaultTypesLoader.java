@@ -12,7 +12,7 @@ import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.sheets.UnitType;
 import org.wolftec.cwt.system.Log;
 
-public class DefaultTypes implements Injectable, GameLoader {
+public class DefaultTypesLoader implements Injectable, GameLoader {
 
   private SheetManager sheets;
   private Log          log;

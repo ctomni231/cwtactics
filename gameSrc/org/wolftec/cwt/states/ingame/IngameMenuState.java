@@ -8,29 +8,16 @@ public class IngameMenuState extends AbstractIngameState {
 
   private UserInteractionData data;
 
-  private void updateMenuData() {
-    // stateData.menu.selectedIndex = renderer.getMenuIndex();
-    // renderer.renderMenu();
-    // renderer.layerUI.renderLayer(0);
-  }
-
   @Override
   public void onEnter(StateTransition transition) {
+    data.cleanInfos();
 
     // TODO
-    // stateData.menu.clean();
     // stateData.menu.generate();
 
-    // // go back when no entries exists
-    // if (stateData.menu.getSize() === 0) {
-    // this.changeState("INGAME_IDLE");
-    //
-    // } else {
-    // renderer.resetMenuShift();
-    // renderer.layerUI.clear(0);
-    // renderer.prepareMenu(stateData.menu);
-    // renderer.layerUI.renderLayer(0);
-    // }
+    if (data.getNumberOfInfos() == 0) {
+      transition.setTransitionTo(IngameIdleState.class);
+    }
   }
 
   @Override
