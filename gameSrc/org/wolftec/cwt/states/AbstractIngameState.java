@@ -20,20 +20,21 @@ public class AbstractIngameState extends AbstractState {
     }
 
     if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
-
+      handleButtonLeft(transition, delta);
     }
 
     if (input.isActionPressed(GameActions.BUTTON_RIGHT)) {
-
+      handleButtonRight(transition, delta);
     }
 
     if (input.isActionPressed(GameActions.BUTTON_UP)) {
-
+      handleButtonUp(transition, delta);
     }
 
     if (input.isActionPressed(GameActions.BUTTON_DOWN)) {
-
+      handleButtonDown(transition, delta);
     }
+
     // stateData.setCursorPosition(renderer.convertToTilePos(x),
     // renderer.convertToTilePos(y), true);
     // TODO
@@ -44,6 +45,18 @@ public class AbstractIngameState extends AbstractState {
     } else if (input.isActionPressed(GameActions.BUTTON_B)) {
       handleButtonB(transition, delta);
     }
+  }
+
+  public void handleButtonUp(StateTransition transition, int delta) {
+  }
+
+  public void handleButtonDown(StateTransition transition, int delta) {
+  }
+
+  public void handleButtonLeft(StateTransition transition, int delta) {
+  }
+
+  public void handleButtonRight(StateTransition transition, int delta) {
   }
 
   public void handleButtonA(StateTransition transition, int delta) {

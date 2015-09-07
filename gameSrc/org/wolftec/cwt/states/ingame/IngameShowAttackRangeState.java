@@ -23,11 +23,6 @@ public class IngameShowAttackRangeState extends AbstractIngameState {
   }
 
   @Override
-  public void handleButtonB(StateTransition transition, int delta) {
-    transition.setTransitionTo(IngameIdleState.class);
-  }
-
-  @Override
   public void update(StateTransition transition, int delta) {
     if (!input.isActionPressed(GameActions.BUTTON_B)) {
       transition.setTransitionTo(transition.getPreviousState().get());

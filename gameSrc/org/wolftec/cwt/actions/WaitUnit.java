@@ -34,4 +34,5 @@ public class WaitUnit implements Action {
   public void evaluateByData(int delta, ActionData data) {
     model.getUnit(data.p1).setActable(false);
   }
+
 }

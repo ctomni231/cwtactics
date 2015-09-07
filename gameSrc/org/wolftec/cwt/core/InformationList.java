@@ -2,9 +2,17 @@ package org.wolftec.cwt.core;
 
 public interface InformationList {
 
-  public void addInfo(String key, boolean flag);
+  void addInfo(String key, boolean flag);
 
-  public void cleanInfos();
+  void cleanInfos();
 
-  public int getNumberOfInfos();
+  void increaseIndex();
+
+  void decreaseIndex();
+
+  String getInfo();
+
+  String getInfoAtIndex(int index);
+
+  int getNumberOfInfos();
 }

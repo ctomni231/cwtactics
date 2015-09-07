@@ -1,12 +1,16 @@
 package org.wolftec.cwt.states.ingame;
 
+import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.system.ClassUtil;
 
 public class IngameMenuState extends AbstractIngameState {
 
   private UserInteractionData data;
+
+  private ErrorManager errors;
 
   @Override
   public void onEnter(StateTransition transition) {
@@ -16,7 +20,7 @@ public class IngameMenuState extends AbstractIngameState {
     // stateData.menu.generate();
 
     if (data.getNumberOfInfos() == 0) {
-      transition.setTransitionTo(IngameIdleState.class);
+      errors.raiseError("NoUnitActionAvailable", ClassUtil.getClassName(IngameMenuState.class));
     }
   }
 

@@ -2,6 +2,8 @@ package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.InformationList;
+import org.wolftec.cwt.core.action.Action;
+import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.model.PositionData;
@@ -9,6 +11,8 @@ import org.wolftec.cwt.system.CircularBuffer;
 import org.wolftec.cwt.system.MoveableMatrix;
 
 public class UserInteractionData implements Injectable, InformationList {
+
+  private ActionManager actions;
 
   public Player actor;
 
@@ -57,6 +61,34 @@ public class UserInteractionData implements Injectable, InformationList {
   public int getNumberOfInfos() {
     // TODO Auto-generated method stub
     return 0;
+  }
+
+  public Action getAction() {
+    return actions.getAction(action);
+  }
+
+  @Override
+  public void increaseIndex() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void decreaseIndex() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public String getInfo() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getInfoAtIndex(int index) {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   //
