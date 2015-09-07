@@ -29,6 +29,7 @@ public class ResetSystem implements GameLoader {
 
       wipeAndReload();
     });
+    done.$invoke();
   }
 
   public void wipeAndReload() {
