@@ -7,15 +7,12 @@ import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.Option;
 
-public class InputManager implements Injectable {
+public class InputManager implements Injectable, InputProvider {
 
   private static final String  NOTHING_MAPPED = "NONE";
   private Map<String, Integer> actionState;
   private Map<String, Boolean> buttonState;
   private Map<String, String>  buttonMapping;
-
-  public int lastX;
-  public int lastY;
 
   @Override
   public void onConstruction() {
@@ -24,20 +21,12 @@ public class InputManager implements Injectable {
     buttonMapping = JSCollections.$map();
   }
 
-  /**
-   * 
-   * @param action
-   * @return true if the given action is pressed, else false
-   */
+  @Override
   public boolean isActionPressed(String action) {
     return Option.ofNullable(actionState.$get(action)).orElse(0) > 0;
   }
 
-  /**
-   * 
-   * @param button
-   * @return true if the given button is pressed, else false
-   */
+  @Override
   public boolean isButtonPressed(String button) {
     return Option.ofNullable(buttonState.$get(button)).orElse(false);
   }
@@ -93,6 +82,7 @@ public class InputManager implements Injectable {
     }
   }
 
+  @Override
   public void forEachButtonMapping(Callback2<String, String> itCb) {
     JsUtil.forEachMapValue(buttonMapping, itCb);
   }

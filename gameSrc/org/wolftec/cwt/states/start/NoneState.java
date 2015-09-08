@@ -2,18 +2,20 @@ package org.wolftec.cwt.states.start;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateTransition;
 
 public class NoneState extends AbstractState {
 
   @Override
-  public void update(StateTransition transition, int delta) {
+  public void update(StateTransition transition, int delta, InputProvider input) {
     transition.setTransitionTo(LoadingState.class);
   }
 
   @Override
-  public void render(int delta) {
+  public void render(int delta, GraphicManager gfx) {
     CanvasRenderingContext2D ctx = gfx.mainCtx;
 
     ctx.font = "24pt Arial";

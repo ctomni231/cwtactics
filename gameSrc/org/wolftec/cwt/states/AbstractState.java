@@ -2,7 +2,7 @@ package org.wolftec.cwt.states;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.input.InputManager;
+import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Option;
@@ -10,9 +10,6 @@ import org.wolftec.cwt.system.Option;
 public class AbstractState implements Injectable {
 
   public static final Option<Class<? extends AbstractState>> NO_TRANSITION = Option.empty();
-
-  protected InputManager                                     input;
-  protected GraphicManager                                   gfx;
 
   /**
    * Called when the state will be leaved.
@@ -42,7 +39,7 @@ public class AbstractState implements Injectable {
    * @param delta
    *          time since the last frame
    */
-  public void update(StateTransition transition, int delta) {
+  public void update(StateTransition transition, int delta, InputProvider input) {
   }
 
   /**
@@ -51,7 +48,7 @@ public class AbstractState implements Injectable {
    * @param delta
    *          time since the last frame
    */
-  public void render(int delta) {
+  public void render(int delta, GraphicManager gfx) {
     CanvasRenderingContext2D ctx = gfx.mainCtx;
 
     ctx.fillStyle = "#CEF6D8";

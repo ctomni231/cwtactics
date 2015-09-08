@@ -1,6 +1,7 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.ErrorManager;
+import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionData;
@@ -25,7 +26,7 @@ public class IngameMenuState extends AbstractIngameState {
   }
 
   @Override
-  public void update(StateTransition transition, int delta) {
+  public void update(StateTransition transition, int delta, InputProvider input) {
     // if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
     //
     // } else if (input.isActionPressed(GameActions.BUTTON_RIGHT)) {

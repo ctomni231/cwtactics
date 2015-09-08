@@ -1,5 +1,6 @@
 package org.wolftec.cwt.states.menu;
 
+import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.StateTransition;
@@ -13,10 +14,8 @@ public class RemapInputMenuState extends AbstractState {
   private static String UIC_BUTTON_A     = "MAP_A";
   private static String UIC_BUTTON_B     = "MAP_B";
 
-  private boolean       setInput;
-
   @Override
-  public void onEnter(StateTransition transition) {
+  public void update(StateTransition transition, int delta, InputProvider input) {
     if (input.isActionPressed(GameActions.BUTTON_B)) {
       transition.setTransitionTo(transition.getPreviousState().get());
     }

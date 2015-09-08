@@ -1,6 +1,7 @@
 package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.core.action.ActionManager;
+import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.states.ingame.IngameEvalActionState;
 
 public class AbstractIngameState extends AbstractState {
@@ -8,7 +9,7 @@ public class AbstractIngameState extends AbstractState {
   private ActionManager actions;
 
   @Override
-  public void update(StateTransition transition, int delta) {
+  public void update(StateTransition transition, int delta, InputProvider input) {
 
     /*
      * We move out of this state directly here when we have actions in the

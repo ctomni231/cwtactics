@@ -4,6 +4,8 @@ import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionManager;
+import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateTransition;
 
@@ -16,8 +18,8 @@ public class IngameEvalActionState extends AbstractState {
   private ErrorManager  errors;
   private ActionManager actions;
 
-  private Action        activeAction;
-  private ActionData    activeData;
+  private Action     activeAction;
+  private ActionData activeData;
 
   @Override
   public void onEnter(StateTransition transition) {
@@ -37,7 +39,7 @@ public class IngameEvalActionState extends AbstractState {
   }
 
   @Override
-  public void update(StateTransition transition, int delta) {
+  public void update(StateTransition transition, int delta, InputProvider input) {
     activeAction.evaluateByData(delta, activeData);
 
     /*
@@ -52,7 +54,7 @@ public class IngameEvalActionState extends AbstractState {
   }
 
   @Override
-  public void render(int delta) {
+  public void render(int delta, GraphicManager gfx) {
     activeAction.renderByData(delta, gfx, activeData);
   }
 }

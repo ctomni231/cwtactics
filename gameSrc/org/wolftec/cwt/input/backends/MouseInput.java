@@ -48,8 +48,8 @@ public class MouseInput implements Injectable, Deactivatable {
       y = ev.layerY;
     }
 
-    input.lastX = gfx.convertPointToTile(x);
-    input.lastY = gfx.convertPointToTile(y);
+    // TODO input.setLastX(gfx.convertPointToTile(x));
+    // TODO input.setLastY(gfx.convertPointToTile(y));
     return true;
   }
 

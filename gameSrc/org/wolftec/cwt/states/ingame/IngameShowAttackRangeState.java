@@ -1,5 +1,6 @@
 package org.wolftec.cwt.states.ingame;
 
+import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.logic.BattleLogic;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.GameActions;
@@ -23,7 +24,7 @@ public class IngameShowAttackRangeState extends AbstractIngameState {
   }
 
   @Override
-  public void update(StateTransition transition, int delta) {
+  public void update(StateTransition transition, int delta, InputProvider input) {
     if (!input.isActionPressed(GameActions.BUTTON_B)) {
       transition.setTransitionTo(transition.getPreviousState().get());
     }
