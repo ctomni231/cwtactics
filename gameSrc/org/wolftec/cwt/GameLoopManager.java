@@ -19,7 +19,7 @@ import org.wolftec.cwt.system.Option;
 
 public class GameLoopManager implements Injectable {
 
-  private static final int BLOCK_INPUT_TIME = 1000;
+  private static final int BLOCK_INPUT_TIME = 250;
 
   @GlobalScope
   @STJSBridge
