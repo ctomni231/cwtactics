@@ -1,5 +1,6 @@
 package org.wolftec.cwt.states;
 
+import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.system.Log;
 
 public class AbstractMenuState extends AbstractState {
@@ -8,7 +9,7 @@ public class AbstractMenuState extends AbstractState {
   protected UserInteractionMap ui;
 
   @Override
-  public void update(StateTransition transition, int delta) {
+  public void update(StateTransition transition, int delta, InputProvider input) {
 
     if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
       ui.event(GameActions.BUTTON_LEFT);

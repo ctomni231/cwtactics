@@ -2,9 +2,9 @@ package org.wolftec.cwt.states;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.STJSBridge;
+import org.wolftec.cwt.core.ioc.Injectable;
 
-@STJSBridge
-public class UiDataMapConfiguration {
+public class UiDataMapConfiguration implements Injectable {
 
   @STJSBridge
   public static class UiDataPlayerConfig {

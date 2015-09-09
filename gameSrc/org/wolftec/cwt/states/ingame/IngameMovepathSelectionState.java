@@ -1,6 +1,7 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.config.OptionsManager;
+import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Ownable;
@@ -94,7 +95,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState {
   }
 
   @Override
-  public void update(StateTransition transition, int delta) {
+  public void update(StateTransition transition, int delta, InputProvider input) {
     updateMovepath();
   }
 }

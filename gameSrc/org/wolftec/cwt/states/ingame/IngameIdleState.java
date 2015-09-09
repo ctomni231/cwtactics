@@ -22,14 +22,14 @@ public class IngameIdleState extends AbstractIngameState {
 
   @Override
   public void handleButtonA(StateTransition transition, int delta) {
-    data.source.set(model, input.lastX, input.lastY);
-    data.target.set(model, input.lastX, input.lastY);
+    data.source.set(model, data.cursorX, data.cursorY);
+    data.target.set(model, data.cursorX, data.cursorY);
     transition.setTransitionTo(IngameMovepathSelectionState.class);
   }
 
   @Override
   public void handleButtonB(StateTransition transition, int delta) {
-    data.source.set(model, input.lastX, input.lastY);
+    data.source.set(model, data.cursorX, data.cursorY);
     Unit sourceUnit = data.source.unit;
     if (sourceUnit != null && (battle.hasMainWeapon(sourceUnit) || battle.hasSecondaryWeapon(sourceUnit))) {
       transition.setTransitionTo(IngameShowAttackRangeState.class);

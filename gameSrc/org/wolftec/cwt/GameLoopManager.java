@@ -8,6 +8,9 @@ import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.FrameTickListener;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.input.BlockedInputManager;
+import org.wolftec.cwt.input.InputManager;
+import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.states.StateTransition;
@@ -16,23 +19,27 @@ import org.wolftec.cwt.system.Option;
 
 public class GameLoopManager implements Injectable {
 
+  private static final int BLOCK_INPUT_TIME = 250;
+
   @GlobalScope
   @STJSBridge
   static class RequestAnimationFrameGlobal {
     native static void requestAnimationFrame(Callback0 handler);
   }
 
-  private StateManager sm;
-  private Log          log;
-
+  private StateManager             sm;
+  private InputManager             inputMgr;
+  private BlockedInputManager      nullInputMgr;
+  protected GraphicManager         gfx;
   private Array<FrameTickListener> frameWatchers;
 
+  private Log log;
+
   private StateTransition transitionData;
-
-  private boolean active;
-
-  private long      oldTime;
-  private Callback0 loopFunction;
+  private boolean         active;
+  private int             blockInputTime;
+  private long            oldTime;
+  private Callback0       loopFunction;
 
   @Override
   public void onConstruction() {
@@ -72,13 +79,18 @@ public class GameLoopManager implements Injectable {
 
     AbstractState activeState = sm.getActiveState();
 
-    activeState.update(transitionData, delta);
-    activeState.render(delta);
+    if (blockInputTime > 0) {
+      blockInputTime -= delta;
+    }
+
+    activeState.update(transitionData, delta, blockInputTime <= 0 ? inputMgr : nullInputMgr);
+    activeState.render(delta, gfx);
 
     Option<Class<? extends AbstractState>> nextState = transitionData.getNextState();
     if (nextState.isPresent()) {
       sm.changeState(nextState.get());
       transitionData.flushTransitionTo();
+      blockInputTime = BLOCK_INPUT_TIME;
     }
   }
 

@@ -1,12 +1,13 @@
 package org.wolftec.cwt.states.ingame;
 
+import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateTransition;
 
 public class IngamePushActionState extends AbstractIngameState {
 
   @Override
-  public void update(StateTransition transition, int delta) {
+  public void update(StateTransition transition, int delta, InputProvider input) {
 
   }
 

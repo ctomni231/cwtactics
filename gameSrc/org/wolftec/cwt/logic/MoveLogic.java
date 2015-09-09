@@ -51,9 +51,9 @@ public class MoveLogic implements Injectable {
   public static final int MOVE_CODES_DOWN  = 2;
   public static final int MOVE_CODES_LEFT  = 3;
 
-  private ModelManager    model;
-  private SheetManager    sheets;
-  private FogLogic        fog;
+  private ModelManager model;
+  private SheetManager sheets;
+  private FogLogic     fog;
 
   /**
    * Little helper array object for `model.move_fillMoveMap`. This will be used
@@ -63,9 +63,9 @@ public class MoveLogic implements Injectable {
    * `model.move_fillMoveMap` will use this helper to prevent unnecessary array
    * creation.
    */
-  private Array<Integer>  fillMoveMapHelper;
+  private Array<Integer> fillMoveMapHelper;
 
-  private Array<Integer>  checkArray;
+  private Array<Integer> checkArray;
 
   @Override
   public void onConstruction() {
@@ -540,7 +540,8 @@ public class MoveLogic implements Injectable {
    * @param preventRemoveOldPos
    * @param preventSetNewPos
    */
-  public void move(Unit unit, int x, int y, CircularBuffer<Integer> movePath, boolean noFuelConsumption, boolean preventRemoveOldPos, boolean preventSetNewPos) {
+  public void move(Unit unit, int x, int y, CircularBuffer<Integer> movePath, boolean noFuelConsumption, boolean preventRemoveOldPos,
+      boolean preventSetNewPos) {
 
     int team = unit.owner.team;
 

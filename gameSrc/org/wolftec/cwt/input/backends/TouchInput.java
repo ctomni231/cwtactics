@@ -12,29 +12,29 @@ import org.wolftec.cwt.system.NumberUtil;
 
 public class TouchInput implements Injectable, Deactivatable {
 
-  public static final String TOUCH_PINCH_OUT   = "TOUCH_PINCH_OUT";
+  public static final String TOUCH_PINCH_OUT = "TOUCH_PINCH_OUT";
 
-  public static final String TOUCH_DOUBLETAP   = "TOUCH_DOUBLETAP";
+  public static final String TOUCH_DOUBLETAP = "TOUCH_DOUBLETAP";
 
-  public static final String TOUCH_PINCH_IN    = "TOUCH_PINCH_IN";
+  public static final String TOUCH_PINCH_IN = "TOUCH_PINCH_IN";
 
-  public static final String TOUCH_TAP         = "TOUCH_TAP";
+  public static final String TOUCH_TAP = "TOUCH_TAP";
 
-  public static final String TOUCH_SWIPE_UP    = "TOUCH_SWIPE_UP";
+  public static final String TOUCH_SWIPE_UP = "TOUCH_SWIPE_UP";
 
-  public static final String TOUCH_SWIPE_DOWN  = "TOUCH_SWIPE_DOWN";
+  public static final String TOUCH_SWIPE_DOWN = "TOUCH_SWIPE_DOWN";
 
   public static final String TOUCH_SWIPE_RIGHT = "TOUCH_SWIPE_RIGHT";
 
-  public static final String TOUCH_SWIPE_LEFT  = "TOUCH_SWIPE_LEFT";
+  public static final String TOUCH_SWIPE_LEFT = "TOUCH_SWIPE_LEFT";
 
-  public static final String TOUCH_DRAG_UP     = "TOUCH_DRAG_UP";
+  public static final String TOUCH_DRAG_UP = "TOUCH_DRAG_UP";
 
-  public static final String TOUCH_DRAG_DOWN   = "TOUCH_DRAG_DOWN";
+  public static final String TOUCH_DRAG_DOWN = "TOUCH_DRAG_DOWN";
 
-  public static final String TOUCH_DRAG_RIGHT  = "TOUCH_DRAG_RIGHT";
+  public static final String TOUCH_DRAG_RIGHT = "TOUCH_DRAG_RIGHT";
 
-  public static final String TOUCH_DRAG_LEFT   = "TOUCH_DRAG_LEFT";
+  public static final String TOUCH_DRAG_LEFT = "TOUCH_DRAG_LEFT";
 
   // @STJSBridge TODO readd when stjs 3.2.0 is fixed
   @SyntheticType
@@ -52,29 +52,29 @@ public class TouchInput implements Injectable, Deactivatable {
     int clientY;
   }
 
-  private Log          log;
+  private Log log;
 
   private InputManager input;
 
-  private int          sx;
-  private int          sy;
-  private int          ex;
-  private int          ey;
+  private int sx;
+  private int sy;
+  private int ex;
+  private int ey;
 
-  private int          s2x;
-  private int          s2y;
-  private int          e2x;
-  private int          e2y;
+  private int s2x;
+  private int s2y;
+  private int e2x;
+  private int e2y;
 
   // timestamp
-  private long         st;
+  private long st;
 
   // pinch data
-  private int          pinDis;
-  private int          pinDis2;
+  private int pinDis;
+  private int pinDis2;
 
   // drag data
-  private int          dragDiff;
+  private int dragDiff;
 
   private void handleTouchStart(DOMEvent origEvent) {
     TouchEvent event = (TouchEvent) ((Object) origEvent);
@@ -189,8 +189,8 @@ public class TouchInput implements Injectable, Deactivatable {
     int d = NumberUtil.asInt(Math.sqrt(dx * dx + dy * dy));
     long timeDiff = event.timeStamp - st;
 
-    input.lastX = ex;
-    input.lastX = ey;
+    // TODO input.setLastX(ex);
+    // TODO input.setLastY(ey);
 
     // IS IT A TWO PINCH GESTURE?
     if (s2x != -1) {
