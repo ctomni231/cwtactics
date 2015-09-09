@@ -198,3 +198,5 @@ ja2.log
 .idea/cwt.iml
 /target/
 /dest/
+
+/mvn/
