@@ -17,10 +17,10 @@ import org.wolftec.cwt.system.StringUtil;
 
 public class ActionManager implements Injectable {
 
-  public static final int            BUFFER_SIZE = 200;
+  public static final int BUFFER_SIZE = 200;
 
-  private Log                        log;
-  private NetworkManager             network;
+  private Log            log;
+  private NetworkManager network;
 
   /**
    * Pool for holding ActionData objects when they aren't in the buffer.
@@ -32,12 +32,12 @@ public class ActionManager implements Injectable {
   /**
    * List of all available actions.
    */
-  private Array<Action>              actions;
+  private Array<Action> actions;
 
   /**
    * Action -> ActionID<numeric> mapping
    */
-  Map<String, Integer>               actionIds;
+  Map<String, Integer> actionIds;
 
   @Override
   public void onConstruction() {
@@ -219,6 +219,7 @@ public class ActionManager implements Injectable {
 
     Action actionObj = actions.$get(data.id);
     // actionObj.evaluateByData(data);
+    // TODO
 
     releaseData(data);
   }
@@ -226,6 +227,10 @@ public class ActionManager implements Injectable {
   public void releaseData(ActionData data) {
     data.reset();
     pool.push(data);
+  }
+
+  public ActionData acquireData() {
+    return pool.popLast();
   }
 
   /**

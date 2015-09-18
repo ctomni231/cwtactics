@@ -1,5 +1,7 @@
 package org.wolftec.cwt.model;
 
+import org.wolftec.cwt.system.Option;
+
 /**
  * Object that holds information about objects at a given position (x,y).
  */
@@ -15,6 +17,10 @@ public class PositionData {
 
   public PositionData() {
     clean();
+  }
+
+  public Option<Unit> getUnit() {
+    return Option.ofNullable(unit);
   }
 
   //

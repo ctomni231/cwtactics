@@ -43,7 +43,7 @@ public class UnloadUnit implements Action {
   }
 
   @Override
-  public void prepareMenu(UserInteractionData data) {
+  public void prepareActionMenu(UserInteractionData data) {
     for (int i = 0, e = Constants.MAX_PLAYER * Constants.MAX_UNITS; i < e; i++) {
       if (model.getUnit(i).loadedIn == data.source.unitId) {
         data.addInfo(i + "", true);

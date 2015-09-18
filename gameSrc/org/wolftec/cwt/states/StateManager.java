@@ -2,14 +2,13 @@ package org.wolftec.cwt.states;
 
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
 
 public class StateManager implements Injectable {
 
-  private Log                        log;
+  private Log log;
 
-  private StateTransition            transition;
+  private StateTransition transition;
 
   /**
    * Holds all registered game states.
@@ -19,7 +18,7 @@ public class StateManager implements Injectable {
   /**
    * The id of the active game state.
    */
-  private String                     activeStateId;
+  private String activeStateId;
 
   @Override
   public void onConstruction() {
@@ -38,9 +37,9 @@ public class StateManager implements Injectable {
    * Changes the active state. The **exit event** will be fired during the
    * change process in the old state and the **enter event** in the new state.
    * 
-   * @param stateId
+   * @param state
    */
-  public void changeState(Class<? extends AbstractState> state) {
+  public void changeState(String state) {
     if (activeStateId != null) {
       getActiveState().onExit(transition);
     }
@@ -56,11 +55,9 @@ public class StateManager implements Injectable {
    * @param stateId
    * @param fireEvent
    */
-  public void setState(Class<?> state, boolean fireEvent) {
-    String stateId = ClassUtil.getClassName(state);
-
-    log.info("set active state to " + stateId + ((fireEvent) ? " with firing enter event" : ""));
-    activeStateId = stateId;
+  public void setState(String state, boolean fireEvent) {
+    log.info("set active state to " + state + ((fireEvent) ? " with firing enter event" : ""));
+    activeStateId = state;
 
     // TODO prevent that ?
     if (fireEvent != false) {

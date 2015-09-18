@@ -27,10 +27,6 @@ public class MoveEnd implements Action {
   public void evaluateByData(int delta, ActionData data) {
     move.move(model.getUnit(moveDto.unitId), moveDto.x, moveDto.y, moveDto.movePath, false, data.p1 == 1, data.p2 == 1);
 
-    // TODO
-    // statemachine.changeState("ANIMATION_MOVE");
-    // moveState.prepareMove(uid, x, y, moveBuffer);
-
     // reset variables
     moveDto.unitId = Constants.INACTIVE;
     moveDto.x = Constants.INACTIVE;

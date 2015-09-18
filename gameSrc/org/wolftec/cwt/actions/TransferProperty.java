@@ -33,7 +33,7 @@ public class TransferProperty implements Action {
   }
 
   @Override
-  public void prepareMenu(UserInteractionData data) {
+  public void prepareActionMenu(UserInteractionData data) {
     team.getPropertyTransferTargets(data.source.property.owner, data);
   }
 

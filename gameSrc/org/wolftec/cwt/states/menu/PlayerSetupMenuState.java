@@ -7,7 +7,7 @@ public class PlayerSetupMenuState extends AbstractMenuState {
 
   @Override
   public void handleButtonA(StateTransition transition, int delta, String currentUiState) {
-    transition.setTransitionTo(ParameterSetupMenuState.class);
+    transition.setTransitionTo("ParameterSetupMenuState");
   }
 
   // enter: function () {

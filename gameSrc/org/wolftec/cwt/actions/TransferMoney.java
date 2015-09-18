@@ -33,7 +33,7 @@ public class TransferMoney implements Action {
   }
 
   @Override
-  public void prepareMenu(UserInteractionData data) {
+  public void prepareActionMenu(UserInteractionData data) {
     team.getTransferMoneyTargets(data.source.property.owner, data);
   }
 

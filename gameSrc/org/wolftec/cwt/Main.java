@@ -7,7 +7,6 @@ import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.ioc.IoCConfiguration;
 import org.wolftec.cwt.core.ioc.IoCContainer;
 import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.states.start.NoneState;
 
 public class Main {
 
@@ -16,7 +15,7 @@ public class Main {
 
     ts = BrowserUtil.getTimestamp();
     IoCContainer ioc = createIocContainer();
-    ioc.getManagedObjectByType(StateManager.class).setState(NoneState.class, true);
+    ioc.getManagedObjectByType(StateManager.class).setState("NoneState", true);
     ioc.getManagedObjectByType(GameLoopManager.class).start();
     ts = BrowserUtil.getTimestamp() - ts;
 

@@ -6,29 +6,27 @@ import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.GameLoader;
-import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.states.misc.PortraitWarningState;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.system.Option;
 
 public class PortraitWatcher implements GameLoader {
 
-  private Log                    log;
-  private StateManager           statemachine;
+  private Log          log;
+  private StateManager statemachine;
 
-  private Class<? extends AbstractState> lastState;
+  private String lastState;
 
   @Override
   public void onLoad(Callback0 done) {
-    Nullable.ifPresent(grabOrientationData(), (orientation) -> {
+    grabOrientationData().ifPresent((orientation) -> {
       Callback1<DOMEvent> doOnOrientationChange = (event) -> {
-        Class<? extends AbstractState> currentState = (Class<? extends AbstractState>) JSObjectAdapter.$constructor(statemachine.getActiveState());
+        String currentState = statemachine.getActiveStateId();
 
-        switch ((int) grabOrientationData()) {
+        switch ((int) orientation) {
           case -90:
           case 90:
-            if (currentState == PortraitWarningState.class) {
+            if (currentState == "PortraitWarningState") {
               statemachine.changeState(lastState);
               lastState = null;
             }
@@ -36,9 +34,9 @@ public class PortraitWatcher implements GameLoader {
 
           default:
             log.info("portrait");
-            if (currentState != PortraitWarningState.class) {
+            if (currentState != "PortraitWarningState") {
               lastState = currentState;
-              statemachine.changeState(PortraitWarningState.class);
+              statemachine.changeState("PortraitWarningState");
             }
             break;
         }
@@ -53,7 +51,7 @@ public class PortraitWatcher implements GameLoader {
     done.$invoke();
   }
 
-  private Object grabOrientationData() {
-    return JSObjectAdapter.$js("window.orientation");
+  private Option<Object> grabOrientationData() {
+    return Option.ofNullable(JSObjectAdapter.$js("window.orientation"));
   }
 }

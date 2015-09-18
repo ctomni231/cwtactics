@@ -2,7 +2,6 @@ package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.input.InputProvider;
-import org.wolftec.cwt.states.ingame.IngameEvalActionState;
 
 public class AbstractIngameState extends AbstractState {
 
@@ -16,7 +15,7 @@ public class AbstractIngameState extends AbstractState {
      * actions buffer.
      */
     if (actions.hasData()) {
-      transition.setTransitionTo(IngameEvalActionState.class);
+      transition.setTransitionTo("IngameEvalActionState");
       return;
     }
 

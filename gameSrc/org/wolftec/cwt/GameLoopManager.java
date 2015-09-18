@@ -86,7 +86,7 @@ public class GameLoopManager implements Injectable {
     activeState.update(transitionData, delta, blockInputTime <= 0 ? inputMgr : nullInputMgr);
     activeState.render(delta, gfx);
 
-    Option<Class<? extends AbstractState>> nextState = transitionData.getNextState();
+    Option<String> nextState = transitionData.getNextState();
     if (nextState.isPresent()) {
       sm.changeState(nextState.get());
       transitionData.flushTransitionTo();

@@ -24,7 +24,7 @@ public class IngameSelectSelectionTileState extends AbstractIngameState {
   public void handleButtonA(StateTransition transition, int delta) {
     if (data.targets.getValue(data.cursorX, data.cursorY) >= 0) {
       data.actionTarget.set(model, data.cursorX, data.cursorY);
-      transition.setTransitionTo(IngamePushActionState.class);
+      transition.setTransitionTo("IngamePushActionState");
     }
   }
 }

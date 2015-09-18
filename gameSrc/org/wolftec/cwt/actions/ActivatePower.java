@@ -33,7 +33,7 @@ public class ActivatePower implements Action {
   }
 
   @Override
-  public void prepareMenu(UserInteractionData data) {
+  public void prepareActionMenu(UserInteractionData data) {
     // TODO
     data.addInfo("cop", false);
     if (co.canActivatePower(data.actor, CommanderLogic.POWER_LEVEL_SCOP)) {

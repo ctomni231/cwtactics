@@ -21,9 +21,9 @@ public class OptionsMenuState extends AbstractMenuState {
   private static final String UIC_DECREASE_MUSIC          = "DECREASE_MUSIC";
   private static final String UIC_DECREASE_SFX            = "DECREASE_SFX";
 
-  private AudioManager        audio;
-  private ErrorManager        error;
-  private SaveManager         saving;
+  private AudioManager audio;
+  private ErrorManager error;
+  private SaveManager  saving;
 
   @Override
   public void onConstruction() {
@@ -98,7 +98,7 @@ public class OptionsMenuState extends AbstractMenuState {
         break;
 
       case UIC_WIPEOUT:
-        transition.setTransitionTo(WipeoutConfirmMenuState.class);
+        transition.setTransitionTo("WipeoutConfirmMenuState");
         break;
 
       case UIC_BACK:

@@ -23,7 +23,7 @@ public class ErrorManager implements Injectable {
     errorState.message = message;
     errorState.where = where;
 
-    stateMachine.changeState(ClassUtil.getClass(errorState));
+    stateMachine.changeState(ClassUtil.getClassName(errorState));
   }
 
   public void raiseWarning(String message, String where) {

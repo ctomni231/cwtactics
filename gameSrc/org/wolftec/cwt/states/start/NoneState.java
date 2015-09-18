@@ -11,7 +11,7 @@ public class NoneState extends AbstractState {
 
   @Override
   public void update(StateTransition transition, int delta, InputProvider input) {
-    transition.setTransitionTo(LoadingState.class);
+    transition.setTransitionTo("LoadingState");
   }
 
   @Override

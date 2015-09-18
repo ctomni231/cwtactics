@@ -78,7 +78,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState {
     }
 
     if (breakMove) {
-      transition.setTransitionTo(IngameMenuState.class);
+      transition.setTransitionTo("IngameMenuState");
     }
   }
 
@@ -90,7 +90,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState {
   @Override
   public void handleButtonA(StateTransition transition, int delta) {
     if (model.getDistance(data.cursorX, data.cursorY, data.target.x, data.target.y) == 0 || options.fastClickMode.value == 1) {
-      transition.setTransitionTo(IngameMenuState.class);
+      transition.setTransitionTo("IngameMenuState");
     }
   }
 

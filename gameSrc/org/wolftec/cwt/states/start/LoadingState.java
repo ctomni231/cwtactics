@@ -18,7 +18,7 @@ public class LoadingState extends AbstractState implements LoadingWatcher {
     if (!loading.isStarted()) {
       loading.loadData(() -> {
         log.info("done");
-        transition.setTransitionTo(StartScreenState.class);
+        transition.setTransitionTo("StartScreenState");
       });
     }
   }

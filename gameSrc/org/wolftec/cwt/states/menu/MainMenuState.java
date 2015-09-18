@@ -26,11 +26,11 @@ public class MainMenuState extends AbstractMenuState {
     switch (ui.getState()) {
 
       case UIC_OPTIONS:
-        transition.setTransitionTo(OptionsMenuState.class);
+        transition.setTransitionTo("OptionsMenuState");
         break;
 
       case UIC_SKIRMISH:
-        transition.setTransitionTo(MapSelectionMenuState.class);
+        transition.setTransitionTo("MapSelectionMenuState");
         break;
     }
   }

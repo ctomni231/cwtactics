@@ -16,4 +16,12 @@ public class NumberUtil {
   public static int stringAsInt(String value) {
     return JSGlobal.parseInt(value, 10);
   }
+
+  public static int safeStringAsInt(String value, int defValue) {
+    try {
+      return JSGlobal.parseInt(value, 10);
+    } catch (Exception e) {
+      return defValue;
+    }
+  }
 }

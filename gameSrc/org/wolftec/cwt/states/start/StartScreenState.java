@@ -5,7 +5,6 @@ import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.StateTransition;
-import org.wolftec.cwt.states.menu.MainMenuState;
 import org.wolftec.cwt.system.Log;
 
 public class StartScreenState extends AbstractState {
@@ -31,7 +30,7 @@ public class StartScreenState extends AbstractState {
   @Override
   public void update(StateTransition transition, int delta, InputProvider input) {
     if (input.isActionPressed(GameActions.BUTTON_A)) {
-      transition.setTransitionTo(MainMenuState.class);
+      transition.setTransitionTo("MainMenuState");
     }
   }
 }

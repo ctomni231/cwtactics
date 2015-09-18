@@ -486,7 +486,7 @@ public class MoveLogic implements Injectable {
     }
   }
 
-  public boolean trapCheck(CircularBuffer<Integer> movePath, PositionData source, PositionData target) {
+  public boolean trapCheck(ModelManager model, CircularBuffer<Integer> movePath, PositionData source, PositionData target) {
     int cBx = 0;
     int cBy = 0;
     int cx = source.x;
@@ -512,7 +512,7 @@ public class MoveLogic implements Injectable {
       }
 
       Unit unit = model.getTile(cx, cy).unit;
-      if (!Nullable.isPresent(unit)) {
+      if (unit == null) {
 
         // no unit there? then it's a valid position
         cBx = cx;
@@ -632,5 +632,22 @@ public class MoveLogic implements Injectable {
       model.getTile(lastX, lastY).unit = unit;
       fog.addUnitVision(lastX, lastY, unit.owner);
     }
+  }
+
+  /**
+   * 
+   * @param model
+   * @param position
+   * @return true when the unit can move somewhere starting from the given
+   *         position, else false
+   */
+  public boolean canMoveSomewhere(ModelManager model, PositionData position) {
+    Unit unit = position.getUnit().orElseThrow("NoUnitAtPosition");
+    MoveType mv = sheets.movetypes.get(unit.type.movetype);
+
+    return ((model.isValidPosition(position.x + 1, position.y) && getMoveCosts(mv, position.x + 1, position.y) > Constants.INACTIVE)
+        || (model.isValidPosition(position.x - 1, position.y) && getMoveCosts(mv, position.x - 1, position.y) > Constants.INACTIVE)
+        || (model.isValidPosition(position.x, position.y - 1) && getMoveCosts(mv, position.x, position.y - 1) > Constants.INACTIVE)
+        || (model.isValidPosition(position.x, position.y + 1) && getMoveCosts(mv, position.x, position.y + 1) > Constants.INACTIVE));
   }
 }

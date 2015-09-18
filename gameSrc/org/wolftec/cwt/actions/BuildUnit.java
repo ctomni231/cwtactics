@@ -36,7 +36,7 @@ public class BuildUnit implements Action {
   }
 
   @Override
-  public void prepareMenu(UserInteractionData data) {
+  public void prepareActionMenu(UserInteractionData data) {
     factory.generateBuildMenu(data.source.property, data, true);
   }
 

@@ -22,7 +22,11 @@ public class MoveAppend implements Action {
 
   @Override
   public void fillData(UserInteractionData positionData, ActionData actionData) {
-    // TODO
+    if (!positionData.movePath.isEmpty()) actionData.p1 = positionData.movePath.popFirst();
+    if (!positionData.movePath.isEmpty()) actionData.p2 = positionData.movePath.popFirst();
+    if (!positionData.movePath.isEmpty()) actionData.p3 = positionData.movePath.popFirst();
+    if (!positionData.movePath.isEmpty()) actionData.p4 = positionData.movePath.popFirst();
+    if (!positionData.movePath.isEmpty()) actionData.p5 = positionData.movePath.popFirst();
   }
 
   @Override

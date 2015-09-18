@@ -39,7 +39,7 @@ public interface Action extends Injectable {
   /**
    * Prepares the menu for a given state data.
    */
-  default void prepareMenu(UserInteractionData data) {
+  default void prepareActionMenu(UserInteractionData data) {
   }
 
   /**

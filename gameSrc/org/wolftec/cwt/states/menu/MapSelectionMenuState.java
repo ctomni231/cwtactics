@@ -34,7 +34,7 @@ public class MapSelectionMenuState extends AbstractState {
 
     }
     if (input.isActionPressed(GameActions.BUTTON_A)) {
-      transition.setTransitionTo(PlayerSetupMenuState.class);
+      transition.setTransitionTo("PlayerSetupMenuState");
     }
   }
 }

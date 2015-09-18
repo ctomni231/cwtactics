@@ -22,7 +22,7 @@ public class IngameSelectFreeTileState extends AbstractIngameState {
   public void handleButtonA(StateTransition transition, int delta) {
     if (actions.getAction(data.action).isTargetValid(data)) {
       data.actionTarget.set(model, data.cursorX, data.cursorY);
-      transition.setTransitionTo(IngamePushActionState.class);
+      transition.setTransitionTo("IngamePushActionState");
     }
   }
 }

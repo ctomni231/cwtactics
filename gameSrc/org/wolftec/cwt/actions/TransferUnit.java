@@ -35,7 +35,7 @@ public class TransferUnit implements Action {
   }
 
   @Override
-  public void prepareMenu(UserInteractionData data) {
+  public void prepareActionMenu(UserInteractionData data) {
     team.getUnitTransferTargets(data.source.unit.owner, data);
   }
 

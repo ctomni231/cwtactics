@@ -44,7 +44,7 @@ public class IngameEnterState extends AbstractState {
   @Override
   public void update(StateTransition transition, int delta, InputProvider input) {
     if (loaded) {
-      transition.setTransitionTo(IngameIdleState.class);
+      transition.setTransitionTo("IngameIdleState");
     }
   }
 
