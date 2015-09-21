@@ -7,6 +7,7 @@ import org.wolftec.cwt.model.Unit;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.system.Option;
 
 public class IngameIdleState extends AbstractIngameState {
 
@@ -27,7 +28,7 @@ public class IngameIdleState extends AbstractIngameState {
     data.source.set(model, data.cursorX, data.cursorY);
     data.target.set(model, data.cursorX, data.cursorY);
 
-    boolean movableUnitAtSource = data.source.unit != null && data.source.unit.canAct && move.canMoveSomewhere(model, data.source);
+    boolean movableUnitAtSource = data.source.unit.isPresent() && data.source.unit.get().canAct && move.canMoveSomewhere(model, data.source);
 
     transition.setTransitionTo(movableUnitAtSource ? "IngameMovepathSelectionState" : "IngameMenuState");
   }
@@ -35,8 +36,8 @@ public class IngameIdleState extends AbstractIngameState {
   @Override
   public void handleButtonB(StateTransition transition, int delta) {
     data.source.set(model, data.cursorX, data.cursorY);
-    Unit sourceUnit = data.source.unit;
-    if (sourceUnit != null && (battle.hasMainWeapon(sourceUnit) || battle.hasSecondaryWeapon(sourceUnit))) {
+    Option<Unit> sourceUnit = data.source.unit;
+    if (sourceUnit.isPresent() && (battle.hasMainWeapon(sourceUnit.get()) || battle.hasSecondaryWeapon(sourceUnit.get()))) {
       transition.setTransitionTo("IngameShowAttackRangeState");
     }
   }

@@ -318,7 +318,7 @@ public class MoveLogic implements Injectable {
 
     int x = source.x;
     int y = source.y;
-    Unit unit = source.unit;
+    Unit unit = source.unit.get();
 
     Array<Integer> checker;
     Array<Integer> toBeChecked;
@@ -491,7 +491,7 @@ public class MoveLogic implements Injectable {
     int cBy = 0;
     int cx = source.x;
     int cy = source.y;
-    int teamId = source.unit.owner.team;
+    int teamId = source.unit.get().owner.team;
     for (int i = 0, e = movePath.getSize(); i < e; i++) {
       switch (movePath.get(i)) {
         case MOVE_CODES_DOWN:
@@ -642,7 +642,7 @@ public class MoveLogic implements Injectable {
    *         position, else false
    */
   public boolean canMoveSomewhere(ModelManager model, PositionData position) {
-    Unit unit = position.getUnit().orElseThrow("NoUnitAtPosition");
+    Unit unit = position.unit.orElseThrow("NoUnitAtPosition");
     MoveType mv = sheets.movetypes.get(unit.type.movetype);
 
     return ((model.isValidPosition(position.x + 1, position.y) && getMoveCosts(mv, position.x + 1, position.y) > Constants.INACTIVE)

@@ -22,15 +22,15 @@ public class ExplodeUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return explode.canSelfDestruct(data.source.unit);
+    return explode.canSelfDestruct(data.source.unit.get());
   }
 
   @Override
   public void fillData(UserInteractionData interactionData, ActionData actionData) {
     actionData.p1 = interactionData.target.x;
     actionData.p2 = interactionData.target.y;
-    actionData.p3 = explode.getSuicideRange(interactionData.source.unit);
-    actionData.p4 = explode.getExplosionDamage(interactionData.source.unit);
+    actionData.p3 = explode.getSuicideRange(interactionData.source.unit.get());
+    actionData.p4 = explode.getExplosionDamage(interactionData.source.unit.get());
   }
 
   @Override

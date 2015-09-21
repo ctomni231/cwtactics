@@ -64,7 +64,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState {
     }
 
     boolean breakMove = false;
-    if (model.isTurnOwnerObject(/* TODO */ (Ownable) data.source.unit) && data.source.unit.canAct) {
+    if (model.isTurnOwnerObject(/* TODO */ (Ownable) data.source.unit) && data.source.unit.get().canAct) {
       data.movePath.clear();
       move.fillMoveMap(data.source, data.targets);
 

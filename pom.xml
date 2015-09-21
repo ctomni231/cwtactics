@@ -102,7 +102,7 @@
 
       <pack>true</pack>
       
-      <generateSourceMap>true</generateSourceMap>
+      <generateSourceMap>false</generateSourceMap>
       
       <annotations>
        <annotation>Handled</annotation>
@@ -148,7 +148,8 @@
          <copy file="${project.build.outputDirectory}/CustomWarsTactics.js"
                tofile="${basedir}/dest/game.js" 
                overwrite="true" />
-               
+            
+            <!--    
          <copy file="${project.build.outputDirectory}/CustomWarsTactics.map"
                tofile="${basedir}/dest/CustomWarsTactics.map" 
                overwrite="true" />
@@ -162,6 +163,7 @@
              "sourceRoot":"http://localhost/gameSrc"
            ]]></replacevalue>
          </replace>
+          -->
         </target>
        </configuration>
       </execution>

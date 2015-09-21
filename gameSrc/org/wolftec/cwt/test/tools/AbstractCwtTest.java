@@ -28,9 +28,14 @@ public abstract class AbstractCwtTest implements Test {
     model.mapWidth = 40;
     model.weather = sheets.weathers.get("WSUN");
     model.weatherLeftDays = 4;
+    model.turnOwner = model.getPlayer(0);
 
     model.forEachTile((x, y, tile) -> {
       tile.type = sheets.tiles.get("PLIN");
     });
+
+    uiData.cursorX = 0;
+    uiData.cursorY = 0;
+    uiData.actor = model.turnOwner;
   }
 }

@@ -5,7 +5,7 @@ import org.wolftec.cwt.input.InputProvider;
 
 public class AbstractIngameState extends AbstractState {
 
-  private ActionManager         actions;
+  protected ActionManager       actions;
   protected UserInteractionData uiData;
 
   @Override

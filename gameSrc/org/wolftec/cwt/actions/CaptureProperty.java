@@ -30,7 +30,7 @@ public class CaptureProperty implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return capture.canCapture(data.source.unit) && capture.canBeCaptured(data.target.property);
+    return data.target.property.isPresent() && capture.canCapture(data.source.unit.get()) && capture.canBeCaptured(data.target.property.get());
   }
 
   @Override

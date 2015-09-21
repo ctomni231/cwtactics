@@ -26,7 +26,7 @@ public class TransferUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return team.canTransferUnit(data.source.unit);
+    return team.canTransferUnit(data.source.unit.get());
   }
 
   @Override
@@ -36,7 +36,7 @@ public class TransferUnit implements Action {
 
   @Override
   public void prepareActionMenu(UserInteractionData data) {
-    team.getUnitTransferTargets(data.source.unit.owner, data);
+    team.getUnitTransferTargets(data.source.unit.get().owner, data);
   }
 
   @Override

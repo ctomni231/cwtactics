@@ -15,7 +15,7 @@ public class IngameShowAttackRangeState extends AbstractIngameState {
 
   @Override
   public void onEnter(StateTransition transition) {
-    attack.fillRangeMap(data.source.unit, data.source.x, data.source.y, data.targets);
+    attack.fillRangeMap(data.source.unit.get(), data.source.x, data.source.y, data.targets);
   }
 
   @Override

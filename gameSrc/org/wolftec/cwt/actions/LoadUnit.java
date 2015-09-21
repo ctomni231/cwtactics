@@ -36,7 +36,8 @@ public class LoadUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return transport.isTransportUnit(data.target.unit) && transport.canLoadUnit(data.target.unit, data.source.unit);
+    return data.target.unit.isPresent() && transport.isTransportUnit(data.target.unit.get())
+        && transport.canLoadUnit(data.target.unit.get(), data.source.unit.get());
   }
 
   @Override

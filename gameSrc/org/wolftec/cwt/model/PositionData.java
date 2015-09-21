@@ -7,20 +7,16 @@ import org.wolftec.cwt.system.Option;
  */
 public class PositionData {
 
-  public int      x;
-  public int      y;
-  public Tile     tile     = null;
-  public Unit     unit     = null;
-  public Property property = null;
-  public int      unitId;
-  public int      propertyId;
+  public int              x;
+  public int              y;
+  public Tile             tile     = null;
+  public Option<Unit>     unit     = null;
+  public Option<Property> property = null;
+  public int              unitId;
+  public int              propertyId;
 
   public PositionData() {
     clean();
-  }
-
-  public Option<Unit> getUnit() {
-    return Option.ofNullable(unit);
   }
 
   //
@@ -63,13 +59,17 @@ public class PositionData {
     tile = manager.getTile(x, y);
 
     if (tile.visionTurnOwner > 0 && this.tile.unit != null) {
-      this.unit = this.tile.unit;
-      this.unitId = manager.getUnitId(unit);
+      unit = Option.of(tile.unit);
+      unitId = manager.getUnitId(tile.unit);
+    } else {
+      unit = Option.empty();
     }
 
     if (tile.property != null) {
-      property = tile.property;
+      property = Option.of(tile.property);
       propertyId = manager.getPropertyId(tile.property);
+    } else {
+      property = Option.empty();
     }
   }
 }

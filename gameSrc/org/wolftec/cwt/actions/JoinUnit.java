@@ -42,7 +42,7 @@ public class JoinUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return join.canJoin(data.source.unit, data.target.unit);
+    return data.target.unit.isPresent() && join.canJoin(data.source.unit.get(), data.target.unit.get());
   }
 
   @Override

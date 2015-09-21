@@ -29,18 +29,18 @@ public class TransferMoney implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return team.canTransferMoney(data.source.property.owner, data.source.x, data.source.y);
+    return data.source.property.isPresent() && team.canTransferMoney(data.source.property.get().owner, data.source.x, data.source.y);
   }
 
   @Override
   public void prepareActionMenu(UserInteractionData data) {
-    team.getTransferMoneyTargets(data.source.property.owner, data);
+    team.getTransferMoneyTargets(data.source.property.get().owner, data);
   }
 
   @Override
   public void fillData(UserInteractionData interactionData, ActionData actionData) {
     actionData.p1 = interactionData.actor.id;
-    actionData.p2 = interactionData.source.property.owner.id;
+    actionData.p2 = interactionData.source.property.get().owner.id;
     actionData.p3 = interactionData.actionDataCode;
   }
 
