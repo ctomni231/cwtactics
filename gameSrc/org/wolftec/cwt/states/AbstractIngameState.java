@@ -5,7 +5,8 @@ import org.wolftec.cwt.input.InputProvider;
 
 public class AbstractIngameState extends AbstractState {
 
-  private ActionManager actions;
+  private ActionManager         actions;
+  protected UserInteractionData uiData;
 
   @Override
   public void update(StateTransition transition, int delta, InputProvider input) {
@@ -48,12 +49,25 @@ public class AbstractIngameState extends AbstractState {
   }
 
   public void handleButtonUp(StateTransition transition, int delta) {
+    uiData.cursorY--;
+    if (uiData.cursorY < 0) {
+      uiData.cursorY = 0;
+    }
   }
 
   public void handleButtonDown(StateTransition transition, int delta) {
+    uiData.cursorY++;
+    // TODO
+    // if (uiData.cursorY >= ) {
+    // uiData.cursorY = 0;
+    // }
   }
 
   public void handleButtonLeft(StateTransition transition, int delta) {
+    uiData.cursorX--;
+    if (uiData.cursorX < 0) {
+      uiData.cursorX = 0;
+    }
   }
 
   public void handleButtonRight(StateTransition transition, int delta) {

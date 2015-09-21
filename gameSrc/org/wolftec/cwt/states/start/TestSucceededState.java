@@ -5,12 +5,12 @@ import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.StateTransition;
 
-public class StartScreenState extends AbstractState {
+public class TestSucceededState extends AbstractState {
 
   @Override
   public void update(StateTransition transition, int delta, InputProvider input) {
     if (input.isActionPressed(GameActions.BUTTON_A)) {
-      transition.setTransitionTo("MainMenuState");
+      transition.setTransitionTo("StartScreenState");
     }
   }
 }

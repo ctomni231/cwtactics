@@ -2,16 +2,37 @@ package org.wolftec.cwt.states.start;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.system.Log;
 
 public class NoneState extends AbstractState {
+
+  private Log          log;
+  private InputManager input;
+
+  @Override
+  public void onEnter(StateTransition transition) {
+    setupDevKeys();
+  }
 
   @Override
   public void update(StateTransition transition, int delta, InputProvider input) {
     transition.setTransitionTo("LoadingState");
+  }
+
+  private void setupDevKeys() {
+    log.info("setup development input mapping");
+    input.setButtonMapping("ENTER", GameActions.BUTTON_A);
+    input.setButtonMapping("CTRL", GameActions.BUTTON_B);
+    input.setButtonMapping("ARROW LEFT", GameActions.BUTTON_LEFT);
+    input.setButtonMapping("ARROW RIGHT", GameActions.BUTTON_RIGHT);
+    input.setButtonMapping("ARROW UP", GameActions.BUTTON_UP);
+    input.setButtonMapping("ARROW DOWN", GameActions.BUTTON_DOWN);
   }
 
   @Override

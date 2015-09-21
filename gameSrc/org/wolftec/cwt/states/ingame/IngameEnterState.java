@@ -7,18 +7,22 @@ import org.wolftec.cwt.model.GameMode;
 import org.wolftec.cwt.model.MapData;
 import org.wolftec.cwt.model.MapManager;
 import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.model.ModelResetter;
 import org.wolftec.cwt.model.Property;
 import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UiDataMapConfiguration;
+import org.wolftec.cwt.states.UserInteractionData;
 
 public class IngameEnterState extends AbstractState {
 
-  private ModelManager model;
-  private SheetManager sheets;
-  private MapManager   maps;
-  private ErrorManager error;
+  private ModelResetter       modelReset;
+  private ModelManager        model;
+  private SheetManager        sheets;
+  private MapManager          maps;
+  private ErrorManager        error;
+  private UserInteractionData uiData;
 
   private UiDataMapConfiguration mapData;
 
@@ -34,6 +38,10 @@ public class IngameEnterState extends AbstractState {
       try {
         cleanModel(data);
         prepareModel(mapData);
+
+        uiData.cursorX = 0;
+        uiData.cursorY = 0;
+
         loaded = true;
       } catch (Exception e) {
         error.raiseError("Could not load map (" + e + ")", "IngameEnter");

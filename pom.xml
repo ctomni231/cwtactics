@@ -23,7 +23,7 @@
   <stjs.version>3.2.1</stjs.version>
    
     <!-- this resolves to test folder.. drops all tests from build -->
-    <test.exclude.pattern>**/test/**/*.java</test.exclude.pattern>
+    <test.exclude.pattern>**/testXY/**/*.java</test.exclude.pattern>
  </properties>
 
  <profiles>
