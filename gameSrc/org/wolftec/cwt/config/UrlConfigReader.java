@@ -20,7 +20,7 @@ public class UrlConfigReader implements GameLoader {
     return 1;
   }
 
-  private void grabConfigFromUrl(String paramName, Config cfg) {
+  private void grabConfigFromUrl(String paramName, ConfigurableValue cfg) {
     BrowserUtil.getUrlParameter(paramName).ifPresent((value) -> {
       if (value != "0" && value != "1") {
         log.warn("IllegalUrlParameter: " + paramName + " will be ignored");

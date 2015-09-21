@@ -7,7 +7,7 @@ import org.wolftec.cwt.system.Option;
 /**
  * Configuration object which contains a configurable value.
  */
-public class Config {
+public class ConfigurableValue {
 
   public int min;
   public int max;
@@ -16,10 +16,10 @@ public class Config {
   public int value;
 
   @Native
-  public Config(int min, int max, int defaultValue) {
+  public ConfigurableValue(int min, int max, int defaultValue) {
   }
 
-  public Config(int min, int max, int defaultValue, int step) {
+  public ConfigurableValue(int min, int max, int defaultValue, int step) {
     this.min = min;
     this.max = max;
     this.def = defaultValue;
