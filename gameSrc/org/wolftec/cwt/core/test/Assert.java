@@ -7,7 +7,7 @@ import org.wolftec.cwt.core.JsUtil;
 
 public class Assert {
 
-  private Object value;
+  protected Object value;
 
   public Assert(Object lValue) {
     value = lValue;
@@ -79,6 +79,34 @@ public class Assert {
   public Assert greaterEquals(Integer num) {
     if (JSGlobal.typeof(value) == "number" && (int) value < num) {
       JsUtil.throwError("AssertionFailed: expected " + value + " to be a number greater equals " + num);
+    }
+    return this;
+  }
+
+  public Assert empty() {
+    if (JSGlobal.typeof(value) != "string" && !(value instanceof Array) || (int) JSObjectAdapter.$get(value, "length") > 0) {
+      JsUtil.throwError("AssertionFailed: expected " + value + " to be empty");
+    }
+    return this;
+  }
+
+  public Assert notEmpty() {
+    if (JSGlobal.typeof(value) != "string" && !(value instanceof Array) || (int) JSObjectAdapter.$get(value, "length") == 0) {
+      JsUtil.throwError("AssertionFailed: expected " + value + " to be not empty");
+    }
+    return this;
+  }
+
+  public Assert contains(Object entry) {
+    if (!(value instanceof Array) || ((Array) value).indexOf(entry) == -1) {
+      JsUtil.throwError("AssertionFailed: expected " + value + " contains " + entry);
+    }
+    return this;
+  }
+
+  public Assert notContains(Object entry) {
+    if (!(value instanceof Array) || ((Array) value).indexOf(entry) != -1) {
+      JsUtil.throwError("AssertionFailed: expected " + value + " not contains " + entry);
     }
     return this;
   }

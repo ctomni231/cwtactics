@@ -2,13 +2,16 @@ package org.wolftec.cwt.test.tools;
 
 import org.wolftec.cwt.core.test.Assert;
 import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.states.UserInteractionData;
 
 public class AssertionStub {
 
-  private ModelManager gameModel;
+  private ModelManager        gameModel;
+  private UserInteractionData uiData;
 
-  public AssertionStub(ModelManager lGameModel) {
+  public AssertionStub(ModelManager lGameModel, UserInteractionData lUiData) {
     gameModel = lGameModel;
+    uiData = lUiData;
   }
 
   public Assert tileAt(int x, int y) {
@@ -28,7 +31,6 @@ public class AssertionStub {
   }
 
   public Assert menu() {
-    // TODO
-    return null;
+    return new MenuAssert(uiData);
   }
 }

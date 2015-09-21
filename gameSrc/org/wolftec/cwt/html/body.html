@@ -40,10 +40,12 @@
     <canvas width="800" height="600" id="gameCanvas"></canvas>
   </body>
 
-  <script type='application/javascript' src='stjs.js'>
-    stjs.mainCallDisabled = true;
-  </script>
+  <script type='application/javascript' src='stjs.js'></script>
+  <script> stjs.mainCallDisabled = true; </script>
+  
   <script type='application/javascript' src='deps.js'></script>
   <script type='application/javascript' src='game.js'></script>
+  
+  <script> cwt.Main.main(); </script>
 
 </html>
