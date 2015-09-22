@@ -8,10 +8,10 @@ import org.wolftec.cwt.states.UserInteractionData;
 
 public abstract class AbstractCwtTest implements Test {
 
-  private SheetManager        sheets;
-  private ModelResetter       modelReset;
-  private ModelManager        model;
-  private UserInteractionData uiData;
+  protected SheetManager        sheets;
+  protected ModelResetter       modelReset;
+  protected ModelManager        model;
+  protected UserInteractionData uiData;
 
   protected AssertionStub assertModel() {
     return new AssertionStub(model, uiData);

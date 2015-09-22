@@ -10,7 +10,6 @@ import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.ClassUtil;
-import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.NumberUtil;
 import org.wolftec.cwt.system.VersionUtil;
 
@@ -21,13 +20,25 @@ public class TestManager implements Injectable {
   private static final String AFTERTEST_METHOD_NAME        = "afterTest";
 
   @SyntheticType
-  public static class TestResults {
-    public int passed;
-    public int failed;
-    public int tests;
+  public static class TestMethodResult {
+    public String    name;
+    public boolean   succeeded;
+    public Exception error;
   }
 
-  private Log log;
+  @SyntheticType
+  public static class TestClassResult {
+    public String                  name;
+    public Array<TestMethodResult> methods;
+  }
+
+  @SyntheticType
+  public static class TestExecutionResults {
+    public Array<TestClassResult> tests;
+    public int                    passed;
+    public int                    failed;
+    public int                    runs;
+  }
 
   private Array<Test> tests;
 
@@ -44,51 +55,65 @@ public class TestManager implements Injectable {
     return tests.$length() > 0;
   }
 
-  public TestResults callAllTests() {
-    log.info("start tests");
+  public TestExecutionResults callAllTests() {
+    TestExecutionResults results = new TestExecutionResults();
 
-    TestResults results = new TestResults();
     results.failed = 0;
     results.passed = 0;
-    results.tests = 0;
+    results.runs = 0;
+    results.tests = JSCollections.$array();
 
-    ListUtil.forEachArrayValue(tests, (index, test) -> callTestMethods(test, results));
+    ListUtil.forEachArrayValue(tests, (index, test) -> {
+      TestClassResult testResults = callTestMethods(test);
 
-    log.info("completed tests");
+      ListUtil.forEachArrayValue(testResults.methods, (resultIndex, resultData) -> {
+        if (resultData.succeeded) {
+          results.passed++;
+        } else {
+          results.failed++;
+        }
+        results.runs++;
+      });
+
+      results.tests.push(testResults);
+    });
+
     return results;
   }
 
-  private TestResults callTestMethods(Test test, TestResults results) {
-    log.info("running " + ClassUtil.getClassName(test) + " test");
+  private TestClassResult callTestMethods(Test test) {
+    TestClassResult results = new TestClassResult();
+
+    results.methods = JSCollections.$array();
+    results.name = ClassUtil.getClassName(test);
 
     Object testProto = JSObjectAdapter.$prototype(JSObjectAdapter.$constructor(test));
     Array<String> properties = JsUtil.objectKeys(testProto);
     ListUtil.forEachArrayValue(properties, (index, property) -> {
       if (isTestCaseProperty(test, property)) {
-        callTestMethod(test, property, results);
+        results.methods.push(callTestMethod(test, property));
       }
     });
-
-    log.info("completed " + ClassUtil.getClassName(test) + " test");
 
     return results;
   }
 
-  private void callTestMethod(Test test, String methodName, TestResults results) {
-    log.info("test case " + methodName);
+  private TestMethodResult callTestMethod(Test test, String methodName) {
+    TestMethodResult results = new TestMethodResult();
 
-    results.tests++;
+    results.name = methodName;
     try {
       invokeMethod(test, BEFORETEST_METHOD_NAME);
       invokeMethod(test, methodName);
       invokeMethod(test, AFTERTEST_METHOD_NAME);
-      log.info(".. has PASSED");
-      results.passed++;
+      results.succeeded = true;
 
     } catch (Exception e) {
-      log.error(".. has FAILED", e);
-      results.failed++;
+      results.succeeded = false;
+      results.error = e;
     }
+
+    return results;
   }
 
   private void invokeMethod(Test test, String methodName) {

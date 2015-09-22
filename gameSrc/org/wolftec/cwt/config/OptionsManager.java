@@ -5,7 +5,7 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 
-public abstract class OptionsManager implements Injectable {
+public abstract class OptionsManager implements Injectable, ConfigurationProvider {
 
   public final ConfigurableValue fogEnabled;
   public final ConfigurableValue daysOfPeace;
