@@ -5,7 +5,7 @@ Real Commanding Officers Icon Completion
 * [x] Max (AW1)
 * [x] Nell (AW1)
 * [x] Hachi (AW2)
-* [ ] Jake (AWDS)
+* [x] Jake (AWDS)
 * [x] Rachel (AWDS)
 
 * [x] Olaf (AW1)
