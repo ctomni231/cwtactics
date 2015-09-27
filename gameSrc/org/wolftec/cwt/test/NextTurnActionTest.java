@@ -8,14 +8,34 @@ public class NextTurnActionTest extends AbstractCwtTest {
   private NextTurn action;
 
   public void testClickOnEmptyTile() {
-    uiData.source.set(model, 0, 0);
-    uiData.target.set(model, 0, 0);
-    assertValue(action.condition(uiData)).is(true);
+    expect().cursorAt(0, 0);
+
+    assertThat(action.condition(uiData)).is(true);
   }
 
-  public void testFail() {
-    uiData.source.set(model, 0, 0);
-    uiData.target.set(model, 0, 0);
-    assertValue(action.condition(uiData)).is(false);
+  public void testClickOnUnit() {
+    expect().unitAt(0, 0, "INFT", model.getPlayer(0));
+
+    expect().cursorAt(0, 0);
+    assertThat(uiData.source.unit.isPresent()).is(true);
+    assertThat(action.condition(uiData)).is(false);
+  }
+
+  public void testClickOnProperty() {
+    expect().propertyAt(0, 0, "BASE", model.getPlayer(0));
+    expect().propertyAt(1, 1, "BASE", model.getPlayer(1));
+    expect().propertyAt(2, 2, "BASE", model.getPlayer(2));
+
+    expect().cursorAt(0, 0);
+    assertThat(uiData.source.property.isPresent()).is(true);
+    assertThat(action.condition(uiData)).is(true);
+
+    expect().cursorAt(1, 1);
+    assertThat(uiData.source.property.isPresent()).is(true);
+    assertThat(action.condition(uiData)).is(false);
+
+    expect().cursorAt(2, 2);
+    assertThat(uiData.source.property.isPresent()).is(true);
+    assertThat(action.condition(uiData)).is(false);
   }
 }

@@ -3,6 +3,7 @@ package org.wolftec.cwt.test.tools;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class ExpectationStub {
@@ -16,11 +17,11 @@ public class ExpectationStub {
     uiData = lUiData;
   }
 
-  public void unit() {
+  public void unitAt(int x, int y, String type, Player owner) {
 
   }
 
-  public void property() {
+  public void propertyAt(int x, int y, String type, Player owner) {
 
   }
 

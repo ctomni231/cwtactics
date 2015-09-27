@@ -23,6 +23,30 @@ public abstract class AbstractCwtTest implements Test {
 
   @Override
   public void beforeTest() {
+    /*
+     * Every test case needs a clean ui data object and model. So we clean it
+     * before the test itself will be executed.
+     */
+    cleanModel();
+    cleanUiData();
+  }
+
+  private void cleanUiData() {
+    uiData.cursorX = 0;
+    uiData.cursorY = 0;
+    uiData.actor = model.turnOwner;
+    uiData.source.clean();
+    uiData.target.clean();
+    uiData.actionTarget.clean();
+    uiData.action = "";
+    uiData.actionCode = -1;
+    uiData.actionData = "";
+    uiData.actionDataCode = -1;
+    uiData.movePath.clear();
+    uiData.cleanInfos();
+  }
+
+  private void cleanModel() {
     modelReset.reset();
     model.mapHeight = 40;
     model.mapWidth = 40;
@@ -33,9 +57,5 @@ public abstract class AbstractCwtTest implements Test {
     model.forEachTile((x, y, tile) -> {
       tile.type = sheets.tiles.get("PLIN");
     });
-
-    uiData.cursorX = 0;
-    uiData.cursorY = 0;
-    uiData.actor = model.turnOwner;
   }
 }

@@ -11,7 +11,7 @@ public interface Test extends Injectable {
     return "1.0.0.0";
   }
 
-  default Assert assertValue(Object value) {
+  default Assert assertThat(Object value) {
     return new Assert(value);
   }
 

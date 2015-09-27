@@ -58,7 +58,7 @@ public class PositionData {
     y = py;
     tile = manager.getTile(x, y);
 
-    if (tile.visionTurnOwner > 0 && this.tile.unit != null) {
+    if (tile.visionTurnOwner > 0 && tile.unit != null) {
       unit = Option.of(tile.unit);
       unitId = manager.getUnitId(tile.unit);
     } else {

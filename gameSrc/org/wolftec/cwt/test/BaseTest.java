@@ -6,6 +6,5 @@ public class BaseTest extends AbstractCwtTest {
 
   public void test_TestEngine() {
     assertModel().unitAt(0, 0).notExists();
-    assertModel().menu().empty();
   }
 }
