@@ -1,0 +1,67 @@
+<!-- DomSorter.html -->
+<!-- This class is a work in progress to help me deal with the DOM and use it as a storage device -->
+
+<!-- New mind meld: Store images in the unsigned integer
+     If browsers can't support, make a mirror integer supported one 
+	 You want to make changes on read, without moving the image (it is kind of like having a double buffer)
+	 So, instead of storing pixels, we'll just change how data is read
+	 I think it'll be faster, by just a bit, instead of manually placing data
+	 Just be careful of multiple changes to the system
+-->
+<HTML>
+	<HEAD>
+		<TITLE> DOM Sorter </TITLE>
+		<SCRIPT type="text/javascript">
+			<!--
+			function addElement(){
+				var storage = document.getElementById("dom");
+				if(storage == null){
+					var temp = document.createElement("div");
+					temp.setAttribute("id", "dom");
+					document.body.appendChild(temp);
+					storage = document.getElementById("dom");
+				}
+				
+				var add = document.getElementById("img0");
+				var counter = 0;
+				while(add != null){
+					counter++;
+					add = document.getElementById("img"+counter);
+				}
+				var tmp = document.createElement("p");
+				tmp.setAttribute("id", "img"+counter);
+				tmp.innerHTML = "Crecen is awesome x"+counter;
+				document.getElementById("dom").appendChild(tmp);
+			}
+			
+			function removeElement(){
+				var storage = document.getElementById("dom");
+				if(storage == null){
+					var temp = document.createElement("div");
+					temp.setAttribute("id", "dom");
+					document.body.appendChild(temp);
+					storage = document.getElementById("dom");
+				}
+				
+				var remove = document.getElementById("img0");
+				var counter = 0;
+				while(remove != null){
+					counter++;
+					remove = document.getElementById("img"+counter);
+				}
+				
+				if(counter > 0){
+					remove = document.getElementById("img"+(counter-1));
+					remove.parentNode.removeChild(remove);
+				}
+			}
+			//-->
+		</SCRIPT>
+	</HEAD>
+	<BODY>
+		<form>
+			<input type="button" value="ADD ELEMENT" onclick="addElement()">
+			<input type="button" value="REMOVE ELEMENT" onclick="removeElement()">
+		</form>
+	</BODY>
+</HTML>
