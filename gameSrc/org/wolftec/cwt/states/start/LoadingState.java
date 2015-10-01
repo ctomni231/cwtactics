@@ -8,6 +8,7 @@ import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.UrlParameterUtil;
 
 public class LoadingState extends AbstractState implements LoadingWatcher {
 
@@ -21,7 +22,7 @@ public class LoadingState extends AbstractState implements LoadingWatcher {
       loading.loadData(() -> {
         log.info("done");
 
-        if (tests.hasTests()) {
+        if (UrlParameterUtil.getUrlParameter("noTests") != "1" && tests.hasTests()) {
           transition.setTransitionTo("TestExecutionState");
         } else {
           transition.setTransitionTo("StartScreenState");

@@ -1,6 +1,8 @@
 package org.wolftec.cwt.test;
 
+import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.actions.NextTurn;
+import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class NextTurnActionTest extends AbstractCwtTest {
@@ -11,6 +13,17 @@ public class NextTurnActionTest extends AbstractCwtTest {
     expect().cursorAt(0, 0);
 
     assertThat(action.condition(uiData)).is(true);
+
+    ActionData data = new ActionData();
+    action.fillData(uiData, data);
+
+    assertThat(data.p1).is(Constants.INACTIVE);
+    assertThat(data.p2).is(Constants.INACTIVE);
+    assertThat(data.p3).is(Constants.INACTIVE);
+    assertThat(data.p4).is(Constants.INACTIVE);
+    assertThat(data.p5).is(Constants.INACTIVE);
+
+    action.evaluateByData(0, data);
   }
 
   public void testClickOnUnit() {

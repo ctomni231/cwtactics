@@ -9,10 +9,10 @@ import org.wolftec.cwt.system.Nullable;
 
 public class DataLoadingManager implements GameLoader {
 
-  private static final String   DATA_FILE = "system/grabbedData";
+  private static final String DATA_FILE = "system/grabbedData";
 
-  private Log                   log;
-  private PersistenceManager    storage;
+  private Log                log;
+  private PersistenceManager storage;
 
   private Array<DataLoader>     loaders;
   private Array<LoadingWatcher> watchers;
@@ -46,7 +46,7 @@ public class DataLoadingManager implements GameLoader {
       if (Nullable.isPresent(data)) {
         ListUtil.forEachArrayValueAsync((Array<String>) data, (findex, file, fnext) -> {
           downloadFolderFile(loader, path, file, fnext);
-        }, next);
+        } , next);
 
       } else {
         /* TODO remove this by error handling */
@@ -84,7 +84,7 @@ public class DataLoadingManager implements GameLoader {
         } else {
           fnext.$invoke();
         }
-      }, next);
+      } , next);
     });
   }
 
