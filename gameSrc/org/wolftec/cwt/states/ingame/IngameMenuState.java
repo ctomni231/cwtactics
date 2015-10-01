@@ -45,7 +45,7 @@ public class IngameMenuState extends AbstractIngameState {
     }
 
     if (data.getNumberOfInfos() == 0) {
-      errors.raiseError("NoUnitActionAvailable", ClassUtil.getClassName(IngameMenuState.class));
+      errors.raiseError("NoActionAvailable", ClassUtil.getClassName(IngameMenuState.class));
     }
   }
 

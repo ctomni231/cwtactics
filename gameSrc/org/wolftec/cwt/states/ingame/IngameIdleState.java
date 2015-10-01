@@ -21,6 +21,7 @@ public class IngameIdleState extends AbstractIngameState {
     data.source.clean();
     data.target.clean();
     data.actionTarget.clean();
+    data.actor = model.turnOwner;
   }
 
   @Override

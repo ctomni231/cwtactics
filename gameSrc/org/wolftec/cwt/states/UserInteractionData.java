@@ -8,9 +8,12 @@ import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.model.PositionData;
 import org.wolftec.cwt.system.CircularBuffer;
+import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.MoveableMatrix;
 
 public class UserInteractionData implements Injectable, InformationList {
+
+  private Log log;
 
   private ActionManager actions;
 
@@ -21,6 +24,9 @@ public class UserInteractionData implements Injectable, InformationList {
   public PositionData actionTarget;
 
   public CircularBuffer<Integer> movePath;
+
+  public CircularBuffer<String> infos;
+  public int                    infoIndex;
 
   public String action;
   public int    actionCode;
@@ -42,25 +48,27 @@ public class UserInteractionData implements Injectable, InformationList {
     actionTarget = new PositionData();
 
     movePath = new CircularBuffer<>(Constants.MAX_SELECTION_RANGE);
+    infos = new CircularBuffer<>(50);
 
     targets = new MoveableMatrix(Constants.MAX_SELECTION_RANGE);
   }
 
   @Override
   public void addInfo(String key, boolean flag) {
-    // TODO Auto-generated method stub
-
+    infos.push(key);
+    log.info("added user action [" + key + "]");
   }
 
   @Override
   public void cleanInfos() {
-    // TODO Auto-generated method stub
+    infos.clear();
+    infoIndex = 0;
+    log.info("cleaned user actions");
   }
 
   @Override
   public int getNumberOfInfos() {
-    // TODO Auto-generated method stub
-    return 0;
+    return infos.getSize();
   }
 
   public Action getAction() {
@@ -69,26 +77,30 @@ public class UserInteractionData implements Injectable, InformationList {
 
   @Override
   public void increaseIndex() {
-    // TODO Auto-generated method stub
-
+    infoIndex++;
+    if (infoIndex == getNumberOfInfos()) {
+      infoIndex = 0;
+    }
+    log.info("current selected user action [" + getInfo() + "]");
   }
 
   @Override
   public void decreaseIndex() {
-    // TODO Auto-generated method stub
-
+    infoIndex--;
+    if (infoIndex < 0) {
+      infoIndex = getNumberOfInfos() - 1;
+    }
+    log.info("current selected user action [" + getInfo() + "]");
   }
 
   @Override
   public String getInfo() {
-    // TODO Auto-generated method stub
-    return null;
+    return infos.get(infoIndex);
   }
 
   @Override
   public String getInfoAtIndex(int index) {
-    // TODO Auto-generated method stub
-    return null;
+    return infos.get(index);
   }
 
   //

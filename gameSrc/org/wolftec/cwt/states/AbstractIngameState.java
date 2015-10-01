@@ -2,8 +2,11 @@ package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.system.Log;
 
 public class AbstractIngameState extends AbstractState {
+
+  protected Log log;
 
   protected ActionManager       actions;
   protected UserInteractionData uiData;
@@ -53,6 +56,7 @@ public class AbstractIngameState extends AbstractState {
     if (uiData.cursorY < 0) {
       uiData.cursorY = 0;
     }
+    handleUpdatedCursor();
   }
 
   public void handleButtonDown(StateTransition transition, int delta) {
@@ -61,6 +65,15 @@ public class AbstractIngameState extends AbstractState {
     // if (uiData.cursorY >= ) {
     // uiData.cursorY = 0;
     // }
+    handleUpdatedCursor();
+  }
+
+  public void handleButtonRight(StateTransition transition, int delta) {
+    uiData.cursorX++;
+    // TODO
+    // if (uiData.cursorX >= ) {
+    // }
+    handleUpdatedCursor();
   }
 
   public void handleButtonLeft(StateTransition transition, int delta) {
@@ -68,9 +81,11 @@ public class AbstractIngameState extends AbstractState {
     if (uiData.cursorX < 0) {
       uiData.cursorX = 0;
     }
+    handleUpdatedCursor();
   }
 
-  public void handleButtonRight(StateTransition transition, int delta) {
+  protected void handleUpdatedCursor() {
+    log.info("updated cursor position [" + uiData.cursorX + ", " + uiData.cursorY + "]");
   }
 
   public void handleButtonA(StateTransition transition, int delta) {

@@ -54,7 +54,9 @@ public class InputManager implements Injectable, InputProvider {
       if (action != null) {
         actionState.$put(action, Option.ofNullable(actionState.$get(action)).orElse(0) + (status ? 1 : -1));
         if (actionState.$get(action) < 0) {
-          JsUtil.throwError("IllegalActionState: negative action counter detected");
+          // JsUtil.throwError("IllegalActionState: negative action counter
+          // detected");
+          actionState.$put(action, 0);
         }
       }
     }
