@@ -3,6 +3,7 @@ Real Commanding Officers Icon Completion
 * [x] Andy (AW1)
 * [x] Sami (AW1)
 * [x] Max (AW1)
+* [x] Max (AW2)
 * [x] Nell (AW1)
 * [x] Hachi (AW2)
 * [x] Jake (AWDS)
@@ -10,8 +11,8 @@ Real Commanding Officers Icon Completion
 
 * [x] Olaf (AW1)
 * [x] Grit (AW1)
-* [ ] Colin (AW2)
-* [ ] Sasha (AWDS)
+* [x] Colin (AW2)
+* [x] Sasha (AWDS)
 
 * [x] Eagle (AW1)
 * [x] Drake (AW1)
