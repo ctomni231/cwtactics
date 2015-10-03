@@ -6,6 +6,7 @@ import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.FogLogic;
 import org.wolftec.cwt.network.NetworkManager;
 import org.wolftec.cwt.states.StateManager;
+import org.wolftec.cwt.states.StateTransition;
 
 public class NextTurn implements Action {
 
@@ -57,7 +58,7 @@ public class NextTurn implements Action {
   // }
 
   @Override
-  public void evaluateByData(int delta, ActionData data) {
+  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
 
     // // special variable for the first turn -> we need the turn start actions
     // after starting the game without

@@ -4,6 +4,7 @@ import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.ExplodeLogic;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class ExplodeUnit implements Action {
@@ -34,7 +35,7 @@ public class ExplodeUnit implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data) {
+  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
     explode.explode(data.p1, data.p2, data.p3, data.p4);
   }
 

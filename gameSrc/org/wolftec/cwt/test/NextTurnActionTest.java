@@ -23,7 +23,7 @@ public class NextTurnActionTest extends AbstractCwtTest {
     assertThat(data.p4).is(Constants.INACTIVE);
     assertThat(data.p5).is(Constants.INACTIVE);
 
-    action.evaluateByData(0, data);
+    action.evaluateByData(0, data, null);
   }
 
   public void testClickOnUnit() {

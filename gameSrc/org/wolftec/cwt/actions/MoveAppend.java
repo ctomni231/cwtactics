@@ -4,6 +4,7 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class MoveAppend implements Action {
@@ -30,7 +31,7 @@ public class MoveAppend implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data) {
+  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
     if (data.p1 != Constants.INACTIVE) moveDto.movePath.push(data.p1);
     if (data.p2 != Constants.INACTIVE) moveDto.movePath.push(data.p2);
     if (data.p3 != Constants.INACTIVE) moveDto.movePath.push(data.p3);

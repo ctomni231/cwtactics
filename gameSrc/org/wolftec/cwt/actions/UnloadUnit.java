@@ -12,6 +12,7 @@ import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Unit;
 import org.wolftec.cwt.sheets.MoveType;
 import org.wolftec.cwt.sheets.SheetManager;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class UnloadUnit implements Action {
@@ -94,7 +95,7 @@ public class UnloadUnit implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data) {
+  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
     Unit load = model.getUnit(data.p2);
     Unit transporter = model.getUnit(data.p1);
 

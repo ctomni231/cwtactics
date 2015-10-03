@@ -1,5 +1,6 @@
 package org.wolftec.cwt.config;
 
+import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.save.AppHandler;
 import org.wolftec.cwt.save.GameHandler;
@@ -10,16 +11,23 @@ public class ConfigLoader implements AppHandler<Map<String, Integer>>, GameHandl
 
   @Override
   public void onAppLoad(Map<String, Integer> data) {
-    data.$put("fastClickMode", options.fastClickMode.value);
-    data.$put("animatedTiles", options.animatedTiles.value);
-    data.$put("forceTouch", options.forceTouch.value);
+    // TODO extended data object with special API ?
+    if (JSObjectAdapter.hasOwnProperty(data, "fastClickMode")) {
+      options.fastClickMode.setValue(data.$get("fastClickMode"));
+    }
+    if (JSObjectAdapter.hasOwnProperty(data, "animatedTiles")) {
+      options.animatedTiles.setValue(data.$get("animatedTiles"));
+    }
+    if (JSObjectAdapter.hasOwnProperty(data, "forceTouch")) {
+      options.forceTouch.setValue(data.$get("forceTouch"));
+    }
   }
 
   @Override
   public void onAppSave(Map<String, Integer> data) {
-    options.fastClickMode.setValue(data.$get("fastClickMode"));
-    options.animatedTiles.setValue(data.$get("animatedTiles"));
-    options.forceTouch.setValue(data.$get("forceTouch"));
+    data.$put("fastClickMode", options.fastClickMode.value);
+    data.$put("animatedTiles", options.animatedTiles.value);
+    data.$put("forceTouch", options.forceTouch.value);
   }
 
   @Override

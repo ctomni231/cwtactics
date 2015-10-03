@@ -4,6 +4,7 @@ import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.renderer.GraphicManager;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.system.Log;
 
 public class TestAction implements Action {
@@ -16,7 +17,7 @@ public class TestAction implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data) {
+  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
     log.info("DATA P5:" + data.p5);
     data.p5++;
   }

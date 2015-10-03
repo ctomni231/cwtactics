@@ -3,6 +3,7 @@ package org.wolftec.cwt.actions;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
+import org.wolftec.cwt.states.StateTransition;
 
 public class AttackUnit implements Action {
 
@@ -17,7 +18,7 @@ public class AttackUnit implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data) {
+  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
     // TODO Auto-generated method stub
 
   }

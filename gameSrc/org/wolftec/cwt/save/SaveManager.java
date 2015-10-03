@@ -15,11 +15,11 @@ public class SaveManager implements GameLoader {
 
   private static final String CONFIG_APP_JSON = "config/app.json";
 
-  private Log                 log;
-  private PersistenceManager  pm;
+  private Log                log;
+  private PersistenceManager pm;
 
-  private Array<GameHandler>  gameHandlers;
-  private Array<AppHandler>   appHandlers;
+  private Array<GameHandler> gameHandlers;
+  private Array<AppHandler>  appHandlers;
 
   @Override
   public int priority() {
@@ -58,7 +58,7 @@ public class SaveManager implements GameLoader {
     Object data = JSObjectAdapter.$js("{}");
     ListUtil.forEachArrayValue(appHandlers, (index, appHandler) -> {
       Object handlerData = JSObjectAdapter.$js("{}");
-      appHandler.onAppSave(data);
+      appHandler.onAppSave(handlerData);
       JSObjectAdapter.$put(data, ClassUtil.getClassName(appHandler), handlerData);
     });
 
@@ -78,7 +78,7 @@ public class SaveManager implements GameLoader {
 
         ListUtil.forEachArrayValue(appHandlers, (index, appHandler) -> {
           Nullable.ifPresent(JSObjectAdapter.$get(data, ClassUtil.getClassName(appHandler)), (handlerData) -> {
-            appHandler.onAppLoad(data);
+            appHandler.onAppLoad(handlerData);
           });
         });
 

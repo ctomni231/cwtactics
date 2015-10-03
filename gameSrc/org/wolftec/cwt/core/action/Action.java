@@ -4,6 +4,7 @@ import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.PositionCheck;
 import org.wolftec.cwt.states.PositionUpdateMode;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.system.ClassUtil;
 
@@ -125,8 +126,11 @@ public interface Action extends Injectable {
 
   /**
    * Invokes the action with a given set of arguments.
+   * 
+   * @param stateTransition
+   *          TODO
    */
-  void evaluateByData(int delta, ActionData data);
+  void evaluateByData(int delta, ActionData data, StateTransition stateTransition);
 
   default boolean isDataEvaluationCompleted(ActionData data) {
     return true;

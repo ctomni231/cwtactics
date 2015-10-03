@@ -4,6 +4,7 @@ import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.states.StateManager;
+import org.wolftec.cwt.states.StateTransition;
 
 public class GoToOptions implements Action {
 
@@ -20,9 +21,13 @@ public class GoToOptions implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data) {
-    // stateData.fromIngameToOptions = true;
-    // state.changeState("MENU_OPTIONS");
+  public boolean noAutoWait() {
+    return true;
+  }
+
+  @Override
+  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
+    stateTransition.setTransitionTo("IngameOptionsMenuState");
   }
 
 }

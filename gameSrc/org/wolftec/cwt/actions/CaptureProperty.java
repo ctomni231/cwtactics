@@ -6,6 +6,7 @@ import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.CaptureLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.PositionCheck;
+import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class CaptureProperty implements Action {
@@ -40,7 +41,7 @@ public class CaptureProperty implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data) {
+  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
     capture.captureProperty(model.getProperty(data.p1), model.getUnit(data.p2));
   }
 

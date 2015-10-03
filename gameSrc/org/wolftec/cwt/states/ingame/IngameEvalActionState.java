@@ -45,7 +45,7 @@ public class IngameEvalActionState extends AbstractState {
   public void update(StateTransition transition, int delta, InputProvider input) {
     log.info("evaluate action data " + activeData.toString());
 
-    activeAction.evaluateByData(delta, activeData);
+    activeAction.evaluateByData(delta, activeData, transition);
 
     /*
      * the action decides when it's completely evaluated and rendered.
@@ -55,7 +55,18 @@ public class IngameEvalActionState extends AbstractState {
      */
     if (activeAction.isDataEvaluationCompleted(activeData)) {
       log.info("evaluation completed");
-      transition.setTransitionTo("IngameIdleState");
+
+      // actions may manipulate the active state so we go into Idle only if the
+      // actions does not set a custom target
+      if (!transition.getNextState().isPresent()) {
+        transition.setTransitionTo("IngameIdleState");
+      } else {
+
+        // check target state
+        if (!transition.getNextState().get().startsWith("Ingame")) {
+          errors.raiseError("cannot move into a non-ingame state here", "ActionEvaluation");
+        }
+      }
 
     } else {
       log.info("evaluation needs at least one more frame to complete");
