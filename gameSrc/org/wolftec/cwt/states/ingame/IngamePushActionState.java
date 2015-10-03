@@ -5,6 +5,7 @@ import org.wolftec.cwt.actions.MoveEnd;
 import org.wolftec.cwt.actions.MoveStart;
 import org.wolftec.cwt.actions.WaitUnit;
 import org.wolftec.cwt.core.action.Action;
+import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.logic.MoveLogic;
@@ -33,27 +34,39 @@ public class IngamePushActionState extends AbstractIngameState {
 
   @Override
   public void update(StateTransition transition, int delta, InputProvider input) {
-
-    boolean trapped = move.trapCheck(model, uiData.movePath, uiData.source, uiData.target);
+    boolean trapped = false;
 
     if (!uiData.movePath.isEmpty()) {
-      moveStartAction.fillData(uiData, actions.acquireData());
+      trapped = move.trapCheck(model, uiData.movePath, uiData.source, uiData.target);
 
-      moveAppendAction.fillData(uiData, actions.acquireData());
+      ActionData moveStart = actions.acquireData();
+      ActionData moveEnd = actions.acquireData();
+
+      moveStartAction.fillData(uiData, moveStart);
+      actions.localActionData(moveStartAction.key(), moveStart);
+
+      moveAppendAction.fillData(uiData, moveStart);
       while (!uiData.movePath.isEmpty()) {
-        moveAppendAction.fillData(uiData, actions.acquireData());
+        ActionData moveMedium = actions.acquireData();
+        moveAppendAction.fillData(uiData, moveMedium);
+        actions.localActionData(moveAppendAction.key(), moveMedium);
       }
 
-      moveEndAction.fillData(uiData, actions.acquireData());
+      moveEndAction.fillData(uiData, moveEnd);
+      actions.localActionData(moveEndAction.key(), moveEnd);
     }
 
     if (!trapped) {
       Action action = uiData.getAction();
 
-      action.fillData(uiData, actions.acquireData());
+      ActionData actionData = actions.acquireData();
+      action.fillData(uiData, actionData);
+      actions.localActionData(action.key(), actionData);
 
       if (!action.noAutoWait()) {
-        waitAction.fillData(uiData, actions.acquireData());
+        ActionData waitData = actions.acquireData();
+        waitAction.fillData(uiData, waitData);
+        actions.localActionData(waitAction.key(), waitData);
       }
 
       if (action.multiStepAction()) {
@@ -64,7 +77,9 @@ public class IngamePushActionState extends AbstractIngameState {
       }
 
     } else {
-      waitAction.fillData(uiData, actions.acquireData());
+      ActionData waitData = actions.acquireData();
+      waitAction.fillData(uiData, waitData);
+      actions.localActionData(waitAction.key(), waitData);
     }
   }
 }

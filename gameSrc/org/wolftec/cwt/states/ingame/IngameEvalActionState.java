@@ -8,12 +8,15 @@ import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.system.Log;
 
 /**
  * The action evaluation state evaluates an action with the first data entry
  * from the action manager.
  */
 public class IngameEvalActionState extends AbstractState {
+
+  private Log log;
 
   private ErrorManager  errors;
   private ActionManager actions;
@@ -40,6 +43,8 @@ public class IngameEvalActionState extends AbstractState {
 
   @Override
   public void update(StateTransition transition, int delta, InputProvider input) {
+    log.info("evaluate action data " + activeData.toString());
+
     activeAction.evaluateByData(delta, activeData);
 
     /*
@@ -49,7 +54,11 @@ public class IngameEvalActionState extends AbstractState {
      * the action evaluation isn't completed.
      */
     if (activeAction.isDataEvaluationCompleted(activeData)) {
-      transition.setTransitionTo(transition.getPreviousState().get());
+      log.info("evaluation completed");
+      transition.setTransitionTo("IngameIdleState");
+
+    } else {
+      log.info("evaluation needs at least one more frame to complete");
     }
   }
 

@@ -154,6 +154,12 @@ public class ActionManager implements Injectable {
     insertLocalAction(key, p1, p2, p3, p4, p5, false);
   }
 
+  public void localActionData(String key, ActionData data) {
+    data.id = getActionId(key);
+    buffer.pushInFront(data);
+    log.info("pushed action " + data.toString() + " (" + key + ") into the stack");
+  }
+
   public void localActionLIFO(String key, int p1, int p2, int p3, int p4, int p5) {
     insertLocalAction(key, p1, p2, p3, p4, p5, true);
   }

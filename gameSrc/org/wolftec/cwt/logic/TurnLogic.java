@@ -45,6 +45,11 @@ public class TurnLogic implements Injectable {
         cPlayer.turnOwnerVisible = true;
       }
     }
+
+    model.forEachUnit((index, unit) -> {
+      boolean turnStarterObject = unit.owner == player;
+      unit.canAct = turnStarterObject ? true : false;
+    });
   }
 
   /**

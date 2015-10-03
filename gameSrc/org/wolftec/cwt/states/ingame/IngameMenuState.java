@@ -8,7 +8,6 @@ import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateTransition;
-import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
 
@@ -16,18 +15,17 @@ public class IngameMenuState extends AbstractIngameState {
 
   private Log log;
 
-  private UserInteractionData data;
-  private ErrorManager        errors;
-  private MoveLogic           move;
-  private ModelManager        model;
+  private ErrorManager errors;
+  private MoveLogic    move;
+  private ModelManager model;
 
   private Array<Action> actionList;
 
   @Override
   public void onEnter(StateTransition transition) {
-    data.cleanInfos();
+    uiData.cleanInfos();
 
-    boolean movableUnitAtSource = data.source.unit.isPresent() && data.source.unit.get().canAct && move.canMoveSomewhere(model, data.source);
+    boolean movableUnitAtSource = uiData.source.unit.isPresent() && uiData.source.unit.get().canAct && move.canMoveSomewhere(model, uiData.source);
 
     ActionType wantedType = ActionType.MAP_ACTION;
     if (movableUnitAtSource) {
@@ -39,12 +37,12 @@ public class IngameMenuState extends AbstractIngameState {
 
       if (action.type() == wantedType) {
         if (action.condition(uiData)) {
-          data.addInfo(action.key(), true);
+          uiData.addInfo(action.key(), true);
         }
       }
     }
 
-    if (data.getNumberOfInfos() == 0) {
+    if (uiData.getNumberOfInfos() == 0) {
       errors.raiseError("NoActionAvailable", ClassUtil.getClassName(IngameMenuState.class));
     }
   }
@@ -61,20 +59,30 @@ public class IngameMenuState extends AbstractIngameState {
 
   @Override
   public void handleButtonUp(StateTransition transition, int delta) {
-    data.decreaseIndex();
+    uiData.decreaseIndex();
   }
 
   @Override
   public void handleButtonDown(StateTransition transition, int delta) {
-    data.increaseIndex();
+    uiData.increaseIndex();
   }
 
   @Override
   public void handleButtonA(StateTransition transition, int delta) {
-    data.action = data.getInfo();
+    uiData.action = uiData.getInfo();
     log.warn("MISSING SET ACTION_ID HERE");
-    data.cleanInfos();
-    data.getAction().prepareActionMenu(data);
-    transition.setTransitionTo(data.getNumberOfInfos() > 0 ? "IngameSubMenuState" : "IngamePushActionState");
+
+    uiData.cleanInfos();
+    if (uiData.getAction().hasSubMenu()) {
+      uiData.getAction().prepareActionMenu(uiData);
+
+      if (uiData.getNumberOfInfos() == 0) {
+        errors.raiseError("NoActionAvailable", ClassUtil.getClassName(IngameMenuState.class));
+      }
+
+      transition.setTransitionTo("IngameSubMenuState");
+    } else {
+      transition.setTransitionTo("IngamePushActionState");
+    }
   }
 }

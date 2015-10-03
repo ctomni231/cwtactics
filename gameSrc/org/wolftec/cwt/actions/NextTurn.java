@@ -19,6 +19,11 @@ public class NextTurn implements Action {
   }
 
   @Override
+  public boolean noAutoWait() {
+    return true;
+  }
+
+  @Override
   public ActionType type() {
     return ActionType.MAP_ACTION;
   }

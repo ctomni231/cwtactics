@@ -3,6 +3,7 @@ package org.wolftec.cwt.states.ingame;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.logic.TurnLogic;
 import org.wolftec.cwt.model.GameMode;
 import org.wolftec.cwt.model.MapData;
 import org.wolftec.cwt.model.MapManager;
@@ -23,6 +24,8 @@ public class IngameEnterState extends AbstractState {
   private MapManager          maps;
   private ErrorManager        error;
   private UserInteractionData uiData;
+
+  private TurnLogic turnLogic;
 
   private UiDataMapConfiguration mapData;
 
@@ -57,7 +60,7 @@ public class IngameEnterState extends AbstractState {
   }
 
   private void prepareModel(UiDataMapConfiguration data) {
-
+    turnLogic.startsTurn(model.turnOwner);
   }
 
   private void cleanModel(MapData mapData) {
