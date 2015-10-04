@@ -85,6 +85,7 @@ List of pretty much every sprite you'd ever need for reference.
 
 * [ ] *SIEG* - Siege Cannon (CO Grit)
 * [ ] *LGTK* - Logistic Truck (CO Sasha)
+* [ ] *PTSN* - Partisan (CO Colin)
 
 ### Yellow Comet
 

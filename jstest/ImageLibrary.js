@@ -31,6 +31,11 @@ function copy(){
 // The top will deprecate as I figure out more about the system
 // Now I need to play around with getting the pixels
 
+// http://www.w3schools.com/tags/ev_onload.asp
+// It looks like the only way to do it in JavaScript is to create a chain of triggers
+// It'll be messy, but if we do it just right, we may be able to create a domino effect
+// that loads the images.
+
 function store(){
 
 	//This grabs an image and temporarily stores it in memory
@@ -43,6 +48,64 @@ function store(){
 	imgStorage.setAttribute("src", text);
 	imgStorage.setAttribute("style", "display:none");
 	
+	//Man is this ugly, but it is so JavaScript...
+	imgStorage.onload = function(){
+		
+		//This makes a canvas storage module for the image
+		var canvas = document.getElementById("store");
+		if(canvas == null){
+			canvas = document.createElement("canvas");
+			document.body.appendChild(canvas);
+		}
+		canvas.setAttribute("id", "store");
+		canvas.setAttribute("width", imgStorage.width);
+		canvas.setAttribute("height", imgStorage.height);
+		canvas.setAttribute("style", "display:none");
+	
+		console.log("("+imgStorage.width+","+imgStorage.height+")");
+	
+		//Attempt to draw something in the newly created canvas
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(imgStorage, 0, 0);
+	
+		//Get the pixels from the image
+		//Got tainted? From this point forward, you have to be in a server context...
+		//https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
+		var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+		
+		//Creates the buffer for storage
+		var buffer = new ArrayBuffer(imgData.data.length);
+		var view = new Uint8Array(buffer);
+		
+		//After we get all the pixels, then we have to create the buffer to store each pixel into.
+		//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
+		//The type we are trying to get is...
+		for(var i = 0; i < imgData.data.length; i++){
+			view[i] = imgData.data[i];
+			if(view[i] != 0)
+				console.log("Color "+i+": "+view[i]);
+		}
+		
+		//List of buffers (ArrayBuffer)
+		//List of buffer sizes (int)
+		//Do manipulations while pulling out of the buffer...
+		
+		//Make 4 different types of compression. 
+		//One for 1/2byte (4bit), one for 1 byte (8bit), 2 bytes (16bit), 4 bytes (32bit)
+		//multiply and add to get the values...
+	}
+}
+	
+//This function shouldn't be called directly...
+function pushToCanvas(){
+
+	//This grabs an image and temporarily stores it in memory
+	var imgStorage = document.getElementById("image");
+	if(imgStorage == null){
+		imgStorage = document.createElement("img");
+		document.body.appendChild(imgStorage);
+	}
+	
 	//This makes a canvas storage module for the image
 	var canvas = document.getElementById("store");
 	if(canvas == null){
@@ -54,14 +117,27 @@ function store(){
 	canvas.setAttribute("height", imgStorage.height);
 	canvas.setAttribute("style", "display:none");
 	
+	console.log("("+imgStorage.width+","+imgStorage.height+")");
+	
+	var canv = document.getElementById("store");
 	//Attempt to draw something in the newly created canvas
-	var ctx = canvas.getContext("2d");
+	var ctx = canv.getContext("2d");
 	ctx.drawImage(image, 0, 0);
 	
 	//Get the pixels from the image
 	var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-	for(var i = 0; i < imgData.data.length; i+=4){
-	}
+	
+	//Freezes until image is loaded... hopefully.
+	//while(imgData.data.length == 0);
+	
+	//Creates the buffer for storage
+	//var buffer = new ArrayBuffer(imgData.data.length);
+	//var view = new UInt8Array(buffer);
+	
+	//for(var i = 0; i < imgData.data.length; i++){
+	//	view[i] = imgData.data[i];
+	//	console.log("Entry "+i+" in the unsigned 8-bit array is now " + view[i]);	
+	//}
 	
 	//After we get all the pixels, then we have to create the buffer to store each pixel into.
 	//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
