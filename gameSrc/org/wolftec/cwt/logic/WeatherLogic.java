@@ -38,7 +38,7 @@ public class WeatherLogic implements Injectable {
   /**
    * Picks a random duration for a given weather type.
    */
-  public int pickRandomWeatherTime(Object type) {
+  public int pickRandomWeatherTime(String type) {
     WeatherType defWather = sheets.weathers.filterFirst((key, weather) -> weather.defaultWeather);
 
     return (type == defWather.ID) ? 1 : (options.weatherMinDays.value + NumberUtil.asInt(options.weatherRandomDays.value * Math.random()));

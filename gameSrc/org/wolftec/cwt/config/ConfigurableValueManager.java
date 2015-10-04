@@ -6,8 +6,11 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.ClassUtil;
+import org.wolftec.cwt.system.Log;
 
 public class ConfigurableValueManager implements Injectable {
+
+  private Log log;
 
   private Array<ConfigurationProvider> configHolders;
   private Array<ConfigurableValue>     configurableValues;
@@ -30,6 +33,8 @@ public class ConfigurableValueManager implements Injectable {
       ClassUtil.forEachClassProperty(ClassUtil.getClass(configHolder), (prop, defValue) -> {
         Object value = JSObjectAdapter.$get(configHolder, prop);
         if (value instanceof ConfigurableValue) {
+          log.info("adding config value " + prop);
+
           values.push((ConfigurableValue) value);
         }
       });

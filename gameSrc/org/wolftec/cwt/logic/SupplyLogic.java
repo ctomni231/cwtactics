@@ -13,10 +13,10 @@ public class SupplyLogic implements Injectable {
 
   /**
    * @param unit
-   * @return **true** if a given **unit** is a supplier, else **false**.
+   * @return
    */
   public boolean isSupplier(Unit unit) {
-    return Nullable.isPresent(unit.type.supply);
+    return unit.type.supply.supplier;
   }
 
   /**
@@ -46,9 +46,12 @@ public class SupplyLogic implements Injectable {
 
   /**
    * 
-   * @param {Unit} supplier
-   * @param {number} x
-   * @param {number} y
+   * @param {Unit}
+   *          supplier
+   * @param {number}
+   *          x
+   * @param {number}
+   *          y
    * @return **true** if a **supplier** unit can support a given tile at the
    *         position (**x**,**y**), else **false**.
    */
@@ -60,8 +63,10 @@ public class SupplyLogic implements Injectable {
   /**
    * Resupplies a unit at a given position.
    * 
-   * @param {number} x
-   * @param {number} y
+   * @param {number}
+   *          x
+   * @param {number}
+   *          y
    */
   public void refillSuppliesByPosition(int x, int y) {
     Unit unit = model.getTile(x, y).unit;
@@ -71,7 +76,8 @@ public class SupplyLogic implements Injectable {
   /**
    * Refills the supplies of an unit.
    * 
-   * @param {Unit} unit
+   * @param {Unit}
+   *          unit
    */
   public void refillSupplies(Unit unit) {
     unit.ammo = unit.type.ammo;
@@ -81,7 +87,8 @@ public class SupplyLogic implements Injectable {
   /**
    * Raises funds from a **property**.
    * 
-   * @param {Property} property
+   * @param {Property}
+   *          property
    */
   public void raiseFunds(Property property) {
     if (property.type.funds > 0) {
@@ -92,7 +99,8 @@ public class SupplyLogic implements Injectable {
   /**
    * Drains fuel of a **unit** if it has the ability of daily fuel usage.
    *
-   * @param {Unit} unit
+   * @param {Unit}
+   *          unit
    */
   public void drainFuel(Unit unit) {
     int value = unit.type.dailyFuelDrain;

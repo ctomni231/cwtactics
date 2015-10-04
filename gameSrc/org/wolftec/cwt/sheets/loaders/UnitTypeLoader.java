@@ -45,7 +45,7 @@ public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
 
       sheet.suicide.damage = read(subDataMap, "damage");
       sheet.suicide.range = read(subDataMap, "range");
-    }, () -> {
+    } , () -> {
       sheet.suicide.damage = 0;
       sheet.suicide.range = 0;
     });
@@ -58,14 +58,17 @@ public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
       sheet.attack.minrange = readNullable(subDataMap, "minrange", 1);
       sheet.attack.maxrange = readNullable(subDataMap, "maxrange", 1);
 
-    }, () -> {
+    } , () -> {
       sheet.attack.main_wp = JSCollections.$map();
       sheet.attack.sec_wp = JSCollections.$map();
       sheet.attack.minrange = 1;
       sheet.attack.maxrange = 1;
     });
 
-    Maybe.of(data.$get("supply")).ifPresent((subData) -> {
+    Maybe.of(data.$get("supply")).ifPresentOrElseDo((subData) -> {
+      sheet.supply.supplier = true;
+    } , () -> {
+      sheet.supply.supplier = false;
     });
   }
 }

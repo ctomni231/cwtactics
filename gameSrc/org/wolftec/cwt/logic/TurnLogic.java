@@ -6,8 +6,11 @@ import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Player;
+import org.wolftec.cwt.system.Log;
 
 public class TurnLogic implements Injectable {
+
+  private Log log;
 
   private OptionsManager options;
   private ModelManager   model;
@@ -17,6 +20,9 @@ public class TurnLogic implements Injectable {
    * @param player
    */
   public void startsTurn(Player player) {
+    model.turnOwner = player;
+
+    log.info("player " + player.id + " starts his turn");
 
     // Sets the new turn owner and also the client, if necessary
     if (player.clientControlled) {
@@ -55,9 +61,11 @@ public class TurnLogic implements Injectable {
   /**
    * Ends the turn for the current active turn owner.
    */
-  public void next() {
+  public void stopTurn() {
     int pid = model.turnOwner.id;
     int oid = pid;
+
+    log.info("player " + pid + " stops his turn");
 
     // Try to find next player from the player pool
     pid++;
@@ -79,7 +87,9 @@ public class TurnLogic implements Injectable {
       }
 
       // Found next player
-      if (model.getPlayer(pid).team != Constants.INACTIVE) break;
+      if (model.getPlayer(pid).team != Constants.INACTIVE) {
+        break;
+      }
 
       // Try next player
       pid++;
@@ -92,7 +102,6 @@ public class TurnLogic implements Injectable {
     }
 
     // Do end/start turn logic
-    model.turnOwner = model.getPlayer(pid);
-    startsTurn(model.turnOwner);
+    startsTurn(model.getPlayer(pid));
   }
 }

@@ -26,6 +26,7 @@ public class ChangeWeather implements Action {
 
   @Override
   public void fillData(UserInteractionData positionData, ActionData actionData) {
+    // TODO recognize current weather
     String weatherId = weather.pickRandomWeatherId();
     actionData.p1 = StringNumberConverter.toInt(weatherId);
     actionData.p2 = weather.pickRandomWeatherTime(weatherId);
