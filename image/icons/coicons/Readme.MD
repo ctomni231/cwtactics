@@ -16,8 +16,8 @@ Real Commanding Officers Icon Completion
 
 * [x] Eagle (AW1)
 * [x] Drake (AW1)
-* [ ] Jess (AW2)
-* [ ] Javier (AWDS)
+* [x] Jess (AW2)
+* [x] Javier (AWDS)
 
 * [x] Kanbei (AW1)
 * [x] Sonja (AW1)

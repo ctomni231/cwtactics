@@ -5,6 +5,9 @@ var x = 0;
 var y = 0;
 var counter = 0;
 var text = "CWT_MECH.png";
+var buffer;
+var lx = 0;
+var ly = 0;
 
 //The images have to be loaded within the function. I guess they can't load in time...
 //Let me try putting the images in head...
@@ -21,9 +24,9 @@ function copy(){
 	var unit = document.getElementById("unit");
 	ctx.drawImage(unit, 130, 30+y);
 	
-	var unit = document.getElementById("image");
-	if(unit != null)
-		ctx.drawImage(unit, 60, 30+y);
+	var image = document.getElementById("image");
+	if(image != null)
+		ctx.drawImage(image, 60, 30+y);
 				
 	y+= 10;
 }
@@ -38,6 +41,7 @@ function copy(){
 
 function store(){
 
+	y=0;
 	//This grabs an image and temporarily stores it in memory
 	var imgStorage = document.getElementById("image");
 	if(imgStorage == null){
@@ -74,7 +78,9 @@ function store(){
 		var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 		
 		//Creates the buffer for storage
-		var buffer = new ArrayBuffer(imgData.data.length);
+		lx = imgStorage.width;
+		ly = imgStorage.height;
+		buffer = new ArrayBuffer(imgData.data.length);
 		var view = new Uint8Array(buffer);
 		
 		//After we get all the pixels, then we have to create the buffer to store each pixel into.
@@ -93,6 +99,82 @@ function store(){
 		//Make 4 different types of compression. 
 		//One for 1/2byte (4bit), one for 1 byte (8bit), 2 bytes (16bit), 4 bytes (32bit)
 		//multiply and add to get the values...
+	}
+}
+
+function pull(){
+
+	//This makes a canvas storage module for the image
+	var canvas = document.getElementById("store");
+	if(canvas == null){
+		canvas = document.createElement("canvas");
+		document.body.appendChild(canvas);
+	}
+	canvas.setAttribute("id", "store");
+	if(buffer == null){
+		canvas.setAttribute("width", 100);
+		canvas.setAttribute("height", 100);
+	}else{
+		canvas.setAttribute("width", lx);
+		canvas.setAttribute("height", ly);
+	}
+	canvas.setAttribute("style", "display:none");
+	var ctx = canvas.getContext("2d");
+	
+	if(buffer == null){
+		var imgData = ctx.createImageData(100,100);
+		for (var i = 0; i < imgData.data.length; i += 4){
+			imgData.data[i+0]=255;
+			imgData.data[i+1]=0;
+			imgData.data[i+2]=0;
+			imgData.data[i+3]=100;
+		}
+		ctx.putImageData(imgData,0,0);
+	}else{
+		var imgData = ctx.createImageData(lx,ly);
+		var view = new Uint8Array(buffer);
+		
+		for (var i = 0; i < imgData.data.length; i++){
+			imgData.data[i] = view[i];
+		}
+		ctx.putImageData(imgData,0,0);
+	}
+	
+	//Reassigns it to the current canvas
+	var c = document.getElementById("myCanvas");
+	ctx = c.getContext("2d");
+
+	ctx.drawImage(canvas, 10, 10);
+	//Makes images bigger...
+	//ctx.drawImage(canvas, 10, 10, canvas.width, canvas.height, 0, 0, (canvas.width*2), (canvas.height*2));
+}
+
+// A function for pulling an image out of the buffer, and hopefully drawing it too.
+function pullWrong(){
+
+	var c=document.getElementById("myCanvas");
+	//Why does this default to false, it ruins my images...
+	var ctx=c.getContext("2d", { alpha: true });
+	ctx.globalCompositeOperation="lighter";
+		
+	if(buffer == null){
+		var imgData = ctx.createImageData(100,100);
+		for (var i = 0; i < imgData.data.length; i += 4){
+			imgData.data[i+0]=255;
+			imgData.data[i+1]=0;
+			imgData.data[i+2]=0;
+			imgData.data[i+3]=100;
+		}
+		ctx.putImageData(imgData,10,10);
+	}else{
+		var imgData = ctx.createImageData(lx,ly);
+		var view = new Uint8Array(buffer);
+		
+		for (var i = 0; i < imgData.data.length; i++){
+			imgData.data[i] = view[i];
+		}
+		ctx.putImageData(imgData,10,10);
+		//ctx.putImageData(imgData, 0, 0, 0, 0, (lx*5), (ly*5)); 
 	}
 }
 	
