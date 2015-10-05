@@ -5,7 +5,7 @@ import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.FogLogic;
 import org.wolftec.cwt.logic.WeatherLogic;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.system.StringNumberConverter;
 
@@ -33,7 +33,7 @@ public class ChangeWeather implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
+  public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
     weather.changeWeather(StringNumberConverter.toId(data.p1), data.p2);
     fog.fullRecalculation();
   }

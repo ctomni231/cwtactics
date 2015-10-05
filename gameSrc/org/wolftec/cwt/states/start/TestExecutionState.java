@@ -5,7 +5,7 @@ import org.wolftec.cwt.core.test.TestManager;
 import org.wolftec.cwt.core.test.TestManager.TestExecutionResults;
 import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.system.Log;
 
 public class TestExecutionState extends AbstractState {
@@ -14,7 +14,7 @@ public class TestExecutionState extends AbstractState {
   private TestManager manager;
 
   @Override
-  public void update(StateTransition transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputProvider input) {
     TestExecutionResults results = manager.callAllTests();
 
     log.info("");

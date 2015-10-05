@@ -1,12 +1,12 @@
 package org.wolftec.cwt.states.menu;
 
 import org.wolftec.cwt.states.AbstractMenuState;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 
 public class PlayerSetupMenuState extends AbstractMenuState {
 
   @Override
-  public void handleButtonA(StateTransition transition, int delta, String currentUiState) {
+  public void handleButtonA(StateFlowData transition, int delta, String currentUiState) {
     transition.setTransitionTo("ParameterSetupMenuState");
   }
 

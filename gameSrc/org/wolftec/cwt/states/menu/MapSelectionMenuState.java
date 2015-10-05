@@ -4,7 +4,7 @@ import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.model.MapManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 
 public class MapSelectionMenuState extends AbstractState {
 
@@ -18,7 +18,7 @@ public class MapSelectionMenuState extends AbstractState {
   }
 
   @Override
-  public void update(StateTransition transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputProvider input) {
 
     if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
       selectedMap--;

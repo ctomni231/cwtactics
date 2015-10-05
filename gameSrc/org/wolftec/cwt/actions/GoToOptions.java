@@ -4,7 +4,7 @@ import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 
 public class GoToOptions implements Action {
 
@@ -26,7 +26,7 @@ public class GoToOptions implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
+  public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
     stateTransition.setTransitionTo("IngameOptionsMenuState");
   }
 

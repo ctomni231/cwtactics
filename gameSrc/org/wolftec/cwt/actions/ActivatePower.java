@@ -5,7 +5,7 @@ import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.CommanderLogic;
 import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class ActivatePower implements Action {
@@ -49,7 +49,7 @@ public class ActivatePower implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
+  public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
     co.activatePower(model.getPlayer(data.p1), data.p2);
   }
 

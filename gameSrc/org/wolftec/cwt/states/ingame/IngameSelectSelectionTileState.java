@@ -2,7 +2,7 @@ package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class IngameSelectSelectionTileState extends AbstractIngameState {
@@ -11,17 +11,17 @@ public class IngameSelectSelectionTileState extends AbstractIngameState {
   private ModelManager        model;
 
   @Override
-  public void onEnter(StateTransition transition) {
+  public void onEnter(StateFlowData transition) {
     data.actionTarget.clean();
   }
 
   @Override
-  public void onExit(StateTransition transition) {
+  public void onExit(StateFlowData transition) {
     data.targets.reset();
   }
 
   @Override
-  public void handleButtonA(StateTransition transition, int delta) {
+  public void handleButtonA(StateFlowData transition, int delta) {
     if (data.targets.getValue(data.cursorX, data.cursorY) >= 0) {
       data.actionTarget.set(model, data.cursorX, data.cursorY);
       transition.setTransitionTo("IngamePushActionState");

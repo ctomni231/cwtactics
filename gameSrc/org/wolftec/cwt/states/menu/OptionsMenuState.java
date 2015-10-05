@@ -6,7 +6,7 @@ import org.wolftec.cwt.audio.AudioManager;
 import org.wolftec.cwt.save.SaveManager;
 import org.wolftec.cwt.states.AbstractMenuState;
 import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 
 public class OptionsMenuState extends AbstractMenuState {
 
@@ -65,12 +65,12 @@ public class OptionsMenuState extends AbstractMenuState {
   }
 
   @Override
-  public void onEnter(StateTransition transition) {
+  public void onEnter(StateFlowData transition) {
     ui.setState(UIC_DECREASE_SFX);
   }
 
   @Override
-  public void handleButtonA(StateTransition transition, int delta, String currentUiState) {
+  public void handleButtonA(StateFlowData transition, int delta, String currentUiState) {
 
     switch (currentUiState) {
 

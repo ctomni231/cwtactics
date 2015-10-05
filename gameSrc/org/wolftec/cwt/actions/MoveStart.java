@@ -3,7 +3,7 @@ package org.wolftec.cwt.actions;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class MoveStart implements Action {
@@ -28,7 +28,7 @@ public class MoveStart implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
+  public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
     moveDto.movePath.clear();
     moveDto.unitId = data.p1;
     moveDto.x = data.p2;

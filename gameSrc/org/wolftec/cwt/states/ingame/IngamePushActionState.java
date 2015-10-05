@@ -11,7 +11,7 @@ import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 /**
@@ -33,7 +33,7 @@ public class IngamePushActionState extends AbstractIngameState {
   private WaitUnit   waitAction;
 
   @Override
-  public void update(StateTransition transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputProvider input) {
     boolean trapped = false;
 
     if (!uiData.movePath.isEmpty()) {

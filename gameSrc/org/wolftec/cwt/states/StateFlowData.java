@@ -6,10 +6,17 @@ import org.wolftec.cwt.system.Option;
 /**
  * 
  */
-public class StateTransition {
+public class StateFlowData {
 
-  private Option<String> previousState;
-  private Option<String> nextState;
+  private Option<String>  previousState;
+  private Option<String>  nextState;
+  private Option<Integer> blockInputRequest;
+
+  public StateFlowData() {
+    previousState = Option.empty();
+    nextState = Option.empty();
+    blockInputRequest = Option.empty();
+  }
 
   /**
    * 
@@ -44,6 +51,21 @@ public class StateTransition {
    */
   public Option<String> getPreviousState() {
     return previousState;
+  }
+
+  public void flushInputBlockRequest() {
+    blockInputRequest = Option.empty();
+  }
+
+  public void requestInputBlock(int time) {
+    if (time <= 0) {
+      JsUtil.throwError("IllegalArgument: negative time");
+    }
+    blockInputRequest = Option.of(time);
+  }
+
+  public Option<Integer> getInputBlockRequest() {
+    return blockInputRequest;
   }
 
 }

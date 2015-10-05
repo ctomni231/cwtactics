@@ -8,7 +8,7 @@ public class StateManager implements Injectable {
 
   private Log log;
 
-  private StateTransition transition;
+  private StateFlowData transition;
 
   /**
    * Holds all registered game states.
@@ -22,7 +22,7 @@ public class StateManager implements Injectable {
 
   @Override
   public void onConstruction() {
-    transition = new StateTransition();
+    transition = new StateFlowData();
   }
 
   public String getActiveStateId() {

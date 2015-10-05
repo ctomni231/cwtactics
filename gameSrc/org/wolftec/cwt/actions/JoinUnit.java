@@ -6,7 +6,7 @@ import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.JoinLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.PositionCheck;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class JoinUnit implements Action {
@@ -47,7 +47,7 @@ public class JoinUnit implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
+  public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
     join.join(model.getUnit(data.p1), data.p2, data.p3);
   }
 

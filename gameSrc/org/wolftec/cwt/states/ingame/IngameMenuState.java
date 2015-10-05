@@ -7,7 +7,7 @@ import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
 
@@ -22,7 +22,7 @@ public class IngameMenuState extends AbstractIngameState {
   private Array<Action> actionList;
 
   @Override
-  public void onEnter(StateTransition transition) {
+  public void onEnter(StateFlowData transition) {
     uiData.cleanInfos();
 
     boolean movableUnitAtSource = uiData.source.unit.isPresent() && uiData.source.unit.get().canAct && move.canMoveSomewhere(model, uiData.source);
@@ -48,27 +48,27 @@ public class IngameMenuState extends AbstractIngameState {
   }
 
   @Override
-  public void handleButtonLeft(StateTransition transition, int delta) {
+  public void handleButtonLeft(StateFlowData transition, int delta) {
     // do nothing to block cursor movement
   }
 
   @Override
-  public void handleButtonRight(StateTransition transition, int delta) {
+  public void handleButtonRight(StateFlowData transition, int delta) {
     // do nothing to block cursor movement
   }
 
   @Override
-  public void handleButtonUp(StateTransition transition, int delta) {
+  public void handleButtonUp(StateFlowData transition, int delta) {
     uiData.decreaseIndex();
   }
 
   @Override
-  public void handleButtonDown(StateTransition transition, int delta) {
+  public void handleButtonDown(StateFlowData transition, int delta) {
     uiData.increaseIndex();
   }
 
   @Override
-  public void handleButtonA(StateTransition transition, int delta) {
+  public void handleButtonA(StateFlowData transition, int delta) {
     uiData.action = uiData.getInfo();
     log.warn("MISSING SET ACTION_ID HERE");
 

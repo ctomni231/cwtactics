@@ -12,7 +12,7 @@ import org.wolftec.cwt.model.ModelResetter;
 import org.wolftec.cwt.model.Property;
 import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UiDataMapConfiguration;
 import org.wolftec.cwt.states.UserInteractionData;
 
@@ -32,7 +32,7 @@ public class IngameEnterState extends AbstractState {
   private boolean loaded;
 
   @Override
-  public void onEnter(StateTransition transition) {
+  public void onEnter(StateFlowData transition) {
     loaded = false;
     // TODO
     mapData.selectedMap = "testmap.json";
@@ -53,7 +53,7 @@ public class IngameEnterState extends AbstractState {
   }
 
   @Override
-  public void update(StateTransition transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputProvider input) {
     if (loaded) {
       transition.setTransitionTo("IngameIdleState");
     }

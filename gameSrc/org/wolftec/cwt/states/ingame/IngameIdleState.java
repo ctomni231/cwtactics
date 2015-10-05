@@ -5,7 +5,7 @@ import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Unit;
 import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.system.Option;
 
@@ -17,7 +17,7 @@ public class IngameIdleState extends AbstractIngameState {
   private BattleLogic         battle;
 
   @Override
-  public void onEnter(StateTransition transition) {
+  public void onEnter(StateFlowData transition) {
     data.source.clean();
     data.target.clean();
     data.actionTarget.clean();
@@ -25,7 +25,7 @@ public class IngameIdleState extends AbstractIngameState {
   }
 
   @Override
-  public void handleButtonA(StateTransition transition, int delta) {
+  public void handleButtonA(StateFlowData transition, int delta) {
     data.source.set(model, data.cursorX, data.cursorY);
     data.target.set(model, data.cursorX, data.cursorY);
 
@@ -35,7 +35,7 @@ public class IngameIdleState extends AbstractIngameState {
   }
 
   @Override
-  public void handleButtonB(StateTransition transition, int delta) {
+  public void handleButtonB(StateFlowData transition, int delta) {
     data.source.set(model, data.cursorX, data.cursorY);
     Option<Unit> sourceUnit = data.source.unit;
     if (sourceUnit.isPresent() && (battle.hasMainWeapon(sourceUnit.get()) || battle.hasSecondaryWeapon(sourceUnit.get()))) {

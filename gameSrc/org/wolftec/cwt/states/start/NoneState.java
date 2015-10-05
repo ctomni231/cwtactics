@@ -7,7 +7,7 @@ import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.system.Log;
 
 public class NoneState extends AbstractState {
@@ -16,12 +16,12 @@ public class NoneState extends AbstractState {
   private InputManager input;
 
   @Override
-  public void onEnter(StateTransition transition) {
+  public void onEnter(StateFlowData transition) {
     setupDevKeys();
   }
 
   @Override
-  public void update(StateTransition transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputProvider input) {
     transition.setTransitionTo("LoadingState");
   }
 

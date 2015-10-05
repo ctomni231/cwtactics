@@ -6,7 +6,7 @@ import org.wolftec.cwt.core.test.TestManager;
 import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.UrlParameterUtil;
 
@@ -17,7 +17,7 @@ public class LoadingState extends AbstractState implements LoadingWatcher {
   private TestManager        tests;
 
   @Override
-  public void update(StateTransition transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputProvider input) {
     if (!loading.isStarted()) {
       loading.loadData(() -> {
         log.info("done");

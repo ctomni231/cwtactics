@@ -5,7 +5,7 @@ import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.HideLogic;
 import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class UnhideUnit implements Action {
@@ -29,7 +29,7 @@ public class UnhideUnit implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
+  public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
     hide.unhide(model.getUnit(data.p1));
   }
 

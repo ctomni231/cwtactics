@@ -6,7 +6,7 @@ import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Ownable;
 import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class IngameMovepathSelectionState extends AbstractIngameState {
@@ -52,7 +52,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState {
   }
 
   @Override
-  public void onEnter(StateTransition transition) {
+  public void onEnter(StateFlowData transition) {
 
     /*
      * when we do back steps in the game flow then we don't want to recreate an
@@ -83,19 +83,19 @@ public class IngameMovepathSelectionState extends AbstractIngameState {
   }
 
   @Override
-  public void onExit(StateTransition transition) {
+  public void onExit(StateFlowData transition) {
     data.targets.reset();
   }
 
   @Override
-  public void handleButtonA(StateTransition transition, int delta) {
+  public void handleButtonA(StateFlowData transition, int delta) {
     if (model.getDistance(data.cursorX, data.cursorY, data.target.x, data.target.y) == 0 || options.fastClickMode.value == 1) {
       transition.setTransitionTo("IngameMenuState");
     }
   }
 
   @Override
-  public void update(StateTransition transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputProvider input) {
     updateMovepath();
   }
 }

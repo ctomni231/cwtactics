@@ -1,5 +1,6 @@
 package org.wolftec.cwt.states;
 
+import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.system.Log;
 
@@ -9,41 +10,55 @@ public class AbstractMenuState extends AbstractState {
   protected UserInteractionMap ui;
 
   @Override
-  public void update(StateTransition transition, int delta, InputProvider input) {
+  public void update(StateFlowData flowData, int delta, InputProvider input) {
 
-    if (input.isActionPressed(GameActions.BUTTON_LEFT)) {
+    boolean isLeftPressed = input.isActionPressed(GameActions.BUTTON_LEFT);
+    boolean isRightPressed = input.isActionPressed(GameActions.BUTTON_RIGHT);
+    boolean isUpPressed = input.isActionPressed(GameActions.BUTTON_UP);
+    boolean isDownPressed = input.isActionPressed(GameActions.BUTTON_DOWN);
+    boolean isBPressed = input.isActionPressed(GameActions.BUTTON_B);
+    boolean isAPressed = input.isActionPressed(GameActions.BUTTON_A);
+
+    boolean isAtLeastOneDPadButtonPressed = (isDownPressed || isRightPressed || isLeftPressed || isUpPressed);
+    boolean isAtLeastOneButtonPressed = (isAtLeastOneDPadButtonPressed || isAPressed || isBPressed);
+
+    if (isAtLeastOneButtonPressed) {
+      flowData.requestInputBlock(Constants.MENU_INPUT_BLOCK_TIME);
+    }
+
+    if (isLeftPressed) {
       ui.event(GameActions.BUTTON_LEFT);
     }
 
-    if (input.isActionPressed(GameActions.BUTTON_RIGHT)) {
+    if (isRightPressed) {
       ui.event(GameActions.BUTTON_RIGHT);
     }
 
-    if (input.isActionPressed(GameActions.BUTTON_UP)) {
+    if (isUpPressed) {
+      flowData.requestInputBlock(Constants.MENU_INPUT_BLOCK_TIME);
       ui.event(GameActions.BUTTON_UP);
     }
 
-    if (input.isActionPressed(GameActions.BUTTON_DOWN)) {
+    if (isDownPressed) {
       ui.event(GameActions.BUTTON_DOWN);
     }
 
-    if (input.isActionPressed(GameActions.BUTTON_LEFT) || input.isActionPressed(GameActions.BUTTON_RIGHT) || input.isActionPressed(GameActions.BUTTON_DOWN)
-        || input.isActionPressed(GameActions.BUTTON_UP)) {
+    if (isAtLeastOneDPadButtonPressed) {
       log.info("current ui state is " + ui.getState());
     }
 
-    if (input.isActionPressed(GameActions.BUTTON_A)) {
-      handleButtonA(transition, delta, ui.getState());
+    if (isAPressed) {
+      handleButtonA(flowData, delta, ui.getState());
     }
 
-    if (input.isActionPressed(GameActions.BUTTON_B)) {
-      handleButtonB(transition, delta, ui.getState());
+    if (isBPressed) {
+      handleButtonB(flowData, delta, ui.getState());
     }
   }
 
-  public void handleButtonA(StateTransition transition, int delta, String currentUiState) {
+  public void handleButtonA(StateFlowData transition, int delta, String currentUiState) {
   }
 
-  public void handleButtonB(StateTransition transition, int delta, String currentUiState) {
+  public void handleButtonB(StateFlowData transition, int delta, String currentUiState) {
   }
 }

@@ -7,7 +7,7 @@ import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.system.Log;
 
 /**
@@ -25,7 +25,7 @@ public class IngameEvalActionState extends AbstractState {
   private ActionData activeData;
 
   @Override
-  public void onEnter(StateTransition transition) {
+  public void onEnter(StateFlowData transition) {
     if (!actions.hasData()) {
       errors.raiseError("no action data available", "ActionEval");
     }
@@ -35,14 +35,14 @@ public class IngameEvalActionState extends AbstractState {
   }
 
   @Override
-  public void onExit(StateTransition transition) {
+  public void onExit(StateFlowData transition) {
     actions.releaseData(activeData);
     activeData = null;
     activeAction = null;
   }
 
   @Override
-  public void update(StateTransition transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputProvider input) {
     log.info("evaluate action data " + activeData.toString());
 
     activeAction.evaluateByData(delta, activeData, transition);

@@ -4,7 +4,7 @@ import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.environment.ResetSystem;
 import org.wolftec.cwt.states.AbstractMenuState;
 import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 
 public class WipeoutConfirmMenuState extends AbstractMenuState {
 
@@ -20,12 +20,12 @@ public class WipeoutConfirmMenuState extends AbstractMenuState {
   }
 
   @Override
-  public void onEnter(StateTransition transition) {
+  public void onEnter(StateFlowData transition) {
     ui.setState(UIC_NO);
   }
 
   @Override
-  public void handleButtonA(StateTransition transition, int delta, String currentUiState) {
+  public void handleButtonA(StateFlowData transition, int delta, String currentUiState) {
 
     switch (currentUiState) {
 

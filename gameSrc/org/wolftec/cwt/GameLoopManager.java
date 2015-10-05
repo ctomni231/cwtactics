@@ -12,8 +12,8 @@ import org.wolftec.cwt.input.BlockedInputManager;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.states.StateTransition;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Option;
 
@@ -35,17 +35,17 @@ public class GameLoopManager implements Injectable {
 
   private Log log;
 
-  private StateTransition transitionData;
-  private boolean         active;
-  private int             blockInputTime;
-  private long            oldTime;
-  private Callback0       loopFunction;
+  private StateFlowData transitionData;
+  private boolean       active;
+  private int           blockInputTime;
+  private long          oldTime;
+  private Callback0     loopFunction;
 
   @Override
   public void onConstruction() {
     active = false;
 
-    transitionData = new StateTransition();
+    transitionData = new StateFlowData();
 
     /*
      * accessing the object with that is faster because loopFunction has not to
@@ -85,6 +85,11 @@ public class GameLoopManager implements Injectable {
 
     activeState.update(transitionData, delta, blockInputTime <= 0 ? inputMgr : nullInputMgr);
     activeState.render(delta, gfx);
+
+    if (transitionData.getInputBlockRequest().isPresent()) {
+      blockInputTime = transitionData.getInputBlockRequest().get();
+      transitionData.flushInputBlockRequest();
+    }
 
     Option<String> nextState = transitionData.getNextState();
     if (nextState.isPresent()) {

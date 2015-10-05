@@ -7,7 +7,7 @@ import org.wolftec.cwt.logic.TransportLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.PositionCheck;
 import org.wolftec.cwt.states.PositionUpdateMode;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class LoadUnit implements Action {
@@ -48,7 +48,7 @@ public class LoadUnit implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
+  public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
     transport.load(model.getUnit(data.p1), model.getUnit(data.p2));
   }
 }

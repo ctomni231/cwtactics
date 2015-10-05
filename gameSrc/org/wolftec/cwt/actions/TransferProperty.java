@@ -5,7 +5,7 @@ import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.TeamLogic;
 import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.states.StateTransition;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class TransferProperty implements Action {
@@ -45,7 +45,7 @@ public class TransferProperty implements Action {
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data, StateTransition stateTransition) {
+  public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
     team.transferPropertyToPlayer(model.getProperty(data.p1), model.getPlayer(data.p2));
   }
 

@@ -17,29 +17,29 @@ public class AbstractState implements Injectable {
    * @param transition
    *          transition data
    */
-  public void onExit(StateTransition transition) {
+  public void onExit(StateFlowData transition) {
 
   }
 
   /**
    * Called when the state will be entered.
    * 
-   * @param transition
+   * @param flowData
    *          transition data
    */
-  public void onEnter(StateTransition transition) {
+  public void onEnter(StateFlowData flowData) {
 
   }
 
   /**
    * Called at first in a new frame.
    * 
-   * @param transition
-   *          transition data
+   * @param flowData
+   *          state execution flow data
    * @param delta
    *          time since the last frame
    */
-  public void update(StateTransition transition, int delta, InputProvider input) {
+  public void update(StateFlowData flowData, int delta, InputProvider input) {
   }
 
   /**
