@@ -4,6 +4,7 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.jslix.ImageLibrary;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
@@ -38,6 +39,7 @@ public class NoneState extends AbstractState {
   @Override
   public void render(int delta, GraphicManager gfx) {
     CanvasRenderingContext2D ctx = gfx.mainCtx;
+    ImageLibrary.store("image/arrow.png");
 
     ctx.font = "24pt Arial";
 
