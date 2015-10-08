@@ -1,7 +1,7 @@
 {
   "cost": 1000,
   "range": 3,
-  "movetype": "MV_INFT",
+  "movetype": "MVIN",
   "vision": 2,
   "fuel": 99,
   "captures": 10,

@@ -2,7 +2,7 @@
   "ID": "RECN",
   "cost": 4000,
   "range": 8,
-  "movetype": "TIRE_A",
+  "movetype": "MVTA",
   "vision": 5,
   "fuel": 80,
   "ammo": 0,

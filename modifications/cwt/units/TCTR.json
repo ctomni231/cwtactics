@@ -2,7 +2,7 @@
   "cost": 5000,
   "range": 6,
   "copter": true,
-  "movetype": "COPTER",
+  "movetype": "MVCP",
   "vision": 2,
   "fuel": 99,
   "dailyFuelDrain": 2,

@@ -15,80 +15,80 @@ import org.wolftec.cwt.system.Functions;
 
 public class ModelManager implements Injectable {
 
-  private OptionsManager     options;
+  private OptionsManager options;
 
-  public Player              lastClientPlayer;
+  public Player lastClientPlayer;
 
   /**
    * The active weather type object.
    */
-  public WeatherType         weather;
+  public WeatherType weather;
 
   /**
    * The amount of days until the weather will be changed.
    */
-  public int                 weatherLeftDays;
+  public int weatherLeftDays;
 
   /**
    * The current active commanders mode.
    */
-  public GameMode            gameMode;
+  public GameMode gameMode;
 
   /**
    * The current active day.
    */
-  public int                 day;
+  public int day;
 
   /**
    * The current active turn owner. Only the turn owner can do actions.
    */
-  public Player              turnOwner;
+  public Player turnOwner;
 
   /**
    * Maximum turn time limit in ms.
    */
-  public int                 turnTimeLimit   = 0;
+  public int turnTimeLimit = 0;
 
   /**
    * Current elapsed turn time in ms.
    */
-  public int                 turnTimeElapsed = 0;
+  public int turnTimeElapsed = 0;
 
   /**
    * Maximum game time limit in ms.
    * 
    */
-  public int                 gameTimeLimit   = 0;
+  public int gameTimeLimit = 0;
 
   /**
    * Current elapsed game time in ms.
    */
-  public int                 gameTimeElapsed = 0;
+  public int gameTimeElapsed = 0;
 
-  public int                 mapWidth;
+  public int mapWidth;
 
-  public int                 mapHeight;
+  public int mapHeight;
 
   /**
    * All player objects of a game round. This buffer holds the maximum amount of
    * possible player objects. Inactive ones are marked by the inactive marker as
    * team value.
    */
-  private Array<Player>      players;
+  private Array<Player> players;
 
   /**
    * All unit objects of a game round. This buffer holds the maximum amount of
    * possible unit objects. Inactive ones are marked by no reference in the map
    * and with an owner value **null**.
    */
-  private Array<Unit>        units;
+  private Array<Unit> units;
 
   /**
    * All property objects of a game round. This buffer holds the maximum amount
    * of possible property objects. Inactive ones are marked by no reference in
    * the map.
    */
-  private Array<Property>    properties;
+  private Array<Property> properties;
 
   private Array<Array<Tile>> map;
 
@@ -217,8 +217,8 @@ public class ModelManager implements Injectable {
     return (day < options.daysOfPeace.value);
   }
 
-  public boolean isTurnOwnerObject(Ownable obj) {
-    return (obj != null && obj.getOwner() == turnOwner);
+  public boolean isTurnOwnerObject(Unit obj) {
+    return (obj != null && obj.owner == turnOwner);
   }
 
   /**

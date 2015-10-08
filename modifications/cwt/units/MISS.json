@@ -1,7 +1,7 @@
 {
   "cost": 12000,
   "range": 4,
-  "movetype": "TIRE_A",
+  "movetype": "MVTA",
   "vision": 5,
   "fuel": 50,
   "ammo": 6,

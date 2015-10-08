@@ -2,7 +2,9 @@ package org.wolftec.cwt.logic;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.GlobalScope;
+import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.JsUtil;
@@ -34,6 +36,8 @@ public class MoveLogic implements Injectable {
 
   @STJSBridge
   private static class Graph {
+
+    @Native
     Graph(Array<Array<Integer>> data) {
     }
 
@@ -179,7 +183,8 @@ public class MoveLogic implements Injectable {
     int cy = sty;
 
     // generate path by the a-star library
-    Graph graph = new Graph(selection.getDataArray());
+    Array<Array<Integer>> matrix = selection.getDataArray();
+    Graph graph = JSObjectAdapter.$js("new Graph(matrix)"); // TODO
     Node start = graph.nodes.$get(dsx).$get(dsy);
     Node end = graph.nodes.$get(dtx).$get(dty);
     Array<Node> path = Window.astar.search(graph.nodes, start, end);
@@ -208,7 +213,7 @@ public class MoveLogic implements Injectable {
    * @return
    */
   private boolean isGoBackCommand(Integer code, CircularBuffer<Integer> movePath) {
-    int lastCode = movePath.popLast();
+    int lastCode = movePath.getLast();
     int goBackCode = 0;
 
     // get go back code
@@ -255,6 +260,9 @@ public class MoveLogic implements Injectable {
       return true;
     }
 
+    int cx;
+    int cy;
+
     Tile source = model.getTile(sx, sy);
     Unit unit = source.unit;
     int points = unit.type.range;
@@ -269,19 +277,76 @@ public class MoveLogic implements Injectable {
     // add command to the move path list
     movePath.push(code);
 
+    int tx = sx;
+    int ty = sy;
+    for (int i = 0, e = movePath.getSize(); i < e; i++) {
+      switch (movePath.get(i)) {
+
+        case MOVE_CODES_UP:
+          ty--;
+          break;
+
+        case MOVE_CODES_LEFT:
+          tx--;
+          break;
+
+        case MOVE_CODES_DOWN:
+          ty++;
+          break;
+
+        case MOVE_CODES_RIGHT:
+          tx++;
+          break;
+      }
+    }
+
+    cx = sx;
+    cy = sy;
+    for (int i = 0, e = movePath.getSize() - 1; i < e; i++) {
+      switch (movePath.get(i)) {
+
+        case MOVE_CODES_UP:
+          cy--;
+          break;
+
+        case MOVE_CODES_LEFT:
+          cx--;
+          break;
+
+        case MOVE_CODES_DOWN:
+          cy++;
+          break;
+
+        case MOVE_CODES_RIGHT:
+          cx++;
+          break;
+      }
+
+      if (tx == cx && ty == cy) {
+        movePath.clearFromIndex(i + 1);
+        break;
+      }
+    }
+
     // calculate fuel consumption for the current move path
-    int cx = sx;
-    int cy = sy;
+    cx = sx;
+    cy = sy;
     int fuelUsed = 0;
     for (int i = 0, e = movePath.getSize(); i < e; i++) {
       switch (movePath.get(i)) {
 
         case MOVE_CODES_UP:
-        case MOVE_CODES_LEFT:
           cy--;
           break;
 
+        case MOVE_CODES_LEFT:
+          cx--;
+          break;
+
         case MOVE_CODES_DOWN:
+          cy++;
+          break;
+
         case MOVE_CODES_RIGHT:
           cx++;
           break;

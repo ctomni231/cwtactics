@@ -23,6 +23,7 @@ public class MoveableMatrix {
         data.$get(i).$set(j, 0);
       }
     }
+    this.sideLen = sideLength;
   }
 
   public int getCenterX() {
@@ -38,8 +39,8 @@ public class MoveableMatrix {
   }
 
   public void setCenter(int centerx, int centery, int defaultValue) {
-    this.centerX = Math.max(0, centerx - (sideLen - 1));
-    this.centerY = Math.max(0, centery - (sideLen - 1));
+    this.centerX = Math.max(0, centerx - (sideLen / 2));
+    this.centerY = Math.max(0, centery - (sideLen / 2));
     this.defaultValue = defaultValue;
 
     // clean data

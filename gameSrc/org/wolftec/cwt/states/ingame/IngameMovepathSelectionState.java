@@ -4,7 +4,6 @@ import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Ownable;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
@@ -41,7 +40,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState {
        */
       move.addCodeToMovePath(move.codeFromAtoB(ox, oy, x, y), data.movePath, data.targets, data.source.x, data.source.y);
 
-    } else {
+    } else if (dis > 1) {
 
       /*
        * Generate a complete new path because between the old tile and the new
@@ -64,7 +63,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState {
     }
 
     boolean breakMove = false;
-    if (model.isTurnOwnerObject(/* TODO */ (Ownable) data.source.unit) && data.source.unit.get().canAct) {
+    if (model.isTurnOwnerObject(data.source.unit.get()) && data.source.unit.get().canAct) {
       data.movePath.clear();
       move.fillMoveMap(data.source, data.targets);
 
@@ -95,7 +94,8 @@ public class IngameMovepathSelectionState extends AbstractIngameState {
   }
 
   @Override
-  public void update(StateFlowData transition, int delta, InputProvider input) {
+  public void update(StateFlowData flowData, int delta, InputProvider input) {
+    super.update(flowData, delta, input);
     updateMovepath();
   }
 }

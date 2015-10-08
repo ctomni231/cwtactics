@@ -1,7 +1,7 @@
 {
   "cost": 24000,
   "range": 6,
-  "movetype": "AIR",
+  "movetype": "MVAR",
   "vision": 4,
   "fuel": 60,
   "ammo": 6,

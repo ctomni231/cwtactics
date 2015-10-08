@@ -1,7 +1,7 @@
 {
   "cost": 3000,
   "range": 2,
-  "movetype": "MV_MECH",
+  "movetype": "MVME",
   "vision": 2,
   "fuel": 70,
   "captures": 10,

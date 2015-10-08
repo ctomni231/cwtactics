@@ -12,8 +12,8 @@ import org.wolftec.cwt.logic.TurnLogic;
 import org.wolftec.cwt.logic.WeatherLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.network.NetworkManager;
-import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class NextTurn implements Action, ConfigurationProvider {

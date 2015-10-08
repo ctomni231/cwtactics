@@ -1,7 +1,7 @@
 {
   "cost": 20000,
   "range": 5,
-  "movetype": "SHIP",
+  "movetype": "MVSP",
   "vision": 5,
   "fuel": 60,
   "stealth": true,

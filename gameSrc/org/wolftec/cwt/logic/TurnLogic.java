@@ -14,6 +14,7 @@ public class TurnLogic implements Injectable {
 
   private OptionsManager options;
   private ModelManager   model;
+  private FogLogic       fog;
 
   /**
    * 
@@ -56,6 +57,8 @@ public class TurnLogic implements Injectable {
       boolean turnStarterObject = unit.owner == player;
       unit.canAct = turnStarterObject ? true : false;
     });
+
+    fog.fullRecalculation();
   }
 
   /**

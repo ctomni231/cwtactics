@@ -14,10 +14,10 @@ public class CircularBuffer<T> {
 
   public static final int DEFAULT_SIZE = 32;
 
-  private int             index;
-  private int             size;
-  private Array<T>        data;
-  private int             maxSize;
+  private int      index;
+  private int      size;
+  private Array<T> data;
+  private int      maxSize;
 
   @SuppressWarnings("unchecked")
   public CircularBuffer(int lMaxSize) {
@@ -77,6 +77,10 @@ public class CircularBuffer<T> {
     return obj;
   }
 
+  public T getLast() {
+    return get(getSize() - 1);
+  }
+
   public T popLast() {
     if (this.size == 0) {
       JsUtil.throwError("buffer is empty");
@@ -125,9 +129,14 @@ public class CircularBuffer<T> {
   }
 
   public void clearFromIndex(int index) { // TODO this buffer is not good
+    if (index == 0) {
+      clear();
+      return;
+    }
     for (int i = index; i < getSize(); i++) {
       set(i, null);
     }
+    size = index;
   }
 
   /**

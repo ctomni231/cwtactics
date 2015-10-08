@@ -1,7 +1,7 @@
 {
   "cost": 16000,
   "range": 5,
-  "movetype": "TANK",
+  "movetype": "MVTK",
   "vision": 1,
   "fuel": 50,
   "ammo": 8,

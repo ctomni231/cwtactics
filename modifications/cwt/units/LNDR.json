@@ -1,7 +1,7 @@
 {
   "cost": 12000,
   "range": 6,
-  "movetype": "WATER_TRANSPORT",
+  "movetype": "MVWT",
   "vision": 1,
   "fuel": 99,
   "dailyFuelDrain": 1,

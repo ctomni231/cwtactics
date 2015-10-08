@@ -1,7 +1,7 @@
 {
   "cost": 28000,
   "range": 5,
-  "movetype": "SHIP",
+  "movetype": "MVSP",
   "vision": 2,
   "fuel": 99,
   "dailyFuelDrain": 1,

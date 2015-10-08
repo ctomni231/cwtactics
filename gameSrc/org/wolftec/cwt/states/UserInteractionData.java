@@ -5,6 +5,7 @@ import org.wolftec.cwt.core.InformationList;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.model.PositionData;
 import org.wolftec.cwt.system.CircularBuffer;
@@ -101,6 +102,64 @@ public class UserInteractionData implements Injectable, InformationList {
   @Override
   public String getInfoAtIndex(int index) {
     return infos.get(index);
+  }
+
+  public void printMoveMapToConsole() {
+    String result = "\n";
+    result += "Left Corner {" + targets.getCenterX() + "," + targets.getCenterY() + "} \n";
+    for (int y = 0; y < targets.getDataArray().$length(); y++) {
+      result += "[ ";
+      for (int x = 0; x < targets.getDataArray().$length(); x++) {
+        int value = targets.getValue(x, y);
+
+        if (value == Constants.INACTIVE) {
+          result += "##";
+        } else {
+          result += ((100 + value) + "").substring(1);
+        }
+
+        if (x < targets.getDataArray().$length() - 1) {
+          result += " - ";
+        }
+      }
+      result += " ]\n";
+    }
+    log.info(result);
+  }
+
+  public void printMoveArrayToConsole() {
+    String result = "\n";
+
+    result += "[ ";
+    for (int y = 0; y < movePath.getSize(); y++) {
+      switch (movePath.get(y)) {
+        case MoveLogic.MOVE_CODES_DOWN:
+          result += "D";
+          break;
+
+        case MoveLogic.MOVE_CODES_UP:
+          result += "U";
+          break;
+
+        case MoveLogic.MOVE_CODES_LEFT:
+          result += "L";
+          break;
+
+        case MoveLogic.MOVE_CODES_RIGHT:
+          result += "R";
+          break;
+
+        default:
+          break;
+      }
+
+      if (y < movePath.getSize() - 1) {
+        result += " - ";
+      }
+    }
+    result += " ]";
+
+    log.info(result);
   }
 
   //

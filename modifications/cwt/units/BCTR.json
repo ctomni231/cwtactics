@@ -1,7 +1,7 @@
 {
   "cost": 9000,
   "range": 6,
-  "movetype": "COPTER",
+  "movetype": "MVCP",
   "copter": true,
   "dailyFuelDrain": 2,
   "vision": 3,

@@ -1,7 +1,7 @@
 {
   "cost": 22000,
   "range": 7,
-  "movetype": "AIR",
+  "movetype": "MVAR",
   "dailyFuelDrain": 5,
   "vision": 3,
   "fuel": 99,
