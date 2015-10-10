@@ -9,6 +9,7 @@ import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.NumberUtil;
 import org.wolftec.cwt.system.Option;
 import org.wolftec.cwt.system.VersionUtil;
 
@@ -16,34 +17,34 @@ public class UpdateManager implements GameLoader {
 
   private static final String KEY_SYSTEM_VERSION = "system/version";
 
-  private PersistenceManager  pm;
-  private ErrorManager        error;
+  private PersistenceManager pm;
+  private ErrorManager       error;
 
-  private Log                 log;
-  private Array<Update>       updates;
+  private Log           log;
+  private Array<Update> updates;
 
   private void sortUpdaters() {
     updates.sort((a, b) -> {
       int aVers = VersionUtil.convertVersionToNumber(a.getUpdateVersion());
       int bVers = VersionUtil.convertVersionToNumber(b.getUpdateVersion());
-
-      if (aVers < bVers) {
-        return -1;
-      } else if (aVers > bVers) {
-        return +1;
-      } else {
-        return 0;
-      }
+      return NumberUtil.compare(aVers, bVers);
     });
   }
 
   private void doUpdate(Update update, Callback0 next) {
     log.info("doing update step for " + update.getUpdateVersion());
     log.info(update.getUpdateText());
-    update.doUpdate(() -> {
-      log.info("completed update step for " + update.getUpdateVersion());
+
+    try {
+      update.doUpdate(() -> {
+        log.info("completed update step for " + update.getUpdateVersion());
+        next.$invoke();
+      });
+
+    } catch (Exception e) {
+      error.raiseError("could not evaluate update for " + ClassUtil.getClassName(update), ClassUtil.getClassName(this));
       next.$invoke();
-    });
+    }
   }
 
   @Override
@@ -60,6 +61,10 @@ public class UpdateManager implements GameLoader {
      */
     VersionUtil.convertVersionToNumber(Constants.VERSION);
 
+    /*
+     * we have to sort the updates into fixed order to make sure that older
+     * updates (e.g. 1.x) will be evaluated before newer updates (e.g. 2.x).
+     */
     sortUpdaters();
 
     pm.getItem(KEY_SYSTEM_VERSION, (String err, Option<String> data) -> {
@@ -67,16 +72,11 @@ public class UpdateManager implements GameLoader {
 
       ListUtil.forEachArrayValueAsync(updates, (index, update, next) -> {
         if (currentVersion < VersionUtil.convertVersionToNumber(update.getUpdateVersion())) {
-          try {
-            doUpdate(update, next);
-          } catch (Exception e) {
-            error.raiseError("could not evaluate update for " + ClassUtil.getClassName(update), ClassUtil.getClassName(this));
-          }
+          doUpdate(update, next);
         } else {
           next.$invoke();
         }
-
-      }, () -> {
+      } , () -> {
         pm.set(KEY_SYSTEM_VERSION, Constants.VERSION, (sErr, sData) -> {
           doneCb.$invoke();
         });

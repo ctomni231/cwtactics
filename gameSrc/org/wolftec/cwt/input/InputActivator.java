@@ -2,11 +2,11 @@ package org.wolftec.cwt.input;
 
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.GameLoader;
+import org.wolftec.cwt.environment.Features;
 import org.wolftec.cwt.input.backends.KeyboardInput;
 import org.wolftec.cwt.input.backends.MouseInput;
 import org.wolftec.cwt.input.backends.TouchInput;
 import org.wolftec.cwt.input.backends.gamepad.GamepadInput;
-import org.wolftec.cwt.system.Features;
 import org.wolftec.cwt.system.Log;
 
 public class InputActivator implements GameLoader {

@@ -2,36 +2,81 @@ package org.wolftec.cwt.system;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
+import org.wolftec.cwt.core.JsUtil;
 
-public class NumberUtil {
+/**
+ * Some utility functions for handling numbers.
+ */
+public abstract class NumberUtil {
 
-  public static int compareInt(int a, int b) {
-    if (a < b) {
-      return -1;
-    } else if (a == b) {
-      return 0;
-    } else {
-      return +1;
-    }
-  }
-
+  /**
+   * 
+   * @param max
+   * @return a random integer from 0 to max (excluded)
+   */
   public static int getRandomInt(int max) {
     return JSGlobal.parseInt(((int) JSObjectAdapter.$js("Math.random()")) * max, 10);
   }
 
+  /**
+   * 
+   * @param value
+   * @return value as integer
+   */
   public static int asInt(Number value) {
     return JSGlobal.parseInt(value, 10);
   }
 
-  public static int stringAsInt(String value) {
-    return JSGlobal.parseInt(value, 10);
+  /**
+   * 
+   * @param value
+   * @param defValue
+   * @return value as integer or raises an error if not
+   */
+  public static int convertStringToInt(String value) {
+    Number number = JSGlobal.NaN;
+    try {
+      number = JSGlobal.parseInt(value, 10);
+    } catch (Exception e) {
+    }
+    if (number == JSGlobal.NaN) {
+      JsUtil.throwError("NotANumber");
+    }
+    return (int) number;
   }
 
-  public static int safeStringAsInt(String value, int defValue) {
+  /**
+   * 
+   * @param value
+   * @param defValue
+   * @return value as integer or defValue if value is not a number
+   */
+  public static int convertStringToIntOrDefault(String value, int defValue) {
+    Number number = defValue;
     try {
-      return JSGlobal.parseInt(value, 10);
+      number = JSGlobal.parseInt(value, 10);
     } catch (Exception e) {
-      return defValue;
+    }
+    return number != JSGlobal.NaN ? (int) number : defValue;
+  }
+
+  /**
+   * Compares two numbers and returns -1 (a is smaller than b), 0 (a is equal b)
+   * or +1 (a is greater than b).
+   * 
+   * @param a
+   * @param b
+   * @return
+   */
+  public static int compare(int a, int b) {
+    if (a < b) {
+      return -1;
+
+    } else if (a > b) {
+      return +1;
+
+    } else {
+      return 0;
     }
   }
 }

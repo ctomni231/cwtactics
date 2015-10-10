@@ -7,7 +7,7 @@ import org.wolftec.cwt.logic.FogLogic;
 import org.wolftec.cwt.logic.WeatherLogic;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.system.StringNumberConverter;
+import org.wolftec.cwt.system.SheetIdNumberConverter;
 
 public class ChangeWeather implements Action {
 
@@ -28,13 +28,13 @@ public class ChangeWeather implements Action {
   public void fillData(UserInteractionData positionData, ActionData actionData) {
     // TODO recognize current weather
     String weatherId = weather.pickRandomWeatherId();
-    actionData.p1 = StringNumberConverter.toInt(weatherId);
+    actionData.p1 = SheetIdNumberConverter.toNumber(weatherId);
     actionData.p2 = weather.pickRandomWeatherTime(weatherId);
   }
 
   @Override
   public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
-    weather.changeWeather(StringNumberConverter.toId(data.p1), data.p2);
+    weather.changeWeather(SheetIdNumberConverter.toId(data.p1), data.p2);
     fog.fullRecalculation();
   }
 

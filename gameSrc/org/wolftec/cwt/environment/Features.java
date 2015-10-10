@@ -1,4 +1,4 @@
-package org.wolftec.cwt.system;
+package org.wolftec.cwt.environment;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.STJSBridge;

@@ -3,6 +3,9 @@ package org.wolftec.cwt.update;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.ioc.Injectable;
 
+/**
+ * An update does several actions when the game updates to a newer version.
+ */
 public interface Update extends Injectable {
 
   /**

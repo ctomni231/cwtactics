@@ -2,7 +2,7 @@ package org.wolftec.cwt.system;
 
 import org.stjs.javascript.JSStringAdapter;
 
-public class StringUtil {
+public abstract class StringUtil {
 
   /**
    * 

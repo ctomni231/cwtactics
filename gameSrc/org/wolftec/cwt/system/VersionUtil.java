@@ -4,36 +4,72 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSStringAdapter;
 import org.wolftec.cwt.core.JsUtil;
 
-public class VersionUtil {
-  public static int convertVersionToNumber(String version) {
-    Array<String> parts = JSStringAdapter.split(version, ".");
+/**
+ * Version utility to manage version strings.
+ */
+public abstract class VersionUtil {
 
-    if (parts.$length() == 2) {
-      parts.push("0", "0");
+  private static int parseVersionNumber(String number) {
+    int code;
 
-    } else if (parts.$length() == 3) {
-      parts.push("0");
-
-    } else if (parts.$length() != 4) {
-      return JsUtil.throwError("IllegalVersionString: only x.y, x.y.z or x.y.z.w allowed");
+    code = NumberUtil.convertStringToInt(number);
+    if (code < 0 || code >= 100) {
+      JsUtil.throwError("IllegalVersionString: one version part has more than three numbers");
     }
-
-    int patchCode = NumberUtil.stringAsInt(parts.$get(3));
-    int buildCode = NumberUtil.stringAsInt(parts.$get(2));
-    int minorCode = NumberUtil.stringAsInt(parts.$get(1));
-    int majorCode = NumberUtil.stringAsInt(parts.$get(0));
-
-    if (majorCode < 0 || majorCode >= 100 || minorCode < 0 || minorCode >= 100 || buildCode < 0 || buildCode >= 100 || patchCode < 0 || patchCode >= 100) {
-      return JsUtil.throwError("IllegalVersionString: one version part has more than three numbers");
-    }
-
-    int code = 100000000;
-
-    code += patchCode;
-    code += 100 * buildCode;
-    code += 10000 * minorCode;
-    code += 1000000 * majorCode;
 
     return code;
+  }
+
+  /**
+   * 
+   * @param version
+   * @return unique numeric version of the version string
+   */
+  public static int convertVersionToNumber(String version) {
+    final int VERSION_CALC_PATCH = 1;
+    final int VERSION_CALC_BUILD = 100;
+    final int VERSION_CALC_MINOR = 10000;
+    final int VERSION_CALC_MAJOR = 1000000;
+    final int VERSION_CALC_BASE = 100000000;
+
+    Array<String> parts = parseVersionString(version);
+    int code = VERSION_CALC_BASE;
+
+    code += VERSION_CALC_PATCH * parseVersionNumber(parts.$get(3));
+    code += VERSION_CALC_BUILD * parseVersionNumber(parts.$get(2));
+    code += VERSION_CALC_MINOR * parseVersionNumber(parts.$get(1));
+    code += VERSION_CALC_MAJOR * parseVersionNumber(parts.$get(0));
+
+    return code;
+  }
+
+  /**
+   * 
+   * @param version
+   * @return version numbers as list
+   */
+  public static Array<String> parseVersionString(String version) {
+    Array<String> parts = JSStringAdapter.split(version, ".");
+
+    switch (parts.$length()) {
+
+      case 2:
+        parts.push("0", "0");
+        break;
+
+      case 3:
+        parts.push("0");
+        break;
+
+      case 4:
+        // perfect version string
+        break;
+
+      default:
+        JsUtil.throwError("IllegalVersionString: only x.y, x.y.z or x.y.z.w allowed");
+        break;
+    }
+
+    return parts;
   }
 }

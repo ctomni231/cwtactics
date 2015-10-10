@@ -117,23 +117,6 @@ public class Unit {
     return (cFuel <= NumberUtil.asInt(mFuel * 0.25));
   }
 
-  public boolean isCapturing() {
-    if (loadedIn != Constants.INACTIVE) {
-      return false;
-    }
-
-    return false;
-    /*
-     * if( unit.x >= 0 ){ var property = model.property_posMap[ unit.x ][ unit.y
-     * ]; if( property !== null && property.capturePoints < 20 ){
-     * unitStatus.CAPTURES = true; } else unitStatus.CAPTURES = false; }
-     */
-  }
-
-  public void setActable(boolean value) {
-    canAct = value;
-  }
-
   /**
    * Converts HP points to a health value.
    * 

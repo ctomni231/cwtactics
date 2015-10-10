@@ -7,7 +7,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.Map;
 
-public class UrlParameterUtil {
+public abstract class UrlParameterUtil {
 
   private static Map<String, String> urlParameters;
 
@@ -15,7 +15,7 @@ public class UrlParameterUtil {
    * 
    * @return a map with parameters
    */
-  public static Map<String, String> getUrlParameterMap() {
+  public static Map<String, String> getParameters() {
     if (urlParameters == null) {
       urlParameters = JSCollections.$map();
       Array<String> parts = JSStringAdapter.split(Global.window.document.location.search.substring(1), "&");
@@ -37,8 +37,8 @@ public class UrlParameterUtil {
    *          the parameter key
    * @return the value for the given parameter
    */
-  public static String getUrlParameter(String param) {
-    String value = getUrlParameterMap().$get(param);
+  public static String getParameter(String param) {
+    String value = getParameters().$get(param);
     return value != JSGlobal.undefined ? value : null;
   }
 }

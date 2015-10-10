@@ -8,12 +8,12 @@ import org.wolftec.cwt.core.DataLoader;
 import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.persistence.PersistenceManager;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 import org.wolftec.cwt.system.RequestUtil;
 
 public class MapManager implements DataLoader {
 
-  private PersistenceManager    pm;
+  private PersistenceManager pm;
 
   private Array<FileDescriptor> maps;
 
@@ -48,8 +48,8 @@ public class MapManager implements DataLoader {
   }
 
   @Override
-  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Maybe<Object>> doneCb) {
-    RequestUtil.getJSON(entryDesc.path, (response) -> doneCb.$invoke(Maybe.of(response.data.orElse(null))));
+  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Option<Object>> doneCb) {
+    RequestUtil.getJSON(entryDesc.path, (response) -> doneCb.$invoke(Option.of(response.data.orElse(null))));
   }
 
   @Override

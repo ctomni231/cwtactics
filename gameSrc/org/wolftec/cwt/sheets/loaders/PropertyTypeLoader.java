@@ -4,7 +4,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.sheets.PropertyType;
 import org.wolftec.cwt.sheets.SheetDatabase;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
 
@@ -25,12 +25,34 @@ public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
 
   @Override
   public void hydrate(Map<String, Object> data, PropertyType sheet) {
+
+    Map<String, Object> laserDataMap = Option.ofNullable((Map<String, Object>) data.$get("damage")).orElseGet(() -> {
+      Map<String, Object> map = JSCollections.$map();
+      map.$put("damage", 0);
+      return map;
+    });
+
+    Map<String, Object> cannonDataMap = Option.ofNullable((Map<String, Object>) data.$get("cannon")).orElseGet(() -> {
+      Map<String, Object> map = JSCollections.$map();
+      map.$put("damage", 0);
+      map.$put("direction", "");
+      map.$put("range", 0);
+      return map;
+    });
+
+    Map<String, Object> siloDataMap = Option.ofNullable((Map<String, Object>) data.$get("rocketsilo")).orElseGet(() -> {
+      Map<String, Object> map = JSCollections.$map();
+      map.$put("changeTo", "");
+      map.$put("damage", 0);
+      map.$put("range", 0);
+      map.$put("fireable", JSCollections.$array());
+      return map;
+    });
+
     sheet.defense = read(data, "defense");
     sheet.vision = read(data, "vision");
-
     sheet.builds = readNullable(data, "builds", JSCollections.$array());
     sheet.repairs = readNullable(data, "repairs", JSCollections.$array());
-
     sheet.funds = readNullable(data, "funds", 0);
     sheet.repairAmount = readNullable(data, "repairAmount", 0);
     sheet.visionBlocker = readNullable(data, "visionBlocker", false);
@@ -38,39 +60,13 @@ public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
     sheet.notTransferable = readNullable(data, "notTransferable", false);
     sheet.capturePoints = readNullable(data, "capturePoints", 20); /* TODO */
     sheet.changeAfterCaptured = readNullable(data, "changeAfterCaptured", sheet.ID);
-
-    Maybe.of(data.$get("laser")).ifPresentOrElseDo((laserData) -> {
-      Map<String, Object> laserDataMap = (Map<String, Object>) laserData;
-
-      sheet.laser.damage = read(laserDataMap, "damage");
-    }, () -> {
-      sheet.laser.damage = 0;
-    });
-
-    Maybe.of(data.$get("cannon")).ifPresentOrElseDo((cannonData) -> {
-      Map<String, Object> cannonDataMap = (Map<String, Object>) cannonData;
-
-      sheet.cannon.damage = read(cannonDataMap, "damage");
-      sheet.cannon.direction = read(cannonDataMap, "direction");
-      sheet.cannon.range = read(cannonDataMap, "range");
-    }, () -> {
-      sheet.cannon.damage = 0;
-      sheet.cannon.direction = "";
-      sheet.cannon.range = 0;
-    });
-
-    Maybe.of(data.$get("rocketsilo")).ifPresentOrElseDo((siloData) -> {
-      Map<String, Object> siloDataMap = (Map<String, Object>) siloData;
-
-      sheet.rocketsilo.changeTo = read(siloDataMap, "changeTo");
-      sheet.rocketsilo.damage = read(siloDataMap, "damage");
-      sheet.rocketsilo.range = read(siloDataMap, "range");
-      sheet.rocketsilo.fireable = read(siloDataMap, "fireable");
-    }, () -> {
-      sheet.rocketsilo.changeTo = "";
-      sheet.rocketsilo.damage = 0;
-      sheet.rocketsilo.range = 0;
-      sheet.rocketsilo.fireable = JSCollections.$array();
-    });
+    sheet.laser.damage = read(laserDataMap, "damage");
+    sheet.rocketsilo.changeTo = read(siloDataMap, "changeTo");
+    sheet.rocketsilo.damage = read(siloDataMap, "damage");
+    sheet.rocketsilo.range = read(siloDataMap, "range");
+    sheet.rocketsilo.fireable = read(siloDataMap, "fireable");
+    sheet.cannon.damage = read(cannonDataMap, "damage");
+    sheet.cannon.direction = read(cannonDataMap, "direction");
+    sheet.cannon.range = read(cannonDataMap, "range");
   }
 }

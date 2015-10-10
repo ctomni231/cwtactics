@@ -8,7 +8,7 @@ import org.wolftec.cwt.logic.FogLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.system.StringNumberConverter;
+import org.wolftec.cwt.system.SheetIdNumberConverter;
 
 public class BuildUnit implements Action {
 
@@ -49,7 +49,7 @@ public class BuildUnit implements Action {
 
   @Override
   public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
-    factory.buildUnit(model.getProperty(data.p1), StringNumberConverter.toId(data.p2));
+    factory.buildUnit(model.getProperty(data.p1), SheetIdNumberConverter.toId(data.p2));
     fog.fullRecalculation();
   }
 

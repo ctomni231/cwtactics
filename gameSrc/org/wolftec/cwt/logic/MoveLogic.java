@@ -23,6 +23,8 @@ import org.wolftec.cwt.system.Nullable;
 
 public class MoveLogic implements Injectable {
 
+  private static final String NO_UNIT_AT_POSITION_ERROR = "NoUnitAtPosition";
+
   @GlobalScope
   @STJSBridge
   private static class Window {
@@ -707,7 +709,7 @@ public class MoveLogic implements Injectable {
    *         position, else false
    */
   public boolean canMoveSomewhere(ModelManager model, PositionData position) {
-    Unit unit = position.unit.orElseThrow("NoUnitAtPosition");
+    Unit unit = position.unit.orElseThrow(NO_UNIT_AT_POSITION_ERROR);
     MoveType mv = sheets.movetypes.get(unit.type.movetype);
 
     return ((model.isValidPosition(position.x + 1, position.y) && getMoveCosts(mv, position.x + 1, position.y) > Constants.INACTIVE)

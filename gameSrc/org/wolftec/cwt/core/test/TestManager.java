@@ -47,7 +47,7 @@ public class TestManager implements Injectable {
     tests.sort((a, b) -> {
       int indexA = VersionUtil.convertVersionToNumber(a.getIndex());
       int indexB = VersionUtil.convertVersionToNumber(b.getIndex());
-      return NumberUtil.compareInt(indexA, indexB);
+      return NumberUtil.compare(indexA, indexB);
     });
   }
 

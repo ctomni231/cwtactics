@@ -5,7 +5,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.DataLoader;
 import org.wolftec.cwt.core.FileDescriptor;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 import org.wolftec.cwt.system.RequestUtil;
 
 public class LanguageLoader implements DataLoader {
@@ -18,8 +18,8 @@ public class LanguageLoader implements DataLoader {
   }
 
   @Override
-  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Maybe<Object>> doneCb) {
-    RequestUtil.getJSON(entryDesc.path, (response) -> doneCb.$invoke(Maybe.of(response.data.orElse(null))));
+  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Option<Object>> doneCb) {
+    RequestUtil.getJSON(entryDesc.path, (response) -> doneCb.$invoke(Option.ofNullable(response.data.orElse(null))));
   }
 
   @Override

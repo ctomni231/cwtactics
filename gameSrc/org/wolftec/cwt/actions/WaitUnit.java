@@ -33,7 +33,7 @@ public class WaitUnit implements Action {
 
   @Override
   public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
-    model.getUnit(data.p1).setActable(false);
+    model.getUnit(data.p1).canAct = false;
   }
 
 }

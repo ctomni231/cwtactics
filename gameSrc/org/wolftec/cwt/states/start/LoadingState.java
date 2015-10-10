@@ -22,7 +22,7 @@ public class LoadingState extends AbstractState implements LoadingWatcher {
       loading.loadData(() -> {
         log.info("done");
 
-        if (UrlParameterUtil.getUrlParameter("noTests") != "1" && tests.hasTests()) {
+        if (UrlParameterUtil.getParameter("noTests") != "1" && tests.hasTests()) {
           transition.setTransitionTo("TestExecutionState");
         } else {
           transition.setTransitionTo("StartScreenState");

@@ -47,7 +47,7 @@ public class IngameSubMenuState extends AbstractIngameState {
   @Override
   public void handleButtonA(StateFlowData transition, int delta) {
     data.actionData = data.getInfo();
-    data.actionDataCode = NumberUtil.safeStringAsInt(data.getInfo(), Constants.INACTIVE);
+    data.actionDataCode = NumberUtil.convertStringToIntOrDefault(data.getInfo(), Constants.INACTIVE);
     transition.setTransitionTo("IngamePushActionState");
   }
 

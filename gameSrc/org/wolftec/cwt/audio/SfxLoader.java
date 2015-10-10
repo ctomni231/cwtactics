@@ -4,7 +4,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.DataLoader;
 import org.wolftec.cwt.core.FileDescriptor;
-import org.wolftec.cwt.system.Maybe;
+import org.wolftec.cwt.system.Option;
 
 public class SfxLoader implements DataLoader {
 
@@ -16,7 +16,7 @@ public class SfxLoader implements DataLoader {
   }
 
   @Override
-  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Maybe<Object>> doneCb) {
+  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Option<Object>> doneCb) {
     // TODO Auto-generated method stub
 
   }

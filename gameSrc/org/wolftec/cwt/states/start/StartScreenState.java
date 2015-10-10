@@ -1,11 +1,11 @@
 package org.wolftec.cwt.states.start;
 
+import org.wolftec.cwt.environment.Features;
 import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.input.backends.KeyboardInput;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.system.Features;
 
 public class StartScreenState extends AbstractState {
 

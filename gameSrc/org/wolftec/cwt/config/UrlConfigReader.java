@@ -27,7 +27,7 @@ public class UrlConfigReader implements GameLoader {
         return;
       }
 
-      cfg.setValue(NumberUtil.stringAsInt(value));
+      cfg.setValue(NumberUtil.convertStringToInt(value));
     });
   }
 
