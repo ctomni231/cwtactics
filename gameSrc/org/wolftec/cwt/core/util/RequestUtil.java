@@ -1,10 +1,11 @@
-package org.wolftec.cwt.system;
+package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.XMLHttpRequest;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.system.Option;
 
 /**
  * Utility class which contains a lot of browser environment related functions.

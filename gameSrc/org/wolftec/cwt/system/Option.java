@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Function0;
-import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.util.JsUtil;
 
 /**
  * A container object which may or may not contain a non-null value.

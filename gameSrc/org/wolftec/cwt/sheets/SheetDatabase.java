@@ -6,7 +6,7 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
-import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.util.JsUtil;
 
 /**
  * A data object that holds a list of sheet objects with a given schema. Every

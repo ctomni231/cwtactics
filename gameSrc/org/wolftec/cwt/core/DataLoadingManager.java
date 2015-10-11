@@ -3,9 +3,12 @@ package org.wolftec.cwt.core;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.util.ListUtil;
+import org.wolftec.cwt.core.util.RequestUtil;
+import org.wolftec.cwt.core.util.RequestUtil.ResponseData;
 import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.system.Option;
 
 public class DataLoadingManager implements GameLoader {
 
@@ -22,7 +25,7 @@ public class DataLoadingManager implements GameLoader {
 
     log.info("downloading " + entryDesc.fileName);
 
-    BrowserUtil.requestJsonFile(entryDesc.path, (data, err) -> {
+    RequestUtil.getJSON(entryDesc.path, (ResponseData<Array<String>> response) -> {
       loader.downloadRemoteFolder(entryDesc, (content) -> {
         /* TODO */
         if (content.isPresent()) {
@@ -42,9 +45,9 @@ public class DataLoadingManager implements GameLoader {
     String path = Constants.SERVER_PATH + Constants.DEF_MOD_PATH + "/" + loader.forPath();
 
     log.info("iterating folder " + loader.forPath());
-    BrowserUtil.requestJsonFile(path + "/__filelist__.json", (data, err) -> {
-      if (Nullable.isPresent(data)) {
-        ListUtil.forEachArrayValueAsync((Array<String>) data, (findex, file, fnext) -> {
+    RequestUtil.getJSON(path + "/__filelist__.json", (ResponseData<Array<String>> response) -> {
+      if (response.data.isPresent()) {
+        ListUtil.forEachArrayValueAsync(response.data.get(), (findex, file, fnext) -> {
           downloadFolderFile(loader, path, file, fnext);
         } , next);
 
@@ -96,7 +99,11 @@ public class DataLoadingManager implements GameLoader {
   @Override
   public void onLoad(Callback0 done) {
     storage.get(DATA_FILE, (err, data) -> {
-      Nullable.ifPresentOrElse(data, (saveData) -> handleData(done), () -> downloadData(() -> handleData(done)));
+      if (Option.ofNullable(data).isPresent()) {
+        handleData(done);
+      } else {
+        downloadData(() -> handleData(done));
+      }
     });
   }
 }

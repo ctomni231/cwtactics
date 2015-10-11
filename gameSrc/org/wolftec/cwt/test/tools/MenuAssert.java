@@ -1,7 +1,7 @@
 package org.wolftec.cwt.test.tools;
 
-import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.test.Assert;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class MenuAssert extends Assert {

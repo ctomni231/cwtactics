@@ -2,7 +2,7 @@ package org.wolftec.cwt.model;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.system.Nullable;
 
 public class TileVariantInfo {

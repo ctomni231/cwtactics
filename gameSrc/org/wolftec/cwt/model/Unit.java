@@ -1,8 +1,8 @@
 package org.wolftec.cwt.model;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.sheets.UnitType;
-import org.wolftec.cwt.system.NumberUtil;
 
 public class Unit {
 

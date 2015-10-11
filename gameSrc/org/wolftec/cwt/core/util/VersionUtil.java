@@ -1,8 +1,7 @@
-package org.wolftec.cwt.system;
+package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSStringAdapter;
-import org.wolftec.cwt.core.JsUtil;
 
 /**
  * Version utility to manage version strings.

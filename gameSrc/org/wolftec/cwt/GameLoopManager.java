@@ -4,10 +4,9 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.FrameTickListener;
-import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.input.BlockedInputManager;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.renderer.GraphicManager;
@@ -53,10 +52,10 @@ public class GameLoopManager implements Injectable {
      */
     final GameLoopManager that = this;
 
-    oldTime = BrowserUtil.getTimestamp();
+    oldTime = JsUtil.getTimestamp();
     loopFunction = () -> {
 
-      long now = BrowserUtil.getTimestamp();
+      long now = JsUtil.getTimestamp();
       int delta = (int) (now - that.oldTime);
       that.oldTime = now;
 

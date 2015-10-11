@@ -2,11 +2,11 @@ package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.ErrorManager;
+import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.system.ClassUtil;
-import org.wolftec.cwt.system.NumberUtil;
 
 public class IngameSubMenuState extends AbstractIngameState {
 

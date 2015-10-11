@@ -1,4 +1,4 @@
-package org.wolftec.cwt.system;
+package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
@@ -6,6 +6,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.Map;
+import org.wolftec.cwt.system.Option;
 
 public abstract class UrlParameterUtil {
 
@@ -37,8 +38,8 @@ public abstract class UrlParameterUtil {
    *          the parameter key
    * @return the value for the given parameter
    */
-  public static String getParameter(String param) {
+  public static Option<String> getParameter(String param) {
     String value = getParameters().$get(param);
-    return value != JSGlobal.undefined ? value : null;
+    return Option.ofNullable(value);
   }
 }

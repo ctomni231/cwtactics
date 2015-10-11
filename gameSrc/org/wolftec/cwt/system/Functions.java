@@ -5,6 +5,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Function0;
+import org.wolftec.cwt.core.util.ClassUtil;
 
 public class Functions {
 

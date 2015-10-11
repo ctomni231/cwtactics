@@ -1,6 +1,7 @@
 package org.wolftec.cwt.system;
 
 import org.stjs.javascript.JSStringAdapter;
+import org.wolftec.cwt.core.util.NumberUtil;
 
 /**
  * Converter which is able to convert id codes.

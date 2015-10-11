@@ -3,7 +3,7 @@ package org.wolftec.cwt.core.test;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.util.JsUtil;
 
 public class Assert {
 

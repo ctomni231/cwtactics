@@ -4,10 +4,10 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.core.ioc.Constructable;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.ListUtil;
 
 public class UserInteractionMap implements Constructable {
 

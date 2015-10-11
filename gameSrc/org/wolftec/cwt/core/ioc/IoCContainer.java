@@ -5,9 +5,9 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwt.core.ListUtil;
-import org.wolftec.cwt.system.ClassUtil;
+import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.ListUtil;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 

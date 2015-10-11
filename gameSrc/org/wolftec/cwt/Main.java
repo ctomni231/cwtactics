@@ -3,9 +3,9 @@ package org.wolftec.cwt;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.ioc.IoCConfiguration;
 import org.wolftec.cwt.core.ioc.IoCContainer;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.states.StateManager;
 
 public class Main {
@@ -13,11 +13,11 @@ public class Main {
   public static void main(String[] args) {
     long ts;
 
-    ts = BrowserUtil.getTimestamp();
+    ts = JsUtil.getTimestamp();
     IoCContainer ioc = createIocContainer();
     ioc.getManagedObjectByType(StateManager.class).setState("NoneState", true);
     ioc.getManagedObjectByType(GameLoopManager.class).start();
-    ts = BrowserUtil.getTimestamp() - ts;
+    ts = JsUtil.getTimestamp() - ts;
 
     Global.console.log("STARTUP " + ts + "ms");
   }

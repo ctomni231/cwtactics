@@ -1,8 +1,7 @@
-package org.wolftec.cwt.system;
+package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwt.core.JsUtil;
 
 /**
  * Some utility functions for handling numbers.

@@ -1,4 +1,4 @@
-package org.wolftec.cwt.core;
+package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.SyntheticType;
@@ -7,7 +7,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Callback3;
 
-public class ListUtil {
+public abstract class ListUtil {
 
   @SyntheticType
   private static class WorkflowData {

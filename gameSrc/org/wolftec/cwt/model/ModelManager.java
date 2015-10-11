@@ -7,9 +7,9 @@ import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function4;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.config.OptionsManager;
-import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.ListUtil;
 import org.wolftec.cwt.sheets.WeatherType;
 import org.wolftec.cwt.system.Functions;
 

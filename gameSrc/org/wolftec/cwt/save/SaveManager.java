@@ -5,9 +5,9 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.GameLoader;
-import org.wolftec.cwt.core.ListUtil;
+import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.ListUtil;
 import org.wolftec.cwt.persistence.PersistenceManager;
-import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 

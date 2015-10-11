@@ -2,7 +2,7 @@ package org.wolftec.cwt.system;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwt.core.JsUtil;
+import org.wolftec.cwt.core.util.JsUtil;
 
 /**
  * An implementation of the concept of a circular buffer. Internally a circular

@@ -2,10 +2,10 @@ package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.sheets.SheetManager;
 import org.wolftec.cwt.sheets.WeatherType;
-import org.wolftec.cwt.system.NumberUtil;
 
 public class WeatherLogic implements Injectable {
 

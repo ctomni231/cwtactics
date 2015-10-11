@@ -2,6 +2,7 @@ package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.model.GameMode;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Player;
@@ -12,7 +13,6 @@ import org.wolftec.cwt.sheets.AttackType;
 import org.wolftec.cwt.sheets.UnitType;
 import org.wolftec.cwt.system.MoveableMatrix;
 import org.wolftec.cwt.system.Nullable;
-import org.wolftec.cwt.system.NumberUtil;
 
 public class BattleLogic implements Injectable {
 

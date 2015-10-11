@@ -1,4 +1,4 @@
-package org.wolftec.cwt.core;
+package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;
@@ -15,7 +15,7 @@ import org.stjs.javascript.functions.Callback1;
 public abstract class ImageUtil {
 
   public static void convertImageToString(Element image, Callback1<String> resultCb) {
-    Canvas canvas = BrowserUtil.createDomElement("canvas");
+    Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D ctx = canvas.getContext("2d");
     canvas.height = image.height;
     canvas.width = image.width;
@@ -24,7 +24,7 @@ public abstract class ImageUtil {
   }
 
   public static void convertStringToImage(String dataUrl, Callback1<Canvas> resultCb) {
-    Canvas canvas = BrowserUtil.createDomElement("canvas");
+    Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D ctx = canvas.getContext("2d");
     Image img = new Image();
     img.onload = (image) -> {
@@ -41,7 +41,7 @@ public abstract class ImageUtil {
    * @return
    */
   public static Canvas convertImageToBlackMask(Image image) {
-    Canvas canvas = BrowserUtil.createDomElement("canvas");
+    Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
 
     // create target canvas
@@ -86,7 +86,7 @@ public abstract class ImageUtil {
    * @return
    */
   public static Canvas cropAndRotate(Image image, int sx, int sy, int w, int rotation) {
-    Canvas canvas = BrowserUtil.createDomElement("canvas");
+    Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D context = canvas.getContext("2d");
     int hw = w / 2;
 
@@ -118,7 +118,7 @@ public abstract class ImageUtil {
    * @return
    */
   public static Canvas cropImage(Image image, int sx, int sy, int w, int h) {
-    Canvas canvas = BrowserUtil.createDomElement("canvas");
+    Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
 
     canvas.width = w;
@@ -146,7 +146,7 @@ public abstract class ImageUtil {
     int posY = flipV ? image.height * -1 : 0;
 
     // target canvas
-    Canvas nCanvas = BrowserUtil.createDomElement("canvas");
+    Canvas nCanvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D nContext = nCanvas.getContext("2d");
     nCanvas.height = image.height;
     nCanvas.width = image.width;
@@ -167,7 +167,7 @@ public abstract class ImageUtil {
    * @return
    */
   public static Array<Integer> getImageData(Image image) {
-    Canvas canvas = BrowserUtil.createDomElement("canvas");
+    Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
 
     int imgW = image.width;
@@ -191,7 +191,7 @@ public abstract class ImageUtil {
    * @return Canvas with replaced colors
    */
   public static Canvas replaceColors(Image image, CanvasImageData colorData, int numColors, int oriIndex, int replaceIndex) {
-    Canvas canvas = BrowserUtil.createDomElement("canvas");
+    Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
 
     // create target canvas
@@ -259,7 +259,7 @@ public abstract class ImageUtil {
     int t3R, t3G, t3B;
 
     // create target canvas
-    Canvas canvasS = BrowserUtil.createDomElement("canvas");
+    Canvas canvasS = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasSContext = canvasS.getContext("2d");
     canvasS.width = imgW;
     canvasS.height = imgH;
@@ -267,7 +267,7 @@ public abstract class ImageUtil {
     CanvasImageData imgPixelsS = canvasSContext.getImageData(0, 0, imgW, imgH);
 
     // create target canvas
-    Canvas canvasT = BrowserUtil.createDomElement("canvas");
+    Canvas canvasT = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasTContext = canvasT.getContext("2d");
     canvasT.width = imgW * 2;
     canvasT.height = imgH * 2;

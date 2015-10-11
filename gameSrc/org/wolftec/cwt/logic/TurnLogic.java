@@ -2,8 +2,8 @@ package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.config.OptionsManager;
-import org.wolftec.cwt.core.JsUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.system.Log;

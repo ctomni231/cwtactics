@@ -5,6 +5,7 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Native;
 import org.wolftec.cwt.core.ioc.Constructable;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.ClassUtil;
 
 public class Log implements Constructable {
 

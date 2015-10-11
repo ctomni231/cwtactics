@@ -1,4 +1,4 @@
-package org.wolftec.cwt.system;
+package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
@@ -9,8 +9,7 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
-import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwt.core.ListUtil;
+import org.wolftec.cwt.system.Nullable;
 
 /**
  * Utility class to handle several low level stuff with stjs based objects.

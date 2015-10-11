@@ -1,4 +1,4 @@
-package org.wolftec.cwt.system;
+package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.JSStringAdapter;
 

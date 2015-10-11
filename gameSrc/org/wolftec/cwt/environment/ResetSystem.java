@@ -2,8 +2,8 @@ package org.wolftec.cwt.environment;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.BrowserUtil;
 import org.wolftec.cwt.core.GameLoader;
+import org.wolftec.cwt.core.util.UrlParameterUtil;
 import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Log;
 
@@ -21,7 +21,7 @@ public class ResetSystem implements GameLoader {
 
   @Override
   public void onLoad(Callback0 done) {
-    BrowserUtil.getUrlParameter(PARAM_WIPEOUT).ifPresent((value) -> {
+    UrlParameterUtil.getParameter(PARAM_WIPEOUT).ifPresent((value) -> {
       if (!(value == "1" || value == "true")) {
         log.warn("IllegalUrlParameter: " + PARAM_WIPEOUT + "can only true or 1");
         return;

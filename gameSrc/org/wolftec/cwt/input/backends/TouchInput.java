@@ -6,9 +6,9 @@ import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.dom.DOMEvent;
 import org.wolftec.cwt.core.Deactivatable;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.NumberUtil;
 
 public class TouchInput implements Injectable, Deactivatable {
 

@@ -6,12 +6,12 @@ import org.stjs.javascript.JSFunctionAdapter;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.SyntheticType;
-import org.wolftec.cwt.core.JsUtil;
-import org.wolftec.cwt.core.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.system.ClassUtil;
-import org.wolftec.cwt.system.NumberUtil;
-import org.wolftec.cwt.system.VersionUtil;
+import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.ListUtil;
+import org.wolftec.cwt.core.util.NumberUtil;
+import org.wolftec.cwt.core.util.VersionUtil;
 
 public class TestManager implements Injectable {
 

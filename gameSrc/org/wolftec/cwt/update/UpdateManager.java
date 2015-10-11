@@ -5,13 +5,13 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.GameLoader;
-import org.wolftec.cwt.core.ListUtil;
+import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.ListUtil;
+import org.wolftec.cwt.core.util.NumberUtil;
+import org.wolftec.cwt.core.util.VersionUtil;
 import org.wolftec.cwt.persistence.PersistenceManager;
-import org.wolftec.cwt.system.ClassUtil;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.NumberUtil;
 import org.wolftec.cwt.system.Option;
-import org.wolftec.cwt.system.VersionUtil;
 
 public class UpdateManager implements GameLoader {
 
