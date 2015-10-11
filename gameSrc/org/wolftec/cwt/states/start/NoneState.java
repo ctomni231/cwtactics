@@ -2,8 +2,8 @@ package org.wolftec.cwt.states.start;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.input.InputManager;
-import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.core.input.InputManager;
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.jslix.ImageLibrary;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;

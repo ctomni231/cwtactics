@@ -1,6 +1,6 @@
 package org.wolftec.cwt.states.start;
 
-import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.StateFlowData;

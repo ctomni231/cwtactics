@@ -1,8 +1,8 @@
 package org.wolftec.cwt.config;
 
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.GameLoader;
 import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.core.util.UrlParameterUtil;
 import org.wolftec.cwt.system.Log;

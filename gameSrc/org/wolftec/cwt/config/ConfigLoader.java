@@ -2,10 +2,10 @@ package org.wolftec.cwt.config;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.save.AppHandler;
-import org.wolftec.cwt.save.GameHandler;
+import org.wolftec.cwt.core.persistence.SaveAppdataHandler;
+import org.wolftec.cwt.core.persistence.SavegameHandler;
 
-public class ConfigLoader implements AppHandler<Map<String, Integer>>, GameHandler<Map<String, Integer>> {
+public class ConfigLoader implements SaveAppdataHandler<Map<String, Integer>>, SavegameHandler<Map<String, Integer>> {
 
   private OptionsManager options;
 
@@ -32,25 +32,6 @@ public class ConfigLoader implements AppHandler<Map<String, Integer>>, GameHandl
 
   @Override
   public void onGameLoad(Map<String, Integer> data) {
-    data.$put("fogEnabled", options.fogEnabled.value);
-    data.$put("daysOfPeace", options.daysOfPeace.value);
-    data.$put("weatherMinDays", options.weatherMinDays.value);
-    data.$put("weatherRandomDays", options.weatherRandomDays.value);
-    data.$put("round_dayLimit", options.round_dayLimit.value);
-    data.$put("noUnitsLeftLoose", options.noUnitsLeftLoose.value);
-    data.$put("autoSupplyAtTurnStart", options.autoSupplyAtTurnStart.value);
-    data.$put("unitLimit", options.unitLimit.value);
-    data.$put("captureLimit", options.captureLimit.value);
-    data.$put("timer_turnTimeLimit", options.timer_turnTimeLimit.value);
-    data.$put("timer_gameTimeLimit", options.timer_gameTimeLimit.value);
-    data.$put("co_getStarCost", options.co_getStarCost.value);
-    data.$put("co_getStarCostIncrease", options.co_getStarCostIncrease.value);
-    data.$put("co_getStarCostIncreaseSteps", options.co_getStarCostIncreaseSteps.value);
-    data.$put("co_enabledCoPower", options.co_enabledCoPower.value);
-  }
-
-  @Override
-  public void onGameSave(Map<String, Integer> data) {
     options.fogEnabled.setValue(data.$get("fogEnabled"));
     options.daysOfPeace.setValue(data.$get("daysOfPeace"));
     options.weatherMinDays.setValue(data.$get("weatherMinDays"));
@@ -66,5 +47,24 @@ public class ConfigLoader implements AppHandler<Map<String, Integer>>, GameHandl
     options.co_getStarCostIncrease.setValue(data.$get("co_getStarCostIncrease"));
     options.co_getStarCostIncreaseSteps.setValue(data.$get("co_getStarCostIncreaseSteps"));
     options.co_enabledCoPower.setValue(data.$get("co_enabledCoPower"));
+  }
+
+  @Override
+  public void onGameSave(Map<String, Integer> data) {
+    data.$put("fogEnabled", options.fogEnabled.value);
+    data.$put("daysOfPeace", options.daysOfPeace.value);
+    data.$put("weatherMinDays", options.weatherMinDays.value);
+    data.$put("weatherRandomDays", options.weatherRandomDays.value);
+    data.$put("round_dayLimit", options.round_dayLimit.value);
+    data.$put("noUnitsLeftLoose", options.noUnitsLeftLoose.value);
+    data.$put("autoSupplyAtTurnStart", options.autoSupplyAtTurnStart.value);
+    data.$put("unitLimit", options.unitLimit.value);
+    data.$put("captureLimit", options.captureLimit.value);
+    data.$put("timer_turnTimeLimit", options.timer_turnTimeLimit.value);
+    data.$put("timer_gameTimeLimit", options.timer_gameTimeLimit.value);
+    data.$put("co_getStarCost", options.co_getStarCost.value);
+    data.$put("co_getStarCostIncrease", options.co_getStarCostIncrease.value);
+    data.$put("co_getStarCostIncreaseSteps", options.co_getStarCostIncreaseSteps.value);
+    data.$put("co_enabledCoPower", options.co_enabledCoPower.value);
   }
 }

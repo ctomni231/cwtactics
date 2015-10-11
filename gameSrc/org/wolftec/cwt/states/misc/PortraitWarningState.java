@@ -1,6 +1,6 @@
 package org.wolftec.cwt.states.misc;
 
-import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateFlowData;
 

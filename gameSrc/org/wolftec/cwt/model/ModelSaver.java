@@ -1,9 +1,9 @@
 package org.wolftec.cwt.model;
 
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.save.GameHandler;
+import org.wolftec.cwt.core.persistence.SavegameHandler;
 
-public class ModelSaver implements GameHandler<Map<String, String>> {
+public class ModelSaver implements SavegameHandler<Map<String, String>> {
 
   private ModelManager model;
 

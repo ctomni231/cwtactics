@@ -1,4 +1,4 @@
-package org.wolftec.cwt.i18n;
+package org.wolftec.cwt.core.i18;
 
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;

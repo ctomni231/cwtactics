@@ -1,4 +1,4 @@
-package org.wolftec.cwt.input;
+package org.wolftec.cwt.core.input;
 
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.core.ioc.Injectable;

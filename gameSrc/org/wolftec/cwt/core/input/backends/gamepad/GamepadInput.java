@@ -1,10 +1,10 @@
-package org.wolftec.cwt.input.backends.gamepad;
+package org.wolftec.cwt.core.input.backends.gamepad;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwt.core.Deactivatable;
 import org.wolftec.cwt.core.FrameTickListener;
+import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 

@@ -4,7 +4,7 @@ import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionManager;
-import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateFlowData;

@@ -3,7 +3,7 @@ package org.wolftec.cwt.states.menu;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.audio.AudioManager;
-import org.wolftec.cwt.save.SaveManager;
+import org.wolftec.cwt.core.persistence.SaveManager;
 import org.wolftec.cwt.states.AbstractMenuState;
 import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.StateFlowData;

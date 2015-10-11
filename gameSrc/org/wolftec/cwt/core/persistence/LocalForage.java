@@ -1,4 +1,4 @@
-package org.wolftec.cwt.persistence;
+package org.wolftec.cwt.core.persistence;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.GlobalScope;

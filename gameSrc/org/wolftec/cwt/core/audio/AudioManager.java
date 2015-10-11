@@ -7,10 +7,10 @@ import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.persistence.PersistenceManager;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.RequestUtil.ArrayBufferRespone;
 import org.wolftec.cwt.environment.Features;
-import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Nullable;
 import org.wolftec.cwt.system.Option;
 

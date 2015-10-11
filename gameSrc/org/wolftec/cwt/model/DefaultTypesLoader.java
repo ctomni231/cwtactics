@@ -2,8 +2,8 @@ package org.wolftec.cwt.model;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.GameLoader;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.logic.CannonLogic;
 import org.wolftec.cwt.logic.LaserLogic;
 import org.wolftec.cwt.sheets.MoveType;

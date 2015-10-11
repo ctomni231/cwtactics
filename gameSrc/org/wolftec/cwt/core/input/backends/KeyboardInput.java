@@ -1,12 +1,12 @@
-package org.wolftec.cwt.input.backends;
+package org.wolftec.cwt.core.input.backends;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.Deactivatable;
+import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Nullable;
 

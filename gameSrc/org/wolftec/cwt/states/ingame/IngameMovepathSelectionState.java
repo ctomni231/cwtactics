@@ -1,7 +1,7 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.config.OptionsManager;
-import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.AbstractIngameState;

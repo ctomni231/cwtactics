@@ -1,4 +1,4 @@
-package org.wolftec.cwt.input.backends.gamepad;
+package org.wolftec.cwt.core.input.backends.gamepad;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.STJSBridge;

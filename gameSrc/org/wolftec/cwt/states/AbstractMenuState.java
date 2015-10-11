@@ -1,7 +1,7 @@
 package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.system.Log;
 
 public class AbstractMenuState extends AbstractState {

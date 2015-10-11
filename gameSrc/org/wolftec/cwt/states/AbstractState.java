@@ -1,9 +1,9 @@
 package org.wolftec.cwt.states;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.ClassUtil;
-import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.system.Option;
 

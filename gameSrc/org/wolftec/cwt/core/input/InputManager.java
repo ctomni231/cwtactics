@@ -1,4 +1,4 @@
-package org.wolftec.cwt.input;
+package org.wolftec.cwt.core.input;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;

@@ -4,12 +4,12 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.ErrorManager;
-import org.wolftec.cwt.core.GameLoader;
+import org.wolftec.cwt.core.loading.GameLoader;
+import org.wolftec.cwt.core.persistence.PersistenceManager;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.ListUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.core.util.VersionUtil;
-import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.system.Option;
 

@@ -1,8 +1,8 @@
-package org.wolftec.cwt.save;
+package org.wolftec.cwt.core.persistence;
 
 import org.wolftec.cwt.core.ioc.Injectable;
 
-public interface GameHandler<T> extends Injectable {
+public interface SavegameHandler<T> extends Injectable {
 
   void onGameLoad(T data);
 

@@ -1,15 +1,14 @@
-package org.wolftec.cwt.save;
+package org.wolftec.cwt.core.persistence;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.GameLoader;
+import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.ListUtil;
-import org.wolftec.cwt.persistence.PersistenceManager;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.system.Option;
 
 public class SaveManager implements GameLoader {
 
@@ -18,8 +17,8 @@ public class SaveManager implements GameLoader {
   private Log                log;
   private PersistenceManager pm;
 
-  private Array<GameHandler> gameHandlers;
-  private Array<AppHandler>  appHandlers;
+  private Array<SavegameHandler> gameHandlers;
+  private Array<SaveAppdataHandler>  appHandlers;
 
   @Override
   public int priority() {
@@ -73,13 +72,14 @@ public class SaveManager implements GameLoader {
    */
   public void loadAppData(Callback1<String> doneCb) {
     pm.get(CONFIG_APP_JSON, (err, data) -> {
-      if (Nullable.isPresent(data)) {
+      if (Option.ofNullable(data).isPresent()) {
         log.info("loading application config from game storage");
 
         ListUtil.forEachArrayValue(appHandlers, (index, appHandler) -> {
-          Nullable.ifPresent(JSObjectAdapter.$get(data, ClassUtil.getClassName(appHandler)), (handlerData) -> {
+          Option<Object> handlerData = Option.ofNullable(JSObjectAdapter.$get(data, ClassUtil.getClassName(appHandler)));
+          if (handlerData.isPresent()) {
             appHandler.onAppLoad(handlerData);
-          });
+          }
         });
 
       } else {

@@ -1,4 +1,4 @@
-package org.wolftec.cwt.core;
+package org.wolftec.cwt.core.loading;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;

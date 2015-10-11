@@ -2,7 +2,7 @@ package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.ErrorManager;
-import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.logic.TurnLogic;
 import org.wolftec.cwt.model.GameMode;
 import org.wolftec.cwt.model.MapData;

@@ -1,7 +1,7 @@
 package org.wolftec.cwt.test.tools;
 
+import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.input.InputManager;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.model.Player;
 import org.wolftec.cwt.states.UserInteractionData;

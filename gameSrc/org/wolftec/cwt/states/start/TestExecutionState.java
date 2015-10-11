@@ -1,9 +1,9 @@
 package org.wolftec.cwt.states.start;
 
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.test.TestManager;
 import org.wolftec.cwt.core.test.TestManager.TestExecutionResults;
 import org.wolftec.cwt.core.util.ListUtil;
-import org.wolftec.cwt.input.InputProvider;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.system.Log;

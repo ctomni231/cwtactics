@@ -7,7 +7,7 @@ import org.wolftec.cwt.actions.WaitUnit;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionManager;
-import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.ModelManager;
 import org.wolftec.cwt.states.AbstractIngameState;

@@ -1,6 +1,6 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.input.InputProvider;
+import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.logic.BattleLogic;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.GameActions;
