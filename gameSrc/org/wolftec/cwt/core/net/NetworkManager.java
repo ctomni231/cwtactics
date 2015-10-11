@@ -1,4 +1,4 @@
-package org.wolftec.cwt.network;
+package org.wolftec.cwt.core.net;
 
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.ioc.Injectable;

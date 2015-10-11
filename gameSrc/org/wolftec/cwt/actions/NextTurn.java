@@ -1,17 +1,17 @@
 package org.wolftec.cwt.actions;
 
-import org.wolftec.cwt.config.ConfigurableValue;
-import org.wolftec.cwt.config.ConfigurationProvider;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.core.action.ActionType;
+import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.config.ConfigurationProvider;
+import org.wolftec.cwt.core.net.NetworkManager;
 import org.wolftec.cwt.logic.FogLogic;
 import org.wolftec.cwt.logic.SupplyLogic;
 import org.wolftec.cwt.logic.TurnLogic;
 import org.wolftec.cwt.logic.WeatherLogic;
 import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.network.NetworkManager;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.states.UserInteractionData;

@@ -1,4 +1,4 @@
-package org.wolftec.cwt.config;
+package org.wolftec.cwt.core.config;
 
 /**
  * This is a marker interface to mark managed classes with

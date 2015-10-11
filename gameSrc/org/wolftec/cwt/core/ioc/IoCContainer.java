@@ -13,13 +13,17 @@ import org.wolftec.cwt.system.Nullable;
 
 public class IoCContainer {
 
-  private static final String     NON_IOC_CANDIDATE_CLASSNAMEPART = "Abstract";
+  private static final String NON_IOC_CANDIDATE_CLASSNAMEPART = "Abstract";
 
-  private Log                     log;
+  private Log log;
 
   private Map<String, Injectable> managedObjects;
 
   public void initByConfig(IoCConfiguration config) {
+    if (config.namespaces.indexOf("wEng") == -1) {
+      config.namespaces.push("wEng");
+    }
+
     Nullable.ifPresent(managedObjects, (value) -> JsUtil.throwError("AlreadyInitialized"));
 
     managedObjects = JSCollections.$map();
@@ -71,8 +75,10 @@ public class IoCContainer {
             return;
           }
 
-        }, () -> {
-          /* leave property as it is because it seems not to be managed or known */
+        } , () -> {
+          /*
+           * leave property as it is because it seems not to be managed or known
+           */
         });
       });
     });
@@ -88,7 +94,7 @@ public class IoCContainer {
         }
       });
       JSObjectAdapter.$put(instance, prop, list);
-    }, () -> {
+    } , () -> {
 
       /*
        * leave property as it is because it seems not to be managed or known
@@ -106,7 +112,7 @@ public class IoCContainer {
         }
       });
       JSObjectAdapter.$put(instance, prop, map);
-    }, () -> {
+    } , () -> {
 
       /*
        * leave property as it is because it seems not to be managed or known

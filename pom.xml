@@ -145,9 +145,11 @@
                overwrite="true" />
 
          <!-- game -->
-         <copy file="${project.build.outputDirectory}/CustomWarsTactics.js"
-               tofile="${basedir}/dest/game.js" 
-               overwrite="true" />
+         <concat      destfile="${basedir}/dest/game.js">
+          <fileset    file="${basedir}/gameSrc/org/wolftec/cwt/html/gamefile_preBlock.js" />
+          <fileset    file="${project.build.outputDirectory}/CustomWarsTactics.js" />
+          <fileset    file="${basedir}/gameSrc/org/wolftec/cwt/html/gamefile_postBlock.js" />
+         </concat>
             
             <!--    
          <copy file="${project.build.outputDirectory}/CustomWarsTactics.map"

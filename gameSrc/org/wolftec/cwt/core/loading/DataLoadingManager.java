@@ -1,8 +1,11 @@
-package org.wolftec.cwt.core;
+package org.wolftec.cwt.core.loading;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.FileDescriptor;
+import org.wolftec.cwt.core.GameLoader;
+import org.wolftec.cwt.core.LoadingWatcher;
 import org.wolftec.cwt.core.util.ListUtil;
 import org.wolftec.cwt.core.util.RequestUtil;
 import org.wolftec.cwt.core.util.RequestUtil.ResponseData;

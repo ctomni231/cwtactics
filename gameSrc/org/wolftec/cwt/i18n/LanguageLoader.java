@@ -3,8 +3,8 @@ package org.wolftec.cwt.i18n;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.DataLoader;
 import org.wolftec.cwt.core.FileDescriptor;
+import org.wolftec.cwt.core.loading.DataLoader;
 import org.wolftec.cwt.core.util.RequestUtil;
 import org.wolftec.cwt.system.Option;
 

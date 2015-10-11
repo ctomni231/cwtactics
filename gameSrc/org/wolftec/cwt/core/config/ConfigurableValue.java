@@ -1,4 +1,4 @@
-package org.wolftec.cwt.config;
+package org.wolftec.cwt.core.config;
 
 import org.stjs.javascript.annotation.Native;
 import org.wolftec.cwt.core.util.JsUtil;

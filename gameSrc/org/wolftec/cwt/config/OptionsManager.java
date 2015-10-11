@@ -2,6 +2,8 @@ package org.wolftec.cwt.config;
 
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
 

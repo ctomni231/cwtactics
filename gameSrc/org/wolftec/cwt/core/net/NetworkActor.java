@@ -1,4 +1,4 @@
-package org.wolftec.cwt.network;
+package org.wolftec.cwt.core.net;
 
 public interface NetworkActor {
 

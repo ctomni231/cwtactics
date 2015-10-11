@@ -1,4 +1,4 @@
-package org.wolftec.cwt.audio;
+package org.wolftec.cwt.core.audio;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;

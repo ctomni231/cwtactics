@@ -1,7 +1,8 @@
-package org.wolftec.cwt.core;
+package org.wolftec.cwt.core.loading;
 
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.system.Option;
 
