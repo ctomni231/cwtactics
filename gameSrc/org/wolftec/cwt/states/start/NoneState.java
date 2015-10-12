@@ -39,7 +39,7 @@ public class NoneState extends AbstractState {
   @Override
   public void render(int delta, GraphicManager gfx) {
     CanvasRenderingContext2D ctx = gfx.mainCtx;
-    ImageLibrary.store("image/arrow.png");
+    ImageLibrary.store("../image/arrow.png");
 
     ctx.font = "24pt Arial";
 
