@@ -20,9 +20,10 @@ Real Commanding Officers Icon Completion
 * [x] Javier (AWDS)
 
 * [x] Kanbei (AW1)
+* [x] Kanbei (AW2)
 * [x] Sonja (AW1)
-* [ ] Sensei (AW2)
-* [ ] Grimm (AWDS)
+* [x] Sensei (AW2)
+* [x] Grimm (AWDS)
 
 * [x] Sturm (AW1)
 * [ ] Sturm (AW2)

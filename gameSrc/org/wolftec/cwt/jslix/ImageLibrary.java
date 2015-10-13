@@ -10,7 +10,10 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 
 public abstract class ImageLibrary {
 	
-	public String buffer = null;
+	public static String buffer = null;
+	public String view = null;
+	public static int lx = 0;
+	public static int ly = 0;
 	
 	public static void store(String text){
 		Document doc = Global.window.document;
@@ -52,12 +55,56 @@ public abstract class ImageLibrary {
 		CanvasImageData imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 		//We are going to use that JSObject Adapter to really make sure we obtain all the JS code
 		//Currently, it is working like intended
-		//JSObjectAdapter.$js(code);
+		lx = img.width;
+		ly = img.height;
+		JSObjectAdapter.$js("this.buffer = new ArrayBuffer(imgData.data.length)");
+		JSObjectAdapter.$js("this.view = new Uint8Array(this.buffer)");
 		
-		
+		for(int i = 0; i < imgData.data.$length(); i++){
+			JSObjectAdapter.$js("this.view[i] = imgData.data[i]");
+			JSObjectAdapter.$js("if(this.view[i] != 0) console.log('Color '+i+': '+this.view[i])");
+		}
 	}
 	
-	
-	
+	public static void pull(){
+		Canvas canvas = (Canvas)Global.window.document.getElementById("store");
+		if(canvas == null){
+			canvas = (Canvas)Global.window.document.createElement("canvas");
+			Global.window.document.body.appendChild(canvas);
+		}
+		canvas.setAttribute("id", "store");
+		if(buffer == null){
+			canvas.setAttribute("width", "100");
+			canvas.setAttribute("height", "100");
+		}else{
+			canvas.setAttribute("width", ""+lx);
+			canvas.setAttribute("height", ""+ly);
+		}
+		canvas.setAttribute("style", "display:none");
+		CanvasRenderingContext2D ctx = canvas.getContext("2d");
+		
+		if(buffer == null){
+			CanvasImageData imgData = ctx.createImageData(100, 100);
+			for(int i = 0; i < imgData.data.$length(); i += 4){
+				imgData.data.$set(i, 255);
+				imgData.data.$set(i+1, 0);
+				imgData.data.$set(i+2, 0);
+				imgData.data.$set(i+3, 100);
+			}
+			ctx.putImageData(imgData, 0, 0);
+		}else{
+			CanvasImageData imgData = ctx.createImageData(lx, ly);
+			JSObjectAdapter.$js("this.view = new Uint8Array(this.buffer)");
+			
+			for(int i = 0; i < imgData.data.$length(); i++)
+				JSObjectAdapter.$js("imgData.data[i] = this.view[i]");
+			
+			ctx.putImageData(imgData, 0, 0);
+		}
+		
+		Canvas c = (Canvas)Global.window.document.getElementById("gameCanvas");
+		ctx = c.getContext("2d");
 
+		ctx.drawImage(canvas, 100, 100);
+	}
 }

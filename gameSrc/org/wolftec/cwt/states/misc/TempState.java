@@ -2,8 +2,10 @@ package org.wolftec.cwt.states.misc;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.jslix.ImageLibrary;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.StateFlowData;
 
 /* TempState.java
  * 
@@ -14,6 +16,11 @@ import org.wolftec.cwt.states.AbstractState;
  * 2015.09.10
  */
 public class TempState extends AbstractState{
+	
+	@Override
+	public void onEnter(StateFlowData transition) {
+		ImageLibrary.store("../image/background/MinuteWars.png");
+	}
 	
 	@Override
 	  public void render(int delta, GraphicManager gfx) {
@@ -29,6 +36,8 @@ public class TempState extends AbstractState{
 
 	    ctx.fillStyle = "#610B0B";
 	    ctx.fillText("- Development Version -", 40, 100, 400);
+	    
+	    ImageLibrary.pull();
 	  }
 	
 }
