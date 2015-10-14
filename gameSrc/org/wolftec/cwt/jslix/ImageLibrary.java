@@ -16,7 +16,6 @@ public abstract class ImageLibrary {
 	
 	public static void store(String text){
 		Document doc = Global.window.document;
-		//Image img = JSObjectAdapter.$js("document.createElement('img')");
 		Image img = (Image)Global.window.document.getElementById("image");
 		if(img == null){
 			img = (Image)Global.window.document.createElement("img");
@@ -24,7 +23,7 @@ public abstract class ImageLibrary {
 		}
 		img.setAttribute("id", "image");
 		img.setAttribute("src", text);
-		img.setAttribute("onload", "cwt.ImageLibrary.push()");
+		//img.setAttribute("onload", "cwt.ImageLibrary.push()");
 		img.setAttribute("style", "display:none");
 	}
 	
@@ -61,7 +60,7 @@ public abstract class ImageLibrary {
 		
 		for(int i = 0; i < imgData.data.$length(); i++){
 			JSObjectAdapter.$js("view[i] = imgData.data[i]");
-			JSObjectAdapter.$js("if(view[i] != 0) console.log('Color '+i+': '+view[i])");
+			//JSObjectAdapter.$js("if(view[i] != 0) console.log('Color '+i+': '+view[i])");
 		}
 	}
 	

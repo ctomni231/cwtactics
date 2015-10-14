@@ -1,6 +1,7 @@
 package org.wolftec.cwt.states.misc;
 
 import org.stjs.javascript.Global;
+import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.dom.Image;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.Constants;
@@ -21,7 +22,9 @@ public class TempState extends AbstractState{
 	
 	@Override
 	public void onEnter(StateFlowData transition) {
-		ImageLibrary.store("../image/background/MinuteWars.png");
+		
+		//This stores the image in a "<img id="image" .... >
+		ImageLibrary.store("../image/arrow.png");
 	}
 	
 	@Override
@@ -39,7 +42,12 @@ public class TempState extends AbstractState{
 	    //ctx.fillStyle = "#610B0B";
 	    //ctx.fillText("- Development Version -", 40, 100, 400);
 
-	    ctx.drawImage(ImageLibrary.pull(), 100, 100);
+	    //ctx.drawImage(ImageLibrary.pull(), 100, 100);
+	    //ctx.drawImage(ImageLibrary.pull(), 100, 100, 400, 300);
+	    //ctx.drawImage(ImageLibrary.pull(), 100, 100, 400, 300, 0, 0, 400, 300);
+	    
+	    JSObjectAdapter.$js("var image = document.getElementById('image')");
+	    JSObjectAdapter.$js("ctx.drawImage(image, 100, 100)");
 	  }
 	
 }
