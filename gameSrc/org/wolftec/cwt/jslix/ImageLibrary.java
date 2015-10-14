@@ -11,7 +11,6 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 public abstract class ImageLibrary {
 	
 	public static String buffer = null;
-	public String view = null;
 	public static int lx = 0;
 	public static int ly = 0;
 	
@@ -58,15 +57,15 @@ public abstract class ImageLibrary {
 		lx = img.width;
 		ly = img.height;
 		JSObjectAdapter.$js("this.buffer = new ArrayBuffer(imgData.data.length)");
-		JSObjectAdapter.$js("this.view = new Uint8Array(this.buffer)");
+		JSObjectAdapter.$js("var view = new Uint8Array(this.buffer)");
 		
 		for(int i = 0; i < imgData.data.$length(); i++){
-			JSObjectAdapter.$js("this.view[i] = imgData.data[i]");
-			JSObjectAdapter.$js("if(this.view[i] != 0) console.log('Color '+i+': '+this.view[i])");
+			JSObjectAdapter.$js("view[i] = imgData.data[i]");
+			JSObjectAdapter.$js("if(view[i] != 0) console.log('Color '+i+': '+view[i])");
 		}
 	}
 	
-	public static void pull(){
+	public static Canvas pull(){
 		Canvas canvas = (Canvas)Global.window.document.getElementById("store");
 		if(canvas == null){
 			canvas = (Canvas)Global.window.document.createElement("canvas");
@@ -94,17 +93,17 @@ public abstract class ImageLibrary {
 			ctx.putImageData(imgData, 0, 0);
 		}else{
 			CanvasImageData imgData = ctx.createImageData(lx, ly);
-			JSObjectAdapter.$js("this.view = new Uint8Array(this.buffer)");
+			JSObjectAdapter.$js("var view = new Uint8Array(this.buffer)");
 			
 			for(int i = 0; i < imgData.data.$length(); i++)
-				JSObjectAdapter.$js("imgData.data[i] = this.view[i]");
+				JSObjectAdapter.$js("imgData.data[i] = view[i]");
 			
 			ctx.putImageData(imgData, 0, 0);
 		}
-		
-		Canvas c = (Canvas)Global.window.document.getElementById("gameCanvas");
-		ctx = c.getContext("2d");
+		return canvas;
+		//Canvas c = (Canvas)Global.window.document.getElementById("gameCanvas");
+		//ctx = c.getContext("2d");
 
-		ctx.drawImage(canvas, 100, 100);
+		//ctx.drawImage(canvas, 100, 100);
 	}
 }
