@@ -1,14 +1,11 @@
 package org.wolftec.cwt.states.misc;
 
-import org.stjs.javascript.Global;
-import org.stjs.javascript.JSObjectAdapter;
-import org.stjs.javascript.dom.Image;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.jslix.ImageLibrary;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.system.Log;
 
 /* TempState.java
  * 
@@ -18,36 +15,42 @@ import org.wolftec.cwt.states.StateFlowData;
  * 
  * 2015.09.10
  */
-public class TempState extends AbstractState{
-	
-	@Override
-	public void onEnter(StateFlowData transition) {
-		
-		//This stores the image in a "<img id="image" .... >
-		ImageLibrary.store("../image/arrow.png");
-	}
-	
-	@Override
-	  public void render(int delta, GraphicManager gfx) {
-	    CanvasRenderingContext2D ctx = gfx.mainCtx;
+public class TempState extends AbstractState {
 
-	    //ctx.font = "24pt Arial";
+  private Log log;
 
-	    //ctx.fillStyle = "#CEF6D8";
-	    //ctx.fillRect(0, 0, gfx.absoluteScreenWidth(), gfx.absoluteScreenHeight());
+  @Override
+  public void onEnter(StateFlowData transition) {
 
-	    //ctx.fillStyle = "#1C1C1C";
-	    //ctx.fillText("CustomWars: Tactics (" + Constants.VERSION + ")", 30, 60, 400);
+    // This stores the image in a "<img id="image" .... >
+    ImageLibrary.store("../image/AW_BUILDINGS.png");
+  }
 
-	    //ctx.fillStyle = "#610B0B";
-	    //ctx.fillText("- Development Version -", 40, 100, 400);
+  @Override
+  public void render(int delta, GraphicManager gfx) {
+    CanvasRenderingContext2D ctx = gfx.mainCtx;
 
-	    //ctx.drawImage(ImageLibrary.pull(), 100, 100);
-	    //ctx.drawImage(ImageLibrary.pull(), 100, 100, 400, 300);
-	    //ctx.drawImage(ImageLibrary.pull(), 100, 100, 400, 300, 0, 0, 400, 300);
-	    
-	    JSObjectAdapter.$js("var image = document.getElementById('image')");
-	    JSObjectAdapter.$js("ctx.drawImage(image, 100, 100)");
-	  }
-	
+    gfx.mainCtx.clearRect(0, 0, gfx.absoluteScreenWidth(), gfx.absoluteScreenHeight());
+
+    // ctx.font = "24pt Arial";
+
+    // ctx.fillStyle = "#CEF6D8";
+    // ctx.fillRect(0, 0, gfx.absoluteScreenWidth(),
+    // gfx.absoluteScreenHeight());
+
+    // ctx.fillStyle = "#1C1C1C";
+    // ctx.fillText("CustomWars: Tactics (" + Constants.VERSION + ")", 30, 60,
+    // 400);
+
+    // ctx.fillStyle = "#610B0B";
+    // ctx.fillText("- Development Version -", 40, 100, 400);
+
+    ctx.drawImage(ImageLibrary.pull(), 100, 100);
+    // ctx.drawImage(ImageLibrary.pull(), 100, 100, 400, 300);
+    // ctx.drawImage(ImageLibrary.pull(), 100, 100, 400, 300, 0, 0, 400, 300);
+
+    // JSObjectAdapter.$js("var image = document.getElementById('image')");
+    // JSObjectAdapter.$js("ctx.drawImage(image, 100, 100)");
+  }
+
 }
