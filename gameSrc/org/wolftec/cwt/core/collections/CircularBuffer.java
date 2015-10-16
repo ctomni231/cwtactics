@@ -160,7 +160,7 @@ public class CircularBuffer<T> {
   public void fillByProvider(Function1<Integer, T> provider) {
     clear();
     int i = 0;
-    while (!isEmpty()) {
+    while (!isFull()) {
       push(provider.$invoke(i));
       i++;
     }

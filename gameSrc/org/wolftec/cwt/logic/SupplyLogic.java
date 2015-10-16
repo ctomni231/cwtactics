@@ -56,8 +56,11 @@ public class SupplyLogic implements Injectable {
    *         position (**x**,**y**), else **false**.
    */
   public boolean canRefillObjectAt(Unit supplier, int x, int y) {
+    if (!model.isValidPosition(x, y)) {
+      return false;
+    }
     Unit target = model.getTile(x, y).unit;
-    return (model.isValidPosition(x, y) && NullUtil.isPresent(target) && target.owner == supplier.owner);
+    return NullUtil.isPresent(target) && target.owner == supplier.owner;
   }
 
   /**

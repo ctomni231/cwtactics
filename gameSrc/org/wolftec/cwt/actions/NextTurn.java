@@ -66,7 +66,7 @@ public class NextTurn implements Action, ConfigurationProvider {
     if (network.isHost() && model.weatherLeftDays == 0) {
       ActionData weatherChangeData = actions.acquireData();
       changeWeather.fillData(uiData, weatherChangeData);
-      actions.localActionData(changeWeather.key(), weatherChangeData);
+      actions.localActionData(changeWeather.key(), weatherChangeData, false);
     }
 
     // TODO move somewhere else
@@ -89,7 +89,7 @@ public class NextTurn implements Action, ConfigurationProvider {
             ActionData healData = actions.acquireData();
             uiData.target.set(model, x, y);
             healUnit.fillData(uiData, healData);
-            actions.localActionData(healUnit.key(), healData);
+            actions.localActionData(healUnit.key(), healData, true);
           }
         }
       }
@@ -107,25 +107,25 @@ public class NextTurn implements Action, ConfigurationProvider {
                 ActionData supplyData = actions.acquireData();
                 uiData.target.set(model, x + 1, y);
                 refillSupply.fillData(uiData, supplyData);
-                actions.localActionData(refillSupply.key(), supplyData);
+                actions.localActionData(refillSupply.key(), supplyData, true);
               }
               if (supply.canRefillObjectAt(tile.unit, x - 1, y)) {
                 ActionData supplyData = actions.acquireData();
                 uiData.target.set(model, x - 1, y);
                 refillSupply.fillData(uiData, supplyData);
-                actions.localActionData(refillSupply.key(), supplyData);
+                actions.localActionData(refillSupply.key(), supplyData, true);
               }
               if (supply.canRefillObjectAt(tile.unit, x, y + 1)) {
                 ActionData supplyData = actions.acquireData();
                 uiData.target.set(model, x, y + 1);
                 refillSupply.fillData(uiData, supplyData);
-                actions.localActionData(refillSupply.key(), supplyData);
+                actions.localActionData(refillSupply.key(), supplyData, true);
               }
               if (supply.canRefillObjectAt(tile.unit, x, y - 1)) {
                 ActionData supplyData = actions.acquireData();
                 uiData.target.set(model, x, y - 1);
                 refillSupply.fillData(uiData, supplyData);
-                actions.localActionData(refillSupply.key(), supplyData);
+                actions.localActionData(refillSupply.key(), supplyData, true);
               }
             }
           }

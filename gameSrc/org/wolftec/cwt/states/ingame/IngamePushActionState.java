@@ -43,17 +43,16 @@ public class IngamePushActionState extends AbstractIngameState {
       ActionData moveEnd = actions.acquireData();
 
       moveStartAction.fillData(uiData, moveStart);
-      actions.localActionData(moveStartAction.key(), moveStart);
+      actions.localActionData(moveStartAction.key(), moveStart, false);
 
-      moveAppendAction.fillData(uiData, moveStart);
       while (!uiData.movePath.isEmpty()) {
         ActionData moveMedium = actions.acquireData();
         moveAppendAction.fillData(uiData, moveMedium);
-        actions.localActionData(moveAppendAction.key(), moveMedium);
+        actions.localActionData(moveAppendAction.key(), moveMedium, false);
       }
 
       moveEndAction.fillData(uiData, moveEnd);
-      actions.localActionData(moveEndAction.key(), moveEnd);
+      actions.localActionData(moveEndAction.key(), moveEnd, false);
     }
 
     if (!trapped) {
@@ -61,12 +60,12 @@ public class IngamePushActionState extends AbstractIngameState {
 
       ActionData actionData = actions.acquireData();
       action.fillData(uiData, actionData);
-      actions.localActionData(action.key(), actionData);
+      actions.localActionData(action.key(), actionData, false);
 
       if (!action.noAutoWait()) {
         ActionData waitData = actions.acquireData();
         waitAction.fillData(uiData, waitData);
-        actions.localActionData(waitAction.key(), waitData);
+        actions.localActionData(waitAction.key(), waitData, false);
       }
 
       if (action.multiStepAction()) {
@@ -79,7 +78,7 @@ public class IngamePushActionState extends AbstractIngameState {
     } else {
       ActionData waitData = actions.acquireData();
       waitAction.fillData(uiData, waitData);
-      actions.localActionData(waitAction.key(), waitData);
+      actions.localActionData(waitAction.key(), waitData, false);
     }
   }
 }

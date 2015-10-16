@@ -4,6 +4,11 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.core.input.InputProvider;
+import org.wolftec.cwt.core.util.NullUtil;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.model.gameround.Unit;
 
 public class AbstractIngameState extends AbstractState {
 
@@ -11,6 +16,8 @@ public class AbstractIngameState extends AbstractState {
 
   protected ActionManager       actions;
   protected UserInteractionData uiData;
+
+  protected ModelManager __model__;
 
   @Override
   public void update(StateFlowData flowData, int delta, InputProvider input) {
@@ -55,7 +62,11 @@ public class AbstractIngameState extends AbstractState {
     }
 
     if (isAtLeastOneDPadButtonPressed) {
-      log.info("cursor position [" + uiData.cursorX + ", " + uiData.cursorY + "]");
+      Tile tile = __model__.getTile(uiData.cursorX, uiData.cursorY);
+      Unit unit = tile.unit;
+      Property prop = tile.property;
+      log.info("cursor position [" + uiData.cursorX + ", " + uiData.cursorY + "] T[" + tile.type.ID + "] P[" + (NullUtil.isPresent(prop) ? prop.type.ID : "N/A")
+          + "] U[" + (NullUtil.isPresent(unit) ? unit.type.ID : "N/A") + "]");
     }
 
     // stateData.setCursorPosition(renderer.convertToTilePos(x),

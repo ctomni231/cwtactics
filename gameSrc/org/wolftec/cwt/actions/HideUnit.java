@@ -24,6 +24,11 @@ public class HideUnit implements Action {
   }
 
   @Override
+  public boolean condition(UserInteractionData data) {
+    return !data.source.unit.get().hidden;
+  }
+
+  @Override
   public void fillData(UserInteractionData interactionData, ActionData actionData) {
     actionData.p1 = interactionData.source.unitId;
   }

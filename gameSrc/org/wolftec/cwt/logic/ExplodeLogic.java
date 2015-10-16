@@ -1,7 +1,6 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
 
@@ -16,7 +15,7 @@ public class ExplodeLogic implements Injectable {
    * @return
    */
   public boolean canSelfDestruct(Unit unit) {
-    return NullUtil.isPresent(unit.type.suicide);
+    return unit.type.suicide.damage > 0 && unit.type.suicide.range > 0;
   }
 
   /**
