@@ -1,9 +1,9 @@
 package org.wolftec.cwt.test.tools;
 
 import org.wolftec.cwt.core.test.Test;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.ModelResetter;
-import org.wolftec.cwt.sheets.SheetManager;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.ModelResetter;
+import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public abstract class AbstractCwtTest implements Test {

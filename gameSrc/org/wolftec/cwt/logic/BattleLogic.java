@@ -1,61 +1,61 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.collections.MoveableMatrix;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
-import org.wolftec.cwt.model.GameMode;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Player;
-import org.wolftec.cwt.model.PositionData;
-import org.wolftec.cwt.model.Tile;
-import org.wolftec.cwt.model.Unit;
-import org.wolftec.cwt.sheets.AttackType;
-import org.wolftec.cwt.sheets.UnitType;
-import org.wolftec.cwt.system.MoveableMatrix;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.model.gameround.GameMode;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Player;
+import org.wolftec.cwt.model.gameround.PositionData;
+import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.model.sheets.types.AttackType;
+import org.wolftec.cwt.model.sheets.types.UnitType;
 
 public class BattleLogic implements Injectable {
 
   /**
    * Signal for units that cannot attack.
    */
-  public static final int  FIRETYPE_NONE       = 0;
+  public static final int FIRETYPE_NONE = 0;
 
   /**
    * Indirect fire type that can fire from range 2 to x.
    */
-  public static final int  FIRETYPE_INDIRECT   = 1;
+  public static final int FIRETYPE_INDIRECT = 1;
 
   /**
    * Direct fire type that can fire from range 1 to 1.
    */
-  public static final int  FIRETYPE_DIRECT     = 2;
+  public static final int FIRETYPE_DIRECT = 2;
 
   /**
    * Ballistic fire type that can fire from range 1 to x.
    */
-  public static final int  FIRETYPE_BALLISTIC  = 3;
+  public static final int FIRETYPE_BALLISTIC = 3;
 
-  private static final int ATTACKABLE          = 1;
+  private static final int ATTACKABLE = 1;
 
   private static final int MOVE_AND_ATTACKABLE = 2;
 
-  private static final int MOVABLE             = 3;
+  private static final int MOVABLE = 3;
 
-  private ModelManager     model;
-  private CommanderLogic   co;
-  private MoveLogic        move;
+  private ModelManager   model;
+  private CommanderLogic co;
+  private MoveLogic      move;
 
   public boolean hasMainWeapon(Unit unit) {
     AttackType attack = unit.type.attack;
     // TODO avoid null here
-    return Nullable.isPresent(attack) && Nullable.isPresent(attack.main_wp);
+    return NullUtil.isPresent(attack) && NullUtil.isPresent(attack.main_wp);
   }
 
   public boolean hasSecondaryWeapon(Unit unit) {
     AttackType attack = unit.type.attack;
     // TODO avoid null here
-    return Nullable.isPresent(attack) && Nullable.isPresent(attack.sec_wp);
+    return NullUtil.isPresent(attack) && NullUtil.isPresent(attack.sec_wp);
   }
 
   public int getFireType(Unit unit) {
@@ -105,8 +105,8 @@ public class BattleLogic implements Injectable {
   public boolean canUseMainWeapon(Unit attacker, Unit defender) {
     AttackType attack = attacker.type.attack;
     // TODO null prevention
-    if (Nullable.isPresent(attack.main_wp) && attacker.ammo > 0) {
-      if (Nullable.getOrElse(attack.main_wp.$get(defender.type.ID), 0) > 0) {
+    if (NullUtil.isPresent(attack.main_wp) && attacker.ammo > 0) {
+      if (NullUtil.getOrElse(attack.main_wp.$get(defender.type.ID), 0) > 0) {
         return true;
       }
     }
@@ -152,13 +152,13 @@ public class BattleLogic implements Injectable {
   public boolean calculateTargets(Unit unit, int x, int y, MoveableMatrix selection, boolean markRangeInSelection) {
     // TODO @ME REFA THIS MONSTER
 
-    boolean markInData = Nullable.isPresent(selection);
+    boolean markInData = NullUtil.isPresent(selection);
     int teamId = unit.owner.team;
     AttackType attackSheet = unit.type.attack;
     boolean targetInRange = false;
 
     // no battle unit ?
-    if (Nullable.isPresent(attackSheet)) {
+    if (NullUtil.isPresent(attackSheet)) {
       return false;
     }
 
@@ -216,7 +216,7 @@ public class BattleLogic implements Injectable {
             int dmg = Constants.INACTIVE;
 
             Unit tUnit = tile.unit;
-            if (Nullable.isPresent(tUnit) && tUnit.owner.team != teamId) {
+            if (NullUtil.isPresent(tUnit) && tUnit.owner.team != teamId) {
 
               dmg = getBaseDamageAgainst(unit, tUnit);
               if (dmg > 0) {
@@ -251,7 +251,7 @@ public class BattleLogic implements Injectable {
 
       selection.onAllValidPositions(0, Constants.MAX_SELECTION_RANGE, (cx, cy, cvalue) -> {
         Tile tile = model.getTile(cx, cy);
-        selection.setValue(x, y, (tile.visionTurnOwner > 0 && Nullable.isPresent(tile.unit) ? Constants.INACTIVE : MOVABLE));
+        selection.setValue(x, y, (tile.visionTurnOwner > 0 && NullUtil.isPresent(tile.unit) ? Constants.INACTIVE : MOVABLE));
       });
 
       selection.onAllValidPositions(MOVE_AND_ATTACKABLE, MOVABLE, (cx, cy, cvalue) -> {
@@ -283,7 +283,7 @@ public class BattleLogic implements Injectable {
   public int getBaseDamageAgainst(Unit attacker, Unit defender) {
     AttackType attack = attacker.type.attack;
 
-    if (!Nullable.isPresent(attack)) {
+    if (!NullUtil.isPresent(attack)) {
       return Constants.INACTIVE;
     }
 
@@ -292,22 +292,22 @@ public class BattleLogic implements Injectable {
 
     boolean withMainWp = false;
 
-    if (Nullable.isPresent(attack.main_wp)) {
+    if (NullUtil.isPresent(attack.main_wp)) {
       withMainWp = true;
     }
 
     // check main weapon
-    if (withMainWp && Nullable.isPresent(attack.main_wp) && attacker.ammo > 0) {
+    if (withMainWp && NullUtil.isPresent(attack.main_wp) && attacker.ammo > 0) {
       v = attack.main_wp.$get(tType);
-      if (Nullable.isPresent(v)) {
+      if (NullUtil.isPresent(v)) {
         return v;
       }
     }
 
     // check secondary weapon
-    if (Nullable.isPresent(attack.sec_wp)) {
+    if (NullUtil.isPresent(attack.sec_wp)) {
       v = attack.sec_wp.$get(tType);
-      if (Nullable.isPresent(v)) {
+      if (NullUtil.isPresent(v)) {
         return v;
       }
     }

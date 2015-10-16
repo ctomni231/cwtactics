@@ -7,23 +7,23 @@ import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.collections.CircularBuffer;
+import org.wolftec.cwt.core.collections.MoveableMatrix;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Player;
-import org.wolftec.cwt.model.PositionData;
-import org.wolftec.cwt.model.Tile;
-import org.wolftec.cwt.model.Unit;
-import org.wolftec.cwt.sheets.MoveType;
-import org.wolftec.cwt.sheets.SheetManager;
-import org.wolftec.cwt.sheets.UnitType;
-import org.wolftec.cwt.system.CircularBuffer;
-import org.wolftec.cwt.system.MoveableMatrix;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.core.util.NullUtil;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Player;
+import org.wolftec.cwt.model.gameround.PositionData;
+import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.model.sheets.SheetManager;
+import org.wolftec.cwt.model.sheets.types.MoveType;
+import org.wolftec.cwt.model.sheets.types.UnitType;
 
 public class MoveLogic implements Injectable {
 
-  private static final String NO_UNIT_AT_POSITION_ERROR = "NoUnitAtPosition";
+  /* --------------- start a-star API --------------- */
 
   @GlobalScope
   @STJSBridge
@@ -51,6 +51,10 @@ public class MoveLogic implements Injectable {
     int x;
     int y;
   }
+
+  /* --------------- end a-star API --------------- */
+
+  private static final String NO_UNIT_AT_POSITION_ERROR = "NoUnitAtPosition";
 
   public static final int MOVE_CODES_UP    = 0;
   public static final int MOVE_CODES_RIGHT = 1;
@@ -127,13 +131,13 @@ public class MoveLogic implements Injectable {
       v = movetype.costs.$get(tile.type.ID);
     }
 
-    if (Nullable.isPresent(v)) {
+    if (NullUtil.isPresent(v)) {
       return v;
     }
 
     // check wildcard
     v = movetype.costs.$get("*");
-    if (Nullable.isPresent(v)) {
+    if (NullUtil.isPresent(v)) {
       return v;
     }
 
@@ -159,7 +163,7 @@ public class MoveLogic implements Injectable {
 
     // check some other rules like fog and units
     Tile tile = model.getTile(x, y);
-    return (tile.visionTurnOwner == 0 || !Nullable.isPresent(tile.unit));
+    return (tile.visionTurnOwner == 0 || !NullUtil.isPresent(tile.unit));
   }
 
   /**
@@ -175,14 +179,10 @@ public class MoveLogic implements Injectable {
    * @param movePath
    */
   public void generateMovePath(int stx, int sty, int tx, int ty, MoveableMatrix selection, CircularBuffer<Integer> movePath) {
-    int dir;
-    Node cNode;
     int dsx = stx - selection.getCenterX();
     int dsy = sty - selection.getCenterY();
     int dtx = tx - selection.getCenterX();
     int dty = ty - selection.getCenterY();
-    int cx = stx;
-    int cy = sty;
 
     // generate path by the a-star library
     Array<Array<Integer>> matrix = selection.getDataArray();
@@ -193,13 +193,19 @@ public class MoveLogic implements Injectable {
 
     // extract data from generated path map and fill the movePath object
     movePath.clear();
+
+    int cx = stx;
+    int cy = sty;
     for (int i = 0, e = path.$length(); i < e; i++) {
-      cNode = path.$get(i);
+      Node cNode = path.$get(i);
 
       // add code to move path
       movePath.push(codeFromAtoB(cx, cy, cNode.x, cNode.y));
 
-      // update current position
+      /*
+       * we need to update the current position to generate a correct move code
+       * in the next iteration step
+       */
       cx = cNode.x;
       cy = cNode.y;
     }
@@ -444,7 +450,7 @@ public class MoveLogic implements Injectable {
       for (int i = 0, e = toBeChecked.$length(); i < e; i += 3) {
         int leftPoints = toBeChecked.$get(i + 2);
 
-        if (Nullable.isPresent(leftPoints) && leftPoints != Constants.INACTIVE) {
+        if (NullUtil.isPresent(leftPoints) && leftPoints != Constants.INACTIVE) {
           if (cHigh == -1 || leftPoints > cHigh) {
             cHigh = leftPoints;
             cHighIndex = i;
@@ -673,7 +679,7 @@ public class MoveLogic implements Injectable {
 
       // movable when tile is empty or the last tile in the way while
       // the unit on the tile belongs to the movers owner
-      if (!Nullable.isPresent(tileUnit) || (tileUnit.owner == unit.owner && i == e - 1)) {
+      if (!NullUtil.isPresent(tileUnit) || (tileUnit.owner == unit.owner && i == e - 1)) {
         lastX = cX;
         lastY = cY;
         lastFuel = fuelUsed;

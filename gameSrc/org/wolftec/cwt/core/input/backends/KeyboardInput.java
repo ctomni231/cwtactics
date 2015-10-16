@@ -5,10 +5,10 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.Deactivatable;
+import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.core.util.NullUtil;
 
 public class KeyboardInput implements Injectable, Deactivatable {
 
@@ -49,9 +49,10 @@ public class KeyboardInput implements Injectable, Deactivatable {
    * @return the character for the given character code.
    */
   private String codeToChar(int characterCode) {
-    String value;
+    NullUtil.mustBePresent(characterCode, "character code");
 
-    switch (Nullable.getOrThrow(characterCode, "IllegalArgument: character code")) {
+    String value;
+    switch (characterCode) {
       case 6:
         value = "Mac";
         break;
@@ -249,7 +250,7 @@ public class KeyboardInput implements Injectable, Deactivatable {
         break;
 
       default:
-        value = Nullable.getOrElse(JSObjectAdapter.$js("String.fromCharCode(characterCode)"), "UNKNOWN");
+        value = NullUtil.getOrElse(JSObjectAdapter.$js("String.fromCharCode(characterCode)"), "UNKNOWN");
     }
 
     return value.toUpperCase();

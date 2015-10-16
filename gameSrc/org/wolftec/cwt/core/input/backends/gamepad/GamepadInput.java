@@ -3,15 +3,15 @@ package org.wolftec.cwt.core.input.backends.gamepad;
 import org.stjs.javascript.Array;
 import org.wolftec.cwt.core.Deactivatable;
 import org.wolftec.cwt.core.FrameTickListener;
+import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.core.util.NullUtil;
 
 public class GamepadInput implements Injectable, Deactivatable, FrameTickListener {
 
-  private Log            log;
-  private InputManager   input;
+  private Log          log;
+  private InputManager input;
 
   private boolean        enabled;
   private Array<Integer> prevTimestamps;
@@ -54,9 +54,11 @@ public class GamepadInput implements Injectable, Deactivatable, FrameTickListene
 
     for (int i = 0; i < 4; i++) {
       Gamedpad gamepad = gamepads.$get(i);
-      if (!Nullable.isPresent(gamepad)) continue;
+      if (!NullUtil.isPresent(gamepad)) {
+        continue;
+      }
 
-      if (Nullable.getOrElse(prevTimestamps.$get(i), 0) == gamepad.timestamp) continue;
+      if (NullUtil.getOrElse(prevTimestamps.$get(i), 0) == gamepad.timestamp) continue;
       prevTimestamps.$set(i, gamepad.timestamp);
 
       checkButton(gamepad, 0);

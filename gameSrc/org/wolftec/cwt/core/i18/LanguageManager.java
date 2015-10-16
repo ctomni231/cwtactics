@@ -2,9 +2,9 @@ package org.wolftec.cwt.core.i18;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
+import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.core.util.NullUtil;
 
 public class LanguageManager implements Injectable {
 
@@ -16,7 +16,7 @@ public class LanguageManager implements Injectable {
   /**
    * The current active language.
    */
-  Map<String, String>              selected;
+  Map<String, String> selected;
 
   public LanguageManager() {
     languages = JSCollections.$map();
@@ -28,15 +28,10 @@ public class LanguageManager implements Injectable {
    * and its values the localized string for the key.
    */
   public void registerLanguage(String key, Map<String, String> obj) {
-    Nullable.getOrThrow(key, "IllegalArgumentException: NoKey");
-    Nullable.getOrThrow(obj, "IllegalArgumentException: NoData");
-
-    if (Nullable.isPresent(languages.$get(key))) {
-      JsUtil.throwError("IllegalArgumentException: KeyAlreadyRegistered");
-    }
-
+    NullUtil.mustNotBePresent(languages.$get(key), "language for " + key + " is already registered");
     Map<String, String> newLang = JSCollections.$map();
-    JsUtil.forEachMapValue(obj, (skey, value) -> {
+
+    ObjectUtil.forEachMapValue(obj, (skey, value) -> {
       newLang.$put(skey, value);
     });
 
@@ -49,20 +44,22 @@ public class LanguageManager implements Injectable {
    * @return true if a language with the given key is loaded, else false
    */
   public boolean hasLanguage(String key) {
-    return Nullable.isPresent(languages.$get(key));
+    return NullUtil.isPresent(languages.$get(key));
   }
 
   /**
    * Selects a language by it's key.
    */
   public void selectLanguage(String key) {
-    selected = Nullable.getOrThrow(languages.$get(key), "UnknownLanguage");
+    Map<String, String> language = languages.$get(key);
+    NullUtil.mustBePresent(language, "unknown language");
+    selected = language;
   }
 
   /**
    * Returns the localized string of a given identifier.
    */
   public String forKey(String key) {
-    return Nullable.getOrElse(selected.$get(key), key);
+    return NullUtil.getOrElse(selected.$get(key), key);
   }
 }

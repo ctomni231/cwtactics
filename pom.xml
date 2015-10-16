@@ -58,6 +58,7 @@
       <excludes>
        <exclude>${test.exclude.pattern}</exclude>
        <exclude>**/gameold/**/*.java</exclude>
+       <!-- <exclude>**/wolftec/**/*.java</exclude> -->
       </excludes>
 
      </configuration>

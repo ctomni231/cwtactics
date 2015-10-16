@@ -1,8 +1,8 @@
 package org.wolftec.cwt.core.input;
 
 import org.stjs.javascript.Map;
+import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.persistence.SaveAppdataHandler;
-import org.wolftec.cwt.core.util.JsUtil;
 
 /**
  * This module saves and loads the input mapping of the game.
@@ -13,7 +13,7 @@ public class MappingLoader implements SaveAppdataHandler<Map<String, String>> {
 
   @Override
   public void onAppLoad(Map<String, String> data) {
-    JsUtil.forEachMapValue(data, (button, action) -> input.setButtonMapping(button, action));
+    ObjectUtil.forEachMapValue(data, (button, action) -> input.setButtonMapping(button, action));
   }
 
   @Override

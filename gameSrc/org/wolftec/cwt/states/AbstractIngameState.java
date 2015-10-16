@@ -1,9 +1,9 @@
 package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.core.input.InputProvider;
-import org.wolftec.cwt.system.Log;
 
 public class AbstractIngameState extends AbstractState {
 

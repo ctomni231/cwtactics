@@ -6,17 +6,16 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.core.env.Features;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.persistence.PersistenceManager;
 import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.RequestUtil.ArrayBufferRespone;
-import org.wolftec.cwt.environment.Features;
-import org.wolftec.cwt.system.Nullable;
-import org.wolftec.cwt.system.Option;
 
 public class AudioManager implements Injectable {
 
-  /* ---------------- START OF WEB AUDIO API ---------------- */
+  /* ---------------- start web audio API ---------------- */
   @GlobalScope
   @STJSBridge
   static class Window {
@@ -79,23 +78,23 @@ public class AudioManager implements Injectable {
 
   }
 
-  /* ---------------- END OF WEB AUDIO API ---------------- */
+  /* ---------------- end web audio API ---------------- */
 
-  public static final String       MUSIC_KEY = "MUSIC_";
+  public static final String MUSIC_KEY = "MUSIC_";
 
-  private AudioContext             audioContext;
-  private GainNode                 musicNode;
-  private GainNode                 sfxNode;
-  private GainNode                 nullNode;
+  private AudioContext audioContext;
+  private GainNode     musicNode;
+  private GainNode     sfxNode;
+  private GainNode     nullNode;
 
-  private Features                 features;
-  private PersistenceManager       persistence;
+  private Features           features;
+  private PersistenceManager persistence;
 
   private Map<String, AudioBuffer> buffer;
 
-  private boolean                  musicInLoad;
-  private AudioBufferSourceNode    musicConnector;
-  private String                   musicIdentifier;
+  private boolean               musicInLoad;
+  private AudioBufferSourceNode musicConnector;
+  private String                musicIdentifier;
 
   @Override
   public void onConstruction() {
@@ -107,7 +106,7 @@ public class AudioManager implements Injectable {
     buffer = JSCollections.$map();
 
     // construct new context
-    if (Nullable.isPresent(Window.AudioContext)) {
+    if (NullUtil.isPresent(Window.AudioContext)) {
       try {
         audioContext = ClassUtil.newInstance(Window.AudioContext);
 
@@ -141,23 +140,23 @@ public class AudioManager implements Injectable {
   }
 
   public float getSfxVolume() {
-    return Option.ofNullable(sfxNode).orElse(nullNode).gain.value;
+    return NullUtil.getOrElse(musicNode, nullNode).gain.value;
   }
 
   public float getMusicVolume() {
-    return Option.ofNullable(musicNode).orElse(nullNode).gain.value;
+    return NullUtil.getOrElse(musicNode, nullNode).gain.value;
   }
 
   // TODO use channel enumeration here
 
   public void setSfxVolume(float vol) {
-    if (Nullable.isPresent(sfxNode)) {
+    if (NullUtil.isPresent(sfxNode)) {
       sfxNode.gain.value = Math.min(Math.max(vol, 0), 1);
     }
   }
 
   public void setMusicVolume(float vol) {
-    if (Nullable.isPresent(musicNode)) {
+    if (NullUtil.isPresent(musicNode)) {
       musicNode.gain.value = Math.min(Math.max(vol, 0), 1);
     }
   }
@@ -179,13 +178,13 @@ public class AudioManager implements Injectable {
    * @param id
    */
   public void unloadBuffer(String id) {
-    if (Nullable.isPresent(buffer.$get(id))) {
+    if (NullUtil.isPresent(buffer.$get(id))) {
       buffer.$delete(id);
     }
   }
 
   public boolean isBuffered(String id) {
-    return Nullable.isPresent(buffer.$get(id));
+    return NullUtil.isPresent(buffer.$get(id));
   }
 
   /**
@@ -193,7 +192,7 @@ public class AudioManager implements Injectable {
    * restricted system like iOS.
    */
   public void playNullSound() {
-    if (Nullable.isPresent(audioContext)) {
+    if (NullUtil.isPresent(audioContext)) {
       AudioBufferSourceNode source = audioContext.createBufferSource();
       source.buffer = audioContext.createBuffer(1, 1, 22050);
       source.connect(audioContext.destination);
@@ -209,7 +208,7 @@ public class AudioManager implements Injectable {
   // @return {*}
   //
   public AudioBufferSourceNode playSound(String id, boolean loop) {
-    if (!Nullable.isPresent(audioContext)) {
+    if (!NullUtil.isPresent(audioContext)) {
       return null;
     }
 
@@ -218,7 +217,7 @@ public class AudioManager implements Injectable {
   }
 
   public boolean playMusic(String id) {
-    if (!Nullable.isPresent(musicNode) || musicInLoad) {
+    if (!NullUtil.isPresent(musicNode) || musicInLoad) {
       return false;
     }
 
@@ -228,7 +227,7 @@ public class AudioManager implements Injectable {
     }
 
     // stop old music
-    if (Nullable.isPresent(musicConnector)) {
+    if (NullUtil.isPresent(musicConnector)) {
       if (!stopMusic()) {
         // TODO error
       }
@@ -248,7 +247,7 @@ public class AudioManager implements Injectable {
   }
 
   public boolean stopMusic() {
-    if (!Nullable.isPresent(musicNode) || musicInLoad) {
+    if (!NullUtil.isPresent(musicNode) || musicInLoad) {
       return false;
     }
 

@@ -5,7 +5,7 @@ import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.MoveLogic;
-import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.StateFlowData;
 
 public class MoveEnd implements Action {

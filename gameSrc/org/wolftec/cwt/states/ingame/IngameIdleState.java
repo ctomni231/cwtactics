@@ -1,13 +1,13 @@
 package org.wolftec.cwt.states.ingame;
 
+import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.logic.BattleLogic;
 import org.wolftec.cwt.logic.MoveLogic;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Unit;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.system.Option;
 
 public class IngameIdleState extends AbstractIngameState {
 

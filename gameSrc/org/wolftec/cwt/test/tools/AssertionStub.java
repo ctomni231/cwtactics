@@ -1,7 +1,7 @@
 package org.wolftec.cwt.test.tools;
 
 import org.wolftec.cwt.core.test.Assert;
-import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class AssertionStub {

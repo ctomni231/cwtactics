@@ -2,8 +2,9 @@ package org.wolftec.cwt.environment;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.core.Log;
+import org.wolftec.cwt.core.env.Features;
 import org.wolftec.cwt.core.loading.GameLoader;
-import org.wolftec.cwt.system.Log;
 
 public class CheckSystem implements GameLoader {
 

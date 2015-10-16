@@ -5,7 +5,8 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.XMLHttpRequest;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.system.Option;
+import org.wolftec.cwt.core.Option;
+import org.wolftec.cwt.core.annotations.OptionalField;
 
 /**
  * Utility class which contains a lot of browser environment related functions.
@@ -18,7 +19,11 @@ public abstract class RequestUtil {
   }
 
   public static class ResponseData<T> {
-    public Option<T>      data;
+
+    @OptionalField
+    public Option<T> data;
+
+    @OptionalField
     public Option<String> error;
   }
 

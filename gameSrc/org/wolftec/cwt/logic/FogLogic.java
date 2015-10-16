@@ -2,12 +2,12 @@ package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Player;
-import org.wolftec.cwt.model.Property;
-import org.wolftec.cwt.model.Tile;
-import org.wolftec.cwt.model.Unit;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.core.util.NullUtil;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Player;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.model.gameround.Unit;
 
 public class FogLogic implements Injectable {
 
@@ -144,14 +144,14 @@ public class FogLogic implements Injectable {
 
   public void removeUnitVision(int x, int y, Player owner) {
     Unit unit = model.getTile(x, y).unit;
-    if (!Nullable.isPresent(owner)) owner = unit.owner;
+    if (!NullUtil.isPresent(owner)) owner = unit.owner;
 
     removeVision(x, y, owner, unit.type.vision);
   }
 
   public void removePropertyVision(int x, int y, Player owner) {
     Property prop = model.getTile(x, y).property;
-    if (!Nullable.isPresent(owner)) owner = prop.owner;
+    if (!NullUtil.isPresent(owner)) owner = prop.owner;
 
     removeVision(x, y, owner, prop.type.vision);
   }
@@ -165,14 +165,14 @@ public class FogLogic implements Injectable {
 
   public void addUnitVision(int x, int y, Player owner) {
     Unit unit = model.getTile(x, y).unit;
-    if (!Nullable.isPresent(owner)) owner = unit.owner;
+    if (!NullUtil.isPresent(owner)) owner = unit.owner;
 
     addVision(x, y, owner, unit.type.vision);
   }
 
   public void addPropertyVision(int x, int y, Player owner) {
     Property prop = model.getTile(x, y).property;
-    if (!Nullable.isPresent(owner)) owner = prop.owner;
+    if (!NullUtil.isPresent(owner)) owner = prop.owner;
 
     addVision(x, y, owner, prop.type.vision);
   }

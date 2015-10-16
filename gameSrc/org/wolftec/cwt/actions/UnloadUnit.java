@@ -8,10 +8,10 @@ import org.wolftec.cwt.core.action.ActionTargetMode;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.logic.TransportLogic;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Unit;
-import org.wolftec.cwt.sheets.MoveType;
-import org.wolftec.cwt.sheets.SheetManager;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.model.sheets.SheetManager;
+import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 

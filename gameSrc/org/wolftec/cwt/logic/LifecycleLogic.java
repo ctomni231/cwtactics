@@ -3,12 +3,12 @@ package org.wolftec.cwt.logic;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Player;
-import org.wolftec.cwt.model.Property;
-import org.wolftec.cwt.model.Tile;
-import org.wolftec.cwt.model.Unit;
-import org.wolftec.cwt.sheets.SheetManager;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Player;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.model.sheets.SheetManager;
 
 public class LifecycleLogic implements Injectable {
 

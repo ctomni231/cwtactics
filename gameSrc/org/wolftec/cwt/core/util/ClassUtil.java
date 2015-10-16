@@ -9,7 +9,8 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.core.collections.ListUtil;
+import org.wolftec.cwt.core.collections.ObjectUtil;
 
 /**
  * Utility class to handle several low level stuff with stjs based objects.
@@ -47,7 +48,7 @@ public abstract class ClassUtil {
   public static void forEachComplexPropertyOfInstance(Object object, Callback2<String, Object> callback) {
     Map<String, ?> types = (Map<String, ?>) JSObjectAdapter.$get(JSObjectAdapter.$constructor(object), PARAM_TYPE_DESCRIPTION);
 
-    JsUtil.forEachMapValue(types, (prop, typeData) -> {
+    ObjectUtil.forEachMapValue(types, (prop, typeData) -> {
 
       /*
        * Because STJS collects static class members in the type description
@@ -70,7 +71,7 @@ public abstract class ClassUtil {
    *          (class, propertyName)
    */
   public static void forEachClassProperty(Class<?> clazz, Callback2<String, Object> callback) {
-    JsUtil.forEachMapValue(JSObjectAdapter.$prototype(clazz), (prop, defValue) -> {
+    ObjectUtil.forEachMapValue(JSObjectAdapter.$prototype(clazz), (prop, defValue) -> {
 
       /*
        * normal iteration through the class prototype object map will return the
@@ -157,11 +158,11 @@ public abstract class ClassUtil {
    */
   public static void searchClassPropertyType(Class<?> clazz, String property, Callback1<Class<?>> foundCb, Callback0 notFoundCb) {
     Object classDesc = JSObjectAdapter.$get(clazz, PARAM_TYPE_DESCRIPTION);
-    String typeName = (String) JSObjectAdapter.$get(classDesc, property);
+    String typeName = ObjectUtil.getObjectProperty(classDesc, property);
 
-    if (Nullable.isPresent(typeName)) {
+    if (NullUtil.isPresent(typeName)) {
       if (JSGlobal.typeof(typeName) != "string") {
-        typeName = (String) JSObjectAdapter.$get(typeName, "name");
+        typeName = ObjectUtil.getObjectProperty(typeName, "name");
       }
 
       Array<String> namePieces = JSStringAdapter.split(typeName, ".");
@@ -180,15 +181,16 @@ public abstract class ClassUtil {
    * @param property
    * @return type of the given property
    */
-  public static void searchClassPropertySubType(Class<?> classObject, String property, int genericTypeIndex, Callback1<Class<?>> foundCb, Callback0 notFoundCb) {
+  public static void searchClassPropertySubType(Class<?> classObject, String property, int genericTypeIndex, Callback1<Class<?>> foundCb,
+      Callback0 notFoundCb) {
     Object classDesc = JSObjectAdapter.$get(classObject, PARAM_TYPE_DESCRIPTION);
-    String typeName = (String) JSObjectAdapter.$get(classDesc, property);
+    String typeName = ObjectUtil.getObjectProperty(classDesc, property);
 
-    if (Nullable.isPresent(typeName) || JSGlobal.typeof(typeName) == "string") {
+    if (NullUtil.isPresent(typeName) || JSGlobal.typeof(typeName) == "string") {
       Array<String> generics = (Array<String>) JSObjectAdapter.$get(typeName, "arguments");
-      typeName = generics.$get(genericTypeIndex);
-      if (JSGlobal.typeof(typeName) == "string") {
-        getTypeByNamespace(JSStringAdapter.split(typeName, "."), foundCb, notFoundCb);
+      String typeName2 = generics.$get(genericTypeIndex);
+      if (JSGlobal.typeof(typeName2) == "string") {
+        getTypeByNamespace(JSStringAdapter.split(typeName2, "."), foundCb, notFoundCb);
 
       } else {
         /* type is too complex -> not supported yet */
@@ -210,8 +212,8 @@ public abstract class ClassUtil {
     Object result = Global.window;
 
     for (int i = 0; i < namePieces.$length(); i++) {
-      result = JSObjectAdapter.$get(result, namePieces.$get(i));
-      if (!Nullable.isPresent(result)) {
+      result = ObjectUtil.getObjectProperty(result, namePieces.$get(i));
+      if (!NullUtil.isPresent(result)) {
         notFoundCb.$invoke();
         return;
       }
@@ -230,7 +232,7 @@ public abstract class ClassUtil {
   public static void forEachClassOfNamespace(Object namespace, Callback2<String, Class<?>> callback) {
     ListUtil.forEachArrayValue(JsUtil.objectKeys(namespace), (index, className) -> {
       Class<?> classObject = (Class<?>) JSObjectAdapter.$get(namespace, className);
-      if (Nullable.isPresent(JSObjectAdapter.$get(classObject, PARAM_TYPE_DESCRIPTION))) {
+      if (NullUtil.isPresent(ObjectUtil.getObjectProperty(classObject, PARAM_TYPE_DESCRIPTION))) {
         callback.$invoke(className, classObject);
       }
     });

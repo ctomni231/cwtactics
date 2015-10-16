@@ -3,9 +3,9 @@ package org.wolftec.cwt.core.persistence;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
+import org.wolftec.cwt.core.Option;
+import org.wolftec.cwt.core.env.Features;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.environment.Features;
-import org.wolftec.cwt.system.Option;
 
 public class PersistenceManager implements Injectable {
 

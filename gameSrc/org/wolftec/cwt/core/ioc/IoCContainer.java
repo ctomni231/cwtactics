@@ -5,11 +5,11 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
+import org.wolftec.cwt.core.Log;
+import org.wolftec.cwt.core.collections.ListUtil;
+import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.util.ClassUtil;
-import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.core.util.ListUtil;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.core.util.NullUtil;
 
 public class IoCContainer {
 
@@ -19,13 +19,19 @@ public class IoCContainer {
 
   private Map<String, Injectable> managedObjects;
 
+  public <T extends Injectable> T getManagedObjectByType(Class<T> clazz) {
+    String className = ClassUtil.getClassName(clazz);
+    T managedObject = (T) managedObjects.$get(className);
+    NullUtil.mustBePresent(managedObject, "unknown state " + className);
+    return managedObject;
+  }
+
   public void initByConfig(IoCConfiguration config) {
     if (config.namespaces.indexOf("wEng") == -1) {
       config.namespaces.push("wEng");
     }
 
-    Nullable.ifPresent(managedObjects, (value) -> JsUtil.throwError("AlreadyInitialized"));
-
+    NullUtil.mustNotBePresent(managedObjects, "already initialized");
     managedObjects = JSCollections.$map();
 
     /*
@@ -44,13 +50,34 @@ public class IoCContainer {
   }
 
   private void callConstructionEvent() {
-    JsUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
+    ObjectUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
       instance.onConstruction();
     });
   }
 
+  private void createManagedObjects(IoCConfiguration config) {
+    ListUtil.forEachArrayValue(config.namespaces, (nsIndex, nsName) -> {
+      Object namespace = JSObjectAdapter.$get(Global.window, nsName);
+
+      ClassUtil.forEachClassOfNamespace(namespace, (className, classObject) -> {
+        boolean isManaged = ClassUtil.classImplementsInterface(classObject, Injectable.class);
+        boolean isAbstract = ClassUtil.getClassName(classObject).startsWith(NON_IOC_CANDIDATE_CLASSNAMEPART);
+
+        if (isManaged && !isAbstract) {
+          NullUtil.mustNotBePresent(managedObjects.$get(className), "already managed " + className);
+
+          /*
+           * casting is okay here because isManaged proved that classObject is
+           * an object of type Injectable
+           */
+          managedObjects.$put(className, (Injectable) ClassUtil.newInstance(classObject));
+        }
+      });
+    });
+  }
+
   private void handleManagedDependencies() {
-    JsUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
+    ObjectUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
       ClassUtil.forEachComplexPropertyOfInstance(instance, (prop, _ignored) -> {
         ClassUtil.searchClassPropertyType(ClassUtil.getClass(instance), prop, (propertyType) -> {
 
@@ -84,34 +111,22 @@ public class IoCContainer {
     });
   }
 
+  private void prepareNamespaces(IoCConfiguration config) {
+    ListUtil.forEachArrayValue(config.namespaces, (nsIndex, nsName) -> {
+      ClassUtil.initClassNames(JSObjectAdapter.$get(Global.window, nsName));
+    });
+  }
+
   private void tryInjectArrayOfManagedObjects(Injectable instance, String prop) {
     ClassUtil.searchClassPropertySubType(ClassUtil.getClass(instance), prop, 0, (propertyGenericType) -> {
       Array<Injectable> list = JSCollections.$array();
-      JsUtil.forEachMapValue(managedObjects, (subInstanceName, subInstance) -> {
+      ObjectUtil.forEachMapValue(managedObjects, (subInstanceName, subInstance) -> {
         if (ClassUtil.classImplementsInterface(ClassUtil.getClass(subInstance), propertyGenericType)) {
           log.info("Injecting instance of " + subInstanceName + " into the list " + ClassUtil.getClassName(instance) + "." + prop);
           list.push(subInstance);
         }
       });
       JSObjectAdapter.$put(instance, prop, list);
-    } , () -> {
-
-      /*
-       * leave property as it is because it seems not to be managed or known
-       */
-    });
-  }
-
-  private void tryInjectMapOfManagedObjects(Injectable instance, String prop) {
-    ClassUtil.searchClassPropertySubType(ClassUtil.getClass(instance), prop, 1, (propertyGenericType) -> {
-      Map<String, Injectable> map = JSCollections.$map();
-      JsUtil.forEachMapValue(managedObjects, (subInstanceName, subInstance) -> {
-        if (ClassUtil.classImplementsInterface(ClassUtil.getClass(subInstance), propertyGenericType)) {
-          log.info("Injecting instance of " + subInstanceName + " into the map " + ClassUtil.getClassName(instance) + "." + prop);
-          map.$put(subInstanceName, subInstance);
-        }
-      });
-      JSObjectAdapter.$put(instance, prop, map);
     } , () -> {
 
       /*
@@ -133,41 +148,29 @@ public class IoCContainer {
   private boolean tryInjectManagedObject(Injectable instance, String prop, Class<?> propertyType) {
     if (ClassUtil.classImplementsInterface(propertyType, Injectable.class)) {
       String propertyTypeName = ClassUtil.getClassName(propertyType);
-      JSObjectAdapter.$put(instance, prop, Nullable.getOrThrow(managedObjects.$get(propertyTypeName), "MissingInjectable: " + propertyTypeName));
+      Injectable managedObject = managedObjects.$get(propertyTypeName);
+      NullUtil.mustBePresent(managedObject, "missing injectable " + propertyTypeName);
+      JSObjectAdapter.$put(instance, prop, managedObject);
       return true;
     }
     return false;
   }
 
-  private void prepareNamespaces(IoCConfiguration config) {
-    ListUtil.forEachArrayValue(config.namespaces, (nsIndex, nsName) -> {
-      ClassUtil.initClassNames(JSObjectAdapter.$get(Global.window, nsName));
-    });
-  }
-
-  private void createManagedObjects(IoCConfiguration config) {
-    ListUtil.forEachArrayValue(config.namespaces, (nsIndex, nsName) -> {
-      Object namespace = JSObjectAdapter.$get(Global.window, nsName);
-
-      ClassUtil.forEachClassOfNamespace(namespace, (className, classObject) -> {
-        boolean isManaged = ClassUtil.classImplementsInterface(classObject, Injectable.class);
-        boolean isAbstract = ClassUtil.getClassName(classObject).startsWith(NON_IOC_CANDIDATE_CLASSNAMEPART);
-
-        if (isManaged && !isAbstract) {
-          Nullable.ifPresent(managedObjects.$get(className), (value) -> JsUtil.throwError("ClassAlreadyManaged: " + className));
-
-          /*
-           * casting is okay here because isManaged proved that classObject is
-           * an object of type Injectable
-           */
-          managedObjects.$put(className, (Injectable) ClassUtil.newInstance(classObject));
+  private void tryInjectMapOfManagedObjects(Injectable instance, String prop) {
+    ClassUtil.searchClassPropertySubType(ClassUtil.getClass(instance), prop, 1, (propertyGenericType) -> {
+      Map<String, Injectable> map = JSCollections.$map();
+      ObjectUtil.forEachMapValue(managedObjects, (subInstanceName, subInstance) -> {
+        if (ClassUtil.classImplementsInterface(ClassUtil.getClass(subInstance), propertyGenericType)) {
+          log.info("Injecting instance of " + subInstanceName + " into the map " + ClassUtil.getClassName(instance) + "." + prop);
+          map.$put(subInstanceName, subInstance);
         }
       });
-    });
-  }
+      JSObjectAdapter.$put(instance, prop, map);
+    } , () -> {
 
-  public <T extends Injectable> T getManagedObjectByType(Class<T> clazz) {
-    String className = ClassUtil.getClassName(clazz);
-    return Nullable.getOrThrow((T) managedObjects.$get(className), "UnknownState: " + className);
+      /*
+       * leave property as it is because it seems not to be managed or known
+       */
+    });
   }
 }

@@ -3,14 +3,14 @@ package org.wolftec.cwt.states.ingame;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.input.InputProvider;
+import org.wolftec.cwt.logic.CaptureLogic;
 import org.wolftec.cwt.logic.TurnLogic;
-import org.wolftec.cwt.model.GameMode;
-import org.wolftec.cwt.model.MapData;
-import org.wolftec.cwt.model.MapManager;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.ModelResetter;
-import org.wolftec.cwt.model.Property;
-import org.wolftec.cwt.sheets.SheetManager;
+import org.wolftec.cwt.model.gameround.GameMode;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.ModelResetter;
+import org.wolftec.cwt.model.mapfile.MapData;
+import org.wolftec.cwt.model.mapfile.MapManager;
+import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UiDataMapConfiguration;
@@ -106,7 +106,7 @@ public class IngameEnterState extends AbstractState {
 
     model.forEachProperty((index, property) -> {
 
-      property.points = Property.CAPTURE_POINTS;
+      property.points = CaptureLogic.CAPTURE_POINTS;
 
       if (index >= mapData.player) {
         property.owner = null;/* TODO */

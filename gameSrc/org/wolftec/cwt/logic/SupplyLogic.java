@@ -1,11 +1,11 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Property;
-import org.wolftec.cwt.model.Tile;
-import org.wolftec.cwt.model.Unit;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.core.util.NullUtil;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.model.gameround.Unit;
 
 public class SupplyLogic implements Injectable {
 
@@ -57,7 +57,7 @@ public class SupplyLogic implements Injectable {
    */
   public boolean canRefillObjectAt(Unit supplier, int x, int y) {
     Unit target = model.getTile(x, y).unit;
-    return (model.isValidPosition(x, y) && Nullable.isPresent(target) && target.owner == supplier.owner);
+    return (model.isValidPosition(x, y) && NullUtil.isPresent(target) && target.owner == supplier.owner);
   }
 
   /**

@@ -3,7 +3,7 @@ package org.wolftec.cwt.actions;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
-import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 

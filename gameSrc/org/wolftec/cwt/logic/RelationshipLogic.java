@@ -1,10 +1,10 @@
 package org.wolftec.cwt.logic;
 
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Player;
-import org.wolftec.cwt.model.Tile;
-import org.wolftec.cwt.model.Unit;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Player;
+import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.model.gameround.Unit;
 
 public class RelationshipLogic {
 

@@ -2,7 +2,7 @@ package org.wolftec.cwt.core.config;
 
 import org.stjs.javascript.annotation.Native;
 import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.system.Option;
+import org.wolftec.cwt.core.util.NullUtil;
 
 /**
  * Configuration object which contains a configurable value.
@@ -23,7 +23,7 @@ public class ConfigurableValue {
     this.min = min;
     this.max = max;
     this.def = defaultValue;
-    this.step = Option.ofNullable(step).orElse(1);
+    this.step = NullUtil.getOrElse(step, 1);
     resetValue();
   }
 

@@ -11,7 +11,7 @@ import org.wolftec.cwt.logic.FogLogic;
 import org.wolftec.cwt.logic.SupplyLogic;
 import org.wolftec.cwt.logic.TurnLogic;
 import org.wolftec.cwt.logic.WeatherLogic;
-import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.states.UserInteractionData;

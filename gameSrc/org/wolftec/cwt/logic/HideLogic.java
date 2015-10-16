@@ -2,7 +2,7 @@ package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.model.Unit;
+import org.wolftec.cwt.model.gameround.Unit;
 
 public class HideLogic implements Injectable {
 

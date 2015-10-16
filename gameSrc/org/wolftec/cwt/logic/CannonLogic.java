@@ -1,21 +1,21 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.collections.MoveableMatrix;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Player;
-import org.wolftec.cwt.model.Property;
-import org.wolftec.cwt.model.Tile;
-import org.wolftec.cwt.model.Unit;
-import org.wolftec.cwt.sheets.PropertyType;
-import org.wolftec.cwt.system.MoveableMatrix;
-import org.wolftec.cwt.system.Nullable;
+import org.wolftec.cwt.core.util.NullUtil;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Player;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.model.sheets.types.PropertyType;
 
 public class CannonLogic implements Injectable {
 
   public static final String CANNON_UNIT_ID = "CANU";
 
-  private ModelManager       model;
+  private ModelManager model;
 
   /**
    * 
@@ -73,10 +73,10 @@ public class CannonLogic implements Injectable {
         if (tile.visionTurnOwner <= 0) continue;
 
         Unit unit = tile.unit;
-        if (Nullable.isPresent(unit)) {
+        if (NullUtil.isPresent(unit)) {
           if (unit.owner.team != tid) {
             // TODO ugly !!!
-            if (Nullable.isPresent(selection)) {
+            if (NullUtil.isPresent(selection)) {
               selection.setValue(sx, sy, 1);
             } else {
               return true;
@@ -157,7 +157,7 @@ public class CannonLogic implements Injectable {
   public PropertyType grabBombPropTypeFromPos(int x, int y) {
     while (true) {
       Tile tile = model.getTile(x, y + 1);
-      if (y + 1 < model.mapHeight && Nullable.isPresent(tile.property) && tile.property.type.ID == "INVU") {
+      if (y + 1 < model.mapHeight && NullUtil.isPresent(tile.property) && tile.property.type.ID == "INVU") {
         y++;
         continue;
       }
@@ -172,7 +172,7 @@ public class CannonLogic implements Injectable {
 
     while (true) {
       Tile stile = model.getTile(x + 1, y);
-      if (x + 1 < model.mapWidth && Nullable.isPresent(stile.property) && stile.property.type.ID != "INVU") {
+      if (x + 1 < model.mapWidth && NullUtil.isPresent(stile.property) && stile.property.type.ID != "INVU") {
         return stile.property.type;
       }
 

@@ -6,10 +6,10 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.InformationList;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Player;
-import org.wolftec.cwt.model.Property;
-import org.wolftec.cwt.model.Unit;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Player;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Unit;
 
 public class TeamLogic implements Injectable {
 

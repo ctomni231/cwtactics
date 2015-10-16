@@ -1,7 +1,7 @@
 package org.wolftec.cwt.states;
 
+import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.system.Option;
 
 /**
  * 

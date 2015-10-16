@@ -4,7 +4,6 @@ import org.stjs.javascript.annotation.STJSBridge;
 import org.wolftec.cwt.audio.VolumeSaver.VolumeData;
 import org.wolftec.cwt.core.audio.AudioManager;
 import org.wolftec.cwt.core.persistence.SavegameHandler;
-import org.wolftec.cwt.system.Nullable;
 
 public class VolumeSaver implements SavegameHandler<VolumeData> {
 
@@ -18,8 +17,9 @@ public class VolumeSaver implements SavegameHandler<VolumeData> {
 
   @Override
   public void onGameLoad(VolumeData data) {
-    Nullable.ifPresent(data.sfx, (v) -> audio.setSfxVolume(v));
-    Nullable.ifPresent(data.music, (v) -> audio.setMusicVolume(v));
+    // TODO optional ?
+    audio.setSfxVolume(data.sfx);
+    audio.setMusicVolume(data.music);
   }
 
   @Override

@@ -5,6 +5,8 @@ import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.FrameTickListener;
+import org.wolftec.cwt.core.Log;
+import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.input.BlockedInputManager;
 import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.ioc.Injectable;
@@ -13,8 +15,6 @@ import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Option;
 
 public class GameLoopManager implements Injectable {
 

@@ -1,11 +1,11 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Property;
-import org.wolftec.cwt.model.Unit;
-import org.wolftec.cwt.sheets.PropertyType;
-import org.wolftec.cwt.sheets.SheetManager;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.model.sheets.SheetManager;
+import org.wolftec.cwt.model.sheets.types.PropertyType;
 
 public class SiloLogic implements Injectable {
 

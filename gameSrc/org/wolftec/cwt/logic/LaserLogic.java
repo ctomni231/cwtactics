@@ -1,9 +1,9 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.model.ModelManager;
-import org.wolftec.cwt.model.Property;
-import org.wolftec.cwt.model.Unit;
+import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Unit;
 
 public class LaserLogic implements Injectable {
 

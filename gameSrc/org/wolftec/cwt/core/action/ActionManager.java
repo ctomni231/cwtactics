@@ -5,15 +5,14 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.Log;
+import org.wolftec.cwt.core.collections.CircularBuffer;
+import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.net.NetworkManager;
 import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.core.util.ListUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.StringUtil;
-import org.wolftec.cwt.system.CircularBuffer;
-import org.wolftec.cwt.system.Functions;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Nullable;
 
 public class ActionManager implements Injectable {
 
@@ -46,7 +45,7 @@ public class ActionManager implements Injectable {
     pool = new CircularBuffer<ActionData>(BUFFER_SIZE);
     buffer = new CircularBuffer<ActionData>(BUFFER_SIZE);
 
-    Functions.repeat(BUFFER_SIZE, (i) -> pool.push(new ActionData()));
+    pool.fillByProvider((i) -> new ActionData());
 
     /*
      * we sort the actions by their hash values. This results into same order of
@@ -118,11 +117,11 @@ public class ActionManager implements Injectable {
 
     // insert data into the action object
     actionData.id = getActionId(key);
-    actionData.p1 = Nullable.getOrElse(p1, Constants.INACTIVE);
-    actionData.p2 = Nullable.getOrElse(p2, Constants.INACTIVE);
-    actionData.p3 = Nullable.getOrElse(p3, Constants.INACTIVE);
-    actionData.p4 = Nullable.getOrElse(p4, Constants.INACTIVE);
-    actionData.p5 = Nullable.getOrElse(p5, Constants.INACTIVE);
+    actionData.p1 = NullUtil.getOrElse(p1, Constants.INACTIVE);
+    actionData.p2 = NullUtil.getOrElse(p2, Constants.INACTIVE);
+    actionData.p3 = NullUtil.getOrElse(p3, Constants.INACTIVE);
+    actionData.p4 = NullUtil.getOrElse(p4, Constants.INACTIVE);
+    actionData.p5 = NullUtil.getOrElse(p5, Constants.INACTIVE);
 
     log.info("append action " + actionData + " as " + (asHead ? "head" : "tail") + " into the stack");
 
@@ -220,7 +219,7 @@ public class ActionManager implements Injectable {
   public void invokeNext() {
     ActionData data = buffer.popFirst();
 
-    Nullable.getOrThrow(data, "NoAction");
+    NullUtil.mustBePresent(data, "NoAction");
     log.info("evaluating action data object " + data);
 
     Action actionObj = actions.$get(data.id);

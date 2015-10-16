@@ -9,7 +9,7 @@ import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.logic.MoveLogic;
-import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;

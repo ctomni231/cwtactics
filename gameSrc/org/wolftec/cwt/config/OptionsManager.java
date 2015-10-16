@@ -2,10 +2,10 @@ package org.wolftec.cwt.config;
 
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.config.ConfigurableValue;
 import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.JsUtil;
 
 public abstract class OptionsManager implements Injectable, ConfigurationProvider {
 
@@ -54,7 +54,7 @@ public abstract class OptionsManager implements Injectable, ConfigurationProvide
    * Resets all registered configuration objects to their default value.
    */
   public void resetOptions() {
-    JsUtil.forEachMapValue((Map<String, Object>) ((Object) this), (key, cfg) -> {
+    ObjectUtil.forEachMapValue((Map<String, Object>) ((Object) this), (key, cfg) -> {
       if (cfg instanceof ConfigurableValue) {
         ((ConfigurableValue) cfg).resetValue();
       }

@@ -3,9 +3,10 @@ package org.wolftec.cwt.core.input;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
+import org.wolftec.cwt.core.Option;
+import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.system.Option;
 
 public class InputManager implements Injectable, InputProvider {
 
@@ -86,7 +87,7 @@ public class InputManager implements Injectable, InputProvider {
 
   @Override
   public void forEachButtonMapping(Callback2<String, String> itCb) {
-    JsUtil.forEachMapValue(buttonMapping, itCb);
+    ObjectUtil.forEachMapValue(buttonMapping, itCb);
   }
 
   public void releaseButtonMapping(String button) {

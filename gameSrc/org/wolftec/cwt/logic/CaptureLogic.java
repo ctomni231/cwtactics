@@ -1,10 +1,13 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.model.Property;
-import org.wolftec.cwt.model.Unit;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Unit;
 
 public class CaptureLogic implements Injectable {
+
+  public static final int CAPTURE_STEP   = 10; // TODO
+  public static final int CAPTURE_POINTS = 20; // TODO
 
   /**
    * 
@@ -37,10 +40,10 @@ public class CaptureLogic implements Injectable {
    */
   public boolean captureProperty(Property property, Unit unit) {
 
-    property.points -= Property.CAPTURE_STEP;
+    property.points -= CaptureLogic.CAPTURE_STEP;
     if (property.points <= 0) {
       property.owner = unit.owner;
-      property.points = Property.CAPTURE_POINTS;
+      property.points = CaptureLogic.CAPTURE_POINTS;
       // TODO: if max points are static then the configurable points from the
       // property sheets can be removed
 

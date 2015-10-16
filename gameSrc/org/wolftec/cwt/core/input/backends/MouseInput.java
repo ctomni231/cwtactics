@@ -4,11 +4,11 @@ import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
 import org.wolftec.cwt.core.Deactivatable;
+import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Nullable;
 
 public class MouseInput implements Injectable, Deactivatable {
 
@@ -40,7 +40,7 @@ public class MouseInput implements Injectable, Deactivatable {
 
     int x;
     int y;
-    if (Nullable.isPresent(ev.offsetX)) {
+    if (NullUtil.isPresent(ev.offsetX)) {
       x = ev.offsetX;
       y = ev.offsetY;
     } else {

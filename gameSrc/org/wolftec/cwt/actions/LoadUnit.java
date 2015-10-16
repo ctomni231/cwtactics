@@ -4,7 +4,7 @@ import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.logic.TransportLogic;
-import org.wolftec.cwt.model.ModelManager;
+import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.PositionCheck;
 import org.wolftec.cwt.states.PositionUpdateMode;
 import org.wolftec.cwt.states.StateFlowData;

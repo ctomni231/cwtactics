@@ -1,7 +1,7 @@
 package org.wolftec.cwt.states.menu;
 
 import org.wolftec.cwt.core.input.InputProvider;
-import org.wolftec.cwt.model.MapManager;
+import org.wolftec.cwt.model.mapfile.MapManager;
 import org.wolftec.cwt.states.AbstractState;
 import org.wolftec.cwt.states.GameActions;
 import org.wolftec.cwt.states.StateFlowData;

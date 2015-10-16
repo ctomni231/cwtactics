@@ -6,10 +6,10 @@ import org.stjs.javascript.JSFunctionAdapter;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.SyntheticType;
+import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.core.util.ListUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.core.util.VersionUtil;
 

@@ -2,10 +2,10 @@ package org.wolftec.cwt.core.i18;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.core.Log;
+import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.core.persistence.PersistenceManager;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.Option;
 
 public class LanguageSelector implements GameLoader {
 
