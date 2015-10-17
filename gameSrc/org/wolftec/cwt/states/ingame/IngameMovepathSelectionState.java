@@ -1,6 +1,7 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.config.OptionsManager;
+import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
@@ -8,13 +9,19 @@ import org.wolftec.cwt.states.AbstractIngameState;
 import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
-public class IngameMovepathSelectionState extends AbstractIngameState {
+public class IngameMovepathSelectionState extends AbstractIngameState implements ConfigurationProvider {
 
   private UserInteractionData data;
 
-  private OptionsManager options;
-  private MoveLogic      move;
-  private ModelManager   model;
+  private MoveLogic    move;
+  private ModelManager model;
+
+  private ConfigurableValue fastClickMode;
+
+  @Override
+  public void onConstruction() {
+    fastClickMode = new ConfigurableValue("app.input.fastClick", 0, 1, 0);
+  }
 
   private void updateMovepath() {
     int x = data.cursorX;
@@ -88,7 +95,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState {
 
   @Override
   public void handleButtonA(StateFlowData transition, int delta) {
-    if (model.getDistance(data.cursorX, data.cursorY, data.target.x, data.target.y) == 0 || options.fastClickMode.value == 1) {
+    if (model.getDistance(data.cursorX, data.cursorY, data.target.x, data.target.y) == 0 || fastClickMode.value == 1) {
       transition.setTransitionTo("IngameMenuState");
     }
   }

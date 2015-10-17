@@ -1,20 +1,27 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.Log;
+import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 
-public class TurnLogic implements Injectable {
+public class TurnLogic implements Injectable, ConfigurationProvider {
 
   private Log log;
 
-  private OptionsManager options;
-  private ModelManager   model;
-  private FogLogic       fog;
+  private ModelManager model;
+  private FogLogic     fog;
+
+  private ConfigurableValue round_dayLimit;
+
+  @Override
+  public void onConstruction() {
+    round_dayLimit = new ConfigurableValue("game.limits.days", 0, 999, 0);
+  }
 
   /**
    * 
@@ -82,8 +89,8 @@ public class TurnLogic implements Injectable {
         model.weatherLeftDays--;
 
         // TODO: into action
-        int round_dayLimit = options.round_dayLimit.value;
-        if (round_dayLimit > 0 && model.day >= round_dayLimit) {
+        int dayLimit = round_dayLimit.value;
+        if (dayLimit > 0 && model.day >= dayLimit) {
           // cwt.Update.endGameRound();
           // TODO
         }

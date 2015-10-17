@@ -388,8 +388,8 @@ public class BattleLogic implements Injectable {
       }
 
       powerAtt = NumberUtil.asInt(powerAtt * 0.1 * dSheets.costs);
-      co.modifyStarPower(attOwner, NumberUtil.asInt(0.5 * powerAtt));
-      co.modifyStarPower(defOwner, powerAtt);
+      co.modifyPlayerCoPower(attOwner, NumberUtil.asInt(0.5 * powerAtt));
+      co.modifyPlayerCoPower(defOwner, powerAtt);
     }
 
     // counter attack when defender survives and defender is an indirect
@@ -412,8 +412,8 @@ public class BattleLogic implements Injectable {
         }
 
         powerCounterAtt = NumberUtil.asInt(powerCounterAtt * 0.1 * aSheets.costs);
-        co.modifyStarPower(defOwner, NumberUtil.asInt(0.5 * powerCounterAtt));
-        co.modifyStarPower(attOwner, powerCounterAtt);
+        co.modifyPlayerCoPower(defOwner, NumberUtil.asInt(0.5 * powerCounterAtt));
+        co.modifyPlayerCoPower(attOwner, powerCounterAtt);
       }
     }
   }

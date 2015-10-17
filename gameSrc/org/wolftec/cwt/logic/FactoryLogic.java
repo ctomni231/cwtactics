@@ -3,20 +3,27 @@ package org.wolftec.cwt.logic;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.config.OptionsManager;
 import org.wolftec.cwt.core.InformationList;
+import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 
-public class FactoryLogic implements Injectable {
+public class FactoryLogic implements Injectable, ConfigurationProvider {
 
-  private OptionsManager options;
   private LifecycleLogic lifecycle;
   private SheetManager   sheets;
   private ModelManager   model;
+
+  private ConfigurableValue unitLimit;
+
+  @Override
+  public void onConstruction() {
+    unitLimit = new ConfigurableValue("game.limits.unitsPerPlayer", 0, Constants.MAX_UNITS, 0, 5);
+  }
 
   //
   // Returns **true** when the given **property** is a factory, else **false**.
@@ -38,7 +45,7 @@ public class FactoryLogic implements Injectable {
 
     // check unit limit and left slots
     int count = property.owner.numberOfUnits;
-    int uLimit = JSGlobal.$or(options.unitLimit.value, 9999999);
+    int uLimit = JSGlobal.$or(unitLimit.value, 9999999);
     if (count >= uLimit || count >= Constants.MAX_UNITS) {
       return false;
     }

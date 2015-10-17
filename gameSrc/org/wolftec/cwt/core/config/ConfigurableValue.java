@@ -9,17 +9,20 @@ import org.wolftec.cwt.core.util.NullUtil;
  */
 public class ConfigurableValue {
 
-  public int min;
-  public int max;
-  public int def;
-  public int step;
-  public int value;
+  public final String key;
+  public int          min;
+  public int          max;
+  public int          def;
+  public int          step;
+  public int          value;
 
   @Native
-  public ConfigurableValue(int min, int max, int defaultValue) {
+  public ConfigurableValue(String key, int min, int max, int defaultValue) {
+    this(key, min, max, defaultValue, 1);
   }
 
-  public ConfigurableValue(int min, int max, int defaultValue, int step) {
+  public ConfigurableValue(String key, int min, int max, int defaultValue, int step) {
+    this.key = key;
     this.min = min;
     this.max = max;
     this.def = defaultValue;

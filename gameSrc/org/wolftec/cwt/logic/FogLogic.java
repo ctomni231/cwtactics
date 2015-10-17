@@ -1,6 +1,7 @@
 package org.wolftec.cwt.logic;
 
-import org.wolftec.cwt.config.OptionsManager;
+import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
@@ -9,10 +10,16 @@ import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 
-public class FogLogic implements Injectable {
+public class FogLogic implements Injectable, ConfigurationProvider {
 
-  private OptionsManager options;
-  private ModelManager   model;
+  private ModelManager model;
+
+  private ConfigurableValue cfgEnabled;
+
+  @Override
+  public void onConstruction() {
+    cfgEnabled = new ConfigurableValue("game.fog.enabled", 0, 1, 1);
+  }
 
   /**
    * Modifies a vision at a given position and player id.
@@ -30,7 +37,7 @@ public class FogLogic implements Injectable {
       return;
     }
 
-    if (options.fogEnabled.value == 0) {
+    if (cfgEnabled.value == 0) {
       return;
     }
 
@@ -88,7 +95,7 @@ public class FogLogic implements Injectable {
     int y;
     int xe = model.mapWidth;
     int ye = model.mapHeight;
-    boolean fogEnabled = (options.fogEnabled.value == 1);
+    boolean fogEnabled = (cfgEnabled.value == 1);
 
     // 1. reset fog maps
     for (x = 0; x < xe; x++) {

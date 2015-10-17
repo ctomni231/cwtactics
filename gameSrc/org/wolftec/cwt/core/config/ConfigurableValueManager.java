@@ -3,12 +3,15 @@ package org.wolftec.cwt.core.config;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.ioc.ObservesIocState;
 import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 
-public class ConfigurableValueManager implements Injectable {
+public class ConfigurableValueManager implements Injectable, ObservesIocState {
 
   private Log log;
 
@@ -16,7 +19,7 @@ public class ConfigurableValueManager implements Injectable {
   private Array<ConfigurableValue>     configurableValues;
 
   @Override
-  public void onConstruction() {
+  public void onIocReady() {
     configurableValues = collectAllConfigValues(configHolders);
 
     // no longer needed => free reference
@@ -32,7 +35,7 @@ public class ConfigurableValueManager implements Injectable {
     ListUtil.forEachArrayValue(injectables, (index, configHolder) -> {
       ClassUtil.forEachClassProperty(ClassUtil.getClass(configHolder), (prop, defValue) -> {
         Object value = JSObjectAdapter.$get(configHolder, prop);
-        if (value instanceof ConfigurableValue) {
+        if (NullUtil.isPresent(value) && value instanceof ConfigurableValue) {
           log.info("adding config value " + prop);
 
           values.push((ConfigurableValue) value);
@@ -40,5 +43,20 @@ public class ConfigurableValueManager implements Injectable {
       });
     });
     return values;
+  }
+
+  /**
+   * Resets all registered configuration objects to their default value.
+   */
+  public void resetGameOptions() {
+    forEachConfig((cfg) -> {
+      if (!cfg.key.startsWith("app.")) {
+        cfg.value = cfg.def;
+      }
+    });
+  }
+
+  public void forEachConfig(Callback1<ConfigurableValue> iterator) {
+    configurableValues.forEach(iterator);
   }
 }

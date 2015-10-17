@@ -1,7 +1,8 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.config.OptionsManager;
+import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
@@ -10,12 +11,18 @@ import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
 
-public class LifecycleLogic implements Injectable {
+public class LifecycleLogic implements Injectable, ConfigurationProvider {
 
-  private OptionsManager options;
-  private ModelManager   model;
-  private SheetManager   sheets;
-  private FogLogic       fog;
+  private ModelManager model;
+  private SheetManager sheets;
+  private FogLogic     fog;
+
+  private ConfigurableValue noUnitsLeftLoose;
+
+  @Override
+  public void onConstruction() {
+    noUnitsLeftLoose = new ConfigurableValue("game.loose.whenNoUnitLeft", 0, 1, 0);
+  }
 
   //
   // Returns an inactive **unit object** or **null** if every slot in the unit
@@ -73,7 +80,7 @@ public class LifecycleLogic implements Injectable {
     tile.unit = null;
 
     // end game when the player does not have any unit left
-    if (options.noUnitsLeftLoose.value == 1 && owner.numberOfUnits == 0) {
+    if (noUnitsLeftLoose.value == 1 && owner.numberOfUnits == 0) {
       deactivatePlayer(owner);
     }
   }

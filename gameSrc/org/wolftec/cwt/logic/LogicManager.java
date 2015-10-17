@@ -3,7 +3,6 @@ package org.wolftec.cwt.logic;
 import org.wolftec.cwt.core.ioc.Injectable;
 
 public class LogicManager implements Injectable {
-  /* TODO */
 
   public BattleLogic       battle;
   public CannonLogic       cannon;

@@ -6,9 +6,10 @@ import org.wolftec.cwt.model.gameround.Unit;
 
 public class CaptureLogic implements Injectable {
 
-  public static final int CAPTURE_STEP   = 10; // TODO
-  public static final int CAPTURE_POINTS = 20; // TODO
+  public static final int CAPTURE_STEP   = 10;
+  public static final int CAPTURE_POINTS = 20;
 
+  // captureLimit = new ConfigurableValue(0, Constants.MAX_PROPERTIES, 0);
   /**
    * 
    * @param unit
@@ -40,10 +41,10 @@ public class CaptureLogic implements Injectable {
    */
   public boolean captureProperty(Property property, Unit unit) {
 
-    property.points -= CaptureLogic.CAPTURE_STEP;
+    property.points -= CAPTURE_STEP;
     if (property.points <= 0) {
       property.owner = unit.owner;
-      property.points = CaptureLogic.CAPTURE_POINTS;
+      property.points = CAPTURE_POINTS;
       // TODO: if max points are static then the configurable points from the
       // property sheets can be removed
 

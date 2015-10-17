@@ -46,12 +46,23 @@ public class IoCContainer {
 
     createManagedObjects(config);
     handleManagedDependencies();
+
     callConstructionEvent();
+
+    callIocReadyEvent();
   }
 
   private void callConstructionEvent() {
     ObjectUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
       instance.onConstruction();
+    });
+  }
+
+  private void callIocReadyEvent() {
+    ObjectUtil.forEachMapValue(managedObjects, (instanceName, instance) -> {
+      if (ClassUtil.classImplementsInterface(ClassUtil.getClass(instance), ObservesIocState.class)) {
+        ((ObservesIocState) instance).onIocReady();
+      }
     });
   }
 

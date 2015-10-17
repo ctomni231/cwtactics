@@ -4,24 +4,28 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.core.Log;
+import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 
 /**
  * Base class which holds a reference to the game canvas.
  * 
  */
-public class GraphicManager implements Injectable {
+public class GraphicManager implements Injectable, ConfigurationProvider {
 
-  private static final String     CANVAS_RENDER_CONTEXT = "2d";
-  private static final String     CANVAS_ID             = "gameCanvas";
+  private static final String CANVAS_RENDER_CONTEXT = "2d";
+  private static final String CANVAS_ID             = "gameCanvas";
 
-  private Log                     log;
+  private Log log;
 
   public Canvas                   mainCanvas;
   public CanvasRenderingContext2D mainCtx;
 
   public Canvas                   bufferCanvas;
   public CanvasRenderingContext2D bufferCtx;
+
+  private ConfigurableValue animatedTiles;
 
   @Override
   public void onConstruction() {
@@ -32,6 +36,8 @@ public class GraphicManager implements Injectable {
 
     bufferCanvas = (Canvas) Global.window.document.createElement("canvas");
     bufferCtx = bufferCanvas.getContext(CANVAS_RENDER_CONTEXT);
+
+    animatedTiles = new ConfigurableValue("app.gfx.animatedTiles", 0, 1, 1);
   }
 
   public int absoluteScreenHeight() {

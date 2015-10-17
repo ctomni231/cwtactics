@@ -38,11 +38,11 @@ public class NextTurn implements Action, ConfigurationProvider {
   private ConfigurableValue cfgPropertyFundsEnabled;
   private ConfigurableValue cfgAutoSupplyAtTurnStartEnabled;
 
-  // TODO better in on construct or autoconstruct ConfigurableValue
-  public NextTurn() {
-    cfgPropertyFundsEnabled = new ConfigurableValue(0, 1, 1);
-    cfgPropertyHealingEnabled = new ConfigurableValue(0, 1, 1);
-    cfgAutoSupplyAtTurnStartEnabled = new ConfigurableValue(0, 1, 1);
+  @Override
+  public void onConstruction() {
+    cfgPropertyFundsEnabled = new ConfigurableValue("supply.propertyFunds.enabled", 0, 1, 1);
+    cfgPropertyHealingEnabled = new ConfigurableValue("supply.propertyHealing.enabled", 0, 1, 1);
+    cfgAutoSupplyAtTurnStartEnabled = new ConfigurableValue("supply.suppliers.autoSupplyAtTurnStart", 0, 1, 1);
   }
 
   @Override
