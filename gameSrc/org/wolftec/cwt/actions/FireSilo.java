@@ -5,18 +5,18 @@ import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.core.action.PositionCheck;
 import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.logic.CaptureLogic;
+import org.wolftec.cwt.logic.SpecialWeaponsLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
 
-public class CaptureProperty implements Action {
+public class FireSilo implements Action {
 
-  private CaptureLogic capture;
-  private ModelManager model;
+  private SpecialWeaponsLogic weapons;
+  private ModelManager        model;
 
   @Override
   public String key() {
-    return "capture";
+    return "fireSilo";
   }
 
   @Override
@@ -26,23 +26,26 @@ public class CaptureProperty implements Action {
 
   @Override
   public boolean checkTarget(PositionCheck unitFlag, PositionCheck propertyFlag) {
-    return unitFlag == PositionCheck.EMPTY && (propertyFlag == PositionCheck.ENEMY || propertyFlag == PositionCheck.EMPTY);
+    return unitFlag == PositionCheck.ENEMY && (propertyFlag == PositionCheck.EMPTY || propertyFlag == PositionCheck.OWN);
   }
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return data.target.property.isPresent() && capture.canCapture(data.source.unit.get()) && capture.canBeCaptured(data.target.property.get());
+    return weapons.isRocketSilo(data.target.property.get()) && weapons.canBeFiredBy(data.target.property.get(), data.source.unit.get());
   }
 
   @Override
   public void fillData(UserInteractionData positionData, ActionData actionData) {
-    actionData.p1 = positionData.target.propertyId;
-    actionData.p2 = positionData.source.unitId;
+    actionData.p1 = positionData.target.x;
+    actionData.p2 = positionData.target.y;
+    actionData.p3 = positionData.actionTarget.x;
+    actionData.p4 = positionData.actionTarget.y;
+    actionData.p5 = positionData.target.unitId;
   }
 
   @Override
   public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
-    capture.captureProperty(model.getProperty(data.p1), model.getUnit(data.p2));
+    weapons.fireSilo(data.p1, data.p2, data.p3, data.p4);
   }
 
 }

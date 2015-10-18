@@ -1,11 +1,11 @@
-package org.wolftec.cwt.model.gameround.loaders;
+package org.wolftec.cwt.model.gameround.persistence;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.loading.GameLoader;
-import org.wolftec.cwt.logic.CannonLogic;
+import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.logic.SpecialWeaponsLogic;
 import org.wolftec.cwt.logic.LaserLogic;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
@@ -61,7 +61,7 @@ public class DefaultTypesLoader implements Injectable, GameLoader {
     sheets.units.registerSheet(laserUnit);
 
     UnitType cannonUnit = new UnitType();
-    cannonUnit.ID = CannonLogic.CANNON_UNIT_ID;
+    cannonUnit.ID = SpecialWeaponsLogic.CANNON_UNIT_ID;
     cannonUnit.costs = -1;
     cannonUnit.range = 0;
     cannonUnit.movetype = "NOMV";

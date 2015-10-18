@@ -7,15 +7,12 @@ import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function4;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.collections.ListUtil;
-import org.wolftec.cwt.core.config.ConfigurableValue;
 import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
 
 public class ModelManager implements Injectable, ConfigurationProvider {
-
-  private ConfigurableValue daysOfPeace;
 
   public Player lastClientPlayer;
 
@@ -28,11 +25,6 @@ public class ModelManager implements Injectable, ConfigurationProvider {
    * The amount of days until the weather will be changed.
    */
   public int weatherLeftDays;
-
-  /**
-   * The current active commanders mode.
-   */
-  public GameMode gameMode;
 
   /**
    * The current active day.
@@ -108,8 +100,6 @@ public class ModelManager implements Injectable, ConfigurationProvider {
     }
 
     ListUtil.forEachArrayValue(players, (i, player) -> player.id = i);
-
-    daysOfPeace = new ConfigurableValue("game.daysOfPeace", 0, 50, 0);
   }
 
   public Tile getTile(int x, int y) {
@@ -209,14 +199,6 @@ public class ModelManager implements Injectable, ConfigurationProvider {
     }
 
     return (foundTeam == -1);
-  }
-
-  /**
-   * 
-   * @return true when the game is in the peace phase, else false
-   */
-  public boolean inPeacePhase() {
-    return (day < daysOfPeace.value);
   }
 
   public boolean isTurnOwnerObject(Unit obj) {

@@ -1,13 +1,11 @@
-package org.wolftec.cwt.audio;
+package org.wolftec.cwt.core.audio;
 
 import org.stjs.javascript.annotation.STJSBridge;
-import org.wolftec.cwt.audio.VolumeSaver.VolumeData;
-import org.wolftec.cwt.core.audio.AudioManager;
+import org.wolftec.cwt.core.audio.VolumeSaver.VolumeData;
 import org.wolftec.cwt.core.persistence.SavegameHandler;
+import org.wolftec.cwt.core.util.NullUtil;
 
 public class VolumeSaver implements SavegameHandler<VolumeData> {
-
-  private AudioManager audio;
 
   @STJSBridge
   static class VolumeData {
@@ -15,11 +13,12 @@ public class VolumeSaver implements SavegameHandler<VolumeData> {
     float music;
   }
 
+  private AudioManager audio;
+
   @Override
   public void onGameLoad(VolumeData data) {
-    // TODO optional ?
-    audio.setSfxVolume(data.sfx);
-    audio.setMusicVolume(data.music);
+    audio.setSfxVolume(NullUtil.getOrElse(data.sfx, 1.0f));
+    audio.setMusicVolume(NullUtil.getOrElse(data.music, 1.0f));
   }
 
   @Override

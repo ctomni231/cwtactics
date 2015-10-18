@@ -1,19 +1,25 @@
 package org.wolftec.cwt.model.gameround;
 
 import org.wolftec.cwt.core.Option;
+import org.wolftec.cwt.core.annotations.OptionalField;
 
 /**
  * Object that holds information about objects at a given position (x,y).
  */
 public class PositionData {
 
-  public int              x;
-  public int              y;
-  public Tile             tile     = null;
-  public Option<Unit>     unit     = null;
+  public int  x;
+  public int  y;
+  public Tile tile = null;
+
+  @OptionalField
+  public Option<Unit> unit = null;
+
+  @OptionalField
   public Option<Property> property = null;
-  public int              unitId;
-  public int              propertyId;
+
+  public int unitId;
+  public int propertyId;
 
   public PositionData() {
     clean();

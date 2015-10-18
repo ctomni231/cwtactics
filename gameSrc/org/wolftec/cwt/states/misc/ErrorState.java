@@ -2,11 +2,11 @@ package org.wolftec.cwt.states.misc;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwt.environment.ResetSystem;
-import org.wolftec.cwt.states.AbstractMenuState;
-import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.states.UserInteractionMap;
+import org.wolftec.cwt.core.env.ResetSystem;
+import org.wolftec.cwt.core.state.AbstractMenuState;
+import org.wolftec.cwt.core.state.GameActions;
+import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.state.MenuInteractionMap;
 
 public class ErrorState extends AbstractMenuState {
 
@@ -15,7 +15,7 @@ public class ErrorState extends AbstractMenuState {
   public String               message;
   public String               where;
 
-  public UserInteractionMap   mapping;
+  public MenuInteractionMap   mapping;
 
   @Override
   public void onConstruction() {

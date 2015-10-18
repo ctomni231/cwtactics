@@ -9,13 +9,15 @@ import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
 
-public class CannonLogic implements Injectable {
+public class SpecialWeaponsLogic implements Injectable {
 
   public static final String CANNON_UNIT_ID = "CANU";
 
   private ModelManager model;
+  private SheetManager sheets;
 
   /**
    * 
@@ -181,5 +183,57 @@ public class CannonLogic implements Injectable {
 
     // TODO error
     return null;
+  }
+
+  //
+  // Returns true if a property id is a rocket silo. A rocket silo has the
+  // ability to fire a rocket to a
+  // position with an impact.
+  //
+  public boolean isRocketSilo(Property property) {
+    return (property.type.rocketsilo != null);
+  }
+
+  //
+  // Returns **true** when a silo **property** can be triggered by a given
+  // **unit**. If not, **false** will be returned.
+  //
+  public boolean canBeFiredBy(Property property, Unit unit) {
+    return (property.type.rocketsilo.fireable.indexOf(unit.type.ID) > -1);
+  }
+
+  //
+  // Returns **true** if a given silo **property** can be fired to a given
+  // position (**x**,**y**). If not, **false**
+  // will be returned.
+  //
+  public boolean canBeFiredTo(Property property, int x, int y) {
+    return (model.isValidPosition(x, y));
+  }
+
+  //
+  // Fires a rocket from a given rocket silo at position (**x**,**y**) to a
+  // given target
+  // position (**tx**,**ty**) and inflicts damage to all units in the range of
+  // the explosion. The health of the units
+  // will be never lower as 9 health after the explosion.
+  //
+  public void fireSilo(int x, int y, int tx, int ty) {
+    Property silo = model.getTile(x, y).property;
+
+    // change silo type to empty
+    PropertyType type = silo.type;
+    silo.type = sheets.properties.get(type.rocketsilo.changeTo);
+
+    int damage = Unit.pointsToHealth(type.rocketsilo.damage);
+    int range = type.rocketsilo.range;
+
+    model.doInRange(tx, ty, range, (cx, cy, tile, crange) -> {
+      Unit unit = tile.unit;
+      if (unit != null) {
+        unit.takeDamage(damage, 9);
+      }
+      return true;
+    });
   }
 }

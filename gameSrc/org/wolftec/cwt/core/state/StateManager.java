@@ -1,14 +1,14 @@
-package org.wolftec.cwt.states;
+package org.wolftec.cwt.core.state;
 
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.log.Log;
 
 public class StateManager implements Injectable {
 
   private Log log;
 
-  private StateFlowData transition;
+  private StateFlowData flowData;
 
   /**
    * Holds all registered game states.
@@ -22,7 +22,7 @@ public class StateManager implements Injectable {
 
   @Override
   public void onConstruction() {
-    transition = new StateFlowData();
+    flowData = new StateFlowData();
   }
 
   public String getActiveStateId() {
@@ -41,7 +41,7 @@ public class StateManager implements Injectable {
    */
   public void changeState(String state) {
     if (activeStateId != null) {
-      getActiveState().onExit(transition);
+      getActiveState().onExit(flowData);
     }
 
     // enter new state
@@ -61,7 +61,7 @@ public class StateManager implements Injectable {
 
     // TODO prevent that ?
     if (fireEvent != false) {
-      getActiveState().onEnter(transition);
+      getActiveState().onEnter(flowData);
     }
   }
 }

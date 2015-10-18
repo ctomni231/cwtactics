@@ -1,16 +1,18 @@
-package org.wolftec.cwt.audio;
+package org.wolftec.cwt.core.audio;
 
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.FileDescriptor;
 import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.loading.DataLoader;
+import org.wolftec.cwt.core.persistence.FileDescriptor;
 
-public class MusicLoader implements DataLoader {
+public class SfxLoader implements DataLoader {
+
+  private AudioManager audio;
 
   @Override
   public String forPath() {
-    return "audio/music";
+    return "audio/sfx";
   }
 
   @Override

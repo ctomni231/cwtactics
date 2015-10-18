@@ -1,4 +1,4 @@
-package org.wolftec.cwt.core;
+package org.wolftec.cwt.core.log;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;

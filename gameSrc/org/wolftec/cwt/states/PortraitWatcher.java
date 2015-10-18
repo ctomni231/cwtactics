@@ -1,14 +1,14 @@
-package org.wolftec.cwt.environment;
+package org.wolftec.cwt.states;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.loading.GameLoader;
-import org.wolftec.cwt.states.StateManager;
+import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.core.state.StateManager;
 
 public class PortraitWatcher implements GameLoader {
 

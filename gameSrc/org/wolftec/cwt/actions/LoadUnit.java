@@ -3,11 +3,11 @@ package org.wolftec.cwt.actions;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
+import org.wolftec.cwt.core.action.PositionCheck;
+import org.wolftec.cwt.core.action.PositionUpdateMode;
+import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.logic.TransportLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
-import org.wolftec.cwt.states.PositionCheck;
-import org.wolftec.cwt.states.PositionUpdateMode;
-import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class LoadUnit implements Action {

@@ -4,10 +4,10 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.loading.GameLoader;
+import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.util.ClassUtil;
 
 public class SaveManager implements GameLoader {

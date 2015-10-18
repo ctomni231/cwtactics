@@ -1,9 +1,9 @@
-package org.wolftec.cwt.environment;
+package org.wolftec.cwt.core.env;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.loading.GameLoader;
+import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.persistence.PersistenceManager;
 import org.wolftec.cwt.core.util.UrlParameterUtil;
 

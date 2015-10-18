@@ -1,4 +1,4 @@
-package org.wolftec.cwt.states;
+package org.wolftec.cwt.core.state;
 
 import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.util.JsUtil;

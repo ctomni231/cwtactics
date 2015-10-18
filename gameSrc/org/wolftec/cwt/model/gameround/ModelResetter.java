@@ -9,7 +9,6 @@ public class ModelResetter implements Injectable {
 
   public void reset() {
     model.day = 0;
-    model.gameMode = GameMode.GAME_MODE_AW2;
     model.gameTimeElapsed = 0;
     model.gameTimeLimit = 0;
     model.turnTimeElapsed = 0;

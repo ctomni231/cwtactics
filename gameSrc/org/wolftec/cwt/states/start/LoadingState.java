@@ -1,14 +1,14 @@
 package org.wolftec.cwt.states.start;
 
-import org.wolftec.cwt.core.LoadingWatcher;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.loading.GameLoadingManager;
+import org.wolftec.cwt.core.loading.LoadingWatcher;
+import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.core.state.AbstractState;
+import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.test.TestManager;
 import org.wolftec.cwt.core.util.UrlParameterUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateFlowData;
 
 public class LoadingState extends AbstractState implements LoadingWatcher {
 

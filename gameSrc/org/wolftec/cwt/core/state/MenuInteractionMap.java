@@ -1,4 +1,4 @@
-package org.wolftec.cwt.states;
+package org.wolftec.cwt.core.state;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -9,7 +9,7 @@ import org.wolftec.cwt.core.ioc.Constructable;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
 
-public class UserInteractionMap implements Constructable {
+public class MenuInteractionMap implements Constructable {
 
   private Map<String, Map<String, String>> states;
   private String                           active;

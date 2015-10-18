@@ -5,7 +5,7 @@ import org.wolftec.cwt.core.ioc.Injectable;
 public class LogicManager implements Injectable {
 
   public BattleLogic       battle;
-  public CannonLogic       cannon;
+  public SpecialWeaponsLogic       cannon;
   public CaptureLogic      capture;
   public CommanderLogic    commander;
   public ExplodeLogic      explode;
@@ -17,7 +17,6 @@ public class LogicManager implements Injectable {
   public LifecycleLogic    lifecycle;
   public MoveLogic         move;
   public RelationshipLogic relationship;
-  public SiloLogic         silo;
   public SupplyLogic       supply;
   public TeamLogic         team;
   public TransportLogic    transport;

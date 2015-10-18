@@ -2,12 +2,12 @@ package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.InformationList;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.core.collections.CircularBuffer;
 import org.wolftec.cwt.core.collections.MoveableMatrix;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.PositionData;

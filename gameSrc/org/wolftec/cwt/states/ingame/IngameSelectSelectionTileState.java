@@ -1,8 +1,8 @@
 package org.wolftec.cwt.states.ingame;
 
+import org.wolftec.cwt.core.state.AbstractIngameState;
+import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.model.gameround.ModelManager;
-import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class IngameSelectSelectionTileState extends AbstractIngameState {

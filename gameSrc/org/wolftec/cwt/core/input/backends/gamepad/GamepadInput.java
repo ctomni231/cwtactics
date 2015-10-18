@@ -1,11 +1,11 @@
 package org.wolftec.cwt.core.input.backends.gamepad;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwt.core.Deactivatable;
-import org.wolftec.cwt.core.FrameTickListener;
-import org.wolftec.cwt.core.Log;
+import org.wolftec.cwt.core.gameloop.FrameTickListener;
+import org.wolftec.cwt.core.input.Deactivatable;
 import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.util.NullUtil;
 
 public class GamepadInput implements Injectable, Deactivatable, FrameTickListener {

@@ -4,34 +4,39 @@ import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.logic.LaserLogic;
+import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
 
-public class MoveStart implements Action {
+public class FireLaser implements Action {
 
-  private MoveActionData moveDto;
+  private LaserLogic   laser;
+  private ModelManager model;
 
   @Override
   public String key() {
-    return "moveStart";
+    return "fireTurret";
   }
 
   @Override
   public ActionType type() {
-    return ActionType.ENGINE_ACTION;
+    return ActionType.PROPERTY_ACTION;
+  }
+
+  @Override
+  public boolean condition(UserInteractionData data) {
+    return laser.isLaser(data.source.unit.get());
   }
 
   @Override
   public void fillData(UserInteractionData positionData, ActionData actionData) {
-    actionData.p1 = positionData.source.unitId;
-    actionData.p2 = positionData.source.x;
-    actionData.p3 = positionData.source.y;
+    actionData.p1 = positionData.target.x;
+    actionData.p2 = positionData.target.y;
   }
 
   @Override
   public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
-    moveDto.movePath.clear();
-    moveDto.unitId = data.p1;
-    moveDto.x = data.p2;
-    moveDto.y = data.p3;
+    laser.fireLaser(data.p1, data.p2);
   }
+
 }

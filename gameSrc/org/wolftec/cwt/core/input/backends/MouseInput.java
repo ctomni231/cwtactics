@@ -3,10 +3,10 @@ package org.wolftec.cwt.core.input.backends;
 import org.stjs.javascript.annotation.SyntheticType;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
-import org.wolftec.cwt.core.Deactivatable;
-import org.wolftec.cwt.core.Log;
+import org.wolftec.cwt.core.input.Deactivatable;
 import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
 

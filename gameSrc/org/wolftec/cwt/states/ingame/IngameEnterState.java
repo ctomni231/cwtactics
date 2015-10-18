@@ -3,16 +3,15 @@ package org.wolftec.cwt.states.ingame;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.input.InputProvider;
+import org.wolftec.cwt.core.state.AbstractState;
+import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.logic.CaptureLogic;
 import org.wolftec.cwt.logic.TurnLogic;
-import org.wolftec.cwt.model.gameround.GameMode;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
 import org.wolftec.cwt.model.mapfile.MapData;
 import org.wolftec.cwt.model.mapfile.MapManager;
 import org.wolftec.cwt.model.sheets.SheetManager;
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UiDataMapConfiguration;
 import org.wolftec.cwt.states.UserInteractionData;
 
@@ -65,7 +64,6 @@ public class IngameEnterState extends AbstractState {
 
   private void cleanModel(MapData mapData) {
     model.day = 0;
-    model.gameMode = GameMode.GAME_MODE_AW2;
     model.gameTimeElapsed = 0;
     model.gameTimeLimit = 0;
     model.turnTimeElapsed = 0;

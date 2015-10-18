@@ -1,4 +1,4 @@
-package org.wolftec.cwt.states;
+package org.wolftec.cwt.core.state;
 
 public interface GameActions {
 

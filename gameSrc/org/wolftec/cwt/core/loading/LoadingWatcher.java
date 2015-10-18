@@ -1,4 +1,4 @@
-package org.wolftec.cwt.core;
+package org.wolftec.cwt.core.loading;
 
 public interface LoadingWatcher {
 

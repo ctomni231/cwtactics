@@ -4,9 +4,9 @@ import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.audio.AudioManager;
 import org.wolftec.cwt.core.persistence.SaveManager;
-import org.wolftec.cwt.states.AbstractMenuState;
-import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.core.state.AbstractMenuState;
+import org.wolftec.cwt.core.state.GameActions;
+import org.wolftec.cwt.core.state.StateFlowData;
 
 public class OptionsMenuState extends AbstractMenuState {
 

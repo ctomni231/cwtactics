@@ -1,11 +1,9 @@
 package org.wolftec.cwt.core.action;
 
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.cwt.states.PositionCheck;
-import org.wolftec.cwt.states.PositionUpdateMode;
-import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 /**

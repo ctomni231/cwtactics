@@ -2,8 +2,8 @@ package org.wolftec.cwt.core.config;
 
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.loading.GameLoader;
+import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.persistence.SaveAppdataHandler;
 import org.wolftec.cwt.core.persistence.SavegameHandler;
 import org.wolftec.cwt.core.util.NullUtil;

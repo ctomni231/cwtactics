@@ -1,10 +1,10 @@
-package org.wolftec.cwt.environment;
+package org.wolftec.cwt.states;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.env.Features;
 import org.wolftec.cwt.core.loading.GameLoader;
+import org.wolftec.cwt.core.log.Log;
 
 public class CheckSystem implements GameLoader {
 

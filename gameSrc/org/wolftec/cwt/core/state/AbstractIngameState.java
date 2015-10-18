@@ -1,14 +1,15 @@
-package org.wolftec.cwt.states;
+package org.wolftec.cwt.core.state;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.core.input.InputProvider;
+import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.states.UserInteractionData;
 
 public class AbstractIngameState extends AbstractState {
 

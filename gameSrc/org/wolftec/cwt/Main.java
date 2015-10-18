@@ -5,8 +5,8 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwt.core.ioc.IoCConfiguration;
 import org.wolftec.cwt.core.ioc.IoCContainer;
+import org.wolftec.cwt.core.state.StateManager;
 import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.states.StateManager;
 
 public class Main {
 

@@ -2,10 +2,10 @@ package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.collections.MoveableMatrix;
+import org.wolftec.cwt.core.config.ConfigurableValue;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
-import org.wolftec.cwt.model.gameround.GameMode;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.PositionData;
@@ -15,6 +15,8 @@ import org.wolftec.cwt.model.sheets.types.AttackType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 
 public class BattleLogic implements Injectable {
+
+  private static final int MAX_LUCK_EXCLUSIVE = 11;
 
   /**
    * Signal for units that cannot attack.
@@ -42,14 +44,38 @@ public class BattleLogic implements Injectable {
 
   private static final int MOVABLE = 3;
 
+  private static final int DAMAGE_CALC_MODE_OLD = 0;
+  private static final int DAMAGE_CALC_MODE_NEW = 1;
+
   private ModelManager   model;
   private CommanderLogic co;
   private MoveLogic      move;
+
+  private ConfigurableValue cfgDaysOfPeace;
+  private ConfigurableValue cfgDamageCalculation;
+
+  @Override
+  public void onConstruction() {
+    cfgDaysOfPeace = new ConfigurableValue("game.daysOfPeace", 0, 50, 0);
+    cfgDamageCalculation = new ConfigurableValue("game.damageCalc.mode", 0, 1, 0);
+  }
+
+  /**
+   * 
+   * @return true when the game is in the peace phase, else false
+   */
+  public boolean inPeacePhase() {
+    return (model.day < cfgDaysOfPeace.value);
+  }
 
   public boolean hasMainWeapon(Unit unit) {
     AttackType attack = unit.type.attack;
     // TODO avoid null here
     return NullUtil.isPresent(attack) && NullUtil.isPresent(attack.main_wp);
+  }
+
+  public int getRandomLuck() {
+    return NumberUtil.getRandomInt(MAX_LUCK_EXCLUSIVE);
   }
 
   public boolean hasSecondaryWeapon(Unit unit) {
@@ -339,10 +365,19 @@ public class BattleLogic implements Injectable {
     int DTR = NumberUtil.asInt(def * 100 / 100);
 
     int damage;
-    if (model.gameMode == GameMode.GAME_MODE_AW2) {
-      damage = BASE * (ACO / 100 - (ACO / 100 * (DCO - 100) / 100)) * (AHP / 10);
-    } else {
-      damage = BASE * (ACO / 100 * DCO / 100) * (AHP / 10);
+    switch (cfgDamageCalculation.value) {
+
+      case DAMAGE_CALC_MODE_OLD:
+        damage = BASE * (ACO / 100 - (ACO / 100 * (DCO - 100) / 100)) * (AHP / 10);
+        break;
+
+      case DAMAGE_CALC_MODE_NEW:
+        damage = BASE * (ACO / 100 * DCO / 100) * (AHP / 10);
+        break;
+
+      default:
+        damage = BASE;
+        break;
     }
 
     return NumberUtil.asInt(damage);

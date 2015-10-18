@@ -2,14 +2,14 @@ package org.wolftec.cwt.states.start;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.input.InputProvider;
+import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.core.state.AbstractState;
+import org.wolftec.cwt.core.state.GameActions;
+import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.jslix.ImageLibrary;
 import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.StateFlowData;
 
 public class NoneState extends AbstractState {
 

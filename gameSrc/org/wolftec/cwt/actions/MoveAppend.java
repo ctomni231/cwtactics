@@ -4,7 +4,7 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
-import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class MoveAppend implements Action {

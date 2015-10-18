@@ -1,13 +1,13 @@
-package org.wolftec.cwt.states;
+package org.wolftec.cwt.core.state;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.input.InputProvider;
+import org.wolftec.cwt.core.log.Log;
 
 public class AbstractMenuState extends AbstractState {
 
   private Log                  log;
-  protected UserInteractionMap ui;
+  protected MenuInteractionMap ui;
 
   @Override
   public void update(StateFlowData flowData, int delta, InputProvider input) {

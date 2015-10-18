@@ -2,14 +2,14 @@ package org.wolftec.cwt.states.ingame;
 
 import org.stjs.javascript.Array;
 import org.wolftec.cwt.ErrorManager;
-import org.wolftec.cwt.core.Log;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionType;
+import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.core.state.AbstractIngameState;
+import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
-import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateFlowData;
 
 public class IngameMenuState extends AbstractIngameState {
 

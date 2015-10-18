@@ -1,4 +1,4 @@
-package org.wolftec.cwt.states;
+package org.wolftec.cwt.core.state;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.core.Option;
@@ -14,10 +14,10 @@ public class AbstractState implements Injectable {
   /**
    * Called when the state will be leaved.
    * 
-   * @param transition
+   * @param flowData
    *          transition data
    */
-  public void onExit(StateFlowData transition) {
+  public void onExit(StateFlowData flowData) {
 
   }
 
