@@ -23,14 +23,15 @@ public class TempState extends AbstractState {
   public void onEnter(StateFlowData transition) {
 
     // This stores the image in a "<img id="image" .... >
-    ImageLibrary.store("../image/AW_BUILDINGS.png");
+    ImageLibrary.store("../image/background/MinuteWars.png");
   }
 
   @Override
   public void render(int delta, GraphicManager gfx) {
     CanvasRenderingContext2D ctx = gfx.mainCtx;
 
-    gfx.mainCtx.clearRect(0, 0, gfx.absoluteScreenWidth(), gfx.absoluteScreenHeight());
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, gfx.absoluteScreenWidth(), gfx.absoluteScreenHeight());
 
     // ctx.font = "24pt Arial";
 
