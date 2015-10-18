@@ -5,7 +5,6 @@ import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.state.AbstractState;
 import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.logic.CaptureLogic;
 import org.wolftec.cwt.logic.TurnLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
@@ -104,7 +103,7 @@ public class IngameEnterState extends AbstractState {
 
     model.forEachProperty((index, property) -> {
 
-      property.points = CaptureLogic.CAPTURE_POINTS;
+      property.points = 20; /* TODO */
 
       if (index >= mapData.player) {
         property.owner = null;/* TODO */

@@ -21,7 +21,7 @@ public class SupplyUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    Unit unit = data.source.unit.get();
+    Unit unit = data.source.unit;
     return supply.isSupplier(unit) && supply.hasRefillTargetsNearby(unit, data.source.x, data.source.y);
   }
 

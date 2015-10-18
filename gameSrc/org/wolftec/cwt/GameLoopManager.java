@@ -4,7 +4,6 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.gameloop.FrameTickListener;
 import org.wolftec.cwt.core.input.BlockedInputManager;
 import org.wolftec.cwt.core.input.InputManager;
@@ -14,6 +13,7 @@ import org.wolftec.cwt.core.state.AbstractState;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.state.StateManager;
 import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
 
 public class GameLoopManager implements Injectable {
@@ -85,14 +85,14 @@ public class GameLoopManager implements Injectable {
     activeState.update(transitionData, delta, blockInputTime <= 0 ? inputMgr : nullInputMgr);
     activeState.render(delta, gfx);
 
-    if (transitionData.getInputBlockRequest().isPresent()) {
-      blockInputTime = transitionData.getInputBlockRequest().get();
+    if (transitionData.hasInputBlockRequest()) {
+      blockInputTime = transitionData.getInputBlockRequest();
       transitionData.flushInputBlockRequest();
     }
 
-    Option<String> nextState = transitionData.getNextState();
-    if (nextState.isPresent()) {
-      sm.changeState(nextState.get());
+    String nextState = transitionData.getNextState();
+    if (NullUtil.isPresent(nextState)) {
+      sm.changeState(nextState);
       transitionData.flushTransitionTo();
       blockInputTime = BLOCK_INPUT_TIME;
     }

@@ -1,7 +1,6 @@
 package org.wolftec.cwt.model.gameround;
 
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.logic.CaptureLogic;
 
 public class ModelResetter implements Injectable {
 
@@ -35,7 +34,7 @@ public class ModelResetter implements Injectable {
     });
 
     model.forEachProperty((index, property) -> {
-      property.points = CaptureLogic.CAPTURE_POINTS;
+      property.points = 20; /* TODO */
       property.owner = null;/* TODO */
       property.type = null;
     });

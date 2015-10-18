@@ -17,7 +17,7 @@ public class RemapInputMenuState extends AbstractState {
   @Override
   public void update(StateFlowData transition, int delta, InputProvider input) {
     if (input.isActionPressed(GameActions.BUTTON_B)) {
-      transition.setTransitionTo(transition.getPreviousState().get());
+      transition.setTransitionTo(transition.getPreviousState());
     }
   }
 }

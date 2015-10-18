@@ -5,6 +5,7 @@ import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.core.action.PositionCheck;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.logic.CaptureLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
@@ -31,7 +32,7 @@ public class CaptureProperty implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return data.target.property.isPresent() && capture.canCapture(data.source.unit.get()) && capture.canBeCaptured(data.target.property.get());
+    return NullUtil.isPresent(data.target.property) && capture.canCapture(data.source.unit) && capture.canBeCaptured(data.target.property);
   }
 
   @Override

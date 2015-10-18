@@ -25,7 +25,7 @@ public class FireLaser implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return laser.isLaser(data.source.unit.get());
+    return laser.isLaser(data.source.unit);
   }
 
   @Override

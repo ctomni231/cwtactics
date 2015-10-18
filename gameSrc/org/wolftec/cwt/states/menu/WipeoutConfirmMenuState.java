@@ -11,7 +11,7 @@ public class WipeoutConfirmMenuState extends AbstractMenuState {
   private static final String UIC_YES = "YES";
   private static final String UIC_NO  = "NO";
 
-  private ResetSystem         reset;
+  private ResetSystem reset;
 
   @Override
   public void onConstruction() {
@@ -34,7 +34,7 @@ public class WipeoutConfirmMenuState extends AbstractMenuState {
         break;
 
       case UIC_NO:
-        transition.setTransitionTo(transition.getPreviousState().get());
+        transition.setTransitionTo(transition.getPreviousState());
         break;
     }
   }

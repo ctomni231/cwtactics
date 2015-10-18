@@ -31,7 +31,7 @@ public class FireSilo implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return weapons.isRocketSilo(data.target.property.get()) && weapons.canBeFiredBy(data.target.property.get(), data.source.unit.get());
+    return weapons.isRocketSilo(data.target.property) && weapons.canBeFiredBy(data.target.property, data.source.unit);
   }
 
   @Override

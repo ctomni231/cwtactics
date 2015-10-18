@@ -8,6 +8,7 @@ import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.state.AbstractState;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
 
 /**
@@ -58,12 +59,13 @@ public class IngameEvalActionState extends AbstractState {
 
       // actions may manipulate the active state so we go into Idle only if the
       // actions does not set a custom target
-      if (!transition.getNextState().isPresent()) {
+      String nextState = transition.getNextState();
+      if (!NullUtil.isPresent(nextState)) {
         transition.setTransitionTo("IngameIdleState");
       } else {
 
         // check target state
-        if (!transition.getNextState().get().startsWith("Ingame")) {
+        if (!nextState.startsWith("Ingame")) {
           errors.raiseError("cannot move into a non-ingame state here", "ActionEvaluation");
         }
       }

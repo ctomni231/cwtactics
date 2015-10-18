@@ -22,14 +22,15 @@ public class ConfigPeristence implements GameLoader, SaveAppdataHandler<Map<Stri
   }
 
   private void grabConfigFromUrl(String paramName, ConfigurableValue cfg) {
-    UrlParameterUtil.getParameter(paramName).ifPresent((value) -> {
-      if (value != "0" && value != "1") {
-        log.warn("IllegalUrlParameter: " + paramName + " will be ignored");
+    String cfgParamValue = UrlParameterUtil.getParameter(paramName);
+    if (NullUtil.isPresent(cfgParamValue)) {
+      if (cfgParamValue != "0" && cfgParamValue != "1") {
+        log.warn("illegal cfg value for " + paramName + " in the url -> will be ignored");
         return;
       }
 
-      cfg.setValue(NumberUtil.convertStringToInt(value));
-    });
+      cfg.setValue(NumberUtil.convertStringToInt(cfgParamValue));
+    }
   }
 
   @Override

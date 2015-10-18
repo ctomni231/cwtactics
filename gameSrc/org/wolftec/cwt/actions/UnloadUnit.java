@@ -40,7 +40,7 @@ public class UnloadUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return transport.isTransportUnit(data.source.unit.get()) && transport.canUnloadSomethingAt(data.source.unit.get(), data.target.x, data.target.y);
+    return transport.isTransportUnit(data.source.unit) && transport.canUnloadSomethingAt(data.source.unit, data.target.x, data.target.y);
   }
 
   @Override
@@ -60,7 +60,7 @@ public class UnloadUnit implements Action {
   @Override
   public void prepareTargets(UserInteractionData data) {
     MoveType loadMovetype = sheets.movetypes.get(model.getUnit(data.actionDataCode).type.movetype);
-    Unit transporter = data.source.unit.get();
+    Unit transporter = data.source.unit;
     int x = data.target.x;
     int y = data.target.y;
 

@@ -386,12 +386,14 @@ public class MoveLogic implements Injectable {
    */
   // TODO @ME REFA THIS MONSTER O_O !!!!
   public void fillMoveMap(PositionData source, MoveableMatrix selection) {
+    NullUtil.mustBePresent(source.unit, NO_UNIT_AT_POSITION_ERROR);
+
     // TODO: source and x,y,unit is kinda double definition of the same things
     int cost;
 
     int x = source.x;
     int y = source.y;
-    Unit unit = source.unit.get();
+    Unit unit = source.unit;
 
     Array<Integer> checker;
     Array<Integer> toBeChecked;
@@ -560,11 +562,13 @@ public class MoveLogic implements Injectable {
   }
 
   public boolean trapCheck(ModelManager model, CircularBuffer<Integer> movePath, PositionData source, PositionData target) {
+    NullUtil.mustBePresent(source.unit, NO_UNIT_AT_POSITION_ERROR);
+
     int cBx = 0;
     int cBy = 0;
     int cx = source.x;
     int cy = source.y;
-    int teamId = source.unit.get().owner.team;
+    int teamId = source.unit.owner.team;
     for (int i = 0, e = movePath.getSize(); i < e; i++) {
       switch (movePath.get(i)) {
         case MOVE_CODES_DOWN:
@@ -715,7 +719,9 @@ public class MoveLogic implements Injectable {
    *         position, else false
    */
   public boolean canMoveSomewhere(ModelManager model, PositionData position) {
-    Unit unit = position.unit.orElseThrow(NO_UNIT_AT_POSITION_ERROR);
+    NullUtil.mustBePresent(position.unit, NO_UNIT_AT_POSITION_ERROR);
+
+    Unit unit = position.unit;
     MoveType mv = sheets.movetypes.get(unit.type.movetype);
 
     return ((model.isValidPosition(position.x + 1, position.y) && getMoveCosts(mv, position.x + 1, position.y) > Constants.INACTIVE)

@@ -28,7 +28,7 @@ public class BuildUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return factory.isFactory(data.source.property.get()) && factory.canProduce(data.source.property.get());
+    return factory.isFactory(data.source.property) && factory.canProduce(data.source.property);
   }
 
   @Override
@@ -38,7 +38,7 @@ public class BuildUnit implements Action {
 
   @Override
   public void prepareActionMenu(UserInteractionData data) {
-    factory.generateBuildMenu(data.source.property.get(), data, true);
+    factory.generateBuildMenu(data.source.property, data, true);
   }
 
   @Override

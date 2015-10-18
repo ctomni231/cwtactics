@@ -1,13 +1,21 @@
 package org.wolftec.cwt.logic;
 
+import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Unit;
 
-public class CaptureLogic implements Injectable {
+public class CaptureLogic implements Injectable, ConfigurationProvider {
 
-  public static final int CAPTURE_STEP   = 10;
-  public static final int CAPTURE_POINTS = 20;
+  private ConfigurableValue cfgCapturerPoints;
+  private ConfigurableValue cfgPropertyPoints;
+
+  @Override
+  public void onConstruction() {
+    cfgPropertyPoints = new ConfigurableValue("game.capture.propertyPoints", 5, 99, 20);
+    cfgCapturerPoints = new ConfigurableValue("game.capture.capturerPoints", 5, 99, 10);
+  }
 
   // captureLimit = new ConfigurableValue(0, Constants.MAX_PROPERTIES, 0);
   /**
@@ -41,10 +49,11 @@ public class CaptureLogic implements Injectable {
    */
   public boolean captureProperty(Property property, Unit unit) {
 
-    property.points -= CAPTURE_STEP;
+    property.points -= cfgCapturerPoints.value;
     if (property.points <= 0) {
       property.owner = unit.owner;
-      property.points = CAPTURE_POINTS;
+      property.points = cfgPropertyPoints.value;
+
       // TODO: if max points are static then the configurable points from the
       // property sheets can be removed
 

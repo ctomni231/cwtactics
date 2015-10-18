@@ -3,7 +3,7 @@ package org.wolftec.cwt.core.util;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.dom.Element;
 
-public class DomUtil {
+public abstract class DomUtil {
 
   /**
    * Creates a DOM element.

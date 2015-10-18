@@ -114,6 +114,6 @@ public class AbstractIngameState extends AbstractState {
   }
 
   public void handleButtonB(StateFlowData transition, int delta) {
-    transition.setTransitionTo(transition.getPreviousState().get());
+    transition.setTransitionTo(transition.getPreviousState());
   }
 }

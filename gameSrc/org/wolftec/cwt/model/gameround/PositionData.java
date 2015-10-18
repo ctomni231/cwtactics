@@ -1,6 +1,5 @@
 package org.wolftec.cwt.model.gameround;
 
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.annotations.OptionalField;
 
 /**
@@ -13,10 +12,10 @@ public class PositionData {
   public Tile tile = null;
 
   @OptionalField
-  public Option<Unit> unit = null;
+  public Unit unit = null;
 
   @OptionalField
-  public Option<Property> property = null;
+  public Property property = null;
 
   public int unitId;
   public int propertyId;
@@ -65,17 +64,17 @@ public class PositionData {
     tile = manager.getTile(x, y);
 
     if (tile.visionTurnOwner > 0 && tile.unit != null) {
-      unit = Option.of(tile.unit);
+      unit = tile.unit;
       unitId = manager.getUnitId(tile.unit);
     } else {
-      unit = Option.empty();
+      unit = null;
     }
 
     if (tile.property != null) {
-      property = Option.of(tile.property);
+      property = tile.property;
       propertyId = manager.getPropertyId(tile.property);
     } else {
-      property = Option.empty();
+      property = null;
     }
   }
 }

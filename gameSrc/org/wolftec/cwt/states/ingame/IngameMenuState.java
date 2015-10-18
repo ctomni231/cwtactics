@@ -8,6 +8,7 @@ import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.state.AbstractIngameState;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 
@@ -25,7 +26,7 @@ public class IngameMenuState extends AbstractIngameState {
   public void onEnter(StateFlowData transition) {
     uiData.cleanInfos();
 
-    boolean movableUnitAtSource = uiData.source.unit.isPresent() && uiData.source.unit.get().canAct && move.canMoveSomewhere(model, uiData.source);
+    boolean movableUnitAtSource = NullUtil.isPresent(uiData.source.unit) && uiData.source.unit.canAct && move.canMoveSomewhere(model, uiData.source);
 
     ActionType wantedType = ActionType.MAP_ACTION;
     if (movableUnitAtSource) {

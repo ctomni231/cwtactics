@@ -5,6 +5,7 @@ import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.core.action.PositionCheck;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.logic.JoinLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
@@ -43,7 +44,7 @@ public class JoinUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return data.target.unit.isPresent() && join.canJoin(data.source.unit.get(), data.target.unit.get());
+    return NullUtil.isPresent(data.target.unit) && join.canJoin(data.source.unit, data.target.unit);
   }
 
   @Override

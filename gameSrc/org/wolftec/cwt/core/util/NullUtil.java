@@ -2,7 +2,7 @@ package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.JSGlobal;
 
-public class NullUtil {
+public abstract class NullUtil {
 
   public static boolean isPresent(Object value) {
     return value != null && value != JSGlobal.undefined;

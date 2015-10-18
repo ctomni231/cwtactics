@@ -1,21 +1,23 @@
 package org.wolftec.cwt.core.state;
 
-import org.wolftec.cwt.core.Option;
+import org.wolftec.cwt.core.annotations.OptionalReturn;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 
 /**
  * 
  */
 public class StateFlowData {
 
-  private Option<String>  previousState;
-  private Option<String>  nextState;
-  private Option<Integer> blockInputRequest;
+  private String previousState;
+  private String nextState;
+  private int    blockInputRequest;
 
   public StateFlowData() {
-    previousState = Option.empty();
-    nextState = Option.empty();
-    blockInputRequest = Option.empty();
+    previousState = null;
+    nextState = null;
+    blockInputRequest = 0;
   }
 
   /**
@@ -23,25 +25,27 @@ public class StateFlowData {
    * @param nullableState
    */
   public void setTransitionTo(String state) {
-    nextState = Option.of(state);
+    NullUtil.mustBePresent(state, "next state is undefined");
+    nextState = state;
   }
 
   /**
    * 
    */
   public void flushTransitionTo() {
-    if (!nextState.isPresent()) {
+    if (!NullUtil.isPresent(nextState)) {
       JsUtil.throwError("NoSuchStateException: cannot flush target value null");
     }
     previousState = nextState;
-    nextState = Option.empty();
+    nextState = null;
   }
 
   /**
    * 
    * @return
    */
-  public Option<String> getNextState() {
+  @OptionalReturn
+  public String getNextState() {
     return nextState;
   }
 
@@ -49,22 +53,26 @@ public class StateFlowData {
    * 
    * @return
    */
-  public Option<String> getPreviousState() {
+  @OptionalReturn
+  public String getPreviousState() {
     return previousState;
   }
 
   public void flushInputBlockRequest() {
-    blockInputRequest = Option.empty();
+    blockInputRequest = 0;
+  }
+
+  public boolean hasInputBlockRequest() {
+    return blockInputRequest > 0;
   }
 
   public void requestInputBlock(int time) {
-    if (time <= 0) {
-      JsUtil.throwError("IllegalArgument: negative time");
-    }
-    blockInputRequest = Option.of(time);
+    AssertUtil.assertThatNot(time <= 0, "negative time");
+    blockInputRequest = time;
   }
 
-  public Option<Integer> getInputBlockRequest() {
+  public int getInputBlockRequest() {
+    AssertUtil.assertThat(blockInputRequest > 0, "no requested block");
     return blockInputRequest;
   }
 

@@ -5,11 +5,11 @@ import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
 
 public class ExplodeLogic implements Injectable {
-  private ModelManager   model;
+
   private LifecycleLogic lifecycle;
 
   /**
-   * Returns **true** if the **unit** is capable to self destruct.
+   * Returns true if the unit is capable to self destruct.
    * 
    * @param unit
    * @return
@@ -19,8 +19,8 @@ public class ExplodeLogic implements Injectable {
   }
 
   /**
-   * Returns the **health** that will be damaged by an explosion of the exploder
-   * **unit**.
+   * Returns the health that will be damaged by an explosion of the exploder
+   * unit.
    * 
    * @param unit
    * @return
@@ -30,7 +30,7 @@ public class ExplodeLogic implements Injectable {
   }
 
   /**
-   * Returns the explosion **range** of the exploder **unit**.
+   * Returns the explosion range of the exploder unit.
    * 
    * @param unit
    * @return
@@ -40,17 +40,18 @@ public class ExplodeLogic implements Injectable {
   }
 
   /**
-   * Invokes an explosion with a given **range** at position (**x**,**y**). All
-   * units in the **range** will be damaged by the value **damage**. The health
-   * of an unit in range will never be lower than 9 health after the explosion (
-   * means it will have 1HP left).
+   * Invokes an explosion with a given range at position (x,y). All units in the
+   * range will be damaged by the value damage. The health of an unit in range
+   * will never be lower than 9 health after the explosion ( means it will have
+   * 1HP left).
    * 
+   * @param model
    * @param x
    * @param y
    * @param range
    * @param damage
    */
-  public void explode(int x, int y, int range, int damage) {
+  public void explode(ModelManager model, int x, int y, int range, int damage) {
     lifecycle.destroyUnit(x, y, false);
     model.doInRange(x, y, range, (cx, cy, ctile, crange) -> {
       Unit unit = ctile.unit;

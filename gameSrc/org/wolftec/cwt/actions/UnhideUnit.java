@@ -25,7 +25,7 @@ public class UnhideUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return data.source.unit.get().hidden;
+    return data.source.unit.hidden;
   }
 
   @Override

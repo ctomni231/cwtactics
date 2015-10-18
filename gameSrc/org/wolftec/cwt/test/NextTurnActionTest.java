@@ -3,6 +3,7 @@ package org.wolftec.cwt.test;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.actions.NextTurn;
 import org.wolftec.cwt.core.action.ActionData;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class NextTurnActionTest extends AbstractCwtTest {
@@ -30,7 +31,7 @@ public class NextTurnActionTest extends AbstractCwtTest {
     expect().unitAt(0, 0, "INFT", model.getPlayer(0));
 
     expect().cursorAt(0, 0);
-    assertThat(uiData.source.unit.isPresent()).is(true);
+    assertThat(NullUtil.isPresent(uiData.source.unit)).is(true);
     assertThat(action.condition(uiData)).is(false);
   }
 
@@ -40,15 +41,15 @@ public class NextTurnActionTest extends AbstractCwtTest {
     expect().propertyAt(2, 2, "BASE", model.getPlayer(2));
 
     expect().cursorAt(0, 0);
-    assertThat(uiData.source.property.isPresent()).is(true);
+    assertThat(NullUtil.isPresent(uiData.source.property)).is(true);
     assertThat(action.condition(uiData)).is(true);
 
     expect().cursorAt(1, 1);
-    assertThat(uiData.source.property.isPresent()).is(true);
+    assertThat(NullUtil.isPresent(uiData.source.property)).is(true);
     assertThat(action.condition(uiData)).is(false);
 
     expect().cursorAt(2, 2);
-    assertThat(uiData.source.property.isPresent()).is(true);
+    assertThat(NullUtil.isPresent(uiData.source.property)).is(true);
     assertThat(action.condition(uiData)).is(false);
   }
 }

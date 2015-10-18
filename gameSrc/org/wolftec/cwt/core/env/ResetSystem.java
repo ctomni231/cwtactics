@@ -5,6 +5,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.persistence.PersistenceManager;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.UrlParameterUtil;
 
 public class ResetSystem implements GameLoader {
@@ -21,14 +22,17 @@ public class ResetSystem implements GameLoader {
 
   @Override
   public void onLoad(Callback0 done) {
-    UrlParameterUtil.getParameter(PARAM_WIPEOUT).ifPresent((value) -> {
-      if (!(value == "1" || value == "true")) {
+    String wipeOutValue = UrlParameterUtil.getParameter(PARAM_WIPEOUT);
+
+    if (NullUtil.isPresent(wipeOutValue)) {
+      if (!(wipeOutValue == "1" || wipeOutValue == "true")) {
         log.warn("IllegalUrlParameter: " + PARAM_WIPEOUT + "can only true or 1");
         return;
       }
 
       wipeAndReload();
-    });
+    }
+
     done.$invoke();
   }
 

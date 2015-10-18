@@ -25,12 +25,12 @@ public class AttackUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return !battle.inPeacePhase() && battle.hasTargets(data.source.unit.get(), data.target.x, data.target.y, !data.movePath.isEmpty());
+    return !battle.inPeacePhase() && battle.hasTargets(data.source.unit, data.target.x, data.target.y, !data.movePath.isEmpty());
   }
 
   @Override
   public void prepareTargets(UserInteractionData data) {
-    battle.calculateTargets(data.source.unit.get(), data.target.x, data.target.y, data.targets, true);
+    battle.calculateTargets(data.source.unit, data.target.x, data.target.y, data.targets, true);
   }
 
   @Override

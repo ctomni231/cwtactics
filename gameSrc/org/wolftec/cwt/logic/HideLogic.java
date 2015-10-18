@@ -1,7 +1,7 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.model.gameround.Unit;
 
 public class HideLogic implements Injectable {
@@ -15,9 +15,7 @@ public class HideLogic implements Injectable {
   }
 
   private void setHiddenStatus(Unit unit, boolean status) {
-    if (unit.hidden == status) {
-      JsUtil.throwError("Already" + (status ? "Unh" : "H") + "idden");
-    }
+    AssertUtil.assertThatNot(unit.hidden == status, "Already" + (status ? "Unh" : "H") + "idden");
     unit.hidden = status;
   }
 }

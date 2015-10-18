@@ -17,7 +17,7 @@ public class IngameSubMenuState extends AbstractIngameState {
 
   @Override
   public void onEnter(StateFlowData transition) {
-    String lastState = transition.getPreviousState().get();
+    String lastState = transition.getPreviousState();
     leavePossible = (lastState == "IngameMovepathSelectionState" || lastState == "IngameIdleState");
     if (data.getNumberOfInfos() == 0) {
       errors.raiseError("NoActionMenuData", ClassUtil.getClassName(IngameSubMenuState.class));
@@ -54,7 +54,7 @@ public class IngameSubMenuState extends AbstractIngameState {
   @Override
   public void handleButtonB(StateFlowData transition, int delta) {
     if (leavePossible) {
-      transition.setTransitionTo(transition.getPreviousState().get());
+      transition.setTransitionTo(transition.getPreviousState());
     }
   }
 }

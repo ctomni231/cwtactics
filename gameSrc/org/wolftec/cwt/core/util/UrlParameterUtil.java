@@ -6,7 +6,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.Option;
+import org.wolftec.cwt.core.annotations.OptionalReturn;
 
 public abstract class UrlParameterUtil {
 
@@ -38,8 +38,8 @@ public abstract class UrlParameterUtil {
    *          the parameter key
    * @return the value for the given parameter
    */
-  public static Option<String> getParameter(String param) {
-    String value = getParameters().$get(param);
-    return Option.ofNullable(value);
+  @OptionalReturn
+  public static String getParameter(String param) {
+    return getParameters().$get(param);
   }
 }

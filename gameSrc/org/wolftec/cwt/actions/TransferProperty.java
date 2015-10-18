@@ -25,7 +25,7 @@ public class TransferProperty implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return team.canTransferProperty(data.source.property.get());
+    return team.canTransferProperty(data.source.property);
   }
 
   @Override
@@ -35,7 +35,7 @@ public class TransferProperty implements Action {
 
   @Override
   public void prepareActionMenu(UserInteractionData data) {
-    team.getPropertyTransferTargets(data.source.property.get().owner, data);
+    team.getPropertyTransferTargets(data.source.property.owner, data);
   }
 
   @Override

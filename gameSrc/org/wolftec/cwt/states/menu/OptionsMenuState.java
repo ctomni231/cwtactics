@@ -103,7 +103,7 @@ public class OptionsMenuState extends AbstractMenuState {
 
       case UIC_BACK:
         saving.saveAppData((saveError) -> {
-          transition.setTransitionTo(transition.getPreviousState().get());
+          transition.setTransitionTo(transition.getPreviousState());
         });
         break;
     }

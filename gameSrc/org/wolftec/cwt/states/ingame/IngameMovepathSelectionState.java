@@ -70,7 +70,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState implements
     }
 
     boolean breakMove = false;
-    if (model.isTurnOwnerObject(data.source.unit.get()) && data.source.unit.get().canAct) {
+    if (model.isTurnOwnerObject(data.source.unit) && data.source.unit.canAct) {
       data.movePath.clear();
       move.fillMoveMap(data.source, data.targets);
 

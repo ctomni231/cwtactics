@@ -6,6 +6,7 @@ import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.core.action.PositionCheck;
 import org.wolftec.cwt.core.action.PositionUpdateMode;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.logic.TransportLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
@@ -37,8 +38,7 @@ public class LoadUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return data.target.unit.isPresent() && transport.isTransportUnit(data.target.unit.get())
-        && transport.canLoadUnit(data.target.unit.get(), data.source.unit.get());
+    return NullUtil.isPresent(data.target.unit) && transport.isTransportUnit(data.target.unit) && transport.canLoadUnit(data.target.unit, data.source.unit);
   }
 
   @Override

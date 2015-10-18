@@ -15,7 +15,7 @@ public class IngameShowAttackRangeState extends AbstractIngameState {
 
   @Override
   public void onEnter(StateFlowData transition) {
-    attack.fillRangeMap(data.source.unit.get(), data.source.x, data.source.y, data.targets);
+    attack.fillRangeMap(data.source.unit, data.source.x, data.source.y, data.targets);
   }
 
   @Override
@@ -26,7 +26,7 @@ public class IngameShowAttackRangeState extends AbstractIngameState {
   @Override
   public void update(StateFlowData transition, int delta, InputProvider input) {
     if (!input.isActionPressed(GameActions.BUTTON_B)) {
-      transition.setTransitionTo(transition.getPreviousState().get());
+      transition.setTransitionTo(transition.getPreviousState());
     }
   }
 }
