@@ -4,6 +4,7 @@ import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.logic.TeamLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
@@ -42,6 +43,12 @@ public class TransferProperty implements Action {
   public void fillData(UserInteractionData interactionData, ActionData actionData) {
     actionData.p1 = interactionData.source.propertyId;
     actionData.p2 = interactionData.actionDataCode;
+  }
+
+  @Override
+  public void checkData(ActionData data) {
+    AssertUtil.assertThat(model.isValidPropertyId(data.p1), "");
+    AssertUtil.assertThat(model.isValidPlayerId(data.p2), "");
   }
 
   @Override

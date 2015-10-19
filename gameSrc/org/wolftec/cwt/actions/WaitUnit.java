@@ -4,12 +4,15 @@ import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.util.AssertUtil;
+import org.wolftec.cwt.logic.LifecycleLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class WaitUnit implements Action {
 
-  private ModelManager model;
+  private ModelManager   model;
+  private LifecycleLogic lifecylce;
 
   @Override
   public String key() {
@@ -32,8 +35,13 @@ public class WaitUnit implements Action {
   }
 
   @Override
+  public void checkData(ActionData data) {
+    AssertUtil.assertThat(model.isValidUnitId(data.p1), "");
+  }
+
+  @Override
   public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
-    model.getUnit(data.p1).canAct = false;
+    lifecylce.makeInactable(model.getUnit(data.p1));
   }
 
 }

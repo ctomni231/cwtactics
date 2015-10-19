@@ -10,6 +10,7 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.collections.CircularBuffer;
 import org.wolftec.cwt.core.collections.MoveableMatrix;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
@@ -115,18 +116,13 @@ public class MoveLogic implements Injectable {
    * @return move cost to move with a given move type on a given tile type
    */
   public int getMoveCosts(MoveType movetype, int x, int y) {
-    if (!model.isValidPosition(x, y)) {
-      JsUtil.throwError("IllegalPosition");
-    }
+    AssertUtil.assertThat(model.isValidPosition(x, y), "illegal position");
 
     int v;
     Tile tile = model.getTile(x, y);
 
-    // grab costs from property or if not given from tile
-    boolean block;
-    // TODO
-    if (tile.type.visionBlocker) {
-      v = -1;
+    if (NullUtil.isPresent(tile.property)) {
+      v = movetype.costs.$get(tile.property.type.ID);
     } else {
       v = movetype.costs.$get(tile.type.ID);
     }
@@ -520,6 +516,8 @@ public class MoveLogic implements Injectable {
 
           if (cUnit != null && cTile.visionTurnOwner > 0 && !cUnit.hidden && cUnit.owner.team != player.team) {
             continue;
+            // TODO visible enemy hidden
+            // TODO own hidden transporter
           }
 
           int rest = cp - cost;

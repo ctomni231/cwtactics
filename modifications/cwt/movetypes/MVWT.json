@@ -1,10 +1,10 @@
 {
   "sound": null,
   "costs": {
-    "WATER": 1,
+    "WATR": 1,
     "PORT": 1,
     "REEF": 2,
-    "SHOAL": 1,
+    "SHOL": 1,
     "*": -1
   }
 }

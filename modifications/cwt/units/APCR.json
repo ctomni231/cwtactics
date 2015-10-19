@@ -7,8 +7,8 @@
   "ammo": 0,
   "maxloads": 1,
   "canload": [
-    "MV_INFT",
-    "MV_MECH"
+    "MVIN",
+    "MVME"
   ],
   "supply": [
     "*"

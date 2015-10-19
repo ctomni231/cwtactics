@@ -30,6 +30,10 @@ public class ObjectUtil {
     }
   }
 
+  public static Map<String, Object> instanceAsMap(Object obj) {
+    return (Map<String, Object>) obj;
+  }
+
   public static <T> void forEachObjectValue(Object obj, Callback2<String, T> callback) {
     forEachObjectValueByFilteredKey(obj, null, callback);
   }

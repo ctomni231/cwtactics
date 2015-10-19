@@ -15,7 +15,8 @@ public class TransportLogic implements Injectable {
   private MoveLogic    move;
 
   /**
-   * @param {Unit} unit
+   * @param {Unit}
+   *          unit
    * @return true if the unit with id tid is a transporter, else false.
    */
   public boolean isTransportUnit(Unit unit) {
@@ -25,7 +26,8 @@ public class TransportLogic implements Injectable {
   /**
    * Has a transporter unit with id tid loaded units?
    *
-   * @param {Unit} unit
+   * @param {Unit}
+   *          unit
    * @return {boolean} true if yes, else false.
    */
   public boolean hasLoads(Unit unit) {
@@ -45,19 +47,23 @@ public class TransportLogic implements Injectable {
    * would load the unit. If the calculated weight is greater than the maximum
    * loadable weight false will be returned.
    *
-   * @param {Unit} transporter
-   * @param {Unit} load
+   * @param {Unit}
+   *          transporter
+   * @param {Unit}
+   *          load
    * @return {boolean}
    */
   public boolean canLoadUnit(Unit transporter, Unit load) {
-    return (transporter.type.canload.indexOf(sheets.movetypes.get(load.type.movetype).ID) != -1);
+    return (transporter.type.canload.indexOf(load.type.movetype) != -1);
   }
 
   /**
    * Loads the unit with id lid into a transporter with the id tid.
    *
-   * @param {Unit} transporter
-   * @param {Unit} load
+   * @param {Unit}
+   *          transporter
+   * @param {Unit}
+   *          load
    */
   public void load(Unit transporter, Unit load) {
     if (load == transporter) {
@@ -73,8 +79,10 @@ public class TransportLogic implements Injectable {
   /**
    * Unloads the unit with id lid from a transporter with the id tid.
    *
-   * @param {Unit} transport
-   * @param {Unit} load
+   * @param {Unit}
+   *          transport
+   * @param {Unit}
+   *          load
    */
   public void unload(Unit transporter, Unit load) {
     if (load.loadedIn != model.getUnitId(transporter)) {
@@ -89,9 +97,12 @@ public class TransportLogic implements Injectable {
    * position. This functions understands the given position as possible
    * position for the transporter.
    *
-   * @param {Unit} transporter
-   * @param {Number} x
-   * @param {Number} y
+   * @param {Unit}
+   *          transporter
+   * @param {Number}
+   *          x
+   * @param {Number}
+   *          y
    * @return {boolean}
    */
   public boolean canUnloadSomethingAt(Unit transporter, int x, int y) {

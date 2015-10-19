@@ -15,10 +15,12 @@ public class Main {
 
     ts = JsUtil.getTimestamp();
     IoCContainer ioc = createIocContainer();
-    //The main game itself...
+    // The main game itself...
     ioc.getManagedObjectByType(StateManager.class).setState("NoneState", true);
-    //Just so JSR can test... comment out to see what JSR is up to. (Need to start using testing functions) 
-    //ioc.getManagedObjectByType(StateManager.class).setState("TempState", true);
+    // Just so JSR can test... comment out to see what JSR is up to. (Need to
+    // start using testing functions)
+    // ioc.getManagedObjectByType(StateManager.class).setState("TempState",
+    // true);
     ioc.getManagedObjectByType(GameLoopManager.class).start();
     ts = JsUtil.getTimestamp() - ts;
 
@@ -30,7 +32,9 @@ public class Main {
     ct.initByConfig(createIoCConfig());
     if (Constants.DEBUG) {
       JSObjectAdapter.$put(Global.window, "__ioc__", ct);
+      JSObjectAdapter.$put(Global.window, "__dev__", ct.getManagedObjectByType(DevDebug.class));
     }
+
     return ct;
   }
 

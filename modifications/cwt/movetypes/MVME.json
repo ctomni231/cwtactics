@@ -1,7 +1,7 @@
 {
   "sound": "",
   "costs": {
-    "WATER": -1,
+    "WATR": -1,
     "REEF": -1,
     "*": 1
   }

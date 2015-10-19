@@ -122,6 +122,10 @@ public interface Action extends Injectable {
 
   }
 
+  default void checkData(ActionData data) {
+
+  }
+
   /**
    * Invokes the action with a given set of arguments.
    * 

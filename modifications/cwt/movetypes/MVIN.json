@@ -2,7 +2,7 @@
   "sound": null,
   "costs": {
     "MNTN": 2,
-    "WATER": -1,
+    "WATR": -1,
     "REEF": -1,
     "*": 1
   }

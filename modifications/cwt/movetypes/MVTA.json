@@ -4,8 +4,8 @@
     "PLIN": 2,
     "FRST": 3,
     "MNTN": -1,
-    "RIVER": -1,
-    "WATER": -1,
+    "RIVR": -1,
+    "WATR": -1,
     "REEF": -1,
     "*": 1
   }

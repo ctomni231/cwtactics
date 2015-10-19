@@ -126,4 +126,12 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
   public boolean hasFreeUnitSlot(Player player) {
     return player.numberOfUnits < Constants.MAX_UNITS;
   }
+
+  public void makeActable(Unit unit) {
+    unit.canAct = true;
+  }
+
+  public void makeInactable(Unit unit) {
+    unit.canAct = false;
+  }
 }
