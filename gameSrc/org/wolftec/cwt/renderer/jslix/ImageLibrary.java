@@ -1,4 +1,4 @@
-package org.wolftec.cwt.jslix;
+package org.wolftec.cwt.renderer.jslix;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
