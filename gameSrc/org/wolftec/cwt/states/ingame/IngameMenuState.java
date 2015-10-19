@@ -35,6 +35,7 @@ public class IngameMenuState extends AbstractIngameState {
     }
 
     // TODO ALLY
+    // TODO TARGET - SOURCE SAME THING CHECK
     PositionCheck sourceUnit = NullUtil.isPresent(uiData.source.unit) ? PositionCheck.OWN : PositionCheck.EMPTY;
     PositionCheck sourceProperty = NullUtil.isPresent(uiData.source.property)
         ? ((uiData.source.property.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY) : PositionCheck.EMPTY;
