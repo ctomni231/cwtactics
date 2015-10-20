@@ -229,7 +229,7 @@ function pushToCanvas(){
 	// var Uint8View = new Uint8Array(buffer);
 }
 
-//Random junk from the old imglibrary.html (Out with the old, in with the new.
+//Random junk from the old imglibrary.html (Out with the old, in with the new.)
 /*
 <!DOCTYPE html>
 

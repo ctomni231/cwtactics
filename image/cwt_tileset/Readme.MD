@@ -103,6 +103,7 @@ List of pretty much every sprite you'd ever need for reference.
 
 * [ ] *PTNK* - Prism Tank (CO Von Bolt)
 * [ ] *AUTK* - Auto Tank (CO Jugger)
+* [ ] *HTNK* - Hot Tank (CO Koal)
 
 ***
 

@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<title>Creating ImgLibrary within JavaScript</title>
-		<script src="ImageLibrary.js"></script>		
+		<script src="imgLibrary.js"></script>		
 	</head>
 	<body>
 		<img id="inft" src="AWDS_INFT.png" style="display: none;" />
@@ -11,10 +11,13 @@
 
 		<canvas id="myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;">
 			Your browser does not support the HTML5 canvas tag.</canvas>
-	
-		<button onclick="copy()">Copy</button>
-		<button onclick="store()">Store</button>
-		<button onclick="pull()">Pull</button>
-	
+			
+		<br />Image File Path:<input id="textBox" type="text" value="CWT_MECH.png" />
+		<button onclick="addImage()">Store</button>
+		<button onclick="displayImage()">Display</button>
 	</body>
+	
+	<!--<button onclick="copy()">Copy</button>
+	<button onclick="store()">Store</button>
+	<button onclick="pull()">Pull</button>-->
 </html>
