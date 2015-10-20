@@ -127,6 +127,10 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
     return player.numberOfUnits < Constants.MAX_UNITS;
   }
 
+  public boolean isActable(Unit unit) {
+    return unit.canAct;
+  }
+
   public void makeActable(Unit unit) {
     unit.canAct = true;
   }

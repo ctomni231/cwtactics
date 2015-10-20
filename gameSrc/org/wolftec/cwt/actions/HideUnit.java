@@ -25,7 +25,7 @@ public class HideUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return !data.source.unit.hidden;
+    return hide.canHide(data.source.unit);
   }
 
   @Override

@@ -53,6 +53,7 @@ public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
     sheet.maxloads = readNullable(data, "maxloads", 0);
     sheet.captures = readNullable(data, "captures", 0);
     sheet.blocked = readNullable(data, "blocked", false);
+    sheet.stealth = readNullable(data, "stealth", false);
     sheet.costs = readNullable(data, "costs", Constants.INACTIVE);
     sheet.dailyFuelDrain = readNullable(data, "dailyFuelDrain", 0);
     sheet.dailyFuelDrainHidden = readNullable(data, "dailyFuelDrainHidden", 0);

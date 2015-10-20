@@ -111,7 +111,14 @@ public interface Action extends Injectable {
   }
 
   default boolean checkTarget(PositionCheck unitFlag, PositionCheck propertyFlag) {
-    return unitFlag == PositionCheck.EMPTY;
+    switch (type()) {
+
+      case UNIT_ACTION:
+        return unitFlag == PositionCheck.OWN || unitFlag == PositionCheck.EMPTY;
+
+      default:
+        return unitFlag == PositionCheck.EMPTY;
+    }
   }
 
   default void fillData(UserInteractionData interactionData, ActionData actionData) {

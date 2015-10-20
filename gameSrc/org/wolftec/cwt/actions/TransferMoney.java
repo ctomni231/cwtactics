@@ -3,8 +3,8 @@ package org.wolftec.cwt.actions;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
+import org.wolftec.cwt.core.action.PositionCheck;
 import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.logic.TeamLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
@@ -30,8 +30,13 @@ public class TransferMoney implements Action {
   }
 
   @Override
+  public boolean checkTarget(PositionCheck unitFlag, PositionCheck propertyFlag) {
+    return propertyFlag != PositionCheck.OWN && propertyFlag != PositionCheck.EMPTY;
+  }
+
+  @Override
   public boolean condition(UserInteractionData data) {
-    return NullUtil.isPresent(data.source.property) && team.canTransferMoney(data.source.property.owner, data.source.x, data.source.y);
+    return team.canTransferMoney(data.source.property.owner, data.source.x, data.source.y);
   }
 
   @Override

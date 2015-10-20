@@ -61,7 +61,7 @@ public class IngameMenuState extends AbstractIngameState {
        * this can happen especially when you click on an own transport unit in
        * your move path, which is not able to load the selected unit.
        */
-      transition.setTransitionTo(uiData.movePath.isEmpty() ? "IngameIdleState" : "IngameMenuState");
+      transition.setTransitionTo(uiData.movePath.isEmpty() ? "IngameIdleState" : "IngameMovepathSelectionState");
     }
   }
 

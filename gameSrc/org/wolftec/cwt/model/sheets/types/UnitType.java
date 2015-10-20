@@ -19,6 +19,7 @@ public class UnitType extends SheetType {
   public int           captures;
   public SupplierType  supply;
   public boolean       blocked;
+  public boolean       stealth;
 
   public UnitType() {
     supply = new SupplierType();

@@ -6,6 +6,14 @@ import org.wolftec.cwt.model.gameround.Unit;
 
 public class HideLogic implements Injectable {
 
+  public boolean canHide(Unit unit) {
+    return unit.type.stealth && !unit.hidden;
+  }
+
+  public boolean canUnhide(Unit unit) {
+    return unit.type.stealth && unit.hidden;
+  }
+
   public void hide(Unit unit) {
     setHiddenStatus(unit, true);
   }

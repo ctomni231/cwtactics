@@ -26,7 +26,7 @@ public class WaitUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return data.source.unit.canAct;
+    return lifecylce.isActable(data.source.unit);
   }
 
   @Override

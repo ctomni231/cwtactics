@@ -1,6 +1,7 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.InformationList;
 import org.wolftec.cwt.core.config.ConfigurableValue;
 import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
@@ -106,6 +107,18 @@ public class CommanderLogic implements Injectable, ConfigurationProvider {
     cost += used * cfgStarCostIncrease.value;
 
     return cost;
+  }
+
+  public void addActivatableLevelsToList(Player actor, InformationList infoList) {
+    for (int i = POWER_LEVEL_COP; i <= POWER_LEVEL_SCOP; i++) {
+      if (canActivatePower(actor, i)) {
+        infoList.addInfo("" + i, false);
+      }
+    }
+  }
+
+  public boolean isValidPowerlevel(int level) {
+    return level >= POWER_LEVEL_OFF && level <= POWER_LEVEL_SCOP;
   }
 
   /**

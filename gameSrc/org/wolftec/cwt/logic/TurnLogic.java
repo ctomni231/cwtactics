@@ -5,7 +5,7 @@ import org.wolftec.cwt.core.config.ConfigurableValue;
 import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.log.Log;
-import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 
@@ -77,7 +77,6 @@ public class TurnLogic implements Injectable, ConfigurationProvider {
 
     log.info("player " + pid + " stops his turn");
 
-    // Try to find next player from the player pool
     pid++;
     while (pid != oid) {
 
@@ -96,22 +95,19 @@ public class TurnLogic implements Injectable, ConfigurationProvider {
         }
       }
 
-      // Found next player
       if (model.getPlayer(pid).team != Constants.INACTIVE) {
         break;
       }
 
-      // Try next player
       pid++;
     }
 
-    // If the new player id is the same as the old
-    // player id then the game aw2 is corrupted
-    if (pid == oid) {
-      JsUtil.throwError("IllegalGameState");
-    }
+    /*
+     * If the new player id is the same as the old player id then the game aw2
+     * is corrupted
+     */
+    AssertUtil.assertThatNot(pid == oid, "illegal game state");
 
-    // Do end/start turn logic
     startsTurn(model.getPlayer(pid));
   }
 }

@@ -33,6 +33,11 @@ public class IngameEvalActionState extends AbstractState {
 
     activeData = actions.popData();
     activeAction = actions.getActionByNumericId(activeData.id);
+
+    /*
+     * validate data since we possibly get the action data from a remote source
+     */
+    activeAction.checkData(activeData);
   }
 
   @Override
@@ -62,8 +67,8 @@ public class IngameEvalActionState extends AbstractState {
       String nextState = transition.getNextState();
       if (!NullUtil.isPresent(nextState)) {
         transition.setTransitionTo("IngameIdleState");
-      } else {
 
+      } else {
         // check target state
         if (!nextState.startsWith("Ingame")) {
           errors.raiseError("cannot move into a non-ingame state here", "ActionEvaluation");
