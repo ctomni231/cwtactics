@@ -6,9 +6,18 @@
 // tools that allow control over the display, without breaking the memory
 // and speed.
 
+//Working on: Just got images to store in an array and display at will from each location
+//            Need a faster way of getting colors from an image (or compression will be a slow process) 
+
+//These are the temporary storage areas for images
 var buffer;
 var lx = 0;
 var ly = 0;
+
+//These are arrays that store multiple images
+var bufferArray = [];
+var locxArray = [];
+var locyArray = [];
 
 // This function adds an image from text.
 function addImage(){
@@ -24,6 +33,7 @@ function addImage(){
 	imgStorage.setAttribute("style", "display:none");
 }
 
+// This function is literally a callback function to actually store the image
 function storeImage(){
 	
 	var imgStorage = document.getElementById("image");
@@ -57,8 +67,79 @@ function storeImage(){
 	
 	for(var i = 0; i < imgData.data.length; i++)
 		view[i] = imgData.data[i];
+		
+	
+	//This pushes the images into an array
+	bufferArray.push(buffer);
+	locxArray.push(lx);
+	locyArray.push(ly);
+	
+	var button = document.getElementById("button"+bufferArray.length);
+	if(button == null){
+		button = document.createElement("button");
+		document.body.appendChild(button);
+	}
+	button.setAttribute("onclick", "display("+(bufferArray.length-1)+")");
+	button.innerHTML = "Display #"+(bufferArray.length);
 }
 
+//This function displays an image by the number selected
+function display(num){
+
+	if(num >= 0 && num < bufferArray.length){
+		buffer = bufferArray[num];
+		lx = locxArray[num];
+		ly = locyArray[num];
+	}else{
+		buffer = null;
+	}
+
+	//This makes a canvas storage module for the image
+	var canvas = document.getElementById("store");
+	if(canvas == null){
+		canvas = document.createElement("canvas");
+		document.body.appendChild(canvas);
+	}
+	canvas.setAttribute("id", "store");
+	if(buffer == null){
+		canvas.setAttribute("width", 100);
+		canvas.setAttribute("height", 100);
+	}else{
+		canvas.setAttribute("width", lx);
+		canvas.setAttribute("height", ly);
+	}
+	canvas.setAttribute("style", "display:none");
+	var ctx = canvas.getContext("2d");
+	
+	if(buffer == null){
+		var imgData = ctx.createImageData(100,100);
+		for (var i = 0; i < imgData.data.length; i += 4){
+			imgData.data[i+0]=255;
+			imgData.data[i+1]=0;
+			imgData.data[i+2]=0;
+			imgData.data[i+3]=100;
+		}
+		ctx.putImageData(imgData,0,0);
+	}else{
+		var imgData = ctx.createImageData(lx,ly);
+		var view = new Uint8Array(buffer);
+		
+		for (var i = 0; i < imgData.data.length; i++){
+			imgData.data[i] = view[i];
+		}
+		ctx.putImageData(imgData,0,0);
+	}
+	
+	//Reassigns it to the current canvas
+	var c = document.getElementById("myCanvas");
+	ctx = c.getContext("2d");
+	ctx.clearRect(0, 0, c.width, c.height);
+	ctx.drawImage(canvas, 10, 10);
+}
+
+//Displays the image currently in buffer
+//Also gets the number of unique colors in an image (for compression later)
+//Pretty slow operation for now, will look into faster methods...
 function displayImage(){
 
 	//This makes a canvas storage module for the image
@@ -102,4 +183,27 @@ function displayImage(){
 	ctx = c.getContext("2d");
 	ctx.clearRect(0, 0, c.width, c.height);
 	ctx.drawImage(canvas, 10, 10);
+	
+	colorInImage();
+}
+
+// Finds the number of colors in the current buffer image
+// Currently a very slow process (researching better ways)
+function colorInImage(){
+	var view = new Uint8Array(buffer);
+	var colorData = [];
+	for (var i = 0, j = 0; i < view.length; i += 4){
+		for (j = 0; j < colorData.length; j += 4){
+			if(colorData[j] == view[i] && colorData[j+1] == view[j+1] &&
+				colorData[j+2] == view[j+2] && colorData[j+3] == view[j+3])
+				break;
+		}
+		if(j >= colorData.length){
+			colorData.push(view[i]);
+			colorData.push(view[i+1]);
+			colorData.push(view[i+2]);
+			colorData.push(view[i+3]);
+		}
+	}
+	console.log("Number of colors: "+(colorData.length / 4)+"/"+(view.length / 4));
 }
