@@ -184,7 +184,67 @@ function displayImage(){
 	ctx.clearRect(0, 0, c.width, c.height);
 	ctx.drawImage(canvas, 10, 10);
 	
-	colorInImage();
+	var time = (new Date()).getTime();
+	colorSplitFake();
+	console.log("Time took to render: " + ((new Date()).getTime() - time) + "ms");
+}
+
+function colorInImg(){
+	var view = new Uint8Array(buffer);
+	var colorData = [];
+	for (var i = 0, j = 0; i < view.length; i++){
+		for (j = 0; j < colorData.length; j++){
+			if(colorData[j] == view[i])
+				break;
+		}
+		if(j >= colorData.length)
+			colorData.push(view[i]);
+	}
+	
+	console.log("Number of colors: "+(colorData.length)+"/"+(view.length));
+}
+
+function colorSplitFake(){
+	var view = new Uint8Array(buffer);
+	var colorData = [];
+	for (var i = 0, j = 0; i < view.length; i += 2){
+		for (j = 0; j < colorData.length; j++){
+			if(colorData[j] == view[i]*1000+view[i+1])
+				break;
+		}
+		if(j >= colorData.length)
+			colorData.push(view[i]*1000+view[i+1]);
+	}
+	console.log("Number of colors: "+(colorData.length)+"/"+(view.length / 4));
+}
+function colorSplit(){
+	var view = new Uint8Array(buffer);
+	var colorData = [];
+	var alphaData = [];
+	for (var i = 0, j = 0; i < view.length; i += 4){
+		for (j = 0; j < colorData.length; j++){
+			if(colorData[j] == view[i]*1000+view[i+1] && alphaData[j] == view[i+2]*1000+view[i+3])
+				break;
+		}
+		if(j >= colorData.length){
+			colorData.push(view[i]*1000+view[i+1]);
+			alphaData.push(view[i+2]*1000+view[i+3]);
+		}
+	}
+	console.log("Number of colors: "+(colorData.length)+"/"+(view.length/4));
+}
+function colorInRGB(){
+	var view = new Uint8Array(buffer);
+	var colorData = [];
+	for (var i = 0, j = 0; i < view.length; i += 4){
+		for (j = 0; j < colorData.length; j++){
+			if(colorData[j] == view[i]*1000000+view[i+1]*1000+view[i+2])
+				break;
+		}
+		if(j >= colorData.length)
+			colorData.push(view[i]*1000000+view[i+1]*1000+view[i+2]);
+	}
+	console.log("Number of colors: "+(colorData.length)+"/"+(view.length / 4));
 }
 
 // Finds the number of colors in the current buffer image
