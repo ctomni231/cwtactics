@@ -1,5 +1,5 @@
 package org.wolftec.cwt.core.action;
 
 public enum PositionCheck {
-  EMPTY, OWN, ALLIED, ENEMY
+  EMPTY, OWN, OWN_USED, ALLIED, ENEMY
 }

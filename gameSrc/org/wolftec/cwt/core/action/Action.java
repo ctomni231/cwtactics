@@ -141,6 +141,13 @@ public interface Action extends Injectable {
     PositionCheck targetProperty = NullUtil.isPresent(uiData.target.property)
         ? ((uiData.target.property.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY) : PositionCheck.EMPTY;
 
+    if (sourceUnit == PositionCheck.OWN && !uiData.source.unit.canAct) {
+      sourceUnit = PositionCheck.OWN_USED;
+    }
+    if (targetUnit == PositionCheck.OWN && !uiData.target.unit.canAct) {
+      targetUnit = PositionCheck.OWN_USED;
+    }
+
     return checkSource(sourceUnit, sourceProperty) && checkTarget(targetUnit, targetProperty) && condition(uiData);
   }
 
