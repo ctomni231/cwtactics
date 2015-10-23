@@ -202,7 +202,7 @@ public class ModelManager implements Injectable, ConfigurationProvider {
   }
 
   public boolean isTurnOwnerObject(Unit obj) {
-    return (obj != null && obj.owner == turnOwner);
+    return (obj.owner == turnOwner);
   }
 
   /**

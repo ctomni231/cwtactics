@@ -3,6 +3,7 @@ package org.wolftec.cwt.core.action;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.UserInteractionData;
 
@@ -127,6 +128,20 @@ public interface Action extends Injectable {
 
   default void checkData(ActionData data) {
 
+  }
+
+  default boolean isUsable(UserInteractionData uiData) {
+    // TODO ALLY
+    // TODO TARGET - SOURCE SAME THING CHECK
+    PositionCheck sourceUnit = NullUtil.isPresent(uiData.source.unit) ? PositionCheck.OWN : PositionCheck.EMPTY;
+    PositionCheck sourceProperty = NullUtil.isPresent(uiData.source.property)
+        ? ((uiData.source.property.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY) : PositionCheck.EMPTY;
+    PositionCheck targetUnit = NullUtil.isPresent(uiData.target.unit) ? ((uiData.target.unit.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY)
+        : PositionCheck.EMPTY;
+    PositionCheck targetProperty = NullUtil.isPresent(uiData.target.property)
+        ? ((uiData.target.property.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY) : PositionCheck.EMPTY;
+
+    return checkSource(sourceUnit, sourceProperty) && checkTarget(targetUnit, targetProperty) && condition(uiData);
   }
 
   /**

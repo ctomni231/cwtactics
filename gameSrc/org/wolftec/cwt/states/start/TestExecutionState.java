@@ -5,8 +5,8 @@ import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.state.AbstractState;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.test.TestExecutionResults;
 import org.wolftec.cwt.core.test.TestManager;
-import org.wolftec.cwt.core.test.TestManager.TestExecutionResults;
 
 public class TestExecutionState extends AbstractState {
 
@@ -17,18 +17,7 @@ public class TestExecutionState extends AbstractState {
   public void update(StateFlowData transition, int delta, InputProvider input) {
     TestExecutionResults results = manager.callAllTests();
 
-    log.info("");
-    log.info("Test results (summary)");
-    log.info("======================");
-    log.info("");
-    log.info("RUNS   : " + results.runs);
-    log.info("PASSED : " + results.passed);
-    log.info("FAILED : " + results.failed);
-    log.info("");
-
-    log.info("Test results (details)");
-    log.info("======================");
-    log.info("");
+    log.info("Test results, " + results.passed + " has passed and " + results.failed + " has failed");
     ListUtil.forEachArrayValue(results.tests, (testI, testData) -> {
       ListUtil.forEachArrayValue(testData.methods, (testMethodI, testMethodData) -> {
         if (testMethodData.succeeded) {
@@ -38,7 +27,6 @@ public class TestExecutionState extends AbstractState {
         }
       });
     });
-    log.info("");
 
     transition.setTransitionTo(results.failed == 0 ? "TestSucceededState" : "TestFailedState");
   }

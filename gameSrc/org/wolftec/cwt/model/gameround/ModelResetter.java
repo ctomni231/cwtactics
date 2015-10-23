@@ -17,7 +17,7 @@ public class ModelResetter implements Injectable {
     model.turnOwner = model.getPlayer(0);
     model.lastClientPlayer = model.getPlayer(0);
     model.weather = null;
-    model.weatherLeftDays = 4;
+    model.weatherLeftDays = 0;
 
     model.forEachTile((x, y, tile) -> {
       tile.type = null;

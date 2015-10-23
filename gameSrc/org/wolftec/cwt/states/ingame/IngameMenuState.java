@@ -4,7 +4,6 @@ import org.stjs.javascript.Array;
 import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionType;
-import org.wolftec.cwt.core.action.PositionCheck;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.state.AbstractIngameState;
 import org.wolftec.cwt.core.state.StateFlowData;
@@ -34,24 +33,12 @@ public class IngameMenuState extends AbstractIngameState {
       wantedType = ActionType.UNIT_ACTION;
     }
 
-    // TODO ALLY
-    // TODO TARGET - SOURCE SAME THING CHECK
-    PositionCheck sourceUnit = NullUtil.isPresent(uiData.source.unit) ? PositionCheck.OWN : PositionCheck.EMPTY;
-    PositionCheck sourceProperty = NullUtil.isPresent(uiData.source.property)
-        ? ((uiData.source.property.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY) : PositionCheck.EMPTY;
-    PositionCheck targetUnit = NullUtil.isPresent(uiData.target.unit) ? ((uiData.target.unit.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY)
-        : PositionCheck.EMPTY;
-    PositionCheck targetProperty = NullUtil.isPresent(uiData.target.property)
-        ? ((uiData.target.property.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY) : PositionCheck.EMPTY;
-
     for (int i = 0; i < actionList.$length(); i++) {
       Action action = actionList.$get(i);
 
       if (action.type() == wantedType) {
-        if (action.checkSource(sourceUnit, sourceProperty) && action.checkTarget(targetUnit, targetProperty)) {
-          if (action.condition(uiData)) {
-            uiData.addInfo(action.key(), true);
-          }
+        if (action.isUsable(uiData)) {
+          uiData.addInfo(action.key(), true);
         }
       }
     }

@@ -5,6 +5,7 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.env.Features;
 import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.core.util.UrlParameterUtil;
 
 public class CheckSystem implements GameLoader {
 
@@ -18,6 +19,11 @@ public class CheckSystem implements GameLoader {
 
   @Override
   public void onLoad(Callback0 done) {
+    if (UrlParameterUtil.getParameter("skipEnvCheck") == "true") {
+      done.$invoke();
+      return;
+    }
+
     log.info("checking abilities of the active environment");
 
     // TODO

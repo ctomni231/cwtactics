@@ -5,9 +5,9 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSFunctionAdapter;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.stjs.javascript.annotation.SyntheticType;
 import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
@@ -15,30 +15,11 @@ import org.wolftec.cwt.core.util.VersionUtil;
 
 public class TestManager implements Injectable {
 
+  private Log log;
+
   private static final String TEST_METHOD_START_IDENTIFIER = "test";
   private static final String BEFORETEST_METHOD_NAME       = "beforeTest";
   private static final String AFTERTEST_METHOD_NAME        = "afterTest";
-
-  @SyntheticType
-  public static class TestMethodResult {
-    public String    name;
-    public boolean   succeeded;
-    public Exception error;
-  }
-
-  @SyntheticType
-  public static class TestClassResult {
-    public String                  name;
-    public Array<TestMethodResult> methods;
-  }
-
-  @SyntheticType
-  public static class TestExecutionResults {
-    public Array<TestClassResult> tests;
-    public int                    passed;
-    public int                    failed;
-    public int                    runs;
-  }
 
   private Array<Test> tests;
 
@@ -56,6 +37,8 @@ public class TestManager implements Injectable {
   }
 
   public TestExecutionResults callAllTests() {
+    log.info("running game tests");
+
     TestExecutionResults results = new TestExecutionResults();
 
     results.failed = 0;
@@ -78,6 +61,7 @@ public class TestManager implements Injectable {
       results.tests.push(testResults);
     });
 
+    log.info("completed game tests");
     return results;
   }
 
@@ -107,7 +91,6 @@ public class TestManager implements Injectable {
       invokeMethod(test, methodName);
       invokeMethod(test, AFTERTEST_METHOD_NAME);
       results.succeeded = true;
-
     } catch (Exception e) {
       results.succeeded = false;
       results.error = e;

@@ -3,7 +3,9 @@ package org.wolftec.cwt.core.test;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 
 public class Assert {
 
@@ -15,28 +17,28 @@ public class Assert {
 
   public Assert notExists() {
     if (value != JSGlobal.undefined && value != null) {
-      JsUtil.throwError("AssertionFailed: expected " + value + " to be nothing");
+      JsUtil.throwError("AssertionFailed: expected nothing, but got " + value);
     }
     return this;
   }
 
   public Assert exists() {
     if (value == JSGlobal.undefined || value == null) {
-      JsUtil.throwError("AssertionFailed: expected " + value + " to be something");
+      JsUtil.throwError("AssertionFailed: expected something, but got nothing");
     }
     return this;
   }
 
   public Assert is(Object o) {
     if (value != o) {
-      JsUtil.throwError("AssertionFailed: expected " + value + " to be the same as " + o);
+      JsUtil.throwError("AssertionFailed: expected " + o + ", but got " + value);
     }
     return this;
   }
 
   public Assert isNot(Object o) {
     if (value == o) {
-      JsUtil.throwError("AssertionFailed: expected " + value + " not to be the same as " + o);
+      JsUtil.throwError("AssertionFailed: expected not" + o + ", but got it");
     }
     return this;
   }
@@ -84,29 +86,45 @@ public class Assert {
   }
 
   public Assert empty() {
-    if (JSGlobal.typeof(value) != "string" && !(value instanceof Array) || (int) JSObjectAdapter.$get(value, "length") > 0) {
+    if (!NullUtil.isPresent(JSObjectAdapter.$get(value, "length"))) {
+      JsUtil.throwError("AssertionFailed: not able to be empty");
+    }
+
+    if ((int) JSObjectAdapter.$get(value, "length") > 0) {
       JsUtil.throwError("AssertionFailed: expected " + value + " to be empty");
     }
     return this;
   }
 
   public Assert notEmpty() {
-    if (JSGlobal.typeof(value) != "string" && !(value instanceof Array) || (int) JSObjectAdapter.$get(value, "length") == 0) {
+    if (!NullUtil.isPresent(JSObjectAdapter.$get(value, "length"))) {
+      JsUtil.throwError("AssertionFailed: not able to be empty");
+    }
+
+    if ((int) JSObjectAdapter.$get(value, "length") == 0) {
       JsUtil.throwError("AssertionFailed: expected " + value + " to be not empty");
     }
     return this;
   }
 
   public Assert contains(Object entry) {
-    if (!(value instanceof Array) || ((Array) value).indexOf(entry) == -1) {
-      JsUtil.throwError("AssertionFailed: expected " + value + " contains " + entry);
+    if (!NullUtil.isPresent(JSObjectAdapter.$get(value, "indexOf"))) {
+      JsUtil.throwError("AssertionFailed: not able to hold entries");
+    }
+
+    if (((Array) value).indexOf(entry) == -1) {
+      JsUtil.throwError("AssertionFailed: expected [" + value + "] contains " + entry);
     }
     return this;
   }
 
   public Assert notContains(Object entry) {
-    if (!(value instanceof Array) || ((Array) value).indexOf(entry) != -1) {
-      JsUtil.throwError("AssertionFailed: expected " + value + " not contains " + entry);
+    if (!NullUtil.isPresent(JSObjectAdapter.$get(value, "indexOf"))) {
+      JsUtil.throwError("AssertionFailed: not able to hold entries");
+    }
+
+    if (((Array) value).indexOf(entry) != -1) {
+      JsUtil.throwError("AssertionFailed: expected [" + value + "] not contains " + entry);
     }
     return this;
   }
@@ -114,5 +132,14 @@ public class Assert {
   public Assert property(String property) {
     exists();
     return new Assert(JSObjectAdapter.$get(value, property));
+  }
+
+  public Assert mustFail(Callback0 failingBlock) {
+    try {
+      failingBlock.$invoke();
+    } catch (Exception expected) {
+      return this;
+    }
+    return JsUtil.throwError("AssertionFailed: expected failure but nothing was thrown");
   }
 }

@@ -109,4 +109,8 @@ public class SheetDatabase<T extends SheetType> {
     } while (true);
   }
 
+  public void dropAll() {
+    forEach((id, sheet) -> sheets.$delete(id));
+    types.splice(0, types.$length());
+  }
 }
