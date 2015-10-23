@@ -1,9 +1,16 @@
 package org.wolftec.cwt.test.tools;
 
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.annotation.Native;
+import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.core.annotations.OptionalParameter;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
 import org.wolftec.cwt.model.sheets.types.MoveType;
+import org.wolftec.cwt.model.sheets.types.PropertyType;
 import org.wolftec.cwt.model.sheets.types.SheetType;
 import org.wolftec.cwt.model.sheets.types.TileType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
@@ -15,6 +22,14 @@ public class TestExpectation {
 
   public TestExpectation(CwtTestManager parent) {
     this.parent = parent;
+  }
+
+  public UnitType unitType(String id) {
+    return sheetType(id, parent.sheets.units);
+  }
+
+  <T extends SheetType> T sheetType(String id, SheetDatabase<T> db) {
+    return db.get(id);
   }
 
   public void unitTypeExists(String id) {
@@ -29,6 +44,10 @@ public class TestExpectation {
 
   public void tileTypeExists(String id) {
     registerType(id, new TileType(), parent.sheets.tiles);
+  }
+
+  public void propertyTypeExists(String id) {
+    registerType(id, new PropertyType(), parent.sheets.properties);
   }
 
   public void weatherTypeExists(String id) {
@@ -73,12 +92,33 @@ public class TestExpectation {
     parent.model.forEachUnit((id, unit) -> unit.canAct = false);
   }
 
+  @Native
+  public void propertyAt(int x, int y, String type, int ownerId) {
+    // ... calls overloaded method ...
+  }
+
+  public void propertyAt(int x, int y, String type, int ownerId, @OptionalParameter Callback1<Property> propertyEditor) {
+    parent.life.createProperty(x, y, parent.model.getPlayer(ownerId), type);
+    if (NullUtil.isPresent(propertyEditor)) {
+      propertyEditor.$invoke(parent.model.getTile(x, y).property);
+    }
+  }
+
+  @Native
   public void unitAt(int x, int y, String type, int ownerId) {
+    // ... calls overloaded method ...
+  }
+
+  public void unitAt(int x, int y, String type, int ownerId, @OptionalParameter Callback1<Unit> unitEditor) {
 
     // just do that to make sure that the type exists
     parent.sheets.units.get(type);
 
     parent.life.createUnit(x, y, parent.model.getPlayer(ownerId), type);
+
+    if (NullUtil.isPresent(unitEditor)) {
+      unitEditor.$invoke(parent.model.getTile(x, y).unit);
+    }
   }
 
   public void turnOwner(int ownerId) {
@@ -89,6 +129,14 @@ public class TestExpectation {
   public void weather(String type, int duration) {
     parent.model.weather = parent.sheets.weathers.get(type);
     parent.model.weatherLeftDays = duration;
+  }
+
+  public void sourceSelectionAt(int x, int y) {
+    parent.uiData.source.set(parent.model, x, y);
+  }
+
+  public void targetSelectionAt(int x, int y) {
+    parent.uiData.target.set(parent.model, x, y);
   }
 
   public void sourceAndTargetSelectionAt(int x, int y) {

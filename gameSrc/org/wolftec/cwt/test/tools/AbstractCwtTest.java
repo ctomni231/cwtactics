@@ -49,6 +49,9 @@ public abstract class AbstractCwtTest implements Test {
     test.expectThat.tileTypeExists("tileA");
     test.expectThat.tileTypeExists("tileB");
     test.expectThat.tileTypeExists("tileC");
+    test.expectThat.propertyTypeExists("propA");
+    test.expectThat.propertyTypeExists("propB");
+    test.expectThat.propertyTypeExists("propC");
     test.expectThat.moveTypeExists("moveA");
     test.expectThat.moveTypeExists("moveB");
     test.expectThat.moveTypeExists("moveC");
@@ -58,6 +61,9 @@ public abstract class AbstractCwtTest implements Test {
     test.expectThat.weatherTypeExists("weatherA");
     test.expectThat.weatherTypeExists("weatherB");
     test.expectThat.weatherTypeExists("weatherC");
+    test.expectThat.movingUnit("unitA", "moveA", 1);
+    test.expectThat.movingUnit("unitB", "moveB", 1);
+    test.expectThat.movingUnit("unitC", "moveC", 1);
   }
 
   protected void prepareModel() {

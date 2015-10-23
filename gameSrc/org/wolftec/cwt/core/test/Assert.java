@@ -4,14 +4,15 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
+import org.stjs.javascript.functions.Function1;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 
-public class Assert {
+public class Assert<T> {
 
-  protected Object value;
+  protected T value;
 
-  public Assert(Object lValue) {
+  public Assert(T lValue) {
     value = lValue;
   }
 
@@ -38,7 +39,7 @@ public class Assert {
 
   public Assert isNot(Object o) {
     if (value == o) {
-      JsUtil.throwError("AssertionFailed: expected not" + o + ", but got it");
+      JsUtil.throwError("AssertionFailed: expected not " + o + ", but got it");
     }
     return this;
   }
@@ -58,28 +59,28 @@ public class Assert {
   }
 
   public Assert lowerThen(Integer num) {
-    if (JSGlobal.typeof(value) == "number" && (int) value >= num) {
+    if (JSGlobal.typeof(value) == "number" && (Integer) value >= num) {
       JsUtil.throwError("AssertionFailed: expected " + value + " to be a number lower then " + num);
     }
     return this;
   }
 
   public Assert lowerEquals(Integer num) {
-    if (JSGlobal.typeof(value) == "number" && (int) value > num) {
+    if (JSGlobal.typeof(value) == "number" && (Integer) value > num) {
       JsUtil.throwError("AssertionFailed: expected " + value + " to be a number lower equals " + num);
     }
     return this;
   }
 
   public Assert greaterThen(Integer num) {
-    if (JSGlobal.typeof(value) == "number" && (int) value <= num) {
+    if (JSGlobal.typeof(value) == "number" && (Integer) value <= num) {
       JsUtil.throwError("AssertionFailed: expected " + value + " to be a number greater then " + num);
     }
     return this;
   }
 
   public Assert greaterEquals(Integer num) {
-    if (JSGlobal.typeof(value) == "number" && (int) value < num) {
+    if (JSGlobal.typeof(value) == "number" && (Integer) value < num) {
       JsUtil.throwError("AssertionFailed: expected " + value + " to be a number greater equals " + num);
     }
     return this;
@@ -118,13 +119,16 @@ public class Assert {
     return this;
   }
 
-  public Assert notContains(Object entry) {
+  public Assert notContains(Object... arguments) {
     if (!NullUtil.isPresent(JSObjectAdapter.$get(value, "indexOf"))) {
       JsUtil.throwError("AssertionFailed: not able to hold entries");
     }
 
-    if (((Array) value).indexOf(entry) != -1) {
-      JsUtil.throwError("AssertionFailed: expected [" + value + "] not contains " + entry);
+    for (int i = 0; i < arguments.length; i++) {
+      Object entry = arguments[i];
+      if (((Array) value).indexOf(entry) != -1) {
+        JsUtil.throwError("AssertionFailed: expected [" + value + "] not contains " + entry);
+      }
     }
     return this;
   }
@@ -132,6 +136,11 @@ public class Assert {
   public Assert property(String property) {
     exists();
     return new Assert(JSObjectAdapter.$get(value, property));
+  }
+
+  public <X> Assert<X> propertyByFn(Function1<T, X> fn) {
+    exists();
+    return new Assert(fn.$invoke(value));
   }
 
   public Assert mustFail(Callback0 failingBlock) {

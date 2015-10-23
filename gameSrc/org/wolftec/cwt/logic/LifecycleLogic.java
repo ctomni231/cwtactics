@@ -1,9 +1,11 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.core.annotations.OptionalReturn;
 import org.wolftec.cwt.core.config.ConfigurableValue;
 import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
@@ -28,10 +30,21 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
   // Returns an inactive **unit object** or **null** if every slot in the unit
   // list is used.
   //
+  @OptionalReturn
   public Unit getInactiveUnit() {
     for (int i = 0, e = Constants.MAX_UNITS * Constants.MAX_PLAYER; i < e; i++) {
       if (model.getUnit(i).owner == null) {
         return model.getUnit(i);
+      }
+    }
+    return null;
+  }
+
+  @OptionalReturn
+  public Property getInactiveProperty() {
+    for (int i = 0, e = Constants.MAX_PROPERTIES; i < e; i++) {
+      if (model.getProperty(i).owner == null) {
+        return model.getProperty(i);
       }
     }
     return null;
@@ -57,6 +70,17 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
     unit.initByType(sheets.units.get(type));
 
     fog.addUnitVision(x, y, player);
+  }
+
+  public void createProperty(int x, int y, Player player, String type) {
+    Tile tile = model.getTile(x, y);
+    Property prop = getInactiveProperty();
+    NullUtil.mustBePresent(prop, "no free property left");
+    prop.owner = player;
+    prop.type = sheets.properties.get(type);
+    tile.property = prop;
+    player.numberOfProperties++;
+    fog.addPropertyVision(x, y, player);
   }
 
   //

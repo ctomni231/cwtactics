@@ -3,6 +3,10 @@ package org.wolftec.cwt.test.tools;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.core.test.Assert;
+import org.wolftec.cwt.model.gameround.Player;
+import org.wolftec.cwt.model.gameround.Property;
+import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.model.gameround.Unit;
 
 public class TestAssertion {
 
@@ -12,19 +16,19 @@ public class TestAssertion {
     this.parent = parent;
   }
 
-  public Assert tileAt(int x, int y) {
+  public Assert<Tile> tileAt(int x, int y) {
     return new Assert(parent.model.getTile(x, y));
   }
 
-  public Assert unitAt(int x, int y) {
+  public Assert<Unit> unitAt(int x, int y) {
     return new Assert(parent.model.getTile(x, y).unit);
   }
 
-  public Assert propertyAt(int x, int y) {
+  public Assert<Property> propertyAt(int x, int y) {
     return new Assert(parent.model.getTile(x, y).property);
   }
 
-  public Assert player(int index) {
+  public Assert<Player> player(int index) {
     return new Assert(parent.model.getPlayer(index));
   }
 
@@ -36,7 +40,7 @@ public class TestAssertion {
     return new Assert(menu);
   }
 
-  public Assert value(Object value) {
+  public <X> Assert<X> value(X value) {
     return new Assert(value);
   }
 }

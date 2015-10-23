@@ -3,6 +3,7 @@ package org.wolftec.cwt.core.log;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.annotation.Native;
+import org.wolftec.cwt.core.annotations.OptionalParameter;
 import org.wolftec.cwt.core.ioc.Constructable;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.ClassUtil;
@@ -48,7 +49,7 @@ public class Log implements Constructable {
     error(msg, null);
   }
 
-  public void error(String msg, Exception e) {
+  public void error(String msg, @OptionalParameter Exception e) {
     Global.console.log("%c[" + loggerName + "][ERROR] %c" + msg, LOGGER_CSS_ERROR_HEAD, LOGGER_CSS_TEXT);
     if (e != null && e != JSGlobal.undefined) {
       Global.console.error(e);

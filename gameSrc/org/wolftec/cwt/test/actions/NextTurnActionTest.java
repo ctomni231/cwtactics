@@ -1,4 +1,4 @@
-package org.wolftec.cwt.test;
+package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.NextTurn;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
@@ -10,13 +10,14 @@ public class NextTurnActionTest extends AbstractCwtTest {
   @Override
   protected void prepareModel() {
     test.expectThat.moveCosts("moveA", "tileA", 1);
-    test.expectThat.movingUnit("unitA", "moveA", 1);
     test.expectThat.everythingVisible();
   }
 
   public void test_USABLE_NOUNIT() {
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
+
     test.modify.checkAction(action);
+
     test.assertThat.menu().contains(action.key());
   }
 
@@ -24,7 +25,9 @@ public class NextTurnActionTest extends AbstractCwtTest {
     test.expectThat.unitAt(0, 0, "unitA", 0);
     test.expectThat.everythingCannotAct();
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
+
     test.modify.checkAction(action);
+
     test.assertThat.menu().contains(action.key());
   }
 
@@ -32,7 +35,9 @@ public class NextTurnActionTest extends AbstractCwtTest {
     test.expectThat.unitAt(0, 0, "unitA", 0);
     test.expectThat.everythingCanAct();
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
+
     test.modify.checkAction(action);
+
     test.assertThat.menu().notContains(action.key());
   }
 
@@ -42,7 +47,9 @@ public class NextTurnActionTest extends AbstractCwtTest {
     test.expectThat.inTeam(1, 0);
     test.expectThat.everythingCanAct();
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
+
     test.modify.checkAction(action);
+
     test.assertThat.menu().notContains(action.key());
   }
 
@@ -52,7 +59,9 @@ public class NextTurnActionTest extends AbstractCwtTest {
     test.expectThat.inTeam(1, 1);
     test.expectThat.everythingCanAct();
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
+
     test.modify.checkAction(action);
+
     test.assertThat.menu().notContains(action.key());
   }
 }
