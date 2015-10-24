@@ -2,12 +2,13 @@ package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.HideUnit;
 import org.wolftec.cwt.actions.UnhideUnit;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class StealthActionTest extends AbstractCwtTest {
 
   private UnhideUnit unhide;
-  private HideUnit   hide;
+  private HideUnit hide;
 
   @Override
   protected void prepareModel() {
@@ -16,7 +17,15 @@ public class StealthActionTest extends AbstractCwtTest {
     test.expectThat.everythingVisible();
   }
 
-  public void testStealthUnitWhenHiddenCanUnhide() {
+  public void test_sourceMustBeOwnUnit() {
+    JsUtil.throwError("test missing");
+  }
+
+  public void test_targetMustBeEmptyOrSource() {
+    JsUtil.throwError("test missing");
+  }
+
+  public void test_usableUnhideOnlyWhenStealthUnitIsHidden() {
     test.expectThat.unitAt(0, 0, "unitA", 0, (unit) -> unit.hidden = true);
     test.expectThat.everythingCanAct();
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
@@ -27,7 +36,7 @@ public class StealthActionTest extends AbstractCwtTest {
     test.assertThat.menu().notContains(hide.key());
   }
 
-  public void testStealthUnitWhenNotHiddenCanHide() {
+  public void test_usableHideOnlyWhenStealthUnitIsNotHidden() {
     test.expectThat.unitAt(0, 0, "unitA", 0, (unit) -> unit.hidden = false);
     test.expectThat.everythingCanAct();
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
@@ -38,7 +47,7 @@ public class StealthActionTest extends AbstractCwtTest {
     test.assertThat.menu().notContains(unhide.key());
   }
 
-  public void testNonStealthUnitCannotUseStealthActions() {
+  public void test_unusableWhenUnitIsNotAStealth() {
     test.expectThat.unitAt(0, 0, "unitB", 0, (unit) -> unit.hidden = false);
     test.expectThat.everythingCanAct();
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
@@ -48,15 +57,7 @@ public class StealthActionTest extends AbstractCwtTest {
     test.assertThat.menu().notContains(hide.key(), unhide.key());
   }
 
-  public void testStealthActionsAreUnitActions() {
-    test.expectThat.sourceAndTargetSelectionAt(0, 0);
-
-    test.modify.checkActions(unhide, hide);
-
-    test.assertThat.menu().notContains(hide.key(), unhide.key());
-  }
-
-  public void testStealthActionShouldChangeHiddenStatus() {
+  public void test_changesUnitHiddenStatus() {
     test.expectThat.unitAt(0, 0, "unitA", 0, (unit) -> unit.hidden = false);
     test.expectThat.unitAt(1, 0, "unitA", 0, (unit) -> unit.hidden = true);
     test.expectThat.everythingCanAct();

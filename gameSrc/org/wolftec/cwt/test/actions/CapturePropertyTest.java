@@ -1,6 +1,7 @@
 package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.CaptureProperty;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class CapturePropertyTest extends AbstractCwtTest {
@@ -11,6 +12,14 @@ public class CapturePropertyTest extends AbstractCwtTest {
   protected void prepareModel() {
     test.expectThat.moveCosts("moveA", "tileA", 1);
     test.expectThat.everythingVisible();
+  }
+
+  public void test_sourceMustBeOwnUnit() {
+    JsUtil.throwError("test missing");
+  }
+
+  public void test_targetMustBeEmptyAndEmptyOrEnemyProperty() {
+    JsUtil.throwError("test missing");
   }
 
   public void testNoCaptureOptionOnNonUnitActions() {
@@ -56,7 +65,7 @@ public class CapturePropertyTest extends AbstractCwtTest {
     test.assertThat.menu().notContains(capture.key());
   }
 
-  public void testNoCaptureOptionOnTilesWithoutProperty() {
+  public void test_unusableTilesWithoutPropertyXXX() {
     test.expectThat.unitAt(0, 0, "unitA", 0);
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
 
@@ -65,7 +74,7 @@ public class CapturePropertyTest extends AbstractCwtTest {
     test.assertThat.menu().notContains(capture.key());
   }
 
-  public void testCaptureShouldLowerPoints() {
+  public void test_changesCapturePoints() {
     int POINTS = 20;
 
     test.expectThat.unitAt(0, 0, "unitA", 0);
@@ -79,7 +88,7 @@ public class CapturePropertyTest extends AbstractCwtTest {
     test.assertThat.propertyAt(0, 1).propertyByFn((prop) -> prop.points).lowerThen(POINTS);
   }
 
-  public void testCaptureShouldChangePropertyWhenPointsAreBelowZero() {
+  public void test_changesOwnerWhenLeftCapturePointsAreZero() {
     int POINTS = 1;
 
     test.expectThat.unitAt(0, 0, "unitA", 0);

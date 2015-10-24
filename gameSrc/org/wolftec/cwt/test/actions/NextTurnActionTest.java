@@ -1,6 +1,7 @@
 package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.NextTurn;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class NextTurnActionTest extends AbstractCwtTest {
@@ -11,6 +12,10 @@ public class NextTurnActionTest extends AbstractCwtTest {
   protected void prepareModel() {
     test.expectThat.moveCosts("moveA", "tileA", 1);
     test.expectThat.everythingVisible();
+  }
+
+  public void test_sourceMustNotBeOwn() {
+    JsUtil.throwError("test missing");
   }
 
   public void test_USABLE_NOUNIT() {

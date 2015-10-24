@@ -32,7 +32,6 @@ public class Main {
     ct.initByConfig(createIoCConfig());
     if (Constants.DEBUG) {
       JSObjectAdapter.$put(Global.window, "__ioc__", ct);
-      JSObjectAdapter.$put(Global.window, "__dev__", ct.getManagedObjectByType(DevDebug.class));
     }
 
     return ct;

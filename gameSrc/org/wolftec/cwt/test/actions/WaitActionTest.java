@@ -1,6 +1,7 @@
 package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.WaitUnit;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class WaitActionTest extends AbstractCwtTest {
@@ -14,6 +15,14 @@ public class WaitActionTest extends AbstractCwtTest {
     test.expectThat.everythingVisible();
 
     test.expectThat.unitAt(1, 1, "unitA", 0);
+  }
+
+  public void test_sourceMustBeOwnUnit() {
+    JsUtil.throwError("test missing");
+  }
+
+  public void test_targetMustBeEmptyOrSource() {
+    JsUtil.throwError("test missing");
   }
 
   public void test_action_whenNoActingUnitIsSelected_shouldBeUnavaible() {

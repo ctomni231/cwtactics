@@ -12,7 +12,7 @@ import org.wolftec.cwt.states.UserInteractionData;
 
 public class JoinUnit implements Action {
 
-  private JoinLogic    join;
+  private JoinLogic join;
   private ModelManager model;
 
   @Override

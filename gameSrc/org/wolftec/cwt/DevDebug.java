@@ -1,6 +1,8 @@
 package org.wolftec.cwt;
 
+import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.SyntheticType;
 import org.wolftec.cwt.core.collections.ObjectUtil;
@@ -15,6 +17,10 @@ import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.types.SheetType;
 import org.wolftec.cwt.states.UserInteractionData;
 
+/**
+ * Simple module to grab system information at runtime.
+ * 
+ */
 public class DevDebug implements Injectable {
 
   @SyntheticType
@@ -23,9 +29,14 @@ public class DevDebug implements Injectable {
   }
 
   private UserInteractionData uiData;
-  private ModelManager        model;
+  private ModelManager model;
 
   private Log log;
+
+  @Override
+  public void onConstruction() {
+    JSObjectAdapter.$put(Global.window, "__cwtDebug__", this);
+  }
 
   private void logValue(StringHolder result, int indention, Object value) {
     if (value == null) {

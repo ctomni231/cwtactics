@@ -1,6 +1,7 @@
 package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.TransferMoney;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class TransferMoneyActionTest extends AbstractCwtTest {
@@ -11,23 +12,15 @@ public class TransferMoneyActionTest extends AbstractCwtTest {
   protected void prepareModel() {
   }
 
-  public void testActionUnusableWithoutPropertySelected() {
-
+  public void test_sourceMustBeOwnProperty() {
+    JsUtil.throwError("test missing");
   }
 
-  public void testActionUsableWithOwnProperty() {
-
+  public void test_subMenuContainsDifferentMoneyValues() {
+    JsUtil.throwError("test missing");
   }
 
-  public void testActionUnusableWithAlliedOrEnemyProperty() {
-
-  }
-
-  public void testActionSubMenuContainsDifferentMoneyValues() {
-
-  }
-
-  public void testActionChangesTheGoldValuesOfTheSourceAndTargetPlayer() {
-
+  public void test_changesTheGoldValuesOfTheSourceAndTargetPlayer() {
+    JsUtil.throwError("test missing");
   }
 }
