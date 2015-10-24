@@ -3,7 +3,7 @@ package org.wolftec.cwt.actions;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
-import org.wolftec.cwt.core.action.PositionCheck;
+import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.logic.JoinLogic;
@@ -38,8 +38,8 @@ public class JoinUnit implements Action {
   }
 
   @Override
-  public boolean checkTarget(PositionCheck unitFlag, PositionCheck propertyFlag) {
-    return unitFlag == PositionCheck.OWN;
+  public boolean checkTarget(TileMeta unitFlag, TileMeta propertyFlag) {
+    return unitFlag == TileMeta.OWN;
   }
 
   @Override

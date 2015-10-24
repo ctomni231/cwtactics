@@ -90,35 +90,34 @@ public interface Action extends Injectable {
     return false;
   }
 
-  default boolean checkSource(PositionCheck unitFlag, PositionCheck propertyFlag) {
+  default boolean checkSource(TileMeta unitFlag, TileMeta propertyFlag) {
     switch (type()) {
 
       case UNIT_ACTION:
-        return unitFlag == PositionCheck.OWN;
+        return unitFlag == TileMeta.OWN;
 
       case PROPERTY_ACTION:
-        return unitFlag != PositionCheck.OWN && propertyFlag == PositionCheck.OWN;
+        return unitFlag != TileMeta.OWN && propertyFlag == TileMeta.OWN;
 
       case MAP_ACTION:
-        return unitFlag != PositionCheck.OWN && propertyFlag != PositionCheck.OWN;
+        return unitFlag != TileMeta.OWN && propertyFlag != TileMeta.OWN;
 
       case CLIENT_ACTION:
-      case ENGINE_ACTION:
-        return true;
 
+      case ENGINE_ACTION:
       default:
         return false;
     }
   }
 
-  default boolean checkTarget(PositionCheck unitFlag, PositionCheck propertyFlag) {
+  default boolean checkTarget(TileMeta unitFlag, TileMeta propertyFlag) {
     switch (type()) {
 
       case UNIT_ACTION:
-        return unitFlag == PositionCheck.OWN || unitFlag == PositionCheck.EMPTY;
+        return unitFlag == TileMeta.OWN || unitFlag == TileMeta.EMPTY;
 
       default:
-        return unitFlag == PositionCheck.EMPTY;
+        return unitFlag == TileMeta.EMPTY;
     }
   }
 
@@ -133,19 +132,23 @@ public interface Action extends Injectable {
   default boolean isUsable(UserInteractionData uiData) {
     // TODO ALLY
     // TODO TARGET - SOURCE SAME THING CHECK
-    PositionCheck sourceUnit = NullUtil.isPresent(uiData.source.unit) ? PositionCheck.OWN : PositionCheck.EMPTY;
-    PositionCheck sourceProperty = NullUtil.isPresent(uiData.source.property)
-        ? ((uiData.source.property.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY) : PositionCheck.EMPTY;
-    PositionCheck targetUnit = NullUtil.isPresent(uiData.target.unit) ? ((uiData.target.unit.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY)
-        : PositionCheck.EMPTY;
-    PositionCheck targetProperty = NullUtil.isPresent(uiData.target.property)
-        ? ((uiData.target.property.owner == uiData.actor) ? PositionCheck.OWN : PositionCheck.ENEMY) : PositionCheck.EMPTY;
+    TileMeta sourceUnit = NullUtil.isPresent(uiData.source.unit) ? TileMeta.OWN : TileMeta.EMPTY;
+    TileMeta sourceProperty = NullUtil.isPresent(uiData.source.property)
+        ? ((uiData.source.property.owner == uiData.actor) ? TileMeta.OWN : TileMeta.ENEMY) : TileMeta.EMPTY;
+    TileMeta targetUnit = NullUtil.isPresent(uiData.target.unit) ? ((uiData.target.unit.owner == uiData.actor) ? TileMeta.OWN : TileMeta.ENEMY)
+        : TileMeta.EMPTY;
+    TileMeta targetProperty = NullUtil.isPresent(uiData.target.property)
+        ? ((uiData.target.property.owner == uiData.actor) ? TileMeta.OWN : TileMeta.ENEMY) : TileMeta.EMPTY;
 
-    if (sourceUnit == PositionCheck.OWN && !uiData.source.unit.canAct) {
-      sourceUnit = PositionCheck.OWN_USED;
+    if (uiData.source.tile == uiData.target.tile) {
+      targetUnit = TileMeta.EMPTY;
     }
-    if (targetUnit == PositionCheck.OWN && !uiData.target.unit.canAct) {
-      targetUnit = PositionCheck.OWN_USED;
+
+    if (sourceUnit == TileMeta.OWN && !uiData.source.unit.canAct) {
+      sourceUnit = TileMeta.OWN_USED;
+    }
+    if (targetUnit == TileMeta.OWN && !uiData.target.unit.canAct) {
+      targetUnit = TileMeta.OWN_USED;
     }
 
     return checkSource(sourceUnit, sourceProperty) && checkTarget(targetUnit, targetProperty) && condition(uiData);

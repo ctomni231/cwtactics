@@ -3,7 +3,7 @@ package org.wolftec.cwt.actions;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
-import org.wolftec.cwt.core.action.PositionCheck;
+import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.logic.TeamLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
@@ -30,8 +30,8 @@ public class TransferMoney implements Action {
   }
 
   @Override
-  public boolean checkTarget(PositionCheck unitFlag, PositionCheck propertyFlag) {
-    return propertyFlag != PositionCheck.OWN && propertyFlag != PositionCheck.EMPTY;
+  public boolean checkTarget(TileMeta unitFlag, TileMeta propertyFlag) {
+    return propertyFlag != TileMeta.OWN && propertyFlag != TileMeta.EMPTY;
   }
 
   @Override

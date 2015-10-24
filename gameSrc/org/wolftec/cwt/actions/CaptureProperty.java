@@ -3,7 +3,7 @@ package org.wolftec.cwt.actions;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
-import org.wolftec.cwt.core.action.PositionCheck;
+import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.logic.CaptureLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
@@ -25,8 +25,8 @@ public class CaptureProperty implements Action {
   }
 
   @Override
-  public boolean checkTarget(PositionCheck unitFlag, PositionCheck propertyFlag) {
-    return unitFlag == PositionCheck.EMPTY && (propertyFlag == PositionCheck.ENEMY || propertyFlag == PositionCheck.EMPTY);
+  public boolean checkTarget(TileMeta unitFlag, TileMeta propertyFlag) {
+    return unitFlag == TileMeta.EMPTY && (propertyFlag == TileMeta.ENEMY || propertyFlag == TileMeta.EMPTY);
   }
 
   @Override

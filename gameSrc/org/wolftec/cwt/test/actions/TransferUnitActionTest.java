@@ -1,6 +1,7 @@
 package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.TransferUnit;
+import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
@@ -13,11 +14,12 @@ public class TransferUnitActionTest extends AbstractCwtTest {
   }
 
   public void test_sourceMustBeOwnUnit() {
-    JsUtil.throwError("test missing");
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.OWN), ActionsTest.allPos())).is(true);
   }
 
   public void test_targetMustBeSameAsSource() {
-    JsUtil.throwError("test missing");
+    // TODO
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
   }
 
   public void test_subMenuContainsAllPlayersExceptSourceUnitOwner() {

@@ -3,7 +3,7 @@ package org.wolftec.cwt.actions;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
-import org.wolftec.cwt.core.action.PositionCheck;
+import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.logic.SpecialWeaponsLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
@@ -25,8 +25,8 @@ public class FireSilo implements Action {
   }
 
   @Override
-  public boolean checkTarget(PositionCheck unitFlag, PositionCheck propertyFlag) {
-    return unitFlag == PositionCheck.ENEMY && (propertyFlag == PositionCheck.EMPTY || propertyFlag == PositionCheck.OWN);
+  public boolean checkTarget(TileMeta unitFlag, TileMeta propertyFlag) {
+    return unitFlag == TileMeta.ENEMY && (propertyFlag == TileMeta.EMPTY || propertyFlag == TileMeta.OWN);
   }
 
   @Override

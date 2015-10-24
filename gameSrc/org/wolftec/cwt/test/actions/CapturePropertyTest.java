@@ -1,12 +1,12 @@
 package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.CaptureProperty;
-import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class CapturePropertyTest extends AbstractCwtTest {
 
-  private CaptureProperty capture;
+  private CaptureProperty action;
 
   @Override
   protected void prepareModel() {
@@ -15,19 +15,19 @@ public class CapturePropertyTest extends AbstractCwtTest {
   }
 
   public void test_sourceMustBeOwnUnit() {
-    JsUtil.throwError("test missing");
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.OWN), ActionsTest.allPos())).is(true);
   }
 
-  public void test_targetMustBeEmptyAndEmptyOrEnemyProperty() {
-    JsUtil.throwError("test missing");
+  public void test_targetMustBeEmptyWithAnEmptyOrEnemyProperty() {
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.EMPTY), ActionsTest.fromPos(TileMeta.EMPTY, TileMeta.ENEMY))).is(true);
   }
 
   public void testNoCaptureOptionOnNonUnitActions() {
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
 
-    test.modify.checkAction(capture);
+    test.modify.checkAction(action);
 
-    test.assertThat.menu().notContains(capture.key());
+    test.assertThat.menu().notContains(action.key());
   }
 
   public void testCaptureOptionOnEnemyProperties() {
@@ -38,9 +38,9 @@ public class CapturePropertyTest extends AbstractCwtTest {
     test.expectThat.sourceSelectionAt(0, 0);
     test.expectThat.targetSelectionAt(0, 1);
 
-    test.modify.checkAction(capture);
+    test.modify.checkAction(action);
 
-    test.assertThat.menu().contains(capture.key());
+    test.assertThat.menu().contains(action.key());
   }
 
   public void testNoCaptureOptionOnAlliedOrOwnProperties() {
@@ -53,25 +53,25 @@ public class CapturePropertyTest extends AbstractCwtTest {
     test.expectThat.sourceSelectionAt(0, 0);
     test.expectThat.targetSelectionAt(0, 1);
 
-    test.modify.checkAction(capture);
+    test.modify.checkAction(action);
 
-    test.assertThat.menu().notContains(capture.key());
+    test.assertThat.menu().notContains(action.key());
 
     test.expectThat.sourceSelectionAt(0, 0);
     test.expectThat.targetSelectionAt(0, 2);
 
-    test.modify.checkAction(capture);
+    test.modify.checkAction(action);
 
-    test.assertThat.menu().notContains(capture.key());
+    test.assertThat.menu().notContains(action.key());
   }
 
   public void test_unusableTilesWithoutPropertyXXX() {
     test.expectThat.unitAt(0, 0, "unitA", 0);
     test.expectThat.sourceAndTargetSelectionAt(0, 0);
 
-    test.modify.checkAction(capture);
+    test.modify.checkAction(action);
 
-    test.assertThat.menu().notContains(capture.key());
+    test.assertThat.menu().notContains(action.key());
   }
 
   public void test_changesCapturePoints() {
@@ -82,7 +82,7 @@ public class CapturePropertyTest extends AbstractCwtTest {
     test.expectThat.sourceSelectionAt(0, 0);
     test.expectThat.targetSelectionAt(0, 1);
 
-    test.modify.invokeAction(capture);
+    test.modify.invokeAction(action);
 
     test.assertThat.propertyAt(0, 1).propertyByFn((prop) -> prop.owner.id).is(0);
     test.assertThat.propertyAt(0, 1).propertyByFn((prop) -> prop.points).lowerThen(POINTS);
@@ -96,7 +96,7 @@ public class CapturePropertyTest extends AbstractCwtTest {
     test.expectThat.sourceSelectionAt(0, 0);
     test.expectThat.targetSelectionAt(0, 1);
 
-    test.modify.invokeAction(capture);
+    test.modify.invokeAction(action);
 
     test.assertThat.propertyAt(0, 1).propertyByFn((prop) -> prop.owner.id).isNot(0);
     test.assertThat.propertyAt(0, 1).propertyByFn((prop) -> prop.points).greaterThen(0);
