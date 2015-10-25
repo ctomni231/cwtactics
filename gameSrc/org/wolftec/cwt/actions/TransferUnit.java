@@ -11,7 +11,7 @@ import org.wolftec.cwt.states.UserInteractionData;
 
 public class TransferUnit implements Action {
 
-  private TeamLogic    team;
+  private TeamLogic team;
   private ModelManager model;
 
   @Override
@@ -26,7 +26,7 @@ public class TransferUnit implements Action {
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return team.canTransferUnit(data.source.unit);
+    return team.canTransferUnit(data.source.unit) && data.movePath.isEmpty();
   }
 
   @Override

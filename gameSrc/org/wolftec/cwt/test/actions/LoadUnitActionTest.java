@@ -10,11 +10,11 @@ public class LoadUnitActionTest extends AbstractCwtTest {
   private LoadUnit action;
 
   public void test_sourceMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.OWN), ActionsTest.allPos())).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
   }
 
   public void test_targetMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.OWN), ActionsTest.allPos())).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
   }
 
   public void test_usableOnlyWhenTargetUnitIsATransporterAndCanLoadSourceUnit() {

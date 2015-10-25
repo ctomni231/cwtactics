@@ -15,12 +15,12 @@ public class NextTurnActionTest extends AbstractCwtTest {
   }
 
   public void test_sourceMustBeEmpty() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.EMPTY),
-                                                  ActionsTest.fromPos(TileMeta.EMPTY, TileMeta.ENEMY, TileMeta.ALLIED))).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.EMPTY),
+                                                  ActionsTest.fromMeta(TileMeta.EMPTY, TileMeta.ENEMY, TileMeta.ALLIED))).is(true);
   }
 
   public void test_USABLE_NOUNIT() {
-    test.expectThat.sourceAndTargetSelectionAt(0, 0);
+    test.expectThat.sourceSelectionAt(0, 0);
 
     test.modify.checkAction(action);
 
@@ -30,7 +30,7 @@ public class NextTurnActionTest extends AbstractCwtTest {
   public void test_USABLE_UNIT_OWN_CANNOTACT() {
     test.expectThat.unitAt(0, 0, "unitA", 0);
     test.expectThat.everythingCannotAct();
-    test.expectThat.sourceAndTargetSelectionAt(0, 0);
+    test.expectThat.sourceSelectionAt(0, 0);
 
     test.modify.checkAction(action);
 
@@ -40,7 +40,7 @@ public class NextTurnActionTest extends AbstractCwtTest {
   public void test_UNUSABLE_UNIT_OWN_CANACT() {
     test.expectThat.unitAt(0, 0, "unitA", 0);
     test.expectThat.everythingCanAct();
-    test.expectThat.sourceAndTargetSelectionAt(0, 0);
+    test.expectThat.sourceSelectionAt(0, 0);
 
     test.modify.checkAction(action);
 
@@ -52,7 +52,7 @@ public class NextTurnActionTest extends AbstractCwtTest {
     test.expectThat.inTeam(0, 0);
     test.expectThat.inTeam(1, 0);
     test.expectThat.everythingCanAct();
-    test.expectThat.sourceAndTargetSelectionAt(0, 0);
+    test.expectThat.sourceSelectionAt(0, 0);
 
     test.modify.checkAction(action);
 
@@ -64,7 +64,7 @@ public class NextTurnActionTest extends AbstractCwtTest {
     test.expectThat.inTeam(0, 0);
     test.expectThat.inTeam(1, 1);
     test.expectThat.everythingCanAct();
-    test.expectThat.sourceAndTargetSelectionAt(0, 0);
+    test.expectThat.sourceSelectionAt(0, 0);
 
     test.modify.checkAction(action);
 

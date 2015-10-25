@@ -18,15 +18,15 @@ public class WaitActionTest extends AbstractCwtTest {
   }
 
   public void test_sourceMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.OWN), ActionsTest.allPos())).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
   }
 
   public void test_targetMustBeEmpty() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
   }
 
   public void test_action_whenNoActingUnitIsSelected_shouldBeUnavaible() {
-    test.expectThat.sourceAndTargetSelectionAt(2, 2);
+    test.expectThat.sourceSelectionAt(2, 2);
 
     test.modify.checkAction(action);
 
@@ -35,7 +35,7 @@ public class WaitActionTest extends AbstractCwtTest {
 
   public void test_action_whenActingUnitIsOwnedAndActive_shouldBeAvaible() {
     test.expectThat.everythingCanAct();
-    test.expectThat.sourceAndTargetSelectionAt(1, 1);
+    test.expectThat.sourceSelectionAt(1, 1);
 
     test.modify.checkAction(action);
 
@@ -44,7 +44,7 @@ public class WaitActionTest extends AbstractCwtTest {
 
   public void test_action_whenActingUnitIsOwnedAndInactive_shouldBeUnavaible() {
     test.expectThat.everythingCannotAct();
-    test.expectThat.sourceAndTargetSelectionAt(1, 1);
+    test.expectThat.sourceSelectionAt(1, 1);
 
     test.modify.checkAction(action);
 
@@ -56,7 +56,7 @@ public class WaitActionTest extends AbstractCwtTest {
     test.expectThat.inTeam(0, 0);
     test.expectThat.inTeam(1, 1);
     test.expectThat.everythingCanAct();
-    test.expectThat.sourceAndTargetSelectionAt(2, 2);
+    test.expectThat.sourceSelectionAt(2, 2);
 
     test.modify.checkAction(action);
 
@@ -68,7 +68,7 @@ public class WaitActionTest extends AbstractCwtTest {
     test.expectThat.inTeam(0, 0);
     test.expectThat.inTeam(1, 1);
     test.expectThat.everythingCanAct();
-    test.expectThat.sourceAndTargetSelectionAt(2, 2);
+    test.expectThat.sourceSelectionAt(2, 2);
 
     test.modify.checkAction(action);
 
@@ -77,7 +77,7 @@ public class WaitActionTest extends AbstractCwtTest {
 
   public void test_action_whenActivated_shouldModifyUnitData() {
     test.expectThat.everythingCanAct();
-    test.expectThat.sourceAndTargetSelectionAt(1, 1);
+    test.expectThat.sourceSelectionAt(1, 1);
 
     test.modify.invokeAction(action);
 

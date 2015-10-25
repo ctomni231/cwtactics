@@ -2,11 +2,14 @@ package org.wolftec.cwt.core.log;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.annotation.Native;
 import org.wolftec.cwt.core.annotations.OptionalParameter;
 import org.wolftec.cwt.core.ioc.Constructable;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.NullUtil;
+import org.wolftec.cwt.core.util.UrlParameterUtil;
 
 public class Log implements Constructable {
 
@@ -26,6 +29,7 @@ public class Log implements Constructable {
   public static final String LOGGER_CSS_TEXT = "color: #1A1A1A";
 
   private String loggerName;
+  private boolean disabled;
 
   @Override
   public void onConstruction(Injectable instance) {
@@ -34,14 +38,19 @@ public class Log implements Constructable {
 
   private void initByName(String name) {
     loggerName = Log.convertNameToFixedLength(name);
+    disabled = NullUtil.isPresent(JSStringAdapter.match(UrlParameterUtil.getParameter("disabledLoggers"), JSGlobal.RegExp(name + "($|[,])")));
   }
 
   public void info(String msg) {
-    Global.console.log("%c[" + loggerName + "][ INFO] %c" + msg, LOGGER_CSS_INFO_HEAD, LOGGER_CSS_TEXT);
+    if (!disabled) {
+      Global.console.log("%c[" + loggerName + "][ INFO] %c" + msg, LOGGER_CSS_INFO_HEAD, LOGGER_CSS_TEXT);
+    }
   }
 
   public void warn(String msg) {
-    Global.console.log("%c[" + loggerName + "][ WARN] %c" + msg, LOGGER_CSS_WARN_HEAD, LOGGER_CSS_TEXT);
+    if (!disabled) {
+      Global.console.log("%c[" + loggerName + "][ WARN] %c" + msg, LOGGER_CSS_WARN_HEAD, LOGGER_CSS_TEXT);
+    }
   }
 
   @Native
@@ -50,9 +59,11 @@ public class Log implements Constructable {
   }
 
   public void error(String msg, @OptionalParameter Exception e) {
-    Global.console.log("%c[" + loggerName + "][ERROR] %c" + msg, LOGGER_CSS_ERROR_HEAD, LOGGER_CSS_TEXT);
-    if (e != null && e != JSGlobal.undefined) {
-      Global.console.error(e);
+    if (!disabled) {
+      Global.console.log("%c[" + loggerName + "][ERROR] %c" + msg, LOGGER_CSS_ERROR_HEAD, LOGGER_CSS_TEXT);
+      if (e != null && e != JSGlobal.undefined) {
+        Global.console.error(e);
+      }
     }
   }
 

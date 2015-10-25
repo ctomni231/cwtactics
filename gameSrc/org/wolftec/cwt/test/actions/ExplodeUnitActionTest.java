@@ -10,11 +10,11 @@ public class ExplodeUnitActionTest extends AbstractCwtTest {
   private ExplodeUnit action;
 
   public void test_sourceMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.OWN), ActionsTest.allPos())).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
   }
 
   public void test_targetMustBeEmpty() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
   }
 
   public void test_usableOnlyWhenUnitIsExploder() {

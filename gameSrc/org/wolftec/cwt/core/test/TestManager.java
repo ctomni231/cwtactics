@@ -18,8 +18,8 @@ public class TestManager implements Injectable {
   private Log log;
 
   private static final String TEST_METHOD_START_IDENTIFIER = "test";
-  private static final String BEFORETEST_METHOD_NAME       = "beforeTest";
-  private static final String AFTERTEST_METHOD_NAME        = "afterTest";
+  private static final String BEFORETEST_METHOD_NAME = "beforeTest";
+  private static final String AFTERTEST_METHOD_NAME = "afterTest";
 
   private Array<Test> tests;
 
@@ -28,7 +28,19 @@ public class TestManager implements Injectable {
     tests.sort((a, b) -> {
       int indexA = VersionUtil.convertVersionToNumber(a.getIndex());
       int indexB = VersionUtil.convertVersionToNumber(b.getIndex());
-      return NumberUtil.compare(indexA, indexB);
+      int res = NumberUtil.compare(indexA, indexB);
+
+      if (res == 0) {
+
+        String aClassName = ClassUtil.getClassName(a);
+        String bClassName = ClassUtil.getClassName(b);
+        if (((boolean) JSObjectAdapter.$js("aClassName < bClassName"))) {
+          return -1;
+        } else {
+          return +1;
+        }
+      }
+      return res;
     });
   }
 

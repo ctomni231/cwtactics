@@ -10,11 +10,11 @@ public class FireSiloActionTest extends AbstractCwtTest {
   private FireSilo action;
 
   public void test_sourceMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.OWN), ActionsTest.allPos())).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
   }
 
   public void test_targetMustBeEmptyOrSourceAndContainsNeutralProperty() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.EMPTY), ActionsTest.fromPos(TileMeta.EMPTY))).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.EMPTY), ActionsTest.fromMeta(TileMeta.EMPTY))).is(true);
   }
 
   public void test_usableOnlyOnSiloProperties() {

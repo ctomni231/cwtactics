@@ -8,9 +8,9 @@ import org.wolftec.cwt.states.UserInteractionData;
 
 public abstract class AbstractCwtTest implements Test {
 
-  protected SheetManager        sheets;
-  protected ModelResetter       modelReset;
-  protected ModelManager        model;
+  protected SheetManager sheets;
+  protected ModelResetter modelReset;
+  protected ModelManager model;
   protected UserInteractionData uiData;
 
   public CwtTestManager test;
@@ -22,7 +22,6 @@ public abstract class AbstractCwtTest implements Test {
   }
 
   protected void prepareDefaultModel() {
-    removeTypes();
     setupDefaultTestTypes();
     setupDefaultModel();
   }
@@ -35,7 +34,7 @@ public abstract class AbstractCwtTest implements Test {
     test.expectThat.turnOwner(0);
   }
 
-  private void removeTypes() {
+  private void setupDefaultTestTypes() {
     sheets.tiles.dropAll();
     sheets.units.dropAll();
     sheets.armies.dropAll();
@@ -43,9 +42,6 @@ public abstract class AbstractCwtTest implements Test {
     sheets.movetypes.dropAll();
     sheets.properties.dropAll();
     sheets.commanders.dropAll();
-  }
-
-  private void setupDefaultTestTypes() {
     test.expectThat.tileTypeExists("tileA");
     test.expectThat.tileTypeExists("tileB");
     test.expectThat.tileTypeExists("tileC");

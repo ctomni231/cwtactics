@@ -10,7 +10,7 @@ public class BuildUnitActionTest extends AbstractCwtTest {
   private LoadUnit action;
 
   public void test_sourceMustBeOwnProperty() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.EMPTY), ActionsTest.fromPos(TileMeta.OWN))).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.EMPTY), ActionsTest.fromMeta(TileMeta.OWN))).is(true);
   }
 
   public void test_usableWhenPropertyIsAFactory() {

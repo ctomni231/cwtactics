@@ -8,6 +8,8 @@ import org.wolftec.cwt.core.collections.CircularBuffer;
 import org.wolftec.cwt.core.collections.MoveableMatrix;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.core.util.AssertUtil;
+import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.PositionData;
 
@@ -26,13 +28,13 @@ public class UserInteractionData implements Injectable, InformationList {
   public CircularBuffer<Integer> movePath;
 
   public CircularBuffer<String> infos;
-  public int                    infoIndex;
+  public int infoIndex;
 
   public String action;
-  public int    actionCode;
+  public int actionCode;
 
   public String actionData;
-  public int    actionDataCode;
+  public int actionDataCode;
 
   public MoveableMatrix targets;
 
@@ -101,6 +103,17 @@ public class UserInteractionData implements Injectable, InformationList {
   @Override
   public String getInfoAtIndex(int index) {
     return infos.get(index);
+  }
+
+  public void selectInfoAtIndex(int index) {
+    AssertUtil.assertThat(index >= 0 && index < getNumberOfInfos(), "IllegalIndex");
+    infoIndex = 0;
+    updateActionData();
+  }
+
+  public void updateActionData() {
+    actionData = getInfo();
+    actionDataCode = NumberUtil.convertStringToIntOrDefault(actionData, -1);
   }
 
   public void reset() {

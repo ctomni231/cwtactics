@@ -17,7 +17,7 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
 
   private ModelManager model;
   private SheetManager sheets;
-  private FogLogic     fog;
+  private FogLogic fog;
 
   private ConfigurableValue noUnitsLeftLoose;
 
@@ -48,6 +48,15 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
       }
     }
     return null;
+  }
+
+  /**
+   * 
+   * @param prop
+   * @return true when a loose of this property causes a loose of the game round
+   */
+  public boolean isCriticalProperty(Property prop) {
+    return prop.type.looseAfterCaptured;
   }
 
   //

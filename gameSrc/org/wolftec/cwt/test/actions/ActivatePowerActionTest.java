@@ -15,7 +15,7 @@ public class ActivatePowerActionTest extends AbstractCwtTest {
   }
 
   public void test_sourceMustBeEmpty() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
 
   }
 

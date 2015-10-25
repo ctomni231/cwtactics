@@ -5,14 +5,16 @@ import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.logic.LifecycleLogic;
 import org.wolftec.cwt.logic.TeamLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class TransferMoney implements Action {
 
-  private TeamLogic    team;
+  private TeamLogic team;
   private ModelManager model;
+  private LifecycleLogic life;
 
   @Override
   public String key() {
@@ -31,17 +33,17 @@ public class TransferMoney implements Action {
 
   @Override
   public boolean checkTarget(TileMeta unitFlag, TileMeta propertyFlag) {
-    return propertyFlag != TileMeta.OWN && propertyFlag != TileMeta.EMPTY;
+    return unitFlag == TileMeta.EMPTY && propertyFlag != TileMeta.OWN && propertyFlag != TileMeta.EMPTY;
   }
 
   @Override
   public boolean condition(UserInteractionData data) {
-    return team.canTransferMoney(data.source.property.owner, data.source.x, data.source.y);
+    return life.isCriticalProperty(data.target.property) && team.canTransferMoney(data.actor, data.target.property.owner);
   }
 
   @Override
   public void prepareActionMenu(UserInteractionData data) {
-    team.getTransferMoneyTargets(data.source.property.owner, data);
+    team.getTransferMoneyTargets(data.actor, data);
   }
 
   @Override

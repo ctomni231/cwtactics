@@ -15,15 +15,15 @@ public class CapturePropertyTest extends AbstractCwtTest {
   }
 
   public void test_sourceMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.OWN), ActionsTest.allPos())).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
   }
 
   public void test_targetMustBeEmptyWithAnEmptyOrEnemyProperty() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromPos(TileMeta.EMPTY), ActionsTest.fromPos(TileMeta.EMPTY, TileMeta.ENEMY))).is(true);
+    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.EMPTY), ActionsTest.fromMeta(TileMeta.EMPTY, TileMeta.ENEMY))).is(true);
   }
 
   public void testNoCaptureOptionOnNonUnitActions() {
-    test.expectThat.sourceAndTargetSelectionAt(0, 0);
+    test.expectThat.sourceSelectionAt(0, 0);
 
     test.modify.checkAction(action);
 
@@ -67,7 +67,7 @@ public class CapturePropertyTest extends AbstractCwtTest {
 
   public void test_unusableTilesWithoutPropertyXXX() {
     test.expectThat.unitAt(0, 0, "unitA", 0);
-    test.expectThat.sourceAndTargetSelectionAt(0, 0);
+    test.expectThat.sourceSelectionAt(0, 0);
 
     test.modify.checkAction(action);
 

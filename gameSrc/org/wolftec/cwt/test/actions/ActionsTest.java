@@ -15,7 +15,11 @@ public abstract class ActionsTest {
     return JSCollections.$array(TileMeta.OWN, TileMeta.OWN_USED, TileMeta.ALLIED, TileMeta.EMPTY, TileMeta.ENEMY);
   }
 
-  public static Array<TileMeta> fromPos(TileMeta... arguments) {
+  public static Array<TileMeta> allPropPos() {
+    return JSCollections.$array(TileMeta.OWN, TileMeta.ALLIED, TileMeta.EMPTY, TileMeta.ENEMY);
+  }
+
+  public static Array<TileMeta> fromMeta(TileMeta... arguments) {
     Array<TileMeta> posArray = JSCollections.$array();
     for (int i = 0; i < arguments.length; i++) {
       posArray.push(arguments[i]);
@@ -33,10 +37,11 @@ public abstract class ActionsTest {
 
   private static boolean doesActionSupportsGivenSets(Action action, boolean source, Array<TileMeta> unitFlags, Array<TileMeta> propFlags) {
     Array<TileMeta> all = allPos();
+    Array<TileMeta> allProp = allPropPos();
     for (int i = 0; i < all.$length(); i++) {
-      for (int j = 0; j < all.$length(); j++) {
+      for (int j = 0; j < allProp.$length(); j++) {
         TileMeta unitFlag = all.$get(i);
-        TileMeta propertyFlag = all.$get(j);
+        TileMeta propertyFlag = allProp.$get(j);
 
         boolean expectedOutput = (unitFlags.indexOf(unitFlag) != -1 && propFlags.indexOf(propertyFlag) != -1);
 

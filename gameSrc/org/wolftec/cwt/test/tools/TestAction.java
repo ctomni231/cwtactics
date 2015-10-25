@@ -3,6 +3,7 @@ package org.wolftec.cwt.test.tools;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.util.JsUtil;
 
 public class TestAction {
 
@@ -27,6 +28,14 @@ public class TestAction {
         parent.uiData.addInfo(action.key(), true);
       }
     }
+  }
+
+  public void buildActionMenu(Action action) {
+    parent.uiData.cleanInfos();
+    if (!action.hasSubMenu()) {
+      JsUtil.throwError("action has no sub menu");
+    }
+    action.prepareActionMenu(parent.uiData);
   }
 
   public void invokeAction(Action action) {

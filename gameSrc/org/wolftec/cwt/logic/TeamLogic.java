@@ -13,9 +13,9 @@ import org.wolftec.cwt.model.gameround.Unit;
 
 public class TeamLogic implements Injectable {
 
-  private ModelManager         model;
-  private TransportLogic       transport;
-  private FogLogic             fog;
+  private ModelManager model;
+  private TransportLogic transport;
+  private FogLogic fog;
 
   /**
    * Different available money transfer steps.
@@ -30,14 +30,14 @@ public class TeamLogic implements Injectable {
   //
   // Returns `true` when a player can transfer money to a tile owner.
   //
-  public boolean canTransferMoney(Player player, int x, int y) {
-    if (player.gold < MONEY_TRANSFER_STEPS.$get(0)) {
+  public boolean canTransferMoney(Player source, Player target) {
+    if (source.gold < MONEY_TRANSFER_STEPS.$get(0)) {
       return false;
     }
-
-    // only transfer money on headquarters
-    Property property = model.getTile(x, y).property;
-    return (property != null && property.type.looseAfterCaptured && property.owner != player);
+    if (source == target) {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -110,7 +110,7 @@ public class TeamLogic implements Injectable {
   }
 
   public boolean canTransferProperty(Property property) {
-    return (property.type.notTransferable != true);
+    return property.type.notTransferable != true && property.owner.gold >= property.type.funds;
   }
 
   public void getPropertyTransferTargets(Player player, InformationList info) { // TODO
@@ -130,6 +130,11 @@ public class TeamLogic implements Injectable {
   public void transferPropertyToPlayer(Property property, Player player) {
     Player origPlayer = property.owner;
     property.owner = player;
+
+    // remove received from the property to prevent money cheating by sharing
+    // the properties among a team
+
+    origPlayer.gold -= property.type.funds;
 
     // remove vision when unit transfers to an enemy team
     if (origPlayer.team != player.team) {
