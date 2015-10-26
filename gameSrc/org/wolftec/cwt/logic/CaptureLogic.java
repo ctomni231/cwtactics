@@ -24,7 +24,7 @@ public class CaptureLogic implements Injectable, ConfigurationProvider {
    * @return **true** when a **unit** can capture a properties, else **false**.
    */
   public boolean canCapture(Unit unit) {
-    return (unit.type.captures > 0);
+    return (unit.type.captures > 0); // TODO
   }
 
   /**
@@ -33,7 +33,7 @@ public class CaptureLogic implements Injectable, ConfigurationProvider {
    * @return **true** when a **property** can be captured, else **false**.
    */
   public boolean canBeCaptured(Property property) {
-    return (property.type.capturePoints > 0);
+    return (property.type.capturePoints > 0); // TODO
   }
 
   /**

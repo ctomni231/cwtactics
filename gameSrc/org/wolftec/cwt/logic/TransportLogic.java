@@ -3,16 +3,18 @@ package org.wolftec.cwt.logic;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
+import org.wolftec.cwt.test.tools.ValueHolder;
 
 public class TransportLogic implements Injectable {
 
   private ModelManager model;
   private SheetManager sheets;
-  private MoveLogic    move;
+  private MoveLogic move;
 
   /**
    * @param {Unit}
@@ -20,7 +22,28 @@ public class TransportLogic implements Injectable {
    * @return true if the unit with id tid is a transporter, else false.
    */
   public boolean isTransportUnit(Unit unit) {
-    return (unit.type.maxloads > 0);
+    return unit.type.maxloads > 0;
+  }
+
+  public boolean isLoadedIn(Unit load, Unit transporter) {
+    return load.loadedIn == model.getUnitId(transporter);
+  }
+
+  // TODO REMOVE ME
+  private ValueHolder<Integer> loadCounter;
+
+  public boolean isFull(Unit transporter) {
+    if (!NullUtil.isPresent(loadCounter)) {
+      loadCounter = new ValueHolder<>();
+    }
+    loadCounter.value = 0;
+    int transporterId = model.getUnitId(transporter);
+    model.forEachUnit((id, unit) -> {
+      if (unit.loadedIn == transporterId) {
+        loadCounter.value++;
+      }
+    });
+    return loadCounter.value == transporter.type.maxloads;
   }
 
   /**
@@ -54,7 +77,7 @@ public class TransportLogic implements Injectable {
    * @return {boolean}
    */
   public boolean canLoadUnit(Unit transporter, Unit load) {
-    return (transporter.type.canload.indexOf(load.type.movetype) != -1);
+    return (transporter.type.canload.indexOf(load.type.movetype) != -1 || transporter.type.canload.indexOf(load.type.ID) != -1);
   }
 
   /**

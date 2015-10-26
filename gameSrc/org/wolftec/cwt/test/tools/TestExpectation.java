@@ -119,11 +119,11 @@ public class TestExpectation {
   }
 
   @Native
-  public void unitAt(int x, int y, String type, int ownerId) {
+  public void unitExistsAt(int x, int y, String type, int ownerId) {
     // ... calls overloaded method ...
   }
 
-  public void unitAt(int x, int y, String type, int ownerId, @OptionalParameter Callback1<Unit> unitEditor) {
+  public void unitExistsAt(int x, int y, String type, int ownerId, @OptionalParameter Callback1<Unit> unitEditor) {
     // TODO check existence of object
     // just do that to make sure that the type exists
     parent.sheets.units.get(type);
@@ -133,6 +133,10 @@ public class TestExpectation {
     if (NullUtil.isPresent(unitEditor)) {
       unitEditor.$invoke(parent.model.getTile(x, y).unit);
     }
+  }
+
+  public Unit unitAt(int x, int y) {
+    return NullUtil.mustBePresent(parent.model.getTile(x, y).unit, "no unit there");
   }
 
   public void turnOwner(int ownerId) {

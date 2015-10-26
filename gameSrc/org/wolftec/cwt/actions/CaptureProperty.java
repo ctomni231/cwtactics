@@ -26,7 +26,7 @@ public class CaptureProperty implements Action {
 
   @Override
   public boolean checkTarget(TileMeta unitFlag, TileMeta propertyFlag) {
-    return unitFlag == TileMeta.EMPTY && (propertyFlag == TileMeta.ENEMY || propertyFlag == TileMeta.EMPTY);
+    return unitFlag == TileMeta.EMPTY && (propertyFlag == TileMeta.ENEMY || propertyFlag == TileMeta.NEUTRAL);
   }
 
   @Override

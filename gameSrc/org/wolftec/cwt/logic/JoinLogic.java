@@ -1,5 +1,6 @@
 package org.wolftec.cwt.logic;
 
+import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
@@ -7,7 +8,7 @@ import org.wolftec.cwt.model.gameround.Unit;
 
 public class JoinLogic implements Injectable {
 
-  private ModelManager   model;
+  private ModelManager model;
   private TransportLogic transport;
   private LifecycleLogic lifecycle;
 
@@ -55,9 +56,11 @@ public class JoinLogic implements Injectable {
     target.heal(Unit.pointsToHealth(Unit.healthToPoints(source.hp)), true);
 
     // ammo
-    target.ammo += source.ammo;
-    if (target.ammo > target.type.ammo) {
-      target.ammo = target.type.ammo;
+    if (target.type.ammo != Constants.INACTIVE) {
+      target.ammo += source.ammo;
+      if (target.ammo > target.type.ammo) {
+        target.ammo = target.type.ammo;
+      }
     }
 
     // fuel
@@ -67,7 +70,6 @@ public class JoinLogic implements Injectable {
     }
 
     // TODO experience points
-
-    lifecycle.destroyUnit(x, y, true);
+    model.searchUnit(source, (ux, uy, unit) -> lifecycle.destroyUnit(ux, uy, true));
   }
 }

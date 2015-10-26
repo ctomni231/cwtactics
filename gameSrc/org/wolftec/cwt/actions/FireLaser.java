@@ -10,7 +10,7 @@ import org.wolftec.cwt.states.UserInteractionData;
 
 public class FireLaser implements Action {
 
-  private LaserLogic   laser;
+  private LaserLogic laser;
   private ModelManager model;
 
   @Override
@@ -20,7 +20,7 @@ public class FireLaser implements Action {
 
   @Override
   public ActionType type() {
-    return ActionType.PROPERTY_ACTION;
+    return ActionType.UNIT_ACTION;
   }
 
   @Override

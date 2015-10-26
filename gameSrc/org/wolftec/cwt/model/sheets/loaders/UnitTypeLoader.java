@@ -40,8 +40,14 @@ public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
       return map;
     });
 
-    Map<String, Object> attackData = Option.ofNullable((Map<String, Object>) data.$get("supply")).orElseGet(() -> {
+    Map<String, Object> attackData = Option.ofNullable((Map<String, Object>) data.$get("attack")).orElseGet(() -> {
       Map<String, Object> map = JSCollections.$map();
+      return map;
+    });
+
+    Map<String, Object> laserDataMap = Option.ofNullable((Map<String, Object>) data.$get("damage")).orElseGet(() -> {
+      Map<String, Object> map = JSCollections.$map();
+      map.$put("damage", 0);
       return map;
     });
 
@@ -61,10 +67,11 @@ public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
     sheet.suicide.damage = read(suicideData, "damage");
     sheet.suicide.range = read(suicideData, "range");
     sheet.supply.supplier = readNullable(supplyData, "supplier", true);
-    sheet.attack.main_wp = readNullable(attackData, "maxrange", JSCollections.$map());
-    sheet.attack.sec_wp = readNullable(attackData, "maxrange", JSCollections.$map());
+    sheet.attack.main_wp = readNullable(attackData, "main_wp", JSCollections.$map());
+    sheet.attack.sec_wp = readNullable(attackData, "sec_wp", JSCollections.$map());
     sheet.attack.minrange = readNullable(attackData, "minrange", 1);
     sheet.attack.maxrange = readNullable(attackData, "maxrange", 1);
+    sheet.laser.damage = read(laserDataMap, "damage");
 
   }
 }

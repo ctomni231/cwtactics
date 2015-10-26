@@ -11,9 +11,9 @@ public class TransferUnitActionTest extends AbstractCwtTest {
 
   @Override
   protected void prepareModel() {
-    test.expectThat.unitAt(0, 0, "unitA", 0);
-    test.expectThat.unitAt(1, 0, "unitA", 1);
-    test.expectThat.unitAt(2, 0, "unitA", 2);
+    test.expectThat.unitExistsAt(0, 0, "unitA", 0);
+    test.expectThat.unitExistsAt(1, 0, "unitA", 1);
+    test.expectThat.unitExistsAt(2, 0, "unitA", 2);
     test.expectThat.inTeam(0, 0);
     test.expectThat.inTeam(1, 0);
     test.expectThat.everythingCanAct();

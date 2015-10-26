@@ -1,7 +1,6 @@
 package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.WaitUnit;
-import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class WaitActionTest extends AbstractCwtTest {
@@ -11,76 +10,41 @@ public class WaitActionTest extends AbstractCwtTest {
   @Override
   protected void prepareModel() {
     test.expectThat.moveCosts("moveA", "tileA", 1);
-
+    test.expectThat.unitExistsAt(1, 1, "unitA", 0);
+    test.expectThat.unitExistsAt(2, 2, "unitA", 1);
     test.expectThat.everythingVisible();
-
-    test.expectThat.unitAt(1, 1, "unitA", 0);
-  }
-
-  public void test_sourceMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
-  }
-
-  public void test_targetMustBeEmpty() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
-  }
-
-  public void test_action_whenNoActingUnitIsSelected_shouldBeUnavaible() {
-    test.expectThat.sourceSelectionAt(2, 2);
-
-    test.modify.checkAction(action);
-
-    test.assertThat.menu().notContains(action.key());
-  }
-
-  public void test_action_whenActingUnitIsOwnedAndActive_shouldBeAvaible() {
     test.expectThat.everythingCanAct();
-    test.expectThat.sourceSelectionAt(1, 1);
-
-    test.modify.checkAction(action);
-
-    test.assertThat.menu().contains(action.key());
   }
 
-  public void test_action_whenActingUnitIsOwnedAndInactive_shouldBeUnavaible() {
+  public void test_usableOnlyWhenOwnUnitIsSelected() {
+
+    // own
+    test.expectThat.sourceSelectionAt(1, 1);
+    test.modify.checkAction(action);
+    test.assertThat.menu().notEmpty();
+
+    // own used
+    test.expectThat.sourceSelectionAt(1, 1);
     test.expectThat.everythingCannotAct();
-    test.expectThat.sourceSelectionAt(1, 1);
-
     test.modify.checkAction(action);
-
-    test.assertThat.menu().notContains(action.key());
-  }
-
-  public void test_action_whenActingUnitBelongsToEnemyPlayer_shouldBeUnavaible() {
-    test.expectThat.unitAt(2, 2, "unitA", 1);
-    test.expectThat.inTeam(0, 0);
-    test.expectThat.inTeam(1, 1);
+    test.assertThat.menu().empty();
     test.expectThat.everythingCanAct();
+
+    // non-own
     test.expectThat.sourceSelectionAt(2, 2);
-
     test.modify.checkAction(action);
+    test.assertThat.menu().empty();
 
-    test.assertThat.menu().notContains(action.key());
+    // nothing
+    test.expectThat.sourceSelectionAt(2, 2);
+    test.modify.checkAction(action);
+    test.assertThat.menu().empty();
   }
 
-  public void test_action_whenActingUnitBelongsToAlliedPlayer_shouldBeUnavaible() {
-    test.expectThat.unitAt(2, 2, "unitA", 2);
-    test.expectThat.inTeam(0, 0);
-    test.expectThat.inTeam(1, 1);
-    test.expectThat.everythingCanAct();
-    test.expectThat.sourceSelectionAt(2, 2);
-
-    test.modify.checkAction(action);
-
-    test.assertThat.menu().notContains(action.key());
-  }
-
-  public void test_action_whenActivated_shouldModifyUnitData() {
+  public void test_shouldModifyUnitActivityStatus() {
     test.expectThat.everythingCanAct();
     test.expectThat.sourceSelectionAt(1, 1);
-
     test.modify.invokeAction(action);
-
     test.assertThat.unitAt(1, 1).propertyByFn((unit) -> unit.canAct).is(false);
   }
 }

@@ -12,10 +12,11 @@ public abstract class NullUtil {
     return isPresent(value) ? value : defValue;
   }
 
-  public static void mustBePresent(Object value, String undefError) {
+  public static <T> T mustBePresent(T value, String undefError) {
     if (!isPresent(value)) {
       JsUtil.throwError("ValueNotPresentException: " + undefError);
     }
+    return value;
   }
 
   public static void mustNotBePresent(Object value, String undefError) {

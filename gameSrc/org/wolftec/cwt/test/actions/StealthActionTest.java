@@ -2,7 +2,6 @@ package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.HideUnit;
 import org.wolftec.cwt.actions.UnhideUnit;
-import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class StealthActionTest extends AbstractCwtTest {
@@ -17,18 +16,8 @@ public class StealthActionTest extends AbstractCwtTest {
     test.expectThat.everythingVisible();
   }
 
-  public void test_sourceMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(unhide, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
-    test.assertThat.value(ActionsTest.sourceCheck(hide, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
-  }
-
-  public void test_targetMustBeEmpty() {
-    test.assertThat.value(ActionsTest.sourceCheck(unhide, ActionsTest.fromMeta(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
-    test.assertThat.value(ActionsTest.sourceCheck(hide, ActionsTest.fromMeta(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
-  }
-
   public void test_usableUnhideOnlyWhenStealthUnitIsHidden() {
-    test.expectThat.unitAt(0, 0, "unitA", 0, (unit) -> unit.hidden = true);
+    test.expectThat.unitExistsAt(0, 0, "unitA", 0, (unit) -> unit.hidden = true);
     test.expectThat.everythingCanAct();
     test.expectThat.sourceSelectionAt(0, 0);
 
@@ -39,7 +28,7 @@ public class StealthActionTest extends AbstractCwtTest {
   }
 
   public void test_usableHideOnlyWhenStealthUnitIsNotHidden() {
-    test.expectThat.unitAt(0, 0, "unitA", 0, (unit) -> unit.hidden = false);
+    test.expectThat.unitExistsAt(0, 0, "unitA", 0, (unit) -> unit.hidden = false);
     test.expectThat.everythingCanAct();
     test.expectThat.sourceSelectionAt(0, 0);
 
@@ -50,7 +39,7 @@ public class StealthActionTest extends AbstractCwtTest {
   }
 
   public void test_unusableWhenUnitIsNotAStealth() {
-    test.expectThat.unitAt(0, 0, "unitB", 0, (unit) -> unit.hidden = false);
+    test.expectThat.unitExistsAt(0, 0, "unitB", 0, (unit) -> unit.hidden = false);
     test.expectThat.everythingCanAct();
     test.expectThat.sourceSelectionAt(0, 0);
 
@@ -60,8 +49,8 @@ public class StealthActionTest extends AbstractCwtTest {
   }
 
   public void test_changesUnitHiddenStatus() {
-    test.expectThat.unitAt(0, 0, "unitA", 0, (unit) -> unit.hidden = false);
-    test.expectThat.unitAt(1, 0, "unitA", 0, (unit) -> unit.hidden = true);
+    test.expectThat.unitExistsAt(0, 0, "unitA", 0, (unit) -> unit.hidden = false);
+    test.expectThat.unitExistsAt(1, 0, "unitA", 0, (unit) -> unit.hidden = true);
     test.expectThat.everythingCanAct();
 
     test.expectThat.sourceSelectionAt(0, 0);

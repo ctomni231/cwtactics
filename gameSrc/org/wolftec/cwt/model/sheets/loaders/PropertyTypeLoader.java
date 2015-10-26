@@ -26,12 +26,6 @@ public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
   @Override
   public void hydrate(Map<String, Object> data, PropertyType sheet) {
 
-    Map<String, Object> laserDataMap = Option.ofNullable((Map<String, Object>) data.$get("damage")).orElseGet(() -> {
-      Map<String, Object> map = JSCollections.$map();
-      map.$put("damage", 0);
-      return map;
-    });
-
     Map<String, Object> cannonDataMap = Option.ofNullable((Map<String, Object>) data.$get("cannon")).orElseGet(() -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("damage", 0);
@@ -60,7 +54,6 @@ public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
     sheet.notTransferable = readNullable(data, "notTransferable", false);
     sheet.capturePoints = readNullable(data, "capturePoints", 20); /* TODO */
     sheet.changeAfterCaptured = readNullable(data, "changeAfterCaptured", sheet.ID);
-    sheet.laser.damage = read(laserDataMap, "damage");
     sheet.rocketsilo.changeTo = read(siloDataMap, "changeTo");
     sheet.rocketsilo.damage = read(siloDataMap, "damage");
     sheet.rocketsilo.range = read(siloDataMap, "range");

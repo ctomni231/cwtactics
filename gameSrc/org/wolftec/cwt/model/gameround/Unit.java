@@ -6,14 +6,14 @@ import org.wolftec.cwt.model.sheets.types.UnitType;
 
 public class Unit implements Ownable {
 
-  public int      hp;
-  public int      ammo;
-  public int      fuel;
-  public boolean  hidden;
-  public int      loadedIn;
+  public int hp;
+  public int ammo;
+  public int fuel;
+  public boolean hidden;
+  public int loadedIn;
   public UnitType type;
-  public boolean  canAct;
-  public Player   owner;
+  public boolean canAct;
+  public Player owner;
 
   public Unit() {
 
@@ -60,7 +60,7 @@ public class Unit implements Ownable {
   public void takeDamage(int damage, int minRest) {
     hp -= damage;
 
-    if (minRest > 0 && hp <= minRest) {
+    if (minRest > 0 && hp < minRest) {
       hp = minRest;
     }
   }
@@ -73,18 +73,18 @@ public class Unit implements Ownable {
    * @param diffAsGold
    */
   public void heal(int health, boolean diffAsGold) {
-    this.hp += health;
-    if (this.hp > 99) {
+    hp += health;
+    if (hp > 99) {
 
       // pay difference of the result health and 100 as
       // gold ( in relation to the unit cost ) to the
       // unit owners gold depot
       if (diffAsGold) {
-        int diff = this.hp - 99;
-        this.owner.gold += NumberUtil.asInt((type.costs * diff) / 100);
+        int diff = hp - 99;
+        owner.gold += NumberUtil.asInt((type.costs * diff) / 100);
       }
 
-      this.hp = 99;
+      hp = 99;
     }
   }
 
@@ -124,7 +124,7 @@ public class Unit implements Ownable {
    * @return
    */
   public static int pointsToHealth(int pt) {
-    return (pt * 10);
+    return pt * 10;
   }
 
   /**

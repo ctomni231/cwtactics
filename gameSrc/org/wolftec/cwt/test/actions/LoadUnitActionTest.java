@@ -1,32 +1,72 @@
 package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.actions.LoadUnit;
-import org.wolftec.cwt.core.action.TileMeta;
-import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.logic.TransportLogic;
+import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class LoadUnitActionTest extends AbstractCwtTest {
 
   private LoadUnit action;
+  private TransportLogic transport;
 
-  public void test_sourceMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
-  }
-
-  public void test_targetMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
+  @Override
+  protected void prepareModel() {
+    test.expectThat.unitType("unitB").canload.push("unitA");
+    test.expectThat.unitType("unitB").maxloads = 1;
+    test.expectThat.everythingVisible();
   }
 
   public void test_usableOnlyWhenTargetUnitIsATransporterAndCanLoadSourceUnit() {
-    JsUtil.throwError("test missing");
+    test.expectThat.unitExistsAt(0, 0, "unitA", 0);
+    test.expectThat.unitExistsAt(0, 1, "unitC", 0);
+    test.expectThat.unitExistsAt(2, 2, "unitB", 0);
+    test.expectThat.everythingCanAct();
+
+    test.expectThat.sourceSelectionAt(0, 0);
+    test.expectThat.targetSelectionAt(2, 2);
+    test.modify.checkAction(action);
+    test.assertThat.menu().notEmpty();
+
+    test.expectThat.sourceSelectionAt(0, 1);
+    test.expectThat.targetSelectionAt(2, 2);
+    test.modify.checkAction(action);
+    test.assertThat.menu().empty();
   }
 
-  public void test_unusableWhenTargetTransporterIsFull() {
-    JsUtil.throwError("test missing");
+  public void test_usableOnlyWhenTargetTransporterIsNotFull() {
+    test.expectThat.unitExistsAt(0, 0, "unitA", 0);
+    test.expectThat.unitExistsAt(0, 1, "unitA", 0);
+    test.expectThat.unitExistsAt(2, 2, "unitB", 0);
+    test.expectThat.everythingCanAct();
+
+    // not full -> should be available
+    test.expectThat.sourceSelectionAt(0, 0);
+    test.expectThat.targetSelectionAt(2, 2);
+    test.modify.checkAction(action);
+    test.assertThat.menu().notEmpty();
+    test.modify.invokeAction(action);
+
+    // full -> should be not available
+    test.expectThat.sourceSelectionAt(0, 1);
+    test.expectThat.targetSelectionAt(2, 2);
+    test.modify.checkAction(action);
+    test.assertThat.menu().empty();
   }
 
   public void test_addsUnitInTransporter() {
-    JsUtil.throwError("test missing");
+    test.expectThat.unitExistsAt(0, 0, "unitA", 0);
+    test.expectThat.unitExistsAt(2, 2, "unitB", 0);
+    Unit load = test.expectThat.unitAt(0, 0);
+    Unit transporter = test.expectThat.unitAt(2, 2);
+    test.expectThat.everythingCanAct();
+
+    test.expectThat.sourceSelectionAt(0, 0);
+    test.expectThat.targetSelectionAt(2, 2);
+    test.modify.checkAction(action);
+    test.assertThat.menu().notEmpty();
+    test.modify.invokeAction(action);
+    test.assertThat.value(transport.isLoadedIn(load, transporter)).is(true);
   }
 
 }

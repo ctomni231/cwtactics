@@ -10,7 +10,9 @@ import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
+import org.wolftec.cwt.core.util.UrlParameterUtil;
 import org.wolftec.cwt.core.util.VersionUtil;
 
 public class TestManager implements Injectable {
@@ -48,7 +50,28 @@ public class TestManager implements Injectable {
     return tests.$length() > 0;
   }
 
-  public TestExecutionResults callAllTests() {
+  public void executeTests() {
+    TestExecutionResults results = callAllTests();
+
+    boolean skipTests = NullUtil.getOrElse(UrlParameterUtil.getParameter("noTests"), "false").equals("true");
+    if (hasTests() && !skipTests) {
+
+      boolean skipErrorLog = NullUtil.getOrElse(UrlParameterUtil.getParameter("noTestErrorLog"), "false").equals("true");
+
+      log.info("Test results, " + results.passed + " has passed and " + results.failed + " has failed");
+      ListUtil.forEachArrayValue(results.tests, (testI, testData) -> {
+        ListUtil.forEachArrayValue(testData.methods, (testMethodI, testMethodData) -> {
+          if (testMethodData.succeeded) {
+            log.info("[PASSED] " + testData.name + "." + testMethodData.name);
+          } else {
+            log.error("[FAILED] " + testData.name + "." + testMethodData.name, !skipErrorLog ? testMethodData.error : null);
+          }
+        });
+      });
+    }
+  }
+
+  private TestExecutionResults callAllTests() {
     log.info("running game tests");
 
     TestExecutionResults results = new TestExecutionResults();

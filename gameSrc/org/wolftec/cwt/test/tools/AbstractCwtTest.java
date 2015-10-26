@@ -1,5 +1,6 @@
 package org.wolftec.cwt.test.tools;
 
+import org.wolftec.cwt.core.config.ConfigurableValueManager;
 import org.wolftec.cwt.core.test.Test;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
@@ -12,6 +13,7 @@ public abstract class AbstractCwtTest implements Test {
   protected ModelResetter modelReset;
   protected ModelManager model;
   protected UserInteractionData uiData;
+  protected ConfigurableValueManager cfg;
 
   public CwtTestManager test;
 
@@ -29,6 +31,7 @@ public abstract class AbstractCwtTest implements Test {
   private void setupDefaultModel() {
     uiData.reset();
     modelReset.reset();
+    cfg.resetGameOptions();
     test.expectThat.filledMapWithTiles(10, 10, "tileA");
     test.expectThat.weather("weatherA", 4);
     test.expectThat.turnOwner(0);

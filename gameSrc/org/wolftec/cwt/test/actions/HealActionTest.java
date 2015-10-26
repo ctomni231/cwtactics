@@ -11,4 +11,8 @@ public class HealActionTest extends AbstractCwtTest {
     test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.noPos(), ActionsTest.noPos())).is(true);
   }
 
+  public void test_shouldIncreaseTheUnitHealth() {
+
+  }
+
 }

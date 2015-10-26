@@ -133,12 +133,38 @@ public interface Action extends Injectable {
     // TODO ALLY
     // TODO TARGET - SOURCE SAME THING CHECK
     TileMeta sourceUnit = NullUtil.isPresent(uiData.source.unit) ? TileMeta.OWN : TileMeta.EMPTY;
-    TileMeta sourceProperty = NullUtil.isPresent(uiData.source.property)
-        ? ((uiData.source.property.owner == uiData.actor) ? TileMeta.OWN : TileMeta.ENEMY) : TileMeta.EMPTY;
+    TileMeta sourceProperty;
+    if (NullUtil.isPresent(uiData.source.property)) {
+      if (uiData.source.property.owner == null) {
+        sourceProperty = TileMeta.NEUTRAL;
+      } else if (uiData.source.property.owner == uiData.actor) {
+        sourceProperty = TileMeta.OWN;
+      } else if (uiData.source.property.owner.team == uiData.actor.team) {
+        sourceProperty = TileMeta.ALLIED;
+      } else {
+        sourceProperty = TileMeta.ENEMY;
+      }
+    } else {
+      sourceProperty = TileMeta.EMPTY;
+    }
+
     TileMeta targetUnit = NullUtil.isPresent(uiData.target.unit) ? ((uiData.target.unit.owner == uiData.actor) ? TileMeta.OWN : TileMeta.ENEMY)
         : TileMeta.EMPTY;
-    TileMeta targetProperty = NullUtil.isPresent(uiData.target.property)
-        ? ((uiData.target.property.owner == uiData.actor) ? TileMeta.OWN : TileMeta.ENEMY) : TileMeta.EMPTY;
+
+    TileMeta targetProperty;
+    if (NullUtil.isPresent(uiData.target.property)) {
+      if (uiData.target.property.owner == null) {
+        targetProperty = TileMeta.NEUTRAL;
+      } else if (uiData.target.property.owner == uiData.actor) {
+        targetProperty = TileMeta.OWN;
+      } else if (uiData.target.property.owner.team == uiData.actor.team) {
+        targetProperty = TileMeta.ALLIED;
+      } else {
+        targetProperty = TileMeta.ENEMY;
+      }
+    } else {
+      targetProperty = TileMeta.EMPTY;
+    }
 
     if (uiData.source.tile == uiData.target.tile) {
       targetUnit = TileMeta.EMPTY;

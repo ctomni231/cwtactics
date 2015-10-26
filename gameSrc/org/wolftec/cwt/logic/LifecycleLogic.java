@@ -43,7 +43,7 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
   @OptionalReturn
   public Property getInactiveProperty() {
     for (int i = 0, e = Constants.MAX_PROPERTIES; i < e; i++) {
-      if (model.getProperty(i).owner == null) {
+      if (model.getProperty(i).type == null) {
         return model.getProperty(i);
       }
     }
