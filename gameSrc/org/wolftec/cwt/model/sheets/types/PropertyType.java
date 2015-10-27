@@ -1,6 +1,7 @@
 package org.wolftec.cwt.model.sheets.types;
 
 import org.stjs.javascript.Array;
+import org.stjs.javascript.JSCollections;
 
 /**
  * 
@@ -22,5 +23,7 @@ public class PropertyType extends TileType {
   public PropertyType() {
     cannon = new CannonType();
     rocketsilo = new SiloType();
+    builds = JSCollections.$array();
+    repairs = JSCollections.$array();
   }
 }

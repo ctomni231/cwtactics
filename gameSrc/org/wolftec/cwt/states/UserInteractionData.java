@@ -57,8 +57,10 @@ public class UserInteractionData implements Injectable, InformationList {
 
   @Override
   public void addInfo(String key, boolean flag) {
-    infos.push(key);
-    log.info("added user action [" + key + "]");
+    if (flag) {
+      infos.push(key);
+      log.info("added user action [" + key + "]");
+    }
   }
 
   @Override

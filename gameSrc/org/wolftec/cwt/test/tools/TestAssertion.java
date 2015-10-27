@@ -2,7 +2,10 @@ package org.wolftec.cwt.test.tools;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.functions.Function1;
+import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.test.Assert;
+import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
@@ -32,7 +35,29 @@ public class TestAssertion {
     return new Assert(parent.model.getPlayer(index));
   }
 
-  public Assert menu() {
+  public Assert<Player> turnOwner() {
+    return new Assert(parent.model.turnOwner);
+  }
+
+  public <X> Assert<X> gameroundProperty(Function1<ModelManager, X> filter) {
+    return new Assert(filter.$invoke(parent.model));
+  }
+
+  public Assert usableAction(Action action) {
+    parent.modify.checkAction(action);
+    return menu().contains(action.key());
+  }
+
+  public Assert unusableAction(Action action) {
+    parent.modify.checkAction(action);
+    return menu().notContains(action.key());
+  }
+
+  public Assert actionTarget(Action action) {
+    return value(action.isTargetValid(parent.uiData));
+  }
+
+  public Assert<Array<String>> menu() {
     Array<String> menu = JSCollections.$array();
     for (int i = 0; i < parent.uiData.getNumberOfInfos(); i++) {
       menu.push(parent.uiData.getInfoAtIndex(i));

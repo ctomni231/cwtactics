@@ -60,7 +60,7 @@ public class SupplyLogic implements Injectable {
       return false;
     }
     Unit target = model.getTile(x, y).unit;
-    return NullUtil.isPresent(target) && target.owner == supplier.owner;
+    return target != supplier && NullUtil.isPresent(target) && target.owner == supplier.owner;
   }
 
   /**

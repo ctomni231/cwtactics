@@ -10,10 +10,10 @@ import org.wolftec.cwt.model.sheets.types.CommanderType;
 
 public class CommanderLogic implements Injectable, ConfigurationProvider {
 
-  public final static int POWER_LEVEL_OFF  = 0;
-  public final static int POWER_LEVEL_COP  = 1;
+  public final static int POWER_LEVEL_OFF = 0;
+  public final static int POWER_LEVEL_COP = 1;
   public final static int POWER_LEVEL_SCOP = 2;
-  public final static int POWER_LEVEL_TAG  = 3;
+  public final static int POWER_LEVEL_TAG = 3;
 
   private ConfigurableValue cfgStarCost;
   private ConfigurableValue cfgStarCostIncrease;
@@ -52,7 +52,7 @@ public class CommanderLogic implements Injectable, ConfigurationProvider {
     }
 
     // commanders must be available and current power must be inactive
-    if (player.coA == null || player.activePower != Constants.INACTIVE) {
+    if (player.coA == null || player.activePower != POWER_LEVEL_OFF) {
       return false;
     }
 
@@ -112,7 +112,7 @@ public class CommanderLogic implements Injectable, ConfigurationProvider {
   public void addActivatableLevelsToList(Player actor, InformationList infoList) {
     for (int i = POWER_LEVEL_COP; i <= POWER_LEVEL_SCOP; i++) {
       if (canActivatePower(actor, i)) {
-        infoList.addInfo("" + i, false);
+        infoList.addInfo("" + i, true);
       }
     }
   }

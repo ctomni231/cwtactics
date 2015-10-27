@@ -46,7 +46,7 @@ public interface Action extends Injectable {
    * Checks the correctness of a given target position.
    */
   default boolean isTargetValid(UserInteractionData data) {
-    return false;
+    return true;
   }
 
   /**

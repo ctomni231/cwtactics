@@ -15,6 +15,8 @@ public abstract class SheetIdNumberUtil {
    * @return numeric sheet code
    */
   public static int toNumber(String id) {
+    AssertUtil.assertThat(id.length() == 4, "illegal ID");
+
     int resultCode = 100000000;
     for (int i = 0; i < id.length(); i++) {
       int charCode = JSStringAdapter.charCodeAt(id, i);
@@ -31,8 +33,8 @@ public abstract class SheetIdNumberUtil {
   public static String toId(int idNumber) {
     String id = idNumber + "";
     String result = "";
-    for (int i = 0; i < id.length(); i += 2) {
-      int code = NumberUtil.convertStringToInt(id.substring(i, 2));
+    for (int i = id.length(); i > 1; i -= 2) {
+      int code = NumberUtil.convertStringToInt(id.substring(i - 2, i));
       String letter = JSStringAdapter.fromCharCode(String.class, code);
       result += letter;
     }

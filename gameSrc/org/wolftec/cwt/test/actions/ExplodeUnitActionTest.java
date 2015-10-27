@@ -9,7 +9,7 @@ public class ExplodeUnitActionTest extends AbstractCwtTest {
   private ExplodeUnit action;
 
   @Override
-  protected void prepareDefaultModel() {
+  protected void prepareModel() {
     test.expectThat.unitExistsAt(0, 0, "unitA", 0);
     test.expectThat.unitType("unitA").suicide.damage = 3;
     test.expectThat.unitType("unitA").suicide.range = 2;

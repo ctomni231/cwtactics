@@ -12,7 +12,7 @@ import org.wolftec.cwt.states.UserInteractionData;
 public class FireSilo implements Action {
 
   private SpecialWeaponsLogic weapons;
-  private ModelManager        model;
+  private ModelManager model;
 
   @Override
   public String key() {
@@ -26,7 +26,7 @@ public class FireSilo implements Action {
 
   @Override
   public boolean checkTarget(TileMeta unitFlag, TileMeta propertyFlag) {
-    return unitFlag == TileMeta.ENEMY && (propertyFlag == TileMeta.EMPTY || propertyFlag == TileMeta.OWN);
+    return unitFlag == TileMeta.EMPTY;
   }
 
   @Override

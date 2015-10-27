@@ -11,7 +11,7 @@ import org.wolftec.cwt.states.UserInteractionData;
 
 public class SupplyUnit implements Action {
 
-  private SupplyLogic  supply;
+  private SupplyLogic supply;
   private ModelManager model;
 
   @Override
@@ -22,7 +22,7 @@ public class SupplyUnit implements Action {
   @Override
   public boolean condition(UserInteractionData data) {
     Unit unit = data.source.unit;
-    return supply.isSupplier(unit) && supply.hasRefillTargetsNearby(unit, data.source.x, data.source.y);
+    return supply.isSupplier(unit) && supply.hasRefillTargetsNearby(unit, data.target.x, data.target.y);
   }
 
   @Override

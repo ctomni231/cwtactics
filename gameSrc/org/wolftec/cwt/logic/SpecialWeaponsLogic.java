@@ -191,7 +191,7 @@ public class SpecialWeaponsLogic implements Injectable {
   // position with an impact.
   //
   public boolean isRocketSilo(Property property) {
-    return (property.type.rocketsilo != null);
+    return property.type.rocketsilo.damage > 0;
   }
 
   //
@@ -199,7 +199,7 @@ public class SpecialWeaponsLogic implements Injectable {
   // **unit**. If not, **false** will be returned.
   //
   public boolean canBeFiredBy(Property property, Unit unit) {
-    return (property.type.rocketsilo.fireable.indexOf(unit.type.ID) > -1);
+    return property.type.rocketsilo.fireable.indexOf(unit.type.ID) > -1;
   }
 
   //
@@ -208,7 +208,7 @@ public class SpecialWeaponsLogic implements Injectable {
   // will be returned.
   //
   public boolean canBeFiredTo(Property property, int x, int y) {
-    return (model.isValidPosition(x, y));
+    return model.isValidPosition(x, y);
   }
 
   //

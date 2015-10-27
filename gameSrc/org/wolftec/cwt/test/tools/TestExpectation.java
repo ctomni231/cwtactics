@@ -3,6 +3,7 @@ package org.wolftec.cwt.test.tools;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.annotations.OptionalParameter;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
@@ -12,6 +13,7 @@ import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.model.sheets.types.CommanderType;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
 import org.wolftec.cwt.model.sheets.types.SheetType;
@@ -29,6 +31,10 @@ public class TestExpectation {
 
   public UnitType unitType(String id) {
     return sheetType(id, parent.sheets.units);
+  }
+
+  public CommanderType coType(String id) {
+    return sheetType(id, parent.sheets.commanders);
   }
 
   public PropertyType propertyType(String id) {
@@ -51,6 +57,10 @@ public class TestExpectation {
 
   public void tileTypeExists(String id) {
     registerType(id, new TileType(), parent.sheets.tiles);
+  }
+
+  public void coTypeExists(String id) {
+    registerType(id, new CommanderType(), parent.sheets.commanders);
   }
 
   public void propertyTypeExists(String id) {
@@ -103,6 +113,10 @@ public class TestExpectation {
     if (NullUtil.isPresent(editor)) {
       editor.$invoke(parent.model.getPlayer(id));
     }
+  }
+
+  public void mainCo(int id, String coId) {
+    player(id, p -> p.coA = parent.sheets.commanders.get(coId));
   }
 
   @Native
@@ -214,6 +228,10 @@ public class TestExpectation {
     parent.move.generateMovePath(parent.uiData.source.x, parent.uiData.source.y, x, y, parent.uiData.targets, parent.uiData.movePath);
   }
 
+  public void actionSelectionAt(int x, int y) {
+    parent.uiData.actionTarget.set(parent.model, x, y);
+  }
+
   public void menuEntrySelected(int index) {
     parent.uiData.selectInfoAtIndex(index);
   }
@@ -221,5 +239,13 @@ public class TestExpectation {
   <T extends SheetType> void registerType(String id, T sheet, SheetDatabase<T> db) {
     sheet.ID = id;
     db.registerSheet(sheet);
+  }
+
+  public void actionSubMenuOpened(Action action) {
+    parent.modify.buildActionMenu(action);
+  }
+
+  public void actionTriggered(Action action) {
+    parent.modify.invokeAction(action);
   }
 }

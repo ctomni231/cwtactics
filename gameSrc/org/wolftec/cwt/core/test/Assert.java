@@ -30,6 +30,14 @@ public class Assert<T> {
     return this;
   }
 
+  public Assert isTrue() {
+    return is(true);
+  }
+
+  public Assert isFalse() {
+    return is(false);
+  }
+
   public Assert is(Object o) {
     if (value != o) {
       JsUtil.throwError("AssertionFailed: expected " + o + ", but got " + value);
@@ -108,13 +116,16 @@ public class Assert<T> {
     return this;
   }
 
-  public Assert contains(Object entry) {
+  public Assert contains(Object... arguments) {
     if (!NullUtil.isPresent(JSObjectAdapter.$get(value, "indexOf"))) {
       JsUtil.throwError("AssertionFailed: not able to hold entries");
     }
 
-    if (((Array) value).indexOf(entry) == -1) {
-      JsUtil.throwError("AssertionFailed: expected [" + value + "] contains " + entry);
+    for (int i = 0; i < arguments.length; i++) {
+      Object entry = arguments[i];
+      if (((Array) value).indexOf(entry) == -1) {
+        JsUtil.throwError("AssertionFailed: expected " + entry + " to be in [" + value + "]");
+      }
     }
     return this;
   }
@@ -127,7 +138,7 @@ public class Assert<T> {
     for (int i = 0; i < arguments.length; i++) {
       Object entry = arguments[i];
       if (((Array) value).indexOf(entry) != -1) {
-        JsUtil.throwError("AssertionFailed: expected [" + value + "] not contains " + entry);
+        JsUtil.throwError("AssertionFailed: expected " + entry + " not to be in [" + value + "]");
       }
     }
     return this;

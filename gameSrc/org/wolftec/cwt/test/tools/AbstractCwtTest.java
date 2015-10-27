@@ -23,7 +23,7 @@ public abstract class AbstractCwtTest implements Test {
     prepareModel();
   }
 
-  protected void prepareDefaultModel() {
+  private void prepareDefaultModel() {
     setupDefaultTestTypes();
     setupDefaultModel();
   }
@@ -51,6 +51,9 @@ public abstract class AbstractCwtTest implements Test {
     test.expectThat.propertyTypeExists("propA");
     test.expectThat.propertyTypeExists("propB");
     test.expectThat.propertyTypeExists("propC");
+    test.expectThat.coTypeExists("coA");
+    test.expectThat.coTypeExists("coB");
+    test.expectThat.coTypeExists("coC");
     test.expectThat.moveTypeExists("moveA");
     test.expectThat.moveTypeExists("moveB");
     test.expectThat.moveTypeExists("moveC");

@@ -51,7 +51,11 @@ public class TestAction {
     StateFlowData flow = new StateFlowData();
 
     action.fillData(parent.uiData, data);
-    action.evaluateByData(0, data, flow);
+
+    do {
+      action.evaluateByData(0, data, flow);
+    } while (!action.isDataEvaluationCompleted(data));
+
     if (NullUtil.isPresent(callback)) {
       callback.$invoke(flow);
     }

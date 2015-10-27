@@ -3,6 +3,7 @@ package org.wolftec.cwt.actions;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionType;
+import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.util.SheetIdNumberUtil;
 import org.wolftec.cwt.logic.FactoryLogic;
@@ -14,7 +15,7 @@ public class BuildUnit implements Action {
 
   private ModelManager model;
   private FactoryLogic factory;
-  private FogLogic     fog;
+  private FogLogic fog;
 
   @Override
   public String key() {
@@ -24,6 +25,11 @@ public class BuildUnit implements Action {
   @Override
   public ActionType type() {
     return ActionType.PROPERTY_ACTION;
+  }
+
+  @Override
+  public boolean checkSource(TileMeta unitFlag, TileMeta propertyFlag) {
+    return unitFlag == TileMeta.EMPTY && propertyFlag == TileMeta.OWN;
   }
 
   @Override

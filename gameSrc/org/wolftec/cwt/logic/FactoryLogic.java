@@ -15,8 +15,8 @@ import org.wolftec.cwt.model.sheets.types.UnitType;
 public class FactoryLogic implements Injectable, ConfigurationProvider {
 
   private LifecycleLogic lifecycle;
-  private SheetManager   sheets;
-  private ModelManager   model;
+  private SheetManager sheets;
+  private ModelManager model;
 
   private ConfigurableValue unitLimit;
 
@@ -29,7 +29,7 @@ public class FactoryLogic implements Injectable, ConfigurationProvider {
   // Returns **true** when the given **property** is a factory, else **false**.
   //
   public boolean isFactory(Property property) {
-    return (property.type.builds != null);
+    return property.type.builds.$length() > 0;
   }
 
   //
@@ -39,7 +39,7 @@ public class FactoryLogic implements Injectable, ConfigurationProvider {
   public boolean canProduce(Property property) {
 
     // check left manpower
-    if (property.owner == null || property.owner.manpower == 0) {
+    if (property.owner.manpower == 0) {
       return false;
     }
 
@@ -84,7 +84,7 @@ public class FactoryLogic implements Injectable, ConfigurationProvider {
     int gold = factory.owner.gold;
     Array<String> bList = factory.type.builds;
     sheets.units.forEach((key, type) -> {
-      if (bList.indexOf(type.movetype) == -1) {
+      if (bList.indexOf(type.movetype) == -1 && bList.indexOf(type.ID) == -1) {
         return;
       }
 
