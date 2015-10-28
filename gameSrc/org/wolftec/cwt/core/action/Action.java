@@ -114,7 +114,7 @@ public interface Action extends Injectable {
     switch (type()) {
 
       case UNIT_ACTION:
-        return unitFlag == TileMeta.OWN || unitFlag == TileMeta.EMPTY;
+        return unitFlag == TileMeta.EMPTY;
 
       default:
         return unitFlag == TileMeta.EMPTY;
