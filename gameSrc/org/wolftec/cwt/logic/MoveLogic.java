@@ -57,14 +57,14 @@ public class MoveLogic implements Injectable {
 
   private static final String NO_UNIT_AT_POSITION_ERROR = "NoUnitAtPosition";
 
-  public static final int MOVE_CODES_UP    = 0;
+  public static final int MOVE_CODES_UP = 0;
   public static final int MOVE_CODES_RIGHT = 1;
-  public static final int MOVE_CODES_DOWN  = 2;
-  public static final int MOVE_CODES_LEFT  = 3;
+  public static final int MOVE_CODES_DOWN = 2;
+  public static final int MOVE_CODES_LEFT = 3;
 
   private ModelManager model;
   private SheetManager sheets;
-  private FogLogic     fog;
+  private FogLogic fog;
 
   /**
    * Little helper array object for `model.move_fillMoveMap`. This will be used
@@ -384,13 +384,10 @@ public class MoveLogic implements Injectable {
   public void fillMoveMap(PositionData source, MoveableMatrix selection) {
     NullUtil.mustBePresent(source.unit, NO_UNIT_AT_POSITION_ERROR);
 
-    // TODO: source and x,y,unit is kinda double definition of the same things
     int cost;
-
     int x = source.x;
     int y = source.y;
     Unit unit = source.unit;
-
     Array<Integer> checker;
     Array<Integer> toBeChecked;
     boolean releaseHelper = false;

@@ -2,7 +2,7 @@ package org.wolftec.cwt.core.input.backends;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Global;
-import org.stjs.javascript.annotation.SyntheticType;
+import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.dom.DOMEvent;
 import org.wolftec.cwt.core.input.Deactivatable;
 import org.wolftec.cwt.core.input.InputManager;
@@ -36,17 +36,15 @@ public class TouchInput implements Injectable, Deactivatable {
 
   public static final String TOUCH_DRAG_LEFT = "TOUCH_DRAG_LEFT";
 
-  // @STJSBridge TODO readd when stjs 3.2.0 is fixed
-  @SyntheticType
+  @STJSBridge
   static class TouchEvent {
     native void preventDefault();
 
     Array<TouchPosition> touches;
-    long                 timeStamp;
+    long timeStamp;
   }
 
-  // @STJSBridge TODO readd when stjs 3.2.0 is fixed
-  @SyntheticType
+  @STJSBridge
   static class TouchPosition {
     int clientX;
     int clientY;

@@ -4,6 +4,9 @@ import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.NullUtil;
+import org.wolftec.cwt.model.gameround.Ownable;
+import org.wolftec.cwt.model.gameround.Player;
+import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.states.UserInteractionData;
 
@@ -129,52 +132,38 @@ public interface Action extends Injectable {
 
   }
 
+  default TileMeta extractPositionMeta(Ownable ownable, Player actor) {
+    if (NullUtil.isPresent(ownable)) {
+      Player owner = ownable.getOwner();
+
+      if (owner == null) {
+        return TileMeta.NEUTRAL;
+
+      } else if (owner == actor) {
+        if (ownable instanceof Unit && !((Unit) ownable).canAct) {
+          return TileMeta.OWN_USED;
+        } else {
+          return TileMeta.OWN;
+        }
+      } else if (owner.team == actor.team) {
+        return TileMeta.ALLIED;
+
+      } else {
+        return TileMeta.ENEMY;
+      }
+    } else {
+      return TileMeta.EMPTY;
+    }
+  }
+
   default boolean isUsable(UserInteractionData uiData) {
-    // TODO ALLY
-    // TODO TARGET - SOURCE SAME THING CHECK
-    TileMeta sourceUnit = NullUtil.isPresent(uiData.source.unit) ? TileMeta.OWN : TileMeta.EMPTY;
-    TileMeta sourceProperty;
-    if (NullUtil.isPresent(uiData.source.property)) {
-      if (uiData.source.property.owner == null) {
-        sourceProperty = TileMeta.NEUTRAL;
-      } else if (uiData.source.property.owner == uiData.actor) {
-        sourceProperty = TileMeta.OWN;
-      } else if (uiData.source.property.owner.team == uiData.actor.team) {
-        sourceProperty = TileMeta.ALLIED;
-      } else {
-        sourceProperty = TileMeta.ENEMY;
-      }
-    } else {
-      sourceProperty = TileMeta.EMPTY;
-    }
-
-    TileMeta targetUnit = NullUtil.isPresent(uiData.target.unit) ? ((uiData.target.unit.owner == uiData.actor) ? TileMeta.OWN : TileMeta.ENEMY)
-        : TileMeta.EMPTY;
-
-    TileMeta targetProperty;
-    if (NullUtil.isPresent(uiData.target.property)) {
-      if (uiData.target.property.owner == null) {
-        targetProperty = TileMeta.NEUTRAL;
-      } else if (uiData.target.property.owner == uiData.actor) {
-        targetProperty = TileMeta.OWN;
-      } else if (uiData.target.property.owner.team == uiData.actor.team) {
-        targetProperty = TileMeta.ALLIED;
-      } else {
-        targetProperty = TileMeta.ENEMY;
-      }
-    } else {
-      targetProperty = TileMeta.EMPTY;
-    }
+    TileMeta sourceUnit = extractPositionMeta(uiData.source.unit, uiData.actor);
+    TileMeta targetUnit = extractPositionMeta(uiData.target.unit, uiData.actor);
+    TileMeta sourceProperty = extractPositionMeta(uiData.source.property, uiData.actor);
+    TileMeta targetProperty = extractPositionMeta(uiData.target.property, uiData.actor);
 
     if (uiData.source.tile == uiData.target.tile) {
       targetUnit = TileMeta.EMPTY;
-    }
-
-    if (sourceUnit == TileMeta.OWN && !uiData.source.unit.canAct) {
-      sourceUnit = TileMeta.OWN_USED;
-    }
-    if (targetUnit == TileMeta.OWN && !uiData.target.unit.canAct) {
-      targetUnit = TileMeta.OWN_USED;
     }
 
     return checkSource(sourceUnit, sourceProperty) && checkTarget(targetUnit, targetProperty) && condition(uiData);
@@ -183,15 +172,27 @@ public interface Action extends Injectable {
   /**
    * Invokes the action with a given set of arguments.
    * 
+   * @param delta
+   * @param data
    * @param stateTransition
-   *          TODO
    */
   void evaluateByData(int delta, ActionData data, StateFlowData stateTransition);
 
+  /**
+   * 
+   * @param data
+   * @return
+   */
   default boolean isDataEvaluationCompleted(ActionData data) {
     return true;
   }
 
+  /**
+   * 
+   * @param delta
+   * @param gfx
+   * @param data
+   */
   default void renderByData(int delta, GraphicManager gfx, ActionData data) {
 
   }

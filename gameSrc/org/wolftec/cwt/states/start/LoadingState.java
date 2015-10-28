@@ -6,14 +6,12 @@ import org.wolftec.cwt.core.loading.LoadingWatcher;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.state.AbstractState;
 import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.core.test.TestManager;
 import org.wolftec.cwt.renderer.GraphicManager;
 
 public class LoadingState extends AbstractState implements LoadingWatcher {
 
-  private Log                log;
+  private Log log;
   private GameLoadingManager loading;
-  private TestManager        tests;
 
   @Override
   public void update(StateFlowData transition, int delta, InputProvider input) {
@@ -31,13 +29,11 @@ public class LoadingState extends AbstractState implements LoadingWatcher {
 
   @Override
   public void onStartLoading(String what) {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public void onFinishedLoading(String what) {
-    // TODO Auto-generated method stub
 
   }
 }

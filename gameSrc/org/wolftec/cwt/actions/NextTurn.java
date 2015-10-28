@@ -30,9 +30,7 @@ public class NextTurn implements Action, ConfigurationProvider {
   private WeatherLogic weather;
   private SupplyLogic supply;
 
-  private RefillSupply refillSupply;
   private ChangeWeather changeWeather;
-  private HealUnit healUnit;
 
   private ConfigurableValue cfgPropertyHealingEnabled;
   private ConfigurableValue cfgPropertyFundsEnabled;

@@ -1,6 +1,6 @@
 package org.wolftec.cwt.core.input.backends;
 
-import org.stjs.javascript.annotation.SyntheticType;
+import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Function1;
 import org.wolftec.cwt.core.input.Deactivatable;
@@ -12,8 +12,7 @@ import org.wolftec.cwt.renderer.GraphicManager;
 
 public class MouseInput implements Injectable, Deactivatable {
 
-  // @STJSBridge TODO readd when stjs 3.2.0 is fixed
-  @SyntheticType
+  @STJSBridge
   static class MouseEvent {
     int offsetX;
     int offsetY;
@@ -21,9 +20,9 @@ public class MouseInput implements Injectable, Deactivatable {
     int layerY;
   }
 
-  private Log            log;
+  private Log log;
   private GraphicManager gfx;
-  private InputManager   input;
+  private InputManager input;
 
   public boolean handleDownEvent(DOMEvent ev) {
     input.pressButton(getKeyFromCode(ev.which));

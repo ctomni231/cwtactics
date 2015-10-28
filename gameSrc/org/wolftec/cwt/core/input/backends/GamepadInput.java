@@ -1,6 +1,8 @@
-package org.wolftec.cwt.core.input.backends.gamepad;
+package org.wolftec.cwt.core.input.backends;
 
 import org.stjs.javascript.Array;
+import org.stjs.javascript.annotation.GlobalScope;
+import org.stjs.javascript.annotation.STJSBridge;
 import org.wolftec.cwt.core.gameloop.FrameTickListener;
 import org.wolftec.cwt.core.input.Deactivatable;
 import org.wolftec.cwt.core.input.InputManager;
@@ -10,13 +12,38 @@ import org.wolftec.cwt.core.util.NullUtil;
 
 public class GamepadInput implements Injectable, Deactivatable, FrameTickListener {
 
-  private Log          log;
+  // --------------- game pad API ---------------
+
+  @STJSBridge
+  @GlobalScope
+  static class Global {
+    static Navigator navigator;
+  }
+
+  @STJSBridge
+  static class Gamedpad {
+    int timestamp;
+
+    // TODO new specification shows different API
+    // https://developer.mozilla.org/en-US/docs/Web/Guide/API/Gamepad
+    Array<Integer> buttons;
+
+    Array<Integer> axes;
+  }
+
+  @STJSBridge
+  static class Navigator {
+    native Array<Gamedpad> getGamepads();
+
+  }
+
+  // --------------- game pad API ---------------
+
+  private Log log;
   private InputManager input;
 
-  private boolean        enabled;
+  private boolean enabled;
   private Array<Integer> prevTimestamps;
-
-  /* TODO move API classes back into this when stjs 3.2.0 bug is fixed */
 
   private void checkButton(Gamedpad gamepad, int id) {
     String button = "GAMEPAD_" + id;

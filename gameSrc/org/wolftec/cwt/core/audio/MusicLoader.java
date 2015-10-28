@@ -15,13 +15,11 @@ public class MusicLoader implements DataLoader {
 
   @Override
   public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Option<Object>> doneCb) {
-    // TODO Auto-generated method stub
 
   }
 
   @Override
   public void handleFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
-    // TODO Auto-generated method stub
 
   }
 

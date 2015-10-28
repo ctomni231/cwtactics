@@ -116,11 +116,16 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
 
     fog.removeUnitVision(x, y, tile.unit.owner);
 
-    // TODO check loads
-
     // remove references
     Player owner = tile.unit.owner;
     owner.numberOfUnits--;
+
+    int unitId = model.getUnitId(tile.unit);
+    model.forEachUnit((id, unit) -> {
+      if (unit.loadedIn == unitId) {
+        unit.owner = null;
+      }
+    });
 
     tile.unit.owner = null;
     tile.unit = null;
