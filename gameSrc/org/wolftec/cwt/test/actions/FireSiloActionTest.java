@@ -55,7 +55,7 @@ public class FireSiloActionTest extends AbstractCwtTest {
     for (int i = 0; i < 10; i++) {
       for (int j = 0; j < 10; j++) {
         test.expectThat.actionSelectionAt(i, j);
-        test.assertThat.actionTarget(action).isTrue();
+        test.assertThat.validFreeSelectionTarget(action).isTrue();
       }
     }
   }

@@ -139,10 +139,10 @@ public class TransportLogic implements Injectable {
       if (unit.loadedIn == tid) {
         MoveType moveType = sheets.movetypes.get(unit.type.movetype);
 
-        if (move.canTypeMoveTo(moveType, x - 1, y)) return true;
-        if (move.canTypeMoveTo(moveType, x + 1, y)) return true;
-        if (move.canTypeMoveTo(moveType, x, y - 1)) return true;
-        if (move.canTypeMoveTo(moveType, x, y + 1)) return true;
+        if (model.isValidPosition(x - 1, y) && move.canTypeMoveTo(moveType, x - 1, y)) return true;
+        if (model.isValidPosition(x + 1, y) && move.canTypeMoveTo(moveType, x + 1, y)) return true;
+        if (model.isValidPosition(x, y - 1) && move.canTypeMoveTo(moveType, x, y - 1)) return true;
+        if (model.isValidPosition(x, y + 1) && move.canTypeMoveTo(moveType, x, y + 1)) return true;
       }
     }
 

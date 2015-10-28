@@ -190,17 +190,33 @@ public abstract class ImageUtil {
    * @param replaceIndex
    * @return Canvas with replaced colors
    */
-  public static Canvas replaceColors(Image image, CanvasImageData colorData, int numColors, int oriIndex, int replaceIndex) {
+  public static Canvas replaceImageColors(Image image, CanvasImageData colorData, int numColors, int oriIndex, int replaceIndex) {
     Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
 
-    // create target canvas
     int imgW = image.width;
     int imgH = image.height;
     canvas.width = imgW;
     canvas.height = imgH;
     canvasContext.drawImage(image, 0, 0);
-    CanvasImageData imgPixels = canvasContext.getImageData(0, 0, imgW, imgH);
+
+    return replaceColors(canvas, colorData, numColors, oriIndex, replaceIndex);
+  }
+
+  /**
+   * Changes colors in an assets object by given replacement color maps and
+   * returns a new assets object (html5 canvas).
+   * 
+   * @param image
+   * @param colorData
+   * @param numColors
+   * @param oriIndex
+   * @param replaceIndex
+   * @return Canvas with replaced colors
+   */
+  public static Canvas replaceColors(Canvas canvas, CanvasImageData colorData, int numColors, int oriIndex, int replaceIndex) {
+    CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
+    CanvasImageData imgPixels = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
 
     int oriStart = (oriIndex * 4) * numColors;
     int replStart = (replaceIndex * 4) * numColors;

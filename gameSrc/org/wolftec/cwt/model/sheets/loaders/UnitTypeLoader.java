@@ -42,6 +42,8 @@ public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
 
     Map<String, Object> attackData = Option.ofNullable((Map<String, Object>) data.$get("attack")).orElseGet(() -> {
       Map<String, Object> map = JSCollections.$map();
+      map.$put("minrange", -1);
+      map.$put("maxrange", -1);
       return map;
     });
 

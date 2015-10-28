@@ -52,7 +52,7 @@ public class ExplodeLogic implements Injectable {
    * @param damage
    */
   public void explode(ModelManager model, int x, int y, int range, int damage) {
-    lifecycle.destroyUnit(x, y, false);
+    lifecycle.destroyUnit(x, y);
     model.doInRange(x, y, range, (cx, cy, ctile, crange) -> {
       Unit unit = ctile.unit;
       if (unit != null) {

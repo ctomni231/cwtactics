@@ -10,7 +10,7 @@ import org.wolftec.cwt.states.UserInteractionData;
 
 public class AttackUnit implements Action {
 
-  private BattleLogic  battle;
+  private BattleLogic battle;
   private ModelManager model;
 
   @Override
@@ -30,7 +30,7 @@ public class AttackUnit implements Action {
 
   @Override
   public void prepareTargets(UserInteractionData data) {
-    battle.calculateTargets(data.source.unit, data.target.x, data.target.y, data.targets, true);
+    battle.calculateTargets(data.source.unit, data.target.x, data.target.y, data.targets, false);
   }
 
   @Override

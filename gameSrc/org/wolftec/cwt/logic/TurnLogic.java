@@ -1,7 +1,6 @@
 package org.wolftec.cwt.logic;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.config.ConfigurableValue;
 import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.log.Log;
@@ -14,14 +13,7 @@ public class TurnLogic implements Injectable, ConfigurationProvider {
   private Log log;
 
   private ModelManager model;
-  private FogLogic     fog;
-
-  private ConfigurableValue round_dayLimit;
-
-  @Override
-  public void onConstruction() {
-    round_dayLimit = new ConfigurableValue("game.limits.days", 0, 999, 0);
-  }
+  private FogLogic fog;
 
   /**
    * 
@@ -86,13 +78,6 @@ public class TurnLogic implements Injectable, ConfigurationProvider {
         // Next day
         model.day++;
         model.weatherLeftDays--;
-
-        // TODO: into action
-        int dayLimit = round_dayLimit.value;
-        if (dayLimit > 0 && model.day >= dayLimit) {
-          // cwt.Update.endGameRound();
-          // TODO
-        }
       }
 
       if (model.getPlayer(pid).team != Constants.INACTIVE) {

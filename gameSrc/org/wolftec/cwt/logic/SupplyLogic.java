@@ -131,7 +131,7 @@ public class SupplyLogic implements Injectable {
     Property prop = tile.property;
     Unit unit = tile.unit;
     if (prop != null && unit != null) {
-      if (prop.type.repairs.indexOf(unit.type.movetype) != -1) {
+      if (prop.type.repairs.indexOf(unit.type.movetype) != -1 || prop.type.repairs.indexOf(unit.type.ID) != -1) {
         return true;
       }
     }

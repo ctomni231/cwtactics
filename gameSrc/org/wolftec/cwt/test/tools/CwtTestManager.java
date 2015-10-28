@@ -1,5 +1,6 @@
 package org.wolftec.cwt.test.tools;
 
+import org.wolftec.cwt.core.config.ConfigurableValueManager;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.logic.LifecycleLogic;
 import org.wolftec.cwt.logic.MoveLogic;
@@ -16,6 +17,7 @@ public class CwtTestManager implements Injectable {
   UserInteractionData uiData;
   LifecycleLogic life;
   MoveLogic move;
+  ConfigurableValueManager cfg;
 
   public TestExpectation expectThat;
   public TestAssertion assertThat;

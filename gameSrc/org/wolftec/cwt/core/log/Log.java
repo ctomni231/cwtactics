@@ -2,6 +2,7 @@ package org.wolftec.cwt.core.log;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.annotation.Native;
 import org.wolftec.cwt.core.annotations.OptionalParameter;
@@ -38,18 +39,25 @@ public class Log implements Constructable {
 
   private void initByName(String name) {
     loggerName = Log.convertNameToFixedLength(name);
-    disabled = NullUtil.isPresent(JSStringAdapter.match(UrlParameterUtil.getParameter("disabledLoggers"), JSGlobal.RegExp(name + "($|[,])")));
+    disabled = NullUtil.isPresent(JSStringAdapter.match(NullUtil.getOrElse(UrlParameterUtil.getParameter("disabledLoggers"), ""),
+                                                        JSGlobal.RegExp(name + "($|[,])")));
+  }
+
+  public static int startTime;
+
+  public String now() {
+    return JSObjectAdapter.$js("(new Date()).toJSON().substring(11,19)");
   }
 
   public void info(String msg) {
     if (!disabled) {
-      Global.console.log("%c[" + loggerName + "][ INFO] %c" + msg, LOGGER_CSS_INFO_HEAD, LOGGER_CSS_TEXT);
+      Global.console.log("%c[" + now() + "][" + loggerName + "][ INFO] %c" + msg, LOGGER_CSS_INFO_HEAD, LOGGER_CSS_TEXT);
     }
   }
 
   public void warn(String msg) {
     if (!disabled) {
-      Global.console.log("%c[" + loggerName + "][ WARN] %c" + msg, LOGGER_CSS_WARN_HEAD, LOGGER_CSS_TEXT);
+      Global.console.log("%c[" + now() + "][" + loggerName + "][ WARN] %c" + msg, LOGGER_CSS_WARN_HEAD, LOGGER_CSS_TEXT);
     }
   }
 
@@ -60,9 +68,10 @@ public class Log implements Constructable {
 
   public void error(String msg, @OptionalParameter Exception e) {
     if (!disabled) {
-      Global.console.log("%c[" + loggerName + "][ERROR] %c" + msg, LOGGER_CSS_ERROR_HEAD, LOGGER_CSS_TEXT);
+      Global.console.log("%c[" + now() + "][" + loggerName + "][ERROR] %c" + msg, LOGGER_CSS_ERROR_HEAD, LOGGER_CSS_TEXT);
       if (e != null && e != JSGlobal.undefined) {
-        Global.console.error(e);
+        // Global.console.error(e);
+        Global.console.error(JSObjectAdapter.$get(e, "stack"));
       }
     }
   }

@@ -53,8 +53,20 @@ public class TestAssertion {
     return menu().notContains(action.key());
   }
 
-  public Assert actionTarget(Action action) {
+  public Assert validFreeSelectionTarget(Action action) {
     return value(action.isTargetValid(parent.uiData));
+  }
+
+  public Assert<Integer> targetMapValue(int x, int y) {
+    return value(parent.uiData.targets.getValue(x, y));
+  }
+
+  public void inTargetMap(int x, int y) {
+    targetMapValue(x, y).greaterThen(0);
+  }
+
+  public void notInTargetMap(int x, int y) {
+    targetMapValue(x, y).lowerEquals(0);
   }
 
   public Assert<Array<String>> menu() {

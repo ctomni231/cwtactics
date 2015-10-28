@@ -9,6 +9,7 @@ import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.ioc.ObservesIocState;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 
 public class ConfigurableValueManager implements Injectable, ObservesIocState {
@@ -16,7 +17,7 @@ public class ConfigurableValueManager implements Injectable, ObservesIocState {
   private Log log;
 
   private Array<ConfigurationProvider> configHolders;
-  private Array<ConfigurableValue>     configurableValues;
+  private Array<ConfigurableValue> configurableValues;
 
   @Override
   public void onIocReady() {
@@ -58,5 +59,15 @@ public class ConfigurableValueManager implements Injectable, ObservesIocState {
 
   public void forEachConfig(Callback1<ConfigurableValue> iterator) {
     configurableValues.forEach(iterator);
+  }
+
+  public ConfigurableValue getConfig(String cfgKey) {
+    for (int i = 0; i < configurableValues.$length(); i++) {
+      ConfigurableValue cfg = configurableValues.$get(i);
+      if (cfg.key == cfgKey) {
+        return cfg;
+      }
+    }
+    return JsUtil.throwError("unknown config key '" + cfgKey + "'");
   }
 }

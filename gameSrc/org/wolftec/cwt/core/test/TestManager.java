@@ -58,7 +58,7 @@ public class TestManager implements Injectable {
 
       boolean skipErrorLog = NullUtil.getOrElse(UrlParameterUtil.getParameter("noTestErrorLog"), "false").equals("true");
 
-      log.info("Test results, " + results.passed + " has passed and " + results.failed + " has failed");
+      log.info("Test results, " + results.passed + " have passed and " + results.failed + " have failed");
       ListUtil.forEachArrayValue(results.tests, (testI, testData) -> {
         ListUtil.forEachArrayValue(testData.methods, (testMethodI, testMethodData) -> {
           if (testMethodData.succeeded) {

@@ -70,6 +70,6 @@ public class JoinLogic implements Injectable {
     }
 
     // TODO experience points
-    model.searchUnit(source, (ux, uy, unit) -> lifecycle.destroyUnit(ux, uy, true));
+    model.searchUnit(source, (ux, uy, unit) -> lifecycle.destroyUnit(ux, uy));
   }
 }

@@ -81,6 +81,19 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
     fog.addUnitVision(x, y, player);
   }
 
+  public Unit createLoadedUnit(Unit transporter, Player player, String type) {
+    Unit unit = getInactiveUnit();
+
+    // set references
+    unit.owner = player;
+    player.numberOfUnits++;
+
+    unit.initByType(sheets.units.get(type));
+    unit.loadedIn = model.getUnitId(transporter);
+
+    return unit;
+  }
+
   public void createProperty(int x, int y, Player player, String type) {
     Tile tile = model.getTile(x, y);
     Property prop = getInactiveProperty();
@@ -98,7 +111,7 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
   // @param {number} y
   // @param {boolean} silent
   //
-  public void destroyUnit(int x, int y, boolean silent) {
+  public void destroyUnit(int x, int y) {
     Tile tile = model.getTile(x, y);
 
     fog.removeUnitVision(x, y, tile.unit.owner);

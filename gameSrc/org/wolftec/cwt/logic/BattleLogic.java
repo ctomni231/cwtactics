@@ -3,6 +3,7 @@ package org.wolftec.cwt.logic;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.collections.MoveableMatrix;
 import org.wolftec.cwt.core.config.ConfigurableValue;
+import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
@@ -14,7 +15,7 @@ import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.types.AttackType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 
-public class BattleLogic implements Injectable {
+public class BattleLogic implements Injectable, ConfigurationProvider {
 
   private static final int MAX_LUCK_EXCLUSIVE = 11;
 
@@ -47,9 +48,10 @@ public class BattleLogic implements Injectable {
   private static final int DAMAGE_CALC_MODE_OLD = 0;
   private static final int DAMAGE_CALC_MODE_NEW = 1;
 
-  private ModelManager   model;
+  private ModelManager model;
   private CommanderLogic co;
-  private MoveLogic      move;
+  private MoveLogic move;
+  private LifecycleLogic life;
 
   private ConfigurableValue cfgDaysOfPeace;
   private ConfigurableValue cfgDamageCalculation;
@@ -154,7 +156,7 @@ public class BattleLogic implements Injectable {
    *         **true** when at least one target is in range, else **false**.
    */
   public boolean hasTargets(Unit unit, int x, int y, boolean moved) {
-    if (moved && isIndirect(unit)) {
+    if (moved && (isIndirect(unit) || isBallistic(unit))) {
       return false;
     }
     return calculateTargets(unit, x, y, null, false);
@@ -183,8 +185,7 @@ public class BattleLogic implements Injectable {
     AttackType attackSheet = unit.type.attack;
     boolean targetInRange = false;
 
-    // no battle unit ?
-    if (NullUtil.isPresent(attackSheet)) {
+    if (attackSheet.minrange == Constants.INACTIVE || attackSheet.maxrange == Constants.INACTIVE) {
       return false;
     }
 
@@ -316,26 +317,16 @@ public class BattleLogic implements Injectable {
     String tType = defender.type.ID;
     int v;
 
-    boolean withMainWp = false;
-
-    if (NullUtil.isPresent(attack.main_wp)) {
-      withMainWp = true;
-    }
-
-    // check main weapon
-    if (withMainWp && NullUtil.isPresent(attack.main_wp) && attacker.ammo > 0) {
+    if (attacker.ammo > 0) {
       v = attack.main_wp.$get(tType);
       if (NullUtil.isPresent(v)) {
         return v;
       }
     }
 
-    // check secondary weapon
-    if (NullUtil.isPresent(attack.sec_wp)) {
-      v = attack.sec_wp.$get(tType);
-      if (NullUtil.isPresent(v)) {
-        return v;
-      }
+    v = attack.sec_wp.$get(tType);
+    if (NullUtil.isPresent(v)) {
+      return v;
     }
 
     return Constants.INACTIVE;
@@ -354,25 +345,25 @@ public class BattleLogic implements Injectable {
       return Constants.INACTIVE;
     }
 
-    int AHP = Unit.healthToPoints(attacker.hp);
-    int LUCK = NumberUtil.asInt((luck / 100) * 10);
-    int ACO = 100;
+    float AHP = Unit.healthToPoints(attacker.hp);
+    float LUCK = NumberUtil.asInt((luck / 100) * 10);
+    float ACO = 100;
     if (isCounter) ACO += 0;
 
-    int def = model.grabTileByUnit(defender).type.defense;
-    int DCO = 100;
-    int DHP = Unit.healthToPoints(defender.hp);
-    int DTR = NumberUtil.asInt(def * 100 / 100);
+    float def = model.grabTileByUnit(defender).type.defense;
+    float DCO = 100;
+    float DHP = Unit.healthToPoints(defender.hp);
+    float DTR = NumberUtil.asInt(def * 100 / 100);
 
     int damage;
     switch (cfgDamageCalculation.value) {
 
       case DAMAGE_CALC_MODE_OLD:
-        damage = BASE * (ACO / 100 - (ACO / 100 * (DCO - 100) / 100)) * (AHP / 10);
+        damage = (int) (BASE * (ACO / 100 - (ACO / 100 * (DCO - 100) / 100)) * (AHP / 10));
         break;
 
       case DAMAGE_CALC_MODE_NEW:
-        damage = BASE * (ACO / 100 * DCO / 100) * (AHP / 10);
+        damage = (int) (BASE * (ACO / 100 * DCO / 100) * (AHP / 10));
         break;
 
       default:
@@ -413,7 +404,7 @@ public class BattleLogic implements Injectable {
     if (damage != Constants.INACTIVE) {
       defender.takeDamage(damage, 0);
       if (defender.hp <= 0) {
-        // TODO destroy unit
+        model.searchUnit(defender, (x, y, tbdu) -> life.destroyUnit(x, y));
       }
 
       powerAtt -= Unit.healthToPoints(defender.hp);
@@ -437,7 +428,7 @@ public class BattleLogic implements Injectable {
       if (damage != -1) {
         attacker.takeDamage(damage, 0);
         if (attacker.hp <= 0) {
-          // TODO destroy unit
+          model.searchUnit(attacker, (x, y, tbdu) -> life.destroyUnit(x, y));
         }
 
         powerCounterAtt -= Unit.healthToPoints(attacker.hp);

@@ -63,9 +63,9 @@ public abstract class AbstractCwtTest implements Test {
     test.expectThat.weatherTypeExists("weatherA");
     test.expectThat.weatherTypeExists("weatherB");
     test.expectThat.weatherTypeExists("weatherC");
-    test.expectThat.movingUnit("unitA", "moveA", 1);
-    test.expectThat.movingUnit("unitB", "moveB", 1);
-    test.expectThat.movingUnit("unitC", "moveC", 1);
+    test.expectThat.movingUnit("unitA", "moveA", 10);
+    test.expectThat.movingUnit("unitB", "moveB", 10);
+    test.expectThat.movingUnit("unitC", "moveC", 10);
   }
 
   protected void prepareModel() {

@@ -1,48 +1,77 @@
 package org.wolftec.cwt.test.actions;
 
-import org.wolftec.cwt.actions.LoadUnit;
-import org.wolftec.cwt.core.action.TileMeta;
-import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.actions.UnloadUnit;
+import org.wolftec.cwt.logic.TransportLogic;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class UnloadUnitActionTest extends AbstractCwtTest {
 
-  private LoadUnit action;
+  private UnloadUnit action;
+  private TransportLogic transport;
 
-  public void test_sourceMustBeOwnUnit() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.OWN), ActionsTest.allPos())).is(true);
+  @Override
+  protected void prepareModel() {
+    test.expectThat.unitType("unitA").maxloads = 1;
+    test.expectThat.moveCosts("moveB", "tileA", 1);
+    test.expectThat.moveCosts("moveB", "tileB", -1);
+    test.expectThat.unitExistsAt(1, 1, "unitA", 0);
+    test.expectThat.loadedUnitExistsIn(1, 1, "unitB");
+    test.expectThat.everythingVisible();
   }
 
-  public void test_targetMustBeEmpty() {
-    test.assertThat.value(ActionsTest.sourceCheck(action, ActionsTest.fromMeta(TileMeta.EMPTY), ActionsTest.allPos())).is(true);
+  public void test_usableOnlyWhenTransporterHasLoads() {
+    test.expectThat.unitExistsAt(3, 3, "unitA", 0);
+
+    // has loads
+    test.expectThat.everythingCanAct();
+    test.expectThat.sourceSelectionAt(1, 1);
+    test.assertThat.usableAction(action);
+
+    // hasn't loads
+    test.expectThat.everythingCanAct();
+    test.expectThat.sourceSelectionAt(3, 3);
+    test.assertThat.unusableAction(action);
   }
 
-  public void test_unloadTargetSelectionMapContainsEmptyFields() {
-    JsUtil.throwError("test missing");
-  }
+  public void test_unloadTargetsOnlyContainsEmptyTilesWhichAreMovableByTheLoad() {
+    test.expectThat.tileTypeAt(1, 0, "tileA");
+    test.expectThat.tileTypeAt(0, 1, "tileA");
+    test.expectThat.tileTypeAt(2, 1, "tileA");
+    test.expectThat.tileTypeAt(1, 2, "tileB");
+    test.expectThat.unitExistsAt(0, 1, "unitC", 0);
+    test.expectThat.unitExistsAt(2, 1, "unitC", 1);
+    test.expectThat.everythingCanAct();
+    test.expectThat.sourceSelectionAt(1, 1);
+    test.expectThat.actionSubMenuOpened(action);
+    test.expectThat.menuEntrySelected(0);
+    test.expectThat.actionTargetMapOpened(action);
 
-  public void test_unloadTargetSelectionMapContainsHiddenFields() {
-    JsUtil.throwError("test missing");
-  }
-
-  public void test_unloadTargetSelectionMapDoesNotContainsOccupiedFields() {
-    JsUtil.throwError("test missing");
-  }
-
-  public void test_usableWhenTransporterHasLoads() {
-    JsUtil.throwError("test missing");
-  }
-
-  public void test_unusableWhenTransporterIsEmpty() {
-    JsUtil.throwError("test missing");
+    test.assertThat.inTargetMap(1, 0);
+    test.assertThat.notInTargetMap(1, 2);
+    test.assertThat.notInTargetMap(2, 1);
+    test.assertThat.notInTargetMap(0, 1);
   }
 
   public void test_removesLoadFromTransporter() {
-    JsUtil.throwError("test missing");
+    test.expectThat.everythingCanAct();
+    test.expectThat.sourceSelectionAt(1, 1);
+    test.expectThat.actionSubMenuOpened(action);
+    test.expectThat.menuEntrySelected(0);
+    test.expectThat.actionSelectionAt(0, 1);
+    test.expectThat.actionTriggered(action);
+
+    test.assertThat.value(transport.hasLoads(test.expectThat.unitAt(1, 1))).isFalse();
   }
 
   public void test_movesLoadToActionTargetTile() {
-    JsUtil.throwError("test missing");
+    test.expectThat.everythingCanAct();
+    test.expectThat.sourceSelectionAt(1, 1);
+    test.expectThat.actionSubMenuOpened(action);
+    test.expectThat.menuEntrySelected(0);
+    test.expectThat.actionSelectionAt(0, 1);
+    test.expectThat.actionTriggered(action);
+
+    test.assertThat.unitAt(0, 1).exists();
   }
 
 }

@@ -5,6 +5,7 @@ import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.annotations.OptionalParameter;
+import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.logic.MoveLogic;
@@ -35,6 +36,10 @@ public class TestExpectation {
 
   public CommanderType coType(String id) {
     return sheetType(id, parent.sheets.commanders);
+  }
+
+  public MoveType moveType(String id) {
+    return sheetType(id, parent.sheets.movetypes);
   }
 
   public PropertyType propertyType(String id) {
@@ -96,6 +101,10 @@ public class TestExpectation {
     parent.model.forEachTile((x, y, tile) -> tile.type = tileSheet);
   }
 
+  public void tileTypeAt(int x, int y, String type) {
+    parent.model.getTile(x, y).type = parent.sheets.tiles.get(type);
+  }
+
   public void everythingVisible() {
     parent.model.forEachTile((x, y, tile) -> tile.visionTurnOwner = 1);
   }
@@ -149,6 +158,24 @@ public class TestExpectation {
     }
   }
 
+  @Native
+  public void loadedUnitExistsIn(int tx, int ty, String type) {
+    // ... calls overloaded method ...
+  }
+
+  public void loadedUnitExistsIn(int tx, int ty, String type, @OptionalParameter Callback1<Unit> unitEditor) {
+    // TODO check existence of object
+    // just do that to make sure that the type exists
+    parent.sheets.units.get(type);
+
+    Unit apc = parent.model.getTile(tx, ty).unit;
+    Unit load = parent.life.createLoadedUnit(apc, apc.owner, type);
+
+    if (NullUtil.isPresent(unitEditor)) {
+      unitEditor.$invoke(load);
+    }
+  }
+
   public Unit unitAt(int x, int y) {
     return NullUtil.mustBePresent(parent.model.getTile(x, y).unit, "no unit there");
   }
@@ -164,6 +191,7 @@ public class TestExpectation {
   }
 
   public void sourceSelectionAt(int x, int y) {
+    parent.uiData.movePath.clear();
     parent.uiData.source.set(parent.model, x, y);
     parent.uiData.target.set(parent.model, x, y);
   }
@@ -245,7 +273,21 @@ public class TestExpectation {
     parent.modify.buildActionMenu(action);
   }
 
+  @Native
   public void actionTriggered(Action action) {
-    parent.modify.invokeAction(action);
+    // native
+  }
+
+  public void actionTriggered(Action action, Callback1<StateFlowData> flowData) {
+    parent.modify.invokeAction(action, flowData);
+  }
+
+  public void actionTargetMapOpened(Action action) {
+    parent.uiData.targets.reset();
+    action.prepareTargets(parent.uiData);
+  }
+
+  public void configValue(String cfg, int value) {
+    parent.cfg.getConfig(cfg).setValue(value);
   }
 }

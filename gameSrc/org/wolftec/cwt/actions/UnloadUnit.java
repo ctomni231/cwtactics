@@ -6,6 +6,7 @@ import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.core.action.ActionTargetMode;
 import org.wolftec.cwt.core.action.ActionType;
+import org.wolftec.cwt.core.collections.CircularBuffer;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.logic.TransportLogic;
@@ -17,11 +18,18 @@ import org.wolftec.cwt.states.UserInteractionData;
 
 public class UnloadUnit implements Action {
 
-  private ModelManager   model;
+  private ModelManager model;
   private TransportLogic transport;
-  private SheetManager   sheets;
-  private MoveLogic      move;
-  private ActionManager  actions;
+  private SheetManager sheets;
+  private MoveLogic move;
+  private ActionManager actions;
+
+  private CircularBuffer<Integer> unloadMovepath;
+
+  @Override
+  public void onConstruction() {
+    unloadMovepath = new CircularBuffer<>(1);
+  }
 
   @Override
   public String key() {
@@ -41,6 +49,11 @@ public class UnloadUnit implements Action {
   @Override
   public boolean condition(UserInteractionData data) {
     return transport.isTransportUnit(data.source.unit) && transport.canUnloadSomethingAt(data.source.unit, data.target.x, data.target.y);
+  }
+
+  @Override
+  public boolean hasSubMenu() {
+    return true;
   }
 
   @Override
@@ -65,22 +78,22 @@ public class UnloadUnit implements Action {
     int y = data.target.y;
 
     // check west
-    if (transport.canUnloadSomethingAt(transporter, x - 1, y) && move.canTypeMoveTo(loadMovetype, x - 1, y)) {
+    if (move.canTypeMoveTo(loadMovetype, x - 1, y)) {
       data.targets.setValue(x - 1, y, 1);
     }
 
     // check east
-    if (transport.canUnloadSomethingAt(transporter, x + 1, y) && move.canTypeMoveTo(loadMovetype, x + 1, y)) {
+    if (move.canTypeMoveTo(loadMovetype, x + 1, y)) {
       data.targets.setValue(x + 1, y, 1);
     }
 
     // check south
-    if (transport.canUnloadSomethingAt(transporter, x, y + 1) && move.canTypeMoveTo(loadMovetype, x, y + 1)) {
+    if (move.canTypeMoveTo(loadMovetype, x, y + 1)) {
       data.targets.setValue(x, y + 1, 1);
     }
 
     // check north
-    if (transport.canUnloadSomethingAt(transporter, x, y - 1) && move.canTypeMoveTo(loadMovetype, x, y - 1)) {
+    if (move.canTypeMoveTo(loadMovetype, x, y - 1)) {
       data.targets.setValue(x, y - 1, 1);
     }
   }
@@ -100,13 +113,9 @@ public class UnloadUnit implements Action {
     Unit transporter = model.getUnit(data.p1);
 
     transport.unload(transporter, load);
-
-    // add commands in reverse order
-    int inactive = Constants.INACTIVE;
-    actions.localActionLIFO("wait", data.p1, inactive, inactive, inactive, inactive);
-    actions.localActionLIFO("moveEnd", 0, 1, inactive, inactive, inactive);
-    actions.localActionLIFO("moveAppend", data.p5, inactive, inactive, inactive, inactive);
-    actions.localActionLIFO("moveStart", data.p2, data.p3, data.p4, inactive, inactive);
+    unloadMovepath.clear();
+    unloadMovepath.push(data.p5);
+    move.move(load, data.p3, data.p4, unloadMovepath, true, true, false);
   }
 
 }
