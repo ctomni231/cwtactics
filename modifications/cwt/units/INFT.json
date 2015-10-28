@@ -4,7 +4,7 @@
   "movetype": "MVIN",
   "vision": 2,
   "fuel": 99,
-  "captures": 10,
+  "captures": true,
   "ammo": 0,
   "attack": {
     "sec_wp": {

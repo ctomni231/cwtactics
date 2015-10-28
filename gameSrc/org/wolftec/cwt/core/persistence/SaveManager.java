@@ -14,11 +14,11 @@ public class SaveManager implements GameLoader {
 
   private static final String CONFIG_APP_JSON = "config/app.json";
 
-  private Log                log;
+  private Log log;
   private PersistenceManager pm;
 
   private Array<SavegameHandler> gameHandlers;
-  private Array<SaveAppdataHandler>  appHandlers;
+  private Array<SaveAppdataHandler> appHandlers;
 
   @Override
   public int priority() {
@@ -32,7 +32,7 @@ public class SaveManager implements GameLoader {
    *          (error) called when operation is done
    */
   public void saveGame(String saveName, Callback1<String> doneCb) {
-    // TODO
+    log.error("not implemented yet");
   }
 
   /**
@@ -42,7 +42,7 @@ public class SaveManager implements GameLoader {
    *          (error) called when operation is done
    */
   public void loadGame(String saveName, Callback1<String> doneCb) {
-    // TODO
+    log.error("not implemented yet");
   }
 
   /**

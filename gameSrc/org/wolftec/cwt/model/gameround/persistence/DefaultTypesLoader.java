@@ -5,8 +5,8 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.core.log.Log;
-import org.wolftec.cwt.logic.SpecialWeaponsLogic;
 import org.wolftec.cwt.logic.LaserLogic;
+import org.wolftec.cwt.logic.SpecialWeaponsLogic;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
@@ -15,7 +15,7 @@ import org.wolftec.cwt.model.sheets.types.UnitType;
 public class DefaultTypesLoader implements Injectable, GameLoader {
 
   private SheetManager sheets;
-  private Log          log;
+  private Log log;
 
   @Override
   public int priority() {
@@ -36,7 +36,7 @@ public class DefaultTypesLoader implements Injectable, GameLoader {
     invisibleProperty.ID = "INVP";
     invisibleProperty.defense = 0;
     invisibleProperty.vision = 0;
-    invisibleProperty.capturePoints = 1;
+    invisibleProperty.capturable = false;
     invisibleProperty.visionBlocker = true;
     sheets.properties.registerSheet(invisibleProperty);
 

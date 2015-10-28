@@ -134,10 +134,11 @@ public class TestExpectation {
   }
 
   public void propertyAt(int x, int y, String type, int ownerId, @OptionalParameter Callback1<Property> propertyEditor) {
-    // TODO check existence of object
-    parent.life.createProperty(x, y, parent.model.getPlayer(ownerId), type);
-    if (NullUtil.isPresent(propertyEditor)) {
-      propertyEditor.$invoke(parent.model.getTile(x, y).property);
+    if (!NullUtil.isPresent(parent.model.getTile(x, y).property)) {
+      parent.life.createProperty(x, y, parent.model.getPlayer(ownerId), type);
+      if (NullUtil.isPresent(propertyEditor)) {
+        propertyEditor.$invoke(parent.model.getTile(x, y).property);
+      }
     }
   }
 
@@ -147,14 +148,11 @@ public class TestExpectation {
   }
 
   public void unitExistsAt(int x, int y, String type, int ownerId, @OptionalParameter Callback1<Unit> unitEditor) {
-    // TODO check existence of object
-    // just do that to make sure that the type exists
-    parent.sheets.units.get(type);
-
-    parent.life.createUnit(x, y, parent.model.getPlayer(ownerId), type);
-
-    if (NullUtil.isPresent(unitEditor)) {
-      unitEditor.$invoke(parent.model.getTile(x, y).unit);
+    if (!NullUtil.isPresent(parent.model.getTile(x, y).unit)) {
+      parent.life.createUnit(x, y, parent.model.getPlayer(ownerId), type);
+      if (NullUtil.isPresent(unitEditor)) {
+        unitEditor.$invoke(parent.model.getTile(x, y).unit);
+      }
     }
   }
 
@@ -164,10 +162,6 @@ public class TestExpectation {
   }
 
   public void loadedUnitExistsIn(int tx, int ty, String type, @OptionalParameter Callback1<Unit> unitEditor) {
-    // TODO check existence of object
-    // just do that to make sure that the type exists
-    parent.sheets.units.get(type);
-
     Unit apc = parent.model.getTile(tx, ty).unit;
     Unit load = parent.life.createLoadedUnit(apc, apc.owner, type);
 

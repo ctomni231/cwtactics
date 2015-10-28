@@ -1,6 +1,7 @@
 package org.wolftec.cwt.test.actions;
 
 import org.stjs.javascript.JSCollections;
+import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.actions.AttackUnit;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
@@ -25,6 +26,8 @@ public class AttackUnitActionTest extends AbstractCwtTest {
     test.expectThat.unitType("unitB").attack.main_wp.$put("unitA", 10);
     test.expectThat.unitType("unitB").attack.minrange = 1;
     test.expectThat.unitType("unitB").attack.maxrange = 1;
+    test.expectThat.unitType("unitC").attack.minrange = Constants.INACTIVE;
+    test.expectThat.unitType("unitC").attack.maxrange = Constants.INACTIVE;
 
     /* A is in team with C */
     test.expectThat.inTeam(0, 1);

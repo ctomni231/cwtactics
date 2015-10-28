@@ -17,14 +17,13 @@ public class CaptureLogic implements Injectable, ConfigurationProvider {
     cfgCapturerPoints = new ConfigurableValue("game.capture.capturerPoints", 5, 99, 10);
   }
 
-  // captureLimit = new ConfigurableValue(0, Constants.MAX_PROPERTIES, 0);
   /**
    * 
    * @param unit
    * @return **true** when a **unit** can capture a properties, else **false**.
    */
   public boolean canCapture(Unit unit) {
-    return (unit.type.captures > 0); // TODO
+    return unit.type.captures;
   }
 
   /**
@@ -33,7 +32,7 @@ public class CaptureLogic implements Injectable, ConfigurationProvider {
    * @return **true** when a **property** can be captured, else **false**.
    */
   public boolean canBeCaptured(Property property) {
-    return (property.type.capturePoints > 0); // TODO
+    return property.type.capturable;
   }
 
   /**

@@ -4,7 +4,7 @@
   "movetype": "MVME",
   "vision": 2,
   "fuel": 70,
-  "captures": 10,
+  "captures": true,
   "ammo": 3,
   "attack": {
     "main_wp": {

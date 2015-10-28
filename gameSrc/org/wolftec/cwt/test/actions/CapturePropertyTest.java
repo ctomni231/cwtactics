@@ -10,8 +10,8 @@ public class CapturePropertyTest extends AbstractCwtTest {
   @Override
   protected void prepareModel() {
     test.expectThat.unitExistsAt(0, 0, "unitA", 0);
-    test.expectThat.unitType("unitA").captures = 10;// TODO
-    test.expectThat.propertyType("propA").capturePoints = 20; // TODO
+    test.expectThat.unitType("unitA").captures = true;
+    test.expectThat.propertyType("propA").capturable = true;
     test.expectThat.moveCosts("moveA", "tileA", 1);
     test.expectThat.moveCosts("moveA", "propA", 1);
     test.expectThat.everythingVisible();

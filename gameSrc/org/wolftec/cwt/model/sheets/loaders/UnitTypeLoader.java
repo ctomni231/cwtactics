@@ -59,7 +59,7 @@ public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
     sheet.ammo = read(data, "ammo");
     sheet.movetype = read(data, "movetype");
     sheet.maxloads = readNullable(data, "maxloads", 0);
-    sheet.captures = readNullable(data, "captures", 0);
+    sheet.captures = readNullable(data, "captures", false);
     sheet.blocked = readNullable(data, "blocked", false);
     sheet.stealth = readNullable(data, "stealth", false);
     sheet.costs = readNullable(data, "costs", Constants.INACTIVE);

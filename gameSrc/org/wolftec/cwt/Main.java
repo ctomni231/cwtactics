@@ -10,6 +10,11 @@ import org.wolftec.cwt.core.util.JsUtil;
 
 public class Main {
 
+  // FIXME Loop into core
+  // FIXME configuration values in action or logic ?
+  // FIXME rename logic to features
+  // FIXME
+
   public static void main(String[] args) {
     long ts;
 

@@ -13,6 +13,7 @@ import org.wolftec.cwt.core.util.NullUtil;
 public class GamepadInput implements Injectable, Deactivatable, FrameTickListener {
 
   // --------------- game pad API ---------------
+  // https://developer.mozilla.org/en-US/docs/Web/Guide/API/Gamepad
 
   @STJSBridge
   @GlobalScope
@@ -23,18 +24,13 @@ public class GamepadInput implements Injectable, Deactivatable, FrameTickListene
   @STJSBridge
   static class Gamedpad {
     int timestamp;
-
-    // TODO new specification shows different API
-    // https://developer.mozilla.org/en-US/docs/Web/Guide/API/Gamepad
     Array<Integer> buttons;
-
     Array<Integer> axes;
   }
 
   @STJSBridge
   static class Navigator {
     native Array<Gamedpad> getGamepads();
-
   }
 
   // --------------- game pad API ---------------

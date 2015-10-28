@@ -17,7 +17,7 @@ public class UnitType extends SheetType {
   public SuicideType suicide;
   public AttackType attack;
   public int maxloads;
-  public int captures; // TODO boolean
+  public boolean captures;
   public SupplierType supply;
   public boolean blocked;
   public LaserType laser;

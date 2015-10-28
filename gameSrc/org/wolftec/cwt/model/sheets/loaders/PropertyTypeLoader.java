@@ -52,7 +52,7 @@ public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
     sheet.visionBlocker = readNullable(data, "visionBlocker", false);
     sheet.looseAfterCaptured = readNullable(data, "looseAfterCaptured", false);
     sheet.notTransferable = readNullable(data, "notTransferable", false);
-    sheet.capturePoints = readNullable(data, "capturePoints", 20); /* TODO */
+    sheet.capturable = readNullable(data, "capturePoints", true);
     sheet.changeAfterCaptured = readNullable(data, "changeAfterCaptured", sheet.ID);
     sheet.rocketsilo.changeTo = read(siloDataMap, "changeTo");
     sheet.rocketsilo.damage = read(siloDataMap, "damage");

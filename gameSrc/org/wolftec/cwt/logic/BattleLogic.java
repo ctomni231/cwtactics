@@ -5,6 +5,7 @@ import org.wolftec.cwt.core.collections.MoveableMatrix;
 import org.wolftec.cwt.core.config.ConfigurableValue;
 import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
@@ -17,34 +18,20 @@ import org.wolftec.cwt.model.sheets.types.UnitType;
 
 public class BattleLogic implements Injectable, ConfigurationProvider {
 
+  /**
+   * Maximum amount of luck for an attacker. This number will be used exclusive
+   * which means variable -1 is the maximum.
+   */
   private static final int MAX_LUCK_EXCLUSIVE = 11;
 
-  /**
-   * Signal for units that cannot attack.
-   */
-  public static final int FIRETYPE_NONE = 0;
-
-  /**
-   * Indirect fire type that can fire from range 2 to x.
-   */
-  public static final int FIRETYPE_INDIRECT = 1;
-
-  /**
-   * Direct fire type that can fire from range 1 to 1.
-   */
-  public static final int FIRETYPE_DIRECT = 2;
-
-  /**
-   * Ballistic fire type that can fire from range 1 to x.
-   */
-  public static final int FIRETYPE_BALLISTIC = 3;
+  private static final int FIRETYPE_NONE = 0;
+  private static final int FIRETYPE_INDIRECT = 1;
+  private static final int FIRETYPE_DIRECT = 2;
+  private static final int FIRETYPE_BALLISTIC = 3;
 
   private static final int ATTACKABLE = 1;
-
   private static final int MOVE_AND_ATTACKABLE = 2;
-
   private static final int MOVABLE = 3;
-
   private static final int DAMAGE_CALC_MODE_OLD = 0;
   private static final int DAMAGE_CALC_MODE_NEW = 1;
 
@@ -64,20 +51,22 @@ public class BattleLogic implements Injectable, ConfigurationProvider {
 
   /**
    * 
+   * @return a random integer which can be used for luck.
+   */
+  public int getBattleLuck() {
+    return NumberUtil.getRandomInt(MAX_LUCK_EXCLUSIVE);
+  }
+
+  /**
+   * 
    * @return true when the game is in the peace phase, else false
    */
   public boolean inPeacePhase() {
-    return (model.day < cfgDaysOfPeace.value);
+    return model.day < cfgDaysOfPeace.value;
   }
 
   public boolean hasMainWeapon(Unit unit) {
-    AttackType attack = unit.type.attack;
-    // TODO avoid null here
-    return NullUtil.isPresent(attack) && NullUtil.isPresent(attack.main_wp);
-  }
-
-  public int getRandomLuck() {
-    return NumberUtil.getRandomInt(MAX_LUCK_EXCLUSIVE);
+    return unit.type.ammo > 0;
   }
 
   public boolean hasSecondaryWeapon(Unit unit) {
@@ -86,59 +75,84 @@ public class BattleLogic implements Injectable, ConfigurationProvider {
     return NullUtil.isPresent(attack) && NullUtil.isPresent(attack.sec_wp);
   }
 
-  public int getFireType(Unit unit) {
-    if (!hasMainWeapon(unit) && !hasSecondaryWeapon(unit)) {
+  /**
+   * 
+   * @param attacker
+   * @return the fire type of an unit
+   */
+  private int getFireType(Unit attacker) {
+    int minrange = attacker.type.attack.minrange;
+    int maxrange = attacker.type.attack.maxrange;
+
+    if (minrange == Constants.INACTIVE && maxrange == Constants.INACTIVE) {
       return FIRETYPE_NONE;
-    }
 
-    // The fire type will be determined by the following situations. All other
-    // situations (which aren't in the
-    // following table) aren't allowed due the game rules.
-    //
-    // Min-Range === 1 --> Ballistic
-    // Min-Range > 1 --> Indirect
-    // No Min-Range --> Direct
-    // Only Secondary --> Direct
-    //
-
-    if (unit.type.attack.minrange == 1 && unit.type.attack.maxrange == 1) {
+    } else if (minrange == 1 && maxrange == 1) {
       return FIRETYPE_DIRECT;
 
-    } else {
-      // TODO non-direct units aren't allowed to obtain secondary weapons
-      return unit.type.attack.minrange > 1 ? FIRETYPE_INDIRECT : FIRETYPE_BALLISTIC;
+    } else if (minrange == 1 && maxrange > 1) {
+      return FIRETYPE_BALLISTIC;
+
+    } else if (minrange > 1 && maxrange > 1) {
+      return FIRETYPE_INDIRECT;
     }
+
+    return AssertUtil.neverReached("unknown firetype");
   }
 
+  /**
+   * A direct unit can fire and move in the same turn but has a minimum and
+   * maximum range of 1 (means must stand next by an opponent to attack).
+   * 
+   * @param unit
+   * @return
+   */
   public boolean isDirect(Unit unit) {
     return getFireType(unit) == FIRETYPE_DIRECT;
   }
 
+  /**
+   * An indirect unit cannot fire and move in the same turn but has a minimum
+   * range of 2 or greater.
+   * 
+   * @param unit
+   * @return
+   */
   public boolean isIndirect(Unit unit) {
     return getFireType(unit) == FIRETYPE_INDIRECT;
   }
 
+  /**
+   * A ballistic unit cannot fire and move in the same turn but has a minimum
+   * range of 1.
+   * 
+   * @param unit
+   * @return
+   */
   public boolean isBallistic(Unit unit) {
     return getFireType(unit) == FIRETYPE_BALLISTIC;
+  }
+
+  /**
+   * @param unit
+   * @return
+   */
+  public boolean cannotAttack(Unit unit) {
+    return getFireType(unit) == FIRETYPE_NONE;
   }
 
   /**
    * 
    * @param attacker
    * @param defender
-   * @return **true** if an **attacker** can use it's main weapon against a
-   *         **defender**. The distance will not checked in case of an indirect
-   *         attacker.
+   * @return true if the attacker can use it's main weapon against the defender
+   *         (regardless of the positions)
    */
   public boolean canUseMainWeapon(Unit attacker, Unit defender) {
     AttackType attack = attacker.type.attack;
-    // TODO null prevention
-    if (NullUtil.isPresent(attack.main_wp) && attacker.ammo > 0) {
-      if (NullUtil.getOrElse(attack.main_wp.$get(defender.type.ID), 0) > 0) {
-        return true;
-      }
+    if (attacker.ammo > 0 && NullUtil.getOrElse(attack.main_wp.$get(defender.type.ID), 0) > 0) {
+      return true;
     }
-
     return false;
   }
 
@@ -178,7 +192,7 @@ public class BattleLogic implements Injectable, ConfigurationProvider {
    * @return
    */
   public boolean calculateTargets(Unit unit, int x, int y, MoveableMatrix selection, boolean markRangeInSelection) {
-    // TODO @ME REFA THIS MONSTER
+    // FIXME @ME REFA THIS MONSTER
 
     boolean markInData = NullUtil.isPresent(selection);
     int teamId = unit.owner.team;

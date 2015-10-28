@@ -37,8 +37,8 @@ public class AttackUnit implements Action {
   public void fillData(UserInteractionData interactionData, ActionData actionData) {
     actionData.p1 = interactionData.source.unitId;
     actionData.p2 = interactionData.actionTarget.unitId;
-    actionData.p3 = battle.getRandomLuck();
-    actionData.p4 = battle.getRandomLuck();
+    actionData.p3 = battle.getBattleLuck();
+    actionData.p4 = battle.getBattleLuck();
   }
 
   @Override

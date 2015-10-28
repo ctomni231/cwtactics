@@ -8,7 +8,7 @@ import org.stjs.javascript.JSCollections;
  *
  */
 public class PropertyType extends TileType {
-  public int capturePoints;
+  public boolean capturable;
   public int vision;
   public int funds;
   public CannonType cannon;
