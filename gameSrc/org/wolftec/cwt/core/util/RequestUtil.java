@@ -14,7 +14,6 @@ public abstract class RequestUtil {
 
   @STJSBridge
   public static interface ArrayBufferRespone {
-
   }
 
   public static class ResponseData<T> {

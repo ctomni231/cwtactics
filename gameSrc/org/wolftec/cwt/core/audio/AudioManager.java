@@ -148,8 +148,6 @@ public class AudioManager implements Injectable {
     return NullUtil.getOrElse(musicNode, nullNode).gain.value;
   }
 
-  // TODO use channel enumeration here
-
   public void setSfxVolume(float vol) {
     if (NullUtil.isPresent(sfxNode)) {
       sfxNode.gain.value = Math.min(Math.max(vol, 0), 1);
@@ -169,7 +167,7 @@ public class AudioManager implements Injectable {
    * @param buff
    */
   public void registerAudioBuffer(String id, AudioBuffer buff) {
-    // TODO error if already buffered
+    AssertUtil.assertThatNot(isBuffered(id));
     buffer.$put(id, buff);
   }
 
@@ -201,13 +199,6 @@ public class AudioManager implements Injectable {
     }
   }
 
-  //
-  // Plays a sound.
-  //
-  // @param {string} id id of the sound that will be played
-  // @param {boolean=} loop (default:false)
-  // @return {*}
-  //
   public AudioBufferSourceNode playSound(String id, boolean loop) {
     if (!NullUtil.isPresent(audioContext)) {
       return null;

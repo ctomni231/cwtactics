@@ -31,13 +31,13 @@ public class ChangeWeather implements Action {
   @Override
   public void fillData(UserInteractionData positionData, ActionData actionData) {
     WeatherType nextWeather = weather.pickRandomWeatherId(model.weather);
-    actionData.p1 = SheetIdNumberUtil.toNumber(nextWeather.ID);
+    actionData.p1 = SheetIdNumberUtil.convertIdToNumber(nextWeather.ID);
     actionData.p2 = weather.pickRandomWeatherTime(nextWeather);
   }
 
   @Override
   public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
-    weather.changeWeather(SheetIdNumberUtil.toId(data.p1), data.p2);
+    weather.changeWeather(SheetIdNumberUtil.convertNumberToId(data.p1), data.p2);
     fog.fullRecalculation();
   }
 

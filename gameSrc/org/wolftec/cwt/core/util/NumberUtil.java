@@ -2,6 +2,7 @@ package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
+import org.wolftec.cwt.core.annotations.MayRaisesError;
 
 /**
  * Some utility functions for handling numbers.
@@ -17,46 +18,27 @@ public abstract class NumberUtil {
     return JSGlobal.parseInt(((int) JSObjectAdapter.$js("Math.random()")) * max, 10);
   }
 
-  /**
-   * 
-   * @param value
-   * @return value as integer
-   */
-  public static int asInt(Number value) {
-    return JSGlobal.parseInt(value, 10);
+  @MayRaisesError("when value is not convertable to an integer")
+  public static int asInt(Object value) {
+    int result = JSGlobal.parseInt(value, 10);
+    AssertUtil.assertThat(!JSGlobal.isNaN(value));
+    return result;
   }
 
   /**
+   * Failsafe asInt which uses defValue when value is not convertable to an
+   * integer.
    * 
    * @param value
    * @param defValue
-   * @return value as integer or raises an error if not
+   * @return value as integer or defValue
    */
-  public static int convertStringToInt(String value) {
-    Number number = JSGlobal.NaN;
+  public static int asIntOrElse(String value, int defValue) {
     try {
-      number = JSGlobal.parseInt(value, 10);
+      return asInt(value);
     } catch (Exception e) {
+      return defValue;
     }
-    if (number == JSGlobal.NaN) {
-      JsUtil.throwError("NotANumber");
-    }
-    return (int) number;
-  }
-
-  /**
-   * 
-   * @param value
-   * @param defValue
-   * @return value as integer or defValue if value is not a number
-   */
-  public static int convertStringToIntOrDefault(String value, int defValue) {
-    Number number = defValue;
-    try {
-      number = JSGlobal.parseInt(value, 10);
-    } catch (Exception e) {
-    }
-    return number != JSGlobal.NaN ? (int) number : defValue;
   }
 
   /**
@@ -65,15 +47,13 @@ public abstract class NumberUtil {
    * 
    * @param a
    * @param b
-   * @return
+   * @return -1, 0 or +1
    */
   public static int compare(int a, int b) {
     if (a < b) {
       return -1;
-
     } else if (a > b) {
       return +1;
-
     } else {
       return 0;
     }

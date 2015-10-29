@@ -3,7 +3,7 @@ package org.wolftec.cwt.test.actions;
 import org.wolftec.cwt.logic.actions.LoadUnit;
 import org.wolftec.cwt.logic.features.TransportLogic;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.cwt.test.tools.AbstractCwtTest;
+import org.wolftec.cwt.test.AbstractCwtTest;
 
 public class LoadUnitActionTest extends AbstractCwtTest {
 

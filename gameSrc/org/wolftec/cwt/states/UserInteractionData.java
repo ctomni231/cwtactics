@@ -115,7 +115,7 @@ public class UserInteractionData implements Injectable, InformationList {
 
   public void updateActionData() {
     actionData = getInfo();
-    actionDataCode = NumberUtil.convertStringToIntOrDefault(actionData, -1);
+    actionDataCode = NumberUtil.asIntOrElse(actionData, Constants.INACTIVE);
   }
 
   public void reset() {

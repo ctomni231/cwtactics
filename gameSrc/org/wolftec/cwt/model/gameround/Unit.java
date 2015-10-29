@@ -9,6 +9,7 @@ public class Unit implements Ownable {
   public int hp;
   public int ammo;
   public int fuel;
+  public int exp;
   public boolean hidden;
   public int loadedIn;
   public UnitType type;
@@ -32,10 +33,13 @@ public class Unit implements Ownable {
   /**
    *
    * @param type
+   * @deprecated FIXME move into resetter
    */
+  @Deprecated
   public void initByType(UnitType type) {
     this.type = type;
     this.hp = 99;
+    this.exp = 0;
     this.ammo = type.ammo;
     this.fuel = type.fuel;
     this.hidden = false;

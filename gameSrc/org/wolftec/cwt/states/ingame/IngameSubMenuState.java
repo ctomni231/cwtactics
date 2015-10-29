@@ -11,7 +11,7 @@ import org.wolftec.cwt.states.UserInteractionData;
 public class IngameSubMenuState extends AbstractIngameState {
 
   private UserInteractionData data;
-  private ErrorManager        errors;
+  private ErrorManager errors;
 
   private boolean leavePossible;
 
@@ -47,7 +47,7 @@ public class IngameSubMenuState extends AbstractIngameState {
   @Override
   public void handleButtonA(StateFlowData transition, int delta) {
     data.actionData = data.getInfo();
-    data.actionDataCode = NumberUtil.convertStringToIntOrDefault(data.getInfo(), Constants.INACTIVE);
+    data.actionDataCode = NumberUtil.asIntOrElse(data.getInfo(), Constants.INACTIVE);
     transition.setTransitionTo("IngamePushActionState");
   }
 

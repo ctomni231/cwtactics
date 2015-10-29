@@ -55,7 +55,7 @@ public class BuildUnit implements Action {
 
   @Override
   public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
-    factory.buildUnit(model.getProperty(data.p1), SheetIdNumberUtil.toId(data.p2));
+    factory.buildUnit(model.getProperty(data.p1), SheetIdNumberUtil.convertNumberToId(data.p2));
     fog.fullRecalculation();
   }
 

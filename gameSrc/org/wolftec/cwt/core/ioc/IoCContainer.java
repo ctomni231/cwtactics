@@ -22,7 +22,7 @@ public class IoCContainer {
   public <T extends Injectable> T getManagedObjectByType(Class<T> clazz) {
     String className = ClassUtil.getClassName(clazz);
     T managedObject = (T) managedObjects.$get(className);
-    NullUtil.mustBePresent(managedObject, "unknown state " + className);
+    NullUtil.getOrThrow(managedObject, "unknown state " + className);
     return managedObject;
   }
 
@@ -31,7 +31,7 @@ public class IoCContainer {
       config.namespaces.push("wEng");
     }
 
-    NullUtil.mustNotBePresent(managedObjects, "already initialized");
+    NullUtil.mayNotPresent(managedObjects, "already initialized");
     managedObjects = JSCollections.$map();
 
     /*
@@ -75,7 +75,7 @@ public class IoCContainer {
         boolean isAbstract = ClassUtil.getClassName(classObject).startsWith(NON_IOC_CANDIDATE_CLASSNAMEPART);
 
         if (isManaged && !isAbstract) {
-          NullUtil.mustNotBePresent(managedObjects.$get(className), "already managed " + className);
+          NullUtil.mayNotPresent(managedObjects.$get(className), "already managed " + className);
 
           /*
            * casting is okay here because isManaged proved that classObject is
@@ -160,7 +160,7 @@ public class IoCContainer {
     if (ClassUtil.classImplementsInterface(propertyType, Injectable.class)) {
       String propertyTypeName = ClassUtil.getClassName(propertyType);
       Injectable managedObject = managedObjects.$get(propertyTypeName);
-      NullUtil.mustBePresent(managedObject, "missing injectable " + propertyTypeName);
+      NullUtil.getOrThrow(managedObject, "missing injectable " + propertyTypeName);
       JSObjectAdapter.$put(instance, prop, managedObject);
       return true;
     }

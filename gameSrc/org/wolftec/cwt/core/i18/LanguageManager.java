@@ -28,7 +28,7 @@ public class LanguageManager implements Injectable {
    * and its values the localized string for the key.
    */
   public void registerLanguage(String key, Map<String, String> obj) {
-    NullUtil.mustNotBePresent(languages.$get(key), "language for " + key + " is already registered");
+    NullUtil.mayNotPresent(languages.$get(key), "language for " + key + " is already registered");
     Map<String, String> newLang = JSCollections.$map();
 
     ObjectUtil.forEachMapValue(obj, (skey, value) -> {
@@ -52,7 +52,7 @@ public class LanguageManager implements Injectable {
    */
   public void selectLanguage(String key) {
     Map<String, String> language = languages.$get(key);
-    NullUtil.mustBePresent(language, "unknown language");
+    NullUtil.getOrThrow(language, "unknown language");
     selected = language;
   }
 

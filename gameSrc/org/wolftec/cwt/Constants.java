@@ -102,5 +102,5 @@ public class Constants {
   public static final int MAX_SELECTION_RANGE = 15;
 
   public static final int CURSOR_MOVEMENT_BLOCK_TIME = 100;
-  public static final int MENU_INPUT_BLOCK_TIME      = 250;
+  public static final int MENU_INPUT_BLOCK_TIME = 250;
 }

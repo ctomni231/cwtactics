@@ -32,7 +32,7 @@ public class SheetDatabase<T extends SheetType> {
   }
 
   public void registerSheet(T sheet) {
-    NullUtil.mustNotBePresent(sheets.$get(sheet.ID), "already registered");
+    NullUtil.mayNotPresent(sheets.$get(sheet.ID), "already registered");
 
     sheets.$put(sheet.ID, sheet);
     types.push(sheet.ID);
@@ -41,7 +41,7 @@ public class SheetDatabase<T extends SheetType> {
   public T get(String key) {
     T sheet = sheets.$get(key);
 
-    NullUtil.mustBePresent(sheet, "unknown id " + key);
+    NullUtil.getOrThrow(sheet, "unknown id " + key);
     return sheet;
   }
 

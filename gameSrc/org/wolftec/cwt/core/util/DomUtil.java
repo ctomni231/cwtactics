@@ -3,6 +3,9 @@ package org.wolftec.cwt.core.util;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.dom.Element;
 
+/**
+ * Utility class to handle with the browser document object model.
+ */
 public abstract class DomUtil {
 
   /**

@@ -46,30 +46,18 @@ public class JoinLogic implements Injectable {
    * @param y
    */
   public void join(Unit source, int x, int y) {
-
     Unit target = model.getTile(x, y).unit;
     if (target.type != source.type) {
-      JsUtil.throwError("TypeMismatch");
+      JsUtil.throwError("TypeMismatch"); // TODO
     }
 
-    // hp
     target.heal(Unit.pointsToHealth(Unit.healthToPoints(source.hp)), true);
-
-    // ammo
     if (target.type.ammo != Constants.INACTIVE) {
-      target.ammo += source.ammo;
-      if (target.ammo > target.type.ammo) {
-        target.ammo = target.type.ammo;
-      }
+      target.ammo = Math.max(target.ammo + source.ammo, target.type.ammo);
     }
+    target.fuel = Math.max(target.fuel + source.fuel, target.type.fuel);
+    target.exp += source.exp;
 
-    // fuel
-    target.fuel += source.fuel;
-    if (target.fuel > target.type.fuel) {
-      target.fuel = target.type.fuel;
-    }
-
-    // TODO experience points
     model.searchUnit(source, (ux, uy, unit) -> lifecycle.destroyUnit(ux, uy));
   }
 }

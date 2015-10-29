@@ -4,7 +4,7 @@ import org.stjs.javascript.Array;
 import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.logic.actions.TransferProperty;
-import org.wolftec.cwt.test.tools.AbstractCwtTest;
+import org.wolftec.cwt.test.AbstractCwtTest;
 
 public class TransferPropertyActionTest extends AbstractCwtTest {
 
@@ -63,7 +63,7 @@ public class TransferPropertyActionTest extends AbstractCwtTest {
     test.expectThat.sourceSelectionAt(1, 0);
     test.modify.buildActionMenu(action);
     test.expectThat.menuEntrySelected(0);
-    int newOwner = NumberUtil.convertStringToInt(test.grab.selectedMenuValue());
+    int newOwner = NumberUtil.asInt(test.grab.selectedMenuValue());
     test.modify.invokeAction(action);
     test.assertThat.propertyAt(1, 0).propertyByFn((prop) -> prop.owner.id).is(newOwner);
   }

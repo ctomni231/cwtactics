@@ -3,6 +3,7 @@ package org.wolftec.cwt;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
+import org.wolftec.cwt.core.GameLoopManager;
 import org.wolftec.cwt.core.ioc.IoCConfiguration;
 import org.wolftec.cwt.core.ioc.IoCContainer;
 import org.wolftec.cwt.core.state.StateManager;
@@ -10,9 +11,6 @@ import org.wolftec.cwt.core.util.JsUtil;
 
 public class Main {
 
-  // FIXME Loop into core
-  // FIXME configuration values in action or logic ?
-  // FIXME rename logic to features
   // FIXME model reset as interface with ResetManager
   // FIXME remove any logic from model
 

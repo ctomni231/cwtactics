@@ -2,7 +2,7 @@ package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.core.util.SheetIdNumberUtil;
 import org.wolftec.cwt.logic.actions.BuildUnit;
-import org.wolftec.cwt.test.tools.AbstractCwtTest;
+import org.wolftec.cwt.test.AbstractCwtTest;
 
 public class BuildUnitActionTest extends AbstractCwtTest {
 
@@ -58,7 +58,7 @@ public class BuildUnitActionTest extends AbstractCwtTest {
     test.expectThat.sourceSelectionAt(0, 0);
     test.expectThat.actionSubMenuOpened(action);
     test.expectThat.menuEntrySelected(0);
-    uiData.actionDataCode = SheetIdNumberUtil.toNumber(uiData.actionData);
+    uiData.actionDataCode = SheetIdNumberUtil.convertIdToNumber(uiData.actionData);
     test.expectThat.actionTriggered(action);
     test.assertThat.unitAt(0, 0).exists();
     test.assertThat.unitAt(0, 0).propertyByFn(u -> u.type.ID).is("UNIA");
@@ -68,7 +68,7 @@ public class BuildUnitActionTest extends AbstractCwtTest {
     test.expectThat.sourceSelectionAt(0, 0);
     test.expectThat.actionSubMenuOpened(action);
     test.expectThat.menuEntrySelected(0);
-    uiData.actionDataCode = SheetIdNumberUtil.toNumber(uiData.actionData);
+    uiData.actionDataCode = SheetIdNumberUtil.convertIdToNumber(uiData.actionData);
     test.expectThat.actionTriggered(action);
     test.assertThat.unitAt(0, 0).propertyByFn(u -> u.canAct).is(false);
   }

@@ -1,7 +1,7 @@
 package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.logic.actions.GoToOptions;
-import org.wolftec.cwt.test.tools.AbstractCwtTest;
+import org.wolftec.cwt.test.AbstractCwtTest;
 
 public class GoToOptionsActionTest extends AbstractCwtTest {
 

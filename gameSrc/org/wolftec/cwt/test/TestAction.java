@@ -1,4 +1,4 @@
-package org.wolftec.cwt.test.tools;
+package org.wolftec.cwt.test;
 
 import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Callback1;

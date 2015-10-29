@@ -1,4 +1,4 @@
-package org.wolftec.cwt.test.tools;
+package org.wolftec.cwt.test;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Native;
@@ -171,7 +171,7 @@ public class TestExpectation {
   }
 
   public Unit unitAt(int x, int y) {
-    return NullUtil.mustBePresent(parent.model.getTile(x, y).unit, "no unit there");
+    return NullUtil.getOrThrow(parent.model.getTile(x, y).unit, "no unit there");
   }
 
   public void turnOwner(int ownerId) {

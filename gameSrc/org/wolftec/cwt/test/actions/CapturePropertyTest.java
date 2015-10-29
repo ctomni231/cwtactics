@@ -1,7 +1,7 @@
 package org.wolftec.cwt.test.actions;
 
 import org.wolftec.cwt.logic.actions.CaptureProperty;
-import org.wolftec.cwt.test.tools.AbstractCwtTest;
+import org.wolftec.cwt.test.AbstractCwtTest;
 
 public class CapturePropertyTest extends AbstractCwtTest {
 

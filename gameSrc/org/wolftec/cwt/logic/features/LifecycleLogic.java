@@ -97,7 +97,7 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
   public void createProperty(int x, int y, Player player, String type) {
     Tile tile = model.getTile(x, y);
     Property prop = getInactiveProperty();
-    NullUtil.mustBePresent(prop, "no free property left");
+    NullUtil.getOrThrow(prop, "no free property left");
     prop.owner = player;
     prop.type = sheets.properties.get(type);
     tile.property = prop;

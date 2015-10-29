@@ -4,7 +4,7 @@ import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.logic.actions.TransferMoney;
 import org.wolftec.cwt.logic.features.TeamLogic;
-import org.wolftec.cwt.test.tools.AbstractCwtTest;
+import org.wolftec.cwt.test.AbstractCwtTest;
 
 public class TransferMoneyActionTest extends AbstractCwtTest {
 
@@ -53,7 +53,7 @@ public class TransferMoneyActionTest extends AbstractCwtTest {
   public void test_changesTheGoldValuesOfTheSourceAndTargetPlayer() {
     test.modify.buildActionMenu(action);
     test.expectThat.menuEntrySelected(0);
-    int transferedMoney = NumberUtil.convertStringToInt(test.grab.selectedMenuValue());
+    int transferedMoney = NumberUtil.asInt(test.grab.selectedMenuValue());
     test.modify.invokeAction(action);
     test.assertThat.player(0).propertyByFn((player) -> player.gold).is(minTransferMoney - transferedMoney);
     test.assertThat.player(1).propertyByFn((player) -> player.gold).is(transferedMoney);

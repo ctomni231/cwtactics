@@ -25,7 +25,7 @@ public class StateFlowData {
    * @param nullableState
    */
   public void setTransitionTo(String state) {
-    NullUtil.mustBePresent(state, "next state is undefined");
+    NullUtil.getOrThrow(state, "next state is undefined");
     nextState = state;
   }
 

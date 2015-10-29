@@ -1,4 +1,4 @@
-package org.wolftec.cwt;
+package org.wolftec.cwt.core;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.GlobalScope;
@@ -12,14 +12,14 @@ import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.state.AbstractState;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.state.StateManager;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
 
-// FIXME
 public class GameLoopManager implements Injectable {
 
-  private static final int BLOCK_INPUT_TIME = 250;
+  // --------------- RequestAnimationFrame API ---------------
 
   @GlobalScope
   @STJSBridge
@@ -27,10 +27,13 @@ public class GameLoopManager implements Injectable {
     native static void requestAnimationFrame(Callback0 handler);
   }
 
+  // --------------- RequestAnimationFrame API ---------------
+
   private StateManager sm;
   private InputManager inputMgr;
   private BlockedInputManager nullInputMgr;
-  protected GraphicManager gfx;
+  private GraphicManager gfx;
+
   private Array<FrameTickListener> frameWatchers;
 
   private Log log;
@@ -43,9 +46,6 @@ public class GameLoopManager implements Injectable {
 
   @Override
   public void onConstruction() {
-    active = false;
-
-    transitionData = new StateFlowData();
 
     /*
      * accessing the object with that is faster because loopFunction has not to
@@ -53,8 +53,10 @@ public class GameLoopManager implements Injectable {
      */
     final GameLoopManager that = this;
 
-    oldTime = JsUtil.getTimestamp();
-    loopFunction = () -> {
+    that.active = false;
+    that.transitionData = new StateFlowData();
+    that.oldTime = JsUtil.getTimestamp();
+    that.loopFunction = () -> {
 
       long now = JsUtil.getTimestamp();
       int delta = (int) (now - that.oldTime);
@@ -68,11 +70,7 @@ public class GameLoopManager implements Injectable {
     };
   }
 
-  /**
-   * 
-   * @param delta
-   */
-  public void update(int delta) {
+  private void update(int delta) {
     for (int i = 0; i < frameWatchers.$length(); i++) {
       frameWatchers.$get(i).onFrameTick(delta);
     }
@@ -95,18 +93,18 @@ public class GameLoopManager implements Injectable {
     if (NullUtil.isPresent(nextState)) {
       sm.changeState(nextState);
       transitionData.flushTransitionTo();
-      blockInputTime = BLOCK_INPUT_TIME;
+      blockInputTime = AppConfiguration.BLOCK_INPUT_TIME;
     }
   }
 
   /**
-   * Starts the game state machine.
+   * Starts the central application loop which starts the game flow. The
+   * environment will try to invoke the loop every 16ms. In this invocation the
+   * active state will be updated and all {@link FrameTickListener} objects will
+   * be triggered.
    */
   public void start() {
-    if (active) {
-      JsUtil.throwError("IllegalState");
-      // TODO
-    }
+    AssertUtil.assertThat(!active);
 
     active = true;
     log.info("starting game loop");
@@ -114,7 +112,12 @@ public class GameLoopManager implements Injectable {
     RequestAnimationFrameGlobal.requestAnimationFrame(loopFunction);
   }
 
+  /**
+   * Stops the game loop.
+   */
   public void stop() {
+    AssertUtil.assertThat(active);
+
     active = false;
     log.info("stopping game loop");
   }

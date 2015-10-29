@@ -12,22 +12,22 @@ public abstract class UrlParameterUtil {
 
   private static Map<String, String> urlParameters;
 
-  /**
-   * 
-   * @return a map with parameters
-   */
-  public static Map<String, String> getParameters() {
-    if (urlParameters == null) {
-      urlParameters = JSCollections.$map();
-      Array<String> parts = JSStringAdapter.split(Global.window.document.location.search.substring(1), "&");
+  private static void parseParameterMap() {
+    urlParameters = JSCollections.$map();
+    Array<String> parts = JSStringAdapter.split(Global.window.document.location.search.substring(1), "&");
 
-      for (int i = 0; i < parts.$length(); i++) {
-        Array<String> nv = JSStringAdapter.split(parts.$get(i), "=");
-        if (!((boolean) ((Object) nv.$get(0)))) {
-          continue;
-        }
-        urlParameters.$put(nv.$get(0), (String) JSGlobal.$or(nv.$get(1), true));
+    for (int i = 0; i < parts.$length(); i++) {
+      Array<String> nv = JSStringAdapter.split(parts.$get(i), "=");
+      if (!((boolean) ((Object) nv.$get(0)))) {
+        continue;
       }
+      urlParameters.$put(nv.$get(0), (String) JSGlobal.$or(nv.$get(1), true));
+    }
+  }
+
+  public static Map<String, String> getParameters() {
+    if (!NullUtil.isPresent(urlParameters)) {
+      parseParameterMap();
     }
     return urlParameters;
   }

@@ -3,7 +3,7 @@ package org.wolftec.cwt.test.actions;
 import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.logic.actions.TransferUnit;
 import org.wolftec.cwt.logic.features.MoveLogic;
-import org.wolftec.cwt.test.tools.AbstractCwtTest;
+import org.wolftec.cwt.test.AbstractCwtTest;
 
 public class TransferUnitActionTest extends AbstractCwtTest {
 
@@ -59,7 +59,7 @@ public class TransferUnitActionTest extends AbstractCwtTest {
     test.expectThat.sourceSelectionAt(0, 0);
     test.modify.buildActionMenu(action);
     test.expectThat.menuEntrySelected(0);
-    int newOwner = NumberUtil.convertStringToInt(test.grab.selectedMenuValue());
+    int newOwner = NumberUtil.asInt(test.grab.selectedMenuValue());
     test.modify.invokeAction(action);
     test.assertThat.unitAt(0, 0).propertyByFn((unit) -> unit.owner.id).is(newOwner);
   }

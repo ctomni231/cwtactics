@@ -48,7 +48,7 @@ public class KeyboardInput implements Injectable, Deactivatable {
    * @return the character for the given character code.
    */
   private String codeToChar(int characterCode) {
-    NullUtil.mustBePresent(characterCode, "character code");
+    NullUtil.getOrThrow(characterCode, "character code");
 
     String value;
     switch (characterCode) {

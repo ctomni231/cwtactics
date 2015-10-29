@@ -224,7 +224,7 @@ public class ActionManager implements Injectable {
   public void invokeNext() {
     ActionData data = buffer.popFirst();
 
-    NullUtil.mustBePresent(data, "NoAction");
+    NullUtil.getOrThrow(data, "NoAction");
     log.info("evaluating action data object " + data);
 
     Action actionObj = actions.$get(data.id);

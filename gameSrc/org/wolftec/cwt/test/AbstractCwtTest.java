@@ -1,4 +1,4 @@
-package org.wolftec.cwt.test.tools;
+package org.wolftec.cwt.test;
 
 import org.wolftec.cwt.core.config.ConfigurableValueManager;
 import org.wolftec.cwt.core.test.Test;

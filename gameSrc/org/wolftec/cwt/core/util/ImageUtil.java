@@ -10,11 +10,11 @@ import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.functions.Callback1;
 
 /**
- * Image utility class to manipulate images.
+ * Image utility class to work with images.
  */
 public abstract class ImageUtil {
 
-  public static void convertImageToString(Element image, Callback1<String> resultCb) {
+  public static void serializeImage(Element image, Callback1<String> resultCb) {
     Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D ctx = canvas.getContext("2d");
     canvas.height = image.height;
@@ -23,7 +23,7 @@ public abstract class ImageUtil {
     resultCb.$invoke(JSObjectAdapter.$js("canvas.toDataURL(\"image/png\")"));
   }
 
-  public static void convertStringToImage(String dataUrl, Callback1<Canvas> resultCb) {
+  public static void deserializeImage(String dataUrl, Callback1<Canvas> resultCb) {
     Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D ctx = canvas.getContext("2d");
     Image img = new Image();

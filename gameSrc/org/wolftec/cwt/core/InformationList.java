@@ -1,5 +1,6 @@
 package org.wolftec.cwt.core;
 
+// TODO
 public interface InformationList {
 
   void addInfo(String key, boolean flag);
