@@ -1,7 +1,7 @@
 package org.wolftec.cwt.test.actions;
 
-import org.wolftec.cwt.actions.UnloadUnit;
-import org.wolftec.cwt.logic.TransportLogic;
+import org.wolftec.cwt.logic.actions.UnloadUnit;
+import org.wolftec.cwt.logic.features.TransportLogic;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class UnloadUnitActionTest extends AbstractCwtTest {

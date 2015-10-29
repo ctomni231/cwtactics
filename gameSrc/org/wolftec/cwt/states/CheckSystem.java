@@ -9,7 +9,7 @@ import org.wolftec.cwt.core.util.UrlParameterUtil;
 
 public class CheckSystem implements GameLoader {
 
-  private Log      log;
+  private Log log;
   private Features features;
 
   @Override
@@ -25,13 +25,12 @@ public class CheckSystem implements GameLoader {
     }
 
     log.info("checking abilities of the active environment");
-
-    // TODO
-    // ask question when system is not supported
     if (!features.supported) {
+
       log.warn("system is not supported");
 
       if (Global.confirm("Go on ?")) {
+        // XXX may show a styled dialog here
         log.warn("starting cwtactics in an unsupported environment");
         done.$invoke();
       }

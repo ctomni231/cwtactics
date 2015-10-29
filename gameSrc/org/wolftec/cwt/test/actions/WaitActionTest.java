@@ -1,6 +1,6 @@
 package org.wolftec.cwt.test.actions;
 
-import org.wolftec.cwt.actions.WaitUnit;
+import org.wolftec.cwt.logic.actions.WaitUnit;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class WaitActionTest extends AbstractCwtTest {

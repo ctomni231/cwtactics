@@ -1,6 +1,6 @@
 package org.wolftec.cwt.test.actions;
 
-import org.wolftec.cwt.actions.FireLaser;
+import org.wolftec.cwt.logic.actions.FireLaser;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 

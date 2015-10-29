@@ -13,7 +13,8 @@ public class Main {
   // FIXME Loop into core
   // FIXME configuration values in action or logic ?
   // FIXME rename logic to features
-  // FIXME
+  // FIXME model reset as interface with ResetManager
+  // FIXME remove any logic from model
 
   public static void main(String[] args) {
     long ts;

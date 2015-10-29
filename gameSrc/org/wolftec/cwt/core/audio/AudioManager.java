@@ -9,6 +9,7 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.env.Features;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.persistence.PersistenceManager;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.RequestUtil.ArrayBufferRespone;
@@ -60,9 +61,9 @@ public class AudioManager implements Injectable {
 
   @STJSBridge
   static class AudioBufferSourceNode extends AudioNode {
-    boolean     loop;
-    double      loopStart;
-    double      loopEnd;
+    boolean loop;
+    double loopStart;
+    double loopEnd;
     AudioBuffer buffer;
 
     native void start(int pos);
@@ -83,18 +84,18 @@ public class AudioManager implements Injectable {
   public static final String MUSIC_KEY = "MUSIC_";
 
   private AudioContext audioContext;
-  private GainNode     musicNode;
-  private GainNode     sfxNode;
-  private GainNode     nullNode;
+  private GainNode musicNode;
+  private GainNode sfxNode;
+  private GainNode nullNode;
 
-  private Features           features;
+  private Features features;
   private PersistenceManager persistence;
 
   private Map<String, AudioBuffer> buffer;
 
-  private boolean               musicInLoad;
+  private boolean musicInLoad;
   private AudioBufferSourceNode musicConnector;
-  private String                musicIdentifier;
+  private String musicIdentifier;
 
   @Override
   public void onConstruction() {
@@ -221,16 +222,16 @@ public class AudioManager implements Injectable {
       return false;
     }
 
-    // break here if the wanted music is already the current played music
+    /*
+     * break here if the wanted music is already the current played music else
+     * we would stop and re-play the music
+     */
     if (musicIdentifier == id) {
       return false;
     }
 
-    // stop old music
     if (NullUtil.isPresent(musicConnector)) {
-      if (!stopMusic()) {
-        // TODO error
-      }
+      AssertUtil.assertThat(stopMusic(), "failed to stop music");
     }
 
     setMusicLoadMetaData(id);

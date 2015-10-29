@@ -9,7 +9,7 @@ import org.wolftec.cwt.core.state.AbstractIngameState;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.NullUtil;
-import org.wolftec.cwt.logic.MoveLogic;
+import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 
 public class IngameMenuState extends AbstractIngameState {

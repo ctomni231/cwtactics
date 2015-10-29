@@ -5,7 +5,7 @@ import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.state.AbstractState;
 import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.logic.TurnLogic;
+import org.wolftec.cwt.logic.features.TurnLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
 import org.wolftec.cwt.model.mapfile.MapData;
@@ -16,11 +16,11 @@ import org.wolftec.cwt.states.UserInteractionData;
 
 public class IngameEnterState extends AbstractState {
 
-  private ModelResetter       modelReset;
-  private ModelManager        model;
-  private SheetManager        sheets;
-  private MapManager          maps;
-  private ErrorManager        error;
+  private ModelResetter modelReset;
+  private ModelManager model;
+  private SheetManager sheets;
+  private MapManager maps;
+  private ErrorManager error;
   private UserInteractionData uiData;
 
   private TurnLogic turnLogic;

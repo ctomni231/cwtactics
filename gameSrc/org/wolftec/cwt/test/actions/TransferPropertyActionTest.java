@@ -1,9 +1,9 @@
 package org.wolftec.cwt.test.actions;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwt.actions.TransferProperty;
 import org.wolftec.cwt.core.action.TileMeta;
 import org.wolftec.cwt.core.util.NumberUtil;
+import org.wolftec.cwt.logic.actions.TransferProperty;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 
 public class TransferPropertyActionTest extends AbstractCwtTest {

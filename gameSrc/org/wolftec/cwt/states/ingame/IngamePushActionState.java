@@ -1,16 +1,16 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.actions.MoveAppend;
-import org.wolftec.cwt.actions.MoveEnd;
-import org.wolftec.cwt.actions.MoveStart;
-import org.wolftec.cwt.actions.WaitUnit;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionManager;
 import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.state.AbstractIngameState;
 import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.logic.MoveLogic;
+import org.wolftec.cwt.logic.actions.MoveAppend;
+import org.wolftec.cwt.logic.actions.MoveEnd;
+import org.wolftec.cwt.logic.actions.MoveStart;
+import org.wolftec.cwt.logic.actions.WaitUnit;
+import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
 

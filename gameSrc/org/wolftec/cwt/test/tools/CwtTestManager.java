@@ -2,8 +2,8 @@ package org.wolftec.cwt.test.tools;
 
 import org.wolftec.cwt.core.config.ConfigurableValueManager;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.logic.LifecycleLogic;
-import org.wolftec.cwt.logic.MoveLogic;
+import org.wolftec.cwt.logic.features.LifecycleLogic;
+import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
 import org.wolftec.cwt.model.sheets.SheetManager;

@@ -2,7 +2,7 @@ package org.wolftec.cwt.test.actions;
 
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.actions.AttackUnit;
+import org.wolftec.cwt.logic.actions.AttackUnit;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 

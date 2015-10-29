@@ -1,6 +1,6 @@
 package org.wolftec.cwt.test.actions;
 
-import org.wolftec.cwt.actions.FireSilo;
+import org.wolftec.cwt.logic.actions.FireSilo;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.tools.AbstractCwtTest;
 

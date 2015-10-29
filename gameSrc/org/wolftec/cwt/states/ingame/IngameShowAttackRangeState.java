@@ -4,7 +4,7 @@ import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.state.AbstractIngameState;
 import org.wolftec.cwt.core.state.GameActions;
 import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.logic.BattleLogic;
+import org.wolftec.cwt.logic.features.BattleLogic;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class IngameShowAttackRangeState extends AbstractIngameState {

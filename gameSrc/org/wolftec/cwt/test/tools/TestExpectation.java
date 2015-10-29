@@ -8,7 +8,7 @@ import org.wolftec.cwt.core.annotations.OptionalParameter;
 import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
-import org.wolftec.cwt.logic.MoveLogic;
+import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
