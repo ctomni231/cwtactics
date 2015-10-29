@@ -16,6 +16,7 @@ import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
 
+// FIXME
 public class GameLoopManager implements Injectable {
 
   private static final int BLOCK_INPUT_TIME = 250;
@@ -26,19 +27,19 @@ public class GameLoopManager implements Injectable {
     native static void requestAnimationFrame(Callback0 handler);
   }
 
-  private StateManager             sm;
-  private InputManager             inputMgr;
-  private BlockedInputManager      nullInputMgr;
-  protected GraphicManager         gfx;
+  private StateManager sm;
+  private InputManager inputMgr;
+  private BlockedInputManager nullInputMgr;
+  protected GraphicManager gfx;
   private Array<FrameTickListener> frameWatchers;
 
   private Log log;
 
   private StateFlowData transitionData;
-  private boolean       active;
-  private int           blockInputTime;
-  private long          oldTime;
-  private Callback0     loopFunction;
+  private boolean active;
+  private int blockInputTime;
+  private long oldTime;
+  private Callback0 loopFunction;
 
   @Override
   public void onConstruction() {

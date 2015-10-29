@@ -3,7 +3,7 @@ package org.wolftec.cwt.model.sheets.loaders;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.Option;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 
@@ -27,27 +27,27 @@ public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
   @Override
   public void hydrate(Map<String, Object> data, UnitType sheet) {
 
-    Map<String, Object> suicideData = Option.ofNullable((Map<String, Object>) data.$get("suicide")).orElseGet(() -> {
+    Map<String, Object> suicideData = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("suicide"), () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("damage", 0);
       map.$put("range", 0);
       return map;
     });
 
-    Map<String, Object> supplyData = Option.ofNullable((Map<String, Object>) data.$get("supply")).orElseGet(() -> {
+    Map<String, Object> supplyData = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("supply"), () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("supplier", false);
       return map;
     });
 
-    Map<String, Object> attackData = Option.ofNullable((Map<String, Object>) data.$get("attack")).orElseGet(() -> {
+    Map<String, Object> attackData = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("attack"), () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("minrange", -1);
       map.$put("maxrange", -1);
       return map;
     });
 
-    Map<String, Object> laserDataMap = Option.ofNullable((Map<String, Object>) data.$get("damage")).orElseGet(() -> {
+    Map<String, Object> laserDataMap = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("damage"), () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("damage", 0);
       return map;

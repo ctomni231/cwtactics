@@ -1,15 +1,12 @@
 package org.wolftec.cwt.core.state;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
 
 public class AbstractState implements Injectable {
-
-  public static final Option<Class<? extends AbstractState>> NO_TRANSITION = Option.empty();
 
   /**
    * Called when the state will be leaved.

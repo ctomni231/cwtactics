@@ -14,11 +14,12 @@ import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.StringUtil;
 
+//FIXME
 public class ActionManager implements Injectable {
 
   public static final int BUFFER_SIZE = 200;
 
-  private Log            log;
+  private Log log;
   private NetworkManager network;
 
   /**

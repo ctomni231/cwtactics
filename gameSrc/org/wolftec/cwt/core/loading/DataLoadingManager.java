@@ -3,11 +3,11 @@ package org.wolftec.cwt.core.loading;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.persistence.FileDescriptor;
 import org.wolftec.cwt.core.persistence.PersistenceManager;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.RequestUtil;
 import org.wolftec.cwt.core.util.RequestUtil.ResponseData;
 
@@ -15,10 +15,10 @@ public class DataLoadingManager implements GameLoader {
 
   private static final String DATA_FILE = "system/grabbedData";
 
-  private Log                log;
+  private Log log;
   private PersistenceManager storage;
 
-  private Array<DataLoader>     loaders;
+  private Array<DataLoader> loaders;
   private Array<LoadingWatcher> watchers;
 
   private void downloadFolderFile(DataLoader loader, String path, String file, Callback0 next) {
@@ -28,9 +28,8 @@ public class DataLoadingManager implements GameLoader {
 
     RequestUtil.getJSON(entryDesc.path, (ResponseData<Array<String>> response) -> {
       loader.downloadRemoteFolder(entryDesc, (content) -> {
-        /* TODO */
-        if (content.isPresent()) {
-          storage.set(entryDesc.path, content.get(), (ferr, fdata) -> {
+        if (NullUtil.isPresent(content)) {
+          storage.set(entryDesc.path, content, (ferr, fdata) -> {
             log.info("completed");
             next.$invoke();
           });
@@ -47,8 +46,8 @@ public class DataLoadingManager implements GameLoader {
 
     log.info("iterating folder " + loader.forPath());
     RequestUtil.getJSON(path + "/__filelist__.json", (ResponseData<Array<String>> response) -> {
-      if (response.data.isPresent()) {
-        ListUtil.forEachArrayValueAsync(response.data.get(), (findex, file, fnext) -> {
+      if (NullUtil.isPresent(response.data)) {
+        ListUtil.forEachArrayValueAsync(response.data, (findex, file, fnext) -> {
           downloadFolderFile(loader, path, file, fnext);
         } , next);
 
@@ -100,7 +99,7 @@ public class DataLoadingManager implements GameLoader {
   @Override
   public void onLoad(Callback0 done) {
     storage.get(DATA_FILE, (err, data) -> {
-      if (Option.ofNullable(data).isPresent()) {
+      if (NullUtil.isPresent(data)) {
         handleData(done);
       } else {
         downloadData(() -> handleData(done));

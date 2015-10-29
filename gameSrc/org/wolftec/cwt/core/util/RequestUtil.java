@@ -5,7 +5,6 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.XMLHttpRequest;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.annotations.OptionalField;
 
 /**
@@ -21,10 +20,10 @@ public abstract class RequestUtil {
   public static class ResponseData<T> {
 
     @OptionalField
-    public Option<T> data;
+    public T data;
 
     @OptionalField
-    public Option<String> error;
+    public String error;
   }
 
   /**
@@ -48,8 +47,8 @@ public abstract class RequestUtil {
           err = request.statusText;
         }
 
-        response.data = Option.ofNullable(data);
-        response.error = Option.ofNullable(err);
+        response.data = data;
+        response.error = err;
 
         callback.$invoke(response);
       }
@@ -86,8 +85,8 @@ public abstract class RequestUtil {
           err = request.statusText;
         }
 
-        response.data = Option.ofNullable(data);
-        response.error = Option.ofNullable(err);
+        response.data = data;
+        response.error = err;
 
         callback.$invoke(response);
       }
@@ -121,8 +120,8 @@ public abstract class RequestUtil {
           err = request.statusText;
         }
 
-        response.data = Option.ofNullable(data);
-        response.error = Option.ofNullable(err);
+        response.data = data;
+        response.error = err;
 
         callback.$invoke(response);
       }

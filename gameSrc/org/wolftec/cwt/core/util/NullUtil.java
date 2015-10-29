@@ -1,6 +1,7 @@
 package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.functions.Function0;
 
 public abstract class NullUtil {
 
@@ -10,6 +11,10 @@ public abstract class NullUtil {
 
   public static <T> T getOrElse(T value, T defValue) {
     return isPresent(value) ? value : defValue;
+  }
+
+  public static <T> T getOrElseByProvider(T value, Function0<T> defValueProvider) {
+    return isPresent(value) ? value : defValueProvider.$invoke();
   }
 
   public static <T> T mustBePresent(T value, String undefError) {

@@ -4,7 +4,6 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.ErrorManager;
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.loading.DataLoader;
 import org.wolftec.cwt.core.persistence.FileDescriptor;
 import org.wolftec.cwt.core.util.ClassUtil;
@@ -17,7 +16,7 @@ import org.wolftec.cwt.model.sheets.types.SheetType;
 public abstract class AbstractSheetLoader<T extends SheetType> implements DataLoader {
 
   protected SheetManager db;
-  private ErrorManager   errors;
+  private ErrorManager errors;
 
   protected <M> M read(Map<String, Object> data, String property) {
     M value = (M) data.$get(property);
@@ -33,8 +32,8 @@ public abstract class AbstractSheetLoader<T extends SheetType> implements DataLo
   public abstract String forPath();
 
   @Override
-  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Option<Object>> doneCb) {
-    RequestUtil.getJSON(entryDesc.path, (response) -> doneCb.$invoke(Option.of(response.data.orElse(null))));
+  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Object> doneCb) {
+    RequestUtil.getJSON(entryDesc.path, response -> doneCb.$invoke(response.data));
   }
 
   @Override

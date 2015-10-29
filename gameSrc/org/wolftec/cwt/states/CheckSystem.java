@@ -30,7 +30,7 @@ public class CheckSystem implements GameLoader {
       log.warn("system is not supported");
 
       if (Global.confirm("Go on ?")) {
-        // XXX may show a styled dialog here
+        // HINT may show a styled dialog here
         log.warn("starting cwtactics in an unsupported environment");
         done.$invoke();
       }

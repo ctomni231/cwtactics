@@ -15,17 +15,17 @@ import org.wolftec.cwt.core.log.Log;
 public class GraphicManager implements Injectable, ConfigurationProvider {
 
   private static final String CANVAS_RENDER_CONTEXT = "2d";
-  private static final String CANVAS_ID             = "gameCanvas";
+  private static final String CANVAS_ID = "gameCanvas";
 
   private Log log;
 
-  public Canvas                   mainCanvas;
+  public Canvas mainCanvas;
   public CanvasRenderingContext2D mainCtx;
 
-  public Canvas                   bufferCanvas;
+  public Canvas bufferCanvas;
   public CanvasRenderingContext2D bufferCtx;
 
-  private ConfigurableValue animatedTiles;
+  private ConfigurableValue cfgAnimatedMap;
 
   @Override
   public void onConstruction() {
@@ -37,7 +37,7 @@ public class GraphicManager implements Injectable, ConfigurationProvider {
     bufferCanvas = (Canvas) Global.window.document.createElement("canvas");
     bufferCtx = bufferCanvas.getContext(CANVAS_RENDER_CONTEXT);
 
-    animatedTiles = new ConfigurableValue("app.gfx.animatedTiles", 0, 1, 1);
+    cfgAnimatedMap = new ConfigurableValue("app.gfx.map.animated", 0, 1, 1);
   }
 
   public int absoluteScreenHeight() {
@@ -49,7 +49,8 @@ public class GraphicManager implements Injectable, ConfigurationProvider {
   }
 
   public int convertPointToTile(int point) {
-    return 0; // TODO
+    log.warn("convertPointToTile isn't implemented yet");
+    return 0;
   }
 
   public void clearBuffer() {

@@ -4,12 +4,12 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.ErrorManager;
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.persistence.PersistenceManager;
 import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.core.util.VersionUtil;
 
@@ -18,9 +18,9 @@ public class UpdateManager implements GameLoader {
   private static final String KEY_SYSTEM_VERSION = "system/version";
 
   private PersistenceManager pm;
-  private ErrorManager       error;
+  private ErrorManager error;
 
-  private Log           log;
+  private Log log;
   private Array<Update> updates;
 
   private void sortUpdaters() {
@@ -67,8 +67,8 @@ public class UpdateManager implements GameLoader {
      */
     sortUpdaters();
 
-    pm.getItem(KEY_SYSTEM_VERSION, (String err, Option<String> data) -> {
-      int currentVersion = VersionUtil.convertVersionToNumber(data.orElse("0.0.0"));
+    pm.getItem(KEY_SYSTEM_VERSION, (err, data) -> {
+      int currentVersion = VersionUtil.convertVersionToNumber(NullUtil.getOrElse((String) data, "0.0.0"));
 
       ListUtil.forEachArrayValueAsync(updates, (index, update, next) -> {
         if (currentVersion < VersionUtil.convertVersionToNumber(update.getUpdateVersion())) {

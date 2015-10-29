@@ -3,17 +3,17 @@ package org.wolftec.cwt.core.input;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 
 public class InputManager implements Injectable, InputProvider {
 
-  private static final String  NOTHING_MAPPED = "NONE";
+  private static final String NOTHING_MAPPED = "NONE";
   private Map<String, Integer> actionState;
   private Map<String, Boolean> buttonState;
-  private Map<String, String>  buttonMapping;
+  private Map<String, String> buttonMapping;
 
   @Override
   public void onConstruction() {
@@ -24,12 +24,12 @@ public class InputManager implements Injectable, InputProvider {
 
   @Override
   public boolean isActionPressed(String action) {
-    return Option.ofNullable(actionState.$get(action)).orElse(0) > 0;
+    return NullUtil.getOrElse(actionState.$get(action), 0) > 0;
   }
 
   @Override
   public boolean isButtonPressed(String button) {
-    return Option.ofNullable(buttonState.$get(button)).orElse(false);
+    return NullUtil.getOrElse(buttonState.$get(button), false);
   }
 
   /**
@@ -53,7 +53,7 @@ public class InputManager implements Injectable, InputProvider {
 
       String action = buttonMapping.$get(button);
       if (action != null) {
-        actionState.$put(action, Option.ofNullable(actionState.$get(action)).orElse(0) + (status ? 1 : -1));
+        actionState.$put(action, NullUtil.getOrElse(actionState.$get(action), 0) + (status ? 1 : -1));
         if (actionState.$get(action) < 0) {
           // JsUtil.throwError("IllegalActionState: negative action counter
           // detected");
@@ -68,7 +68,7 @@ public class InputManager implements Injectable, InputProvider {
       JsUtil.throwError("IllegalArgumentException: null");
     }
 
-    boolean pressed = Option.ofNullable(buttonState.$get(button)).orElse(false);
+    boolean pressed = NullUtil.getOrElse(buttonState.$get(button), false);
 
     /*
      * deactivate the button here to decrease the action counter of the previous

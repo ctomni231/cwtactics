@@ -4,11 +4,11 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.NullUtil;
 
 public class SaveManager implements GameLoader {
 
@@ -72,12 +72,12 @@ public class SaveManager implements GameLoader {
    */
   public void loadAppData(Callback1<String> doneCb) {
     pm.get(CONFIG_APP_JSON, (err, data) -> {
-      if (Option.ofNullable(data).isPresent()) {
+      if (NullUtil.isPresent(data)) {
         log.info("loading application config from game storage");
 
         ListUtil.forEachArrayValue(appHandlers, (index, appHandler) -> {
-          Option<Object> handlerData = Option.ofNullable(JSObjectAdapter.$get(data, ClassUtil.getClassName(appHandler)));
-          if (handlerData.isPresent()) {
+          Object handlerData = JSObjectAdapter.$get(data, ClassUtil.getClassName(appHandler));
+          if (NullUtil.isPresent(handlerData)) {
             appHandler.onAppLoad(handlerData);
           }
         });

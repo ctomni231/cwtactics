@@ -71,7 +71,7 @@ public class JoinUnitActionTest extends AbstractCwtTest {
     test.expectThat.sourceSelectionAt(1, 1);
     test.expectThat.targetSelectionAt(2, 1);
     test.modify.invokeAction(action);
-    // TODO test.assertThat.unitAt(1, 1).is(null);
+    // HINT test.assertThat.unitAt(1, 1).is(null);
     test.assertThat.unitAt(2, 1).propertyByFn((unit) -> Unit.healthToPoints(unit.hp)).is(2);
     test.assertThat.unitAt(2, 1).propertyByFn((unit) -> unit.fuel).is(2);
     test.assertThat.unitAt(2, 1).propertyByFn((unit) -> unit.ammo).is(2);
@@ -95,7 +95,7 @@ public class JoinUnitActionTest extends AbstractCwtTest {
     test.expectThat.unitType("unitA").costs = 10000;
     test.expectThat.player(0, (player) -> player.gold = 0);
     test.modify.invokeAction(action);
-    // TODO test.assertThat.unitAt(1, 1).is(null);
+    // HINT test.assertThat.unitAt(1, 1).is(null);
     test.assertThat.unitAt(2, 1).propertyByFn((unit) -> Unit.healthToPoints(unit.hp)).is(10);
     test.assertThat.player(0).propertyByFn((p) -> p.gold).greaterThen(0);
   }

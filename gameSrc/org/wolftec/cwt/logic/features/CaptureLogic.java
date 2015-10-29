@@ -44,23 +44,15 @@ public class CaptureLogic implements Injectable, ConfigurationProvider {
    * 
    * @param property
    * @param unit
-   * @return
+   * @return true if the property was captured completely, else false
    */
   public boolean captureProperty(Property property, Unit unit) {
-
     property.points -= cfgCapturerPoints.value;
     if (property.points <= 0) {
       property.owner = unit.owner;
       property.points = cfgPropertyPoints.value;
-
-      // TODO: if max points are static then the configurable points from the
-      // property sheets can be removed
-
-      // was captured
       return true;
     }
-
-    // was not captured
     return false;
   }
 }

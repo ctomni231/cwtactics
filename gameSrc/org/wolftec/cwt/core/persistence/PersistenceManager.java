@@ -3,7 +3,6 @@ package org.wolftec.cwt.core.persistence;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.env.Features;
 import org.wolftec.cwt.core.ioc.Injectable;
 
@@ -21,9 +20,9 @@ public class PersistenceManager implements Injectable {
   /**
    * Maximum size of the application stoarge.
    */
-  public static final int DEFAULT_DB_SIZE         = 50;
+  public static final int DEFAULT_DB_SIZE = 50;
 
-  private Features        features;
+  private Features features;
 
   @Override
   public void onConstruction() {
@@ -39,13 +38,15 @@ public class PersistenceManager implements Injectable {
    * @param key
    * @param callback
    */
-  public void get(String key, Callback2<String, Object> callback) {
-    LocalForage.localforage.getItem(key, callback);
+  public <T> void get(String key, Callback2<String, T> callback) {
+    LocalForage.localforage.getItem(key, (rErr, rData) -> {
+      callback.$invoke(rErr, (T) rData);
+    });
   }
 
-  public <T> void getItem(String key, Callback2<String, Option<T>> callback) {
+  public <T> void getItem(String key, Callback2<String, T> callback) {
     LocalForage.localforage.getItem(key, (rErr, rData) -> {
-      callback.$invoke(rErr, Option.ofNullable((T) rData));
+      callback.$invoke(rErr, (T) rData);
     });
   }
 

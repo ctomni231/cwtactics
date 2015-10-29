@@ -2,15 +2,16 @@ package org.wolftec.cwt.core.i18;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.Option;
+import org.wolftec.cwt.core.annotations.OptionalReturn;
 import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.persistence.PersistenceManager;
+import org.wolftec.cwt.core.util.NullUtil;
 
 public class LanguageSelector implements GameLoader {
 
-  private Log                log;
-  private LanguageManager    i18n;
+  private Log log;
+  private LanguageManager i18n;
   private PersistenceManager storage;
 
   @Override
@@ -28,12 +29,12 @@ public class LanguageSelector implements GameLoader {
   @Override
   public void onLoad(Callback0 done) {
     storage.get("cfg.language", (error, keyValue) -> {
-      if (Option.ofNullable(keyValue).isPresent()) {
+      if (NullUtil.isPresent(keyValue)) {
         tryToSelectLanguage((String) keyValue);
         done.$invoke();
 
       } else {
-        switch (browserLanguage().orElse("en")) {
+        switch (NullUtil.getOrElse(browserLanguage(), "en")) {
 
           case "de":
           case "de-de":
@@ -54,7 +55,8 @@ public class LanguageSelector implements GameLoader {
     });
   }
 
-  private Option<String> browserLanguage() {
-    return Option.ofNullable((String) JSObjectAdapter.$js("window.navigator.userLanguage || window.navigator.language"));
+  @OptionalReturn
+  private String browserLanguage() {
+    return (String) JSObjectAdapter.$js("window.navigator.userLanguage || window.navigator.language");
   }
 }

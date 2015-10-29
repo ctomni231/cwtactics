@@ -2,7 +2,7 @@ package org.wolftec.cwt.model.sheets.loaders;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.Option;
+import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
 
@@ -26,7 +26,7 @@ public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
   @Override
   public void hydrate(Map<String, Object> data, PropertyType sheet) {
 
-    Map<String, Object> cannonDataMap = Option.ofNullable((Map<String, Object>) data.$get("cannon")).orElseGet(() -> {
+    Map<String, Object> cannonDataMap = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("cannon"), () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("damage", 0);
       map.$put("direction", "");
@@ -34,7 +34,7 @@ public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
       return map;
     });
 
-    Map<String, Object> siloDataMap = Option.ofNullable((Map<String, Object>) data.$get("rocketsilo")).orElseGet(() -> {
+    Map<String, Object> siloDataMap = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("rocketsilo"), () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("changeTo", "");
       map.$put("damage", 0);

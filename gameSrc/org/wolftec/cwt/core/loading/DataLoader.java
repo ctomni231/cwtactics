@@ -2,7 +2,6 @@ package org.wolftec.cwt.core.loading;
 
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.Option;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.persistence.FileDescriptor;
 
@@ -16,7 +15,7 @@ public interface DataLoader extends Injectable {
    * @param entryDesc
    * @param doneCb
    */
-  void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Option<Object>> doneCb);
+  void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Object> doneCb);
 
   /**
    * Loads the given data key from the local data location.
