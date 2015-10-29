@@ -2,7 +2,6 @@ package org.wolftec.cwt.core.state;
 
 import org.wolftec.cwt.core.annotations.OptionalReturn;
 import org.wolftec.cwt.core.util.AssertUtil;
-import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 
 /**
@@ -12,7 +11,7 @@ public class StateFlowData {
 
   private String previousState;
   private String nextState;
-  private int    blockInputRequest;
+  private int blockInputRequest;
 
   public StateFlowData() {
     previousState = null;
@@ -25,18 +24,14 @@ public class StateFlowData {
    * @param nullableState
    */
   public void setTransitionTo(String state) {
-    NullUtil.getOrThrow(state, "next state is undefined");
-    nextState = state;
+    nextState = NullUtil.getOrThrow(state);
   }
 
   /**
    * 
    */
   public void flushTransitionTo() {
-    if (!NullUtil.isPresent(nextState)) {
-      JsUtil.throwError("NoSuchStateException: cannot flush target value null");
-    }
-    previousState = nextState;
+    previousState = NullUtil.getOrThrow(nextState);
     nextState = null;
   }
 

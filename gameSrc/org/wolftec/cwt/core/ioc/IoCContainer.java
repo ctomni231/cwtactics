@@ -8,6 +8,7 @@ import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 
@@ -22,8 +23,7 @@ public class IoCContainer {
   public <T extends Injectable> T getManagedObjectByType(Class<T> clazz) {
     String className = ClassUtil.getClassName(clazz);
     T managedObject = (T) managedObjects.$get(className);
-    NullUtil.getOrThrow(managedObject, "unknown state " + className);
-    return managedObject;
+    return NullUtil.getOrThrow(managedObject);
   }
 
   public void initByConfig(IoCConfiguration config) {
@@ -31,7 +31,7 @@ public class IoCContainer {
       config.namespaces.push("wEng");
     }
 
-    NullUtil.mayNotPresent(managedObjects, "already initialized");
+    AssertUtil.assertThat(!NullUtil.isPresent(managedObjects));
     managedObjects = JSCollections.$map();
 
     /*
@@ -75,7 +75,7 @@ public class IoCContainer {
         boolean isAbstract = ClassUtil.getClassName(classObject).startsWith(NON_IOC_CANDIDATE_CLASSNAMEPART);
 
         if (isManaged && !isAbstract) {
-          NullUtil.mayNotPresent(managedObjects.$get(className), "already managed " + className);
+          AssertUtil.assertThat(!NullUtil.isPresent(managedObjects.$get(className)));
 
           /*
            * casting is okay here because isManaged proved that classObject is
@@ -160,8 +160,7 @@ public class IoCContainer {
     if (ClassUtil.classImplementsInterface(propertyType, Injectable.class)) {
       String propertyTypeName = ClassUtil.getClassName(propertyType);
       Injectable managedObject = managedObjects.$get(propertyTypeName);
-      NullUtil.getOrThrow(managedObject, "missing injectable " + propertyTypeName);
-      JSObjectAdapter.$put(instance, prop, managedObject);
+      JSObjectAdapter.$put(instance, prop, NullUtil.getOrThrow(managedObject));
       return true;
     }
     return false;

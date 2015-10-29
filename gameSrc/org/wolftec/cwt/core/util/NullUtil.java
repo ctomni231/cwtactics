@@ -3,10 +3,8 @@ package org.wolftec.cwt.core.util;
 import java.util.Optional;
 
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Function0;
 import org.wolftec.cwt.core.annotations.MayRaisesError;
-import org.wolftec.cwt.core.annotations.OptionalParameter;
 
 /**
  * This utility class is heavily inspired by {@link Optional} but uses a non
@@ -43,32 +41,11 @@ public abstract class NullUtil {
     return isPresent(value) ? value : defValueProvider.$invoke();
   }
 
-  /**
-   * @see getOrThrow(value,error)
-   * @param value
-   * @return
-   */
-  @Native
-  public static <T> T getOrThrow(T value) {
-    return null; // ...native...
-  }
-
-  @MayRaisesError("when value is not present")
-  public static <T> T getOrThrow(T value, @OptionalParameter String error) {
-    AssertUtil.assertThat(isPresent(value), getOrElse(error, "ValueNotPresentException"));
-    return value;
-  }
-
-  /**
-   * @see mayNotPresent(value,error)
-   * @param value
-   */
-  @Native
-  public static void mayNotPresent(Object value) {
-  }
-
   @MayRaisesError("when value is present")
-  public static void mayNotPresent(Object value, @OptionalParameter String error) {
-    AssertUtil.assertThat(!isPresent(value), getOrElse(error, "ValuePresentException"));
+  public static <T> T getOrThrow(T value) {
+    if (!isPresent(value)) {
+      JsUtil.throwError("ValueNotPresentException");
+    }
+    return value;
   }
 }

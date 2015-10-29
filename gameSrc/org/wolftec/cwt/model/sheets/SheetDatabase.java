@@ -5,6 +5,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
@@ -32,17 +33,14 @@ public class SheetDatabase<T extends SheetType> {
   }
 
   public void registerSheet(T sheet) {
-    NullUtil.mayNotPresent(sheets.$get(sheet.ID), "already registered");
-
+    AssertUtil.assertThat(!NullUtil.isPresent(sheets.$get(sheet.ID)));
     sheets.$put(sheet.ID, sheet);
     types.push(sheet.ID);
   }
 
   public T get(String key) {
     T sheet = sheets.$get(key);
-
-    NullUtil.getOrThrow(sheet, "unknown id " + key);
-    return sheet;
+    return NullUtil.getOrThrow(sheet);
   }
 
   /**

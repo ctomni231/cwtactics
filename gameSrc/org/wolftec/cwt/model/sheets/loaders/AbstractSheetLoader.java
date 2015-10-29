@@ -20,8 +20,7 @@ public abstract class AbstractSheetLoader<T extends SheetType> implements DataLo
 
   protected <M> M read(Map<String, Object> data, String property) {
     M value = (M) data.$get(property);
-    NullUtil.getOrThrow(value, property + " is missing in data map");
-    return value;
+    return NullUtil.getOrThrow(value);
   }
 
   protected <M> M readNullable(Map<String, Object> data, String property, M defaultValue) {

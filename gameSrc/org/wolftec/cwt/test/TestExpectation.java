@@ -171,7 +171,7 @@ public class TestExpectation {
   }
 
   public Unit unitAt(int x, int y) {
-    return NullUtil.getOrThrow(parent.model.getTile(x, y).unit, "no unit there");
+    return NullUtil.getOrThrow(parent.model.getTile(x, y).unit);
   }
 
   public void turnOwner(int ownerId) {

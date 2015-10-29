@@ -382,7 +382,7 @@ public class MoveLogic implements Injectable {
    */
   // TODO @ME REFA THIS MONSTER O_O !!!!
   public void fillMoveMap(PositionData source, MoveableMatrix selection) {
-    NullUtil.getOrThrow(source.unit, NO_UNIT_AT_POSITION_ERROR);
+    NullUtil.getOrThrow(source.unit);
 
     int cost;
     int x = source.x;
@@ -557,7 +557,7 @@ public class MoveLogic implements Injectable {
   }
 
   public boolean trapCheck(ModelManager model, CircularBuffer<Integer> movePath, PositionData source, PositionData target) {
-    NullUtil.getOrThrow(source.unit, NO_UNIT_AT_POSITION_ERROR);
+    NullUtil.getOrThrow(source.unit);
 
     int cBx = 0;
     int cBy = 0;
@@ -714,7 +714,7 @@ public class MoveLogic implements Injectable {
    *         position, else false
    */
   public boolean canMoveSomewhere(ModelManager model, PositionData position) {
-    NullUtil.getOrThrow(position.unit, NO_UNIT_AT_POSITION_ERROR);
+    NullUtil.getOrThrow(position.unit);
 
     Unit unit = position.unit;
     MoveType mv = sheets.movetypes.get(unit.type.movetype);

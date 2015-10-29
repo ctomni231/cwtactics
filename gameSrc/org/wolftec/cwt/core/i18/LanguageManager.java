@@ -4,6 +4,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 
 public class LanguageManager implements Injectable {
@@ -28,7 +29,7 @@ public class LanguageManager implements Injectable {
    * and its values the localized string for the key.
    */
   public void registerLanguage(String key, Map<String, String> obj) {
-    NullUtil.mayNotPresent(languages.$get(key), "language for " + key + " is already registered");
+    AssertUtil.assertThat(!NullUtil.isPresent(languages.$get(key)));
     Map<String, String> newLang = JSCollections.$map();
 
     ObjectUtil.forEachMapValue(obj, (skey, value) -> {
@@ -52,8 +53,7 @@ public class LanguageManager implements Injectable {
    */
   public void selectLanguage(String key) {
     Map<String, String> language = languages.$get(key);
-    NullUtil.getOrThrow(language, "unknown language");
-    selected = language;
+    selected = NullUtil.getOrThrow(language);
   }
 
   /**

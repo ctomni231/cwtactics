@@ -29,7 +29,7 @@ public class ConfigPeristence implements GameLoader, SaveAppdataHandler<Map<Stri
         return;
       }
 
-      cfg.setValue(NumberUtil.convertStringToInt(cfgParamValue));
+      cfg.setValue(NumberUtil.asInt(cfgParamValue));
     }
   }
 

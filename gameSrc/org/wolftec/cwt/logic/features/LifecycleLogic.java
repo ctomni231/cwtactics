@@ -5,7 +5,6 @@ import org.wolftec.cwt.core.annotations.OptionalReturn;
 import org.wolftec.cwt.core.config.ConfigurableValue;
 import org.wolftec.cwt.core.config.ConfigurationProvider;
 import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
@@ -97,7 +96,6 @@ public class LifecycleLogic implements Injectable, ConfigurationProvider {
   public void createProperty(int x, int y, Player player, String type) {
     Tile tile = model.getTile(x, y);
     Property prop = getInactiveProperty();
-    NullUtil.getOrThrow(prop, "no free property left");
     prop.owner = player;
     prop.type = sheets.properties.get(type);
     tile.property = prop;
