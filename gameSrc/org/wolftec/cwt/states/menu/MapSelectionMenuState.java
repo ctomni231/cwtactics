@@ -4,7 +4,7 @@ import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.state.AbstractState;
 import org.wolftec.cwt.core.state.GameActions;
 import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.model.mapfile.MapManager;
+import org.wolftec.cwt.model.persistence.MapManager;
 
 public class MapSelectionMenuState extends AbstractState {
 

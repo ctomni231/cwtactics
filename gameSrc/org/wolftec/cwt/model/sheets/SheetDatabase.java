@@ -32,7 +32,7 @@ public class SheetDatabase<T extends SheetType> {
     sheets = JSCollections.$map();
   }
 
-  public void registerSheet(T sheet) {
+  public void register(T sheet) {
     AssertUtil.assertThat(!NullUtil.isPresent(sheets.$get(sheet.ID)));
     sheets.$put(sheet.ID, sheet);
     types.push(sheet.ID);
@@ -107,6 +107,9 @@ public class SheetDatabase<T extends SheetType> {
     } while (true);
   }
 
+  /**
+   * Removes all registered sheets.
+   */
   public void dropAll() {
     forEach((id, sheet) -> sheets.$delete(id));
     types.splice(0, types.$length());

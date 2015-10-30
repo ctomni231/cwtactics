@@ -3,10 +3,10 @@ package org.wolftec.cwt.model.sheets.loaders;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.loading.DataLoader;
 import org.wolftec.cwt.core.persistence.FileDescriptor;
 import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.RequestUtil;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
@@ -16,7 +16,6 @@ import org.wolftec.cwt.model.sheets.types.SheetType;
 public abstract class AbstractSheetLoader<T extends SheetType> implements DataLoader {
 
   protected SheetManager db;
-  private ErrorManager errors;
 
   protected <M> M read(Map<String, Object> data, String property) {
     M value = (M) data.$get(property);
@@ -50,11 +49,11 @@ public abstract class AbstractSheetLoader<T extends SheetType> implements DataLo
        * from the data class structure.
        */
       hydrate((Map<String, Object>) entry, data);
-      getDatabase().registerSheet(data);
+      getDatabase().register(data);
       doneCb.$invoke();
 
     } catch (Exception e) {
-      errors.raiseError("could not hydrate data for " + entryDesc.fileNameWithoutExtension + " because of " + e, "sheet loading");
+      JsUtil.throwError("could not hydrate data for " + entryDesc.fileNameWithoutExtension + " because of " + e);
     }
   }
 

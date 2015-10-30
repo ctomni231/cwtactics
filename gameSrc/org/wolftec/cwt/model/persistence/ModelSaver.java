@@ -1,4 +1,4 @@
-package org.wolftec.cwt.model.gameround.persistence;
+package org.wolftec.cwt.model.persistence;
 
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.log.Log;

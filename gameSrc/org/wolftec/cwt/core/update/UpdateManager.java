@@ -3,12 +3,12 @@ package org.wolftec.cwt.core.update;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.ErrorManager;
-import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.loading.GameLoader;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.persistence.PersistenceManager;
 import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.ListUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.core.util.VersionUtil;
@@ -18,7 +18,6 @@ public class UpdateManager implements GameLoader {
   private static final String KEY_SYSTEM_VERSION = "system/version";
 
   private PersistenceManager pm;
-  private ErrorManager error;
 
   private Log log;
   private Array<Update> updates;
@@ -42,7 +41,7 @@ public class UpdateManager implements GameLoader {
       });
 
     } catch (Exception e) {
-      error.raiseError("could not evaluate update for " + ClassUtil.getClassName(update), ClassUtil.getClassName(this));
+      JsUtil.throwError("could not evaluate update for " + ClassUtil.getClassName(update));
       next.$invoke();
     }
   }

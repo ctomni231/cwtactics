@@ -4,12 +4,12 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.ioc.ObservesIocState;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.util.ClassUtil;
 import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.ListUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 
 public class ConfigurableValueManager implements Injectable, ObservesIocState {

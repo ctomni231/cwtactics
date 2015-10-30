@@ -1,4 +1,4 @@
-package org.wolftec.cwt.core.collections;
+package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
@@ -10,7 +10,6 @@ import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Callback3;
 import org.wolftec.cwt.core.annotations.Async;
 import org.wolftec.cwt.core.annotations.AsyncCallback;
-import org.wolftec.cwt.core.util.JsUtil;
 
 public abstract class ListUtil {
 

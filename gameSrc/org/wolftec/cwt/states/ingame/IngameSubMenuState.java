@@ -1,17 +1,15 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.state.AbstractIngameState;
 import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.states.UserInteractionData;
 
 public class IngameSubMenuState extends AbstractIngameState {
 
   private UserInteractionData data;
-  private ErrorManager errors;
 
   private boolean leavePossible;
 
@@ -20,7 +18,7 @@ public class IngameSubMenuState extends AbstractIngameState {
     String lastState = transition.getPreviousState();
     leavePossible = (lastState == "IngameMovepathSelectionState" || lastState == "IngameIdleState");
     if (data.getNumberOfInfos() == 0) {
-      errors.raiseError("NoActionMenuData", ClassUtil.getClassName(IngameSubMenuState.class));
+      JsUtil.throwError("no action menu data");
     }
   }
 

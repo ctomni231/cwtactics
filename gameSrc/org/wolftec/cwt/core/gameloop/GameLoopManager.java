@@ -1,10 +1,10 @@
-package org.wolftec.cwt.core;
+package org.wolftec.cwt.core.gameloop;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.gameloop.FrameTickListener;
+import org.wolftec.cwt.core.AppConfiguration;
 import org.wolftec.cwt.core.input.BlockedInputManager;
 import org.wolftec.cwt.core.input.InputManager;
 import org.wolftec.cwt.core.ioc.Injectable;

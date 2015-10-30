@@ -2,10 +2,10 @@ package org.wolftec.cwt.core.i18;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.core.util.NullUtil;
+import org.wolftec.cwt.core.util.ObjectUtil;
 
 public class LanguageManager implements Injectable {
 

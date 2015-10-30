@@ -1,4 +1,4 @@
-package org.wolftec.cwt.model.gameround.persistence;
+package org.wolftec.cwt.model.persistence;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
@@ -12,6 +12,7 @@ import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 
+@Deprecated
 public class DefaultTypesLoader implements Injectable, GameLoader {
 
   private SheetManager sheets;
@@ -30,7 +31,7 @@ public class DefaultTypesLoader implements Injectable, GameLoader {
     noMove.ID = "NOMV";
     noMove.costs = JSCollections.$map();
     noMove.costs.$put("*", -1);
-    sheets.movetypes.registerSheet(noMove);
+    sheets.movetypes.register(noMove);
 
     PropertyType invisibleProperty = new PropertyType();
     invisibleProperty.ID = "INVP";
@@ -38,7 +39,7 @@ public class DefaultTypesLoader implements Injectable, GameLoader {
     invisibleProperty.vision = 0;
     invisibleProperty.capturable = false;
     invisibleProperty.visionBlocker = true;
-    sheets.properties.registerSheet(invisibleProperty);
+    sheets.properties.register(invisibleProperty);
 
     UnitType invisibleUnit = new UnitType();
     invisibleUnit.ID = "INVU";
@@ -48,7 +49,7 @@ public class DefaultTypesLoader implements Injectable, GameLoader {
     invisibleUnit.vision = 1;
     invisibleUnit.fuel = 0;
     invisibleUnit.ammo = 0;
-    sheets.units.registerSheet(invisibleUnit);
+    sheets.units.register(invisibleUnit);
 
     UnitType laserUnit = new UnitType();
     laserUnit.ID = LaserLogic.LASER_UNIT_ID;
@@ -58,7 +59,7 @@ public class DefaultTypesLoader implements Injectable, GameLoader {
     laserUnit.vision = 1;
     laserUnit.fuel = 0;
     laserUnit.ammo = 0;
-    sheets.units.registerSheet(laserUnit);
+    sheets.units.register(laserUnit);
 
     UnitType cannonUnit = new UnitType();
     cannonUnit.ID = SpecialWeaponsLogic.CANNON_UNIT_ID;
@@ -68,7 +69,7 @@ public class DefaultTypesLoader implements Injectable, GameLoader {
     cannonUnit.vision = 1;
     cannonUnit.fuel = 0;
     cannonUnit.ammo = 0;
-    sheets.units.registerSheet(cannonUnit);
+    sheets.units.register(cannonUnit);
 
     done.$invoke();
   }

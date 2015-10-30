@@ -1,13 +1,12 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionType;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.state.AbstractIngameState;
 import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.core.util.ClassUtil;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
@@ -16,8 +15,7 @@ public class IngameMenuState extends AbstractIngameState {
 
   private Log log;
 
-  private ErrorManager errors;
-  private MoveLogic    move;
+  private MoveLogic move;
   private ModelManager model;
 
   private Array<Action> actionList;
@@ -82,7 +80,7 @@ public class IngameMenuState extends AbstractIngameState {
       uiData.getAction().prepareActionMenu(uiData);
 
       if (uiData.getNumberOfInfos() == 0) {
-        errors.raiseError("NoActionAvailable", ClassUtil.getClassName(IngameMenuState.class));
+        JsUtil.throwError("NoActionAvailable");
       }
 
       transition.setTransitionTo("IngameSubMenuState");

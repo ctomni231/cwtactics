@@ -260,7 +260,7 @@ public class TestExpectation {
 
   <T extends SheetType> void registerType(String id, T sheet, SheetDatabase<T> db) {
     sheet.ID = id;
-    db.registerSheet(sheet);
+    db.register(sheet);
   }
 
   public void actionSubMenuOpened(Action action) {

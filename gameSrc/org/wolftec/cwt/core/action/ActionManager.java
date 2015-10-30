@@ -6,11 +6,11 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.collections.CircularBuffer;
-import org.wolftec.cwt.core.collections.ListUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.net.NetworkManager;
 import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.core.util.ListUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.core.util.StringUtil;
 

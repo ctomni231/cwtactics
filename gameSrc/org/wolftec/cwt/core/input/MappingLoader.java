@@ -1,8 +1,8 @@
 package org.wolftec.cwt.core.input;
 
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.persistence.SaveAppdataHandler;
+import org.wolftec.cwt.core.util.ObjectUtil;
 
 /**
  * This module saves and loads the input mapping of the game.

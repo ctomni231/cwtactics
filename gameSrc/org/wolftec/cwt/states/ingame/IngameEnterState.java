@@ -1,15 +1,15 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.state.AbstractState;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.logic.features.TurnLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
-import org.wolftec.cwt.model.mapfile.MapData;
-import org.wolftec.cwt.model.mapfile.MapManager;
+import org.wolftec.cwt.model.persistence.MapData;
+import org.wolftec.cwt.model.persistence.MapManager;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.states.UiDataMapConfiguration;
 import org.wolftec.cwt.states.UserInteractionData;
@@ -20,7 +20,6 @@ public class IngameEnterState extends AbstractState {
   private ModelManager model;
   private SheetManager sheets;
   private MapManager maps;
-  private ErrorManager error;
   private UserInteractionData uiData;
 
   private TurnLogic turnLogic;
@@ -45,7 +44,7 @@ public class IngameEnterState extends AbstractState {
 
         loaded = true;
       } catch (Exception e) {
-        error.raiseError("Could not load map (" + e + ")", "IngameEnter");
+        JsUtil.throwError("Could not load map (" + e + ")");
       }
     });
   }

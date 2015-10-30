@@ -1,6 +1,5 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.ErrorManager;
 import org.wolftec.cwt.core.action.Action;
 import org.wolftec.cwt.core.action.ActionData;
 import org.wolftec.cwt.core.action.ActionManager;
@@ -8,6 +7,7 @@ import org.wolftec.cwt.core.input.InputProvider;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.state.AbstractState;
 import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.renderer.GraphicManager;
 
@@ -19,16 +19,15 @@ public class IngameEvalActionState extends AbstractState {
 
   private Log log;
 
-  private ErrorManager  errors;
   private ActionManager actions;
 
-  private Action     activeAction;
+  private Action activeAction;
   private ActionData activeData;
 
   @Override
   public void onEnter(StateFlowData transition) {
     if (!actions.hasData()) {
-      errors.raiseError("no action data available", "ActionEval");
+      JsUtil.throwError("no action data available");
     }
 
     activeData = actions.popData();
@@ -71,7 +70,7 @@ public class IngameEvalActionState extends AbstractState {
       } else {
         // check target state
         if (!nextState.startsWith("Ingame")) {
-          errors.raiseError("cannot move into a non-ingame state here", "ActionEvaluation");
+          JsUtil.throwError("cannot move into a non-ingame state here");
         }
       }
 

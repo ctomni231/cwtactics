@@ -1,4 +1,4 @@
-package org.wolftec.cwt.model.mapfile;
+package org.wolftec.cwt.model.persistence;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.STJSBridge;

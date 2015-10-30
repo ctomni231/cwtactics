@@ -2,26 +2,47 @@ package org.wolftec.cwt.states.misc;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.env.ResetSystem;
+import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.state.AbstractMenuState;
 import org.wolftec.cwt.core.state.GameActions;
-import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.core.state.MenuInteractionMap;
+import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.core.state.StateManager;
+import org.wolftec.cwt.core.util.ObjectUtil;
 
 public class ErrorState extends AbstractMenuState {
 
-  private static final String UIC_RELOAD  = "RELOAD";
+  private static final String UIC_RELOAD = "RELOAD";
   private static final String UIC_WIPEOUT = "WIPEOUT";
-  public String               message;
-  public String               where;
 
-  public MenuInteractionMap   mapping;
+  private String message;
+
+  private MenuInteractionMap mapping;
+  private Log log;
+
+  private StateManager stm;
 
   @Override
   public void onConstruction() {
     mapping.registerMulti(UIC_WIPEOUT, JSCollections.$array(GameActions.BUTTON_LEFT, GameActions.BUTTON_RIGHT), UIC_RELOAD);
     mapping.registerMulti(UIC_RELOAD, JSCollections.$array(GameActions.BUTTON_LEFT, GameActions.BUTTON_RIGHT), UIC_WIPEOUT);
     mapping.setState(UIC_RELOAD);
+    registerErrorHandler();
+  }
+
+  @Override
+  public void onEnter(StateFlowData flowData) {
+    log.warn("entered error state with error date [" + message + "]");
+  }
+
+  private void registerErrorHandler() {
+    ErrorState that = this;
+    ObjectUtil.setObjectProperty(Global.window, "onerror", (Callback1<String>) (error) -> {
+      that.message = error;
+      that.stm.changeState("ErrorState");
+    });
   }
 
   @Override

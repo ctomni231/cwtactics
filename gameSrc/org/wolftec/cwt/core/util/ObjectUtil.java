@@ -1,4 +1,4 @@
-package org.wolftec.cwt.core.collections;
+package org.wolftec.cwt.core.util;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;
@@ -7,13 +7,16 @@ import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function1;
 import org.wolftec.cwt.core.annotations.OptionalReturn;
-import org.wolftec.cwt.core.util.JsUtil;
 
-public class ObjectUtil {
+public abstract class ObjectUtil {
 
   @OptionalReturn
   public static <T> T getObjectProperty(Object obj, String property) {
     return (T) JSObjectAdapter.$get(obj, property);
+  }
+
+  public static void setObjectProperty(Object obj, String property, Object value) {
+    JSObjectAdapter.$put(obj, property, value);
   }
 
   public static void forEachObjectKeys(Object obj, Callback1<String> callback) {

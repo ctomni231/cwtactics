@@ -3,10 +3,10 @@ package org.wolftec.cwt.core.input;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
-import org.wolftec.cwt.core.collections.ObjectUtil;
 import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.core.util.NullUtil;
+import org.wolftec.cwt.core.util.ObjectUtil;
 
 public class InputManager implements Injectable, InputProvider {
 
