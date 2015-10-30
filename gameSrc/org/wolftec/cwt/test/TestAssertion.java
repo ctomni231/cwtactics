@@ -8,8 +8,8 @@ import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.test.Assert;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.test.Assert;
 
 public class TestAssertion {
 

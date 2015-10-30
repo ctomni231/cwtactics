@@ -4,8 +4,8 @@ import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.wotec.config.ConfigurableValueManager;
-import org.wolftec.cwt.wotec.test.Test;
+import org.wolftec.wTec.config.ConfigurableValueManager;
+import org.wolftec.wTec.test.Test;
 
 public abstract class AbstractCwtTest implements Test {
 

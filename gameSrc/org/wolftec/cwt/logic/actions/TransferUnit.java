@@ -4,10 +4,10 @@ import org.wolftec.cwt.logic.features.TeamLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.util.AssertUtil;
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.action.ActionData;
-import org.wolftec.cwt.wotec.action.ActionType;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.action.ActionData;
+import org.wolftec.wTec.action.ActionType;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class TransferUnit implements Action {
 

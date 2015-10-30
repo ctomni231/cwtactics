@@ -1,9 +1,9 @@
 package org.wolftec.cwt.logic.actions;
 
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.action.ActionData;
-import org.wolftec.cwt.wotec.action.ActionType;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.action.ActionData;
+import org.wolftec.wTec.action.ActionType;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class GoToOptions implements Action {
 

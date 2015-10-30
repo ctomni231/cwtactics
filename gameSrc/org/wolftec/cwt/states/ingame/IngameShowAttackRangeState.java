@@ -2,10 +2,10 @@ package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.logic.features.BattleLogic;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.wotec.input.InputProvider;
-import org.wolftec.cwt.wotec.state.AbstractIngameState;
-import org.wolftec.cwt.wotec.state.GameActions;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.input.InputProvider;
+import org.wolftec.wTec.state.AbstractIngameState;
+import org.wolftec.wTec.state.GameActions;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class IngameShowAttackRangeState extends AbstractIngameState {
 

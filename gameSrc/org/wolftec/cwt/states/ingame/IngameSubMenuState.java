@@ -4,8 +4,8 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NumberUtil;
-import org.wolftec.cwt.wotec.state.AbstractIngameState;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.state.AbstractIngameState;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class IngameSubMenuState extends AbstractIngameState {
 

@@ -1,8 +1,8 @@
 package org.wolftec.cwt.states.misc;
 
-import org.wolftec.cwt.wotec.input.InputProvider;
-import org.wolftec.cwt.wotec.state.AbstractState;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.input.InputProvider;
+import org.wolftec.wTec.state.AbstractState;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class PortraitWarningState extends AbstractState {
 

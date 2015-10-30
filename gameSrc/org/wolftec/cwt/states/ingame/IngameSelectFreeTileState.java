@@ -2,9 +2,9 @@ package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.wotec.action.ActionManager;
-import org.wolftec.cwt.wotec.state.AbstractIngameState;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.action.ActionManager;
+import org.wolftec.wTec.state.AbstractIngameState;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class IngameSelectFreeTileState extends AbstractIngameState {
 

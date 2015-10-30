@@ -7,12 +7,12 @@ import org.wolftec.cwt.logic.actions.WaitUnit;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.action.ActionData;
-import org.wolftec.cwt.wotec.action.ActionManager;
-import org.wolftec.cwt.wotec.input.InputProvider;
-import org.wolftec.cwt.wotec.state.AbstractIngameState;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.action.ActionData;
+import org.wolftec.wTec.action.ActionManager;
+import org.wolftec.wTec.input.InputProvider;
+import org.wolftec.wTec.state.AbstractIngameState;
+import org.wolftec.wTec.state.StateFlowData;
 
 /**
  * This states flushes the action data from the {@link UserInteractionData} into

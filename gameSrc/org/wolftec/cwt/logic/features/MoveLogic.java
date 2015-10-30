@@ -18,9 +18,9 @@ import org.wolftec.cwt.model.sheets.types.UnitType;
 import org.wolftec.cwt.util.AssertUtil;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.cwt.wotec.collections.CircularBuffer;
-import org.wolftec.cwt.wotec.collections.MoveableMatrix;
-import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.wTec.collections.CircularBuffer;
+import org.wolftec.wTec.collections.MoveableMatrix;
+import org.wolftec.wTec.ioc.Injectable;
 
 public class MoveLogic implements Injectable {
 

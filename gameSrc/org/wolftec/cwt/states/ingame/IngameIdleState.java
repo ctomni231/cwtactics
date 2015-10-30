@@ -6,8 +6,8 @@ import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.cwt.wotec.state.AbstractIngameState;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.state.AbstractIngameState;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class IngameIdleState extends AbstractIngameState {
 

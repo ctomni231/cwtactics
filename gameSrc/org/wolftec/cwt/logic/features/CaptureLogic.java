@@ -2,9 +2,9 @@ package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.cwt.wotec.config.ConfigurableValue;
-import org.wolftec.cwt.wotec.config.ConfigurationProvider;
-import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.wTec.config.ConfigurableValue;
+import org.wolftec.wTec.config.ConfigurationProvider;
+import org.wolftec.wTec.ioc.Injectable;
 
 public class CaptureLogic implements Injectable, ConfigurationProvider {
 

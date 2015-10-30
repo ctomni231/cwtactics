@@ -8,8 +8,8 @@ import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.wotec.InformationList;
-import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.wTec.InformationList;
+import org.wolftec.wTec.ioc.Injectable;
 
 public class TeamLogic implements Injectable {
 

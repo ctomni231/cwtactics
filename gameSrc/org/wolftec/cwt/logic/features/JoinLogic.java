@@ -4,7 +4,7 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.wTec.ioc.Injectable;
 
 public class JoinLogic implements Injectable {
 

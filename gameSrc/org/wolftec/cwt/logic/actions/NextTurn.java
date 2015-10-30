@@ -6,15 +6,15 @@ import org.wolftec.cwt.logic.features.TurnLogic;
 import org.wolftec.cwt.logic.features.WeatherLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.action.ActionData;
-import org.wolftec.cwt.wotec.action.ActionManager;
-import org.wolftec.cwt.wotec.action.ActionType;
-import org.wolftec.cwt.wotec.config.ConfigurableValue;
-import org.wolftec.cwt.wotec.config.ConfigurationProvider;
-import org.wolftec.cwt.wotec.net.NetworkManager;
-import org.wolftec.cwt.wotec.state.StateFlowData;
-import org.wolftec.cwt.wotec.state.StateManager;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.action.ActionData;
+import org.wolftec.wTec.action.ActionManager;
+import org.wolftec.wTec.action.ActionType;
+import org.wolftec.wTec.config.ConfigurableValue;
+import org.wolftec.wTec.config.ConfigurationProvider;
+import org.wolftec.wTec.net.NetworkManager;
+import org.wolftec.wTec.state.StateFlowData;
+import org.wolftec.wTec.state.StateManager;
 
 public class NextTurn implements Action, ConfigurationProvider {
 

@@ -4,13 +4,13 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.util.ObjectUtil;
-import org.wolftec.cwt.wotec.env.ResetSystem;
-import org.wolftec.cwt.wotec.log.Log;
-import org.wolftec.cwt.wotec.state.AbstractMenuState;
-import org.wolftec.cwt.wotec.state.GameActions;
-import org.wolftec.cwt.wotec.state.MenuInteractionMap;
-import org.wolftec.cwt.wotec.state.StateFlowData;
-import org.wolftec.cwt.wotec.state.StateManager;
+import org.wolftec.wTec.env.ResetSystem;
+import org.wolftec.wTec.log.Log;
+import org.wolftec.wTec.state.AbstractMenuState;
+import org.wolftec.wTec.state.GameActions;
+import org.wolftec.wTec.state.MenuInteractionMap;
+import org.wolftec.wTec.state.StateFlowData;
+import org.wolftec.wTec.state.StateManager;
 
 public class ErrorState extends AbstractMenuState {
 

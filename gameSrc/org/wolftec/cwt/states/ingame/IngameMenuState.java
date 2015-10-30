@@ -5,11 +5,11 @@ import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.action.ActionType;
-import org.wolftec.cwt.wotec.log.Log;
-import org.wolftec.cwt.wotec.state.AbstractIngameState;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.action.ActionType;
+import org.wolftec.wTec.log.Log;
+import org.wolftec.wTec.state.AbstractIngameState;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class IngameMenuState extends AbstractIngameState {
 

@@ -3,10 +3,10 @@ package org.wolftec.cwt.renderer;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.dom.Canvas;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolftec.cwt.wotec.config.ConfigurableValue;
-import org.wolftec.cwt.wotec.config.ConfigurationProvider;
-import org.wolftec.cwt.wotec.ioc.Injectable;
-import org.wolftec.cwt.wotec.log.Log;
+import org.wolftec.wTec.config.ConfigurableValue;
+import org.wolftec.wTec.config.ConfigurationProvider;
+import org.wolftec.wTec.ioc.Injectable;
+import org.wolftec.wTec.log.Log;
 
 /**
  * Base class which holds a reference to the game canvas.

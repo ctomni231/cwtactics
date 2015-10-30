@@ -2,7 +2,7 @@ package org.wolftec.cwt.util;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwt.wotec.annotations.MayRaisesError;
+import org.wolftec.wTec.annotations.MayRaisesError;
 
 /**
  * Some utility functions for handling numbers.

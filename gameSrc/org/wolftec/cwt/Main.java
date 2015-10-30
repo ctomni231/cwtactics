@@ -4,10 +4,10 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.wotec.gameloop.GameLoopManager;
-import org.wolftec.cwt.wotec.ioc.IoCConfiguration;
-import org.wolftec.cwt.wotec.ioc.IoCContainer;
-import org.wolftec.cwt.wotec.state.StateManager;
+import org.wolftec.wTec.gameloop.GameLoopManager;
+import org.wolftec.wTec.ioc.IoCConfiguration;
+import org.wolftec.wTec.ioc.IoCContainer;
+import org.wolftec.wTec.state.StateManager;
 
 public class Main {
 

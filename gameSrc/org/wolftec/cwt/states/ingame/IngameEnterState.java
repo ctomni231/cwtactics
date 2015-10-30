@@ -10,9 +10,9 @@ import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.states.UiDataMapConfiguration;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.wotec.input.InputProvider;
-import org.wolftec.cwt.wotec.state.AbstractState;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.input.InputProvider;
+import org.wolftec.wTec.state.AbstractState;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class IngameEnterState extends AbstractState {
 

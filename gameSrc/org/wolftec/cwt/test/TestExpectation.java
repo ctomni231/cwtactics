@@ -18,9 +18,9 @@ import org.wolftec.cwt.model.sheets.types.UnitType;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.annotations.OptionalParameter;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.annotations.OptionalParameter;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class TestExpectation {
 

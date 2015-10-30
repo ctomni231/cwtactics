@@ -5,13 +5,13 @@ import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.PositionData;
 import org.wolftec.cwt.util.AssertUtil;
 import org.wolftec.cwt.util.NumberUtil;
-import org.wolftec.cwt.wotec.InformationList;
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.action.ActionManager;
-import org.wolftec.cwt.wotec.collections.CircularBuffer;
-import org.wolftec.cwt.wotec.collections.MoveableMatrix;
-import org.wolftec.cwt.wotec.ioc.Injectable;
-import org.wolftec.cwt.wotec.log.Log;
+import org.wolftec.wTec.InformationList;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.action.ActionManager;
+import org.wolftec.wTec.collections.CircularBuffer;
+import org.wolftec.wTec.collections.MoveableMatrix;
+import org.wolftec.wTec.ioc.Injectable;
+import org.wolftec.wTec.log.Log;
 
 public class UserInteractionData implements Injectable, InformationList {
 

@@ -9,8 +9,8 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.ListUtil;
-import org.wolftec.cwt.wotec.config.ConfigurationProvider;
-import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.wTec.config.ConfigurationProvider;
+import org.wolftec.wTec.ioc.Injectable;
 
 public class ModelManager implements Injectable, ConfigurationProvider {
 

@@ -8,7 +8,7 @@ import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.test.ValueHolder;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.wTec.ioc.Injectable;
 
 public class TransportLogic implements Injectable {
 

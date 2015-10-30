@@ -1,12 +1,12 @@
 package org.wolftec.cwt.states.start;
 
 import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.cwt.wotec.input.InputProvider;
-import org.wolftec.cwt.wotec.loading.GameLoadingManager;
-import org.wolftec.cwt.wotec.loading.LoadingWatcher;
-import org.wolftec.cwt.wotec.log.Log;
-import org.wolftec.cwt.wotec.state.AbstractState;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.input.InputProvider;
+import org.wolftec.wTec.loading.GameLoadingManager;
+import org.wolftec.wTec.loading.LoadingWatcher;
+import org.wolftec.wTec.log.Log;
+import org.wolftec.wTec.state.AbstractState;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class LoadingState extends AbstractState implements LoadingWatcher {
 

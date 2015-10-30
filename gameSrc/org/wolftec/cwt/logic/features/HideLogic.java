@@ -2,7 +2,7 @@ package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.util.AssertUtil;
-import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.wTec.ioc.Injectable;
 
 public class HideLogic implements Injectable {
 

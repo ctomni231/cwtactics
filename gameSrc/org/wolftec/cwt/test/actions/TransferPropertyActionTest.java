@@ -4,7 +4,7 @@ import org.stjs.javascript.Array;
 import org.wolftec.cwt.logic.actions.TransferProperty;
 import org.wolftec.cwt.test.AbstractCwtTest;
 import org.wolftec.cwt.util.NumberUtil;
-import org.wolftec.cwt.wotec.action.TileMeta;
+import org.wolftec.wTec.action.TileMeta;
 
 public class TransferPropertyActionTest extends AbstractCwtTest {
 

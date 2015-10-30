@@ -4,10 +4,10 @@ import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.action.ActionData;
-import org.wolftec.cwt.wotec.annotations.OptionalParameter;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.action.ActionData;
+import org.wolftec.wTec.annotations.OptionalParameter;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class TestAction {
 

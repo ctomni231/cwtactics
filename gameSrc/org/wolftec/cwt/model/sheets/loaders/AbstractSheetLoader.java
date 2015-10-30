@@ -10,8 +10,8 @@ import org.wolftec.cwt.util.ClassUtil;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
 import org.wolftec.cwt.util.RequestUtil;
-import org.wolftec.cwt.wotec.loading.DataLoader;
-import org.wolftec.cwt.wotec.persistence.FileDescriptor;
+import org.wolftec.wTec.loading.DataLoader;
+import org.wolftec.wTec.persistence.FileDescriptor;
 
 public abstract class AbstractSheetLoader<T extends SheetType> implements DataLoader {
 

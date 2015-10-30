@@ -11,10 +11,10 @@ import org.wolftec.cwt.model.sheets.types.UnitType;
 import org.wolftec.cwt.util.AssertUtil;
 import org.wolftec.cwt.util.NullUtil;
 import org.wolftec.cwt.util.NumberUtil;
-import org.wolftec.cwt.wotec.collections.MoveableMatrix;
-import org.wolftec.cwt.wotec.config.ConfigurableValue;
-import org.wolftec.cwt.wotec.config.ConfigurationProvider;
-import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.wTec.collections.MoveableMatrix;
+import org.wolftec.wTec.config.ConfigurableValue;
+import org.wolftec.wTec.config.ConfigurationProvider;
+import org.wolftec.wTec.ioc.Injectable;
 
 public class BattleLogic implements Injectable, ConfigurationProvider {
 

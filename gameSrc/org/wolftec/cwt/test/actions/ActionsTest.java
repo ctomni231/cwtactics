@@ -2,8 +2,8 @@ package org.wolftec.cwt.test.actions;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.action.TileMeta;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.action.TileMeta;
 
 public abstract class ActionsTest {
 

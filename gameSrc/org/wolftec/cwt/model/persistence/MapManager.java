@@ -6,9 +6,9 @@ import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.RequestUtil;
-import org.wolftec.cwt.wotec.loading.DataLoader;
-import org.wolftec.cwt.wotec.persistence.FileDescriptor;
-import org.wolftec.cwt.wotec.persistence.PersistenceManager;
+import org.wolftec.wTec.loading.DataLoader;
+import org.wolftec.wTec.persistence.FileDescriptor;
+import org.wolftec.wTec.persistence.PersistenceManager;
 
 public class MapManager implements DataLoader {
 

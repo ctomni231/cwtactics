@@ -1,6 +1,6 @@
 package org.wolftec.cwt.model.gameround;
 
-import org.wolftec.cwt.wotec.annotations.OptionalField;
+import org.wolftec.wTec.annotations.OptionalField;
 
 /**
  * Object that holds information about objects at a given position (x,y).

@@ -1,6 +1,6 @@
 package org.wolftec.cwt.model.gameround;
 
-import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.wTec.ioc.Injectable;
 
 public class ModelResetter implements Injectable {
 

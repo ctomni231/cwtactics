@@ -7,7 +7,7 @@ import org.wolftec.cwt.model.sheets.types.PropertyType;
 import org.wolftec.cwt.model.sheets.types.TileType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
-import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.wTec.ioc.Injectable;
 
 /**
  * Holds all object types of the game.

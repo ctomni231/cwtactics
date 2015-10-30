@@ -3,9 +3,9 @@ package org.wolftec.cwt.states;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.util.UrlParameterUtil;
-import org.wolftec.cwt.wotec.env.Features;
-import org.wolftec.cwt.wotec.loading.GameLoader;
-import org.wolftec.cwt.wotec.log.Log;
+import org.wolftec.wTec.env.Features;
+import org.wolftec.wTec.loading.GameLoader;
+import org.wolftec.wTec.log.Log;
 
 public class CheckSystem implements GameLoader {
 

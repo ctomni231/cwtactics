@@ -8,13 +8,13 @@ import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.wotec.action.Action;
-import org.wolftec.cwt.wotec.action.ActionData;
-import org.wolftec.cwt.wotec.action.ActionManager;
-import org.wolftec.cwt.wotec.action.ActionTargetMode;
-import org.wolftec.cwt.wotec.action.ActionType;
-import org.wolftec.cwt.wotec.collections.CircularBuffer;
-import org.wolftec.cwt.wotec.state.StateFlowData;
+import org.wolftec.wTec.action.Action;
+import org.wolftec.wTec.action.ActionData;
+import org.wolftec.wTec.action.ActionManager;
+import org.wolftec.wTec.action.ActionTargetMode;
+import org.wolftec.wTec.action.ActionType;
+import org.wolftec.wTec.collections.CircularBuffer;
+import org.wolftec.wTec.state.StateFlowData;
 
 public class UnloadUnit implements Action {
 
