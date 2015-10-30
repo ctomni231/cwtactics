@@ -1,8 +1,8 @@
 package org.wolftec.cwt.model.gameround;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.model.sheets.types.UnitType;
+import org.wolftec.cwt.util.NumberUtil;
 
 public class Unit implements Ownable {
 

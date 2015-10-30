@@ -1,12 +1,12 @@
 package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.InformationList;
-import org.wolftec.cwt.core.config.ConfigurableValue;
-import org.wolftec.cwt.core.config.ConfigurationProvider;
-import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.sheets.types.CommanderType;
+import org.wolftec.cwt.wotec.InformationList;
+import org.wolftec.cwt.wotec.config.ConfigurableValue;
+import org.wolftec.cwt.wotec.config.ConfigurationProvider;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class CommanderLogic implements Injectable, ConfigurationProvider {
 

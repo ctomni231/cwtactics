@@ -1,10 +1,10 @@
 package org.wolftec.cwt.test.actions;
 
-import org.wolftec.cwt.core.action.TileMeta;
-import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.logic.actions.TransferMoney;
 import org.wolftec.cwt.logic.features.TeamLogic;
 import org.wolftec.cwt.test.AbstractCwtTest;
+import org.wolftec.cwt.util.NumberUtil;
+import org.wolftec.cwt.wotec.action.TileMeta;
 
 public class TransferMoneyActionTest extends AbstractCwtTest {
 

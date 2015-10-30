@@ -1,12 +1,12 @@
 package org.wolftec.cwt.states.menu;
 
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwt.core.audio.AudioManager;
-import org.wolftec.cwt.core.persistence.SaveManager;
-import org.wolftec.cwt.core.state.AbstractMenuState;
-import org.wolftec.cwt.core.state.GameActions;
-import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.wotec.audio.AudioManager;
+import org.wolftec.cwt.wotec.persistence.SaveManager;
+import org.wolftec.cwt.wotec.state.AbstractMenuState;
+import org.wolftec.cwt.wotec.state.GameActions;
+import org.wolftec.cwt.wotec.state.StateFlowData;
 
 public class OptionsMenuState extends AbstractMenuState {
 

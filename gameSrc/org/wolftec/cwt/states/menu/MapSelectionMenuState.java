@@ -1,10 +1,10 @@
 package org.wolftec.cwt.states.menu;
 
-import org.wolftec.cwt.core.input.InputProvider;
-import org.wolftec.cwt.core.state.AbstractState;
-import org.wolftec.cwt.core.state.GameActions;
-import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.model.persistence.MapManager;
+import org.wolftec.cwt.wotec.input.InputProvider;
+import org.wolftec.cwt.wotec.state.AbstractState;
+import org.wolftec.cwt.wotec.state.GameActions;
+import org.wolftec.cwt.wotec.state.StateFlowData;
 
 public class MapSelectionMenuState extends AbstractState {
 

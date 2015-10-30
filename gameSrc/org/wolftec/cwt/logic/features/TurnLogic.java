@@ -1,12 +1,12 @@
 package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.config.ConfigurationProvider;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.log.Log;
-import org.wolftec.cwt.core.util.AssertUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
+import org.wolftec.cwt.util.AssertUtil;
+import org.wolftec.cwt.wotec.config.ConfigurationProvider;
+import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.cwt.wotec.log.Log;
 
 public class TurnLogic implements Injectable, ConfigurationProvider {
 

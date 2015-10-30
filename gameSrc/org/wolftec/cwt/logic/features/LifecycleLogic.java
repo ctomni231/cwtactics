@@ -1,16 +1,16 @@
 package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.annotations.OptionalReturn;
-import org.wolftec.cwt.core.config.ConfigurableValue;
-import org.wolftec.cwt.core.config.ConfigurationProvider;
-import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
+import org.wolftec.cwt.wotec.annotations.OptionalReturn;
+import org.wolftec.cwt.wotec.config.ConfigurableValue;
+import org.wolftec.cwt.wotec.config.ConfigurationProvider;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class LifecycleLogic implements Injectable, ConfigurationProvider {
 

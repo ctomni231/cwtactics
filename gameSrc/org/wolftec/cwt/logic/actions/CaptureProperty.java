@@ -1,13 +1,13 @@
 package org.wolftec.cwt.logic.actions;
 
-import org.wolftec.cwt.core.action.Action;
-import org.wolftec.cwt.core.action.ActionData;
-import org.wolftec.cwt.core.action.ActionType;
-import org.wolftec.cwt.core.action.TileMeta;
-import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.logic.features.CaptureLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.wotec.action.Action;
+import org.wolftec.cwt.wotec.action.ActionData;
+import org.wolftec.cwt.wotec.action.ActionType;
+import org.wolftec.cwt.wotec.action.TileMeta;
+import org.wolftec.cwt.wotec.state.StateFlowData;
 
 public class CaptureProperty implements Action {
 

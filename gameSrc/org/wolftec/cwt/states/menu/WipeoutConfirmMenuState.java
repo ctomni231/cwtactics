@@ -1,10 +1,10 @@
 package org.wolftec.cwt.states.menu;
 
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwt.core.env.ResetSystem;
-import org.wolftec.cwt.core.state.AbstractMenuState;
-import org.wolftec.cwt.core.state.GameActions;
-import org.wolftec.cwt.core.state.StateFlowData;
+import org.wolftec.cwt.wotec.env.ResetSystem;
+import org.wolftec.cwt.wotec.state.AbstractMenuState;
+import org.wolftec.cwt.wotec.state.GameActions;
+import org.wolftec.cwt.wotec.state.StateFlowData;
 
 public class WipeoutConfirmMenuState extends AbstractMenuState {
 

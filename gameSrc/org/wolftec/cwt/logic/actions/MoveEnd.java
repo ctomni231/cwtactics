@@ -1,14 +1,14 @@
 package org.wolftec.cwt.logic.actions;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.action.Action;
-import org.wolftec.cwt.core.action.ActionData;
-import org.wolftec.cwt.core.action.ActionType;
-import org.wolftec.cwt.core.action.PositionUpdateMode;
-import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.wotec.action.Action;
+import org.wolftec.cwt.wotec.action.ActionData;
+import org.wolftec.cwt.wotec.action.ActionType;
+import org.wolftec.cwt.wotec.action.PositionUpdateMode;
+import org.wolftec.cwt.wotec.state.StateFlowData;
 
 public class MoveEnd implements Action {
 

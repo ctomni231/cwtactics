@@ -1,8 +1,8 @@
 package org.wolftec.cwt.logic.actions;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.collections.CircularBuffer;
-import org.wolftec.cwt.core.ioc.Injectable;
+import org.wolftec.cwt.wotec.collections.CircularBuffer;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class MoveActionData implements Injectable {
   public int                     x;

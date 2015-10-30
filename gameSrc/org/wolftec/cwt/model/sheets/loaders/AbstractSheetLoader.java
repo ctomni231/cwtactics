@@ -3,15 +3,15 @@ package org.wolftec.cwt.model.sheets.loaders;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.loading.DataLoader;
-import org.wolftec.cwt.core.persistence.FileDescriptor;
-import org.wolftec.cwt.core.util.ClassUtil;
-import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.core.util.NullUtil;
-import org.wolftec.cwt.core.util.RequestUtil;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.SheetType;
+import org.wolftec.cwt.util.ClassUtil;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.util.RequestUtil;
+import org.wolftec.cwt.wotec.loading.DataLoader;
+import org.wolftec.cwt.wotec.persistence.FileDescriptor;
 
 public abstract class AbstractSheetLoader<T extends SheetType> implements DataLoader {
 

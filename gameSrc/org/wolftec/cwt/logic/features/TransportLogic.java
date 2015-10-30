@@ -1,14 +1,14 @@
 package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.test.ValueHolder;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class TransportLogic implements Injectable {
 

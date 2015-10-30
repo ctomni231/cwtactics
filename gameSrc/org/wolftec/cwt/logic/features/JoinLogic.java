@@ -1,10 +1,10 @@
 package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class JoinLogic implements Injectable {
 

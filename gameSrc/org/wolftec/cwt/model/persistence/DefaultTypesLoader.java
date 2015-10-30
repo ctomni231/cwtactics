@@ -2,15 +2,15 @@ package org.wolftec.cwt.model.persistence;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.loading.GameLoader;
-import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.logic.features.LaserLogic;
 import org.wolftec.cwt.logic.features.SpecialWeaponsLogic;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
+import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.cwt.wotec.loading.GameLoader;
+import org.wolftec.cwt.wotec.log.Log;
 
 @Deprecated
 public class DefaultTypesLoader implements Injectable, GameLoader {

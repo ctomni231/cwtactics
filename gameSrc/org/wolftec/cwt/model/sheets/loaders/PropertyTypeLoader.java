@@ -2,9 +2,9 @@ package org.wolftec.cwt.model.sheets.loaders;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
+import org.wolftec.cwt.util.NullUtil;
 
 public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
 

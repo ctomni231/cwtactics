@@ -3,10 +3,10 @@ package org.wolftec.cwt.model.tilevariants;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class TileVariantManager implements Injectable {
 

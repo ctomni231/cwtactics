@@ -1,17 +1,17 @@
 package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.InformationList;
-import org.wolftec.cwt.core.action.Action;
-import org.wolftec.cwt.core.action.ActionManager;
-import org.wolftec.cwt.core.collections.CircularBuffer;
-import org.wolftec.cwt.core.collections.MoveableMatrix;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.log.Log;
-import org.wolftec.cwt.core.util.AssertUtil;
-import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.PositionData;
+import org.wolftec.cwt.util.AssertUtil;
+import org.wolftec.cwt.util.NumberUtil;
+import org.wolftec.cwt.wotec.InformationList;
+import org.wolftec.cwt.wotec.action.Action;
+import org.wolftec.cwt.wotec.action.ActionManager;
+import org.wolftec.cwt.wotec.collections.CircularBuffer;
+import org.wolftec.cwt.wotec.collections.MoveableMatrix;
+import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.cwt.wotec.log.Log;
 
 public class UserInteractionData implements Injectable, InformationList {
 

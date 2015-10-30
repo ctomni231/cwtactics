@@ -6,11 +6,11 @@ import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function4;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.config.ConfigurationProvider;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.core.util.ListUtil;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.util.ListUtil;
+import org.wolftec.cwt.wotec.config.ConfigurationProvider;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class ModelManager implements Injectable, ConfigurationProvider {
 

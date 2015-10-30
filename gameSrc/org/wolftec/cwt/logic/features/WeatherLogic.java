@@ -1,12 +1,12 @@
 package org.wolftec.cwt.logic.features;
 
-import org.wolftec.cwt.core.config.ConfigurableValue;
-import org.wolftec.cwt.core.config.ConfigurationProvider;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
+import org.wolftec.cwt.util.NumberUtil;
+import org.wolftec.cwt.wotec.config.ConfigurableValue;
+import org.wolftec.cwt.wotec.config.ConfigurationProvider;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class WeatherLogic implements Injectable, ConfigurationProvider {
 

@@ -1,10 +1,6 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.input.InputProvider;
-import org.wolftec.cwt.core.state.AbstractState;
-import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.core.util.JsUtil;
 import org.wolftec.cwt.logic.features.TurnLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
@@ -13,6 +9,10 @@ import org.wolftec.cwt.model.persistence.MapManager;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.states.UiDataMapConfiguration;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.wotec.input.InputProvider;
+import org.wolftec.cwt.wotec.state.AbstractState;
+import org.wolftec.cwt.wotec.state.StateFlowData;
 
 public class IngameEnterState extends AbstractState {
 

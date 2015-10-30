@@ -3,11 +3,6 @@ package org.wolftec.cwt.test;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.action.Action;
-import org.wolftec.cwt.core.annotations.OptionalParameter;
-import org.wolftec.cwt.core.state.StateFlowData;
-import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
@@ -21,6 +16,11 @@ import org.wolftec.cwt.model.sheets.types.SheetType;
 import org.wolftec.cwt.model.sheets.types.TileType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.wotec.action.Action;
+import org.wolftec.cwt.wotec.annotations.OptionalParameter;
+import org.wolftec.cwt.wotec.state.StateFlowData;
 
 public class TestExpectation {
 

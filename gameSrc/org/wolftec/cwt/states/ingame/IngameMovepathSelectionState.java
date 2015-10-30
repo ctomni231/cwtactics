@@ -1,13 +1,13 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.core.config.ConfigurableValue;
-import org.wolftec.cwt.core.config.ConfigurationProvider;
-import org.wolftec.cwt.core.input.InputProvider;
-import org.wolftec.cwt.core.state.AbstractIngameState;
-import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.wotec.config.ConfigurableValue;
+import org.wolftec.cwt.wotec.config.ConfigurationProvider;
+import org.wolftec.cwt.wotec.input.InputProvider;
+import org.wolftec.cwt.wotec.state.AbstractIngameState;
+import org.wolftec.cwt.wotec.state.StateFlowData;
 
 public class IngameMovepathSelectionState extends AbstractIngameState implements ConfigurationProvider {
 

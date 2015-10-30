@@ -7,12 +7,6 @@ import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.collections.CircularBuffer;
-import org.wolftec.cwt.core.collections.MoveableMatrix;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.AssertUtil;
-import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.PositionData;
@@ -21,6 +15,12 @@ import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
+import org.wolftec.cwt.util.AssertUtil;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.wotec.collections.CircularBuffer;
+import org.wolftec.cwt.wotec.collections.MoveableMatrix;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class MoveLogic implements Injectable {
 

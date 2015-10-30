@@ -5,10 +5,6 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.SyntheticType;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.log.Log;
-import org.wolftec.cwt.core.util.NullUtil;
-import org.wolftec.cwt.core.util.ObjectUtil;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
@@ -16,6 +12,10 @@ import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.types.SheetType;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.util.ObjectUtil;
+import org.wolftec.cwt.wotec.ioc.Injectable;
+import org.wolftec.cwt.wotec.log.Log;
 
 /**
  * Simple module to grab system information at runtime.

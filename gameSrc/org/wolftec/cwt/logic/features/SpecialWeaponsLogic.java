@@ -1,9 +1,6 @@
 package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.collections.MoveableMatrix;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
@@ -11,6 +8,9 @@ import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
+import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.wotec.collections.MoveableMatrix;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class SpecialWeaponsLogic implements Injectable {
 

@@ -1,9 +1,9 @@
 package org.wolftec.cwt.test.actions;
 
-import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.logic.actions.TransferUnit;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.test.AbstractCwtTest;
+import org.wolftec.cwt.util.NumberUtil;
 
 public class TransferUnitActionTest extends AbstractCwtTest {
 

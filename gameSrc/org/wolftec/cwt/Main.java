@@ -3,11 +3,11 @@ package org.wolftec.cwt;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwt.core.gameloop.GameLoopManager;
-import org.wolftec.cwt.core.ioc.IoCConfiguration;
-import org.wolftec.cwt.core.ioc.IoCContainer;
-import org.wolftec.cwt.core.state.StateManager;
-import org.wolftec.cwt.core.util.JsUtil;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.wotec.gameloop.GameLoopManager;
+import org.wolftec.cwt.wotec.ioc.IoCConfiguration;
+import org.wolftec.cwt.wotec.ioc.IoCContainer;
+import org.wolftec.cwt.wotec.state.StateManager;
 
 public class Main {
 

@@ -1,11 +1,11 @@
 package org.wolftec.cwt.logic.features;
 
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.NullUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class SupplyLogic implements Injectable {
 

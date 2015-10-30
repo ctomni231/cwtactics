@@ -5,11 +5,11 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function2;
-import org.wolftec.cwt.core.util.AssertUtil;
-import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.core.util.NullUtil;
-import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.model.sheets.types.SheetType;
+import org.wolftec.cwt.util.AssertUtil;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.util.NumberUtil;
 
 /**
  * A data object that holds a list of sheet objects with a given schema. Every

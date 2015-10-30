@@ -1,13 +1,13 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.core.config.ConfigurableValueManager;
-import org.wolftec.cwt.core.ioc.Injectable;
 import org.wolftec.cwt.logic.features.LifecycleLogic;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.wotec.config.ConfigurableValueManager;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class CwtTestManager implements Injectable {
 

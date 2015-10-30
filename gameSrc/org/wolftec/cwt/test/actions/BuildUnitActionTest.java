@@ -1,8 +1,8 @@
 package org.wolftec.cwt.test.actions;
 
-import org.wolftec.cwt.core.util.SheetIdNumberUtil;
 import org.wolftec.cwt.logic.actions.BuildUnit;
 import org.wolftec.cwt.test.AbstractCwtTest;
+import org.wolftec.cwt.util.SheetIdNumberUtil;
 
 public class BuildUnitActionTest extends AbstractCwtTest {
 

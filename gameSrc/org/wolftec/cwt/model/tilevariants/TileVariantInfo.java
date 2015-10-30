@@ -2,8 +2,8 @@ package org.wolftec.cwt.model.tilevariants;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.util.JsUtil;
-import org.wolftec.cwt.core.util.NullUtil;
+import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.util.NullUtil;
 
 public class TileVariantInfo {
 

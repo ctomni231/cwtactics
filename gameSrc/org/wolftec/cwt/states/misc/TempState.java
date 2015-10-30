@@ -1,10 +1,10 @@
 package org.wolftec.cwt.states.misc;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolftec.cwt.core.log.Log;
-import org.wolftec.cwt.core.state.AbstractState;
-import org.wolftec.cwt.core.state.StateFlowData;
 import org.wolftec.cwt.renderer.jslix.ImageLibrary;
+import org.wolftec.cwt.wotec.log.Log;
+import org.wolftec.cwt.wotec.state.AbstractState;
+import org.wolftec.cwt.wotec.state.StateFlowData;
 import org.wolftec.cwt.renderer.GraphicManager;
 
 /* TempState.java

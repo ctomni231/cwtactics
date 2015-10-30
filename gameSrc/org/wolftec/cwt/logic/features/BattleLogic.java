@@ -1,13 +1,6 @@
 package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.collections.MoveableMatrix;
-import org.wolftec.cwt.core.config.ConfigurableValue;
-import org.wolftec.cwt.core.config.ConfigurationProvider;
-import org.wolftec.cwt.core.ioc.Injectable;
-import org.wolftec.cwt.core.util.AssertUtil;
-import org.wolftec.cwt.core.util.NullUtil;
-import org.wolftec.cwt.core.util.NumberUtil;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.PositionData;
@@ -15,6 +8,13 @@ import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.types.AttackType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
+import org.wolftec.cwt.util.AssertUtil;
+import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.util.NumberUtil;
+import org.wolftec.cwt.wotec.collections.MoveableMatrix;
+import org.wolftec.cwt.wotec.config.ConfigurableValue;
+import org.wolftec.cwt.wotec.config.ConfigurationProvider;
+import org.wolftec.cwt.wotec.ioc.Injectable;
 
 public class BattleLogic implements Injectable, ConfigurationProvider {
 
