@@ -93,7 +93,7 @@ public class NextTurnActionTest extends AbstractCwtTest {
     test.expectThat.propertyAt(0, 0, "propA", 1);
     test.expectThat.unitAt(0, 0).hp = Unit.pointsToHealth(5) - 1;
 
-    // TODO repairAmount directly as points
+    // HINT repairAmount directly as points
     test.expectThat.propertyType("propA").repairs.push("unitA");
     test.expectThat.propertyType("propA").repairAmount = Unit.pointsToHealth(2);
 

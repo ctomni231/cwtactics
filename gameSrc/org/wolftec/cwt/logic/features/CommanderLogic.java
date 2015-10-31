@@ -1,7 +1,7 @@
 package org.wolftec.cwt.logic.features;
 
+import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.InformationList;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.sheets.types.CommanderType;
 import org.wolftec.cwt.system.Configurable;
@@ -109,10 +109,10 @@ public class CommanderLogic implements ManagedClass, Configurable {
     return cost;
   }
 
-  public void addActivatableLevelsToList(Player actor, InformationList infoList) {
+  public void addActivatableLevelsToList(Player actor, Callback1<Integer> levelCb) {
     for (int i = POWER_LEVEL_COP; i <= POWER_LEVEL_SCOP; i++) {
       if (canActivatePower(actor, i)) {
-        infoList.addInfo("" + i, true);
+        levelCb.$invoke(i);
       }
     }
   }

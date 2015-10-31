@@ -7,10 +7,12 @@ import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
+import org.wolftec.cwt.model.sheets.types.UnitType;
 import org.wolftec.cwt.system.Configurable;
 import org.wolftec.cwt.system.Configuration;
 import org.wolftec.cwt.system.ManagedClass;
 import org.wolftec.cwt.system.annotations.OptionalReturn;
+import org.wolftec.cwt.util.NullUtil;
 
 public class LifecycleLogic implements ManagedClass, Configurable {
 
@@ -25,10 +27,6 @@ public class LifecycleLogic implements ManagedClass, Configurable {
     noUnitsLeftLoose = new Configuration("game.loose.whenNoUnitLeft", 0, 1, 0);
   }
 
-  //
-  // Returns an inactive **unit object** or **null** if every slot in the unit
-  // list is used.
-  //
   @OptionalReturn
   public Unit getInactiveUnit() {
     for (int i = 0, e = Constants.MAX_UNITS * Constants.MAX_PLAYER; i < e; i++) {
@@ -50,7 +48,6 @@ public class LifecycleLogic implements ManagedClass, Configurable {
   }
 
   /**
-   * 
    * @param prop
    * @return true when a loose of this property causes a loose of the game round
    */
@@ -58,63 +55,40 @@ public class LifecycleLogic implements ManagedClass, Configurable {
     return prop.type.looseAfterCaptured;
   }
 
-  //
-  //
-  // @param {number} x
-  // @param {number} y
-  // @param {cwt.Player|cwt.Unit|cwt.Property} player
-  // @param type
-  //
-  public void createUnit(int x, int y, Player player, String type) {
+  public void createUnitAtPosition(int x, int y, Player player, String type) {
     Tile tile = model.getTile(x, y);
-
-    Unit unit = getInactiveUnit();
-
-    // set references
-    unit.owner = player;
+    Unit unit = createUnit(player, type);
     tile.unit = unit;
-    player.numberOfUnits++;
-
-    unit.initByType(sheets.units.get(type));
-
     fog.addUnitVision(x, y, player);
   }
 
-  public Unit createLoadedUnit(Unit transporter, Player player, String type) {
-    Unit unit = getInactiveUnit();
-
-    // set references
-    unit.owner = player;
-    player.numberOfUnits++;
-
-    unit.initByType(sheets.units.get(type));
+  public Unit createUnitAsLoad(Unit transporter, Player player, String type) {
+    Unit unit = createUnit(player, type);
     unit.loadedIn = model.getUnitId(transporter);
-
     return unit;
   }
 
-  public void createProperty(int x, int y, Player player, String type) {
-    Tile tile = model.getTile(x, y);
-    Property prop = getInactiveProperty();
-    prop.owner = player;
-    prop.type = sheets.properties.get(type);
-    tile.property = prop;
-    player.numberOfProperties++;
-    fog.addPropertyVision(x, y, player);
+  private Unit createUnit(Player player, String type) {
+    Unit unit = getInactiveUnit();
+    UnitType typeSheet = sheets.units.get(type);
+    unit.owner = player;
+    unit.type = typeSheet;
+    unit.hp = 99;
+    unit.exp = 0;
+    unit.ammo = typeSheet.ammo;
+    unit.fuel = typeSheet.fuel;
+    unit.hidden = false;
+    unit.loadedIn = Constants.INACTIVE;
+    unit.canAct = false;
+    player.numberOfUnits++;
+    return unit;
   }
 
-  //
-  //
-  // @param {number} x
-  // @param {number} y
-  // @param {boolean} silent
-  //
   public void destroyUnit(int x, int y) {
     Tile tile = model.getTile(x, y);
 
     fog.removeUnitVision(x, y, tile.unit.owner);
 
-    // remove references
     Player owner = tile.unit.owner;
     owner.numberOfUnits--;
 
@@ -128,10 +102,19 @@ public class LifecycleLogic implements ManagedClass, Configurable {
     tile.unit.owner = null;
     tile.unit = null;
 
-    // end game when the player does not have any unit left
     if (noUnitsLeftLoose.value == 1 && owner.numberOfUnits == 0) {
       deactivatePlayer(owner);
     }
+  }
+
+  public void createProperty(int x, int y, Player player, String type) {
+    Tile tile = model.getTile(x, y);
+    Property prop = getInactiveProperty();
+    prop.owner = player;
+    prop.type = sheets.properties.get(type);
+    tile.property = prop;
+    player.numberOfProperties++;
+    fog.addPropertyVision(x, y, player);
   }
 
   /**
@@ -145,7 +128,7 @@ public class LifecycleLogic implements ManagedClass, Configurable {
     for (int i = 0, e = Constants.MAX_UNITS * Constants.MAX_PLAYER; i < e; i++) {
       Unit unit = model.getUnit(i);
       if (unit.owner == player) {
-        // TODO
+        model.searchUnit(unit, (x, y, u) -> destroyUnit(x, y));
       }
     }
 
@@ -153,10 +136,8 @@ public class LifecycleLogic implements ManagedClass, Configurable {
     for (int i = 0, e = Constants.MAX_PROPERTIES; i < e; i++) {
       Property prop = model.getProperty(i);
       if (prop.owner == player) {
-        prop.makeNeutral();
-
-        // TODO: change type when the property is a changing type property
-        String changeType = prop.type.changeAfterCaptured;
+        prop.owner = null;
+        prop.type = sheets.properties.get(prop.type.changeAfterCaptured);
       }
     }
 
@@ -164,14 +145,10 @@ public class LifecycleLogic implements ManagedClass, Configurable {
 
     // when no opposite teams are found then the game has ended
     if (!model.areEnemyTeamsLeft()) {
-      // TODO
+      endGameround();
     }
   }
 
-  //
-  //
-  // @return {boolean}
-  //
   public boolean hasFreeUnitSlot(Player player) {
     return player.numberOfUnits < Constants.MAX_UNITS;
   }
@@ -186,5 +163,50 @@ public class LifecycleLogic implements ManagedClass, Configurable {
 
   public void makeInactable(Unit unit) {
     unit.canAct = false;
+  }
+
+  public void endGameround() {
+
+  }
+
+  public boolean isGameroundEnded() {
+    return false;
+  }
+
+  public void destroyEverything() {
+
+    model.forEachTile((x, y, tile) -> {
+      tile.type = null;
+      if (NullUtil.isPresent(tile.unit)) {
+        destroyUnit(x, y);
+      }
+      tile.property = null;
+    });
+
+    model.forEachPlayer((index, player) -> {
+      player.clientControlled = true;
+      player.team = index;
+      player.coA = null;
+      player.gold = 999999;
+      player.manpower = 999999;
+    });
+
+    model.forEachProperty((index, property) -> {
+      property.points = 20; /* TODO */
+      property.owner = null;
+      property.type = null;
+    });
+
+    model.day = 0;
+    model.gameTimeElapsed = 0;
+    model.gameTimeLimit = 0;
+    model.turnTimeElapsed = 0;
+    model.turnTimeLimit = 0;
+    model.mapHeight = 0;
+    model.mapWidth = 0;
+    model.turnOwner = model.getPlayer(0);
+    model.lastClientPlayer = model.getPlayer(0);
+    model.weather = null;
+    model.weatherLeftDays = 0;
   }
 }

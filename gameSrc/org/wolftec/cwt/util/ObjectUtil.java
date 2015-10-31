@@ -10,6 +10,14 @@ import org.wolftec.cwt.system.annotations.OptionalReturn;
 
 public abstract class ObjectUtil {
 
+  public static <M> M readProperty(Object data, String property) {
+    return NullUtil.getOrThrow(getObjectProperty(data, property));
+  }
+
+  public static <M> M readPropertyOrDefault(Object data, String property, M defaultValue) {
+    return NullUtil.getOrElse(getObjectProperty(data, property), defaultValue);
+  }
+
   @OptionalReturn
   public static <T> T getObjectProperty(Object obj, String property) {
     return (T) JSObjectAdapter.$get(obj, property);

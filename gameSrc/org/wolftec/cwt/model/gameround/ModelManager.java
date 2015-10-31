@@ -9,6 +9,7 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
 import org.wolftec.cwt.system.Configurable;
 import org.wolftec.cwt.system.ManagedClass;
+import org.wolftec.cwt.util.AssertUtil;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.ListUtil;
 import org.wolftec.cwt.util.NullUtil;
@@ -134,10 +135,7 @@ public class ModelManager implements ManagedClass, Configurable {
   }
 
   public Player getPlayer(int id) {
-    if (id < 0 || id >= players.$length()) {
-      JsUtil.throwError("InvalidPlayerIdException");
-    } // TODO
-
+    AssertUtil.assertThatNot(id < 0 || id > players.$length());
     return players.$get(id);
   }
 
@@ -146,10 +144,7 @@ public class ModelManager implements ManagedClass, Configurable {
   }
 
   public Unit getUnit(int id) {
-    if (id < 0 || id >= units.$length()) {
-      JsUtil.throwError("InvalidUnitIdException");
-    } // TODO
-
+    AssertUtil.assertThatNot(id < 0 || id > units.$length());
     return units.$get(id);
   }
 
@@ -162,10 +157,7 @@ public class ModelManager implements ManagedClass, Configurable {
   }
 
   public Property getProperty(int id) {
-    if (id < 0 || id > properties.$length()) {
-      JsUtil.throwError("InvalidPropertyIdException");
-    } // TODO
-
+    AssertUtil.assertThatNot(id < 0 || id > properties.$length());
     return properties.$get(id);
   }
 

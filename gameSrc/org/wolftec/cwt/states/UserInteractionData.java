@@ -1,7 +1,6 @@
 package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.InformationList;
 import org.wolftec.cwt.logic.Action;
 import org.wolftec.cwt.logic.ActionManager;
 import org.wolftec.cwt.model.gameround.Player;
@@ -13,7 +12,7 @@ import org.wolftec.cwt.system.RingList;
 import org.wolftec.cwt.util.AssertUtil;
 import org.wolftec.cwt.util.NumberUtil;
 
-public class UserInteractionData implements ManagedClass, InformationList {
+public class UserInteractionData implements ManagedClass {
 
   private Log log;
 
@@ -55,7 +54,6 @@ public class UserInteractionData implements ManagedClass, InformationList {
     targets = new MatrixSegment(Constants.MAX_SELECTION_RANGE);
   }
 
-  @Override
   public void addInfo(String key, boolean flag) {
     if (flag) {
       infos.push(key);
@@ -63,14 +61,12 @@ public class UserInteractionData implements ManagedClass, InformationList {
     }
   }
 
-  @Override
   public void cleanInfos() {
     infos.clear();
     infoIndex = 0;
     log.info("cleaned user actions");
   }
 
-  @Override
   public int getNumberOfInfos() {
     return infos.getSize();
   }
@@ -79,7 +75,6 @@ public class UserInteractionData implements ManagedClass, InformationList {
     return actions.getAction(action);
   }
 
-  @Override
   public void increaseIndex() {
     infoIndex++;
     if (infoIndex == getNumberOfInfos()) {
@@ -88,7 +83,6 @@ public class UserInteractionData implements ManagedClass, InformationList {
     log.info("current selected user action [" + getInfo() + "]");
   }
 
-  @Override
   public void decreaseIndex() {
     infoIndex--;
     if (infoIndex < 0) {
@@ -97,12 +91,10 @@ public class UserInteractionData implements ManagedClass, InformationList {
     log.info("current selected user action [" + getInfo() + "]");
   }
 
-  @Override
   public String getInfo() {
     return infos.get(infoIndex);
   }
 
-  @Override
   public String getInfoAtIndex(int index) {
     return infos.get(index);
   }

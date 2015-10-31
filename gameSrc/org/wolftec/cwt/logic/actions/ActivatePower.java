@@ -11,7 +11,7 @@ import org.wolftec.cwt.util.AssertUtil;
 
 public class ActivatePower implements Action {
 
-  private ModelManager   model;
+  private ModelManager model;
   private CommanderLogic co;
 
   @Override
@@ -36,7 +36,7 @@ public class ActivatePower implements Action {
 
   @Override
   public void prepareActionMenu(UserInteractionData data) {
-    co.addActivatableLevelsToList(data.actor, data);
+    co.addActivatableLevelsToList(data.actor, lv -> data.addInfo(lv + "", true));
   }
 
   @Override

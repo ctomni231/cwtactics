@@ -3,6 +3,7 @@ package org.wolftec.cwt.system;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.ListUtil;
 import org.wolftec.cwt.util.NullUtil;
 import org.wolftec.cwt.util.RequestUtil;
@@ -18,18 +19,22 @@ public class ResourceLoadingManager implements GameLoadingHandler {
   private Log log;
   private PersistenceManager storage;
   private Array<ResourceLoader> loaders;
-  private Array<ResourceRequestWatcher> watchers; // TODO
+  private Array<ResourceRequestWatcher> watchers;
 
   private void downloadFolderFile(ResourceLoader loader, String path, String file, Callback0 next) {
     FileDescriptor entryDesc = new FileDescriptor(path + "/" + file);
 
     log.info("downloading " + entryDesc.fileName);
+    ListUtil.forEachArrayValue(watchers, (i, w) -> w.onStartLoading(entryDesc.fileName));
 
     RequestUtil.getJSON(entryDesc.path, (ResponseData<Array<String>> response) -> {
       loader.downloadRemoteFolder(entryDesc, (content) -> {
         if (NullUtil.isPresent(content)) {
           storage.set(entryDesc.path, content, (ferr, fdata) -> {
-            log.info("completed");
+
+            log.info("completed downloading " + entryDesc.fileName);
+            ListUtil.forEachArrayValue(watchers, (i, w) -> w.onFinishedLoading(entryDesc.fileName));
+
             next.$invoke();
           });
 
@@ -51,8 +56,7 @@ public class ResourceLoadingManager implements GameLoadingHandler {
         } , next);
 
       } else {
-        /* TODO remove this by error handling */
-        next.$invoke();
+        JsUtil.throwError("could not download filelist for folder " + loader.forPath());
       }
     });
   }

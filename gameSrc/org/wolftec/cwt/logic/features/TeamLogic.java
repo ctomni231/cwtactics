@@ -2,8 +2,8 @@ package org.wolftec.cwt.logic.features;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.InformationList;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
@@ -46,10 +46,10 @@ public class TeamLogic implements ManagedClass {
    * @param player
    * @param menuObject
    */
-  public void getTransferMoneyTargets(Player player, InformationList info) { // TODO
+  public void getTransferMoneyTargets(Player player, Callback1<Integer> targetCb) {
     for (int i = 0, e = MONEY_TRANSFER_STEPS.$length(); i < e; i++) {
       if (player.gold >= MONEY_TRANSFER_STEPS.$get(i)) {
-        info.addInfo(MONEY_TRANSFER_STEPS.$get(i) + "", true);
+        targetCb.$invoke(MONEY_TRANSFER_STEPS.$get(i));
       }
     }
   }
@@ -75,7 +75,7 @@ public class TeamLogic implements ManagedClass {
     return !transport.hasLoads(unit);
   }
 
-  public void getUnitTransferTargets(Player player, InformationList info) { // TODO
+  public void getUnitTransferTargets(Player player, Callback1<Integer> targetCb) {
     int origI = player.id;
     for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
       if (i == origI) {
@@ -84,7 +84,7 @@ public class TeamLogic implements ManagedClass {
 
       player = model.getPlayer(i);
       if (!player.isInactive() && player.numberOfUnits < Constants.MAX_UNITS) {
-        info.addInfo(i + "", true);
+        targetCb.$invoke(i);
       }
     }
   }
@@ -113,7 +113,7 @@ public class TeamLogic implements ManagedClass {
     return property.type.notTransferable != true && property.owner.gold >= property.type.funds;
   }
 
-  public void getPropertyTransferTargets(Player player, InformationList info) { // TODO
+  public void getPropertyTransferTargets(Player player, Callback1<Integer> targetCb) {
     int origI = player.id;
     for (int i = 0, e = Constants.MAX_PLAYER; i < e; i++) {
       if (i == origI) {
@@ -122,7 +122,7 @@ public class TeamLogic implements ManagedClass {
 
       player = model.getPlayer(i);
       if (!player.isInactive()) {
-        info.addInfo(i + "", true);
+        targetCb.$invoke(i);
       }
     }
   }

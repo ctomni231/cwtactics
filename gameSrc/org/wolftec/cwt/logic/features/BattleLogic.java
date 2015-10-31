@@ -69,12 +69,6 @@ public class BattleLogic implements ManagedClass, Configurable {
     return unit.type.ammo > 0;
   }
 
-  public boolean hasSecondaryWeapon(Unit unit) {
-    AttackType attack = unit.type.attack;
-    // TODO avoid null here
-    return NullUtil.isPresent(attack) && NullUtil.isPresent(attack.sec_wp);
-  }
-
   /**
    * 
    * @param attacker
@@ -205,7 +199,7 @@ public class BattleLogic implements ManagedClass, Configurable {
 
     // a unit may does not have ammo but a weapon that needs ammo to fire
     if (!markRangeInSelection) {
-      if (hasMainWeapon(unit) && !hasSecondaryWeapon(unit) && unit.type.ammo > 0 && unit.ammo == 0) {
+      if (!cannotAttack(unit) && unit.type.ammo > 0 && unit.ammo == 0) {
         return false;
       }
     }

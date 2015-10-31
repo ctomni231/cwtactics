@@ -3,8 +3,8 @@ package org.wolftec.cwt.system;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
-import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback3;
+import org.wolftec.cwt.util.JsUtil;
 
 public class MatrixSegment {
 
@@ -68,12 +68,10 @@ public class MatrixSegment {
     y = y - this.centerY;
 
     if (x < 0 || y < 0 || x >= sideLen || y >= sideLen) {
-      // TODO
-      JSObjectAdapter.$js("throw new Error('IndexOutOfBounds')");
-
-    } else {
-      this.data.$get(x).$set(y, value);
+      JsUtil.throwError("index out of bounds");
     }
+
+    this.data.$get(x).$set(y, value);
   }
 
   public void reset() {
@@ -177,7 +175,7 @@ public class MatrixSegment {
     y = y - this.centerY;
 
     if (x < 0 || y < 0 || x >= sideLen || y >= sideLen) {
-      JSGlobal.stjs.exception("IndexOutOfBounds");
+      JsUtil.throwError("index out of bounds");
     }
 
     return ((x > 0 && this.data.$get(x - 1).$get(y) > 0) || (y > 0 && this.data.$get(x).$get(y - 1) > 0)

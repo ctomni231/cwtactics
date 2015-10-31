@@ -9,14 +9,11 @@ import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.system.InputManager;
 import org.wolftec.cwt.system.InputProvider;
 import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.test.TestManager;
 
 public class NoneState extends AbstractState {
 
   private Log log;
-
   private InputManager input;
-  private TestManager tests;
 
   @Override
   public void onEnter(StateFlowData transition) {
@@ -25,8 +22,7 @@ public class NoneState extends AbstractState {
 
   @Override
   public void update(StateFlowData transition, int delta, InputProvider input) {
-    tests.executeTests();
-    transition.setTransitionTo("LoadingState");
+    transition.setTransitionTo("CheckSystemState");
   }
 
   @Override

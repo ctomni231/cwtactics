@@ -5,6 +5,7 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
+import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.util.AssertUtil;
 import org.wolftec.cwt.util.ClassUtil;
 import org.wolftec.cwt.util.ListUtil;
@@ -19,16 +20,19 @@ public class IoCContainer {
 
   private Map<String, ManagedClass> managedObjects;
 
+  public IoCContainer() {
+    init();
+  }
+
   public <T extends ManagedClass> T getManagedObjectByType(Class<T> clazz) {
     String className = ClassUtil.getClassName(clazz);
     T managedObject = (T) managedObjects.$get(className);
     return NullUtil.getOrThrow(managedObject);
   }
 
-  public void initByConfig(IoCConfiguration config) {
-    if (config.namespaces.indexOf("wEng") == -1) {
-      config.namespaces.push("wEng");
-    }
+  public void init() {
+    IoCConfiguration config = new IoCConfiguration();
+    config.namespaces = JSCollections.$array(Constants.NAMESPACE);
 
     AssertUtil.assertThat(!NullUtil.isPresent(managedObjects));
     managedObjects = JSCollections.$map();

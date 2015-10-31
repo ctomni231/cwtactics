@@ -1,6 +1,5 @@
 package org.wolftec.cwt.model.gameround;
 
-import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 import org.wolftec.cwt.util.NumberUtil;
 
@@ -15,45 +14,6 @@ public class Unit implements Ownable {
   public UnitType type;
   public boolean canAct;
   public Player owner;
-
-  public Unit() {
-
-    this.hp = 99;
-    this.ammo = 0;
-    this.fuel = 0;
-    this.hidden = false;
-    this.loadedIn = Constants.INACTIVE;
-    this.type = null;
-    this.canAct = false;
-
-    // If the value is null then unit does not exists on the map.
-    this.owner = null;
-  }
-
-  /**
-   *
-   * @param type
-   * @deprecated FIXME move into resetter
-   */
-  @Deprecated
-  public void initByType(UnitType type) {
-    this.type = type;
-    this.hp = 99;
-    this.exp = 0;
-    this.ammo = type.ammo;
-    this.fuel = type.fuel;
-    this.hidden = false;
-    this.loadedIn = Constants.INACTIVE;
-    this.canAct = false;
-  }
-
-  /**
-   *
-   * @return {boolean}
-   */
-  public boolean isInactive() {
-    return owner == null;
-  }
 
   /**
    * Damages a unit.

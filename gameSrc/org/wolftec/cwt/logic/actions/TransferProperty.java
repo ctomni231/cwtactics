@@ -11,7 +11,7 @@ import org.wolftec.cwt.util.AssertUtil;
 
 public class TransferProperty implements Action {
 
-  private TeamLogic    team;
+  private TeamLogic team;
   private ModelManager model;
 
   @Override
@@ -36,7 +36,7 @@ public class TransferProperty implements Action {
 
   @Override
   public void prepareActionMenu(UserInteractionData data) {
-    team.getPropertyTransferTargets(data.source.property.owner, data);
+    team.getPropertyTransferTargets(data.source.property.owner, t -> data.addInfo(t + "", true));
   }
 
   @Override

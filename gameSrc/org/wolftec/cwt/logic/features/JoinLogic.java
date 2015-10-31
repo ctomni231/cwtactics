@@ -4,7 +4,7 @@ import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.system.ManagedClass;
-import org.wolftec.cwt.util.JsUtil;
+import org.wolftec.cwt.util.AssertUtil;
 
 public class JoinLogic implements ManagedClass {
 
@@ -47,9 +47,7 @@ public class JoinLogic implements ManagedClass {
    */
   public void join(Unit source, int x, int y) {
     Unit target = model.getTile(x, y).unit;
-    if (target.type != source.type) {
-      JsUtil.throwError("TypeMismatch"); // TODO
-    }
+    AssertUtil.assertThat(target.type == source.type);
 
     target.heal(Unit.pointsToHealth(Unit.healthToPoints(source.hp)), true);
     if (target.type.ammo != Constants.INACTIVE) {

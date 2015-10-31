@@ -33,7 +33,7 @@ public class WeatherLogic implements ManagedClass, Configurable {
     // Search a random weather if the last weather was `null` or the default
     // weather type
     WeatherType newTp;
-    if (model.weather != null && model.weather == defWather) { // TODO
+    if (model.weather == defWather) {
       newTp = sheets.weathers.random(model.weather);
 
     } else {

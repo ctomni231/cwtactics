@@ -17,11 +17,13 @@ public abstract class AbstractSheetLoader<T extends SheetType> implements Resour
 
   protected SheetManager db;
 
+  @Deprecated
   protected <M> M read(Map<String, Object> data, String property) {
     M value = (M) data.$get(property);
     return NullUtil.getOrThrow(value);
   }
 
+  @Deprecated
   protected <M> M readNullable(Map<String, Object> data, String property, M defaultValue) {
     return NullUtil.getOrElse((M) data.$get(property), defaultValue);
   }

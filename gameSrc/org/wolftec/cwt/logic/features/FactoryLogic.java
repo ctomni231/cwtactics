@@ -2,8 +2,8 @@ package org.wolftec.cwt.logic.features;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
+import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.InformationList;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.sheets.SheetManager;
@@ -67,7 +67,7 @@ public class FactoryLogic implements ManagedClass, Configurable {
     factory.owner.manpower--;
     factory.owner.gold -= sheet.costs;
 
-    model.searchProperty(factory, (fx, fy, fac) -> lifecycle.createUnit(fx, fy, fac.owner, type));
+    model.searchProperty(factory, (fx, fy, fac) -> lifecycle.createUnitAtPosition(fx, fy, fac.owner, type));
   }
 
   /**
@@ -80,7 +80,7 @@ public class FactoryLogic implements ManagedClass, Configurable {
    * @param info
    * @param markDisabled
    */
-  public void generateBuildMenu(Property factory, InformationList info, boolean markDisabled) {
+  public void generateBuildMenu(Property factory, Callback2<String, Boolean> buildCb) {
     int gold = factory.owner.gold;
     Array<String> bList = factory.type.builds;
     sheets.units.forEach((key, type) -> {
@@ -92,9 +92,7 @@ public class FactoryLogic implements ManagedClass, Configurable {
         return;
       }
 
-      if (type.costs <= gold || markDisabled) {
-        info.addInfo(key, (type.costs <= gold));
-      }
+      buildCb.$invoke(key, (type.costs <= gold));
     });
   }
 }

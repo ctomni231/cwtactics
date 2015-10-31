@@ -44,7 +44,11 @@ public class BuildUnit implements Action {
 
   @Override
   public void prepareActionMenu(UserInteractionData data) {
-    factory.generateBuildMenu(data.source.property, data, true);
+    factory.generateBuildMenu(data.source.property, (tp, enabled) -> {
+      if (enabled) {
+        data.addInfo(tp, true);
+      }
+    });
   }
 
   @Override

@@ -183,7 +183,7 @@ public class AttackUnitActionTest extends AbstractCwtTest {
     test.expectThat.actionSelectionAt(0, 3);
     test.expectThat.actionTriggered(action);
 
-    // TODO NO MOVE IN TEST MODE -> IMPLEMENT THE REAL CASE
+    // HINT NO MOVE IN TEST MODE -> IMPLEMENT THE REAL CASE
     test.assertThat.unitAt(0, 0).propertyByFn(u -> u.ammo).is(START_AMMO - 1);
   }
 
@@ -200,7 +200,7 @@ public class AttackUnitActionTest extends AbstractCwtTest {
     test.expectThat.actionSelectionAt(0, 3);
     test.expectThat.actionTriggered(action);
 
-    // TODO NO MOVE IN TEST MODE -> IMPLEMENT THE REAL CASE
+    // HINT NO MOVE IN TEST MODE -> IMPLEMENT THE REAL CASE
     test.assertThat.unitAt(0, 0).propertyByFn(u -> u.ammo).is(START_AMMO);
   }
 

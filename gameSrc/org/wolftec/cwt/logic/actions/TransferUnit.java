@@ -36,7 +36,7 @@ public class TransferUnit implements Action {
 
   @Override
   public void prepareActionMenu(UserInteractionData data) {
-    team.getUnitTransferTargets(data.source.unit.owner, data);
+    team.getUnitTransferTargets(data.source.unit.owner, t -> data.addInfo(t + "", true));
   }
 
   @Override

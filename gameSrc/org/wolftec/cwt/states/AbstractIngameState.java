@@ -1,7 +1,6 @@
 package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.logic.ActionManager;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
@@ -14,30 +13,17 @@ public class AbstractIngameState extends AbstractState {
 
   protected Log log;
 
-  protected ActionManager actions;
   protected UserInteractionData uiData;
-
-  protected ModelManager __model__;
+  protected ModelManager model;
 
   @Override
   public void update(StateFlowData flowData, int delta, InputProvider input) {
-
-    /*
-     * We move out of this state directly here when we have actions in the
-     * actions buffer.
-     */
-    if (actions.hasData()) {
-      flowData.setTransitionTo("IngameEvalActionState");
-      return;
-    }
-
     boolean isLeftPressed = input.isActionPressed(GameActions.BUTTON_LEFT);
     boolean isRightPressed = input.isActionPressed(GameActions.BUTTON_RIGHT);
     boolean isUpPressed = input.isActionPressed(GameActions.BUTTON_UP);
     boolean isDownPressed = input.isActionPressed(GameActions.BUTTON_DOWN);
     boolean isBPressed = input.isActionPressed(GameActions.BUTTON_B);
     boolean isAPressed = input.isActionPressed(GameActions.BUTTON_A);
-
     boolean isAtLeastOneDPadButtonPressed = (isDownPressed || isRightPressed || isLeftPressed || isUpPressed);
     boolean isAtLeastOneButtonPressed = (isAtLeastOneDPadButtonPressed || isAPressed || isBPressed);
 
@@ -62,7 +48,7 @@ public class AbstractIngameState extends AbstractState {
     }
 
     if (isAtLeastOneDPadButtonPressed) {
-      Tile tile = __model__.getTile(uiData.cursorX, uiData.cursorY);
+      Tile tile = model.getTile(uiData.cursorX, uiData.cursorY);
       Unit unit = tile.unit;
       Property prop = tile.property;
       log.info("cursor position [" + uiData.cursorX + ", " + uiData.cursorY + "] T[" + tile.type.ID + "] P[" + (NullUtil.isPresent(prop) ? prop.type.ID : "N/A")
@@ -77,31 +63,26 @@ public class AbstractIngameState extends AbstractState {
   }
 
   public void handleButtonUp(StateFlowData transition, int delta) {
-    uiData.cursorY--;
-    if (uiData.cursorY < 0) {
-      uiData.cursorY = 0;
+    if (uiData.cursorY > 0) {
+      uiData.cursorY--;
     }
   }
 
   public void handleButtonDown(StateFlowData transition, int delta) {
-    uiData.cursorY++;
-    // TODO
-    // if (uiData.cursorY >= ) {
-    // uiData.cursorY = 0;
-    // }
+    if (uiData.cursorY < model.mapHeight) {
+      uiData.cursorY++;
+    }
   }
 
   public void handleButtonRight(StateFlowData flowData, int delta) {
-    uiData.cursorX++;
-    // TODO
-    // if (uiData.cursorX >= ) {
-    // }
+    if (uiData.cursorX < model.mapWidth) {
+      uiData.cursorX++;
+    }
   }
 
   public void handleButtonLeft(StateFlowData flowData, int delta) {
-    uiData.cursorX--;
-    if (uiData.cursorX < 0) {
-      uiData.cursorX = 0;
+    if (uiData.cursorX > 0) {
+      uiData.cursorX--;
     }
   }
 

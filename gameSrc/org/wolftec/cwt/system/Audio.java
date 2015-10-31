@@ -6,6 +6,7 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.annotation.GlobalScope;
 import org.stjs.javascript.annotation.STJSBridge;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.system.annotations.OptionalReturn;
 import org.wolftec.cwt.util.AssertUtil;
 import org.wolftec.cwt.util.ClassUtil;
 import org.wolftec.cwt.util.NullUtil;
@@ -197,13 +198,12 @@ public class Audio implements ManagedClass {
     }
   }
 
+  @OptionalReturn
   public AudioBufferSourceNode playSound(String id, boolean loop) {
-    if (!NullUtil.isPresent(audioContext)) {
-      return null;
+    if (NullUtil.isPresent(audioContext)) {
+      return playSoundOnGainNode(sfxNode, NullUtil.getOrThrow(buffer.$get(id)), loop);
     }
-
-    // TODO error buffer does not exists
-    return playSoundOnGainNode(sfxNode, buffer.$get(id), loop);
+    return null;
   }
 
   public boolean playMusic(String id) {
