@@ -6,14 +6,14 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.SheetType;
+import org.wolftec.cwt.system.FileDescriptor;
+import org.wolftec.cwt.system.ResourceLoader;
 import org.wolftec.cwt.util.ClassUtil;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
 import org.wolftec.cwt.util.RequestUtil;
-import org.wolftec.wTec.loading.DataLoader;
-import org.wolftec.wTec.persistence.FileDescriptor;
 
-public abstract class AbstractSheetLoader<T extends SheetType> implements DataLoader {
+public abstract class AbstractSheetLoader<T extends SheetType> implements ResourceLoader {
 
   protected SheetManager db;
 

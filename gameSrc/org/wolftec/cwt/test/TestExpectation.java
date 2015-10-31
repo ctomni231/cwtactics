@@ -3,6 +3,7 @@ package org.wolftec.cwt.test;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.logic.Action;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
@@ -16,11 +17,10 @@ import org.wolftec.cwt.model.sheets.types.SheetType;
 import org.wolftec.cwt.model.sheets.types.TileType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
+import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.system.annotations.OptionalParameter;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.wTec.action.Action;
-import org.wolftec.wTec.annotations.OptionalParameter;
-import org.wolftec.wTec.state.StateFlowData;
 
 public class TestExpectation {
 
@@ -186,8 +186,8 @@ public class TestExpectation {
 
   public void sourceSelectionAt(int x, int y) {
     parent.uiData.movePath.clear();
-    parent.uiData.source.set(parent.model, x, y);
-    parent.uiData.target.set(parent.model, x, y);
+    parent.model.updatePositionData(parent.uiData.source, x, y);
+    parent.model.updatePositionData(parent.uiData.target, x, y);
   }
 
   /**
@@ -232,7 +232,7 @@ public class TestExpectation {
       parent.uiData.movePath.push(code);
     }
 
-    parent.uiData.target.set(parent.model, x, y);
+    parent.model.updatePositionData(parent.uiData.target, x, y);
   }
 
   /**
@@ -245,13 +245,13 @@ public class TestExpectation {
       JsUtil.throwError("source position must be set before target");
     }
 
-    parent.uiData.target.set(parent.model, x, y);
+    parent.model.updatePositionData(parent.uiData.target, x, y);
     parent.uiData.targets.setAllValuesTo(1, 1);
     parent.move.generateMovePath(parent.uiData.source.x, parent.uiData.source.y, x, y, parent.uiData.targets, parent.uiData.movePath);
   }
 
   public void actionSelectionAt(int x, int y) {
-    parent.uiData.actionTarget.set(parent.model, x, y);
+    parent.model.updatePositionData(parent.uiData.actionTarget, x, y);
   }
 
   public void menuEntrySelected(int index) {

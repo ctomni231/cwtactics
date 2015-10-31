@@ -3,13 +3,12 @@ package org.wolftec.cwt.test;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Function1;
+import org.wolftec.cwt.logic.Action;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.wTec.action.Action;
-import org.wolftec.wTec.test.Assert;
 
 public class TestAssertion {
 

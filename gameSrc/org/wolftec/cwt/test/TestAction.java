@@ -2,12 +2,12 @@ package org.wolftec.cwt.test;
 
 import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.logic.Action;
+import org.wolftec.cwt.logic.ActionData;
+import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.system.annotations.OptionalParameter;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.wTec.action.Action;
-import org.wolftec.wTec.action.ActionData;
-import org.wolftec.wTec.annotations.OptionalParameter;
-import org.wolftec.wTec.state.StateFlowData;
 
 public class TestAction {
 

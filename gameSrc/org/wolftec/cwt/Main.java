@@ -3,16 +3,13 @@ package org.wolftec.cwt;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSObjectAdapter;
+import org.wolftec.cwt.states.StateManager;
+import org.wolftec.cwt.system.GameloopService;
+import org.wolftec.cwt.system.IoCConfiguration;
+import org.wolftec.cwt.system.IoCContainer;
 import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.wTec.gameloop.GameLoopManager;
-import org.wolftec.wTec.ioc.IoCConfiguration;
-import org.wolftec.wTec.ioc.IoCContainer;
-import org.wolftec.wTec.state.StateManager;
 
 public class Main {
-
-  // FIXME model reset as interface with ResetManager
-  // FIXME remove any logic from model
 
   public static void main(String[] args) {
     long ts;
@@ -25,7 +22,7 @@ public class Main {
     // start using testing functions)
     // ioc.getManagedObjectByType(StateManager.class).setState("TempState",
     // true);
-    ioc.getManagedObjectByType(GameLoopManager.class).start();
+    ioc.getManagedObjectByType(GameloopService.class).start();
     ts = JsUtil.getTimestamp() - ts;
 
     Global.console.log("STARTUP " + ts + "ms");

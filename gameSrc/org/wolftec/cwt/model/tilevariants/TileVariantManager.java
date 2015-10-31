@@ -5,10 +5,10 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.system.ManagedClass;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.wTec.ioc.Injectable;
 
-public class TileVariantManager implements Injectable {
+public class TileVariantManager implements ManagedClass {
 
   Map<String, TileVariantInfo> types;
 

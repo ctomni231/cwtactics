@@ -8,12 +8,12 @@ import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
-import org.wolftec.wTec.ioc.Injectable;
-import org.wolftec.wTec.loading.GameLoader;
-import org.wolftec.wTec.log.Log;
+import org.wolftec.cwt.system.GameLoadingHandler;
+import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.ManagedClass;
 
 @Deprecated
-public class DefaultTypesLoader implements Injectable, GameLoader {
+public class DefaultTypesLoader implements ManagedClass, GameLoadingHandler {
 
   private SheetManager sheets;
   private Log log;

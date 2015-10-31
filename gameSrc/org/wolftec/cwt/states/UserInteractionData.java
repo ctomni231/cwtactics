@@ -1,19 +1,19 @@
 package org.wolftec.cwt.states;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.InformationList;
+import org.wolftec.cwt.logic.Action;
+import org.wolftec.cwt.logic.ActionManager;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.PositionData;
+import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.ManagedClass;
+import org.wolftec.cwt.system.MatrixSegment;
+import org.wolftec.cwt.system.RingList;
 import org.wolftec.cwt.util.AssertUtil;
 import org.wolftec.cwt.util.NumberUtil;
-import org.wolftec.wTec.InformationList;
-import org.wolftec.wTec.action.Action;
-import org.wolftec.wTec.action.ActionManager;
-import org.wolftec.wTec.collections.CircularBuffer;
-import org.wolftec.wTec.collections.MoveableMatrix;
-import org.wolftec.wTec.ioc.Injectable;
-import org.wolftec.wTec.log.Log;
 
-public class UserInteractionData implements Injectable, InformationList {
+public class UserInteractionData implements ManagedClass, InformationList {
 
   private Log log;
 
@@ -25,9 +25,9 @@ public class UserInteractionData implements Injectable, InformationList {
   public PositionData target;
   public PositionData actionTarget;
 
-  public CircularBuffer<Integer> movePath;
+  public RingList<Integer> movePath;
 
-  public CircularBuffer<String> infos;
+  public RingList<String> infos;
   public int infoIndex;
 
   public String action;
@@ -36,7 +36,7 @@ public class UserInteractionData implements Injectable, InformationList {
   public String actionData;
   public int actionDataCode;
 
-  public MoveableMatrix targets;
+  public MatrixSegment targets;
 
   public int cursorX;
   public int cursorY;
@@ -49,10 +49,10 @@ public class UserInteractionData implements Injectable, InformationList {
     target = new PositionData();
     actionTarget = new PositionData();
 
-    movePath = new CircularBuffer<>(Constants.MAX_SELECTION_RANGE);
-    infos = new CircularBuffer<>(50);
+    movePath = new RingList<>(Constants.MAX_SELECTION_RANGE);
+    infos = new RingList<>(50);
 
-    targets = new MoveableMatrix(Constants.MAX_SELECTION_RANGE);
+    targets = new MatrixSegment(Constants.MAX_SELECTION_RANGE);
   }
 
   @Override

@@ -1,8 +1,8 @@
 package org.wolftec.cwt.util;
 
 import org.stjs.javascript.annotation.Native;
-import org.wolftec.wTec.annotations.MayRaisesError;
-import org.wolftec.wTec.annotations.OptionalParameter;
+import org.wolftec.cwt.system.annotations.MayRaisesError;
+import org.wolftec.cwt.system.annotations.OptionalParameter;
 
 /**
  * Simple and small utility class to handle with assertions.

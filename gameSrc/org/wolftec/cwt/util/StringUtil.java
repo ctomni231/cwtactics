@@ -1,5 +1,6 @@
 package org.wolftec.cwt.util;
 
+import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.JSStringAdapter;
 
 public abstract class StringUtil {
@@ -23,5 +24,15 @@ public abstract class StringUtil {
     }
 
     return hash;
+  }
+
+  public static int compare(String a, String b) {
+    if ((boolean) JSObjectAdapter.$js("a < b")) {
+      return -1;
+    } else if ((boolean) JSObjectAdapter.$js("a > b")) {
+      return +1;
+    } else {
+      return 0;
+    }
   }
 }

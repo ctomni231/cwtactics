@@ -8,11 +8,11 @@ import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
+import org.wolftec.cwt.system.ManagedClass;
+import org.wolftec.cwt.system.MatrixSegment;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.wTec.collections.MoveableMatrix;
-import org.wolftec.wTec.ioc.Injectable;
 
-public class SpecialWeaponsLogic implements Injectable {
+public class SpecialWeaponsLogic implements ManagedClass {
 
   public static final String CANNON_UNIT_ID = "CANU";
 
@@ -34,11 +34,11 @@ public class SpecialWeaponsLogic implements Injectable {
   // (**x**,**y**) and has targets in it's range,
   // else **false**.
   //
-  public boolean hasTargets(int x, int y, MoveableMatrix selection) {
+  public boolean hasTargets(int x, int y, MatrixSegment selection) {
     return isCannonUnit(model.getTile(x, y).unit) && markCannonTargets(x, y, selection);
   }
 
-  public void fillCannonTargets(int x, int y, MoveableMatrix selection) {
+  public void fillCannonTargets(int x, int y, MatrixSegment selection) {
     markCannonTargets(x, y, selection);
   }
 
@@ -58,7 +58,7 @@ public class SpecialWeaponsLogic implements Injectable {
   // the rectangle from `sx,sy` to `tx,ty`. The cannon is on the tile `ox,oy`
   // with a given `range`.
   //
-  public boolean tryToMarkCannonTargets(Player player, MoveableMatrix selection, int ox, int oy, int otx, int oty, int sx, int sy, int tx, int ty, int range) {
+  public boolean tryToMarkCannonTargets(Player player, MatrixSegment selection, int ox, int oy, int otx, int oty, int sx, int sy, int tx, int ty, int range) {
     int tid = player.team;
     int osy = sy;
     boolean result = false;
@@ -99,7 +99,7 @@ public class SpecialWeaponsLogic implements Injectable {
    * @param y
    * @param selection
    */
-  public boolean markCannonTargets(int x, int y, MoveableMatrix selection) {
+  public boolean markCannonTargets(int x, int y, MatrixSegment selection) {
     Property prop = model.getTile(x, y).property;
     PropertyType type = (prop.type.ID != "PROP_INV") ? prop.type : grabBombPropTypeFromPos(x, y);
 

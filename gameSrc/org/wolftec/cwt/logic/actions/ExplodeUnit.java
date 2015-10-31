@@ -1,12 +1,12 @@
 package org.wolftec.cwt.logic.actions;
 
+import org.wolftec.cwt.logic.Action;
+import org.wolftec.cwt.logic.ActionData;
+import org.wolftec.cwt.logic.ActionType;
 import org.wolftec.cwt.logic.features.ExplodeLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.wTec.action.Action;
-import org.wolftec.wTec.action.ActionData;
-import org.wolftec.wTec.action.ActionType;
-import org.wolftec.wTec.state.StateFlowData;
 
 public class ExplodeUnit implements Action {
 

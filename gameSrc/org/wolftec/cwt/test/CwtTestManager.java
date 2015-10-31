@@ -6,10 +6,10 @@ import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.wTec.config.ConfigurableValueManager;
-import org.wolftec.wTec.ioc.Injectable;
+import org.wolftec.cwt.system.ConfigurationManager;
+import org.wolftec.cwt.system.ManagedClass;
 
-public class CwtTestManager implements Injectable {
+public class CwtTestManager implements ManagedClass {
 
   SheetManager sheets;
   ModelResetter modelReset;
@@ -17,7 +17,7 @@ public class CwtTestManager implements Injectable {
   UserInteractionData uiData;
   LifecycleLogic life;
   MoveLogic move;
-  ConfigurableValueManager cfg;
+  ConfigurationManager cfg;
 
   public TestExpectation expectThat;
   public TestAssertion assertThat;

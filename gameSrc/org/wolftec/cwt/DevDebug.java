@@ -12,16 +12,16 @@ import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.types.SheetType;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.ManagedClass;
 import org.wolftec.cwt.util.NullUtil;
 import org.wolftec.cwt.util.ObjectUtil;
-import org.wolftec.wTec.ioc.Injectable;
-import org.wolftec.wTec.log.Log;
 
 /**
  * Simple module to grab system information at runtime.
  * 
  */
-public class DevDebug implements Injectable {
+public class DevDebug implements ManagedClass {
 
   @SyntheticType
   private static class StringHolder {

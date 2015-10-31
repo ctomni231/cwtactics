@@ -4,10 +4,10 @@ import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.system.ManagedClass;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.wTec.ioc.Injectable;
 
-public class SupplyLogic implements Injectable {
+public class SupplyLogic implements ManagedClass {
 
   private ModelManager model;
 

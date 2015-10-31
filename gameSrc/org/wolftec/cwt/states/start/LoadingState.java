@@ -1,25 +1,32 @@
 package org.wolftec.cwt.states.start;
 
 import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.wTec.input.InputProvider;
-import org.wolftec.wTec.loading.GameLoadingManager;
-import org.wolftec.wTec.loading.LoadingWatcher;
-import org.wolftec.wTec.log.Log;
-import org.wolftec.wTec.state.AbstractState;
-import org.wolftec.wTec.state.StateFlowData;
+import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.system.GameLoadingManager;
+import org.wolftec.cwt.system.InputProvider;
+import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.ResourceRequestWatcher;
 
-public class LoadingState extends AbstractState implements LoadingWatcher {
+public class LoadingState extends AbstractState implements ResourceRequestWatcher {
 
   private Log log;
   private GameLoadingManager loading;
+  private boolean done;
 
   @Override
-  public void update(StateFlowData transition, int delta, InputProvider input) {
-    if (!loading.isStarted()) {
-      loading.loadData(() -> {
-        log.info("done");
-        transition.setTransitionTo("StartScreenState");
-      });
+  public void onEnter(StateFlowData flowData) {
+    done = false;
+    loading.loadData(() -> {
+      log.info("done");
+      done = true;
+    });
+  }
+
+  @Override
+  public void update(StateFlowData flowData, int delta, InputProvider input) {
+    if (done) {
+      flowData.setTransitionTo("StartScreenState");
     }
   }
 

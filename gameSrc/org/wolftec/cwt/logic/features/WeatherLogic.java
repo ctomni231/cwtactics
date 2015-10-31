@@ -3,23 +3,23 @@ package org.wolftec.cwt.logic.features;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
+import org.wolftec.cwt.system.Configurable;
+import org.wolftec.cwt.system.Configuration;
+import org.wolftec.cwt.system.ManagedClass;
 import org.wolftec.cwt.util.NumberUtil;
-import org.wolftec.wTec.config.ConfigurableValue;
-import org.wolftec.wTec.config.ConfigurationProvider;
-import org.wolftec.wTec.ioc.Injectable;
 
-public class WeatherLogic implements Injectable, ConfigurationProvider {
+public class WeatherLogic implements ManagedClass, Configurable {
 
   private SheetManager sheets;
   private ModelManager model;
 
-  private ConfigurableValue cfgMinDays;
-  private ConfigurableValue cfgRandomDays;
+  private Configuration cfgMinDays;
+  private Configuration cfgRandomDays;
 
   @Override
   public void onConstruction() {
-    cfgMinDays = new ConfigurableValue("weather.mindays", 1, 5, 1);
-    cfgRandomDays = new ConfigurableValue("weather.randomdays", 0, 5, 4);
+    cfgMinDays = new Configuration("weather.mindays", 1, 5, 1);
+    cfgRandomDays = new Configuration("weather.randomdays", 0, 5, 4);
   }
 
   /**

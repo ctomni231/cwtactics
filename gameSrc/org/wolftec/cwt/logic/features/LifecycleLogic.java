@@ -7,22 +7,22 @@ import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
-import org.wolftec.wTec.annotations.OptionalReturn;
-import org.wolftec.wTec.config.ConfigurableValue;
-import org.wolftec.wTec.config.ConfigurationProvider;
-import org.wolftec.wTec.ioc.Injectable;
+import org.wolftec.cwt.system.Configurable;
+import org.wolftec.cwt.system.Configuration;
+import org.wolftec.cwt.system.ManagedClass;
+import org.wolftec.cwt.system.annotations.OptionalReturn;
 
-public class LifecycleLogic implements Injectable, ConfigurationProvider {
+public class LifecycleLogic implements ManagedClass, Configurable {
 
   private ModelManager model;
   private SheetManager sheets;
   private FogLogic fog;
 
-  private ConfigurableValue noUnitsLeftLoose;
+  private Configuration noUnitsLeftLoose;
 
   @Override
   public void onConstruction() {
-    noUnitsLeftLoose = new ConfigurableValue("game.loose.whenNoUnitLeft", 0, 1, 0);
+    noUnitsLeftLoose = new Configuration("game.loose.whenNoUnitLeft", 0, 1, 0);
   }
 
   //

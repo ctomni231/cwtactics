@@ -7,12 +7,13 @@ import org.stjs.javascript.functions.Callback3;
 import org.stjs.javascript.functions.Function4;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
+import org.wolftec.cwt.system.Configurable;
+import org.wolftec.cwt.system.ManagedClass;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.ListUtil;
-import org.wolftec.wTec.config.ConfigurationProvider;
-import org.wolftec.wTec.ioc.Injectable;
+import org.wolftec.cwt.util.NullUtil;
 
-public class ModelManager implements Injectable, ConfigurationProvider {
+public class ModelManager implements ManagedClass, Configurable {
 
   public Player lastClientPlayer;
 
@@ -343,6 +344,28 @@ public class ModelManager implements Injectable, ConfigurationProvider {
           return;
         }
       }
+    }
+  }
+
+  public void updatePositionData(PositionData data, int px, int py) {
+    data.clean();
+
+    data.x = px;
+    data.y = py;
+    data.tile = getTile(px, py);
+
+    if (data.tile.visionTurnOwner > 0 && NullUtil.isPresent(data.tile.unit)) {
+      data.unit = data.tile.unit;
+      data.unitId = getUnitId(data.tile.unit);
+    } else {
+      data.unit = null;
+    }
+
+    if (NullUtil.isPresent(data.tile.property)) {
+      data.property = data.tile.property;
+      data.propertyId = getPropertyId(data.tile.property);
+    } else {
+      data.property = null;
     }
   }
 }

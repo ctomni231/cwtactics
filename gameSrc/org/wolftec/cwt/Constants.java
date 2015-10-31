@@ -2,9 +2,30 @@ package org.wolftec.cwt;
 
 public class Constants {
 
+  public static final String NAMESPACE = "cwt";
+
   public static final String VERSION = "0.36";
 
-  public static final String NAMESPACE = "cwt";
+  /**
+   * After a state transition the complete input stack will be blocked for the
+   * given amount of time.
+   */
+  public static final int BLOCK_INPUT_TIME = 250;
+
+  /**
+   * Controls the exact length of the logger name field in a log message. The
+   * class name will be extended (with spaces) or trimmed to has the exact
+   * wanted length.
+   */
+  public static final int LOGGER_CLASS_NAME_LENGTH = 20;
+
+  public static final String LOGGER_CSS_INFO_HEAD = "color: #197519; font-weight: bold";
+
+  public static final String LOGGER_CSS_WARN_HEAD = "color: #FF7519; font-weight: bold";
+
+  public static final String LOGGER_CSS_ERROR_HEAD = "color: #B20000; font-weight: bold";
+
+  public static final String LOGGER_CSS_TEXT = "color: #1A1A1A";
 
   /**
    * Determines the debug mode. Can be changed at runtime to enable/disable

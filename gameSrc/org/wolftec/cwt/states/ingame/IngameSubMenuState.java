@@ -1,11 +1,11 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.states.AbstractIngameState;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NumberUtil;
-import org.wolftec.wTec.state.AbstractIngameState;
-import org.wolftec.wTec.state.StateFlowData;
 
 public class IngameSubMenuState extends AbstractIngameState {
 

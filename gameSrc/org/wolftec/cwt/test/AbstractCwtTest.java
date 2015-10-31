@@ -4,8 +4,7 @@ import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.ModelResetter;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.wTec.config.ConfigurableValueManager;
-import org.wolftec.wTec.test.Test;
+import org.wolftec.cwt.system.ConfigurationManager;
 
 public abstract class AbstractCwtTest implements Test {
 
@@ -13,7 +12,7 @@ public abstract class AbstractCwtTest implements Test {
   protected ModelResetter modelReset;
   protected ModelManager model;
   protected UserInteractionData uiData;
-  protected ConfigurableValueManager cfg;
+  protected ConfigurationManager cfg;
 
   public CwtTestManager test;
 

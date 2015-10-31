@@ -1,21 +1,19 @@
 package org.wolftec.cwt.model.gameround;
 
-import org.wolftec.wTec.annotations.OptionalField;
+import org.wolftec.cwt.system.annotations.OptionalField;
 
 /**
  * Object that holds information about objects at a given position (x,y).
  */
 public class PositionData {
 
-  public int  x;
-  public int  y;
+  public int x;
+  public int y;
   public Tile tile = null;
 
-  @OptionalField
-  public Unit unit = null;
+  @OptionalField public Unit unit = null;
 
-  @OptionalField
-  public Property property = null;
+  @OptionalField public Property property = null;
 
   public int unitId;
   public int propertyId;
@@ -48,33 +46,5 @@ public class PositionData {
     this.unitId = otherPos.unitId;
     this.property = otherPos.property;
     this.propertyId = otherPos.propertyId;
-  }
-
-  /**
-   * Sets a position.
-   * 
-   * @param px
-   * @param py
-   */
-  public void set(ModelManager manager, int px, int py) {
-    this.clean();
-
-    x = px;
-    y = py;
-    tile = manager.getTile(x, y);
-
-    if (tile.visionTurnOwner > 0 && tile.unit != null) {
-      unit = tile.unit;
-      unitId = manager.getUnitId(tile.unit);
-    } else {
-      unit = null;
-    }
-
-    if (tile.property != null) {
-      property = tile.property;
-      propertyId = manager.getPropertyId(tile.property);
-    } else {
-      property = null;
-    }
   }
 }

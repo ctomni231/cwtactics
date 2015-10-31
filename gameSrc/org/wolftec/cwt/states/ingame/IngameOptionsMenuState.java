@@ -1,7 +1,7 @@
 package org.wolftec.cwt.states.ingame;
 
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.menu.OptionsMenuState;
-import org.wolftec.wTec.state.StateFlowData;
 
 public class IngameOptionsMenuState extends OptionsMenuState {
   @Override

@@ -3,14 +3,14 @@ package org.wolftec.cwt.states.misc;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.states.AbstractMenuState;
+import org.wolftec.cwt.states.GameActions;
+import org.wolftec.cwt.states.MenuInteractionMap;
+import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.states.StateManager;
+import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.SystemResetter;
 import org.wolftec.cwt.util.ObjectUtil;
-import org.wolftec.wTec.env.ResetSystem;
-import org.wolftec.wTec.log.Log;
-import org.wolftec.wTec.state.AbstractMenuState;
-import org.wolftec.wTec.state.GameActions;
-import org.wolftec.wTec.state.MenuInteractionMap;
-import org.wolftec.wTec.state.StateFlowData;
-import org.wolftec.wTec.state.StateManager;
 
 public class ErrorState extends AbstractMenuState {
 
@@ -60,7 +60,7 @@ public class ErrorState extends AbstractMenuState {
 
   private void reloadWithWipe() {
     String newURL = Global.window.document.location.href;
-    newURL = newURL.substring(0, newURL.indexOf("?")) + "?" + ResetSystem.PARAM_WIPEOUT + "=1";
+    newURL = newURL.substring(0, newURL.indexOf("?")) + "?" + SystemResetter.PARAM_WIPEOUT + "=1";
     Global.window.document.location.replace(newURL);
   }
 }

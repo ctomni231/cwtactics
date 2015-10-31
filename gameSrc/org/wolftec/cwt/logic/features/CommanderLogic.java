@@ -1,31 +1,31 @@
 package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.InformationList;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.sheets.types.CommanderType;
-import org.wolftec.wTec.InformationList;
-import org.wolftec.wTec.config.ConfigurableValue;
-import org.wolftec.wTec.config.ConfigurationProvider;
-import org.wolftec.wTec.ioc.Injectable;
+import org.wolftec.cwt.system.Configurable;
+import org.wolftec.cwt.system.Configuration;
+import org.wolftec.cwt.system.ManagedClass;
 
-public class CommanderLogic implements Injectable, ConfigurationProvider {
+public class CommanderLogic implements ManagedClass, Configurable {
 
   public final static int POWER_LEVEL_OFF = 0;
   public final static int POWER_LEVEL_COP = 1;
   public final static int POWER_LEVEL_SCOP = 2;
   public final static int POWER_LEVEL_TAG = 3;
 
-  private ConfigurableValue cfgStarCost;
-  private ConfigurableValue cfgStarCostIncrease;
-  private ConfigurableValue cfgStarCostIncreaseSteps;
-  private ConfigurableValue cfgCoLevel;
+  private Configuration cfgStarCost;
+  private Configuration cfgStarCostIncrease;
+  private Configuration cfgStarCostIncreaseSteps;
+  private Configuration cfgCoLevel;
 
   @Override
   public void onConstruction() {
-    cfgCoLevel = new ConfigurableValue("game.co.level", POWER_LEVEL_OFF, POWER_LEVEL_TAG, POWER_LEVEL_SCOP);
-    cfgStarCost = new ConfigurableValue("game.co.stars.cost", 100, 50000, 9000, 100);
-    cfgStarCostIncrease = new ConfigurableValue("game.co.stars.cost.increase.value", 0, 50000, 1800, 100);
-    cfgStarCostIncreaseSteps = new ConfigurableValue("game.co.stars.cost.increase.steps", 0, 50, 10);
+    cfgCoLevel = new Configuration("game.co.level", POWER_LEVEL_OFF, POWER_LEVEL_TAG, POWER_LEVEL_SCOP);
+    cfgStarCost = new Configuration("game.co.stars.cost", 100, 50000, 9000, 100);
+    cfgStarCostIncrease = new Configuration("game.co.stars.cost.increase.value", 0, 50000, 1800, 100);
+    cfgStarCostIncreaseSteps = new Configuration("game.co.stars.cost.increase.steps", 0, 50, 10);
   }
 
   /**

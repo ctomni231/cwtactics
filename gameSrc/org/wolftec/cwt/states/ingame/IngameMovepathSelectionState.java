@@ -2,25 +2,25 @@ package org.wolftec.cwt.states.ingame;
 
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.states.AbstractIngameState;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.wTec.config.ConfigurableValue;
-import org.wolftec.wTec.config.ConfigurationProvider;
-import org.wolftec.wTec.input.InputProvider;
-import org.wolftec.wTec.state.AbstractIngameState;
-import org.wolftec.wTec.state.StateFlowData;
+import org.wolftec.cwt.system.Configurable;
+import org.wolftec.cwt.system.Configuration;
+import org.wolftec.cwt.system.InputProvider;
 
-public class IngameMovepathSelectionState extends AbstractIngameState implements ConfigurationProvider {
+public class IngameMovepathSelectionState extends AbstractIngameState implements Configurable {
 
   private UserInteractionData data;
 
-  private MoveLogic    move;
+  private MoveLogic move;
   private ModelManager model;
 
-  private ConfigurableValue fastClickMode;
+  private Configuration fastClickMode;
 
   @Override
   public void onConstruction() {
-    fastClickMode = new ConfigurableValue("app.input.fastClick", 0, 1, 0);
+    fastClickMode = new Configuration("app.input.fastClick", 0, 1, 0);
   }
 
   private void updateMovepath() {
@@ -38,7 +38,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState implements
     int oy = data.target.y;
     int dis = model.getDistance(ox, oy, x, y);
 
-    data.target.set(model, x, y);
+    model.updatePositionData(data.target, x, y);
 
     if (dis == 1) {
 

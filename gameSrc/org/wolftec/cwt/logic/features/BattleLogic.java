@@ -8,15 +8,15 @@ import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.types.AttackType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
+import org.wolftec.cwt.system.Configurable;
+import org.wolftec.cwt.system.Configuration;
+import org.wolftec.cwt.system.ManagedClass;
+import org.wolftec.cwt.system.MatrixSegment;
 import org.wolftec.cwt.util.AssertUtil;
 import org.wolftec.cwt.util.NullUtil;
 import org.wolftec.cwt.util.NumberUtil;
-import org.wolftec.wTec.collections.MoveableMatrix;
-import org.wolftec.wTec.config.ConfigurableValue;
-import org.wolftec.wTec.config.ConfigurationProvider;
-import org.wolftec.wTec.ioc.Injectable;
 
-public class BattleLogic implements Injectable, ConfigurationProvider {
+public class BattleLogic implements ManagedClass, Configurable {
 
   /**
    * Maximum amount of luck for an attacker. This number will be used exclusive
@@ -40,13 +40,13 @@ public class BattleLogic implements Injectable, ConfigurationProvider {
   private MoveLogic move;
   private LifecycleLogic life;
 
-  private ConfigurableValue cfgDaysOfPeace;
-  private ConfigurableValue cfgDamageCalculation;
+  private Configuration cfgDaysOfPeace;
+  private Configuration cfgDamageCalculation;
 
   @Override
   public void onConstruction() {
-    cfgDaysOfPeace = new ConfigurableValue("game.daysOfPeace", 0, 50, 0);
-    cfgDamageCalculation = new ConfigurableValue("game.damageCalc.mode", 0, 1, 0);
+    cfgDaysOfPeace = new Configuration("game.daysOfPeace", 0, 50, 0);
+    cfgDamageCalculation = new Configuration("game.damageCalc.mode", 0, 1, 0);
   }
 
   /**
@@ -191,7 +191,7 @@ public class BattleLogic implements Injectable, ConfigurationProvider {
    * @param markRangeInSelection
    * @return
    */
-  public boolean calculateTargets(Unit unit, int x, int y, MoveableMatrix selection, boolean markRangeInSelection) {
+  public boolean calculateTargets(Unit unit, int x, int y, MatrixSegment selection, boolean markRangeInSelection) {
     // FIXME @ME REFA THIS MONSTER
 
     boolean markInData = NullUtil.isPresent(selection);
@@ -280,14 +280,14 @@ public class BattleLogic implements Injectable, ConfigurationProvider {
     return targetInRange;
   }
 
-  public void fillRangeMap(Unit unit, int x, int y, MoveableMatrix selection) {
+  public void fillRangeMap(Unit unit, int x, int y, MatrixSegment selection) {
     selection.reset();
 
     if (isDirect(unit)) {
 
       // movable unit -> check attack from every movable position
       PositionData pdata = new PositionData();
-      pdata.set(model, x, y);
+      model.updatePositionData(pdata, x, y);
       move.fillMoveMap(pdata, selection);
 
       selection.onAllValidPositions(0, Constants.MAX_SELECTION_RANGE, (cx, cy, cvalue) -> {

@@ -3,10 +3,10 @@ package org.wolftec.cwt.logic.features;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.system.ManagedClass;
 import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.wTec.ioc.Injectable;
 
-public class JoinLogic implements Injectable {
+public class JoinLogic implements ManagedClass {
 
   private ModelManager model;
   private TransportLogic transport;

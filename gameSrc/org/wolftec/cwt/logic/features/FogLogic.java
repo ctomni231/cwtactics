@@ -5,20 +5,20 @@ import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.system.Configurable;
+import org.wolftec.cwt.system.Configuration;
+import org.wolftec.cwt.system.ManagedClass;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.wTec.config.ConfigurableValue;
-import org.wolftec.wTec.config.ConfigurationProvider;
-import org.wolftec.wTec.ioc.Injectable;
 
-public class FogLogic implements Injectable, ConfigurationProvider {
+public class FogLogic implements ManagedClass, Configurable {
 
   private ModelManager model;
 
-  private ConfigurableValue cfgEnabled;
+  private Configuration cfgEnabled;
 
   @Override
   public void onConstruction() {
-    cfgEnabled = new ConfigurableValue("game.fog.enabled", 0, 1, 1);
+    cfgEnabled = new Configuration("game.fog.enabled", 0, 1, 1);
   }
 
   /**

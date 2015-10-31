@@ -1,22 +1,22 @@
 package org.wolftec.cwt.logic.actions;
 
+import org.wolftec.cwt.logic.Action;
+import org.wolftec.cwt.logic.ActionData;
+import org.wolftec.cwt.logic.ActionManager;
+import org.wolftec.cwt.logic.ActionType;
 import org.wolftec.cwt.logic.features.FogLogic;
 import org.wolftec.cwt.logic.features.SupplyLogic;
 import org.wolftec.cwt.logic.features.TurnLogic;
 import org.wolftec.cwt.logic.features.WeatherLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.states.StateManager;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.wTec.action.Action;
-import org.wolftec.wTec.action.ActionData;
-import org.wolftec.wTec.action.ActionManager;
-import org.wolftec.wTec.action.ActionType;
-import org.wolftec.wTec.config.ConfigurableValue;
-import org.wolftec.wTec.config.ConfigurationProvider;
-import org.wolftec.wTec.net.NetworkManager;
-import org.wolftec.wTec.state.StateFlowData;
-import org.wolftec.wTec.state.StateManager;
+import org.wolftec.cwt.system.Configurable;
+import org.wolftec.cwt.system.Configuration;
+import org.wolftec.cwt.system.NetworkManager;
 
-public class NextTurn implements Action, ConfigurationProvider {
+public class NextTurn implements Action, Configurable {
 
   private FogLogic fog;
   private StateManager state;
@@ -32,17 +32,17 @@ public class NextTurn implements Action, ConfigurationProvider {
 
   private ChangeWeather changeWeather;
 
-  private ConfigurableValue cfgPropertyHealingEnabled;
-  private ConfigurableValue cfgPropertyFundsEnabled;
-  private ConfigurableValue cfgAutoSupplyAtTurnStartEnabled;
-  private ConfigurableValue cfgDayLimit;
+  private Configuration cfgPropertyHealingEnabled;
+  private Configuration cfgPropertyFundsEnabled;
+  private Configuration cfgAutoSupplyAtTurnStartEnabled;
+  private Configuration cfgDayLimit;
 
   @Override
   public void onConstruction() {
-    cfgPropertyFundsEnabled = new ConfigurableValue("game.turnStart.funds.enabled", 0, 1, 1);
-    cfgPropertyHealingEnabled = new ConfigurableValue("game.turnStart.healing.enabled", 0, 1, 1);
-    cfgAutoSupplyAtTurnStartEnabled = new ConfigurableValue("game.turnStart.autoSupply", 0, 1, 1);
-    cfgDayLimit = new ConfigurableValue("game.limits.days", 0, 999, 0);
+    cfgPropertyFundsEnabled = new Configuration("game.turnStart.funds.enabled", 0, 1, 1);
+    cfgPropertyHealingEnabled = new Configuration("game.turnStart.healing.enabled", 0, 1, 1);
+    cfgAutoSupplyAtTurnStartEnabled = new Configuration("game.turnStart.autoSupply", 0, 1, 1);
+    cfgDayLimit = new Configuration("game.limits.days", 0, 999, 0);
   }
 
   @Override

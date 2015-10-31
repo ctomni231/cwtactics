@@ -7,12 +7,12 @@ import org.wolftec.cwt.model.gameround.ModelResetter;
 import org.wolftec.cwt.model.persistence.MapData;
 import org.wolftec.cwt.model.persistence.MapManager;
 import org.wolftec.cwt.model.sheets.SheetManager;
+import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UiDataMapConfiguration;
 import org.wolftec.cwt.states.UserInteractionData;
+import org.wolftec.cwt.system.InputProvider;
 import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.wTec.input.InputProvider;
-import org.wolftec.wTec.state.AbstractState;
-import org.wolftec.wTec.state.StateFlowData;
 
 public class IngameEnterState extends AbstractState {
 

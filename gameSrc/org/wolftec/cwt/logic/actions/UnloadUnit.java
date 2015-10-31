@@ -1,20 +1,20 @@
 package org.wolftec.cwt.logic.actions;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.logic.Action;
+import org.wolftec.cwt.logic.ActionData;
+import org.wolftec.cwt.logic.ActionManager;
+import org.wolftec.cwt.logic.TargetSelectionMode;
+import org.wolftec.cwt.logic.ActionType;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.logic.features.TransportLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.wTec.action.Action;
-import org.wolftec.wTec.action.ActionData;
-import org.wolftec.wTec.action.ActionManager;
-import org.wolftec.wTec.action.ActionTargetMode;
-import org.wolftec.wTec.action.ActionType;
-import org.wolftec.wTec.collections.CircularBuffer;
-import org.wolftec.wTec.state.StateFlowData;
+import org.wolftec.cwt.system.RingList;
 
 public class UnloadUnit implements Action {
 
@@ -24,11 +24,11 @@ public class UnloadUnit implements Action {
   private MoveLogic move;
   private ActionManager actions;
 
-  private CircularBuffer<Integer> unloadMovepath;
+  private RingList<Integer> unloadMovepath;
 
   @Override
   public void onConstruction() {
-    unloadMovepath = new CircularBuffer<>(1);
+    unloadMovepath = new RingList<>(1);
   }
 
   @Override
@@ -66,8 +66,8 @@ public class UnloadUnit implements Action {
   }
 
   @Override
-  public ActionTargetMode targetSelectionType() {
-    return ActionTargetMode.B;
+  public TargetSelectionMode targetSelectionType() {
+    return TargetSelectionMode.B;
   }
 
   @Override

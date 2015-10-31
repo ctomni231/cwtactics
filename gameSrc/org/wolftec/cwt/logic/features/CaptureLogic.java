@@ -2,19 +2,19 @@ package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.wTec.config.ConfigurableValue;
-import org.wolftec.wTec.config.ConfigurationProvider;
-import org.wolftec.wTec.ioc.Injectable;
+import org.wolftec.cwt.system.Configurable;
+import org.wolftec.cwt.system.Configuration;
+import org.wolftec.cwt.system.ManagedClass;
 
-public class CaptureLogic implements Injectable, ConfigurationProvider {
+public class CaptureLogic implements ManagedClass, Configurable {
 
-  private ConfigurableValue cfgCapturerPoints;
-  private ConfigurableValue cfgPropertyPoints;
+  private Configuration cfgCapturerPoints;
+  private Configuration cfgPropertyPoints;
 
   @Override
   public void onConstruction() {
-    cfgPropertyPoints = new ConfigurableValue("game.capture.propertyPoints", 5, 99, 20);
-    cfgCapturerPoints = new ConfigurableValue("game.capture.capturerPoints", 5, 99, 10);
+    cfgPropertyPoints = new Configuration("game.capture.propertyPoints", 5, 99, 20);
+    cfgCapturerPoints = new Configuration("game.capture.capturerPoints", 5, 99, 10);
   }
 
   /**

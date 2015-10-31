@@ -5,13 +5,13 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.system.GameLoadingHandler;
+import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.annotations.OptionalReturn;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.wTec.annotations.OptionalReturn;
-import org.wolftec.wTec.loading.GameLoader;
-import org.wolftec.wTec.log.Log;
-import org.wolftec.wTec.state.StateManager;
 
-public class PortraitWatcher implements GameLoader {
+// TODO into state
+public class PortraitWatcher implements GameLoadingHandler {
 
   private Log log;
   private StateManager statemachine;

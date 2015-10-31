@@ -2,9 +2,9 @@ package org.wolftec.cwt.logic.features;
 
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.wTec.ioc.Injectable;
+import org.wolftec.cwt.system.ManagedClass;
 
-public class LaserLogic implements Injectable {
+public class LaserLogic implements ManagedClass {
 
   public static final String LASER_UNIT_ID = "LASU";
 

@@ -1,15 +1,15 @@
 package org.wolftec.cwt.states.ingame;
 
+import org.wolftec.cwt.logic.Action;
+import org.wolftec.cwt.logic.ActionData;
+import org.wolftec.cwt.logic.ActionManager;
 import org.wolftec.cwt.renderer.GraphicManager;
+import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.system.InputProvider;
+import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.wTec.action.Action;
-import org.wolftec.wTec.action.ActionData;
-import org.wolftec.wTec.action.ActionManager;
-import org.wolftec.wTec.input.InputProvider;
-import org.wolftec.wTec.log.Log;
-import org.wolftec.wTec.state.AbstractState;
-import org.wolftec.wTec.state.StateFlowData;
 
 /**
  * The action evaluation state evaluates an action with the first data entry

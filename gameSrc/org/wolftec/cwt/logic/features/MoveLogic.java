@@ -15,14 +15,14 @@ import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
+import org.wolftec.cwt.system.ManagedClass;
+import org.wolftec.cwt.system.MatrixSegment;
+import org.wolftec.cwt.system.RingList;
 import org.wolftec.cwt.util.AssertUtil;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.wTec.collections.CircularBuffer;
-import org.wolftec.wTec.collections.MoveableMatrix;
-import org.wolftec.wTec.ioc.Injectable;
 
-public class MoveLogic implements Injectable {
+public class MoveLogic implements ManagedClass {
 
   /* --------------- start a-star API --------------- */
 
@@ -174,7 +174,7 @@ public class MoveLogic implements Injectable {
    * @param selection
    * @param movePath
    */
-  public void generateMovePath(int stx, int sty, int tx, int ty, MoveableMatrix selection, CircularBuffer<Integer> movePath) {
+  public void generateMovePath(int stx, int sty, int tx, int ty, MatrixSegment selection, RingList<Integer> movePath) {
     int dsx = stx - selection.getCenterX();
     int dsy = sty - selection.getCenterY();
     int dtx = tx - selection.getCenterX();
@@ -216,7 +216,7 @@ public class MoveLogic implements Injectable {
    * @param movePath
    * @return
    */
-  private boolean isGoBackCommand(Integer code, CircularBuffer<Integer> movePath) {
+  private boolean isGoBackCommand(Integer code, RingList<Integer> movePath) {
     int lastCode = movePath.getLast();
     int goBackCode = 0;
 
@@ -256,7 +256,7 @@ public class MoveLogic implements Injectable {
    * @param sy
    * @return
    */
-  public boolean addCodeToMovePath(Integer code, CircularBuffer<Integer> movePath, MoveableMatrix selection, int sx, int sy) {
+  public boolean addCodeToMovePath(Integer code, RingList<Integer> movePath, MatrixSegment selection, int sx, int sy) {
 
     // drop last move code when the new command realizes a move back schema
     if (movePath.getSize() > 0 && isGoBackCommand(code, movePath)) {
@@ -381,7 +381,7 @@ public class MoveLogic implements Injectable {
    * @param unit
    */
   // TODO @ME REFA THIS MONSTER O_O !!!!
-  public void fillMoveMap(PositionData source, MoveableMatrix selection) {
+  public void fillMoveMap(PositionData source, MatrixSegment selection) {
     NullUtil.getOrThrow(source.unit);
 
     int cost;
@@ -556,7 +556,7 @@ public class MoveLogic implements Injectable {
     }
   }
 
-  public boolean trapCheck(ModelManager model, CircularBuffer<Integer> movePath, PositionData source, PositionData target) {
+  public boolean trapCheck(ModelManager model, RingList<Integer> movePath, PositionData source, PositionData target) {
     NullUtil.getOrThrow(source.unit);
 
     int cBx = 0;
@@ -592,7 +592,7 @@ public class MoveLogic implements Injectable {
 
       } else if (teamId != unit.owner.team) {
 
-        target.set(model, cBx, cBy); // ? this looks ugly here...
+        model.updatePositionData(target, cBx, cBy);
         movePath.set(i, Constants.INACTIVE);
 
         return true;
@@ -612,8 +612,7 @@ public class MoveLogic implements Injectable {
    * @param preventRemoveOldPos
    * @param preventSetNewPos
    */
-  public void move(Unit unit, int x, int y, CircularBuffer<Integer> movePath, boolean noFuelConsumption, boolean preventRemoveOldPos,
-      boolean preventSetNewPos) {
+  public void move(Unit unit, int x, int y, RingList<Integer> movePath, boolean noFuelConsumption, boolean preventRemoveOldPos, boolean preventSetNewPos) {
 
     int team = unit.owner.team;
 

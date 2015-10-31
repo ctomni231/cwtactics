@@ -1,17 +1,17 @@
 package org.wolftec.cwt.states.menu;
 
 import org.stjs.javascript.JSCollections;
-import org.wolftec.wTec.env.ResetSystem;
-import org.wolftec.wTec.state.AbstractMenuState;
-import org.wolftec.wTec.state.GameActions;
-import org.wolftec.wTec.state.StateFlowData;
+import org.wolftec.cwt.states.AbstractMenuState;
+import org.wolftec.cwt.states.GameActions;
+import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.system.SystemResetter;
 
 public class WipeoutConfirmMenuState extends AbstractMenuState {
 
   private static final String UIC_YES = "YES";
   private static final String UIC_NO  = "NO";
 
-  private ResetSystem reset;
+  private SystemResetter reset;
 
   @Override
   public void onConstruction() {

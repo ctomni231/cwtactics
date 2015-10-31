@@ -3,26 +3,26 @@ package org.wolftec.cwt.logic.features;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.InformationList;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.UnitType;
-import org.wolftec.wTec.InformationList;
-import org.wolftec.wTec.config.ConfigurableValue;
-import org.wolftec.wTec.config.ConfigurationProvider;
-import org.wolftec.wTec.ioc.Injectable;
+import org.wolftec.cwt.system.Configurable;
+import org.wolftec.cwt.system.Configuration;
+import org.wolftec.cwt.system.ManagedClass;
 
-public class FactoryLogic implements Injectable, ConfigurationProvider {
+public class FactoryLogic implements ManagedClass, Configurable {
 
   private LifecycleLogic lifecycle;
   private SheetManager sheets;
   private ModelManager model;
 
-  private ConfigurableValue unitLimit;
+  private Configuration unitLimit;
 
   @Override
   public void onConstruction() {
-    unitLimit = new ConfigurableValue("game.limits.unitsPerPlayer", 0, Constants.MAX_UNITS, 0, 5);
+    unitLimit = new Configuration("game.limits.unitsPerPlayer", 0, Constants.MAX_UNITS, 0, 5);
   }
 
   //

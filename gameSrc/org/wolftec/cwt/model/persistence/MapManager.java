@@ -4,13 +4,13 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.system.FileDescriptor;
+import org.wolftec.cwt.system.PersistenceManager;
+import org.wolftec.cwt.system.ResourceLoader;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.RequestUtil;
-import org.wolftec.wTec.loading.DataLoader;
-import org.wolftec.wTec.persistence.FileDescriptor;
-import org.wolftec.wTec.persistence.PersistenceManager;
 
-public class MapManager implements DataLoader {
+public class MapManager implements ResourceLoader {
 
   private PersistenceManager pm;
 

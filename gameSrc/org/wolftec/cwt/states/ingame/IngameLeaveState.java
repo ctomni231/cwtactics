@@ -1,7 +1,7 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.wTec.state.AbstractState;
-import org.wolftec.wTec.state.StateFlowData;
+import org.wolftec.cwt.states.AbstractState;
+import org.wolftec.cwt.states.StateFlowData;
 
 public class IngameLeaveState extends AbstractState {
 

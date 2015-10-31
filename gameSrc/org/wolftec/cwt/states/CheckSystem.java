@@ -2,13 +2,13 @@ package org.wolftec.cwt.states;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.system.Features;
+import org.wolftec.cwt.system.GameLoadingHandler;
+import org.wolftec.cwt.system.Log;
 import org.wolftec.cwt.util.UrlParameterUtil;
-import org.wolftec.wTec.env.Features;
-import org.wolftec.wTec.loading.GameLoader;
-import org.wolftec.wTec.log.Log;
 
-public class CheckSystem implements GameLoader {
-
+public class CheckSystem implements GameLoadingHandler {
+  // TODO move into state
   private Log log;
   private Features features;
 

@@ -1,14 +1,14 @@
 package org.wolftec.cwt.logic.actions;
 
+import org.wolftec.cwt.logic.Action;
+import org.wolftec.cwt.logic.ActionData;
+import org.wolftec.cwt.logic.ActionType;
+import org.wolftec.cwt.logic.MoveMeta;
+import org.wolftec.cwt.logic.TileMeta;
 import org.wolftec.cwt.logic.features.TransportLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.wTec.action.Action;
-import org.wolftec.wTec.action.ActionData;
-import org.wolftec.wTec.action.ActionType;
-import org.wolftec.wTec.action.PositionUpdateMode;
-import org.wolftec.wTec.action.TileMeta;
-import org.wolftec.wTec.state.StateFlowData;
 
 public class LoadUnit implements Action {
 
@@ -26,8 +26,8 @@ public class LoadUnit implements Action {
   }
 
   @Override
-  public PositionUpdateMode positionUpdateMode() {
-    return PositionUpdateMode.PREVENT_SET_NEW_POS;
+  public MoveMeta positionUpdateMode() {
+    return MoveMeta.PREVENT_SET_NEW_POS;
   }
 
   @Override

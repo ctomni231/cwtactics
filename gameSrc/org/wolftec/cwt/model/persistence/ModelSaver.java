@@ -2,8 +2,8 @@ package org.wolftec.cwt.model.persistence;
 
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.model.gameround.ModelManager;
-import org.wolftec.wTec.log.Log;
-import org.wolftec.wTec.persistence.SavegameHandler;
+import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.system.SavegameHandler;
 
 public class ModelSaver implements SavegameHandler<Map<String, String>> {
 

@@ -5,12 +5,12 @@ import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
+import org.wolftec.cwt.system.ManagedClass;
 import org.wolftec.cwt.test.ValueHolder;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.wTec.ioc.Injectable;
 
-public class TransportLogic implements Injectable {
+public class TransportLogic implements ManagedClass {
 
   private ModelManager model;
   private SheetManager sheets;

@@ -1,14 +1,14 @@
 package org.wolftec.cwt.logic.actions;
 
 import org.wolftec.cwt.Constants;
+import org.wolftec.cwt.logic.Action;
+import org.wolftec.cwt.logic.ActionData;
+import org.wolftec.cwt.logic.ActionType;
+import org.wolftec.cwt.logic.MoveMeta;
 import org.wolftec.cwt.logic.features.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.states.StateFlowData;
 import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.wTec.action.Action;
-import org.wolftec.wTec.action.ActionData;
-import org.wolftec.wTec.action.ActionType;
-import org.wolftec.wTec.action.PositionUpdateMode;
-import org.wolftec.wTec.state.StateFlowData;
 
 public class MoveEnd implements Action {
 
@@ -28,8 +28,8 @@ public class MoveEnd implements Action {
 
   @Override
   public void fillData(UserInteractionData interactionData, ActionData actionData) {
-    actionData.p1 = interactionData.getAction().positionUpdateMode() == PositionUpdateMode.PREVENT_CLEAR_OLD_POS ? 1 : 0;
-    actionData.p2 = interactionData.getAction().positionUpdateMode() == PositionUpdateMode.PREVENT_SET_NEW_POS ? 1 : 0;
+    actionData.p1 = interactionData.getAction().positionUpdateMode() == MoveMeta.PREVENT_CLEAR_OLD_POS ? 1 : 0;
+    actionData.p2 = interactionData.getAction().positionUpdateMode() == MoveMeta.PREVENT_SET_NEW_POS ? 1 : 0;
   }
 
   @Override

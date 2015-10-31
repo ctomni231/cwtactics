@@ -1,8 +1,8 @@
 package org.wolftec.cwt.model.gameround;
 
-import org.wolftec.wTec.ioc.Injectable;
+import org.wolftec.cwt.system.ManagedClass;
 
-public class ModelResetter implements Injectable {
+public class ModelResetter implements ManagedClass {
 
   private ModelManager model;
 
