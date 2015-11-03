@@ -6,7 +6,7 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSStringAdapter;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.system.annotations.OptionalReturn;
+import org.wolftec.cwt.annotations.OptionalReturn;
 
 public abstract class UrlParameterUtil {
 

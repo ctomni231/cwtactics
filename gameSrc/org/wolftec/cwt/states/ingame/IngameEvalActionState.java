@@ -1,13 +1,13 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.logic.Action;
-import org.wolftec.cwt.logic.ActionData;
-import org.wolftec.cwt.logic.ActionManager;
+import org.wolftec.cwt.action.Action;
+import org.wolftec.cwt.action.ActionData;
+import org.wolftec.cwt.action.ActionService;
+import org.wolftec.cwt.input.InputService;
+import org.wolftec.cwt.log.Log;
 import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.system.InputProvider;
-import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.states.base.AbstractState;
+import org.wolftec.cwt.states.base.StateFlowData;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
 
@@ -19,7 +19,7 @@ public class IngameEvalActionState extends AbstractState {
 
   private Log log;
 
-  private ActionManager actions;
+  private ActionService actions;
 
   private Action activeAction;
   private ActionData activeData;
@@ -47,7 +47,7 @@ public class IngameEvalActionState extends AbstractState {
   }
 
   @Override
-  public void update(StateFlowData transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputService input) {
     log.info("evaluate action data " + activeData.toString());
 
     activeAction.evaluateByData(delta, activeData, transition);

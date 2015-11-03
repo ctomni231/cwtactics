@@ -4,11 +4,11 @@ import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.dom.DOMEvent;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.system.InputProvider;
-import org.wolftec.cwt.system.annotations.OptionalReturn;
+import org.wolftec.cwt.annotations.OptionalReturn;
+import org.wolftec.cwt.input.InputService;
+import org.wolftec.cwt.states.base.AbstractState;
+import org.wolftec.cwt.states.base.StateFlowData;
+import org.wolftec.cwt.states.base.StateManager;
 import org.wolftec.cwt.util.NullUtil;
 
 public class PortraitWarningState extends AbstractState {
@@ -48,7 +48,7 @@ public class PortraitWarningState extends AbstractState {
   }
 
   @Override
-  public void update(StateFlowData transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputService input) {
   }
 
   @OptionalReturn

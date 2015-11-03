@@ -2,15 +2,15 @@ package org.wolftec.cwt.model.persistence;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.logic.features.LaserLogic;
-import org.wolftec.cwt.logic.features.SpecialWeaponsLogic;
+import org.wolftec.cwt.loading.GameLoadingHandler;
+import org.wolftec.cwt.log.Log;
+import org.wolftec.cwt.logic.LaserLogic;
+import org.wolftec.cwt.logic.SpecialWeaponsLogic;
+import org.wolftec.cwt.managed.ManagedClass;
 import org.wolftec.cwt.model.sheets.SheetManager;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
-import org.wolftec.cwt.system.GameLoadingHandler;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.ManagedClass;
 
 @Deprecated
 public class DefaultTypesLoader implements ManagedClass, GameLoadingHandler {

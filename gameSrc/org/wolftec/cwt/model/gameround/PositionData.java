@@ -1,6 +1,6 @@
 package org.wolftec.cwt.model.gameround;
 
-import org.wolftec.cwt.system.annotations.OptionalField;
+import org.wolftec.cwt.annotations.OptionalField;
 
 /**
  * Object that holds information about objects at a given position (x,y).
@@ -9,22 +9,14 @@ public class PositionData {
 
   public int x;
   public int y;
-  public Tile tile = null;
 
+  @OptionalField public Tile tile = null;
   @OptionalField public Unit unit = null;
-
   @OptionalField public Property property = null;
 
   public int unitId;
   public int propertyId;
 
-  public PositionData() {
-    clean();
-  }
-
-  //
-  // Cleans all data of the object.
-  //
   public void clean() {
     this.x = -1;
     this.y = -1;
@@ -33,18 +25,5 @@ public class PositionData {
     this.property = null;
     this.unitId = -1;
     this.propertyId = -1;
-  }
-
-  //
-  // Grabs the data from another position object.
-  //
-  public void grab(PositionData otherPos) {
-    this.x = otherPos.x;
-    this.y = otherPos.y;
-    this.tile = otherPos.tile;
-    this.unit = otherPos.unit;
-    this.unitId = otherPos.unitId;
-    this.property = otherPos.property;
-    this.propertyId = otherPos.propertyId;
   }
 }

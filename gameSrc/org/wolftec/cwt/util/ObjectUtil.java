@@ -6,7 +6,7 @@ import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.stjs.javascript.functions.Function1;
-import org.wolftec.cwt.system.annotations.OptionalReturn;
+import org.wolftec.cwt.annotations.OptionalReturn;
 
 public abstract class ObjectUtil {
 

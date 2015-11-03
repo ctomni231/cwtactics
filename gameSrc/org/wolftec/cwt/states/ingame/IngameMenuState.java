@@ -1,13 +1,13 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwt.logic.Action;
-import org.wolftec.cwt.logic.ActionType;
-import org.wolftec.cwt.logic.features.MoveLogic;
+import org.wolftec.cwt.action.Action;
+import org.wolftec.cwt.action.ActionType;
+import org.wolftec.cwt.log.Log;
+import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
-import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.states.base.AbstractIngameState;
+import org.wolftec.cwt.states.base.StateFlowData;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
 

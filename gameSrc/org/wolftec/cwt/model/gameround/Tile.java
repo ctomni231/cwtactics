@@ -1,7 +1,7 @@
 package org.wolftec.cwt.model.gameround;
 
+import org.wolftec.cwt.annotations.OptionalField;
 import org.wolftec.cwt.model.sheets.types.TileType;
-import org.wolftec.cwt.system.annotations.OptionalField;
 
 public class Tile {
 

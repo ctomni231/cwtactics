@@ -2,6 +2,7 @@ package org.wolftec.cwt.system;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.annotation.STJSBridge;
+import org.wolftec.cwt.managed.ManagedClass;
 
 public class Features implements ManagedClass {
 

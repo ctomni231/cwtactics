@@ -1,13 +1,13 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.logic.ActionManager;
-import org.wolftec.cwt.logic.features.BattleLogic;
-import org.wolftec.cwt.logic.features.MoveLogic;
+import org.wolftec.cwt.action.ActionService;
+import org.wolftec.cwt.input.InputService;
+import org.wolftec.cwt.logic.BattleLogic;
+import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.system.InputProvider;
+import org.wolftec.cwt.states.base.AbstractIngameState;
+import org.wolftec.cwt.states.base.StateFlowData;
+import org.wolftec.cwt.ui.UserInteractionData;
 import org.wolftec.cwt.util.NullUtil;
 
 public class IngameIdleState extends AbstractIngameState {
@@ -15,7 +15,7 @@ public class IngameIdleState extends AbstractIngameState {
   private UserInteractionData data;
   private MoveLogic move;
   private BattleLogic battle;
-  private ActionManager actions;
+  private ActionService actions;
 
   @Override
   public void onEnter(StateFlowData transition) {
@@ -26,7 +26,7 @@ public class IngameIdleState extends AbstractIngameState {
   }
 
   @Override
-  public void update(StateFlowData flowData, int delta, InputProvider input) {
+  public void update(StateFlowData flowData, int delta, InputService input) {
 
     /*
      * We move out of this state directly here when we have actions in the
