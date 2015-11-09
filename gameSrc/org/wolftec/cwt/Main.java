@@ -16,11 +16,11 @@ public class Main {
     }
 
     // The main game itself...
-    ioc.getManagedObjectByType(StateManager.class).setState("NoneState", true);
+    //ioc.getManagedObjectByType(StateManager.class).setState("NoneState", true);
     // Just so JSR can test... comment out to see what JSR is up to. (Need to
     // start using testing functions)
-    // ioc.getManagedObjectByType(StateManager.class).setState("TempState",
-    // true);
+     ioc.getManagedObjectByType(StateManager.class).setState("TempState",
+     true);
     ioc.getManagedObjectByType(GameloopService.class).start();
   }
 }
