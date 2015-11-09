@@ -1,11 +1,11 @@
 package org.wolftec.cwt.states.menu;
 
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwt.states.AbstractMenuState;
-import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.system.Audio;
-import org.wolftec.cwt.system.SaveManager;
+import org.wolftec.cwt.audio.AudioService;
+import org.wolftec.cwt.serialization.SaveManager;
+import org.wolftec.cwt.states.base.AbstractMenuState;
+import org.wolftec.cwt.states.base.GameActions;
+import org.wolftec.cwt.states.base.StateFlowData;
 import org.wolftec.cwt.util.JsUtil;
 
 public class OptionsMenuState extends AbstractMenuState {
@@ -21,7 +21,7 @@ public class OptionsMenuState extends AbstractMenuState {
   public static final String UIC_DECREASE_MUSIC = "DECREASE_MUSIC";
   public static final String UIC_DECREASE_SFX = "DECREASE_SFX";
 
-  private Audio audio;
+  private AudioService audio;
   protected SaveManager saving;
 
   @Override

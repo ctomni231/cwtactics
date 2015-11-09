@@ -1,13 +1,13 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.logic.features.MoveLogic;
+import org.wolftec.cwt.input.InputService;
+import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
-import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.system.Configurable;
-import org.wolftec.cwt.system.Configuration;
-import org.wolftec.cwt.system.InputProvider;
+import org.wolftec.cwt.states.base.AbstractIngameState;
+import org.wolftec.cwt.states.base.StateFlowData;
+import org.wolftec.cwt.tags.Configurable;
+import org.wolftec.cwt.tags.Configuration;
+import org.wolftec.cwt.ui.UserInteractionData;
 
 public class IngameMovepathSelectionState extends AbstractIngameState implements Configurable {
 
@@ -101,7 +101,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState implements
   }
 
   @Override
-  public void update(StateFlowData flowData, int delta, InputProvider input) {
+  public void update(StateFlowData flowData, int delta, InputService input) {
     super.update(flowData, delta, input);
     updateMovepath();
   }

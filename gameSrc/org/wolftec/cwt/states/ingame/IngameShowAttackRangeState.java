@@ -1,11 +1,11 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.logic.features.BattleLogic;
-import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.system.InputProvider;
+import org.wolftec.cwt.input.InputService;
+import org.wolftec.cwt.logic.BattleLogic;
+import org.wolftec.cwt.states.base.AbstractIngameState;
+import org.wolftec.cwt.states.base.GameActions;
+import org.wolftec.cwt.states.base.StateFlowData;
+import org.wolftec.cwt.ui.UserInteractionData;
 
 public class IngameShowAttackRangeState extends AbstractIngameState {
 
@@ -24,7 +24,7 @@ public class IngameShowAttackRangeState extends AbstractIngameState {
   }
 
   @Override
-  public void update(StateFlowData transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputService input) {
     if (!input.isActionPressed(GameActions.BUTTON_B)) {
       transition.setTransitionTo(transition.getPreviousState());
     }

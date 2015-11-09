@@ -1,5 +1,6 @@
 package org.wolftec.cwt.model.sheets;
 
+import org.wolftec.cwt.managed.ManagedClass;
 import org.wolftec.cwt.model.sheets.types.ArmyType;
 import org.wolftec.cwt.model.sheets.types.CommanderType;
 import org.wolftec.cwt.model.sheets.types.MoveType;
@@ -7,7 +8,6 @@ import org.wolftec.cwt.model.sheets.types.PropertyType;
 import org.wolftec.cwt.model.sheets.types.TileType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
-import org.wolftec.cwt.system.ManagedClass;
 
 /**
  * Holds all object types of the game.

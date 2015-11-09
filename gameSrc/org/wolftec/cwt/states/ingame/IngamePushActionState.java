@@ -1,18 +1,18 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.logic.Action;
-import org.wolftec.cwt.logic.ActionData;
-import org.wolftec.cwt.logic.ActionManager;
-import org.wolftec.cwt.logic.actions.MoveAppend;
-import org.wolftec.cwt.logic.actions.MoveEnd;
-import org.wolftec.cwt.logic.actions.MoveStart;
-import org.wolftec.cwt.logic.actions.WaitUnit;
-import org.wolftec.cwt.logic.features.MoveLogic;
+import org.wolftec.cwt.action.Action;
+import org.wolftec.cwt.action.ActionData;
+import org.wolftec.cwt.action.ActionService;
+import org.wolftec.cwt.action.actions.MoveAppend;
+import org.wolftec.cwt.action.actions.MoveEnd;
+import org.wolftec.cwt.action.actions.MoveStart;
+import org.wolftec.cwt.action.actions.WaitUnit;
+import org.wolftec.cwt.input.InputService;
+import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
-import org.wolftec.cwt.states.AbstractIngameState;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.system.InputProvider;
+import org.wolftec.cwt.states.base.AbstractIngameState;
+import org.wolftec.cwt.states.base.StateFlowData;
+import org.wolftec.cwt.ui.UserInteractionData;
 
 /**
  * This states flushes the action data from the {@link UserInteractionData} into
@@ -23,17 +23,17 @@ public class IngamePushActionState extends AbstractIngameState {
 
   private UserInteractionData uiData;
 
-  private ActionManager actions;
-  private MoveLogic     move;
-  private ModelManager  model;
+  private ActionService actions;
+  private MoveLogic move;
+  private ModelManager model;
 
-  private MoveStart  moveStartAction;
+  private MoveStart moveStartAction;
   private MoveAppend moveAppendAction;
-  private MoveEnd    moveEndAction;
-  private WaitUnit   waitAction;
+  private MoveEnd moveEndAction;
+  private WaitUnit waitAction;
 
   @Override
-  public void update(StateFlowData transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputService input) {
     boolean trapped = false;
 
     if (!uiData.movePath.isEmpty()) {

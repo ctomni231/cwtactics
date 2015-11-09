@@ -2,10 +2,9 @@ package org.wolftec.cwt.states.misc;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.wolftec.cwt.renderer.jslix.ImageLibrary;
-import org.wolftec.cwt.renderer.jslix.ImgLibrary;
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.states.base.AbstractState;
+import org.wolftec.cwt.states.base.StateFlowData;
+import org.wolftec.cwt.log.Log;
 import org.wolftec.cwt.renderer.GraphicManager;
 
 /* TempState.java
@@ -24,10 +23,7 @@ public class TempState extends AbstractState {
   public void onEnter(StateFlowData transition) {
 
     // This stores the image in a "<img id="image" .... >
-    //ImageLibrary.store("../image/background/MinuteWars.png");
-	ImgLibrary.addImage("../image/background/MinuteWars.png");
-    ImgLibrary.addImage("../image/background/day.png");
-    
+    ImageLibrary.store("../image/background/MinuteWars.png");
   }
 
   @Override
@@ -50,11 +46,7 @@ public class TempState extends AbstractState {
     // ctx.fillStyle = "#610B0B";
     // ctx.fillText("- Development Version -", 40, 100, 400);
 
-    //ctx.drawImage(ImageLibrary.pull(), 100, 100);
-    ctx.drawImage(ImgLibrary.displayImage(0), 100, 100);
-    ctx.drawImage(ImgLibrary.displayImage(1), 120, 120);
-    ctx.drawImage(ImgLibrary.displayImage(0), 140, 140);
-    ctx.drawImage(ImgLibrary.displayImage(1), 160, 160);
+    ctx.drawImage(ImageLibrary.pull(), 100, 100);
     // ctx.drawImage(ImageLibrary.pull(), 100, 100, 400, 300);
     // ctx.drawImage(ImageLibrary.pull(), 100, 100, 400, 300, 0, 0, 400, 300);
 

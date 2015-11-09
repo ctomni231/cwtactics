@@ -1,17 +1,17 @@
 package org.wolftec.cwt.states.ingame;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwt.logic.features.TurnLogic;
+import org.wolftec.cwt.collection.ListUtil;
+import org.wolftec.cwt.input.InputService;
+import org.wolftec.cwt.logic.TurnLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.persistence.MapManager;
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.states.UiDataMapConfiguration;
-import org.wolftec.cwt.states.UserInteractionData;
-import org.wolftec.cwt.system.InputProvider;
-import org.wolftec.cwt.system.SavegameHandler;
+import org.wolftec.cwt.serialization.SavegameHandler;
+import org.wolftec.cwt.states.base.AbstractState;
+import org.wolftec.cwt.states.base.StateFlowData;
+import org.wolftec.cwt.ui.UiDataMapConfiguration;
+import org.wolftec.cwt.ui.UserInteractionData;
 import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.util.ListUtil;
 
 public class IngameEnterState extends AbstractState {
 
@@ -52,7 +52,7 @@ public class IngameEnterState extends AbstractState {
   }
 
   @Override
-  public void update(StateFlowData transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputService input) {
     if (loaded) {
       transition.setTransitionTo("IngameIdleState");
     }

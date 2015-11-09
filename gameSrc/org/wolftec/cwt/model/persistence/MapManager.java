@@ -4,9 +4,9 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.system.FileDescriptor;
-import org.wolftec.cwt.system.PersistenceManager;
-import org.wolftec.cwt.system.ResourceLoader;
+import org.wolftec.cwt.loading.ResourceLoader;
+import org.wolftec.cwt.serialization.FileDescriptor;
+import org.wolftec.cwt.serialization.PersistenceManager;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.RequestUtil;
 

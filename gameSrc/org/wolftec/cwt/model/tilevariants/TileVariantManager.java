@@ -3,9 +3,9 @@ package org.wolftec.cwt.model.tilevariants;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
+import org.wolftec.cwt.managed.ManagedClass;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.gameround.Tile;
-import org.wolftec.cwt.system.ManagedClass;
 import org.wolftec.cwt.util.NullUtil;
 
 public class TileVariantManager implements ManagedClass {

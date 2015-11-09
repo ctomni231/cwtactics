@@ -2,9 +2,9 @@ package org.wolftec.cwt;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.system.GameloopService;
-import org.wolftec.cwt.system.IoCContainer;
+import org.wolftec.cwt.loop.GameloopService;
+import org.wolftec.cwt.managed.IoCContainer;
+import org.wolftec.cwt.states.base.StateManager;
 
 public class Main {
 

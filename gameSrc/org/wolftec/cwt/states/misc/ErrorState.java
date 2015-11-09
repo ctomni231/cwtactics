@@ -3,13 +3,13 @@ package org.wolftec.cwt.states.misc;
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.states.AbstractMenuState;
-import org.wolftec.cwt.states.GameActions;
-import org.wolftec.cwt.states.MenuInteractionMap;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.states.StateManager;
-import org.wolftec.cwt.system.Log;
+import org.wolftec.cwt.log.Log;
+import org.wolftec.cwt.states.base.AbstractMenuState;
+import org.wolftec.cwt.states.base.GameActions;
+import org.wolftec.cwt.states.base.StateFlowData;
+import org.wolftec.cwt.states.base.StateManager;
 import org.wolftec.cwt.system.SystemResetter;
+import org.wolftec.cwt.ui.MenuInteractionMap;
 import org.wolftec.cwt.util.ObjectUtil;
 
 public class ErrorState extends AbstractMenuState {

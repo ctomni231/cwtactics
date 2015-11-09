@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.functions.Function0;
-import org.wolftec.cwt.system.annotations.MayRaisesError;
+import org.wolftec.cwt.annotations.MayRaisesError;
 
 /**
  * This utility class is heavily inspired by {@link Optional} but uses a non

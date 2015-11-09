@@ -1,7 +1,7 @@
 package org.wolftec.cwt.states.menu;
 
-import org.wolftec.cwt.states.AbstractMenuState;
-import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.states.base.AbstractMenuState;
+import org.wolftec.cwt.states.base.StateFlowData;
 
 public class ParameterSetupMenuState extends AbstractMenuState {
 

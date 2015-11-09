@@ -1,12 +1,12 @@
 package org.wolftec.cwt.states.start;
 
 import org.stjs.javascript.Global;
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.input.InputService;
+import org.wolftec.cwt.log.Log;
+import org.wolftec.cwt.states.base.AbstractState;
+import org.wolftec.cwt.states.base.StateFlowData;
 import org.wolftec.cwt.system.Features;
-import org.wolftec.cwt.system.InputProvider;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.test.TestManager;
+import org.wolftec.cwt.test.base.TestManager;
 import org.wolftec.cwt.util.UrlParameterUtil;
 
 public class CheckSystemState extends AbstractState {
@@ -20,7 +20,7 @@ public class CheckSystemState extends AbstractState {
   }
 
   @Override
-  public void update(StateFlowData transition, int delta, InputProvider input) {
+  public void update(StateFlowData transition, int delta, InputService input) {
     log.info("checking abilities of the active environment");
 
     boolean skipCheck = UrlParameterUtil.getParameter("skipEnvCheck") == "true";

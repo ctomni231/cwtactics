@@ -1,12 +1,12 @@
 package org.wolftec.cwt.states.start;
 
+import org.wolftec.cwt.input.InputService;
+import org.wolftec.cwt.loading.GameLoadingManager;
+import org.wolftec.cwt.loading.ResourceRequestWatcher;
+import org.wolftec.cwt.log.Log;
 import org.wolftec.cwt.renderer.GraphicManager;
-import org.wolftec.cwt.states.AbstractState;
-import org.wolftec.cwt.states.StateFlowData;
-import org.wolftec.cwt.system.GameLoadingManager;
-import org.wolftec.cwt.system.InputProvider;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.ResourceRequestWatcher;
+import org.wolftec.cwt.states.base.AbstractState;
+import org.wolftec.cwt.states.base.StateFlowData;
 
 public class LoadingState extends AbstractState implements ResourceRequestWatcher {
 
@@ -24,7 +24,7 @@ public class LoadingState extends AbstractState implements ResourceRequestWatche
   }
 
   @Override
-  public void update(StateFlowData flowData, int delta, InputProvider input) {
+  public void update(StateFlowData flowData, int delta, InputService input) {
     if (done) {
       flowData.setTransitionTo("StartScreenState");
     }

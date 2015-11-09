@@ -1,6 +1,6 @@
 package org.wolftec.cwt.states.ingame;
 
-import org.wolftec.cwt.states.StateFlowData;
+import org.wolftec.cwt.states.base.StateFlowData;
 import org.wolftec.cwt.states.menu.OptionsMenuState;
 
 public class IngameOptionsMenuState extends OptionsMenuState {

@@ -3,11 +3,11 @@ package org.wolftec.cwt.model.persistence;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.logic.features.LifecycleLogic;
+import org.wolftec.cwt.log.Log;
+import org.wolftec.cwt.logic.LifecycleLogic;
 import org.wolftec.cwt.model.gameround.ModelManager;
 import org.wolftec.cwt.model.sheets.SheetManager;
-import org.wolftec.cwt.system.Log;
-import org.wolftec.cwt.system.SavegameHandler;
+import org.wolftec.cwt.serialization.SavegameHandler;
 import org.wolftec.cwt.util.ObjectUtil;
 
 public class ModelSaver implements SavegameHandler<Map<String, String>> {
