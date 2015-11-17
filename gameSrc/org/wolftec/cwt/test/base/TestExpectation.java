@@ -3,14 +3,17 @@ package org.wolftec.cwt.test.base;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.action.Action;
-import org.wolftec.cwt.annotations.OptionalParameter;
+import org.wolftec.cwt.controller.states.base.StateFlowData;
+import org.wolftec.cwt.core.NullUtil;
+import org.wolftec.cwt.core.annotations.OptionalParameter;
+import org.wolftec.cwt.core.javascript.JsUtil;
 import org.wolftec.cwt.logic.MoveLogic;
-import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.actions.AbstractAction;
+import org.wolftec.cwt.model.gameround.GameroundEnder;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.model.sheets.SheetSet;
 import org.wolftec.cwt.model.sheets.types.CommanderType;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 import org.wolftec.cwt.model.sheets.types.PropertyType;
@@ -18,9 +21,6 @@ import org.wolftec.cwt.model.sheets.types.SheetType;
 import org.wolftec.cwt.model.sheets.types.TileType;
 import org.wolftec.cwt.model.sheets.types.UnitType;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
-import org.wolftec.cwt.states.base.StateFlowData;
-import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.util.NullUtil;
 
 public class TestExpectation {
 
@@ -46,7 +46,7 @@ public class TestExpectation {
     return sheetType(id, parent.sheets.properties);
   }
 
-  <T extends SheetType> T sheetType(String id, SheetDatabase<T> db) {
+  <T extends SheetType> T sheetType(String id, SheetSet<T> db) {
     return db.get(id);
   }
 
@@ -110,7 +110,7 @@ public class TestExpectation {
   }
 
   public void everythingCanAct() {
-    ModelManager model = parent.model;
+    GameroundEnder model = parent.model;
     model.forEachUnit((id, unit) -> unit.canAct = model.isTurnOwnerObject(unit));
   }
 
@@ -180,8 +180,8 @@ public class TestExpectation {
   }
 
   public void weather(String type, int duration) {
-    parent.model.weather = parent.sheets.weathers.get(type);
-    parent.model.weatherLeftDays = duration;
+    parent.model.weather.type = parent.sheets.weathers.get(type);
+    parent.model.weather.leftDays = duration;
   }
 
   public void sourceSelectionAt(int x, int y) {
@@ -258,25 +258,25 @@ public class TestExpectation {
     parent.uiData.selectInfoAtIndex(index);
   }
 
-  <T extends SheetType> void registerType(String id, T sheet, SheetDatabase<T> db) {
+  <T extends SheetType> void registerType(String id, T sheet, SheetSet<T> db) {
     sheet.ID = id;
     db.register(sheet);
   }
 
-  public void actionSubMenuOpened(Action action) {
+  public void actionSubMenuOpened(AbstractAction action) {
     parent.modify.buildActionMenu(action);
   }
 
   @Native
-  public void actionTriggered(Action action) {
+  public void actionTriggered(AbstractAction action) {
     // native
   }
 
-  public void actionTriggered(Action action, Callback1<StateFlowData> flowData) {
+  public void actionTriggered(AbstractAction action, Callback1<StateFlowData> flowData) {
     parent.modify.invokeAction(action, flowData);
   }
 
-  public void actionTargetMapOpened(Action action) {
+  public void actionTargetMapOpened(AbstractAction action) {
     parent.uiData.targets.reset();
     action.prepareTargets(parent.uiData);
   }

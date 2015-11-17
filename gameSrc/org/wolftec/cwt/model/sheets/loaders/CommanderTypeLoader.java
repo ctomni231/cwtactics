@@ -2,9 +2,14 @@ package org.wolftec.cwt.model.sheets.loaders;
 
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.model.sheets.SheetSet;
 import org.wolftec.cwt.model.sheets.types.CommanderType;
 
 public class CommanderTypeLoader extends AbstractSheetLoader<CommanderType> {
+
+  public CommanderTypeLoader(SheetDatabase db) {
+    super(db);
+  }
 
   @Override
   public String forPath() {
@@ -12,7 +17,7 @@ public class CommanderTypeLoader extends AbstractSheetLoader<CommanderType> {
   }
 
   @Override
-  public SheetDatabase<CommanderType> getDatabase() {
+  public SheetSet<CommanderType> getDatabase() {
     return db.commanders;
   }
 

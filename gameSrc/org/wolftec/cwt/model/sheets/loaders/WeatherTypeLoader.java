@@ -1,7 +1,7 @@
 package org.wolftec.cwt.model.sheets.loaders;
 
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.model.sheets.SheetSet;
 import org.wolftec.cwt.model.sheets.types.WeatherType;
 
 public class WeatherTypeLoader extends AbstractSheetLoader<WeatherType> {
@@ -12,7 +12,7 @@ public class WeatherTypeLoader extends AbstractSheetLoader<WeatherType> {
   }
 
   @Override
-  public SheetDatabase<WeatherType> getDatabase() {
+  public SheetSet<WeatherType> getDatabase() {
     return db.weathers;
   }
 

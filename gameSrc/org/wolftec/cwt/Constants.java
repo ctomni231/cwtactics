@@ -4,7 +4,8 @@ public class Constants {
 
   public static final String NAMESPACE = "cwt";
 
-  public static final String VERSION = "0.36";
+  public static final String RELEASE_VERSION = "0.4";
+  public static final String RELEASE_NAME = "Sunrise";
 
   /**
    * After a state transition the complete input stack will be blocked for the
@@ -19,12 +20,24 @@ public class Constants {
    */
   public static final int LOGGER_CLASS_NAME_LENGTH = 20;
 
+  /**
+   * Style of the head part of an info log message.
+   */
   public static final String LOGGER_CSS_INFO_HEAD = "color: #197519; font-weight: bold";
 
+  /**
+   * Style of the head part of a warn log message.
+   */
   public static final String LOGGER_CSS_WARN_HEAD = "color: #FF7519; font-weight: bold";
 
+  /**
+   * Style of the head part of an error log message.
+   */
   public static final String LOGGER_CSS_ERROR_HEAD = "color: #B20000; font-weight: bold";
 
+  /**
+   * Style of a log message.
+   */
   public static final String LOGGER_CSS_TEXT = "color: #1A1A1A";
 
   /**
@@ -123,5 +136,8 @@ public class Constants {
   public static final int MAX_SELECTION_RANGE = 15;
 
   public static final int CURSOR_MOVEMENT_BLOCK_TIME = 100;
+
   public static final int MENU_INPUT_BLOCK_TIME = 250;
+
+  public static final int ACTION_BUFFER_SIZE = 200;
 }

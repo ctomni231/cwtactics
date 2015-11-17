@@ -2,21 +2,26 @@ package org.wolftec.cwt.model.gameround;
 
 import org.wolftec.cwt.model.sheets.types.PropertyType;
 
-public class Property implements Ownable {
+public class Property {
 
-  public int points = 20;
-  public Player owner;
+  public final Ownable owners;
+
   public PropertyType type;
 
-  /**
-   * @return true, when the given property is neutral, else false.
-   */
-  public boolean isNeutral() {
-    return owner == null;
-  }
+  public final Supplier<Property> supply;
+  public final Visioner<Property> vision;
+  public final Silo silo;
+  public final Capturable capture;
 
-  @Override
-  public Player getOwner() {
-    return owner;
+  public final Position position;
+
+  public Property() {
+    supply = Specialization.constructSpecialization(Supplier.class, this);
+    vision = Specialization.constructSpecialization(Visioner.class, this);
+    silo = Specialization.constructSpecialization(Silo.class, this);
+    capture = Specialization.constructSpecialization(Capturable.class, this);
+
+    owners = new Ownable();
+    position = new Position();
   }
 }

@@ -26,4 +26,12 @@ public class PropertyType extends TileType {
     builds = JSCollections.$array();
     repairs = JSCollections.$array();
   }
+
+  public boolean hasBuilds() {
+    return builds.$length() > 0;
+  }
+
+  public boolean hasBuild(String id) {
+    return builds.indexOf(id) > -1;
+  }
 }

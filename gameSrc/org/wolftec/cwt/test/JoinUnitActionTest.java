@@ -1,12 +1,12 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.JoinUnit;
+import org.wolftec.cwt.model.actions.UnitJoinAction;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class JoinUnitActionTest extends AbstractCwtTest {
 
-  private JoinUnit action;
+  private UnitJoinAction action;
 
   @Override
   protected void prepareModel() {

@@ -3,7 +3,7 @@ package org.wolftec.cwt.model.sheets.types;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 
-public class SiloType {
+public class SiloType extends SheetType {
   public Array<String> fireable;
   public String changeTo;
   public int damage;
@@ -11,5 +11,25 @@ public class SiloType {
 
   public SiloType() {
     fireable = JSCollections.$array();
+  }
+
+  public boolean fireableContains(String id) {
+    return fireable.indexOf(id) > -1;
+  }
+
+  public String getChangeTo() {
+    return changeTo;
+  }
+
+  public int getDamage() {
+    return damage;
+  }
+
+  public boolean inflictsDamage() {
+    return damage > 0;
+  }
+
+  public int getRange() {
+    return range;
   }
 }

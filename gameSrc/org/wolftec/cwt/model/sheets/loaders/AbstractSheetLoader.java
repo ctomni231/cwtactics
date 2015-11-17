@@ -3,19 +3,22 @@ package org.wolftec.cwt.model.sheets.loaders;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.loading.ResourceLoader;
+import org.wolftec.cwt.core.NullUtil;
+import org.wolftec.cwt.core.javascript.ClassUtil;
+import org.wolftec.cwt.core.javascript.JsUtil;
+import org.wolftec.cwt.core.javascript.RequestUtil;
+import org.wolftec.cwt.core.persistence.FileDescriptor;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
-import org.wolftec.cwt.model.sheets.SheetManager;
+import org.wolftec.cwt.model.sheets.SheetSet;
 import org.wolftec.cwt.model.sheets.types.SheetType;
-import org.wolftec.cwt.serialization.FileDescriptor;
-import org.wolftec.cwt.util.ClassUtil;
-import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.cwt.util.RequestUtil;
 
-public abstract class AbstractSheetLoader<T extends SheetType> implements ResourceLoader {
+public abstract class AbstractSheetLoader<T extends SheetType> {
 
-  protected SheetManager db;
+  protected SheetDatabase db;
+
+  public AbstractSheetLoader(SheetDatabase db) {
+    this.db = db;
+  }
 
   @Deprecated
   protected <M> M read(Map<String, Object> data, String property) {
@@ -59,7 +62,7 @@ public abstract class AbstractSheetLoader<T extends SheetType> implements Resour
     }
   }
 
-  abstract SheetDatabase<T> getDatabase();
+  abstract SheetSet<T> getDatabase();
 
   abstract Class<T> getSheetClass();
 

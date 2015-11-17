@@ -1,7 +1,7 @@
 package org.wolftec.cwt.model.sheets.loaders;
 
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.model.sheets.SheetSet;
 import org.wolftec.cwt.model.sheets.types.TileType;
 
 public class TileTypeLoader extends AbstractSheetLoader<TileType> {
@@ -12,7 +12,7 @@ public class TileTypeLoader extends AbstractSheetLoader<TileType> {
   }
 
   @Override
-  public SheetDatabase<TileType> getDatabase() {
+  public SheetSet<TileType> getDatabase() {
     return db.tiles;
   }
 

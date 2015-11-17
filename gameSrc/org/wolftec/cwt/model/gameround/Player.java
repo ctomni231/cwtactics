@@ -2,7 +2,8 @@ package org.wolftec.cwt.model.gameround;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.model.sheets.types.CommanderType;
+import org.wolftec.cwt.core.AssertUtil;
+import org.wolftec.cwt.model.Specialization;
 
 /**
  * Player class which holds all parameters of a army owner.
@@ -10,29 +11,34 @@ import org.wolftec.cwt.model.sheets.types.CommanderType;
  */
 public class Player {
 
-  public int           id;
+  public int id;
 
-  public int           team;
-  public String        name;
+  public int team;
+  public String name;
 
-  public CommanderType coA;
-  public int           activePower;
-  public int           power;
-  public int           powerUsed;
+  public int activePower;
+  public int power;
+  public int powerUsed;
 
-  public int           gold;
-  public int           manpower;
+  public int gold;
+  public int manpower;
 
-  public int           numberOfUnits;
-  public int           numberOfProperties;
+  public int numberOfUnits;
+  public int numberOfProperties;
 
-  public boolean       turnOwnerVisible;
-  public boolean       clientVisible;
-  public boolean       clientControlled;
+  public boolean turnOwnerVisible;
+  public boolean clientVisible;
+  public boolean clientControlled;
+
+  public final Team teaming;
+  public final Commander commander;
 
   public Player() {
     id = -1;
     this.reset();
+
+    teaming = Specialization.constructSpecialization(Team.class, this);
+    commander = Specialization.constructSpecialization(Commander.class, this);
   }
 
   public boolean isPowerActive(int level) {
@@ -51,11 +57,20 @@ public class Player {
     team = teamNumber;
   }
 
+  public void payMoney(int money) {
+    AssertUtil.assertThat(money >= gold);
+    gold -= money;
+  }
+
+  public void earnMoney(int money) {
+    AssertUtil.assertThat(money >= 0);
+    gold += money;
+  }
+
   public void reset() {
     this.team = Constants.INACTIVE;
     this.name = null;
 
-    this.coA = null;
     this.activePower = Constants.INACTIVE;
     this.power = 0;
     this.powerUsed = 0;

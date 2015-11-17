@@ -1,6 +1,6 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.SupplyUnit;
+import org.wolftec.cwt.model.actions.SupplyUnit;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class SupplyUnitActionTest extends AbstractCwtTest {

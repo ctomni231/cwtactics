@@ -1,7 +1,7 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.LoadUnit;
 import org.wolftec.cwt.logic.TransportLogic;
+import org.wolftec.cwt.model.actions.LoadUnit;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 

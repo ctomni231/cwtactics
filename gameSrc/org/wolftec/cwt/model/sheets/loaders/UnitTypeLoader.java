@@ -3,9 +3,9 @@ package org.wolftec.cwt.model.sheets.loaders;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.core.NullUtil;
+import org.wolftec.cwt.model.sheets.SheetSet;
 import org.wolftec.cwt.model.sheets.types.UnitType;
-import org.wolftec.cwt.util.NullUtil;
 
 public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
 
@@ -15,7 +15,7 @@ public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
   }
 
   @Override
-  public SheetDatabase<UnitType> getDatabase() {
+  public SheetSet<UnitType> getDatabase() {
     return db.units;
   }
 

@@ -1,12 +1,12 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.FireLaser;
+import org.wolftec.cwt.model.actions.UnitFireLaserAction;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class FireLaserActionTest extends AbstractCwtTest {
 
-  private FireLaser action;
+  private UnitFireLaserAction action;
 
   @Override
   protected void prepareModel() {

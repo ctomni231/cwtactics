@@ -1,8 +1,8 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.NextTurn;
+import org.wolftec.cwt.core.persistence.ValueHolder;
+import org.wolftec.cwt.model.actions.NextTurn;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.cwt.system.ValueHolder;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class NextTurnActionTest extends AbstractCwtTest {

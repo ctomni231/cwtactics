@@ -3,19 +3,15 @@ package org.wolftec.cwt.model.tilevariants;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.managed.ManagedClass;
-import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.core.NullUtil;
+import org.wolftec.cwt.model.gameround.GameroundEnder;
 import org.wolftec.cwt.model.gameround.Tile;
-import org.wolftec.cwt.util.NullUtil;
 
-public class TileVariantManager implements ManagedClass {
+public class TileVariantManager {
 
   Map<String, TileVariantInfo> types;
 
-  private ModelManager model;
-
-  @Override
-  public void onConstruction() {
+  public TileVariantManager() {
     types = JSCollections.$map();
   }
 
@@ -36,7 +32,7 @@ public class TileVariantManager implements ManagedClass {
   /**
    * Updates the variant number for every tile in the map.
    */
-  public void updateTileSprites() {
+  public void updateTileSprites(GameroundEnder model) {
     int x;
     int y;
     int xe = model.mapWidth;

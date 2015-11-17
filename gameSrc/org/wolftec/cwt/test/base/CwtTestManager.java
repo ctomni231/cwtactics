@@ -1,17 +1,17 @@
 package org.wolftec.cwt.test.base;
 
+import org.wolftec.cwt.controller.ui.UserInteractionData;
 import org.wolftec.cwt.logic.LifecycleLogic;
 import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.managed.ManagedClass;
-import org.wolftec.cwt.model.gameround.ModelManager;
-import org.wolftec.cwt.model.sheets.SheetManager;
-import org.wolftec.cwt.tags.ConfigurationManager;
-import org.wolftec.cwt.ui.UserInteractionData;
+import org.wolftec.cwt.model.gameround.Battlefield;
+import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.model.tags.ConfigurationManager;
 
 public class CwtTestManager implements ManagedClass {
 
-  SheetManager sheets;
-  ModelManager model;
+  SheetDatabase sheets;
+  Battlefield model;
   UserInteractionData uiData;
   LifecycleLogic life;
   MoveLogic move;

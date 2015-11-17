@@ -1,13 +1,13 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.HideUnit;
-import org.wolftec.cwt.action.actions.UnhideUnit;
+import org.wolftec.cwt.model.actions.UnitHideAction;
+import org.wolftec.cwt.model.actions.UnitUnhideAction;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class StealthActionTest extends AbstractCwtTest {
 
-  private UnhideUnit unhide;
-  private HideUnit hide;
+  private UnitUnhideAction unhide;
+  private UnitHideAction hide;
 
   @Override
   protected void prepareModel() {

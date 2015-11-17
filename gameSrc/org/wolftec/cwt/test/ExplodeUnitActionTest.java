@@ -1,12 +1,12 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.ExplodeUnit;
+import org.wolftec.cwt.model.actions.UnitExplodeAction;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class ExplodeUnitActionTest extends AbstractCwtTest {
 
-  private ExplodeUnit action;
+  private UnitExplodeAction action;
 
   @Override
   protected void prepareModel() {

@@ -1,15 +1,15 @@
 package org.wolftec.cwt.test.base;
 
+import org.wolftec.cwt.controller.ui.UserInteractionData;
 import org.wolftec.cwt.logic.LifecycleLogic;
-import org.wolftec.cwt.model.gameround.ModelManager;
-import org.wolftec.cwt.model.sheets.SheetManager;
-import org.wolftec.cwt.tags.ConfigurationManager;
-import org.wolftec.cwt.ui.UserInteractionData;
+import org.wolftec.cwt.model.gameround.GameroundEnder;
+import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.model.tags.ConfigurationManager;
 
 public abstract class AbstractCwtTest implements Test {
 
-  protected SheetManager sheets;
-  protected ModelManager model;
+  protected SheetDatabase sheets;
+  protected GameroundEnder model;
   protected UserInteractionData uiData;
   protected LifecycleLogic life;
   protected ConfigurationManager cfg;

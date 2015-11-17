@@ -2,8 +2,8 @@ package org.wolftec.cwt.test;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwt.action.Action;
-import org.wolftec.cwt.action.TileMeta;
+import org.wolftec.cwt.controller.actions.core.TileMeta;
+import org.wolftec.cwt.model.actions.AbstractAction;
 
 public abstract class ActionsTest {
 
@@ -27,15 +27,15 @@ public abstract class ActionsTest {
     return posArray;
   }
 
-  public static boolean sourceCheck(Action action, Array<TileMeta> unitFlags, Array<TileMeta> propFlags) {
+  public static boolean sourceCheck(AbstractAction action, Array<TileMeta> unitFlags, Array<TileMeta> propFlags) {
     return doesActionSupportsGivenSets(action, true, unitFlags, propFlags);
   }
 
-  public static boolean targetCheck(Action action, Array<TileMeta> unitFlags, Array<TileMeta> propFlags) {
+  public static boolean targetCheck(AbstractAction action, Array<TileMeta> unitFlags, Array<TileMeta> propFlags) {
     return doesActionSupportsGivenSets(action, false, unitFlags, propFlags);
   }
 
-  private static boolean doesActionSupportsGivenSets(Action action, boolean source, Array<TileMeta> unitFlags, Array<TileMeta> propFlags) {
+  private static boolean doesActionSupportsGivenSets(AbstractAction action, boolean source, Array<TileMeta> unitFlags, Array<TileMeta> propFlags) {
     Array<TileMeta> all = allPos();
     Array<TileMeta> allProp = allPropPos();
     for (int i = 0; i < all.$length(); i++) {

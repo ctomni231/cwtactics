@@ -1,117 +1,46 @@
 package org.wolftec.cwt.model.sheets;
 
-import org.stjs.javascript.Array;
-import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.Map;
-import org.stjs.javascript.functions.Callback2;
-import org.stjs.javascript.functions.Function2;
-import org.wolftec.cwt.model.sheets.types.SheetType;
-import org.wolftec.cwt.util.AssertUtil;
-import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.cwt.util.NumberUtil;
+import org.stjs.javascript.functions.Callback0;
+import org.wolftec.cwt.core.annotations.AsyncCallback;
+import org.wolftec.cwt.core.annotations.AsyncOperation;
+import org.wolftec.cwt.model.sheets.types.ArmyType;
+import org.wolftec.cwt.model.sheets.types.CommanderType;
+import org.wolftec.cwt.model.sheets.types.MoveType;
+import org.wolftec.cwt.model.sheets.types.PropertyType;
+import org.wolftec.cwt.model.sheets.types.TileType;
+import org.wolftec.cwt.model.sheets.types.UnitType;
+import org.wolftec.cwt.model.sheets.types.WeatherType;
 
 /**
- * A data object that holds a list of sheet objects with a given schema. Every
- * sheet that will be added to the data object will be validated first.
+ * Holds all object types of the game.
  */
-public class SheetDatabase<T extends SheetType> {
+public class SheetDatabase {
 
-  /**
-   * Holds all type sheet objects.
-   */
-  private Map<String, T> sheets;
+  public final SheetSet<WeatherType> weathers;
+  public final SheetSet<MoveType> movetypes;
+  public final SheetSet<ArmyType> armies;
+  public final SheetSet<PropertyType> properties;
+  public final SheetSet<TileType> tiles;
+  public final SheetSet<CommanderType> commanders;
+  public final SheetSet<UnitType> units;
 
-  /**
-   * Holds all type names.
-   */
-  private Array<String> types;
+  private final SheetLoader objectTypeLoaders;
 
   public SheetDatabase() {
-    types = JSCollections.$array();
-    sheets = JSCollections.$map();
+    tiles = new SheetSet<TileType>();
+    units = new SheetSet<UnitType>();
+    armies = new SheetSet<ArmyType>();
+    weathers = new SheetSet<WeatherType>();
+    movetypes = new SheetSet<MoveType>();
+    properties = new SheetSet<PropertyType>();
+    commanders = new SheetSet<CommanderType>();
+
+    objectTypeLoaders = new SheetLoader();
   }
 
-  public void register(T sheet) {
-    AssertUtil.assertThat(!NullUtil.isPresent(sheets.$get(sheet.ID)));
-    sheets.$put(sheet.ID, sheet);
-    types.push(sheet.ID);
-  }
+  @AsyncOperation
+  public void loadSheets(@AsyncCallback Callback0 onFinish) {
 
-  public T get(String key) {
-    T sheet = sheets.$get(key);
-    return NullUtil.getOrThrow(sheet);
-  }
-
-  /**
-   * 
-   * @param iterator
-   *          called with (sheet.id, sheet) for each sheet in the database
-   */
-  public void forEach(Callback2<String, T> iterator) {
-    for (int i = 0; i < types.$length(); i++) {
-      iterator.$invoke(types.$get(i), sheets.$get(types.$get(i)));
-    }
-  }
-
-  /**
-   * 
-   * @param filter
-   * @return the first entry where filter function returns true
-   */
-  public T filterFirst(Function2<String, T, Boolean> filter) {
-    for (int i = 0; i < types.$length(); i++) {
-      if (filter.$invoke(types.$get(i), sheets.$get(types.$get(i)))) {
-        return sheets.$get(types.$get(i));
-      }
-    }
-    return JsUtil.throwError("NoMatch");
-  }
-
-  /**
-   * Picks a random sheet from the database while ignoring the given sheets from
-   * the arguments list.
-   * 
-   * @param arguments
-   * @return
-   */
-  public T random(T... arguments) {
-    int numberOfSheets = types.$length();
-    int randIndex = NumberUtil.getRandomInt(numberOfSheets);
-    int firstIndex = randIndex;
-
-    do {
-      T sheet = sheets.$get(types.$get(randIndex));
-      boolean inArgs = false;
-
-      for (int i = 0; i < arguments.length; i++) {
-        if (arguments[i] == sheet) {
-          inArgs = true;
-
-          randIndex++;
-          if (randIndex == numberOfSheets) {
-            randIndex = 0;
-          }
-
-          if (randIndex == firstIndex) {
-            JsUtil.throwError("no random item selectable");
-          }
-
-          break;
-        }
-      }
-
-      if (!inArgs) {
-        return sheet;
-      }
-    } while (true);
-  }
-
-  /**
-   * Removes all registered sheets.
-   */
-  public void dropAll() {
-    forEach((id, sheet) -> sheets.$delete(id));
-    types.splice(0, types.$length());
+    onFinish.$invoke();
   }
 }

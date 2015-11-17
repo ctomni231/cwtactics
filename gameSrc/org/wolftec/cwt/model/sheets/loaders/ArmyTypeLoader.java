@@ -1,7 +1,7 @@
 package org.wolftec.cwt.model.sheets.loaders;
 
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.model.sheets.SheetSet;
 import org.wolftec.cwt.model.sheets.types.ArmyType;
 
 public class ArmyTypeLoader extends AbstractSheetLoader<ArmyType> {
@@ -12,7 +12,7 @@ public class ArmyTypeLoader extends AbstractSheetLoader<ArmyType> {
   }
 
   @Override
-  public SheetDatabase<ArmyType> getDatabase() {
+  public SheetSet<ArmyType> getDatabase() {
     return db.armies;
   }
 

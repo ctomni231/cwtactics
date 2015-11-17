@@ -1,12 +1,12 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.FireSilo;
+import org.wolftec.cwt.model.actions.PropertyFireRocketAction;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class FireSiloActionTest extends AbstractCwtTest {
 
-  private FireSilo action;
+  private PropertyFireRocketAction action;
 
   @Override
   protected void prepareModel() {

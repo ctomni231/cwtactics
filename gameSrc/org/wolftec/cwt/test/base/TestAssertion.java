@@ -3,8 +3,8 @@ package org.wolftec.cwt.test.base;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.functions.Function1;
-import org.wolftec.cwt.action.Action;
-import org.wolftec.cwt.model.gameround.ModelManager;
+import org.wolftec.cwt.model.actions.AbstractAction;
+import org.wolftec.cwt.model.gameround.Battlefield;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
@@ -38,21 +38,21 @@ public class TestAssertion {
     return new Assert(parent.model.turnOwner);
   }
 
-  public <X> Assert<X> gameroundProperty(Function1<ModelManager, X> filter) {
+  public <X> Assert<X> gameroundProperty(Function1<Battlefield, X> filter) {
     return new Assert(filter.$invoke(parent.model));
   }
 
-  public Assert usableAction(Action action) {
+  public Assert usableAction(AbstractAction action) {
     parent.modify.checkAction(action);
     return menu().contains(action.key());
   }
 
-  public Assert unusableAction(Action action) {
+  public Assert unusableAction(AbstractAction action) {
     parent.modify.checkAction(action);
     return menu().notContains(action.key());
   }
 
-  public Assert validFreeSelectionTarget(Action action) {
+  public Assert validFreeSelectionTarget(AbstractAction action) {
     return value(action.isTargetValid(parent.uiData));
   }
 

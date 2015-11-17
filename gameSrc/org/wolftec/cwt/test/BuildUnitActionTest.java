@@ -1,12 +1,12 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.BuildUnit;
+import org.wolftec.cwt.core.SheetIdNumberUtil;
+import org.wolftec.cwt.model.actions.UnitFactoryAction;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
-import org.wolftec.cwt.util.SheetIdNumberUtil;
 
 public class BuildUnitActionTest extends AbstractCwtTest {
 
-  private BuildUnit action;
+  private UnitFactoryAction action;
 
   @Override
   protected void prepareModel() {

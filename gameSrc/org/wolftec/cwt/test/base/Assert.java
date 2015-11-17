@@ -5,8 +5,8 @@ import org.stjs.javascript.JSGlobal;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Function1;
-import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.core.NullUtil;
+import org.wolftec.cwt.core.javascript.JsUtil;
 
 public class Assert<T> {
 

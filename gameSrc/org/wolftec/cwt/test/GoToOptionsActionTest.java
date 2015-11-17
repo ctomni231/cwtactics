@@ -1,11 +1,11 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.GoToOptions;
+import org.wolftec.cwt.model.actions.GameOpenOptionsAction;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class GoToOptionsActionTest extends AbstractCwtTest {
 
-  private GoToOptions action;
+  private GameOpenOptionsAction action;
 
   @Override
   protected void prepareModel() {

@@ -2,6 +2,7 @@ package org.wolftec.cwt.model.sheets.types;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
+import org.wolftec.cwt.core.NumberUtil;
 
 public class UnitType extends SheetType {
 
@@ -29,5 +30,9 @@ public class UnitType extends SheetType {
     suicide = new SuicideType();
     laser = new LaserType();
     canload = JSCollections.$array();
+  }
+
+  public int getCostsByPercentage(int perc) {
+    return NumberUtil.asInt((costs * perc) / 100);
   }
 }

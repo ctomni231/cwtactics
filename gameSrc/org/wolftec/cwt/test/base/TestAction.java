@@ -2,12 +2,12 @@ package org.wolftec.cwt.test.base;
 
 import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.action.Action;
-import org.wolftec.cwt.action.ActionData;
-import org.wolftec.cwt.annotations.OptionalParameter;
-import org.wolftec.cwt.states.base.StateFlowData;
-import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.controller.actions.core.ActionData;
+import org.wolftec.cwt.controller.states.base.StateFlowData;
+import org.wolftec.cwt.core.NullUtil;
+import org.wolftec.cwt.core.annotations.OptionalParameter;
+import org.wolftec.cwt.core.javascript.JsUtil;
+import org.wolftec.cwt.model.actions.AbstractAction;
 
 public class TestAction {
 
@@ -17,24 +17,24 @@ public class TestAction {
     this.parent = parent;
   }
 
-  public void checkAction(Action action) {
+  public void checkAction(AbstractAction action) {
     parent.uiData.cleanInfos();
     if (action.isUsable(parent.uiData)) {
       parent.uiData.addInfo(action.key(), true);
     }
   }
 
-  public void checkActions(Action... arguments) {
+  public void checkActions(AbstractAction... arguments) {
     parent.uiData.cleanInfos();
     for (int i = 0; i < arguments.length; i++) {
-      Action action = arguments[i];
+      AbstractAction action = arguments[i];
       if (action.isUsable(parent.uiData)) {
         parent.uiData.addInfo(action.key(), true);
       }
     }
   }
 
-  public void buildActionMenu(Action action) {
+  public void buildActionMenu(AbstractAction action) {
     parent.uiData.cleanInfos();
     if (!action.hasSubMenu()) {
       JsUtil.throwError("action has no sub menu");
@@ -43,10 +43,10 @@ public class TestAction {
   }
 
   @Native
-  public void invokeAction(Action action) {
+  public void invokeAction(AbstractAction action) {
   }
 
-  public void invokeAction(Action action, @OptionalParameter Callback1<StateFlowData> callback) {
+  public void invokeAction(AbstractAction action, @OptionalParameter Callback1<StateFlowData> callback) {
     ActionData data = new ActionData();
     StateFlowData flow = new StateFlowData();
 

@@ -1,13 +1,13 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.TransferUnit;
+import org.wolftec.cwt.core.NumberUtil;
 import org.wolftec.cwt.logic.MoveLogic;
+import org.wolftec.cwt.model.actions.UnitTransferAction;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
-import org.wolftec.cwt.util.NumberUtil;
 
 public class TransferUnitActionTest extends AbstractCwtTest {
 
-  private TransferUnit action;
+  private UnitTransferAction action;
 
   @Override
   protected void prepareModel() {

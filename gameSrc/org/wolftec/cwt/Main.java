@@ -2,25 +2,30 @@ package org.wolftec.cwt;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
-import org.wolftec.cwt.loop.GameloopService;
-import org.wolftec.cwt.managed.IoCContainer;
-import org.wolftec.cwt.states.base.StateManager;
+import org.wolftec.cwt.controller.Controller;
+import org.wolftec.cwt.model.Model;
+import org.wolftec.cwt.test.base.Tests;
+import org.wolftec.cwt.view.View;
 
 public class Main {
 
+  /**
+   * The entry point of the whole game.
+   * 
+   * @param args
+   */
   public static void main(String[] args) {
-    IoCContainer ioc = new IoCContainer();
+    Model model = new Model();
+    View view = new View(model);
+    Controller controller = new Controller(model, view);
 
     if (Constants.DEBUG) {
-      JSObjectAdapter.$put(Global.window, "__ioc__", ioc);
+      JSObjectAdapter.$put(Global.window, "cwtController", controller);
+      JSObjectAdapter.$put(Global.window, "cwtModel", model);
+      JSObjectAdapter.$put(Global.window, "cwtView", view);
+      JSObjectAdapter.$put(Global.window, "cwtTest", new Tests());
     }
 
-    // The main game itself...
-    ioc.getManagedObjectByType(StateManager.class).setState("NoneState", true);
-    // Just so JSR can test... comment out to see what JSR is up to. (Need to
-    // start using testing functions)
-    // ioc.getManagedObjectByType(StateManager.class).setState("TempState",
-    // true);
-    ioc.getManagedObjectByType(GameloopService.class).start();
+    // TODO start the controller
   }
 }

@@ -1,7 +1,7 @@
 package org.wolftec.cwt.model.sheets.loaders;
 
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.model.sheets.SheetSet;
 import org.wolftec.cwt.model.sheets.types.MoveType;
 
 public class MoveTypeLoader extends AbstractSheetLoader<MoveType> {
@@ -12,7 +12,7 @@ public class MoveTypeLoader extends AbstractSheetLoader<MoveType> {
   }
 
   @Override
-  public SheetDatabase<MoveType> getDatabase() {
+  public SheetSet<MoveType> getDatabase() {
     return db.movetypes;
   }
 

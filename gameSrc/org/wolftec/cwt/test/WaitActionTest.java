@@ -1,11 +1,11 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.action.actions.WaitUnit;
+import org.wolftec.cwt.model.actions.UnitWaitAction;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class WaitActionTest extends AbstractCwtTest {
 
-  private WaitUnit action;
+  private UnitWaitAction action;
 
   @Override
   protected void prepareModel() {
