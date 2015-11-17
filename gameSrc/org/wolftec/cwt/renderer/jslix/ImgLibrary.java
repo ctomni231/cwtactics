@@ -121,7 +121,7 @@ public class ImgLibrary {
 	      ctx.putImageData(imgData, 0, 0);
 	    } else {
 	      CanvasImageData imgData = ctx.createImageData(lx, ly);
-	      JSObjectAdapter.$js("var view = new Uint8Array(this.buffer)");
+	      JSObjectAdapter.$js("var view = new Uint8Array(this.bufferArray[num])");
 
 	      for (int i = 0; i < imgData.data.$length(); i++)
 	        JSObjectAdapter.$js("imgData.data[i] = view[i]");
