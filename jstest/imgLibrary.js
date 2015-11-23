@@ -19,6 +19,8 @@ var bufferArray = [];
 var locxArray = [];
 var locyArray = [];
 
+var everyColor = [];
+
 // This function adds an image from text.
 function addImage(){
 	//This grabs an image and temporarily stores it in memory
@@ -83,8 +85,32 @@ function storeImage(){
 	button.innerHTML = "Display #"+(bufferArray.length);
 }
 
+function cascade(){
+
+	var c = document.getElementById("myCanvas");
+	var ctx = c.getContext("2d");
+	ctx.clearRect(0, 0, c.width, c.height);
+	
+	for(var i = 0; i < bufferArray.length; i++){
+		ctx.drawImage(canvasImage(i), 10*i, 10*i);
+	}
+	
+	for(var i = 0; i < bufferArray.length; i++){
+		ctx.drawImage(canvasImage(i), 10*(i+bufferArray.length), 10*(i+bufferArray.length));
+	}
+}
 //This function displays an image by the number selected
 function display(num){
+	
+	//Reassigns it to the current canvas
+	var c = document.getElementById("myCanvas");
+	var ctx = c.getContext("2d");
+	ctx.clearRect(0, 0, c.width, c.height);
+	ctx.drawImage(canvasImage(num), 10, 10);
+}
+
+//This function stores an image by the number selected
+function canvasImage(num){
 
 	if(num >= 0 && num < bufferArray.length){
 		buffer = bufferArray[num];
@@ -130,11 +156,7 @@ function display(num){
 		ctx.putImageData(imgData,0,0);
 	}
 	
-	//Reassigns it to the current canvas
-	var c = document.getElementById("myCanvas");
-	ctx = c.getContext("2d");
-	ctx.clearRect(0, 0, c.width, c.height);
-	ctx.drawImage(canvas, 10, 10);
+	return canvas;
 }
 
 //Displays the image currently in buffer
@@ -185,8 +207,39 @@ function displayImage(){
 	ctx.drawImage(canvas, 10, 10);
 	
 	var time = (new Date()).getTime();
-	colorSplitFake();
+	imageColors();
 	console.log("Time took to render: " + ((new Date()).getTime() - time) + "ms");
+}
+
+function imageColors(){
+	
+	var view = new Uint8Array(buffer);
+	
+	intBuffer = new ArrayBuffer(4);
+	intView = new Uint8Array(intBuffer);
+	
+	var colorData = [];
+	
+	for (var i = 0, j = 0; i < view.length; i += 4){
+		for (j = 0; j < colorData.length; j+=4){
+			intBuffer = colorData[j];
+			if(intView[j]*1000+intView[j+1] == view[i]*1000+view[i+1] && 
+			   intView[j+2]*1000+intView[j+3] == view[i+2]*1000+view[i+3]){
+				break;
+			}
+		}
+		if(j >= colorData.length){
+			intBuffer = new ArrayBuffer(4);
+			intView = new Uint8Array(intBuffer);
+			intView[0] = view[i];
+			intView[1] = view[i+1];
+			intView[2] = view[i+2];
+			intView[3] = view[i+3];
+			colorData.push(intBuffer);
+			
+		}
+	}
+	console.log("Number of colors: "+(colorData.length)+"/"+(view.length/4));
 }
 
 function colorInImg(){
@@ -215,7 +268,7 @@ function colorSplitFake(){
 		if(j >= colorData.length)
 			colorData.push(view[i]*1000+view[i+1]);
 	}
-	console.log("Number of colors: "+(colorData.length)+"/"+(view.length / 4));
+	console.log("Number of colors: "+(colorData.length)+"/"+(view.length / 2));
 }
 function colorSplit(){
 	var view = new Uint8Array(buffer);
