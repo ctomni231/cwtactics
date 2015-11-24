@@ -13,6 +13,7 @@
 var buffer;
 var lx = 0;
 var ly = 0;
+var fps = 0;
 
 //These are arrays that store multiple images
 var bufferArray = [];
@@ -85,8 +86,14 @@ function storeImage(){
 	button.innerHTML = "Display #"+(bufferArray.length);
 }
 
+function repeatCascade(){
+	setInterval(cascade(), 50);
+}
+
 function cascade(){
 
+	lastTime = new Date();
+	
 	var c = document.getElementById("myCanvas");
 	var ctx = c.getContext("2d");
 	ctx.clearRect(0, 0, c.width, c.height);
@@ -95,9 +102,18 @@ function cascade(){
 		ctx.drawImage(canvasImage(i), 10*i, 10*i);
 	}
 	
-	for(var i = 0; i < bufferArray.length; i++){
-		ctx.drawImage(canvasImage(i), 10*(i+bufferArray.length), 10*(i+bufferArray.length));
-	}
+	//No more double cascade
+	//for(var i = 0; i < bufferArray.length; i++){
+	//	ctx.drawImage(canvasImage(i), 10*(i+bufferArray.length), 10*(i+bufferArray.length));
+	//}
+	
+	var nowTime = new Date();
+	var diffTime = Math.ceil((nowTime.getTime() - lastTime.getTime()));
+	fps = 1000/diffTime;
+	ctx.save();
+	ctx.fillStyle = '#000000';
+	ctx.font = 'bold 10px sans-serif';
+	ctx.fillText('FPS: ' + fps , 4, 10);
 }
 //This function displays an image by the number selected
 function display(num){
