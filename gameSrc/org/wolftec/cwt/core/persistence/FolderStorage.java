@@ -3,6 +3,7 @@ package org.wolftec.cwt.core.persistence;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
+import org.stjs.javascript.functions.Callback3;
 import org.wolftec.cwt.core.NullUtil;
 import org.wolftec.cwt.core.annotations.AsyncCallback;
 import org.wolftec.cwt.core.annotations.AsyncOperation;
@@ -31,6 +32,16 @@ public class FolderStorage {
   }
 
   @AsyncOperation
+  public <T> void readFiles(@AsyncCallback Callback3<String, T, Callback0> onLoadedFile, @AsyncCallback Callback0 onFinish,
+      @AsyncCallback Callback1<String> onError) {
+    fileList((files) -> {
+      ListUtil.forEachArrayValueAsync(files, (index, filePath, next) -> {
+        readFile(filePath, (T fileData) -> onLoadedFile.$invoke(filePath, fileData, next), onError);
+      } , onFinish);
+    } , onError);
+  }
+
+  @AsyncOperation
   public <T> void writeFile(String fileName, T content, @AsyncCallback Callback0 onFinish, @AsyncCallback Callback1<String> onError) {
     LocalForage.localforage.setItem(folder + fileName, content, (error, data) -> {
       if (NullUtil.isPresent(error)) {
@@ -49,6 +60,13 @@ public class FolderStorage {
       } else {
         onFinish.$invoke();
       }
+    });
+  }
+
+  @AsyncOperation
+  public void hasFile(String fileName, @AsyncCallback Callback1<Boolean> onChecked) {
+    LocalForage.localforage.getItem(fileName, (err, data) -> {
+      onChecked.$invoke(data != null);
     });
   }
 

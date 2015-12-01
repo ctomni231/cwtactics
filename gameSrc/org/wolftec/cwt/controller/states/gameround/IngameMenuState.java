@@ -1,13 +1,13 @@
 package org.wolftec.cwt.controller.states.gameround;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwt.controller.actions.core.ActionType;
 import org.wolftec.cwt.controller.states.base.GameroundState;
 import org.wolftec.cwt.controller.states.base.StateFlowData;
 import org.wolftec.cwt.core.NullUtil;
 import org.wolftec.cwt.core.javascript.JsUtil;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.logic.MoveLogic;
+import org.wolftec.cwt.model.ActionType;
 import org.wolftec.cwt.model.actions.AbstractAction;
 import org.wolftec.cwt.model.gameround.GameroundEnder;
 

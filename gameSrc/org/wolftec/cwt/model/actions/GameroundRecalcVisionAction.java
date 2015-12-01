@@ -1,10 +1,11 @@
 package org.wolftec.cwt.model.actions;
 
-import org.wolftec.cwt.controller.actions.core.ActionType;
+import org.wolftec.cwt.model.ActionType;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.TileMap;
 import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.model.tags.Tags;
 import org.wolftec.cwt.model.tags.TagValue;
 
 public class GameroundRecalcVisionAction extends AbstractAction {
@@ -13,14 +14,14 @@ public class GameroundRecalcVisionAction extends AbstractAction {
 
   private final TagValue cfgEnabled;
 
-  public GameroundRecalcVisionAction(GameroundChangeVisionAction addVision) {
+  public GameroundRecalcVisionAction(Tags cfg, GameroundChangeVisionAction addVision) {
     this.changeVision = addVision;
-    cfgEnabled = new TagValue("game.fog.enabled", 0, 1, 1);
+    cfgEnabled = cfg.registerConfig("game.fog.enabled", 0, 1, 1, 1);
   }
 
   @Override
   public ActionType type() {
-    return ActionType.ENGINE_ACTION;
+    return ActionType.ENGINE_MAP_ACTION;
   }
 
   @Override
@@ -42,11 +43,11 @@ public class GameroundRecalcVisionAction extends AbstractAction {
         Tile tile = tilemap.getTile(x, y);
 
         if (!fogEnabled) {
-          tile.visionTurnOwner = 1;
-          tile.visionClient = 1;
+          tile.data.visionTurnOwner = 1;
+          tile.data.visionClient = 1;
         } else {
-          tile.visionTurnOwner = 0;
-          tile.visionClient = 0;
+          tile.data.visionTurnOwner = 0;
+          tile.data.visionClient = 0;
         }
       }
     }

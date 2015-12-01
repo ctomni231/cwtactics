@@ -4,12 +4,12 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.ObjectUtil;
-import org.wolftec.cwt.core.Properties;
+import org.wolftec.cwt.core.PropertyMap;
 import org.wolftec.cwt.core.annotations.AsyncCallback;
 import org.wolftec.cwt.core.annotations.AsyncOperation;
 import org.wolftec.cwt.core.collection.ListUtil;
 import org.wolftec.cwt.core.javascript.JsUtil;
+import org.wolftec.cwt.core.javascript.ObjectUtil;
 import org.wolftec.cwt.core.persistence.FileDescriptor;
 import org.wolftec.cwt.core.persistence.FolderStorage;
 import org.wolftec.cwt.core.persistence.RemoteFolderReader;
@@ -37,8 +37,8 @@ public class LanguageFolderReader {
   }
 
   @AsyncOperation
-  public void readLanguageFiles(@AsyncCallback Callback1<Map<String, Properties>> onFinish) {
-    Map<String, Properties> languages = JSCollections.$map();
+  public void readLanguageFiles(@AsyncCallback Callback1<Map<String, PropertyMap>> onFinish) {
+    Map<String, PropertyMap> languages = JSCollections.$map();
     storage.fileList((files) -> {
       ListUtil.forEachArrayValueAsync(files, (index, file, next) -> {
         FileDescriptor fileMeta = new FileDescriptor(file);
@@ -53,9 +53,9 @@ public class LanguageFolderReader {
   }
 
   @AsyncOperation
-  private void readLanguageFile(FileDescriptor fileMeta, @AsyncCallback Callback1<Properties> onFinish) {
+  private void readLanguageFile(FileDescriptor fileMeta, @AsyncCallback Callback1<PropertyMap> onFinish) {
     storage.readFile(fileMeta.path, (Map<String, String> value) -> {
-      Properties langProp = new Properties();
+      PropertyMap langProp = new PropertyMap();
       ObjectUtil.forEachMapValue(value, (okey, ovalue) -> langProp.put(okey, ovalue));
       onFinish.$invoke(langProp);
 

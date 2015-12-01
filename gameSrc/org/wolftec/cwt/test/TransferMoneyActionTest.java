@@ -1,14 +1,14 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.controller.actions.core.TileMeta;
 import org.wolftec.cwt.core.NumberUtil;
 import org.wolftec.cwt.logic.TeamLogic;
-import org.wolftec.cwt.model.actions.TransferMoney;
+import org.wolftec.cwt.model.TileMeta;
+import org.wolftec.cwt.model.actions.PlayerTransferMoneyAction;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class TransferMoneyActionTest extends AbstractCwtTest {
 
-  private TransferMoney action;
+  private PlayerTransferMoneyAction action;
 
   private int minTransferMoney;
 

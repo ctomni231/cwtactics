@@ -1,0 +1,238 @@
+package org.wolftec.cwt.model.actions;
+
+import org.wolftec.cwt.model.ActionType;
+
+public class PropertyFireCannonAction extends AbstractAction {
+
+  @Override
+  public String key() {
+    return "fireCannon";
+  }
+
+  @Override
+  public ActionType type() {
+    return ActionType.UNIT_ACTION;
+  }
+
+  @Override
+  public boolean condition(ModelData model, ControllerData controller) {
+    return false;
+  }
+
+  @Override
+  public void fillData(ModelData model, ControllerData controller) {
+  }
+
+  @Override
+  public void evaluateByData(ModelData model, ControllerData controller) {
+  }
+
+  // require('../actions').unitAction({
+  // key: "fireCannon",
+  //
+  // relation: [
+  // "S", "T",
+  // cwt.Relationship.RELATION_SAME_THING
+  // ],
+  //
+  // condition: function (data) {
+  // return (
+  // cwt.Cannon.isCannonUnit(data.source.unit) &&
+  // cwt.Cannon.hasTargets(data.source.x, data.source.y, null)
+  // );
+  // },
+  //
+  // targetSelectionType: "A",
+  // prepareTargets: function (data) {
+  // cwt.Cannon.fillCannonTargets(data.source.x, data.source.y, data.selection);
+  // },
+  //
+  // toDataBlock: function (data, dataBlock) {
+  // dataBlock.p1 = data.source.x;
+  // dataBlock.p2 = data.source.y;
+  // dataBlock.p3 = data.targetselection.x;
+  // dataBlock.p4 = data.targetselection.y;
+  // },
+  //
+  // parseDataBlock: function (dataBlock) {
+  // cwt.Cannon.fireCannon(dataBlock.p1, dataBlock.p2,dataBlock.p3,
+  // dataBlock.p4);
+  // }
+  //
+  // });
+
+  // /**
+  // *
+  // * @param unit
+  // * @return **true** if a given **unit** is a cannon trigger unit, else
+  // * **false**.
+  // */
+  // public boolean isCannonUnit(Unit unit) {
+  // return (unit.type.ID == CANNON_UNIT_ID);
+  // }
+  //
+  // //
+  // // Returns **true** when a cannon trigger unit is at a given position
+  // // (**x**,**y**) and has targets in it's range,
+  // // else **false**.
+  // //
+  // public boolean hasTargets(int x, int y, MatrixSegment selection) {
+  // return isCannonUnit(model.getTile(x, y).unit) && markCannonTargets(x, y,
+  // selection);
+  // }
+  //
+  // public void fillCannonTargets(int x, int y, MatrixSegment selection) {
+  // markCannonTargets(x, y, selection);
+  // }
+  //
+  // //
+  // // Fires a cannon at a given position.
+  // //
+  // public void fireCannon(int ox, int oy, int x, int y) {
+  // Unit target = model.getTile(x, y).unit;
+  // PropertyType type = grabBombPropTypeFromPos(ox, oy);
+  //
+  // target.damage(Unit.pointsToHealth(type.cannon.damage), 9);
+  // }
+  //
+  // //
+  // // Marks all cannon targets in a selection. The area of fire will be
+  // defined
+  // // by
+  // // the rectangle from `sx,sy` to `tx,ty`. The cannon is on the tile `ox,oy`
+  // // with a given `range`.
+  // //
+  // public boolean tryToMarkCannonTargets(Player player, MatrixSegment
+  // selection, int ox, int oy, int otx, int oty, int sx, int sy, int tx, int
+  // ty, int range) {
+  // int tid = player.team;
+  // int osy = sy;
+  // boolean result = false;
+  // for (; sx <= tx; sx++) {
+  // for (sy = osy; sy >= ty; sy--) {
+  // if (!model.isValidPosition(sx, sy)) continue;
+  // Tile tile = model.getTile(sx, sy);
+  //
+  // // range maybe don't match
+  // if ((Math.abs(sx - ox) + Math.abs(sy - oy)) > range) continue;
+  // if ((Math.abs(sx - otx) + Math.abs(sy - oty)) > range) continue;
+  //
+  // // in fog
+  // if (tile.visionTurnOwner <= 0) continue;
+  //
+  // Unit unit = tile.unit;
+  // if (NullUtil.isPresent(unit)) {
+  // if (unit.owner.team != tid) {
+  // // TODO ugly !!!
+  // if (NullUtil.isPresent(selection)) {
+  // selection.setValue(sx, sy, 1);
+  // } else {
+  // return true;
+  // }
+  // result = true;
+  // }
+  // }
+  // }
+  // }
+  //
+  // return result;
+  // }
+  //
+  // /**
+  // * Marks all cannon targets in a given selection model.
+  // *
+  // * @param x
+  // * @param y
+  // * @param selection
+  // */
+  // public boolean markCannonTargets(int x, int y, MatrixSegment selection) {
+  // Property prop = model.getTile(x, y).property;
+  // PropertyType type = (prop.type.ID != "PROP_INV") ? prop.type :
+  // grabBombPropTypeFromPos(x, y);
+  //
+  // selection.setCenter(x, y, Constants.INACTIVE);
+  //
+  // int otx = 0;
+  // int oty = 0;
+  // int sx = 0;
+  // int sy = 0;
+  // int tx = 0;
+  // int ty = 0;
+  // int max = type.cannon.range;
+  // int ox = x;
+  // int oy = y;
+  // switch (type.cannon.direction) {
+  //
+  // case "N":
+  // otx = x;
+  // oty = y - max - 1;
+  // sx = x - max + 1;
+  // sy = y - 1;
+  // tx = x + max - 1;
+  // ty = y - max;
+  // break;
+  //
+  // case "E":
+  // otx = x + max + 1;
+  // oty = y;
+  // sx = x + 1;
+  // sy = y + max - 1;
+  // tx = x + max;
+  // ty = y - max + 1;
+  // break;
+  //
+  // case "W":
+  // otx = x - max - 1;
+  // oty = y;
+  // sx = x - max;
+  // sy = y + max - 1;
+  // tx = x - 1;
+  // ty = y - max + 1;
+  // break;
+  //
+  // case "S":
+  // otx = x;
+  // oty = y + max + 1;
+  // sx = x - max + 1;
+  // sy = y + max;
+  // tx = x + max - 1;
+  // ty = y + 1;
+  // break;
+  // }
+  //
+  // return tryToMarkCannonTargets(model.getTile(x, y).unit.owner, selection,
+  // ox, oy, otx, oty, sx, sy, tx, ty, max);
+  // }
+  //
+  // public PropertyType grabBombPropTypeFromPos(int x, int y) {
+  // while (true) {
+  // Tile tile = model.getTile(x, y + 1);
+  // if (y + 1 < model.mapHeight && NullUtil.isPresent(tile.property) &&
+  // tile.property.type.ID == "INVU") {
+  // y++;
+  // continue;
+  // }
+  //
+  // break;
+  // }
+  //
+  // Tile tile = model.getTile(x, y);
+  // if (tile.property.type.ID != "INVU") {
+  // return tile.property.type;
+  // }
+  //
+  // while (true) {
+  // Tile stile = model.getTile(x + 1, y);
+  // if (x + 1 < model.mapWidth && NullUtil.isPresent(stile.property) &&
+  // stile.property.type.ID != "INVU") {
+  // return stile.property.type;
+  // }
+  //
+  // break;
+  // }
+  //
+  // // TODO error
+  // return null;
+  // }
+
+}

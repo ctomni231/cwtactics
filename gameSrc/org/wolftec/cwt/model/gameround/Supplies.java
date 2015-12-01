@@ -1,17 +1,19 @@
 package org.wolftec.cwt.model.gameround;
 
 import org.wolftec.cwt.core.NumberUtil;
-import org.wolftec.cwt.core.annotations.InjectedPostConstruction;
-import org.wolftec.cwt.model.Specialization;
 
-public class Supplies extends Specialization<Unit> {
+public class Supplies {
 
   private static final double LOW_SUPPLIES_MODIFICATOR = 0.25;
 
-  @InjectedPostConstruction Hidable hide;
+  private final Unit self;
 
   public int ammo;
   public int fuel;
+
+  public Supplies(Unit self) {
+    this.self = self;
+  }
 
   public void refill() {
     ammo = self.type.ammo;
@@ -23,7 +25,7 @@ public class Supplies extends Specialization<Unit> {
     if (value > 0) {
 
       /* hidden units may drain more fuel */
-      if (hide.hidden && self.type.dailyFuelDrainHidden > 0) {
+      if (self.hide.isHidden() && self.type.dailyFuelDrainHidden > 0) {
         value = self.type.dailyFuelDrainHidden;
       }
 
@@ -34,8 +36,12 @@ public class Supplies extends Specialization<Unit> {
     }
   }
 
-  public boolean hasNoFuelLeft() {
+  public boolean hasNoFuel() {
     return fuel == 0;
+  }
+
+  public boolean hasNoAmmo() {
+    return ammo == 0;
   }
 
   /**

@@ -1,6 +1,6 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.model.actions.SupplyUnit;
+import org.wolftec.cwt.model.actions.UnitSupplyNeighborsAction;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class SupplyUnitActionTest extends AbstractCwtTest {
@@ -8,7 +8,7 @@ public class SupplyUnitActionTest extends AbstractCwtTest {
   private static final int MAX_AMMO = 10;
   private static final int MAX_FUEL = 90;
 
-  private SupplyUnit action;
+  private UnitSupplyNeighborsAction action;
 
   @Override
   protected void prepareModel() {

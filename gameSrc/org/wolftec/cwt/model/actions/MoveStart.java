@@ -1,13 +1,14 @@
 package org.wolftec.cwt.model.actions;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.controller.actions.core.ActionData;
-import org.wolftec.cwt.controller.actions.core.ActionType;
-import org.wolftec.cwt.controller.states.base.StateFlowData;
-import org.wolftec.cwt.controller.ui.UserInteractionData;
+import org.wolftec.cwt.core.NullUtil;
 import org.wolftec.cwt.core.collection.RingList;
+import org.wolftec.cwt.model.ActionType;
+import org.wolftec.cwt.model.gameround.Tile;
+import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.model.gameround.objecttypes.MoveType;
 
-public class MoveStart implements AbstractAction {
+public class MoveStart extends AbstractAction {
 
   public static class MoveActionData {
     public int x;
@@ -29,21 +30,44 @@ public class MoveStart implements AbstractAction {
 
   @Override
   public ActionType type() {
-    return ActionType.ENGINE_ACTION;
+    return ActionType.ENGINE_MAP_ACTION;
   }
 
   @Override
-  public void fillData(UserInteractionData positionData, ActionData actionData) {
-    actionData.p1 = positionData.source.unitId;
-    actionData.p2 = positionData.source.x;
-    actionData.p3 = positionData.source.y;
+  public boolean condition(ModelData model, ControllerData controller) {
+
+    // check technical movement to tile type
+    if (getMoveCosts(moveType, x, y) == Constants.INACTIVE) {
+      return false;
+    }
+
+    // check some other rules like fog and units
+    Tile tile = model.getTile(x, y);
+    return (tile.data.visionTurnOwner == 0 || !NullUtil.isPresent(tile.unit));
+
+    NullUtil.getOrThrow(position.unit);
+
+    Unit unit = position.unit;
+    MoveType mv = sheets.movetypes.get(unit.type.movetype);
+
+    return ((model.isValidPosition(position.x + 1, position.y) && getMoveCosts(mv, position.x + 1, position.y) > Constants.INACTIVE)
+        || (model.isValidPosition(position.x - 1, position.y) && getMoveCosts(mv, position.x - 1, position.y) > Constants.INACTIVE)
+        || (model.isValidPosition(position.x, position.y - 1) && getMoveCosts(mv, position.x, position.y - 1) > Constants.INACTIVE)
+        || (model.isValidPosition(position.x, position.y + 1) && getMoveCosts(mv, position.x, position.y + 1) > Constants.INACTIVE));
   }
 
   @Override
-  public void evaluateByData(int delta, ActionData data, StateFlowData stateTransition) {
+  public void fillData(ModelData model, ControllerData controller) {
+    controller.data.p1 = controller.ui.source.unitId;
+    controller.data.p2 = controller.ui.source.x;
+    controller.data.p3 = controller.ui.source.y;
+  }
+
+  @Override
+  public void evaluateByData(ModelData model, ControllerData controller) {
     moveDto.movePath.clear();
-    moveDto.unitId = data.p1;
-    moveDto.x = data.p2;
-    moveDto.y = data.p3;
+    moveDto.unitId = controller.data.p1;
+    moveDto.x = controller.data.p2;
+    moveDto.y = controller.data.p3;
   }
 }

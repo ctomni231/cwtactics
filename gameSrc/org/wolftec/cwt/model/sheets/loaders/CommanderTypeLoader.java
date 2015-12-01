@@ -1,13 +1,12 @@
 package org.wolftec.cwt.model.sheets.loaders;
 
-import org.stjs.javascript.Map;
-import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.model.GenericDataObject;
+import org.wolftec.cwt.model.gameround.objecttypes.CommanderType;
 import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.CommanderType;
 
 public class CommanderTypeLoader extends AbstractSheetLoader<CommanderType> {
 
-  public CommanderTypeLoader(SheetDatabase db) {
+  public CommanderTypeLoader(SheetSet<CommanderType> db) {
     super(db);
   }
 
@@ -17,18 +16,13 @@ public class CommanderTypeLoader extends AbstractSheetLoader<CommanderType> {
   }
 
   @Override
-  public SheetSet<CommanderType> getDatabase() {
-    return db.commanders;
-  }
-
-  @Override
   public Class<CommanderType> getSheetClass() {
     return CommanderType.class;
   }
 
   @Override
-  public void hydrate(Map<String, Object> data, CommanderType sheet) {
-    sheet.coStars = read(data, "copStars");
-    sheet.scoStars = read(data, "scopStars");
+  void hydrate(GenericDataObject data, CommanderType sheet) {
+    sheet.coStars = data.read("copStars");
+    sheet.scoStars = data.read("scopStars");
   }
 }

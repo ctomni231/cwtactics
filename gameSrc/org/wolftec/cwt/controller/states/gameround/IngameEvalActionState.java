@@ -1,12 +1,12 @@
 package org.wolftec.cwt.controller.states.gameround;
 
 import org.wolftec.cwt.action.ActionService;
-import org.wolftec.cwt.controller.actions.core.ActionData;
 import org.wolftec.cwt.controller.states.base.State;
 import org.wolftec.cwt.controller.states.base.StateFlowData;
 import org.wolftec.cwt.core.NullUtil;
 import org.wolftec.cwt.core.javascript.JsUtil;
 import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.model.ActionData;
 import org.wolftec.cwt.model.actions.AbstractAction;
 import org.wolftec.cwt.view.GraphicManager;
 import org.wolftec.cwt.view.input.InputService;

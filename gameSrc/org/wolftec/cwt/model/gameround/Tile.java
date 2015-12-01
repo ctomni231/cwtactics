@@ -1,38 +1,32 @@
 package org.wolftec.cwt.model.gameround;
 
 import org.wolftec.cwt.core.annotations.OptionalField;
-import org.wolftec.cwt.model.sheets.types.TileType;
+import org.wolftec.cwt.model.gameround.objecttypes.FieldType;
 
 public class Tile {
 
-  public TileType type;
+  public FieldType type;
 
-  @OptionalField
+  @OptionalField // TODO will be integer as reference to the real unit
   public Unit unit;
 
-  @OptionalField
+  @OptionalField // TODO will be integer as reference to the real prop
   public Property property;
 
   public int variant = 0;
 
-  public int visionTurnOwner = 0;
-  public int visionClient    = 0;
+  public final Visible data;
 
   public Tile() {
     this.type = null;
     this.unit = null;
     this.property = null;
-    this.visionTurnOwner = 0;
     this.variant = 0;
-    this.visionClient = 0;
+    this.data = new Visible(0, 0);
   }
 
   public boolean isOccupied() {
     return unit != null;
-  }
-
-  public boolean isVisible() {
-    return visionTurnOwner > 0;
   }
 
 }

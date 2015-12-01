@@ -1,9 +1,9 @@
 package org.wolftec.cwt.model.actions;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.controller.actions.core.ActionData;
-import org.wolftec.cwt.controller.actions.core.ActionType;
 import org.wolftec.cwt.core.AssertUtil;
+import org.wolftec.cwt.model.ActionData;
+import org.wolftec.cwt.model.ActionType;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Unit;
 

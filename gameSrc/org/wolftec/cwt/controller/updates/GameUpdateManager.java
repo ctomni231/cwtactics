@@ -10,12 +10,12 @@ import org.wolftec.cwt.core.VersionUtil;
 import org.wolftec.cwt.core.annotations.AsyncCallback;
 import org.wolftec.cwt.core.annotations.AsyncOperation;
 import org.wolftec.cwt.core.collection.ListUtil;
-import org.wolftec.cwt.core.javascript.ClassUtil;
 import org.wolftec.cwt.core.javascript.JsUtil;
 import org.wolftec.cwt.core.javascript.ReflectionUtil;
 import org.wolftec.cwt.core.log.Log;
 import org.wolftec.cwt.core.log.LogFactory;
 import org.wolftec.cwt.core.persistence.FolderStorage;
+import org.wolftec.cwt.core.stjs.ClassUtil;
 
 /**
  * This class manages the update process of the game by invoking all

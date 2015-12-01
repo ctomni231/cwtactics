@@ -1,19 +1,18 @@
 package org.wolftec.cwt.model.sheets.loaders;
 
-import org.stjs.javascript.Map;
+import org.wolftec.cwt.model.GenericDataObject;
+import org.wolftec.cwt.model.gameround.objecttypes.MoveType;
 import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.MoveType;
 
 public class MoveTypeLoader extends AbstractSheetLoader<MoveType> {
+
+  public MoveTypeLoader(SheetSet<MoveType> db) {
+    super(db);
+  }
 
   @Override
   public String forPath() {
     return "movetypes";
-  }
-
-  @Override
-  public SheetSet<MoveType> getDatabase() {
-    return db.movetypes;
   }
 
   @Override
@@ -22,7 +21,7 @@ public class MoveTypeLoader extends AbstractSheetLoader<MoveType> {
   }
 
   @Override
-  public void hydrate(Map<String, Object> data, MoveType sheet) {
-    sheet.costs = read(data, "costs");
+  public void hydrate(GenericDataObject data, MoveType sheet) {
+    sheet.costs = data.read("costs");
   }
 }

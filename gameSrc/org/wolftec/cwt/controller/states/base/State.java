@@ -1,7 +1,7 @@
 package org.wolftec.cwt.controller.states.base;
 
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
-import org.wolftec.cwt.core.javascript.ClassUtil;
+import org.wolftec.cwt.core.stjs.ClassUtil;
 import org.wolftec.cwt.view.GraphicManager;
 import org.wolftec.cwt.view.input.InputService;
 

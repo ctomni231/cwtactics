@@ -1,12 +1,12 @@
 package org.wolftec.cwt.test;
 
 import org.wolftec.cwt.logic.CommanderLogic;
-import org.wolftec.cwt.model.actions.ActivatePower;
+import org.wolftec.cwt.model.actions.PlayerActivatePowerAction;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class ActivatePowerActionTest extends AbstractCwtTest {
 
-  private ActivatePower action;
+  private PlayerActivatePowerAction action;
 
   @Override
   protected void prepareModel() {

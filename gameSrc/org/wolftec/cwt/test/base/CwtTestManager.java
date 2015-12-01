@@ -6,7 +6,7 @@ import org.wolftec.cwt.logic.MoveLogic;
 import org.wolftec.cwt.managed.ManagedClass;
 import org.wolftec.cwt.model.gameround.Battlefield;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
-import org.wolftec.cwt.model.tags.ConfigurationManager;
+import org.wolftec.cwt.model.tags.Tags;
 
 public class CwtTestManager implements ManagedClass {
 
@@ -15,7 +15,7 @@ public class CwtTestManager implements ManagedClass {
   UserInteractionData uiData;
   LifecycleLogic life;
   MoveLogic move;
-  ConfigurationManager cfg;
+  Tags cfg;
 
   public TestExpectation expectThat;
   public TestAssertion assertThat;

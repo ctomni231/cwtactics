@@ -3,19 +3,19 @@ package org.wolftec.cwt.view.i18n;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.core.AssertUtil;
 import org.wolftec.cwt.core.NullUtil;
-import org.wolftec.cwt.core.ObjectUtil;
-import org.wolftec.cwt.core.Properties;
+import org.wolftec.cwt.core.PropertyMap;
 import org.wolftec.cwt.core.annotations.OptionalField;
+import org.wolftec.cwt.core.javascript.ObjectUtil;
 
 public class LanguageBundle {
 
-  private Map<String, Properties> languages;
+  private Map<String, PropertyMap> languages;
 
-  @OptionalField private Properties language;
+  @OptionalField private PropertyMap language;
 
   public void registerLanguage(String languageKey, Map<String, String> data) {
     AssertUtil.assertThat(!NullUtil.isPresent(languages.$get(languageKey)));
-    Properties props = new Properties();
+    PropertyMap props = new PropertyMap();
     ObjectUtil.forEachMapValue(data, (skey, value) -> props.put(skey, value));
     languages.$put(languageKey, props);
   }

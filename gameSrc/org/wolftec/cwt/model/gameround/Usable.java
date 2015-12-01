@@ -2,18 +2,18 @@ package org.wolftec.cwt.model.gameround;
 
 public class Usable {
 
-  private boolean canAct;
+  private boolean actable;
 
-  public boolean isActable() {
-    return canAct;
+  public boolean canAct() {
+    return actable;
   }
 
   public void makeActable() {
-    canAct = true;
+    actable = true;
   }
 
   public void makeInactable() {
-    canAct = false;
+    actable = false;
   }
 
 }

@@ -1,15 +1,15 @@
 package org.wolftec.cwt.model.actions;
 
 import org.stjs.javascript.annotation.SyntheticType;
-import org.wolftec.cwt.controller.actions.core.ActionData;
-import org.wolftec.cwt.controller.actions.core.ActionType;
-import org.wolftec.cwt.controller.actions.core.MoveMeta;
-import org.wolftec.cwt.controller.actions.core.TargetSelectionMode;
-import org.wolftec.cwt.controller.actions.core.TileMeta;
 import org.wolftec.cwt.controller.states.base.StateFlowData;
 import org.wolftec.cwt.controller.ui.UserInteractionData;
 import org.wolftec.cwt.core.NullUtil;
-import org.wolftec.cwt.core.javascript.ClassUtil;
+import org.wolftec.cwt.core.stjs.ClassUtil;
+import org.wolftec.cwt.model.ActionData;
+import org.wolftec.cwt.model.ActionType;
+import org.wolftec.cwt.model.MoveMeta;
+import org.wolftec.cwt.model.TargetSelectionMode;
+import org.wolftec.cwt.model.TileMeta;
 import org.wolftec.cwt.model.gameround.Battlefield;
 import org.wolftec.cwt.model.gameround.Ownable;
 import org.wolftec.cwt.model.gameround.Player;
@@ -20,7 +20,7 @@ import org.wolftec.cwt.view.GraphicManager;
 /**
  * Action class which represents an action which is usable by engine objects.
  */
-public abstract class AbstractAction {
+public abstract class AbstractAction<A, B, C, D, E> {
 
   @SyntheticType
   public static class ControllerData {
@@ -128,7 +128,7 @@ public abstract class AbstractAction {
 
       case CLIENT_ACTION:
 
-      case ENGINE_ACTION:
+      case ENGINE_MAP_ACTION:
       default:
         return false;
     }
@@ -161,7 +161,7 @@ public abstract class AbstractAction {
         return TileMeta.NEUTRAL;
 
       } else if (owner == actor) {
-        if (ownable instanceof Unit && !((Unit) ownable).usable.isActable()) {
+        if (ownable instanceof Unit && !((Unit) ownable).usable.canAct()) {
           return TileMeta.OWN_USED;
         } else {
           return TileMeta.OWN;

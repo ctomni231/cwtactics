@@ -4,7 +4,14 @@ public class Constants {
 
   public static final String NAMESPACE = "cwt";
 
+  /**
+   * Version of the game.
+   */
   public static final String RELEASE_VERSION = "0.4";
+
+  /**
+   * Version name of the game.
+   */
   public static final String RELEASE_NAME = "Sunrise";
 
   /**

@@ -4,8 +4,8 @@ import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.core.NullUtil;
-import org.wolftec.cwt.core.ObjectUtil;
 import org.wolftec.cwt.core.javascript.JsUtil;
+import org.wolftec.cwt.core.javascript.ObjectUtil;
 
 public class InputService {
 

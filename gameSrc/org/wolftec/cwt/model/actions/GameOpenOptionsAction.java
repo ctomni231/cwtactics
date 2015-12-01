@@ -1,6 +1,6 @@
 package org.wolftec.cwt.model.actions;
 
-import org.wolftec.cwt.controller.actions.core.ActionType;
+import org.wolftec.cwt.model.ActionType;
 
 public class GameOpenOptionsAction extends AbstractAction {
 

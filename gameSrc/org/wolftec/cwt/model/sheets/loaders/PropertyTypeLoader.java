@@ -2,20 +2,19 @@ package org.wolftec.cwt.model.sheets.loaders;
 
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.NullUtil;
+import org.wolftec.cwt.model.GenericDataObject;
+import org.wolftec.cwt.model.gameround.objecttypes.PropertyType;
 import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.PropertyType;
 
 public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
+
+  public PropertyTypeLoader(SheetSet<PropertyType> db) {
+    super(db);
+  }
 
   @Override
   public String forPath() {
     return "props";
-  }
-
-  @Override
-  public SheetSet<PropertyType> getDatabase() {
-    return db.properties;
   }
 
   @Override
@@ -24,9 +23,9 @@ public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
   }
 
   @Override
-  public void hydrate(Map<String, Object> data, PropertyType sheet) {
+  public void hydrate(GenericDataObject data, PropertyType sheet) {
 
-    Map<String, Object> cannonDataMap = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("cannon"), () -> {
+    GenericDataObject cannonDataMap = data.readComplexNullableByProvider("cannon", () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("damage", 0);
       map.$put("direction", "");
@@ -34,7 +33,7 @@ public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
       return map;
     });
 
-    Map<String, Object> siloDataMap = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("rocketsilo"), () -> {
+    GenericDataObject siloDataMap = data.readComplexNullableByProvider("rocketsilo", () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("changeTo", "");
       map.$put("damage", 0);
@@ -43,23 +42,25 @@ public class PropertyTypeLoader extends AbstractSheetLoader<PropertyType> {
       return map;
     });
 
-    sheet.defense = read(data, "defense");
-    sheet.vision = read(data, "vision");
-    sheet.builds = readNullable(data, "builds", JSCollections.$array());
-    sheet.repairs = readNullable(data, "repairs", JSCollections.$array());
-    sheet.funds = readNullable(data, "funds", 0);
-    sheet.repairAmount = readNullable(data, "repairAmount", 0);
-    sheet.visionBlocker = readNullable(data, "visionBlocker", false);
-    sheet.looseAfterCaptured = readNullable(data, "looseAfterCaptured", false);
-    sheet.notTransferable = readNullable(data, "notTransferable", false);
-    sheet.capturable = readNullable(data, "capturePoints", true);
-    sheet.changeAfterCaptured = readNullable(data, "changeAfterCaptured", sheet.ID);
-    sheet.rocketsilo.changeTo = read(siloDataMap, "changeTo");
-    sheet.rocketsilo.damage = read(siloDataMap, "damage");
-    sheet.rocketsilo.range = read(siloDataMap, "range");
-    sheet.rocketsilo.fireable = read(siloDataMap, "fireable");
-    sheet.cannon.damage = read(cannonDataMap, "damage");
-    sheet.cannon.direction = read(cannonDataMap, "direction");
-    sheet.cannon.range = read(cannonDataMap, "range");
+    sheet.defense = data.read("defense");
+    sheet.vision = data.read("vision");
+    sheet.builds = data.readNullable("builds", JSCollections.$array());
+    sheet.repairs = data.readNullable("repairs", JSCollections.$array());
+    sheet.funds = data.readNullable("funds", 0);
+    sheet.repairAmount = data.readNullable("repairAmount", 0);
+    sheet.visionBlocker = data.readNullable("visionBlocker", false);
+    sheet.looseAfterCaptured = data.readNullable("looseAfterCaptured", false);
+    sheet.notTransferable = data.readNullable("notTransferable", false);
+    sheet.capturable = data.readNullable("capturePoints", true);
+    sheet.changeAfterCaptured = data.readNullable("changeAfterCaptured", sheet.ID);
+
+    sheet.rocketsilo.changeTo = siloDataMap.read("changeTo");
+    sheet.rocketsilo.damage = siloDataMap.read("damage");
+    sheet.rocketsilo.range = siloDataMap.read("range");
+    sheet.rocketsilo.fireable = siloDataMap.read("fireable");
+
+    sheet.cannon.damage = cannonDataMap.read("damage");
+    sheet.cannon.direction = cannonDataMap.read("direction");
+    sheet.cannon.range = cannonDataMap.read("range");
   }
 }

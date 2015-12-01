@@ -20,10 +20,12 @@ public class Main {
     Controller controller = new Controller(model, view);
 
     if (Constants.DEBUG) {
+      Tests test = new Tests();
+
       JSObjectAdapter.$put(Global.window, "cwtController", controller);
       JSObjectAdapter.$put(Global.window, "cwtModel", model);
       JSObjectAdapter.$put(Global.window, "cwtView", view);
-      JSObjectAdapter.$put(Global.window, "cwtTest", new Tests());
+      JSObjectAdapter.$put(Global.window, "cwtTest", test);
     }
 
     // TODO start the controller

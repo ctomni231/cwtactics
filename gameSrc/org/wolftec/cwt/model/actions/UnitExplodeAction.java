@@ -1,8 +1,8 @@
 package org.wolftec.cwt.model.actions;
 
-import org.wolftec.cwt.controller.actions.core.ActionType;
+import org.wolftec.cwt.model.ActionType;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.cwt.model.sheets.types.SuicideType;
+import org.wolftec.cwt.model.gameround.objecttypes.SuicideType;
 
 public class UnitExplodeAction extends AbstractAction {
 

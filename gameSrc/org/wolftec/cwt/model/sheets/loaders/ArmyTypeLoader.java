@@ -1,19 +1,18 @@
 package org.wolftec.cwt.model.sheets.loaders;
 
-import org.stjs.javascript.Map;
+import org.wolftec.cwt.model.GenericDataObject;
+import org.wolftec.cwt.model.gameround.objecttypes.ArmyType;
 import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.ArmyType;
 
 public class ArmyTypeLoader extends AbstractSheetLoader<ArmyType> {
+
+  public ArmyTypeLoader(SheetSet<ArmyType> db) {
+    super(db);
+  }
 
   @Override
   public String forPath() {
     return "armies";
-  }
-
-  @Override
-  public SheetSet<ArmyType> getDatabase() {
-    return db.armies;
   }
 
   @Override
@@ -22,8 +21,8 @@ public class ArmyTypeLoader extends AbstractSheetLoader<ArmyType> {
   }
 
   @Override
-  public void hydrate(Map<String, Object> data, ArmyType sheet) {
-    sheet.color = read(data, "color");
-    sheet.name = read(data, "name");
+  public void hydrate(GenericDataObject data, ArmyType sheet) {
+    sheet.color = data.read("color");
+    sheet.name = data.read("name");
   }
 }

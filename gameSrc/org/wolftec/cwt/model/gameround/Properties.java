@@ -4,11 +4,8 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.AssertUtil;
-import org.wolftec.cwt.core.NullUtil;
-import org.wolftec.cwt.core.annotations.OptionalReturn;
 import org.wolftec.cwt.core.collection.ListUtil;
-import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.PropertyType;
+import org.wolftec.cwt.core.javascript.JsUtil;
 
 public class Properties {
 
@@ -19,10 +16,7 @@ public class Properties {
    */
   private Array<Property> properties;
 
-  private final SheetSet<PropertyType> propertyDb;
-
-  public Properties(SheetSet<PropertyType> propertyDb) {
-    this.propertyDb = NullUtil.getOrThrow(propertyDb);
+  public Properties() {
     properties = ListUtil.instanceList(Property.class, Constants.MAX_PROPERTIES);
   }
 
@@ -45,33 +39,12 @@ public class Properties {
     }
   }
 
-  @OptionalReturn
   public Property getInactiveProperty() {
     for (int i = 0, e = Constants.MAX_PROPERTIES; i < e; i++) {
       if (getProperty(i).type == null) {
         return getProperty(i);
       }
     }
-    return null;
-  }
-
-  public void dropPropertiesOfPlayer(Player player) {
-    for (int i = 0, e = Constants.MAX_PROPERTIES; i < e; i++) {
-      Property prop = getProperty(i);
-      if (prop.owner == player) {
-        prop.owner = null;
-        prop.type = propertyDb.get(prop.type.changeAfterCaptured);
-      }
-    }
-  }
-
-  public void createProperty(int x, int y, Player player, String type) {
-    Tile tile = model.getTile(x, y);
-    Property prop = getInactiveProperty();
-    prop.owner = player;
-    prop.type = propertyDb.get(type);
-    tile.property = prop;
-    player.numberOfProperties++;
-    fog.addPropertyVision(x, y, player);
+    return JsUtil.throwError("no inactive property left");
   }
 }

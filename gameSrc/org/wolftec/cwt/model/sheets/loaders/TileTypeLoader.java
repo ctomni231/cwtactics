@@ -1,10 +1,14 @@
 package org.wolftec.cwt.model.sheets.loaders;
 
-import org.stjs.javascript.Map;
+import org.wolftec.cwt.model.GenericDataObject;
+import org.wolftec.cwt.model.gameround.objecttypes.FieldType;
 import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.TileType;
 
-public class TileTypeLoader extends AbstractSheetLoader<TileType> {
+public class TileTypeLoader extends AbstractSheetLoader<FieldType> {
+
+  public TileTypeLoader(SheetSet<FieldType> db) {
+    super(db);
+  }
 
   @Override
   public String forPath() {
@@ -12,18 +16,13 @@ public class TileTypeLoader extends AbstractSheetLoader<TileType> {
   }
 
   @Override
-  public SheetSet<TileType> getDatabase() {
-    return db.tiles;
+  public Class<FieldType> getSheetClass() {
+    return FieldType.class;
   }
 
   @Override
-  public Class<TileType> getSheetClass() {
-    return TileType.class;
-  }
-
-  @Override
-  public void hydrate(Map<String, Object> data, TileType sheet) {
-    sheet.defense = read(data, "defense");
-    sheet.visionBlocker = readNullable(data, "visionBlocker", false);
+  public void hydrate(GenericDataObject data, FieldType sheet) {
+    sheet.defense = data.read("defense");
+    sheet.visionBlocker = data.readNullable("visionBlocker", false);
   }
 }

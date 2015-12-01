@@ -11,14 +11,14 @@ public class Hidable {
   }
 
   public void hide() {
-    _setHiddenStatus(true);
+    setHiddenStatus(true);
   }
 
   public void unhide() {
-    _setHiddenStatus(false);
+    setHiddenStatus(false);
   }
 
-  private void _setHiddenStatus(boolean status) {
+  private void setHiddenStatus(boolean status) {
     AssertUtil.assertThatNot(hidden == status, "Already" + (status ? "Unh" : "H") + "idden");
     hidden = status;
   }

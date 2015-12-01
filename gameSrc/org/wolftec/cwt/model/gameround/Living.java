@@ -1,9 +1,8 @@
 package org.wolftec.cwt.model.gameround;
 
 import org.wolftec.cwt.core.NumberUtil;
-import org.wolftec.cwt.model.Specialization;
 
-public class Living extends Specialization<Unit> {
+public class Living {
 
   public static final int MAX_HP = 99;
 

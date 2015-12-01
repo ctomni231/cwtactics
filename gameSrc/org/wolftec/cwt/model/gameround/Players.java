@@ -8,10 +8,6 @@ import org.wolftec.cwt.core.collection.ListUtil;
 
 public class Players {
 
-  private final Units units;
-  private final Properties properties;
-  private final GameroundEnder gameroundEnd;
-
   /**
    * All player objects of a game round. This buffer holds the maximum amount of
    * possible player objects. Inactive ones are marked by the inactive marker as
@@ -19,11 +15,7 @@ public class Players {
    */
   private Array<Player> players;
 
-  public Players(Units units, Properties properties, GameroundEnder gameroundEnd) {
-    this.units = units;
-    this.properties = properties;
-    this.gameroundEnd = gameroundEnd;
-
+  public Players() {
     this.players = ListUtil.instanceList(Player.class, Constants.MAX_PLAYER);
     ListUtil.forEachArrayValue(players, (i, player) -> player.id = i);
   }
@@ -68,21 +60,7 @@ public class Players {
     return (foundTeam == -1);
   }
 
-  /**
-   * A player has loosed the game round due a specific reason. This function
-   * removes all of his units and properties. Furthermore the left teams will be
-   * checked. If only one team is left then the end game event will be invoked.
-   * 
-   * @param player
-   */
-  public void deactivatePlayer(Player player) {
-    units.dropUnitsOfPlayer(player);
-    properties.dropPropertiesOfPlayer(player);
+  public void removePlayer(Player player) {
     player.deactivate();
-
-    AssertUtil.assertThat(!gameroundEnd.isGameroundEnded());
-    if (!areEnemyPlayersLeft()) {
-      gameroundEnd.endGameround();
-    }
   }
 }

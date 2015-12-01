@@ -1,6 +1,6 @@
 package org.wolftec.cwt.core.log;
 
-import org.wolftec.cwt.core.javascript.ClassUtil;
+import org.wolftec.cwt.core.stjs.ClassUtil;
 
 public abstract class LogFactory {
 

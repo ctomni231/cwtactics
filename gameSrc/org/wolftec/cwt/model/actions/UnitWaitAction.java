@@ -1,8 +1,8 @@
 package org.wolftec.cwt.model.actions;
 
-import org.wolftec.cwt.controller.actions.core.ActionData;
-import org.wolftec.cwt.controller.actions.core.ActionType;
 import org.wolftec.cwt.core.AssertUtil;
+import org.wolftec.cwt.model.ActionData;
+import org.wolftec.cwt.model.ActionType;
 
 public class UnitWaitAction extends AbstractAction {
 
@@ -18,7 +18,7 @@ public class UnitWaitAction extends AbstractAction {
 
   @Override
   public boolean condition(ModelData model, ControllerData controller) {
-    return controller.ui.source.unit.usable.isActable();
+    return controller.ui.source.unit.usable.canAct();
   }
 
   @Override

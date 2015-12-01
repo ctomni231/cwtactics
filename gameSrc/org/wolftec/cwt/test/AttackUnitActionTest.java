@@ -2,13 +2,13 @@ package org.wolftec.cwt.test;
 
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.model.actions.AttackUnit;
+import org.wolftec.cwt.model.actions.UnitAttackAction;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class AttackUnitActionTest extends AbstractCwtTest {
 
-  private AttackUnit action;
+  private UnitAttackAction action;
 
   private int START_AMMO;
   private int START_HP;

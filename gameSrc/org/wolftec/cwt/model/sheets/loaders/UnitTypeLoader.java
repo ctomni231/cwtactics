@@ -3,20 +3,19 @@ package org.wolftec.cwt.model.sheets.loaders;
 import org.stjs.javascript.JSCollections;
 import org.stjs.javascript.Map;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.core.NullUtil;
+import org.wolftec.cwt.model.GenericDataObject;
+import org.wolftec.cwt.model.gameround.objecttypes.UnitType;
 import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.UnitType;
 
 public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
+
+  public UnitTypeLoader(SheetSet<UnitType> db) {
+    super(db);
+  }
 
   @Override
   public String forPath() {
     return "units";
-  }
-
-  @Override
-  public SheetSet<UnitType> getDatabase() {
-    return db.units;
   }
 
   @Override
@@ -25,55 +24,59 @@ public class UnitTypeLoader extends AbstractSheetLoader<UnitType> {
   }
 
   @Override
-  public void hydrate(Map<String, Object> data, UnitType sheet) {
+  public void hydrate(GenericDataObject data, UnitType sheet) {
 
-    Map<String, Object> suicideData = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("suicide"), () -> {
+    GenericDataObject suicideData = data.readComplexNullableByProvider("suicide", () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("damage", 0);
       map.$put("range", 0);
       return map;
     });
 
-    Map<String, Object> supplyData = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("supply"), () -> {
+    GenericDataObject supplyData = data.readComplexNullableByProvider("supply", () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("supplier", false);
       return map;
     });
 
-    Map<String, Object> attackData = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("attack"), () -> {
+    GenericDataObject attackData = data.readComplexNullableByProvider("attack", () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("minrange", -1);
       map.$put("maxrange", -1);
       return map;
     });
 
-    Map<String, Object> laserDataMap = NullUtil.getOrElseByProvider((Map<String, Object>) data.$get("damage"), () -> {
+    GenericDataObject laserDataMap = data.readComplexNullableByProvider("damage", () -> {
       Map<String, Object> map = JSCollections.$map();
       map.$put("damage", 0);
       return map;
     });
 
-    sheet.range = read(data, "range");
-    sheet.vision = read(data, "vision");
-    sheet.fuel = read(data, "fuel");
-    sheet.ammo = read(data, "ammo");
-    sheet.movetype = read(data, "movetype");
-    sheet.maxloads = readNullable(data, "maxloads", 0);
-    sheet.captures = readNullable(data, "captures", false);
-    sheet.blocked = readNullable(data, "blocked", false);
-    sheet.stealth = readNullable(data, "stealth", false);
-    sheet.costs = readNullable(data, "costs", Constants.INACTIVE);
-    sheet.dailyFuelDrain = readNullable(data, "dailyFuelDrain", 0);
-    sheet.dailyFuelDrainHidden = readNullable(data, "dailyFuelDrainHidden", 0);
-    sheet.canload = readNullable(data, "canload", JSCollections.$array());
-    sheet.suicide.damage = read(suicideData, "damage");
-    sheet.suicide.range = read(suicideData, "range");
-    sheet.supply.supplier = readNullable(supplyData, "supplier", true);
-    sheet.attack.main_wp = readNullable(attackData, "main_wp", JSCollections.$map());
-    sheet.attack.sec_wp = readNullable(attackData, "sec_wp", JSCollections.$map());
-    sheet.attack.minrange = readNullable(attackData, "minrange", 1);
-    sheet.attack.maxrange = readNullable(attackData, "maxrange", 1);
-    sheet.laser.damage = read(laserDataMap, "damage");
+    sheet.range = data.read("range");
+    sheet.vision = data.read("vision");
+    sheet.fuel = data.read("fuel");
+    sheet.ammo = data.read("ammo");
+    sheet.movetype = data.read("movetype");
+    sheet.maxloads = data.readNullable("maxloads", 0);
+    sheet.captures = data.readNullable("captures", false);
+    sheet.blocked = data.readNullable("blocked", false);
+    sheet.stealth = data.readNullable("stealth", false);
+    sheet.costs = data.readNullable("costs", Constants.INACTIVE);
+    sheet.dailyFuelDrain = data.readNullable("dailyFuelDrain", 0);
+    sheet.dailyFuelDrainHidden = data.readNullable("dailyFuelDrainHidden", 0);
+    sheet.canload = data.readNullable("canload", JSCollections.$array());
+
+    sheet.suicide.damage = suicideData.read("damage");
+    sheet.suicide.range = suicideData.read("range");
+
+    sheet.supply.supplier = supplyData.readNullable("supplier", true);
+
+    sheet.attack.main_wp = attackData.readNullable("main_wp", JSCollections.$map());
+    sheet.attack.sec_wp = attackData.readNullable("sec_wp", JSCollections.$map());
+    sheet.attack.minrange = attackData.readNullable("minrange", 1);
+    sheet.attack.maxrange = attackData.readNullable("maxrange", 1);
+
+    sheet.laser.damage = laserDataMap.read("damage");
 
   }
 }

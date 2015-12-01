@@ -1,7 +1,7 @@
 package org.wolftec.cwt.model.actions;
 
-import org.wolftec.cwt.controller.actions.core.ActionType;
 import org.wolftec.cwt.core.SheetIdNumberUtil;
+import org.wolftec.cwt.model.ActionType;
 import org.wolftec.cwt.model.tags.TagValue;
 
 public class GameroundChangeWeatherAction extends AbstractAction {
@@ -25,7 +25,7 @@ public class GameroundChangeWeatherAction extends AbstractAction {
 
   @Override
   public ActionType type() {
-    return ActionType.ENGINE_ACTION;
+    return ActionType.ENGINE_MAP_ACTION;
   }
 
   @Override

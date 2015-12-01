@@ -3,7 +3,6 @@ package org.wolftec.cwt.model.gameround;
 import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.core.AssertUtil;
-import org.wolftec.cwt.model.Specialization;
 
 /**
  * Player class which holds all parameters of a army owner.
@@ -30,15 +29,12 @@ public class Player {
   public boolean clientVisible;
   public boolean clientControlled;
 
-  public final Team teaming;
   public final Commander commander;
 
   public Player() {
     id = -1;
     this.reset();
-
-    teaming = Specialization.constructSpecialization(Team.class, this);
-    commander = Specialization.constructSpecialization(Commander.class, this);
+    commander = new Commander(this);
   }
 
   public boolean isPowerActive(int level) {
@@ -55,6 +51,10 @@ public class Player {
 
   public void activate(int teamNumber) {
     team = teamNumber;
+  }
+
+  public boolean isActive() {
+    return team != Constants.INACTIVE;
   }
 
   public void payMoney(int money) {

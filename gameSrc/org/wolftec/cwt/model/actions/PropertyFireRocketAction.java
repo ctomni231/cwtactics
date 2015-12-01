@@ -1,11 +1,11 @@
 package org.wolftec.cwt.model.actions;
 
-import org.wolftec.cwt.controller.actions.core.ActionType;
-import org.wolftec.cwt.controller.actions.core.TileMeta;
+import org.wolftec.cwt.model.ActionType;
+import org.wolftec.cwt.model.TileMeta;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Unit;
-import org.wolftec.cwt.model.sheets.types.PropertyType;
-import org.wolftec.cwt.model.sheets.types.SiloType;
+import org.wolftec.cwt.model.gameround.objecttypes.PropertyType;
+import org.wolftec.cwt.model.gameround.objecttypes.SiloType;
 
 public class PropertyFireRocketAction extends AbstractAction {
 

@@ -5,19 +5,16 @@ public class Position {
   private int x;
   private int y;
 
-  public int getPositionX() {
+  public int getX() {
     return x;
   }
 
-  public int getPositionY() {
+  public int getY() {
     return y;
   }
 
-  public void setPositionX(int newX) {
-    x = newX;
-  }
-
-  public void setPositionY(int newY) {
-    y = newY;
+  public void set(int x, int y) {
+    this.x = x;
+    this.y = y;
   }
 }

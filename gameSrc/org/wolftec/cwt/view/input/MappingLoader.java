@@ -1,7 +1,7 @@
 package org.wolftec.cwt.view.input;
 
 import org.stjs.javascript.Map;
-import org.wolftec.cwt.core.ObjectUtil;
+import org.wolftec.cwt.core.javascript.ObjectUtil;
 
 public class MappingLoader {
 

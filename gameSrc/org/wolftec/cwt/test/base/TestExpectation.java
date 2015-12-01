@@ -13,14 +13,14 @@ import org.wolftec.cwt.model.gameround.GameroundEnder;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Property;
 import org.wolftec.cwt.model.gameround.Unit;
+import org.wolftec.cwt.model.gameround.objecttypes.CommanderType;
+import org.wolftec.cwt.model.gameround.objecttypes.FieldType;
+import org.wolftec.cwt.model.gameround.objecttypes.MoveType;
+import org.wolftec.cwt.model.gameround.objecttypes.PropertyType;
+import org.wolftec.cwt.model.gameround.objecttypes.SheetType;
+import org.wolftec.cwt.model.gameround.objecttypes.UnitType;
+import org.wolftec.cwt.model.gameround.objecttypes.WeatherType;
 import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.CommanderType;
-import org.wolftec.cwt.model.sheets.types.MoveType;
-import org.wolftec.cwt.model.sheets.types.PropertyType;
-import org.wolftec.cwt.model.sheets.types.SheetType;
-import org.wolftec.cwt.model.sheets.types.TileType;
-import org.wolftec.cwt.model.sheets.types.UnitType;
-import org.wolftec.cwt.model.sheets.types.WeatherType;
 
 public class TestExpectation {
 
@@ -61,7 +61,7 @@ public class TestExpectation {
   }
 
   public void tileTypeExists(String id) {
-    registerType(id, new TileType(), parent.sheets.tiles);
+    registerType(id, new FieldType(), parent.sheets.tiles);
   }
 
   public void coTypeExists(String id) {
@@ -95,7 +95,7 @@ public class TestExpectation {
   }
 
   public void filledMapWithTiles(int width, int height, String tileType) {
-    TileType tileSheet = parent.sheets.tiles.get(tileType);
+    FieldType tileSheet = parent.sheets.tiles.get(tileType);
     parent.model.mapHeight = height;
     parent.model.mapWidth = width;
     parent.model.forEachTile((x, y, tile) -> tile.type = tileSheet);

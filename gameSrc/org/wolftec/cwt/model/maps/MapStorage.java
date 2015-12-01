@@ -8,6 +8,7 @@ import org.wolftec.cwt.core.annotations.AsyncOperation;
 import org.wolftec.cwt.core.javascript.JsUtil;
 import org.wolftec.cwt.core.persistence.FolderStorage;
 
+@Deprecated // merge into map administration
 public class MapStorage {
 
   private final FolderStorage mapDir;

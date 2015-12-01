@@ -1,26 +1,17 @@
 package org.wolftec.cwt.model.gameround;
 
-import org.wolftec.cwt.model.sheets.types.PropertyType;
+import org.wolftec.cwt.model.gameround.objecttypes.PropertyType;
 
 public class Property {
 
-  public final Ownable owners;
-
   public PropertyType type;
 
-  public final Supplier<Property> supply;
-  public final Visioner<Property> vision;
-  public final Silo silo;
+  public final Ownable owners;
   public final Capturable capture;
-
   public final Position position;
 
   public Property() {
-    supply = Specialization.constructSpecialization(Supplier.class, this);
-    vision = Specialization.constructSpecialization(Visioner.class, this);
-    silo = Specialization.constructSpecialization(Silo.class, this);
-    capture = Specialization.constructSpecialization(Capturable.class, this);
-
+    capture = new Capturable();
     owners = new Ownable();
     position = new Position();
   }

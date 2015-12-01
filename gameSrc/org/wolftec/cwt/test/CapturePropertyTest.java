@@ -1,11 +1,11 @@
 package org.wolftec.cwt.test;
 
-import org.wolftec.cwt.model.actions.CaptureProperty;
+import org.wolftec.cwt.model.actions.UnitCapturePropertyAction;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class CapturePropertyTest extends AbstractCwtTest {
 
-  private CaptureProperty action;
+  private UnitCapturePropertyAction action;
 
   @Override
   protected void prepareModel() {

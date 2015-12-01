@@ -9,7 +9,7 @@ import org.wolftec.cwt.controller.states.base.MenuStateInteraction;
 import org.wolftec.cwt.controller.states.base.StateFlowData;
 import org.wolftec.cwt.controller.states.base.StateManager;
 import org.wolftec.cwt.controller.urlConfig.SystemResetter;
-import org.wolftec.cwt.core.ObjectUtil;
+import org.wolftec.cwt.core.javascript.ObjectUtil;
 import org.wolftec.cwt.core.log.Log;
 
 public class ErrorState extends MenuState implements GameActionConstants {

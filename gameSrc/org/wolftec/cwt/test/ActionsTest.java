@@ -2,7 +2,7 @@ package org.wolftec.cwt.test;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.wolftec.cwt.controller.actions.core.TileMeta;
+import org.wolftec.cwt.model.TileMeta;
 import org.wolftec.cwt.model.actions.AbstractAction;
 
 public abstract class ActionsTest {

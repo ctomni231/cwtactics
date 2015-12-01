@@ -1,0 +1,37 @@
+package org.wolftec.cwt.model.gameround.objecttypes;
+
+import org.stjs.javascript.Array;
+import org.stjs.javascript.JSCollections;
+
+/**
+ * 
+ *
+ */
+public class PropertyType extends FieldType {
+  public boolean capturable;
+  public int vision;
+  public int funds;
+  public CannonType cannon;
+  public SiloType rocketsilo;
+  public Array<String> builds;
+  public Array<String> repairs;
+  public int repairAmount;
+  public boolean looseAfterCaptured;
+  public boolean notTransferable;
+  public String changeAfterCaptured;
+
+  public PropertyType() {
+    cannon = new CannonType();
+    rocketsilo = new SiloType();
+    builds = JSCollections.$array();
+    repairs = JSCollections.$array();
+  }
+
+  public boolean hasBuilds() {
+    return builds.$length() > 0;
+  }
+
+  public boolean hasBuild(String id) {
+    return builds.indexOf(id) > -1;
+  }
+}

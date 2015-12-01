@@ -9,10 +9,10 @@ import org.stjs.javascript.functions.Callback1;
 import org.wolftec.cwt.core.AssertUtil;
 import org.wolftec.cwt.core.NullUtil;
 import org.wolftec.cwt.core.annotations.OptionalReturn;
-import org.wolftec.cwt.core.javascript.ClassUtil;
 import org.wolftec.cwt.core.javascript.JsUtil;
 import org.wolftec.cwt.core.javascript.RequestUtil.ArrayBufferRespone;
 import org.wolftec.cwt.core.persistence.FolderStorage;
+import org.wolftec.cwt.core.stjs.ClassUtil;
 
 public class Audio {
 

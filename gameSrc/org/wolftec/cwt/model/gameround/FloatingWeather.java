@@ -2,12 +2,10 @@ package org.wolftec.cwt.model.gameround;
 
 import org.wolftec.cwt.core.AssertUtil;
 import org.wolftec.cwt.core.NumberUtil;
+import org.wolftec.cwt.model.gameround.objecttypes.WeatherType;
 import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.WeatherType;
 
 public class FloatingWeather {
-
-  private SheetSet<WeatherType> weathers;
 
   /**
    * The active weather type object.
@@ -19,8 +17,7 @@ public class FloatingWeather {
    */
   private int leftDays;
 
-  public FloatingWeather(SheetSet<WeatherType> weathers) {
-    this.weathers = weathers;
+  public FloatingWeather() {
   }
 
   public WeatherType getType() {
@@ -41,7 +38,7 @@ public class FloatingWeather {
    * 
    * @return random weather id in relation to the current action weather
    */
-  public String pickRandomWeatherId() {
+  public String pickRandomWeatherId(SheetSet<WeatherType> weathers) {
     WeatherType defWather = weathers.filterFirst((key, weather) -> weather.defaultWeather);
 
     // Search a random weather if the last weather was `null` or the default
@@ -58,13 +55,12 @@ public class FloatingWeather {
     return newTp.ID;
   }
 
-  public int pickRandomWeatherTime(String type, int minDays, int additionalRandomDays) {
-    WeatherType defWather = weathers.filterFirst((key, weather) -> weather.defaultWeather);
-    return (weathers.get(type) == defWather) ? 1 : (minDays + NumberUtil.asInt(additionalRandomDays * Math.random()));
+  public int pickRandomWeatherTime(WeatherType type, int minDays, int additionalRandomDays) {
+    return (type.defaultWeather ? 1 : (minDays + NumberUtil.asInt(additionalRandomDays * Math.random())));
   }
 
-  public void changeWeather(String weather, int duration) {
-    type = weathers.get(weather);
-    leftDays = duration;
+  public void changeWeather(WeatherType type, int duration) {
+    this.type = type;
+    this.leftDays = duration;
   }
 }

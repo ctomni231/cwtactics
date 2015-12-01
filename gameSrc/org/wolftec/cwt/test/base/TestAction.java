@@ -2,11 +2,11 @@ package org.wolftec.cwt.test.base;
 
 import org.stjs.javascript.annotation.Native;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.controller.actions.core.ActionData;
 import org.wolftec.cwt.controller.states.base.StateFlowData;
 import org.wolftec.cwt.core.NullUtil;
 import org.wolftec.cwt.core.annotations.OptionalParameter;
 import org.wolftec.cwt.core.javascript.JsUtil;
+import org.wolftec.cwt.model.ActionData;
 import org.wolftec.cwt.model.actions.AbstractAction;
 
 public class TestAction {

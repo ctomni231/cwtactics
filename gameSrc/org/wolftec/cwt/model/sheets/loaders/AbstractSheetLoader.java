@@ -1,68 +1,71 @@
 package org.wolftec.cwt.model.sheets.loaders;
 
-import org.stjs.javascript.Map;
+import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.NullUtil;
-import org.wolftec.cwt.core.javascript.ClassUtil;
-import org.wolftec.cwt.core.javascript.JsUtil;
-import org.wolftec.cwt.core.javascript.RequestUtil;
-import org.wolftec.cwt.core.persistence.FileDescriptor;
-import org.wolftec.cwt.model.sheets.SheetDatabase;
+import org.wolftec.cwt.core.FileUtil;
+import org.wolftec.cwt.core.annotations.AsyncCallback;
+import org.wolftec.cwt.core.annotations.AsyncOperation;
+import org.wolftec.cwt.core.javascript.ReflectionUtil;
+import org.wolftec.cwt.core.persistence.FolderStorage;
+import org.wolftec.cwt.core.persistence.RemoteFolderReader;
+import org.wolftec.cwt.model.GenericDataObject;
+import org.wolftec.cwt.model.gameround.objecttypes.SheetType;
 import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.SheetType;
 
 public abstract class AbstractSheetLoader<T extends SheetType> {
 
-  protected SheetDatabase db;
+  protected SheetSet<T> sheets;
+  private RemoteFolderReader remoteReader;
+  private FolderStorage storageReader;
 
-  public AbstractSheetLoader(SheetDatabase db) {
-    this.db = db;
+  public AbstractSheetLoader(SheetSet<T> db) {
+    this.sheets = db;
+    this.storageReader = new FolderStorage(forPath());
   }
 
-  @Deprecated
-  protected <M> M read(Map<String, Object> data, String property) {
-    M value = (M) data.$get(property);
-    return NullUtil.getOrThrow(value);
+  @AsyncOperation
+  private void grabRemoteData(@AsyncCallback Callback0 onFinish, @AsyncCallback Callback1<String> onFail) {
+    remoteReader.readAllFiles((filePath, data, next) -> {
+      storageReader.writeFile(filePath, data, next, onFail);
+    } , onFinish);
   }
 
-  @Deprecated
-  protected <M> M readNullable(Map<String, Object> data, String property, M defaultValue) {
-    return NullUtil.getOrElse((M) data.$get(property), defaultValue);
-  }
+  @AsyncOperation
+  private void grabCacheData(@AsyncCallback Callback0 onFinish, @AsyncCallback Callback1<String> onFail) {
+    storageReader.readFiles((filePath, data, next) -> {
+      GenericDataObject genData = new GenericDataObject(Global.JSON.parse((String) data));
+      T sheet = ReflectionUtil.createInstance(getSheetClass());
 
-  @Override
-  public abstract String forPath();
-
-  @Override
-  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Object> doneCb) {
-    RequestUtil.getJSON(entryDesc.path, response -> doneCb.$invoke(response.data));
-  }
-
-  @Override
-  public void handleFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb) {
-    T data = ClassUtil.newInstance(getSheetClass());
-
-    /* we inject the ID by the file name to prevent to set the id name twice */
-    data.ID = entryDesc.fileNameWithoutExtension;
-
-    try {
+      /*
+       * we inject the ID by the file name to prevent to set the id name twice
+       */
+      sheet.ID = FileUtil.extractFilename(filePath);
 
       /*
        * hydrates the data object into the created sheet instead of
-       * automatically copy the properties ==> decouples the sheet file format
+       * automatically copy the properties -> decouples the sheet file format
        * from the data class structure.
        */
-      hydrate((Map<String, Object>) entry, data);
-      getDatabase().register(data);
-      doneCb.$invoke();
+      hydrate(genData, sheet);
 
-    } catch (Exception e) {
-      JsUtil.throwError("could not hydrate data for " + entryDesc.fileNameWithoutExtension + " because of " + e);
-    }
+      sheets.register(sheet);
+      next.$invoke();
+    } , onFinish, onFail);
   }
 
-  abstract SheetSet<T> getDatabase();
+  @AsyncOperation
+  public void grabData(@AsyncCallback Callback0 onFinish, @AsyncCallback Callback1<String> onFail) {
+    storageReader.hasFile("__cached__", (cached) -> {
+      if (cached) {
+        grabCacheData(onFinish, onFail);
+      } else {
+        grabRemoteData(() -> grabCacheData(onFinish, onFail), onFail);
+      }
+    });
+  }
+
+  abstract String forPath();
 
   abstract Class<T> getSheetClass();
 
@@ -72,5 +75,5 @@ public abstract class AbstractSheetLoader<T extends SheetType> {
    * @param dataMap
    * @param sheet
    */
-  abstract void hydrate(Map<String, Object> dataMap, T sheet);
+  abstract void hydrate(GenericDataObject data, T sheet);
 }

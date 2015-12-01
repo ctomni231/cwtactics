@@ -1,6 +1,6 @@
 package org.wolftec.cwt.model.actions;
 
-import org.wolftec.cwt.controller.actions.core.ActionType;
+import org.wolftec.cwt.model.ActionType;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.Tile;
 import org.wolftec.cwt.model.gameround.TileMap;
@@ -17,13 +17,15 @@ public class GameroundChangeVisionAction extends AbstractAction {
 
   @Override
   public ActionType type() {
-    return ActionType.ENGINE_ACTION;
+    return ActionType.ENGINE_MAP_ACTION;
   }
 
   @Override
   public void fillData(ModelData model, ControllerData controller) {
     controller.data.p1 = controller.ui.target.x;
     controller.data.p2 = controller.ui.target.y;
+
+    // TODO property
     controller.data.p3 = controller.ui.target.unit.type.vision;
   }
 
@@ -55,8 +57,8 @@ public class GameroundChangeVisionAction extends AbstractAction {
 
     if (range == 0) {
       Tile tile = map.getTile(x, y);
-      if (clientVisible) tile.visionClient += change;
-      if (turnOwnerVisible) tile.visionTurnOwner += change;
+      if (clientVisible) tile.data.visionClient += change;
+      if (turnOwnerVisible) tile.data.visionTurnOwner += change;
 
     } else {
       int mW = map.mapWidth;
@@ -84,8 +86,8 @@ public class GameroundChangeVisionAction extends AbstractAction {
             continue;
           }
 
-          if (clientVisible) tile.visionClient += change;
-          if (turnOwnerVisible) tile.visionTurnOwner += change;
+          if (clientVisible) tile.data.visionClient += change;
+          if (turnOwnerVisible) tile.data.visionTurnOwner += change;
         }
       }
     }

@@ -1,11 +1,11 @@
 package org.wolftec.cwt.controller.states.gameround;
 
 import org.wolftec.cwt.action.ActionService;
-import org.wolftec.cwt.controller.actions.core.ActionData;
 import org.wolftec.cwt.controller.states.base.GameroundState;
 import org.wolftec.cwt.controller.states.base.StateFlowData;
 import org.wolftec.cwt.controller.ui.UserInteractionData;
 import org.wolftec.cwt.logic.MoveLogic;
+import org.wolftec.cwt.model.ActionData;
 import org.wolftec.cwt.model.actions.AbstractAction;
 import org.wolftec.cwt.model.actions.MoveAppend;
 import org.wolftec.cwt.model.actions.MoveEnd;

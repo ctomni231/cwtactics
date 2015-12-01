@@ -1,12 +1,13 @@
 package org.wolftec.cwt.model.actions;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.controller.actions.core.ActionData;
-import org.wolftec.cwt.controller.actions.core.ActionType;
 import org.wolftec.cwt.controller.states.base.StateFlowData;
 import org.wolftec.cwt.controller.ui.UserInteractionData;
+import org.wolftec.cwt.model.ActionData;
+import org.wolftec.cwt.model.ActionType;
+import org.wolftec.cwt.model.actions.MoveStart.MoveActionData;
 
-public class MoveAppend implements AbstractAction {
+public class MoveAppend extends AbstractAction {
 
   private MoveActionData moveDto;
 
@@ -17,7 +18,7 @@ public class MoveAppend implements AbstractAction {
 
   @Override
   public ActionType type() {
-    return ActionType.ENGINE_ACTION;
+    return ActionType.ENGINE_MAP_ACTION;
   }
 
   @Override

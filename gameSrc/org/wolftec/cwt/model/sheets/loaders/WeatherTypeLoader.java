@@ -1,19 +1,18 @@
 package org.wolftec.cwt.model.sheets.loaders;
 
-import org.stjs.javascript.Map;
+import org.wolftec.cwt.model.GenericDataObject;
+import org.wolftec.cwt.model.gameround.objecttypes.WeatherType;
 import org.wolftec.cwt.model.sheets.SheetSet;
-import org.wolftec.cwt.model.sheets.types.WeatherType;
 
 public class WeatherTypeLoader extends AbstractSheetLoader<WeatherType> {
+
+  public WeatherTypeLoader(SheetSet<WeatherType> db) {
+    super(db);
+  }
 
   @Override
   public String forPath() {
     return "weathers";
-  }
-
-  @Override
-  public SheetSet<WeatherType> getDatabase() {
-    return db.weathers;
   }
 
   @Override
@@ -22,7 +21,7 @@ public class WeatherTypeLoader extends AbstractSheetLoader<WeatherType> {
   }
 
   @Override
-  public void hydrate(Map<String, Object> data, WeatherType sheet) {
-    sheet.defaultWeather = readNullable(data, "defaultWeather", false);
+  public void hydrate(GenericDataObject data, WeatherType sheet) {
+    sheet.defaultWeather = data.readNullable("defaultWeather", false);
   }
 }

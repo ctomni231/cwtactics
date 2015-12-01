@@ -9,7 +9,7 @@ import org.wolftec.cwt.core.AssertUtil;
 import org.wolftec.cwt.core.NullUtil;
 import org.wolftec.cwt.core.NumberUtil;
 import org.wolftec.cwt.core.javascript.JsUtil;
-import org.wolftec.cwt.model.sheets.types.SheetType;
+import org.wolftec.cwt.model.gameround.objecttypes.SheetType;
 
 /**
  * A data object that holds a list of sheet objects with a given schema. Every

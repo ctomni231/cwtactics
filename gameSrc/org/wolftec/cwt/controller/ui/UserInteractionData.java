@@ -1,13 +1,13 @@
 package org.wolftec.cwt.controller.ui;
 
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.controller.actions.core.Actions;
 import org.wolftec.cwt.core.AssertUtil;
 import org.wolftec.cwt.core.NumberUtil;
 import org.wolftec.cwt.core.annotations.InjectedPostConstruction;
 import org.wolftec.cwt.core.collection.MatrixSegment;
 import org.wolftec.cwt.core.collection.RingList;
 import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.model.Actions;
 import org.wolftec.cwt.model.actions.AbstractAction;
 import org.wolftec.cwt.model.gameround.Player;
 import org.wolftec.cwt.model.gameround.PositionData;

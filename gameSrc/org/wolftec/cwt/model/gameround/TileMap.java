@@ -86,7 +86,7 @@ public class TileMap {
    * @param sy
    * @param tx
    * @param ty
-   * @return the distance bewteen the two positions
+   * @return the distance between the two positions
    */
   public static int getDistance(int sx, int sy, int tx, int ty) {
     return Math.abs(sx - tx) + Math.abs(sy - ty);

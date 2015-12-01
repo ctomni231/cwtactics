@@ -1,14 +1,14 @@
 package org.wolftec.cwt.test;
 
 import org.stjs.javascript.Array;
-import org.wolftec.cwt.controller.actions.core.TileMeta;
 import org.wolftec.cwt.core.NumberUtil;
-import org.wolftec.cwt.model.actions.TransferProperty;
+import org.wolftec.cwt.model.TileMeta;
+import org.wolftec.cwt.model.actions.PropertyTransferAction;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class TransferPropertyActionTest extends AbstractCwtTest {
 
-  private TransferProperty action;
+  private PropertyTransferAction action;
 
   private int PLAYER_GOLD = 5000;
   private int FUNDS = 1000;

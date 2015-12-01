@@ -1,7 +1,5 @@
 package org.wolftec.cwt.controller;
 
-import org.wolftec.cwt.controller.actions.core.ActionDataPuffer;
-import org.wolftec.cwt.controller.actions.core.Actions;
 import org.wolftec.cwt.controller.net.XmlHttpNetwork;
 import org.wolftec.cwt.controller.states.StateAdministration;
 import org.wolftec.cwt.controller.states.base.Gameloop;
@@ -9,6 +7,7 @@ import org.wolftec.cwt.controller.ui.UserInteraction;
 import org.wolftec.cwt.controller.urlConfig.UrlConfiguration;
 import org.wolftec.cwt.core.persistence.LocalForage;
 import org.wolftec.cwt.core.persistence.LocalForageConfig;
+import org.wolftec.cwt.model.ActionDataPuffer;
 import org.wolftec.cwt.model.Model;
 import org.wolftec.cwt.view.View;
 import org.wolftec.cwt.view.audio.MusicLoader;
@@ -25,7 +24,6 @@ public class Controller {
   public final SoundLoader sfxLoader;
   public final XmlHttpNetwork network;
 
-  public final Actions actions;
   public final ActionDataPuffer actionEvalPuffer;
 
   public final UrlConfiguration urlConfig;
@@ -45,11 +43,10 @@ public class Controller {
     musicLoader = new MusicLoader();
     network = new XmlHttpNetwork();
 
-    actions = new Actions();
     actionEvalPuffer = new ActionDataPuffer();
 
     ui = new UserInteraction();
-    ui.gameround.actions = actions;
+    ui.gameround.actions = model.actions;
 
     urlConfig = new UrlConfiguration();
 

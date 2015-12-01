@@ -3,11 +3,11 @@ package org.wolftec.cwt.model.actions;
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSGlobal;
 import org.wolftec.cwt.Constants;
-import org.wolftec.cwt.controller.actions.core.ActionType;
-import org.wolftec.cwt.controller.actions.core.TileMeta;
 import org.wolftec.cwt.core.SheetIdNumberUtil;
+import org.wolftec.cwt.model.ActionType;
+import org.wolftec.cwt.model.TileMeta;
 import org.wolftec.cwt.model.gameround.Property;
-import org.wolftec.cwt.model.sheets.types.UnitType;
+import org.wolftec.cwt.model.gameround.objecttypes.UnitType;
 import org.wolftec.cwt.model.tags.TagValue;
 
 public class UnitFactoryAction extends AbstractAction {
@@ -98,7 +98,7 @@ public class UnitFactoryAction extends AbstractAction {
 
     model.battlefield.properties.forEachProperty((pi, prop) -> {
       if (prop == factory) {
-        model.battlefield.units.createUnitAtPosition(prop.position.getPositionX(), prop.position.getPositionY(), prop.owners.getOwner(), type);
+        model.battlefield.units.createUnitAtPosition(prop.position.getX(), prop.position.getY(), prop.owners.getOwner(), type);
       }
     });
 

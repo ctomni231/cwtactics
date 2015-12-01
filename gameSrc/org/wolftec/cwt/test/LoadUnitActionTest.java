@@ -1,13 +1,13 @@
 package org.wolftec.cwt.test;
 
 import org.wolftec.cwt.logic.TransportLogic;
-import org.wolftec.cwt.model.actions.LoadUnit;
+import org.wolftec.cwt.model.actions.UnitLoadAction;
 import org.wolftec.cwt.model.gameround.Unit;
 import org.wolftec.cwt.test.base.AbstractCwtTest;
 
 public class LoadUnitActionTest extends AbstractCwtTest {
 
-  private LoadUnit action;
+  private UnitLoadAction action;
   private TransportLogic transport;
 
   @Override

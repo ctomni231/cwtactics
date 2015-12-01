@@ -4,7 +4,7 @@ import org.wolftec.cwt.controller.ui.UserInteractionData;
 import org.wolftec.cwt.logic.LifecycleLogic;
 import org.wolftec.cwt.model.gameround.GameroundEnder;
 import org.wolftec.cwt.model.sheets.SheetDatabase;
-import org.wolftec.cwt.model.tags.ConfigurationManager;
+import org.wolftec.cwt.model.tags.Tags;
 
 public abstract class AbstractCwtTest implements Test {
 
@@ -12,7 +12,7 @@ public abstract class AbstractCwtTest implements Test {
   protected GameroundEnder model;
   protected UserInteractionData uiData;
   protected LifecycleLogic life;
-  protected ConfigurationManager cfg;
+  protected Tags cfg;
 
   public CwtTestManager test;
 

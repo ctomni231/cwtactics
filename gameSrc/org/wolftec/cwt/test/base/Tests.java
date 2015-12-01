@@ -8,10 +8,10 @@ import org.stjs.javascript.JSObjectAdapter;
 import org.wolftec.cwt.core.NullUtil;
 import org.wolftec.cwt.core.StringUtil;
 import org.wolftec.cwt.core.collection.ListUtil;
-import org.wolftec.cwt.core.javascript.ClassUtil;
 import org.wolftec.cwt.core.javascript.JsUtil;
 import org.wolftec.cwt.core.javascript.ReflectionUtil;
 import org.wolftec.cwt.core.log.Log;
+import org.wolftec.cwt.core.stjs.ClassUtil;
 import org.wolftec.cwt.core.url.UrlParameterUtil;
 
 public class Tests {
