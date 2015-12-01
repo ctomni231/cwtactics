@@ -1,5 +1,9 @@
 #### Custom Wars Tactics
 
+##### [Play Online - Version 0.35.1](http://ctomni231.github.io/cwtactics/0_3_5/game/game.html)
+
+##### Game Engine
+
 **CW:T** is a rebuild of the original game series Advance Wars. The engine itself is a proof of concept to show the capabilities of HTML5 technologies. 
 
 ###### Requirements Desktop
