@@ -87,7 +87,7 @@ function storeImage(){
 }
 
 function repeatCascade(){
-	setInterval(cascade(), 50);
+	setInterval(cascade, 50);
 }
 
 function cascade(){

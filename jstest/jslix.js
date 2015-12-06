@@ -1,9 +1,16 @@
 //The battle to make a decent screen organization system begins
 //here
 
+//http://localhost:8000/jslix.html
+
 // JSlix stuff
 var interval;
 var lastTime = new Date();
+var imgQueue = [];
+var frame = 0;
+var count = 0;
+var fps = 0;
+var sec = 16;
 
 // ImageLibrary Stuff
 var buffer;
@@ -31,7 +38,7 @@ function run(sec){
 	imgStorage.setAttribute("width", w);
 	imgStorage.setAttribute("height", h);
 	imgStorage.innerHTML = "Your browser does not support the HTML5 canvas tag.";
-	interval = setInterval(runGame(), sec);
+	interval = setInterval(runGame, sec);
 }
 
 function rebase(sec){
@@ -47,18 +54,24 @@ function rebase(sec){
 	imgStorage.setAttribute("width", w);
 	imgStorage.setAttribute("height", h);
 	imgStorage.innerHTML = "Your browser does not support the HTML5 canvas tag.";
-	interval = setInterval(runGame(), sec);
+	interval = setInterval(runGame, sec);
 }
 
 function init(){
-	addImage("MinuteWars.png");
+	queueImage("MinuteWars.png");
 	addImage("AWDS_INFT.png");
+}
+
+function queueImage(text){
+	imgQueue.push(text);
+}
+
+function startQueue(){
+	addImage(imgQueue.pop());
 }
 
 function runGame(){
 
-	lastTime = new Date();
-	
 	var c = document.getElementById("myCanvas");
 	var ctx = c.getContext("2d");
 	
@@ -67,16 +80,26 @@ function runGame(){
 	step++;
 	if( step == 3 ) step = 0;
 	
-	ctx.drawImage(canvasImage(0), 0, 0, c.width, c.height);
-	ctx.drawImage(canvasImage(1), step*32, 0, 32, 32, 10, 10, 32, 32);
+	ctx.drawImage(canvasImage(1), 0, 0, c.width, c.height);
+	ctx.drawImage(canvasImage(0), step*32, 0, 32, 32, 10, 10, 32, 32);
 	
 	var nowTime = new Date();
-	var diffTime = Math.ceil((nowTime.getTime() - lastTime.getTime()));
-	fps = 1000/diffTime;
-	ctx.save();
+	//var diffTime = Math.ceil((nowTime.getTime() - lastTime.getTime()));
+	var diffTime = nowTime.getTime() - lastTime.getTime();
+	//fps = 1000/diffTime;
+	frame += diffTime;
+	count++;
+	//ctx.save();
+	if(frame > 1000){
+		frame -= 1000;
+		fps = count;
+		count = 0;
+	}
 	ctx.fillStyle = '#000000';
 	ctx.font = 'bold 10px sans-serif';
 	ctx.fillText('FPS: ' + fps , 4, 10);
+	
+	lastTime = new Date();
 }
 
 // This function adds an image from text.
@@ -134,7 +157,19 @@ function storeImage(){
 	locxArray.push(lx);
 	locyArray.push(ly);
 	
-	run(50);
+	/*var button = document.getElementById("button"+bufferArray.length);
+	if(button == null){
+		button = document.createElement("button");
+		document.body.appendChild(button);
+	}
+	button.setAttribute("onclick", "display("+(bufferArray.length-1)+")");
+	button.innerHTML = "Display #"+(bufferArray.length);//*/
+	
+	if(imgQueue.length > 0){
+		addImage(imgQueue.pop());
+	}
+	
+	rebase(sec);
 }
 
 //This function stores an image by the number selected
@@ -166,7 +201,7 @@ function canvasImage(num){
 	var ctx2 = canvas.getContext("2d");
 	
 	if(buffer == null){
-		var imgData = ctx.createImageData(100,100);
+		var imgData = ctx2.createImageData(100,100);
 		for (var i = 0; i < imgData.data.length; i += 4){
 			imgData.data[i+0]=255;
 			imgData.data[i+1]=0;
