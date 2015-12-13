@@ -11,6 +11,8 @@ var frame = 0;
 var count = 0;
 var fps = 0;
 var sec = 16;
+var cx = 0;
+var cy = 0;
 
 // ImageLibrary Stuff
 var buffer;
@@ -80,8 +82,11 @@ function runGame(){
 	step++;
 	if( step == 3 ) step = 0;
 	
-	ctx.drawImage(canvasImage(1), 0, 0, c.width, c.height);
-	ctx.drawImage(canvasImage(0), step*32, 0, 32, 32, 10, 10, 32, 32);
+	//quickImage(ctx, 1);
+	ctx.drawImage(image, 0, 0, c.width, c.height);
+	//ctx.drawImage(canvasImage(1), 0, 0, c.width, c.height);
+	for(var i = 0; i < 1; i++)
+		ctx.drawImage(canvasImage(0), step*32, 0, 32, 32, 10*i, 10, 32, 32);
 	
 	var nowTime = new Date();
 	//var diffTime = Math.ceil((nowTime.getTime() - lastTime.getTime()));
@@ -170,6 +175,36 @@ function storeImage(){
 	}
 	
 	rebase(sec);
+}
+
+//This function draws the image directly to the canvas
+function quickImage(ctx, num){
+	if(num >= 0 && num < bufferArray.length){
+		buffer = bufferArray[num];
+		lx = locxArray[num];
+		ly = locyArray[num];
+	}else{
+		buffer = null;
+	}
+	
+	if(buffer == null){
+		var imgData = ctx.createImageData(100,100);
+		for (var i = 0; i < imgData.data.length; i += 4){
+			imgData.data[i+0]=255;
+			imgData.data[i+1]=0;
+			imgData.data[i+2]=0;
+			imgData.data[i+3]=100;
+		}
+		ctx.putImageData(imgData,0,0);
+	}else{
+		var imgData = ctx.createImageData(lx,ly);
+		var view = new Uint8Array(buffer);
+		
+		for (var i = 0; i < imgData.data.length; i++){
+			imgData.data[i] = view[i];
+		}
+		ctx.putImageData(imgData,0,0);
+	}
 }
 
 //This function stores an image by the number selected
