@@ -24,6 +24,11 @@ var bufferArray = [];
 var locxArray = [];
 var locyArray = [];
 
+// Drastically decrease copy times
+var imgcanvas;
+var imgctx;
+var imgnum = -1;
+
 //animation stuff
 var step = 0;
 
@@ -61,6 +66,7 @@ function rebase(sec){
 
 function init(){
 	queueImage("MinuteWars.png");
+	queueImage("CWT_MECH.png");
 	addImage("AWDS_INFT.png");
 }
 
@@ -85,8 +91,16 @@ function runGame(){
 	//quickImage(ctx, 1);
 	ctx.drawImage(image, 0, 0, c.width, c.height);
 	//ctx.drawImage(canvasImage(1), 0, 0, c.width, c.height);
-	for(var i = 0; i < 1; i++)
-		ctx.drawImage(canvasImage(0), step*32, 0, 32, 32, 10*i, 10, 32, 32);
+	for(var i = 0; i < 100; i++)
+		ctx.drawImage(canvasImg(0), step*32, 0, 32, 32, 10*i, 10, 32, 32);
+	for(var i = 0; i < 100; i++)
+		ctx.drawImage(canvasImg(1), step*32, 0, 32, 32, 10*i, 10+16, 32, 32);
+	for(var i = 0; i < 100; i++)
+		ctx.drawImage(canvasImg(0), step*32, 0, 32, 32, 10*i, 10+32, 32, 32);
+	for(var i = 0; i < 100; i++)
+		ctx.drawImage(canvasImg(1), step*32, 0, 32, 32, 10*i, 10+48, 32, 32);
+	for(var i = 0; i < 100; i++)
+		ctx.drawImage(canvasImg(0), step*32, 0, 32, 32, 10*i, 10+64, 32, 32);
 	
 	var nowTime = new Date();
 	//var diffTime = Math.ceil((nowTime.getTime() - lastTime.getTime()));
@@ -177,8 +191,13 @@ function storeImage(){
 	rebase(sec);
 }
 
-//This function draws the image directly to the canvas
-function quickImage(ctx, num){
+//Canvas Image with a speed mechanic included
+function canvasImg(num){
+
+	if(num == imgnum){
+		return imgcanvas;
+	}
+
 	if(num >= 0 && num < bufferArray.length){
 		buffer = bufferArray[num];
 		lx = locxArray[num];
@@ -186,25 +205,45 @@ function quickImage(ctx, num){
 	}else{
 		buffer = null;
 	}
+
+	//This makes a canvas storage module for the image
+	imgcanvas = document.getElementById("store");
+	if(imgcanvas == null){
+		imgcanvas = document.createElement("canvas");
+		document.body.appendChild(imgcanvas);
+	}
+	imgcanvas.setAttribute("id", "store");
+	if(buffer == null){
+		imgcanvas.setAttribute("width", 100);
+		imgcanvas.setAttribute("height", 100);
+	}else{
+		imgcanvas.setAttribute("width", lx);
+		imgcanvas.setAttribute("height", ly);
+	}
+	imgcanvas.setAttribute("style", "display:none");
+	imgctx = imgcanvas.getContext("2d");
 	
 	if(buffer == null){
-		var imgData = ctx.createImageData(100,100);
+		var imgData = ctx2.createImageData(100,100);
 		for (var i = 0; i < imgData.data.length; i += 4){
 			imgData.data[i+0]=255;
 			imgData.data[i+1]=0;
 			imgData.data[i+2]=0;
 			imgData.data[i+3]=100;
 		}
-		ctx.putImageData(imgData,0,0);
+		imgctx.putImageData(imgData,0,0);
 	}else{
-		var imgData = ctx.createImageData(lx,ly);
+		var imgData = imgctx.createImageData(lx,ly);
 		var view = new Uint8Array(buffer);
 		
 		for (var i = 0; i < imgData.data.length; i++){
 			imgData.data[i] = view[i];
 		}
-		ctx.putImageData(imgData,0,0);
+		imgctx.putImageData(imgData,0,0);
 	}
+	
+	imgnum = num;
+	return imgcanvas;
 }
 
 //This function stores an image by the number selected
@@ -255,4 +294,37 @@ function canvasImage(num){
 	}
 	
 	return canvas;
+}
+
+// This is extra stuff for drawing an image
+// ----------------------------------------
+
+//This function draws the image directly to the canvas
+function quickImage(ctx, num){
+	if(num >= 0 && num < bufferArray.length){
+		buffer = bufferArray[num];
+		lx = locxArray[num];
+		ly = locyArray[num];
+	}else{
+		buffer = null;
+	}
+	
+	if(buffer == null){
+		var imgData = ctx.createImageData(100,100);
+		for (var i = 0; i < imgData.data.length; i += 4){
+			imgData.data[i+0]=255;
+			imgData.data[i+1]=0;
+			imgData.data[i+2]=0;
+			imgData.data[i+3]=100;
+		}
+		ctx.putImageData(imgData,0,0);
+	}else{
+		var imgData = ctx.createImageData(lx,ly);
+		var view = new Uint8Array(buffer);
+		
+		for (var i = 0; i < imgData.data.length; i++){
+			imgData.data[i] = view[i];
+		}
+		ctx.putImageData(imgData,0,0);
+	}
 }
