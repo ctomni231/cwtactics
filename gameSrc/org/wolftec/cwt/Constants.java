@@ -1,13 +1,14 @@
 package org.wolftec.cwt;
 
-public class Constants {
+public class Constants
+{
 
   public static final String NAMESPACE = "cwt";
 
   /**
    * Version of the game.
    */
-  public static final String RELEASE_VERSION = "0.4";
+  public static final String RELEASE_VERSION = "0.38";
 
   /**
    * Version name of the game.
@@ -116,6 +117,8 @@ public class Constants {
    * Maximum height of a map.
    */
   public static final int MAX_MAP_HEIGHT = 60;
+
+  public static final int MAX_MAP_SIDE_LENGTH = 50;
 
   /**
    * Maximum range of a move action.

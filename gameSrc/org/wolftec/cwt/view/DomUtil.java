@@ -1,4 +1,4 @@
-package org.wolftec.cwt.core.javascript;
+package org.wolftec.cwt.view;
 
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.dom.Element;

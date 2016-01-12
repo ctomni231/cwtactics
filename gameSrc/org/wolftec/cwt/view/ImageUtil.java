@@ -8,7 +8,6 @@ import org.stjs.javascript.dom.Image;
 import org.stjs.javascript.dom.canvas.CanvasImageData;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.core.javascript.DomUtil;
 
 /**
  * Image utility class to work with images.
