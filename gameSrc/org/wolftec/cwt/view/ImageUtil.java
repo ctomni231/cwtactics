@@ -8,13 +8,16 @@ import org.stjs.javascript.dom.Image;
 import org.stjs.javascript.dom.canvas.CanvasImageData;
 import org.stjs.javascript.dom.canvas.CanvasRenderingContext2D;
 import org.stjs.javascript.functions.Callback1;
+import org.wolftec.cwt.util.DomUtil;
 
 /**
  * Image utility class to work with images.
  */
-public abstract class ImageUtil {
+public abstract class ImageUtil
+{
 
-  public static void serializeImage(Element image, Callback1<String> resultCb) {
+  public static void serializeImage(Element image, Callback1<String> resultCb)
+  {
     Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D ctx = canvas.getContext("2d");
     canvas.height = image.height;
@@ -23,11 +26,13 @@ public abstract class ImageUtil {
     resultCb.$invoke(JSObjectAdapter.$js("canvas.toDataURL(\"image/png\")"));
   }
 
-  public static void deserializeImage(String dataUrl, Callback1<Canvas> resultCb) {
+  public static void deserializeImage(String dataUrl, Callback1<Canvas> resultCb)
+  {
     Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D ctx = canvas.getContext("2d");
     Image img = new Image();
-    img.onload = (image) -> {
+    img.onload = (image) ->
+    {
       ctx.drawImage(image, 0, 0);
       resultCb.$invoke(canvas);
     };
@@ -40,7 +45,8 @@ public abstract class ImageUtil {
    * @param image
    * @return
    */
-  public static Canvas convertImageToBlackMask(Image image) {
+  public static Canvas convertImageToBlackMask(Image image)
+  {
     Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
 
@@ -52,13 +58,16 @@ public abstract class ImageUtil {
     canvasContext.drawImage(image, 0, 0);
     CanvasImageData imgPixels = canvasContext.getImageData(0, 0, imgW, imgH);
 
-    for (int y = 0; y < imgPixels.height; y++) {
-      for (int x = 0; x < imgPixels.width; x++) {
+    for (int y = 0; y < imgPixels.height; y++)
+    {
+      for (int x = 0; x < imgPixels.width; x++)
+      {
         int xi = (y * 4) * imgPixels.width + x * 4;
         int oA = imgPixels.data.$get(xi + 3);
 
         // if pixel is not transparent, then fill it with black
-        if (oA > 0) {
+        if (oA > 0)
+        {
           imgPixels.data.$set(xi, 0);
           imgPixels.data.$set(xi + 1, 0);
           imgPixels.data.$set(xi + 2, 0);
@@ -85,7 +94,8 @@ public abstract class ImageUtil {
    * @param rotation
    * @return
    */
-  public static Canvas cropAndRotate(Image image, int sx, int sy, int w, int rotation) {
+  public static Canvas cropAndRotate(Image image, int sx, int sy, int w, int rotation)
+  {
     Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D context = canvas.getContext("2d");
     int hw = w / 2;
@@ -117,7 +127,8 @@ public abstract class ImageUtil {
    * @param h
    * @return
    */
-  public static Canvas cropImage(Image image, int sx, int sy, int w, int h) {
+  public static Canvas cropImage(Image image, int sx, int sy, int w, int h)
+  {
     Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
 
@@ -139,7 +150,8 @@ public abstract class ImageUtil {
    * @param flipV
    * @return
    */
-  public static Canvas flipImage(Image image, boolean flipH, boolean flipV) {
+  public static Canvas flipImage(Image image, boolean flipH, boolean flipV)
+  {
     int scaleH = flipH ? -1 : 1;
     int scaleV = flipV ? -1 : 1;
     int posX = flipH ? image.width * -1 : 0;
@@ -166,7 +178,8 @@ public abstract class ImageUtil {
    * @param image
    * @return
    */
-  public static Array<Integer> getImageData(Image image) {
+  public static Array<Integer> getImageData(Image image)
+  {
     Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
 
@@ -190,7 +203,9 @@ public abstract class ImageUtil {
    * @param replaceIndex
    * @return Canvas with replaced colors
    */
-  public static Canvas replaceImageColors(Image image, CanvasImageData colorData, int numColors, int oriIndex, int replaceIndex) {
+  public static Canvas replaceImageColors(Image image, CanvasImageData colorData, int numColors, int oriIndex,
+      int replaceIndex)
+  {
     Canvas canvas = DomUtil.createDomElement("canvas");
     CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
 
@@ -214,26 +229,32 @@ public abstract class ImageUtil {
    * @param replaceIndex
    * @return Canvas with replaced colors
    */
-  public static Canvas replaceColors(Canvas canvas, CanvasImageData colorData, int numColors, int oriIndex, int replaceIndex) {
+  public static Canvas replaceColors(Canvas canvas, CanvasImageData colorData, int numColors, int oriIndex,
+      int replaceIndex)
+  {
     CanvasRenderingContext2D canvasContext = canvas.getContext("2d");
     CanvasImageData imgPixels = canvasContext.getImageData(0, 0, canvas.width, canvas.height);
 
     int oriStart = (oriIndex * 4) * numColors;
     int replStart = (replaceIndex * 4) * numColors;
-    for (int y = 0; y < imgPixels.height; y++) {
-      for (int x = 0; x < imgPixels.width; x++) {
+    for (int y = 0; y < imgPixels.height; y++)
+    {
+      for (int x = 0; x < imgPixels.width; x++)
+      {
         int xi = (y * 4) * imgPixels.width + x * 4;
 
         int oR = imgPixels.data.$get(xi);
         int oG = imgPixels.data.$get(xi + 1);
         int oB = imgPixels.data.$get(xi + 2);
-        for (int n = 0, ne = (numColors * 4); n < ne; n += 4) {
+        for (int n = 0, ne = (numColors * 4); n < ne; n += 4)
+        {
 
           int sR = colorData.data.$get(oriStart + n);
           int sG = colorData.data.$get(oriStart + n + 1);
           int sB = colorData.data.$get(oriStart + n + 2);
 
-          if (sR == oR && sG == oG && sB == oB) {
+          if (sR == oR && sG == oG && sB == oB)
+          {
 
             int r = replStart + n;
             int rR = colorData.data.$get(r);
@@ -260,7 +281,8 @@ public abstract class ImageUtil {
    * @param image
    * @return
    */
-  public static Canvas scaleImageWithScale2x(Image image) {
+  public static Canvas scaleImageWithScale2x(Image image)
+  {
     int imgW = image.width;
     int imgH = image.height;
     int oR, oG, oB;
@@ -290,8 +312,10 @@ public abstract class ImageUtil {
     CanvasImageData imgPixelsT = canvasTContext.getImageData(0, 0, imgW * 2, imgH * 2);
 
     // scale it
-    for (int y = 0; y < imgPixelsS.height; y++) {
-      for (int x = 0; x < imgPixelsS.width; x++) {
+    for (int y = 0; y < imgPixelsS.height; y++)
+    {
+      for (int x = 0; x < imgPixelsS.width; x++)
+      {
 
         // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         // grab source pixels
@@ -304,48 +328,60 @@ public abstract class ImageUtil {
         oB = imgPixelsS.data.$get(xi + 2);
 
         // grab left
-        if (x > 0) {
+        if (x > 0)
+        {
           xi = (y * 4) * imgPixelsS.width + (x - 1) * 4;
           lR = imgPixelsS.data.$get(xi);
           lG = imgPixelsS.data.$get(xi + 1);
           lB = imgPixelsS.data.$get(xi + 2);
-        } else {
+        }
+        else
+        {
           lR = oR;
           lG = oG;
           lB = oB;
         }
 
         // grab up
-        if (y > 0) {
+        if (y > 0)
+        {
           xi = ((y - 1) * 4) * imgPixelsS.width + (x) * 4;
           uR = imgPixelsS.data.$get(xi);
           uG = imgPixelsS.data.$get(xi + 1);
           uB = imgPixelsS.data.$get(xi + 2);
-        } else {
+        }
+        else
+        {
           uR = oR;
           uG = oG;
           uB = oB;
         }
 
         // grab down
-        if (x < imgPixelsS.height - 1) {
+        if (x < imgPixelsS.height - 1)
+        {
           xi = ((y + 1) * 4) * imgPixelsS.width + (x) * 4;
           dR = imgPixelsS.data.$get(xi);
           dG = imgPixelsS.data.$get(xi + 1);
           dB = imgPixelsS.data.$get(xi + 2);
-        } else {
+        }
+        else
+        {
           dR = oR;
           dG = oG;
           dB = oB;
         }
 
         // grab right
-        if (x < imgPixelsS.width - 1) {
+        if (x < imgPixelsS.width - 1)
+        {
           xi = (y * 4) * imgPixelsS.width + (x + 1) * 4;
           rR = imgPixelsS.data.$get(xi);
           rG = imgPixelsS.data.$get(xi + 1);
           rB = imgPixelsS.data.$get(xi + 2);
-        } else {
+        }
+        else
+        {
           rR = oR;
           rG = oG;
           rB = oB;
@@ -370,31 +406,36 @@ public abstract class ImageUtil {
         t3B = oB;
 
         // if (B != H && D != F)
-        if ((uR != dR || uG != dG || uB != dB) && (lR != rR || lG != rG || lB != rB)) {
+        if ((uR != dR || uG != dG || uB != dB) && (lR != rR || lG != rG || lB != rB))
+        {
 
           // E0 = D == B ? D : E;
-          if (uR == lR && uG == lG && uB == lB) {
+          if (uR == lR && uG == lG && uB == lB)
+          {
             t0R = lR;
             t0G = lG;
             t0B = lB;
           }
 
           // E1 = B == F ? F : E;
-          if (uR == rR && uG == rG && uB == rB) {
+          if (uR == rR && uG == rG && uB == rB)
+          {
             t1R = rR;
             t1G = rG;
             t1B = rB;
           }
 
           // E2 = D == H ? D : E;
-          if (lR == dR && lG == dG && lB == dB) {
+          if (lR == dR && lG == dG && lB == dB)
+          {
             t2R = lR;
             t2G = lG;
             t2B = lB;
           }
 
           // E3 = H == F ? F : E;
-          if (dR == rR && dG == rG && dB == rB) {
+          if (dR == rR && dG == rG && dB == rB)
+          {
             t3R = rR;
             t3G = rG;
             t3B = rB;
