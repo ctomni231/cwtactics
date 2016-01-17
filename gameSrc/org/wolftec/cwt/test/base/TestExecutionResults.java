@@ -7,7 +7,7 @@ import org.stjs.javascript.annotation.SyntheticType;
 public class TestExecutionResults
 {
   public Array<TestClassResult> tests;
-  public int                    passed;
-  public int                    failed;
-  public int                    runs;
+  public int passed;
+  public int failed;
+  public int runs;
 }

@@ -11,8 +11,8 @@ import org.wolftec.cwt.util.NullUtil;
 class LanguageSelector implements GameLoadingHandler
 {
 
-  private Log                log;
-  private I18Service         i18n;
+  private Log log;
+  private I18Service i18n;
   private PersistenceManager storage;
 
   @Override

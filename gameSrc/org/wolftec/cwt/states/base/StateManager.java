@@ -15,10 +15,10 @@ public class StateManager implements ManagedClass, GameloopWatcher
   private Log log;
 
   private StateFlowData flowData;
-  private int           blockInputTime;
+  private int blockInputTime;
 
   private GraphicManager gfx;
-  private InputService   inputMgr;
+  private InputService inputMgr;
 
   /**
    * Holds all registered game states.

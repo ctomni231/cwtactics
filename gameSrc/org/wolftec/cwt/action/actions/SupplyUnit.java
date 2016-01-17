@@ -12,7 +12,7 @@ import org.wolftec.cwt.ui.UserInteractionData;
 public class SupplyUnit implements Action
 {
 
-  private SupplyLogic  supply;
+  private SupplyLogic supply;
   private ModelManager model;
 
   @Override

@@ -20,8 +20,8 @@ public class TestManager implements ManagedClass
   private Log log;
 
   private static final String TEST_METHOD_START_IDENTIFIER = "test";
-  private static final String BEFORETEST_METHOD_NAME       = "beforeTest";
-  private static final String AFTERTEST_METHOD_NAME        = "afterTest";
+  private static final String BEFORETEST_METHOD_NAME = "beforeTest";
+  private static final String AFTERTEST_METHOD_NAME = "afterTest";
 
   private Array<Test> tests;
 

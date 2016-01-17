@@ -17,7 +17,7 @@ public class ConfigurationManager implements ManagedClass, ObservesIocState
 
   private Log log;
 
-  private Array<Configurable>  configHolders;
+  private Array<Configurable> configHolders;
   private Array<Configuration> configurableValues;
 
   @Override

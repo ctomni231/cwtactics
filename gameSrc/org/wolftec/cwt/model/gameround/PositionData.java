@@ -11,8 +11,8 @@ public class PositionData
   public int x;
   public int y;
 
-  @OptionalField public Tile     tile     = null;
-  @OptionalField public Unit     unit     = null;
+  @OptionalField public Tile tile = null;
+  @OptionalField public Unit unit = null;
   @OptionalField public Property property = null;
 
   public int unitId;

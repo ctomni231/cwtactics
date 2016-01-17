@@ -13,9 +13,9 @@ import org.wolftec.cwt.util.ObjectUtil;
 public class ModelSaver implements SavegameHandler<Map<String, String>>
 {
 
-  private ModelManager   model;
+  private ModelManager model;
   private LifecycleLogic life;
-  private SheetManager   sheets;
+  private SheetManager sheets;
 
   private Log log;
 

@@ -27,12 +27,12 @@ public class ImgLibrary
   // runtime manipulations.
 
   public static String buffer = null;
-  public static int    lx     = 0;
-  public static int    ly     = 0;
+  public static int lx = 0;
+  public static int ly = 0;
 
-  public static Array<String>  bufferArray = new Array<String>();
-  public static Array<Integer> locxArray   = new Array<Integer>();
-  public static Array<Integer> locyArray   = new Array<Integer>();
+  public static Array<String> bufferArray = new Array<String>();
+  public static Array<Integer> locxArray = new Array<Integer>();
+  public static Array<Integer> locyArray = new Array<Integer>();
 
   public static void addImage(String text)
   {

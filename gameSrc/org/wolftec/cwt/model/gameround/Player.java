@@ -13,13 +13,13 @@ public class Player
 
   public int id;
 
-  public int    team;
+  public int team;
   public String name;
 
   public CommanderType coA;
-  public int           activePower;
-  public int           power;
-  public int           powerUsed;
+  public int activePower;
+  public int power;
+  public int powerUsed;
 
   public int gold;
   public int manpower;

@@ -16,10 +16,10 @@ public class RingList<T>
 
   public static final int DEFAULT_SIZE = 32;
 
-  private int      index;
-  private int      size;
+  private int index;
+  private int size;
   private Array<T> data;
-  private int      maxSize;
+  private int maxSize;
 
   @SuppressWarnings("unchecked")
   public RingList(int lMaxSize)

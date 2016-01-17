@@ -14,7 +14,7 @@ public class IngameMovepathSelectionState extends AbstractIngameState implements
 
   private UserInteractionData data;
 
-  private MoveLogic    move;
+  private MoveLogic move;
   private ModelManager model;
 
   private Configuration fastClickMode;

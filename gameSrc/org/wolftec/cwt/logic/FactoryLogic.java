@@ -16,8 +16,8 @@ public class FactoryLogic implements ManagedClass, Configurable
 {
 
   private LifecycleLogic lifecycle;
-  private SheetManager   sheets;
-  private ModelManager   model;
+  private SheetManager sheets;
+  private ModelManager model;
 
   private Configuration unitLimit;
 

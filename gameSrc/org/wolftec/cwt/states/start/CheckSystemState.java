@@ -12,9 +12,9 @@ import org.wolftec.cwt.util.UrlParameterUtil;
 public class CheckSystemState extends AbstractState
 {
 
-  private Log         log;
+  private Log log;
   private TestManager tests;
-  private Features    features;
+  private Features features;
 
   @Override
   public void onEnter(StateFlowData transition)

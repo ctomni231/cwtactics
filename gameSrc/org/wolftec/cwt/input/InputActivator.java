@@ -7,11 +7,11 @@ import org.wolftec.cwt.system.Features;
 class InputActivator implements GameLoadingHandler
 {
 
-  private Features             features;
+  private Features features;
   private InputKeyboardBackend keyboard;
-  private InputGamepadBackend  gamepad;
-  private MouseBackend         mouse;
-  private TouchBackend         touch;
+  private InputGamepadBackend gamepad;
+  private MouseBackend mouse;
+  private TouchBackend touch;
 
   @Override
   public void onLoad(Callback0 done)

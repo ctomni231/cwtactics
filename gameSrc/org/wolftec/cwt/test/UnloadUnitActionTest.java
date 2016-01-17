@@ -7,7 +7,7 @@ import org.wolftec.cwt.test.base.AbstractCwtTest;
 public class UnloadUnitActionTest extends AbstractCwtTest
 {
 
-  private UnloadUnit     action;
+  private UnloadUnit action;
   private TransportLogic transport;
 
   @Override

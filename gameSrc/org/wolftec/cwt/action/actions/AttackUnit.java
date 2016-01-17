@@ -12,7 +12,7 @@ import org.wolftec.cwt.ui.UserInteractionData;
 public class AttackUnit implements Action
 {
 
-  private BattleLogic  battle;
+  private BattleLogic battle;
   private ModelManager model;
 
   @Override

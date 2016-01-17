@@ -12,7 +12,7 @@ public class TransferPropertyActionTest extends AbstractCwtTest
   private TransferProperty action;
 
   private int PLAYER_GOLD = 5000;
-  private int FUNDS       = 1000;
+  private int FUNDS = 1000;
 
   @Override
   protected void prepareModel()

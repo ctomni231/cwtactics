@@ -13,12 +13,12 @@ import org.wolftec.cwt.ui.UserInteractionData;
 public class NextTurn implements Action
 {
 
-  private TurnLogic           turn;
-  private LifecycleLogic      life;
-  private ActionService       actions;
+  private TurnLogic turn;
+  private LifecycleLogic life;
+  private ActionService actions;
   private UserInteractionData uiData;
-  private ModelManager        model;
-  private ChangeWeather       changeWeather;
+  private ModelManager model;
+  private ChangeWeather changeWeather;
 
   @Override
   public String key()

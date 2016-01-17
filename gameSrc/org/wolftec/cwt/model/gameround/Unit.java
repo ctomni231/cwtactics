@@ -6,15 +6,15 @@ import org.wolftec.cwt.util.NumberUtil;
 public class Unit implements Ownable
 {
 
-  public int      hp;
-  public int      ammo;
-  public int      fuel;
-  public int      exp;
-  public boolean  hidden;
-  public int      loadedIn;
+  public int hp;
+  public int ammo;
+  public int fuel;
+  public int exp;
+  public boolean hidden;
+  public int loadedIn;
   public UnitType type;
-  public boolean  canAct;
-  public Player   owner;
+  public boolean canAct;
+  public Player owner;
 
   /**
    * Damages a unit.

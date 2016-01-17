@@ -5,8 +5,8 @@ import org.wolftec.cwt.model.sheets.types.PropertyType;
 public class Property implements Ownable
 {
 
-  public int          points = 20;
-  public Player       owner;
+  public int points = 20;
+  public Player owner;
   public PropertyType type;
 
   /**

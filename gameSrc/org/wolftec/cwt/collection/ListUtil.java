@@ -18,7 +18,7 @@ public abstract class ListUtil
   @SyntheticType
   private static class WorkflowData
   {
-    int       completed;
+    int completed;
     Callback0 mainCb;
   }
 

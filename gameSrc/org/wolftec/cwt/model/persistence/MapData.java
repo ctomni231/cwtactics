@@ -7,12 +7,12 @@ import org.stjs.javascript.annotation.STJSBridge;
 public class MapData
 {
 
-  public String                name;
-  public int                   mph;
-  public int                   mpw;
-  public int                   player;
-  public Array<String>         typeMap;
+  public String name;
+  public int mph;
+  public int mpw;
+  public int player;
+  public Array<String> typeMap;
   public Array<Array<Integer>> map;
-  public Array<Array<Object>>  units;
-  public Array<Array<Object>>  prps;
+  public Array<Array<Object>> units;
+  public Array<Array<Object>> prps;
 }

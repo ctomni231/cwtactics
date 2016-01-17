@@ -52,8 +52,8 @@ public class Features implements ManagedClass
   @STJSBridge
   static class Browser
   {
-    String  name;
-    int     version;
+    String name;
+    int version;
     boolean mobile;
     boolean chrome;
     boolean android;

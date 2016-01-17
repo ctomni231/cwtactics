@@ -10,8 +10,8 @@ public class IngameSelectFreeTileState extends AbstractIngameState
 {
 
   private UserInteractionData data;
-  private ModelManager        model;
-  private ActionService       actions;
+  private ModelManager model;
+  private ActionService actions;
 
   @Override
   public void onEnter(StateFlowData transition)

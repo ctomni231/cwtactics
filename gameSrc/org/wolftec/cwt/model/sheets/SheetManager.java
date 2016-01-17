@@ -15,13 +15,13 @@ import org.wolftec.cwt.model.sheets.types.WeatherType;
 public class SheetManager implements ManagedClass
 {
 
-  public final SheetDatabase<WeatherType>   weathers;
-  public final SheetDatabase<MoveType>      movetypes;
-  public final SheetDatabase<ArmyType>      armies;
-  public final SheetDatabase<PropertyType>  properties;
-  public final SheetDatabase<TileType>      tiles;
+  public final SheetDatabase<WeatherType> weathers;
+  public final SheetDatabase<MoveType> movetypes;
+  public final SheetDatabase<ArmyType> armies;
+  public final SheetDatabase<PropertyType> properties;
+  public final SheetDatabase<TileType> tiles;
   public final SheetDatabase<CommanderType> commanders;
-  public final SheetDatabase<UnitType>      units;
+  public final SheetDatabase<UnitType> units;
 
   public SheetManager()
   {

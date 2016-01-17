@@ -63,14 +63,14 @@ public class MoveLogic implements ManagedClass
 
   private static final String NO_UNIT_AT_POSITION_ERROR = "NoUnitAtPosition";
 
-  public static final int MOVE_CODES_UP    = 0;
+  public static final int MOVE_CODES_UP = 0;
   public static final int MOVE_CODES_RIGHT = 1;
-  public static final int MOVE_CODES_DOWN  = 2;
-  public static final int MOVE_CODES_LEFT  = 3;
+  public static final int MOVE_CODES_DOWN = 2;
+  public static final int MOVE_CODES_LEFT = 3;
 
   private ModelManager model;
   private SheetManager sheets;
-  private FogLogic     fog;
+  private FogLogic fog;
 
   /**
    * Little helper array object for `model.move_fillMoveMap`. This will be used

@@ -22,9 +22,9 @@ public class GameUpdateManager implements GameLoadingHandler
 
   private static final String KEY_SYSTEM_VERSION = "system/version";
 
-  private Log                log;
+  private Log log;
   private PersistenceManager pm;
-  private Array<GameUpdate>  updates;
+  private Array<GameUpdate> updates;
 
   private void sortUpdaters()
   {

@@ -13,11 +13,11 @@ import org.wolftec.cwt.util.AssertUtil;
 public class TurnLogic implements ManagedClass, Configurable
 {
 
-  private Log            log;
-  private ModelManager   model;
-  private FogLogic       fog;
+  private Log log;
+  private ModelManager model;
+  private FogLogic fog;
   private NetworkManager network;
-  private SupplyLogic    supply;
+  private SupplyLogic supply;
   private LifecycleLogic life;
 
   private Configuration cfgPropertyHealingEnabled;

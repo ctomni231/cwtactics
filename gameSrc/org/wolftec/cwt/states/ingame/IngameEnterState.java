@@ -16,8 +16,8 @@ import org.wolftec.cwt.util.JsUtil;
 public class IngameEnterState extends AbstractState
 {
 
-  private ModelManager        model;
-  private MapManager          maps;
+  private ModelManager model;
+  private MapManager maps;
   private UserInteractionData uiData;
 
   private TurnLogic turnLogic;

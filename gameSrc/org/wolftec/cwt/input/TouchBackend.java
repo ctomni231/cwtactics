@@ -41,7 +41,7 @@ class TouchBackend implements ManagedClass, InputBackend
     native void preventDefault();
 
     Array<TouchPosition> touches;
-    long                 timeStamp;
+    long timeStamp;
   }
 
   @STJSBridge

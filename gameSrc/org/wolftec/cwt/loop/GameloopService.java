@@ -25,9 +25,9 @@ public class GameloopService implements ManagedClass
 
   private Array<GameloopWatcher> frameWatchers;
 
-  private Log       log;
-  private boolean   active;
-  private long      oldTime;
+  private Log log;
+  private boolean active;
+  private long oldTime;
   private Callback0 loopFunction;
 
   @Override

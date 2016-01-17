@@ -17,7 +17,7 @@ class InputKeyboardBackend implements ManagedClass, InputBackend
     int keyCode;
   }
 
-  private Log          log;
+  private Log log;
   private InputService input;
 
   public void handleKeyDown(KeyEvent ev)

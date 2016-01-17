@@ -12,7 +12,7 @@ import org.wolftec.cwt.states.base.StateFlowData;
 public class NoneState extends AbstractState
 {
 
-  private Log          log;
+  private Log log;
   private InputService input;
 
   @Override

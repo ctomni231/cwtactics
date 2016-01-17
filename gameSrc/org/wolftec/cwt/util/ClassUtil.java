@@ -19,9 +19,9 @@ import org.wolftec.cwt.collection.ListUtil;
 public abstract class ClassUtil
 {
 
-  private static final String PARAM_INHERIT          = "$inherit";
+  private static final String PARAM_INHERIT = "$inherit";
   private static final String PARAM_TYPE_DESCRIPTION = "$typeDescription";
-  private static final String PROPERTY_CLASS_NAME    = "__className__";
+  private static final String PROPERTY_CLASS_NAME = "__className__";
 
   /**
    * Initializes the class names by putting a special hidden variable into the

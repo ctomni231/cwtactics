@@ -17,7 +17,7 @@ public class DefaultTypesLoader implements ManagedClass, GameLoadingHandler
 {
 
   private SheetManager sheets;
-  private Log          log;
+  private Log log;
 
   @Override
   public int priority()

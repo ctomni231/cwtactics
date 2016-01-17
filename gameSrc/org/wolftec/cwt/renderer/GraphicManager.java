@@ -16,14 +16,14 @@ public class GraphicManager implements ManagedClass, Configurable
 {
 
   private static final String CANVAS_RENDER_CONTEXT = "2d";
-  private static final String CANVAS_ID             = "gameCanvas";
+  private static final String CANVAS_ID = "gameCanvas";
 
   private Log log;
 
-  public Canvas                   mainCanvas;
+  public Canvas mainCanvas;
   public CanvasRenderingContext2D mainCtx;
 
-  public Canvas                   bufferCanvas;
+  public Canvas bufferCanvas;
   public CanvasRenderingContext2D bufferCtx;
 
   private Configuration cfgAnimatedMap;

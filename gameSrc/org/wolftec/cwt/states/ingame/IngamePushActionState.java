@@ -25,13 +25,13 @@ public class IngamePushActionState extends AbstractIngameState
   private UserInteractionData uiData;
 
   private ActionService actions;
-  private MoveLogic     move;
-  private ModelManager  model;
+  private MoveLogic move;
+  private ModelManager model;
 
-  private MoveStart  moveStartAction;
+  private MoveStart moveStartAction;
   private MoveAppend moveAppendAction;
-  private MoveEnd    moveEndAction;
-  private WaitUnit   waitAction;
+  private MoveEnd moveEndAction;
+  private WaitUnit waitAction;
 
   @Override
   public void update(StateFlowData transition, int delta, InputService input)

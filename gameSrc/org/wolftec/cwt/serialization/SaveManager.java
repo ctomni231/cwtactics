@@ -15,10 +15,10 @@ public class SaveManager implements GameLoadingHandler
 
   private static final String CONFIG_APP_JSON = "config/app.json";
 
-  private Log                log;
+  private Log log;
   private PersistenceManager pm;
 
-  private Array<SavegameHandler>    gameHandlers;
+  private Array<SavegameHandler> gameHandlers;
   private Array<SaveAppdataHandler> appHandlers;
 
   @Override

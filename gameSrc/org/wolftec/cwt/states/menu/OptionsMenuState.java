@@ -11,18 +11,18 @@ import org.wolftec.cwt.util.JsUtil;
 public class OptionsMenuState extends AbstractMenuState
 {
 
-  public static final String UIC_WIPEOUT                 = "WIPEOUT";
-  public static final String UIC_BACK                    = "BACK";
-  public static final String UIC_REMAP_GAMEPAD           = "REMAP_GAMEPAD";
-  public static final String UIC_REMAP_KEYBOARD          = "REMAP_KEYBOARD";
-  public static final String UIC_CHECKBOX_FORCE_TOUCH    = "CHECKBOX_FORCE_TOUCH";
+  public static final String UIC_WIPEOUT = "WIPEOUT";
+  public static final String UIC_BACK = "BACK";
+  public static final String UIC_REMAP_GAMEPAD = "REMAP_GAMEPAD";
+  public static final String UIC_REMAP_KEYBOARD = "REMAP_KEYBOARD";
+  public static final String UIC_CHECKBOX_FORCE_TOUCH = "CHECKBOX_FORCE_TOUCH";
   public static final String UIC_CHECKBOX_ANIMATED_TILES = "CHECKBOX_ANIMATED_TILES";
-  public static final String UIC_INCREASE_SFX            = "INCREASE_SFX";
-  public static final String UIC_INCREASE_MUSIC          = "INCREASE_MUSIC";
-  public static final String UIC_DECREASE_MUSIC          = "DECREASE_MUSIC";
-  public static final String UIC_DECREASE_SFX            = "DECREASE_SFX";
+  public static final String UIC_INCREASE_SFX = "INCREASE_SFX";
+  public static final String UIC_INCREASE_MUSIC = "INCREASE_MUSIC";
+  public static final String UIC_DECREASE_MUSIC = "DECREASE_MUSIC";
+  public static final String UIC_DECREASE_SFX = "DECREASE_SFX";
 
-  private AudioService  audio;
+  private AudioService audio;
   protected SaveManager saving;
 
   @Override

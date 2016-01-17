@@ -13,7 +13,7 @@ public class FireSilo implements Action
 {
 
   private SpecialWeaponsLogic weapons;
-  private ModelManager        model;
+  private ModelManager model;
 
   @Override
   public String key()

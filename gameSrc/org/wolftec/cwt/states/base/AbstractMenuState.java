@@ -8,7 +8,7 @@ import org.wolftec.cwt.ui.MenuInteractionMap;
 public class AbstractMenuState extends AbstractState
 {
 
-  private Log                  log;
+  private Log log;
   protected MenuInteractionMap ui;
 
   @Override

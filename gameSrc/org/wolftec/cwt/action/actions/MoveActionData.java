@@ -6,9 +6,9 @@ import org.wolftec.cwt.managed.ManagedClass;
 
 public class MoveActionData implements ManagedClass
 {
-  public int               x;
-  public int               y;
-  public int               unitId;
+  public int x;
+  public int y;
+  public int unitId;
   public RingList<Integer> movePath;
 
   @Override

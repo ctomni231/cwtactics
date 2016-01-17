@@ -12,7 +12,7 @@ import org.wolftec.cwt.util.AssertUtil;
 public class WaitUnit implements Action
 {
 
-  private ModelManager   model;
+  private ModelManager model;
   private LifecycleLogic lifecylce;
 
   @Override

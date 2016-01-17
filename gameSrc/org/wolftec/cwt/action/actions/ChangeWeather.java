@@ -14,7 +14,7 @@ import org.wolftec.cwt.util.SheetIdNumberUtil;
 public class ChangeWeather implements Action
 {
 
-  private FogLogic     fog;
+  private FogLogic fog;
   private WeatherLogic weather;
 
   private ModelManager model;

@@ -8,7 +8,7 @@ import org.wolftec.cwt.util.NullUtil;
 public class TileVariantInfo
 {
 
-  Map<String, String>  desc;
+  Map<String, String> desc;
   Array<Array<String>> connection;
 
   public TileVariantInfo(Map<String, String> desc, Array<Array<String>> connection)

@@ -14,7 +14,7 @@ import org.wolftec.cwt.util.ClassUtil;
 public class GameLoadingManager implements ManagedClass
 {
 
-  private Log                       log;
+  private Log log;
   private Array<GameLoadingHandler> loaders;
 
   private boolean started;

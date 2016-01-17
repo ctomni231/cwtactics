@@ -15,13 +15,13 @@ import org.wolftec.cwt.util.ObjectUtil;
 public class ErrorState extends AbstractMenuState
 {
 
-  private static final String UIC_RELOAD  = "RELOAD";
+  private static final String UIC_RELOAD = "RELOAD";
   private static final String UIC_WIPEOUT = "WIPEOUT";
 
   private String message;
 
   private MenuInteractionMap mapping;
-  private Log                log;
+  private Log log;
 
   private StateManager stm;
 

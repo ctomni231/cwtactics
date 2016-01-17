@@ -10,7 +10,7 @@ public class WipeoutConfirmMenuState extends AbstractMenuState
 {
 
   private static final String UIC_YES = "YES";
-  private static final String UIC_NO  = "NO";
+  private static final String UIC_NO = "NO";
 
   private SystemResetter reset;
 

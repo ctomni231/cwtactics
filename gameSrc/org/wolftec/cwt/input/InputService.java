@@ -15,7 +15,7 @@ public class InputService implements ManagedClass
 
   private Map<String, Integer> actionState;
   private Map<String, Boolean> buttonState;
-  private Map<String, String>  buttonMapping;
+  private Map<String, String> buttonMapping;
 
   private boolean blocked;
 

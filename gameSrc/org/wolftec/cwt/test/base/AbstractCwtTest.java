@@ -9,10 +9,10 @@ import org.wolftec.cwt.ui.UserInteractionData;
 public abstract class AbstractCwtTest implements Test
 {
 
-  protected SheetManager         sheets;
-  protected ModelManager         model;
-  protected UserInteractionData  uiData;
-  protected LifecycleLogic       life;
+  protected SheetManager sheets;
+  protected ModelManager model;
+  protected UserInteractionData uiData;
+  protected LifecycleLogic life;
   protected ConfigurationManager cfg;
 
   public CwtTestManager test;

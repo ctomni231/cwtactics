@@ -12,7 +12,7 @@ import org.wolftec.cwt.util.AssertUtil;
 public class TransferProperty implements Action
 {
 
-  private TeamLogic    team;
+  private TeamLogic team;
   private ModelManager model;
 
   @Override

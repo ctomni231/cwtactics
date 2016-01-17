@@ -11,9 +11,9 @@ import org.wolftec.cwt.states.base.StateFlowData;
 public class LoadingState extends AbstractState implements ResourceRequestWatcher
 {
 
-  private Log                log;
+  private Log log;
   private GameLoadingManager loading;
-  private boolean            done;
+  private boolean done;
 
   @Override
   public void onEnter(StateFlowData flowData)

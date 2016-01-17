@@ -11,10 +11,10 @@ import org.wolftec.cwt.tags.Configuration;
 public class CommanderLogic implements ManagedClass, Configurable
 {
 
-  public final static int POWER_LEVEL_OFF  = 0;
-  public final static int POWER_LEVEL_COP  = 1;
+  public final static int POWER_LEVEL_OFF = 0;
+  public final static int POWER_LEVEL_COP = 1;
   public final static int POWER_LEVEL_SCOP = 2;
-  public final static int POWER_LEVEL_TAG  = 3;
+  public final static int POWER_LEVEL_TAG = 3;
 
   private Configuration cfgStarCost;
   private Configuration cfgStarCostIncrease;

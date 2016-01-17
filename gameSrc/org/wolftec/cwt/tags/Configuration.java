@@ -11,11 +11,11 @@ public class Configuration
 {
 
   public final String key;
-  public int          min;
-  public int          max;
-  public int          def;
-  public int          step;
-  public int          value;
+  public int min;
+  public int max;
+  public int def;
+  public int step;
+  public int value;
 
   @Native
   public Configuration(String key, int min, int max, int defaultValue)

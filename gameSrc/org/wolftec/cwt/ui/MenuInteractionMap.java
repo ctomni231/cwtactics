@@ -13,7 +13,7 @@ public class MenuInteractionMap implements Constructable
 {
 
   private Map<String, Map<String, String>> states;
-  private String                           active;
+  private String active;
 
   @Override
   public void onConstruction(ManagedClass instance)

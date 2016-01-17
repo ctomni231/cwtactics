@@ -13,8 +13,8 @@ import org.wolftec.cwt.ui.UserInteractionData;
 public class MoveEnd implements Action
 {
 
-  private MoveLogic      move;
-  private ModelManager   model;
+  private MoveLogic move;
+  private ModelManager model;
   private MoveActionData moveDto;
 
   @Override

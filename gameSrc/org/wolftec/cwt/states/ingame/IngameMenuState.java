@@ -16,7 +16,7 @@ public class IngameMenuState extends AbstractIngameState
 
   private Log log;
 
-  private MoveLogic    move;
+  private MoveLogic move;
   private ModelManager model;
 
   private Array<Action> actionList;

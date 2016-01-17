@@ -9,17 +9,17 @@ import org.stjs.javascript.JSCollections;
  */
 public class PropertyType extends TileType
 {
-  public boolean       capturable;
-  public int           vision;
-  public int           funds;
-  public CannonType    cannon;
-  public SiloType      rocketsilo;
+  public boolean capturable;
+  public int vision;
+  public int funds;
+  public CannonType cannon;
+  public SiloType rocketsilo;
   public Array<String> builds;
   public Array<String> repairs;
-  public int           repairAmount;
-  public boolean       looseAfterCaptured;
-  public boolean       notTransferable;
-  public String        changeAfterCaptured;
+  public int repairAmount;
+  public boolean looseAfterCaptured;
+  public boolean notTransferable;
+  public String changeAfterCaptured;
 
   public PropertyType()
   {

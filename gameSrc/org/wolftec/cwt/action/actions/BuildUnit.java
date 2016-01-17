@@ -16,7 +16,7 @@ public class BuildUnit implements Action
 
   private ModelManager model;
   private FactoryLogic factory;
-  private FogLogic     fog;
+  private FogLogic fog;
 
   @Override
   public String key()

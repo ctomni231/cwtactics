@@ -8,7 +8,7 @@ import org.wolftec.cwt.states.base.StateFlowData;
 public class MainMenuState extends AbstractMenuState
 {
 
-  private static final String UIC_OPTIONS  = "OPTIONS";
+  private static final String UIC_OPTIONS = "OPTIONS";
   private static final String UIC_SKIRMISH = "SKIRMISH";
 
   @Override

@@ -20,7 +20,7 @@ public class ActionService implements ManagedClass
 
   public static final int BUFFER_SIZE = 200;
 
-  private Log            log;
+  private Log log;
   private NetworkManager network;
 
   /**

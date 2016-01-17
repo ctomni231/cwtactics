@@ -14,9 +14,9 @@ public class IngameIdleState extends AbstractIngameState
 {
 
   private UserInteractionData data;
-  private MoveLogic           move;
-  private BattleLogic         battle;
-  private ActionService       actions;
+  private MoveLogic move;
+  private BattleLogic battle;
+  private ActionService actions;
 
   @Override
   public void onEnter(StateFlowData transition)

@@ -20,9 +20,9 @@ class MouseBackend implements ManagedClass, InputBackend
     int layerY;
   }
 
-  private Log            log;
+  private Log log;
   private GraphicManager gfx;
-  private InputService   input;
+  private InputService input;
 
   public boolean handleDownEvent(DOMEvent ev)
   {

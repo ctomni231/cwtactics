@@ -12,7 +12,7 @@ import org.wolftec.cwt.util.AssertUtil;
 public class TransferUnit implements Action
 {
 
-  private TeamLogic    team;
+  private TeamLogic team;
   private ModelManager model;
 
   @Override

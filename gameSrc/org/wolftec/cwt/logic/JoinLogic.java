@@ -9,7 +9,7 @@ import org.wolftec.cwt.util.AssertUtil;
 public class JoinLogic implements ManagedClass
 {
 
-  private ModelManager   model;
+  private ModelManager model;
   private TransportLogic transport;
   private LifecycleLogic lifecycle;
 

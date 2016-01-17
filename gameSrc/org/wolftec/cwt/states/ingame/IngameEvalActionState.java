@@ -22,7 +22,7 @@ public class IngameEvalActionState extends AbstractState
 
   private ActionService actions;
 
-  private Action     activeAction;
+  private Action activeAction;
   private ActionData activeData;
 
   @Override

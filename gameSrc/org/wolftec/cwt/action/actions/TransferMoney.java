@@ -13,8 +13,8 @@ import org.wolftec.cwt.ui.UserInteractionData;
 public class TransferMoney implements Action
 {
 
-  private TeamLogic      team;
-  private ModelManager   model;
+  private TeamLogic team;
+  private ModelManager model;
   private LifecycleLogic life;
 
   @Override

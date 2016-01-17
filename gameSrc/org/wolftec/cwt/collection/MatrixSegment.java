@@ -9,10 +9,10 @@ import org.wolftec.cwt.util.JsUtil;
 public class MatrixSegment
 {
 
-  private int                   sideLen;
-  private int                   centerX;
-  private int                   centerY;
-  private int                   defaultValue;
+  private int sideLen;
+  private int centerX;
+  private int centerY;
+  private int defaultValue;
   private Array<Array<Integer>> data;
 
   @SuppressWarnings("unchecked")

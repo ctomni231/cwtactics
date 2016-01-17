@@ -13,7 +13,7 @@ public class SystemResetter implements GameLoadingHandler
 
   public static final String PARAM_WIPEOUT = "resetData";
 
-  private Log                log;
+  private Log log;
   private PersistenceManager pm;
 
   @Override

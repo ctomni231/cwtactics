@@ -12,7 +12,7 @@ public class StateFlowData
 
   private String previousState;
   private String nextState;
-  private int    blockInputRequest;
+  private int blockInputRequest;
 
   public StateFlowData()
   {

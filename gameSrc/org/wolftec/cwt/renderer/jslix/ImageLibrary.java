@@ -12,8 +12,8 @@ public abstract class ImageLibrary
 {
 
   public static String buffer = null;
-  public static int    lx     = 0;
-  public static int    ly     = 0;
+  public static int lx = 0;
+  public static int ly = 0;
 
   public static void store(String text)
   {

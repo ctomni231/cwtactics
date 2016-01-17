@@ -20,9 +20,9 @@ public class ResourceLoadingManager implements GameLoadingHandler
 
   public static final String DATA_FILE = "system/grabbedData";
 
-  private Log                           log;
-  private PersistenceManager            storage;
-  private Array<ResourceLoader>         loaders;
+  private Log log;
+  private PersistenceManager storage;
+  private Array<ResourceLoader> loaders;
   private Array<ResourceRequestWatcher> watchers;
 
   private void downloadFolderFile(ResourceLoader loader, String path, String file, Callback0 next)

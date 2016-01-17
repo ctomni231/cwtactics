@@ -11,7 +11,7 @@ import org.wolftec.cwt.ui.UserInteractionData;
 public class UnhideUnit implements Action
 {
 
-  private HideLogic    hide;
+  private HideLogic hide;
   private ModelManager model;
 
   @Override

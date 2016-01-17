@@ -14,9 +14,9 @@ import org.wolftec.cwt.util.JsUtil;
 public class TeamLogic implements ManagedClass
 {
 
-  private ModelManager   model;
+  private ModelManager model;
   private TransportLogic transport;
-  private FogLogic       fog;
+  private FogLogic fog;
 
   /**
    * Different available money transfer steps.

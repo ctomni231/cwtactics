@@ -13,7 +13,7 @@ import org.wolftec.cwt.ui.UserInteractionData;
 public class LoadUnit implements Action
 {
 
-  private ModelManager   model;
+  private ModelManager model;
   private TransportLogic transport;
 
   @Override

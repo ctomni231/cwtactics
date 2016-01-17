@@ -72,9 +72,9 @@ public class AudioService implements ManagedClass
   @STJSBridge
   static class AudioBufferSourceNode extends AudioNode
   {
-    boolean     loop;
-    double      loopStart;
-    double      loopEnd;
+    boolean loop;
+    double loopStart;
+    double loopEnd;
     AudioBuffer buffer;
 
     native void start(int pos);
@@ -96,18 +96,18 @@ public class AudioService implements ManagedClass
   public static final String MUSIC_KEY = "MUSIC_";
 
   private AudioContext audioContext;
-  private GainNode     musicNode;
-  private GainNode     sfxNode;
-  private GainNode     nullNode;
+  private GainNode musicNode;
+  private GainNode sfxNode;
+  private GainNode nullNode;
 
-  private Features           features;
+  private Features features;
   private PersistenceManager persistence;
 
   private Map<String, AudioBuffer> buffer;
 
-  private boolean               musicInLoad;
+  private boolean musicInLoad;
   private AudioBufferSourceNode musicConnector;
-  private String                musicIdentifier;
+  private String musicIdentifier;
 
   @Override
   public void onConstruction()

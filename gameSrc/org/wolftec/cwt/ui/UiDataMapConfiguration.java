@@ -11,10 +11,10 @@ public class UiDataMapConfiguration implements ManagedClass
   public static class UiDataPlayerConfig
   {
     public String name;
-    public int    team;
+    public int team;
   }
 
-  public String                    selectedMap;
+  public String selectedMap;
   public Array<UiDataPlayerConfig> players;
-  public int                       turnLimit;
+  public int turnLimit;
 }

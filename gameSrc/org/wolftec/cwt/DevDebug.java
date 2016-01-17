@@ -31,7 +31,7 @@ public class DevDebug implements ManagedClass
   }
 
   private UserInteractionData uiData;
-  private ModelManager        model;
+  private ModelManager model;
 
   private Log log;
 

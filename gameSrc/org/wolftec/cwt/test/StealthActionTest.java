@@ -8,7 +8,7 @@ public class StealthActionTest extends AbstractCwtTest
 {
 
   private UnhideUnit unhide;
-  private HideUnit   hide;
+  private HideUnit hide;
 
   @Override
   protected void prepareModel()

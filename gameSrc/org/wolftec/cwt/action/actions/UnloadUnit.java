@@ -19,11 +19,11 @@ import org.wolftec.cwt.ui.UserInteractionData;
 public class UnloadUnit implements Action
 {
 
-  private ModelManager   model;
+  private ModelManager model;
   private TransportLogic transport;
-  private SheetManager   sheets;
-  private MoveLogic      move;
-  private ActionService  actions;
+  private SheetManager sheets;
+  private MoveLogic move;
+  private ActionService actions;
 
   private RingList<Integer> unloadMovepath;
 

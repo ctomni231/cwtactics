@@ -16,7 +16,7 @@ import org.wolftec.cwt.util.UrlParameterUtil;
 public class Log implements Constructable
 {
 
-  private String  loggerName;
+  private String loggerName;
   private boolean disabled;
 
   @Override

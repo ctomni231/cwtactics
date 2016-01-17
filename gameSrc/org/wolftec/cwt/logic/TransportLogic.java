@@ -15,7 +15,7 @@ public class TransportLogic implements ManagedClass
 
   private ModelManager model;
   private SheetManager sheets;
-  private MoveLogic    move;
+  private MoveLogic move;
 
   /**
    * @param {Unit}

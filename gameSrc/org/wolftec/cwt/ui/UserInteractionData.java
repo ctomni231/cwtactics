@@ -28,13 +28,13 @@ public class UserInteractionData implements ManagedClass
   public RingList<Integer> movePath;
 
   public RingList<String> infos;
-  public int              infoIndex;
+  public int infoIndex;
 
   public String action;
-  public int    actionCode;
+  public int actionCode;
 
   public String actionData;
-  public int    actionDataCode;
+  public int actionDataCode;
 
   public MatrixSegment targets;
 

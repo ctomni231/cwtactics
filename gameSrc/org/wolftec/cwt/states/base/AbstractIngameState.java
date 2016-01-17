@@ -16,7 +16,7 @@ public class AbstractIngameState extends AbstractState
   protected Log log;
 
   protected UserInteractionData uiData;
-  protected ModelManager        model;
+  protected ModelManager model;
 
   @Override
   public void update(StateFlowData flowData, int delta, InputService input)

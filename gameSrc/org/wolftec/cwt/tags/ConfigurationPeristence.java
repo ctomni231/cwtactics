@@ -15,7 +15,7 @@ public class ConfigurationPeristence
 {
 
   private ConfigurationManager cfgManager;
-  private Log                  log;
+  private Log log;
 
   @Override
   public int priority()

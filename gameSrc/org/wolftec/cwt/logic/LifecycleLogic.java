@@ -19,7 +19,7 @@ public class LifecycleLogic implements ManagedClass, Configurable
 
   private ModelManager model;
   private SheetManager sheets;
-  private FogLogic     fog;
+  private FogLogic fog;
 
   private Configuration noUnitsLeftLoose;
 

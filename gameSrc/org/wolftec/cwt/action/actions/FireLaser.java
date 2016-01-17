@@ -11,7 +11,7 @@ import org.wolftec.cwt.ui.UserInteractionData;
 public class FireLaser implements Action
 {
 
-  private LaserLogic   laser;
+  private LaserLogic laser;
   private ModelManager model;
 
   @Override

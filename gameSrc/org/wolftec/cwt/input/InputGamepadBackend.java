@@ -24,7 +24,7 @@ class InputGamepadBackend implements ManagedClass, InputBackend, GameloopWatcher
   @STJSBridge
   static class Gamedpad
   {
-    int            timestamp;
+    int timestamp;
     Array<Integer> buttons;
     Array<Integer> axes;
   }
@@ -37,10 +37,10 @@ class InputGamepadBackend implements ManagedClass, InputBackend, GameloopWatcher
 
   // --------------- game pad API ---------------
 
-  private Log          log;
+  private Log log;
   private InputService input;
 
-  private boolean        enabled;
+  private boolean enabled;
   private Array<Integer> prevTimestamps;
 
   private void checkButton(Gamedpad gamepad, int id)

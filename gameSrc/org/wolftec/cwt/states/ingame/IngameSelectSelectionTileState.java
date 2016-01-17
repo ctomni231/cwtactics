@@ -9,7 +9,7 @@ public class IngameSelectSelectionTileState extends AbstractIngameState
 {
 
   private UserInteractionData data;
-  private ModelManager        model;
+  private ModelManager model;
 
   @Override
   public void onEnter(StateFlowData transition)

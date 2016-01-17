@@ -15,7 +15,7 @@ public class PortraitWarningState extends AbstractState
 {
 
   private StateManager statemachine;
-  private String       lastState;
+  private String lastState;
 
   @Override
   public void onEnter(StateFlowData flowData)

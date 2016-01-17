@@ -15,7 +15,7 @@ public class Tile
   public int variant = 0;
 
   public int visionTurnOwner = 0;
-  public int visionClient    = 0;
+  public int visionClient = 0;
 
   public Tile()
   {

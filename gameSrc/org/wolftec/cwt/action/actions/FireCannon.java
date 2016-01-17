@@ -12,7 +12,7 @@ public class FireCannon implements Action
 {
 
   private SpecialWeaponsLogic cannon;
-  private ModelManager        model;
+  private ModelManager model;
 
   @Override
   public String key()

@@ -25,20 +25,20 @@ public class BattleLogic implements ManagedClass, Configurable
    */
   private static final int MAX_LUCK_EXCLUSIVE = 11;
 
-  private static final int FIRETYPE_NONE      = 0;
-  private static final int FIRETYPE_INDIRECT  = 1;
-  private static final int FIRETYPE_DIRECT    = 2;
+  private static final int FIRETYPE_NONE = 0;
+  private static final int FIRETYPE_INDIRECT = 1;
+  private static final int FIRETYPE_DIRECT = 2;
   private static final int FIRETYPE_BALLISTIC = 3;
 
-  private static final int ATTACKABLE           = 1;
-  private static final int MOVE_AND_ATTACKABLE  = 2;
-  private static final int MOVABLE              = 3;
+  private static final int ATTACKABLE = 1;
+  private static final int MOVE_AND_ATTACKABLE = 2;
+  private static final int MOVABLE = 3;
   private static final int DAMAGE_CALC_MODE_OLD = 0;
   private static final int DAMAGE_CALC_MODE_NEW = 1;
 
-  private ModelManager   model;
+  private ModelManager model;
   private CommanderLogic co;
-  private MoveLogic      move;
+  private MoveLogic move;
   private LifecycleLogic life;
 
   private Configuration cfgDaysOfPeace;
