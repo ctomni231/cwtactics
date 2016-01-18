@@ -33,7 +33,7 @@ public class GameUpdater
     this.updaters = new Plugins<>(GameUpdate.class);
   }
 
-  public void evaluateAllNecessaryUpdates(Callback0 doneCb)
+  public void invokeAllNecessaryGameUpdates(Callback0 doneCb)
   {
     log.info("checking necessary update steps");
 

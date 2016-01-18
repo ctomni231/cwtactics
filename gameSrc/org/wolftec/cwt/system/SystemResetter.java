@@ -2,50 +2,37 @@ package org.wolftec.cwt.system;
 
 import org.stjs.javascript.Global;
 import org.stjs.javascript.functions.Callback0;
-import org.wolftec.cwt.loading.GameLoadingHandler;
 import org.wolftec.cwt.log.Log;
-import org.wolftec.cwt.serialization.PersistenceManager;
-import org.wolftec.cwt.util.NullUtil;
-import org.wolftec.cwt.util.UrlParameterUtil;
+import org.wolftec.cwt.parameters.ParameterAction;
+import org.wolftec.cwt.serialization.StorageProvider;
 
-public class SystemResetter implements GameLoadingHandler
+public class SystemResetter implements ParameterAction
 {
 
-  public static final String PARAM_WIPEOUT = "resetData";
-
-  private Log log;
-  private PersistenceManager pm;
+  public static final String WIPE_PARAMETER = "resetData";
 
   @Override
-  public int priority()
+  public String watchesOnParameterKey()
   {
-    return +999;
+    return WIPE_PARAMETER;
   }
 
   @Override
-  public void onLoad(Callback0 done)
+  public boolean isValid(String parameterValue)
   {
-    String wipeOutValue = UrlParameterUtil.getParameter(PARAM_WIPEOUT);
-
-    if (NullUtil.isPresent(wipeOutValue))
-    {
-      if (!(wipeOutValue == "1" || wipeOutValue == "true"))
-      {
-        log.warn("IllegalUrlParameter: " + PARAM_WIPEOUT + "can only true or 1");
-        return;
-      }
-
-      wipeAndReload();
-    }
-
-    done.$invoke();
+    return parameterValue == "1" || parameterValue == "true";
   }
 
-  public void wipeAndReload()
+  @Override
+  public void handle(String parameterValue, Callback0 whenDone)
   {
-    pm.clear((error) ->
+    new Log(this).info("going to clear the game storage");
+
+    StorageProvider.getStorageProvider().clear((error) ->
     {
       String href = Global.window.document.location.href;
+
+      // this invokes a reload of the game.. calling whenDone is not necessary
       Global.window.document.location.replace(href.substring(0, href.indexOf("?")));
     });
   }

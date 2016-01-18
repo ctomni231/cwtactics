@@ -1,5 +1,6 @@
 package org.wolftec.cwt.states.menu;
 
+import org.stjs.javascript.Global;
 import org.stjs.javascript.JSCollections;
 import org.wolftec.cwt.states.base.AbstractMenuState;
 import org.wolftec.cwt.states.base.GameActions;
@@ -11,8 +12,6 @@ public class WipeoutConfirmMenuState extends AbstractMenuState
 
   private static final String UIC_YES = "YES";
   private static final String UIC_NO = "NO";
-
-  private SystemResetter reset;
 
   @Override
   public void onConstruction()
@@ -35,7 +34,10 @@ public class WipeoutConfirmMenuState extends AbstractMenuState
     {
 
       case UIC_YES:
-        reset.wipeAndReload();
+        String newLocation = Global.window.document.location.href;
+        newLocation = newLocation.substring(0, newLocation.indexOf("?"));
+        newLocation = newLocation + "?" + SystemResetter.WIPE_PARAMETER + "=1";
+        Global.window.document.location.replace(newLocation);
         break;
 
       case UIC_NO:

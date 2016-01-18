@@ -4,6 +4,7 @@ import org.wolftec.cwt.input.InputService;
 import org.wolftec.cwt.loading.GameLoadingManager;
 import org.wolftec.cwt.loading.ResourceRequestWatcher;
 import org.wolftec.cwt.log.Log;
+import org.wolftec.cwt.parameters.Parameters;
 import org.wolftec.cwt.renderer.GraphicManager;
 import org.wolftec.cwt.serialization.PersistenceManager;
 import org.wolftec.cwt.states.base.AbstractState;
@@ -29,7 +30,8 @@ public class LoadingState extends AbstractState implements ResourceRequestWatche
 
       SerialJobQueue jobs = new SerialJobQueue();
 
-      jobs.pushJob((next) -> new GameUpdater(storage).evaluateAllNecessaryUpdates(next));
+      jobs.pushJob((next) -> new Parameters().invokeAllUrlParameterActions(next));
+      jobs.pushJob((next) -> new GameUpdater(storage).invokeAllNecessaryGameUpdates(next));
 
       jobs.evaluate(() -> done = true);
     });
