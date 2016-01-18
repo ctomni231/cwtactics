@@ -19,6 +19,30 @@ public class Log implements Constructable
   private String loggerName;
   private boolean disabled;
 
+  @Native
+  public Log()
+  {
+  }
+
+  public Log(Object nameIdentifier)
+  {
+    String name = "GLOBAL";
+
+    if (NullUtil.isPresent(nameIdentifier))
+    {
+      if (nameIdentifier instanceof String)
+      {
+        name = nameIdentifier.toString();
+      }
+      else
+      {
+        name = ClassUtil.getClassName(nameIdentifier);
+      }
+    }
+
+    initByName(name);
+  }
+
   @Override
   public void onConstruction(ManagedClass instance)
   {

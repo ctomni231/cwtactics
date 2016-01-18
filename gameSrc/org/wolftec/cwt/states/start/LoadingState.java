@@ -5,13 +5,17 @@ import org.wolftec.cwt.loading.GameLoadingManager;
 import org.wolftec.cwt.loading.ResourceRequestWatcher;
 import org.wolftec.cwt.log.Log;
 import org.wolftec.cwt.renderer.GraphicManager;
+import org.wolftec.cwt.serialization.PersistenceManager;
 import org.wolftec.cwt.states.base.AbstractState;
 import org.wolftec.cwt.states.base.StateFlowData;
+import org.wolftec.cwt.update.GameUpdater;
+import org.wolftec.cwt.util.SerialJobQueue;
 
 public class LoadingState extends AbstractState implements ResourceRequestWatcher
 {
 
   private Log log;
+  private PersistenceManager storage;
   private GameLoadingManager loading;
   private boolean done;
 
@@ -22,7 +26,12 @@ public class LoadingState extends AbstractState implements ResourceRequestWatche
     loading.loadData(() ->
     {
       log.info("done");
-      done = true;
+
+      SerialJobQueue jobs = new SerialJobQueue();
+
+      jobs.pushJob((next) -> new GameUpdater(storage).evaluateAllNecessaryUpdates(next));
+
+      jobs.evaluate(() -> done = true);
     });
   }
 

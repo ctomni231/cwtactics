@@ -4,7 +4,6 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.Constants;
 import org.wolftec.cwt.collection.ListUtil;
-import org.wolftec.cwt.loading.GameLoadingHandler;
 import org.wolftec.cwt.log.Log;
 import org.wolftec.cwt.serialization.PersistenceManager;
 import org.wolftec.cwt.util.ClassUtil;
@@ -18,28 +17,23 @@ import org.wolftec.cwt.util.VersionUtil;
  * This class manages the update process of the game by invoking all
  * {@link GameUpdate} classes.
  */
-public class GameUpdater implements GameLoadingHandler
+public class GameUpdater
 {
 
   private static final String KEY_SYSTEM_VERSION = "system/version";
 
-  private Log log;
-  private PersistenceManager pm;
-  private Plugins<GameUpdate> updaters;
+  private final Log log;
+  private final PersistenceManager storage;
+  private final Plugins<GameUpdate> updaters;
 
-  public GameUpdater()
+  public GameUpdater(PersistenceManager storage)
   {
-    updaters = new Plugins<>(GameUpdate.class);
+    this.log = new Log(this);
+    this.storage = NullUtil.getOrThrow(storage);
+    this.updaters = new Plugins<>(GameUpdate.class);
   }
 
-  @Override
-  public int priority()
-  {
-    return -1;
-  }
-
-  @Override
-  public void onLoad(Callback0 doneCb)
+  public void evaluateAllNecessaryUpdates(Callback0 doneCb)
   {
     log.info("checking necessary update steps");
 
@@ -62,7 +56,7 @@ public class GameUpdater implements GameLoadingHandler
       return NumberUtil.compare(aVers, bVers);
     });
 
-    pm.getItem(KEY_SYSTEM_VERSION, (err, data) ->
+    storage.getItem(KEY_SYSTEM_VERSION, (err, data) ->
     {
       int currentVersion = VersionUtil.convertVersionToNumber(NullUtil.getOrElse((String) data, "0.0.0"));
 
@@ -78,7 +72,7 @@ public class GameUpdater implements GameLoadingHandler
         }
       } , () ->
       {
-        pm.set(KEY_SYSTEM_VERSION, Constants.VERSION, (sErr, sData) ->
+        storage.set(KEY_SYSTEM_VERSION, Constants.VERSION, (sErr, sData) ->
         {
           doneCb.$invoke();
         });
