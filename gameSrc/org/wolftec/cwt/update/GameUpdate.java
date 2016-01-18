@@ -1,4 +1,4 @@
-package org.wolftec.cwt.update.base;
+package org.wolftec.cwt.update;
 
 import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.managed.ManagedClass;

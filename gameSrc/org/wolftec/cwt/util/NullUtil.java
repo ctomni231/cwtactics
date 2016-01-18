@@ -48,9 +48,15 @@ public abstract class NullUtil
   @MayRaisesError("when value is present")
   public static <T> T getOrThrow(T value)
   {
+    return getOrThrowError(value, "ValueNotPresentError");
+  }
+
+  @MayRaisesError("when value is present")
+  public static <T> T getOrThrowError(T value, String error)
+  {
     if (!isPresent(value))
     {
-      JsUtil.throwError("ValueNotPresentException");
+      JsUtil.throwError(error);
     }
     return value;
   }

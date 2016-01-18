@@ -1,4 +1,4 @@
-package org.wolftec.cwt.update.base;
+package org.wolftec.cwt.update;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback0;
@@ -11,50 +11,25 @@ import org.wolftec.cwt.util.ClassUtil;
 import org.wolftec.cwt.util.JsUtil;
 import org.wolftec.cwt.util.NullUtil;
 import org.wolftec.cwt.util.NumberUtil;
+import org.wolftec.cwt.util.Plugins;
 import org.wolftec.cwt.util.VersionUtil;
 
 /**
  * This class manages the update process of the game by invoking all
  * {@link GameUpdate} classes.
  */
-public class GameUpdateManager implements GameLoadingHandler
+public class GameUpdater implements GameLoadingHandler
 {
 
   private static final String KEY_SYSTEM_VERSION = "system/version";
 
   private Log log;
   private PersistenceManager pm;
-  private Array<GameUpdate> updates;
+  private Plugins<GameUpdate> updaters;
 
-  private void sortUpdaters()
+  public GameUpdater()
   {
-    updates.sort((a, b) ->
-    {
-      int aVers = VersionUtil.convertVersionToNumber(a.getUpdateVersion());
-      int bVers = VersionUtil.convertVersionToNumber(b.getUpdateVersion());
-      return NumberUtil.compare(aVers, bVers);
-    });
-  }
-
-  private void doUpdate(GameUpdate update, Callback0 next)
-  {
-    log.info("doing update step for " + update.getUpdateVersion());
-    log.info(update.getUpdateText());
-
-    try
-    {
-      update.doUpdate(() ->
-      {
-        log.info("completed update step for " + update.getUpdateVersion());
-        next.$invoke();
-      });
-
-    }
-    catch (Exception e)
-    {
-      JsUtil.throwError("could not evaluate update for " + ClassUtil.getClassName(update));
-      next.$invoke();
-    }
+    updaters = new Plugins<>(GameUpdate.class);
   }
 
   @Override
@@ -77,7 +52,15 @@ public class GameUpdateManager implements GameLoadingHandler
      * we have to sort the updates into fixed order to make sure that older
      * updates (e.g. 1.x) will be evaluated before newer updates (e.g. 2.x).
      */
-    sortUpdaters();
+
+    Array<GameUpdate> updates = updaters.getPlugins();
+
+    updates.sort((a, b) ->
+    {
+      int aVers = VersionUtil.convertVersionToNumber(a.getUpdateVersion());
+      int bVers = VersionUtil.convertVersionToNumber(b.getUpdateVersion());
+      return NumberUtil.compare(aVers, bVers);
+    });
 
     pm.getItem(KEY_SYSTEM_VERSION, (err, data) ->
     {
@@ -101,5 +84,26 @@ public class GameUpdateManager implements GameLoadingHandler
         });
       });
     });
+  }
+
+  private void doUpdate(GameUpdate update, Callback0 next)
+  {
+    log.info("doing update step for " + update.getUpdateVersion());
+    log.info(update.getUpdateText());
+
+    try
+    {
+      update.doUpdate(() ->
+      {
+        log.info("completed update step for " + update.getUpdateVersion());
+        next.$invoke();
+      });
+
+    }
+    catch (Exception e)
+    {
+      JsUtil.throwError("could not evaluate update for " + ClassUtil.getClassName(update));
+      next.$invoke();
+    }
   }
 }

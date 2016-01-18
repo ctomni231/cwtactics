@@ -1,6 +1,7 @@
 package org.wolftec.cwt.util;
 
 import org.stjs.javascript.Array;
+import org.stjs.javascript.Global;
 import org.stjs.javascript.JSObjectAdapter;
 import org.stjs.javascript.Map;
 import org.stjs.javascript.functions.Callback1;
@@ -11,6 +12,11 @@ import org.wolftec.cwt.annotations.OptionalReturn;
 public abstract class ObjectUtil
 {
 
+  public static void freezeObject(Object object)
+  {
+    JSObjectAdapter.$js("Object.freeze(object)");
+  }
+
   public static <M> M readProperty(Object data, String property)
   {
     return NullUtil.getOrThrow(getObjectProperty(data, property));
@@ -19,6 +25,12 @@ public abstract class ObjectUtil
   public static <M> M readPropertyOrDefault(Object data, String property, M defaultValue)
   {
     return NullUtil.getOrElse(getObjectProperty(data, property), defaultValue);
+  }
+
+  @OptionalReturn
+  public static <T> T getGlobalProperty(String property)
+  {
+    return (T) JSObjectAdapter.$get(Global.window, property);
   }
 
   @OptionalReturn
