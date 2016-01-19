@@ -5,8 +5,9 @@ import org.stjs.javascript.functions.Callback0;
 import org.wolftec.cwt.log.Log;
 import org.wolftec.cwt.parameters.ParameterAction;
 import org.wolftec.cwt.serialization.StorageProvider;
+import org.wolftec.cwt.util.JsUtil;
 
-public class SystemResetter implements ParameterAction
+public class ResetDataParameterAction implements ParameterAction
 {
 
   public static final String WIPE_PARAMETER = "resetData";
@@ -26,15 +27,19 @@ public class SystemResetter implements ParameterAction
   @Override
   public void handle(String parameterValue, Callback0 whenDone)
   {
-    new Log(this).info("going to clear the game storage");
+    Log log = new Log(this);
 
-    StorageProvider.getStorageProvider().clear((error) ->
+    log.info("going to clear the game storage");
+    StorageProvider.getStorage().clearEntries(() ->
     {
+      log.info("successfully wiped, reload game");
+
       String href = Global.window.document.location.href;
 
       // this invokes a reload of the game.. calling whenDone is not necessary
       Global.window.document.location.replace(href.substring(0, href.indexOf("?")));
-    });
+
+    } , JsUtil.throwErrorCallback());
   }
 
 }

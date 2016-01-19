@@ -1,21 +1,21 @@
 package org.wolftec.cwt.serialization;
 
-import org.wolftec.cwt.managed.ManagedClass;
-import org.wolftec.cwt.util.NullUtil;
+import org.wolftec.cwt.serialization.localforage.LocalForageStorage;
 
-public class StorageProvider implements ManagedClass // TODO temp managed
+/**
+ * This provider allows access to the data storage of the active environment.
+ */
+public class StorageProvider
 {
-  private static PersistenceManager static_pm;
-  private PersistenceManager pm;
+  private static final LocalForageStorage LOCAL_FORAGE_STORAGE;
 
-  @Override
-  public void onConstruction()
+  static
   {
-    static_pm = NullUtil.getOrThrow(pm);
+    LOCAL_FORAGE_STORAGE = new LocalForageStorage();
   }
 
-  public static PersistenceManager getStorageProvider()
+  public static Storage getStorage()
   {
-    return static_pm;
+    return LOCAL_FORAGE_STORAGE;
   }
 }

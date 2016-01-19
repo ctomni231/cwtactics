@@ -10,19 +10,12 @@ import org.wolftec.cwt.util.UrlParameterUtil;
 
 public class Parameters
 {
-
-  private Log log;
-  private Plugins<ParameterAction> actions;
-
-  public Parameters()
-  {
-    log = new Log(this);
-    actions = new Plugins<>(ParameterAction.class);
-  }
-
   public void invokeAllUrlParameterActions(Callback0 whenDone)
   {
+    Log log = new Log(this);
+    Plugins<ParameterAction> actions = new Plugins<>(ParameterAction.class);
     Map<String, String> parameters = UrlParameterUtil.getParameters();
+
     ListUtil.forEachArrayValueAsync(actions.getPlugins(), (index, action, next) ->
     {
       String parameterKey = action.watchesOnParameterKey();
@@ -34,11 +27,16 @@ public class Parameters
         {
           log.warn("url parameter value " + parameterValue + " for key " + parameterKey
               + " is not valid. Will be ingored.");
+          next.$invoke();
         }
         else
         {
           action.handle(parameterValue, next);
         }
+      }
+      else
+      {
+        next.$invoke();
       }
 
     } , whenDone);

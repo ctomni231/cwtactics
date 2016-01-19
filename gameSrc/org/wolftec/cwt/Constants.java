@@ -48,7 +48,7 @@ public class Constants
    * URL of the active server where the game was downloaded from. This server
    * will be used to grab the game data.
    */
-  public static final String SERVER_PATH = "http://localhost:80";
+  public static final String SERVER_PATH = "http://localhost:80/cwtactics";
 
   public static final String DEF_MOD_PATH = "/modifications/cwt";
 

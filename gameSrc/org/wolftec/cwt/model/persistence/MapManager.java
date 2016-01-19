@@ -2,31 +2,23 @@ package org.wolftec.cwt.model.persistence;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSCollections;
-import org.stjs.javascript.functions.Callback0;
 import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.loading.ResourceLoader;
+import org.wolftec.cwt.loading.DataGrabber;
+import org.wolftec.cwt.loading.ResourceGrabbingType;
 import org.wolftec.cwt.serialization.FileDescriptor;
 import org.wolftec.cwt.serialization.PersistenceManager;
 import org.wolftec.cwt.util.JsUtil;
-import org.wolftec.cwt.util.RequestUtil;
 
-public class MapManager implements ResourceLoader
+public class MapManager implements DataGrabber
 {
 
   private PersistenceManager pm;
 
   private Array<FileDescriptor> maps;
 
-  @Override
-  public void onConstruction()
+  public MapManager()
   {
     maps = JSCollections.$array();
-  }
-
-  @Override
-  public String forPath()
-  {
-    return "maps";
   }
 
   /**
@@ -54,19 +46,6 @@ public class MapManager implements ResourceLoader
     return JsUtil.throwError("UnknownMap:" + mapName);
   }
 
-  @Override
-  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Object> doneCb)
-  {
-    RequestUtil.getJSON(entryDesc.path, response -> doneCb.$invoke(response.data));
-  }
-
-  @Override
-  public void handleFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb)
-  {
-    maps.push(entryDesc.clone());
-    doneCb.$invoke();
-  }
-
   public FileDescriptor getMapName(int id)
   {
     return maps.$get(id);
@@ -75,6 +54,24 @@ public class MapManager implements ResourceLoader
   public int getNumberOfMaps()
   {
     return maps.$length();
+  }
+
+  @Override
+  public String getTargetFolder()
+  {
+    return "maps";
+  }
+
+  @Override
+  public ResourceGrabbingType getFileType(FileDescriptor file)
+  {
+    return ResourceGrabbingType.JSON_DATA;
+  }
+
+  @Override
+  public void putDataIntoGame(FileDescriptor file, Object data)
+  {
+    maps.push(file.clone());
   }
 
 }

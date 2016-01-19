@@ -56,7 +56,8 @@ public class GameLoadingManager implements ManagedClass
     ListUtil.forEachArrayValueAsync(loaders, (index, loader, next) ->
     {
       log.info("[" + index + "] booting " + ClassUtil.getClassName(loader));
-      loader.onLoad(next);
+      // TODO loader.onLoad(next);
+      next.$invoke();
 
     } , () ->
     {

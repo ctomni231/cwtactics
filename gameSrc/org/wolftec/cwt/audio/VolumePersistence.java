@@ -15,7 +15,7 @@ class VolumePersistence implements SaveAppdataHandler<VolumeData>
     float music;
   }
 
-  private AudioService audio;
+  private Audio audio;
 
   @Override
   public void onAppLoad(VolumeData data)

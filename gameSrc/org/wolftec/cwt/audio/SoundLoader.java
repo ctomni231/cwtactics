@@ -1,29 +1,27 @@
 package org.wolftec.cwt.audio;
 
-import org.stjs.javascript.functions.Callback0;
-import org.stjs.javascript.functions.Callback1;
-import org.wolftec.cwt.loading.ResourceLoader;
+import org.wolftec.cwt.loading.DataGrabber;
+import org.wolftec.cwt.loading.ResourceGrabbingType;
 import org.wolftec.cwt.serialization.FileDescriptor;
 
-class SoundLoader implements ResourceLoader
+class SoundLoader implements DataGrabber
 {
 
   @Override
-  public String forPath()
+  public String getTargetFolder()
   {
     return "audio/sfx";
   }
 
   @Override
-  public void downloadRemoteFolder(FileDescriptor entryDesc, Callback1<Object> doneCb)
+  public ResourceGrabbingType getFileType(FileDescriptor file)
   {
-
+    return ResourceGrabbingType.TEXT_DATA;
   }
 
   @Override
-  public void handleFolderEntry(FileDescriptor entryDesc, Object entry, Callback0 doneCb)
+  public void putDataIntoGame(FileDescriptor file, Object data)
   {
-
   }
 
 }

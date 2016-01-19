@@ -15,7 +15,7 @@ import org.wolftec.cwt.util.ClassUtil;
 import org.wolftec.cwt.util.NullUtil;
 import org.wolftec.cwt.util.RequestUtil.ArrayBufferRespone;
 
-public class AudioService implements ManagedClass
+public class AudioService implements ManagedClass, Audio
 {
 
   /* ---------------- start web audio API ---------------- */
@@ -162,16 +162,28 @@ public class AudioService implements ManagedClass
     audioContext.decodeAudioData(arrayBuffer, successCb, errorCb);
   }
 
+  /* (non-Javadoc)
+   * @see org.wolftec.cwt.audio.Audio#getSfxVolume()
+   */
+  @Override
   public float getSfxVolume()
   {
     return NullUtil.getOrElse(musicNode, nullNode).gain.value;
   }
 
+  /* (non-Javadoc)
+   * @see org.wolftec.cwt.audio.Audio#getMusicVolume()
+   */
+  @Override
   public float getMusicVolume()
   {
     return NullUtil.getOrElse(musicNode, nullNode).gain.value;
   }
 
+  /* (non-Javadoc)
+   * @see org.wolftec.cwt.audio.Audio#setSfxVolume(float)
+   */
+  @Override
   public void setSfxVolume(float vol)
   {
     if (NullUtil.isPresent(sfxNode))
@@ -180,6 +192,10 @@ public class AudioService implements ManagedClass
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.wolftec.cwt.audio.Audio#setMusicVolume(float)
+   */
+  @Override
   public void setMusicVolume(float vol)
   {
     if (NullUtil.isPresent(musicNode))
@@ -218,10 +234,10 @@ public class AudioService implements ManagedClass
     return NullUtil.isPresent(buffer.$get(id));
   }
 
-  /**
-   * Plays an empty sound buffer. Useful to initialize the audio system on
-   * restricted system like iOS.
+  /* (non-Javadoc)
+   * @see org.wolftec.cwt.audio.Audio#playNullSound()
    */
+  @Override
   public void playNullSound()
   {
     if (NullUtil.isPresent(audioContext))
@@ -233,6 +249,10 @@ public class AudioService implements ManagedClass
     }
   }
 
+  /* (non-Javadoc)
+   * @see org.wolftec.cwt.audio.Audio#playSound(java.lang.String, boolean)
+   */
+  @Override
   @OptionalReturn
   public AudioBufferSourceNode playSound(String id, boolean loop)
   {
@@ -243,6 +263,10 @@ public class AudioService implements ManagedClass
     return null;
   }
 
+  /* (non-Javadoc)
+   * @see org.wolftec.cwt.audio.Audio#playMusic(java.lang.String)
+   */
+  @Override
   public boolean playMusic(String id)
   {
     if (!NullUtil.isPresent(musicNode) || musicInLoad)
@@ -279,6 +303,10 @@ public class AudioService implements ManagedClass
     });
   }
 
+  /* (non-Javadoc)
+   * @see org.wolftec.cwt.audio.Audio#stopMusic()
+   */
+  @Override
   public boolean stopMusic()
   {
     if (!NullUtil.isPresent(musicNode) || musicInLoad)

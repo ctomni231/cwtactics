@@ -4,6 +4,8 @@ import org.stjs.javascript.Array;
 import org.stjs.javascript.functions.Callback1;
 import org.stjs.javascript.functions.Callback2;
 import org.wolftec.cwt.managed.ManagedClass;
+import org.wolftec.cwt.serialization.localforage.LocalForage;
+import org.wolftec.cwt.serialization.localforage.LocalForageConfig;
 import org.wolftec.cwt.system.Features;
 
 public class PersistenceManager implements ManagedClass

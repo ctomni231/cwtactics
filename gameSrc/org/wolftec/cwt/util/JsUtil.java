@@ -2,6 +2,7 @@ package org.wolftec.cwt.util;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.JSObjectAdapter;
+import org.stjs.javascript.functions.Callback1;
 
 /**
  * Utility to handle special JavaScript stuff like errors or prototypes.
@@ -16,6 +17,11 @@ public abstract class JsUtil
   public static Array<String> objectKeys(Object obj)
   {
     return JSObjectAdapter.$js("Object.keys(obj)");
+  }
+
+  public static Callback1<String> throwErrorCallback()
+  {
+    return (err) -> throwError(err);
   }
 
   public static <T> T throwError(String message)

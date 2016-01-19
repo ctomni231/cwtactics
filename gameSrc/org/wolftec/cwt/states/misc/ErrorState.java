@@ -8,7 +8,7 @@ import org.wolftec.cwt.states.base.AbstractMenuState;
 import org.wolftec.cwt.states.base.GameActions;
 import org.wolftec.cwt.states.base.StateFlowData;
 import org.wolftec.cwt.states.base.StateManager;
-import org.wolftec.cwt.system.SystemResetter;
+import org.wolftec.cwt.system.ResetDataParameterAction;
 import org.wolftec.cwt.ui.MenuInteractionMap;
 import org.wolftec.cwt.util.ObjectUtil;
 
@@ -73,7 +73,7 @@ public class ErrorState extends AbstractMenuState
   private void reloadWithWipe()
   {
     String newURL = Global.window.document.location.href;
-    newURL = newURL.substring(0, newURL.indexOf("?")) + "?" + SystemResetter.WIPE_PARAMETER + "=1";
+    newURL = newURL.substring(0, newURL.indexOf("?")) + "?" + ResetDataParameterAction.WIPE_PARAMETER + "=1";
     Global.window.document.location.replace(newURL);
   }
 }

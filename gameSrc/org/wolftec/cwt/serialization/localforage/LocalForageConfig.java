@@ -1,4 +1,4 @@
-package org.wolftec.cwt.serialization;
+package org.wolftec.cwt.serialization.localforage;
 
 import org.stjs.javascript.Array;
 import org.stjs.javascript.annotation.SyntheticType;
