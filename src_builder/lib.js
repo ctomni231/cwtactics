@@ -11,10 +11,6 @@ cwtBuild.maskPathSlashes = function (path) {
   }
 };
 
-cwtBuild.removeDevMacros = function (string) {
-  return string.replace(/(\/\/#MACRO:IF DEV)([\s\S]*)(\/\/#MACRO:ENDIF)/gm, "");
-};
-
 cwtBuild.requireNonNull = function (obj, error) {
   if (obj === undefined || obj == null) {
     throw new Error(error || "ValueNotPresent");

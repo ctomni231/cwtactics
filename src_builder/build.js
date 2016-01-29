@@ -27,8 +27,8 @@ var isLiveMode = function (args) {
   return args.indexOf(ARG_LIVE_BUILD) != -1;
 };
 
-var buildGameFile = function () {
-
+var removeDevMacros = function (string) {
+  return string.replace(/(\/\/#MACRO:IF DEV)([\s\S]*)(\/\/#MACRO:ENDIF)/gm, "");
 };
 
 var startFlow = function () {
@@ -92,7 +92,7 @@ var startFlow = function () {
   cwtBuild.readFile(htmlSource, CLIENT_SOURCE_DIRECTORY + "/html/end.html");
 
   console.log("deploy files into " + DEST_DIRECTORY + "/");
-  var gameCode = isLiveMode(args) ? cwtBuild.removeDevMacros(gameSource.toString()) : gameSource.toString();
+  var gameCode = isLiveMode(args) ? removeDevMacros(gameSource.toString()) : gameSource.toString();
   cwtBuild.writeFile(gameCode, DEST_DIRECTORY + "/game.js");
   cwtBuild.writeFile(cssSource.toString(), DEST_DIRECTORY + "/game.css");
   cwtBuild.writeFile(htmlSource.toString(), DEST_DIRECTORY + "/game.html");
