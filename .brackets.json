@@ -1,0 +1,8 @@
+{
+    "jscodehints.detectedExclusions": [
+        "C:/Users/Hasi/Documents/Projekt/CustomWarsTactics/cwtactics/target/classes/org/wolftec/cwt/html/gamefile_postBlock.js",
+        "C:/Users/Hasi/Documents/Projekt/CustomWarsTactics/cwtactics/src_const/base.js",
+        "C:/Users/Hasi/Documents/Projekt/CustomWarsTactics/cwtactics/gameSrc/org/wolftec/cwt/html/gamefile_postBlock.js",
+        "C:/Users/Hasi/Documents/Projekt/CustomWarsTactics/cwtactics/bin/target/classes/org/wolftec/cwt/html/gamefile_postBlock.js"
+    ]
+}

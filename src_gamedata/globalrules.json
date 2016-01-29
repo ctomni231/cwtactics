@@ -1,0 +1,9 @@
+[
+  {
+    "$when": [
+      "MOVE_TYPE", ["MV_INFT", "MV_MECH"],
+      "TILE_TYPE", ["MNTN"]
+    ],
+    "vision": 3
+  }
+]

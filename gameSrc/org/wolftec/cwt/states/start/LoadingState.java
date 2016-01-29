@@ -24,6 +24,7 @@ public class LoadingState extends AbstractState
 
       jobs.pushJob((next) -> new Parameters().invokeAllUrlParameterActions(next));
       jobs.pushJob((next) -> new DataGrabbers().downloadGameData(next));
+      // TODO model data sheet validation
       jobs.pushJob((next) -> new GameUpdater().invokeAllNecessaryGameUpdates(next));
 
       jobs.evaluate(() ->

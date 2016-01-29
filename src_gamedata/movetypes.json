@@ -1,0 +1,90 @@
+[
+  {
+    "ID"    : "MV_INFT",
+    "sound" : null,
+    "costs" : {
+      "MNTN": 2,
+      "WATER": -1,
+      "REEF": -1,
+      "*": 1
+    }
+  },
+
+  {
+    "ID"    : "MV_MECH",
+    "sound" : null,
+    "costs" : {
+      "WATER": -1,
+      "REEF": -1,
+      "*": 1
+    }
+  },
+
+  {
+    "ID"    : "TIRE_A",
+    "sound" : null,
+    "costs" : {
+      "PLIN": 2,
+      "FRST": 3,
+      "MNTN": -1,
+      "RIVER": -1,
+      "WATER": -1,
+      "REEF": -1,
+      "*": 1
+    }
+  },
+
+  {
+    "ID"    : "TANK",
+    "sound" : null,
+    "costs" : {
+      "FRST": 2,
+      "MNTN": -1,
+      "RIVER": -1,
+      "WATER": -1,
+      "REEF": -1,
+      "*": 1
+    }
+  },
+
+  {
+    "ID"    : "AIR",
+    "sound" : null,
+    "costs" : {
+      "*": 1
+    }
+  },
+
+  {
+    "ID"    : "SHIP",
+    "sound" : null,
+    "costs" : {
+      "WATER": 1,
+      "PORT": 1,
+      "REEF": 2,
+      "*": -1
+    }
+  },
+
+  {
+    "ID"    : "WATER_TRANSPORT",
+    "sound" : null,
+    "costs" : {
+      "WATER": 1,
+      "PORT": 1,
+      "REEF": 2,
+      "SHOAL": 1,
+      "*": -1
+    }
+  },
+
+  {
+    "ID"    : "SLIME",
+    "sound" : null,
+    "costs" : {
+      "WATER": -1,
+      "REEF": -1,
+      "*": 1
+    }
+  }
+]

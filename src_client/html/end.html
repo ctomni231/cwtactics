@@ -1,0 +1,42 @@
+
+
+  </body>
+
+  <!--
+  <script type="text/javascript">
+    var reg = /function\s*\(\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\s*[,]*\s*(\w*)\)/;
+
+    var aopThat = function( fn ){
+      var str = fn.toString();
+      var typeMap = [];
+      str.replace(reg, function () {
+        for( var i=1; i<11; i++ ){
+            if( arguments[i] ){
+                if( arguments[i].indexOf("num") === 0 ) typeMap[i-1] = 1;
+                else typeMap[i-1] = 0;
+            }
+            else typeMap[i-1] = 0;
+        }
+      });
+
+      return function(){
+        for( var i=0; i<arguments.length; i++ ){
+          if( typeMap[i] ){
+              if( typeMap[i] === 1 && typeof arguments[i] !== "number" ){
+                throw Error("type fail");
+              }
+          }
+        }
+        return fn.apply(this,arguments);
+      };
+    };
+
+    var keys = Object.keys(model);
+    for (var i = keys.length - 1; i >= 0; i--) {
+      var fn = model[keys[i]];
+      if( typeof fn === "function") model[keys[i]] = aopThat(fn);
+    };
+  </script>
+  -->
+
+</html>

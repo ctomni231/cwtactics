@@ -1,0 +1,4 @@
+controller.updateComplexTileInformation = function(  ){
+  
+  
+}

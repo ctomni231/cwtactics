@@ -1,0 +1,141 @@
+* 
+{
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-khtml-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+}
+
+:focus { 
+	outline: none; 
+}
+
+body
+{
+	overflow:hidden;
+}
+
+body,html,p
+{
+	margin:0;
+	padding:0;
+}
+
+.detachedtInFront, .detachedInFront{
+	position: absolute;
+	z-index: 5;
+}
+
+.w_25,
+.w_25>button {
+	width: 25px;
+}
+
+.w_40,
+.w_40>button {
+	width: 40px;
+}
+
+.w_50,
+.w_50>button {
+	width: 50px;
+}
+
+.w_60,
+.w_60>button {
+	width: 60px;
+}
+
+.w_75,
+.w_75>button {
+	width: 75px;
+}
+
+.w_95,
+.w_95>button {
+	width: 95px;
+}
+
+.w_100,
+.w_100>button {
+	width: 100px;
+}
+
+.w_120,
+.w_120>button {
+	width: 120px;
+}
+
+.w_150,
+.w_150>button {
+	width: 150px;
+}
+
+.w_175,
+.w_175>button {
+	width: 175px;
+}
+
+.w_190,
+.w_190>button {
+	width: 190px;
+}
+
+.w_200,
+.w_200>button {
+	width: 200px;
+}
+
+.w_300,
+.w_300>button {
+	width: 300px;
+}
+
+.w_380,
+.w_380>button {
+	width: 380px;
+}
+
+.w_375,
+.w_375>button {
+	width: 375px;
+}
+
+.w_400,
+.w_400>button {
+	width: 400px;
+}
+
+.w_800, 
+.w_800>button {
+	width: 800px;
+}
+
+.table_fixed{
+	table-layout: fixed;
+}
+
+.table_center {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.table_collapse {
+	border-collapse: collapse;
+}
+
+.table_collapse tr, 
+.table_collapse td {
+	margin: 0px;
+	padding: 0px;
+}
+
+.floatLeft{
+	float: left;
+}
+
+.semiAlpha{
+	opacity: 0.9;
+}

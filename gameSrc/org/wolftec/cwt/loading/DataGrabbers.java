@@ -41,6 +41,7 @@ public class DataGrabbers
   private void loadDataFromServer(Callback0 whenDone)
   {
     String serverPath = Constants.SERVER_PATH + Constants.DEF_MOD_PATH;
+
     grabbers.asyncForEach((grabber, invokeNextGrabber) ->
     {
 
@@ -86,6 +87,7 @@ public class DataGrabbers
         } , (error) -> whenGrabberFail.$invoke("could not save " + folder + " file list"));
       } , (error) -> whenGrabberFail.$invoke("could not download " + folder + " file list"));
     } , whenDone);
+
   }
 
   private void loadDataFromStorage(Callback0 whenDone)

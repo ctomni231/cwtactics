@@ -1,0 +1,8 @@
+{
+  "excluded-directories" : [
+    "dist",
+    "gameSrc"
+  ],  
+  "max-file-count": 1000,   
+  "max-file-size": 524288 
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "ID":"AW1",
+    "config":{},
+    "rules":[
+      {
+        "$when": [
+          "UNIT_TYPE", ["NTNK","WRTK"]
+        ],
+        "disableBuild": 1
+      }
+    ]
+  },
+  
+  {
+    "ID":"AW2",
+    "config":{},
+    "rules":[
+      {
+        "$when": [
+          "UNIT_TYPE", ["WRTK"]
+        ],
+        "disableBuild": 1
+      }
+    ]
+  }
+]
