@@ -97,6 +97,19 @@ var startFlow = function () {
   cwtBuild.writeFile(cssSource.toString(), DEST_DIRECTORY + "/game.css");
   cwtBuild.writeFile(htmlSource.toString(), DEST_DIRECTORY + "/game.html");
 
+  var cacheManifestSource = new cwtBuild.StringBuilder();
+  cacheManifestSource.append("CACHE MANIFEST").appendNewLine();
+  cacheManifestSource.appendNewLine();
+  cacheManifestSource.append("# VERSION: " + (new Date()).getTime()).appendNewLine();;
+  cacheManifestSource.appendNewLine();
+  cacheManifestSource.append("game.js").appendNewLine();
+  cacheManifestSource.append("game.css").appendNewLine();
+  cacheManifestSource.append("game.html").appendNewLine();
+  cacheManifestSource.appendNewLine();
+  cacheManifestSource.append("NETWORK:").appendNewLine();
+  cacheManifestSource.append("*");
+  cwtBuild.writeFile(cacheManifestSource.toString(), DEST_DIRECTORY + "/cache.manifest");
+
   console.log("completed");
 };
 

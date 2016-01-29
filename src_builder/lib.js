@@ -80,6 +80,12 @@ cwtBuild.StringBuilder = function () {
 
 cwtBuild.StringBuilder.prototype.append = function (str) {
   this.strings.push(cwtBuild.requireNonNull(str));
+  return this;
+};
+
+cwtBuild.StringBuilder.prototype.appendNewLine = function () {
+  this.strings.push("\n");
+  return this;
 };
 
 cwtBuild.StringBuilder.prototype.toString = function () {
