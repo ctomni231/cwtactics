@@ -111,8 +111,10 @@ cwtBuild.readFolderFileList = function (path) {
 cwtBuild.readFolder = function (builder, path, filter) {
   cwtBuild.readFolderFileList(path).forEach(function (file, i) {
     if (!filter || !filter(file)) {
-      cwtBuild.readFile(builder, file);
-      builder.append("\r\n");
+      if (fs.lstatSync(file).isFile()) {
+        cwtBuild.readFile(builder, file);
+        builder.append("\r\n");
+      }
     }
   });
   return builder;
@@ -120,7 +122,7 @@ cwtBuild.readFolder = function (builder, path, filter) {
 
 cwtBuild.readFile = function (builder, path) {
   var content;
-  
+
   content = fs.readFileSync(path).toString();
   builder.append(content);
   builder.append("\r\n");

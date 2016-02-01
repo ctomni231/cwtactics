@@ -32,8 +32,10 @@ var removeDevMacros = function (string) {
 };
 
 var startFlow = function () {
+  var devMode = isDevMode(args);
+  var liveMode = isLiveMode(args);
 
-  if ((!isDevMode(args) && !isLiveMode(args)) || (isDevMode(args) && isLiveMode(args))) {
+  if ((!devMode && !liveMode) || (devMode && liveMode)) {
     console.log("Cannot build game with the given arguments!");
     console.log("");
     console.log("Correct usage:");
@@ -50,7 +52,7 @@ var startFlow = function () {
   var gameSource = new cwtBuild.StringBuilder();
 
   cwtBuild.readFile(gameSource, BASE_CONSTANTS_FILE);
-  cwtBuild.readFile(gameSource, isDevMode(args) ? DEV_CONSTANTS_FILE : LIVE_CONSTANTS_FILE);
+  cwtBuild.readFile(gameSource, devMode ? DEV_CONSTANTS_FILE : LIVE_CONSTANTS_FILE);
 
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/libs");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/core");
@@ -62,6 +64,11 @@ var startFlow = function () {
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/sheetHandler");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/commands");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/commands_ai");
+
+  if (devMode) {
+    cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/tests");
+    cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/tests/core");
+  }
 
   cwtBuild.readFolder(gameSource, CLIENT_SOURCE_DIRECTORY + "/libs");
   cwtBuild.readFolder(gameSource, CLIENT_SOURCE_DIRECTORY + "/core");
@@ -92,8 +99,7 @@ var startFlow = function () {
   cwtBuild.readFile(htmlSource, CLIENT_SOURCE_DIRECTORY + "/html/end.html");
 
   console.log("deploy files into " + DEST_DIRECTORY + "/");
-  var gameCode = isLiveMode(args) ? removeDevMacros(gameSource.toString()) : gameSource.toString();
-  cwtBuild.writeFile(gameCode, DEST_DIRECTORY + "/game.js");
+  cwtBuild.writeFile(gameSource.toString(), DEST_DIRECTORY + "/game.js");
   cwtBuild.writeFile(cssSource.toString(), DEST_DIRECTORY + "/game.css");
   cwtBuild.writeFile(htmlSource.toString(), DEST_DIRECTORY + "/game.html");
 

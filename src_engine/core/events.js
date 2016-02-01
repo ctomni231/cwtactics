@@ -1,3 +1,6 @@
+var cwtEvents = {};
+
+
 // TODO: rename from model.xxx to events.xxx
 
 // This module defines the event system API. This API basically defines the define function
