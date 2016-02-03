@@ -1,6 +1,19 @@
-//Let's take all we've learned and really make something out of it.
+// Now for an even harder assignment. We are going to make a paint program to
+// fully test the limits of jslix. Using the images we have already. 
 
-//http://localhost:8000/jslix.html
+// I need mouse functionality to make this one truly feel special
+// And better get keyboard functionality while I'm at it
+
+// Main features.
+
+// Point and click draw (Did it, but it is pretty slow, still got to work on it).
+// point and click animate
+
+// Future features
+
+// Able to change the color of an image
+
+//http://localhost:8000/testjslix.html
 
 // ImageLibrary Stuff
 var view;
@@ -22,6 +35,9 @@ var imgsData;
 var imgview;
 var i;
 
+//animation stuff
+var step = 0;
+
 // JSlix stuff
 var interval = null;
 var lastTime = new Date();
@@ -32,19 +48,31 @@ var sec = 16;
 var cx = 0;
 var cy = 0;
 
-//animation stuff
-var step = 0;
-
 // getImage stuff
 var newImg = new Image();
 var tempImg = new Image();
 newImgReady = -1;
 
+//Init stuff
+var mousex = 0;
+var mousey = 0;
+
+var intArray = [];
+var mxArray = [];
+var myArray = [];
+
 function init(){
-	addImage("AWDS_INFT.png");
-	addImage("MinuteWars.png");
-	addImage("CWT_MECH.png");
 	
+}
+
+function createImage(event){
+	var text = document.getElementById("textBox");
+	
+	intArray.push(viewArray.length);
+	mxArray.push(mousex);
+	myArray.push(mousey);
+	
+	addImage(text.value);
 }
 
 function runGame(){
@@ -57,23 +85,11 @@ function runGame(){
 	step++;
 	if( step == 3 ) step = 0;
 	
-	ctx.drawImage(image, 0, 0, c.width, c.height);
-	//ctx.drawImage(canvasImage(1), 0, 0, c.width, c.height);
-	//for(var i = 0; i < 20; i++){
-	//	ctx.drawImage(newImg, step*32, 0, 32, 32, 10*i, 10, 32, 32);
-	//}
-	for(var i = 0; i < 20; i++){
-		ctx.drawImage(canvasImg(0), step*32, 0, 32, 32, 10*i, 10, 32, 32);
+	for(var i = 0; i < intArray.length; i++){
+		ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
 	}
-	for(var i = 0; i < 20; i++)
-		ctx.drawImage(canvasImg(1), step*32, 0, 32, 32, 10*i, 10+16, 32, 32);
-	for(var i = 0; i < 20; i++)
-		ctx.drawImage(getImg(0), step*32, 0, 32, 32, 10*i, 10+32, 32, 32);
-	/*for(var i = 0; i < 100; i++)
-		ctx.drawImage(canvasImg(1), step*32, 0, 32, 32, 10*i, 10+48, 32, 32);
-	for(var i = 0; i < 100; i++)
-		ctx.drawImage(canvasImg(0), step*32, 0, 32, 32, 10*i, 10+64, 32, 32);//*/
 	
+	// Keeps track of the FPS
 	var nowTime = new Date();
 	var diffTime = nowTime.getTime() - lastTime.getTime();
 	frame += diffTime;
@@ -86,9 +102,11 @@ function runGame(){
 	ctx.fillStyle = '#000000';
 	ctx.font = 'bold 10px sans-serif';
 	ctx.fillText('FPS: ' + fps , 4, 10);
+	ctx.fillText('Mouse:(' + mousex + ',' + mousey + ')' , 4, 20);
 	
 	lastTime = new Date();
 }
+
 
 // This is the game test itself
 function run(sec){
@@ -104,10 +122,17 @@ function run(sec){
 		document.body.appendChild(imgStorage);
 	}
 	imgStorage.setAttribute("id", "myCanvas");
-	imgStorage.setAttribute("width", w);
-	imgStorage.setAttribute("height", h);
+	//imgStorage.setAttribute("width", w);
+	//imgStorage.setAttribute("height", h);
+	imgStorage.setAttribute("onmousemove", "getDimensions(event)");
+	imgStorage.setAttribute("onclick", "createImage(event)");
 	imgStorage.innerHTML = "Your browser does not support the HTML5 canvas tag.";
 	interval = setInterval(runGame, sec);
+}
+
+function getDimensions(event){
+	mousex = event.clientX - 8;
+	mousey = event.clientY - 8;
 }
 
 // ---------------------------------
@@ -247,7 +272,7 @@ function canvasImg(num){
 // The getImage stuff - to get rid of the slow time of Internet Explorer
 function getImg(num){
 	if(newImgReady != num){
-		console.log("Goes here "+newImgReady);
+		//console.log("Goes here "+newImgReady);
 		addLoadEvent(loadImage(num));
 	}
 

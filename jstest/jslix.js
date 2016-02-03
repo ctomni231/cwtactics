@@ -4,7 +4,7 @@
 //http://localhost:8000/jslix.html
 
 // JSlix stuff
-var interval;
+var interval = null;
 var lastTime = new Date();
 var imgQueue = [];
 var frame = 0;
@@ -38,27 +38,12 @@ var i;
 var newImg = new Image();
 newImgReady = -1;
 
-
-
-
+// This is the game test itself
 function run(sec){
-	init();
-	var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-	var h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-	var imgStorage = document.getElementById("myCanvas");
-	if(imgStorage == null){
-		imgStorage = document.createElement("canvas");
-		document.body.appendChild(imgStorage);
-	}
-	imgStorage.setAttribute("id", "myCanvas");
-	imgStorage.setAttribute("width", w);
-	imgStorage.setAttribute("height", h);
-	imgStorage.innerHTML = "Your browser does not support the HTML5 canvas tag.";
-	interval = setInterval(runGame, sec);
-}
-
-function rebase(sec){
-	clearInterval(interval);
+	if(interval == null)
+		init();
+	else
+		clearInterval(interval);
 	var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 	var h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
 	var imgStorage = document.getElementById("myCanvas");
