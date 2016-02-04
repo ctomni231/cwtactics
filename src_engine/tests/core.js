@@ -1,24 +1,24 @@
-cwt.test.tests = [];
+var tests = [];
 
-cwt.test.asynchronTest = function (groupName, caseName, test) {
-  cwt.test.tests.push({
+gameServices.asynchronTest = function (groupName, caseName, test) {
+  tests.push({
     group: groupName,
     name: caseName,
     test: test
   });
 };
 
-cwt.test.synchronTest = function (groupName, caseName, test) {
-  cwt.test.tests.push({
+gameServices.synchronTest = function (groupName, caseName, test) {
+  tests.push({
     group: groupName,
     name: caseName,
     test: test
   });
 };
 
-cwt.test.evaluateTests = function (whenDoneCb) {
+gameServices.evaluateTests = function (whenDoneCb) {
   cwt.serialExecution(function (pushJob) {
-    cwt.test.tests.forEach(function (el) {
+    tests.forEach(function (el) {
       pushJob(function (next) {
         console.log("executing test [" + el.group + "|" + el.name + "]");
         try {
@@ -36,12 +36,3 @@ cwt.test.evaluateTests = function (whenDoneCb) {
     })
   });
 };
-
-/*
-var gameDict = {};
-
-requireNonNull(gameDict.wuff);
-gameDict.wuff = function (x) {
-  console.log("X: " + x);
-};
-*/
