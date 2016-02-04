@@ -4,7 +4,7 @@
     "ID": "PLIN",
     "defense": 1,
     "assets":{
-      "gfx":"cwt_anim/terrain/CWT_PLIN.png"
+      "gfx":"cwt_tileset/terrain(C)/CWT_PLIN.png"
     }
   },
 
@@ -13,7 +13,7 @@
     "defense": 2,
     "blocksVision":true,
     "assets":{
-      "gfx":"cwt_anim/terrain/CWT_FRST.png",
+      "gfx":"cwt_tileset/terrain(C)/CWT_FRST.png",
       "gfxOverlay":true
     }
   },
@@ -22,7 +22,7 @@
     "ID": "MNTN",
     "defense": 4,
     "assets":{
-      "gfx":"cwt_anim/terrain/CWT_MNTN.png",
+      "gfx":"cwt_tileset/terrain(C)/CWT_MNTN.png",
       "gfxOverlay":true
     }
   },
@@ -32,7 +32,7 @@
     "ID": "ROAD",
     "defense": 0,
     "assets":{
-      "gfx":"cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png",
+      "gfx":"cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",
       "gfx_variants":[
         {
           "ROAD": "R",
@@ -45,22 +45,22 @@
           "DEFAULT": ""
         },
         [
-          [ "cwt_anim/terrain/CWT_ROAD(O)$OOOO~~~~.png",  "R","R","R","R" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$~OOO~~~~.png",  "","R","R","R" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$O~OO~~~~.png",  "R","R","","R" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$OO~O~~~~.png",  "R","R","R","" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$OOO~~~~~.png",  "R","","R","R" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png",  "","R","","R" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$~O~O~~~~.png",  "","R","R","" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$~OO~~~~~.png",  "","","R","R" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$O~~O~~~~.png",  "R","R","","" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$O~O~~~~~.png",  "R","","","R" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$OO~~~~~~.png",  "R","","R","" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$OO~~~~~~.png",  "","","R","" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$OO~~~~~~.png",  "R","","","" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png",  "","","","R" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png",  "","R","","" ],
-          [ "cwt_anim/terrain/CWT_ROAD(O)$~~OO~~~~.png",  "","","","" ]
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OOOO~~~~.png",  "R","R","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~OOO~~~~.png",  "","R","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$O~OO~~~~.png",  "R","R","","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~O~~~~.png",  "R","R","R","" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OOO~~~~~.png",  "R","","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",  "","R","","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~O~O~~~~.png",  "","R","R","" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~OO~~~~~.png",  "","","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$O~~O~~~~.png",  "R","R","","" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$O~O~~~~~.png",  "R","","","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~~~~~~.png",  "R","","R","" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~~~~~~.png",  "","","R","" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~~~~~~.png",  "R","","","" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",  "","","","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",  "","R","","" ],
+          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",  "","","","" ]
         ]
       ]
     }
@@ -71,25 +71,25 @@
     "defense": 0,
     "assets":{
       "animated": 2,
-      "gfx":"cwt_anim/terrain/CWT_RIVR(R)$~~RR~~~~.png",
+      "gfx":"cwt_tileset/terrain(C)/CWT_RIVR(R)$~~RR~~~~.png",
       "gfx_variants":[
         {
           "RIVER": "R",
           "DEFAULT": ""
         },
         [
-          [ "cwt_anim/terrain/CWT_RIVR(R)$RRRR~~~~.png",  "R","R","R","R" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$~RRR~~~~.png",  "","R","R","R" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$R~RR~~~~.png",  "R","R","","R" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$RR~R~~~~.png",  "R","R","R","" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$RRR~~~~~.png",  "R","","R","R" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$~~RR~~~~.png",  "","R","","R" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$~R~R~~~~.png",  "","R","R","" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$~RR~~~~~.png",  "","","R","R" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$R~~R~~~~.png",  "R","R","","" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$R~R~~~~~.png",  "R","","","R" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$RR~~~~~~.png",  "R","","R","" ],
-          [ "cwt_anim/terrain/CWT_RIVR(R)$~~RR~~~~.png",  "","","","" ]
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$RRRR~~~~.png",  "R","R","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$~RRR~~~~.png",  "","R","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$R~RR~~~~.png",  "R","R","","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$RR~R~~~~.png",  "R","R","R","" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$RRR~~~~~.png",  "R","","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$~~RR~~~~.png",  "","R","","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$~R~R~~~~.png",  "","R","R","" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$~RR~~~~~.png",  "","","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$R~~R~~~~.png",  "R","R","","" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$R~R~~~~~.png",  "R","","","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$RR~~~~~~.png",  "R","","R","" ],
+          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$~~RR~~~~.png",  "","","","" ]
         ]
       ]
     }
@@ -99,7 +99,7 @@
     "ID": "BRDG",
     "defense": 0,
     "assets":{
-      "gfx":"cwt_anim/terrain/CWT_BRDG(ORB)$~~OO~~~~.png",
+      "gfx":"cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",
       "gfx_variants":[
         {
           "ROAD": "R",
@@ -109,24 +109,24 @@
         },
         [
 
-          [ "cwt_anim/terrain/CWT_BRDG(OSRB)$OOOO~~~~.png",  "R","R","R","R" ],
-          [ "cwt_anim/terrain/CWT_BRDG(OSRB)$~OOO~~~~.png",  "","R","R","R" ],
-          [ "cwt_anim/terrain/CWT_BRDG(OSRB)$O~OO~~~~.png",  "R","R","","R" ],
-          [ "cwt_anim/terrain/CWT_BRDG(OSRB)$OO~O~~~~.png",  "R","R","R","" ],
-          [ "cwt_anim/terrain/CWT_BRDG(OSRB)$OOO~~~~~.png",  "R","","R","R" ],
-          [ "cwt_anim/terrain/CWT_BRDG(OSRB)$~OO~~~~~.png",  "","","R","R" ],
-          [ "cwt_anim/terrain/CWT_BRDG(OSRB)$O~O~~~~~.png",  "R","","","R" ],
-          [ "cwt_anim/terrain/CWT_BRDG(OSRB)$O~~O~~~~.png",  "R","R","","" ],
-          [ "cwt_anim/terrain/CWT_BRDG(OSRB)$~O~O~~~~.png",  "","R","R","" ],
-          [ "cwt_anim/terrain/CWT_BRDG(OSB)$OOSS~~~~.png",  "R","S","R","S"],
-          [ "cwt_anim/terrain/CWT_BRDG(OSB)$SSOO~~~~.png",  "S","R","S","R"],
-          [ "cwt_anim/terrain/CWT_BRDG(ORB)$OO~~~~~~.png",  "R","","R",""],
-          [ "cwt_anim/terrain/CWT_BRDG(ORB)$OO~~~~~~.png",  "","","R",""],
-          [ "cwt_anim/terrain/CWT_BRDG(ORB)$OO~~~~~~.png",  "R","","",""],
-          [ "cwt_anim/terrain/CWT_BRDG(ORB)$~~OO~~~~.png",  "","R","","R"],
-          [ "cwt_anim/terrain/CWT_BRDG(ORB)$~~OO~~~~.png",  "","","","R"],
-          [ "cwt_anim/terrain/CWT_BRDG(ORB)$~~OO~~~~.png",  "","R","",""],
-          [ "cwt_anim/terrain/CWT_BRDG(ORB)$~~OO~~~~.png",  "","","","" ]
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$OOOO~~~~.png",  "R","R","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$~OOO~~~~.png",  "","R","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$O~OO~~~~.png",  "R","R","","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$OO~O~~~~.png",  "R","R","R","" ],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$OOO~~~~~.png",  "R","","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$~OO~~~~~.png",  "","","R","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$O~O~~~~~.png",  "R","","","R" ],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$O~~O~~~~.png",  "R","R","","" ],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$~O~O~~~~.png",  "","R","R","" ],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSB)$OOSS~~~~.png",  "R","S","R","S"],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSB)$SSOO~~~~.png",  "S","R","S","R"],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$OO~~~~~~.png",  "R","","R",""],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$OO~~~~~~.png",  "","","R",""],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$OO~~~~~~.png",  "R","","",""],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",  "","R","","R"],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",  "","","","R"],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",  "","R","",""],
+          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",  "","","","" ]
         ]
       ]
     }
@@ -136,7 +136,7 @@
     "ID": "WATER",
     "defense": 0,
     "assets":{
-      "gfx":"cwt_anim/terrain/CWT_SEAS(S).png",
+      "gfx":"cwt_tileset/terrain(C)/CWT_SEAS(S).png",
       "animated": 2,
       "gfx_variants":[
         {
@@ -151,52 +151,52 @@
           "DEFAULT": ""
         },
         [
-          [ "cwt_anim/terrain/CWT_SEAS(S).png", "S","S","S","S","S","S","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~~~~~~~~.png", "L","L","L","L","L","L","L","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~~SS~~~~.png", "L","","S","","L","","S","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SS~~~~~~.png", "S","","L","","S","","L","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~~~S~~~~.png", "L","","S","","L","","L","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~~S~~~~~.png", "L","","L","","L","","S","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~S~~~~~~.png", "L","","L","","S","","L","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~S~~~~~~.png", "S","","L","","L","","L","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~S~S~~~S.png", "L","L","S","S","S","L","L","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~S~S~~~S.png", "L","","S","S","S","","L","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~SS~~~S~.png", "L","L","L","L","S","S","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~SS~~~S~.png", "L","","L","","S","S","S","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","L","S","S","S","S","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$RSSS~~SS.png", "RV","L","S","S","S","S","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$S~~~~~~~.png", "S","L","L","L","L","L","L","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$S~~S~S~~.png", "S","S","S","L","L","L","L","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$S~S~S~~~.png", "S","","L","","L","","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$S~SSSS~~.png", "S","","S","","L","","S","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SRSSSS~~.png", "S","S","S","L","RV","L","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SS~S~S~S.png", "S","","S","","S","","L","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSRS~S~S.png", "S","S","S","S","S","L","RV","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSS~S~S~.png", "S","","L","","S","","","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSRS~S~.png", "S","L","RV","L","S","S","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSS~~~~.png", "S","L","S","L","S","L","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSS~~~S.png", "S","L","S","S","S","L","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSS~~S~.png", "S","L","S","L","S","S","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSS~~SS.png", "S","L","S","S","S","S","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSS~S~~.png", "S","S","S","L","S","L","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSS~S~S.png", "S","S","S","S","S","L","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSS~SS~.png", "S","S","S","L","S","S","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSS~SSS.png", "S","S","S","S","S","S","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~~~.png", "S","L","S","L","S","L","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~~S.png", "S","L","S","S","S","L","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~S~.png", "S","L","S","L","S","S","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~SS.png", "S","L","S","S","S","S","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~~.png", "S","S","S","L","S","L","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSSSS~.png", "S","S","S","L","S","S","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~S.png", "S","S","S","S","S","L","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","L","S","S","S","S","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","S" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$~SSS~~S~.png", "L","L","S","L","S","","S","L" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSS~SS.png", "S","L","S","","","","","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSSSS~.png", "","","S","L","S","","","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSSSS~S.png", "","","","","S","L","S","" ],
-          [ "cwt_anim/terrain/CWT_SEAS(S)$SSSS~SSS.png", "S","","","","","","S","L" ]
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S).png", "S","S","S","S","S","S","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~~~~~~~~.png", "L","L","L","L","L","L","L","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~~SS~~~~.png", "L","","S","","L","","S","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SS~~~~~~.png", "S","","L","","S","","L","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~~~S~~~~.png", "L","","S","","L","","L","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~~S~~~~~.png", "L","","L","","L","","S","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~~~~~~.png", "L","","L","","S","","L","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~~~~~~.png", "S","","L","","L","","L","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~S~~~S.png", "L","L","S","S","S","L","L","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~S~~~S.png", "L","","S","S","S","","L","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SS~~~S~.png", "L","L","L","L","S","S","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SS~~~S~.png", "L","","L","","S","S","S","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L","L","S","S","S","S","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$RSSS~~SS.png", "RV","L","S","S","S","S","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$S~~~~~~~.png", "S","L","L","L","L","L","L","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$S~~S~S~~.png", "S","S","S","L","L","L","L","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$S~S~S~~~.png", "S","","L","","L","","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$S~SSSS~~.png", "S","","S","","L","","S","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SRSSSS~~.png", "S","S","S","L","RV","L","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SS~S~S~S.png", "S","","S","","S","","L","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSRS~S~S.png", "S","S","S","S","S","L","RV","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSS~S~S~.png", "S","","L","","S","","","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSRS~S~.png", "S","L","RV","L","S","S","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~~~.png", "S","L","S","L","S","L","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~~S.png", "S","L","S","S","S","L","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~S~.png", "S","L","S","L","S","S","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~SS.png", "S","L","S","S","S","S","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~S~~.png", "S","S","S","L","S","L","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~S~S.png", "S","S","S","S","S","L","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~SS~.png", "S","S","S","L","S","S","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~SSS.png", "S","S","S","S","S","S","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~~~.png", "S","L","S","L","S","L","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~~S.png", "S","L","S","S","S","L","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~S~.png", "S","L","S","L","S","S","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~SS.png", "S","L","S","S","S","S","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSS~~.png", "S","S","S","L","S","L","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSSS~.png", "S","S","S","L","S","S","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSS~S.png", "S","S","S","S","S","L","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L","L","S","S","S","S","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","S" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~S~.png", "L","L","S","L","S","","S","L" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~SS.png", "S","L","S","","","","","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSSS~.png", "","","S","L","S","","","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSS~S.png", "","","","","S","L","S","" ],
+          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~SSS.png", "S","","","","","","S","L" ]
         ]
       ]
     }
@@ -208,7 +208,7 @@
     "blocksVision":true,
     "assets":{
       "animated": 2,
-      "gfx":"cwt_anim/terrain/CWT_REEF(S).png"
+      "gfx":"cwt_tileset/terrain(C)/CWT_REEF(S).png"
     }
   },
 
@@ -217,7 +217,7 @@
     "defense": 0,
     "assets":{
       "animated": 2,
-      "gfx":"cwt_anim/terrain/CWT_SHOA(BS)$BB~S~S~S.png"
+      "gfx":"cwt_tileset/terrain(C)/CWT_SHOA(BS)$BB~S~S~S.png"
     }
   },
 
@@ -242,7 +242,7 @@
       "TANK":2
     },
     "assets":{
-      "gfx":"cwt_anim/properties/CWT_CITY.png"
+      "gfx":"cwt_tileset/properties(C)/CWT_CITY.png"
     }
   },
 
@@ -275,7 +275,7 @@
       "TANK"
     ],
     "assets":{
-      "gfx":"cwt_anim/properties/CWT_BASE.png"
+      "gfx":"cwt_tileset/properties(C)/CWT_BASE.png"
     }
   },
 
@@ -295,7 +295,7 @@
       "AIR"
     ],
     "assets":{
-      "gfx":"cwt_anim/properties/CWT_APRT.png"
+      "gfx":"cwt_tileset/properties(C)/CWT_APRT.png"
     }
   },
 
@@ -318,7 +318,7 @@
       "WATER_TRANSPORT"
     ],
     "assets":{
-      "gfx":"cwt_anim/properties/CWT_PORT(SBR).png"
+      "gfx":"cwt_tileset/properties(C)/CWT_PORT(SBR).png"
     }
   },
 
@@ -334,7 +334,7 @@
     "changeTo":"SILO_EMPTY",
     "assets":{
       "fireSound":"rocketImpact.mp3",
-      "gfx":"cwt_anim/properties/CWT_SILO.png"
+      "gfx":"cwt_tileset/properties(C)/CWT_SILO.png"
     }
   },
 
@@ -344,7 +344,7 @@
     "vision": 0,
     "rocketsilo":{},
     "assets":{
-      "gfx":"cwt_anim/properties/CWT_PLTF.png"
+      "gfx":"cwt_tileset/properties(C)/CWT_PLTF.png"
     }
   },
 
@@ -372,12 +372,12 @@
       "TANK":2
     },
     "assets":{
-      "gfx":"cwt_anim/properties/CWT_HQTR.png",
+      "gfx":"cwt_tileset/properties(C)/CWT_HQTR.png",
       "factionSprites":{
-        "ORST":"cwt_anim/properties/CWT_HQTR_OS.png",
-        "BLMN":"cwt_anim/properties/CWT_HQTR_BM.png",
-        "GRET":"cwt_anim/properties/CWT_HQTR_GE.png",
-        "YLCM":"cwt_anim/properties/CWT_HQTR_YC.png"
+        "ORST":"cwt_tileset/properties(C)/CWT_HQTR_OS.png",
+        "BLMN":"cwt_tileset/properties(C)/CWT_HQTR_BM.png",
+        "GRET":"cwt_tileset/properties(C)/CWT_HQTR_GE.png",
+        "YLCM":"cwt_tileset/properties(C)/CWT_HQTR_YC.png"
       }
     }
   },
@@ -388,7 +388,7 @@
     "defense": 3,
     "points": 20,
     "assets":{
-      "gfx":"cwt_anim/properties/CWT_RADR.png"
+      "gfx":"cwt_tileset/properties(C)/CWT_RADR.png"
     }
   },
 
@@ -404,7 +404,7 @@
       "damage":3
     },
     "assets":{
-      "gfx":"cwt_anim/inventions/CWT_BHMC-E.png",
+      "gfx":"cwt_tileset/inventions(C)/CWT_BHMC-E.png",
       "fireSound" : "cannon.wav",
       "fireAnimation":[
         "object_firing/CWT_BHMC-E.png",
@@ -427,7 +427,7 @@
       "damage":3
     },
     "assets":{
-      "gfx":"cwt_anim/inventions/CWT_BHMC-N.png",
+      "gfx":"cwt_tileset/inventions(C)/CWT_BHMC-N.png",
       "fireSound" : "cannon.wav",
       "animated":false,
       "fireAnimation":[
@@ -450,7 +450,7 @@
       "damage":3
     },
     "assets":{
-      "gfx":"cwt_anim/inventions/CWT_BHMC-S.png",
+      "gfx":"cwt_tileset/inventions(C)/CWT_BHMC-S.png",
       "fireSound" : "cannon.wav",
       "animated"  : false,
       "fireAnimation":[
@@ -473,7 +473,7 @@
       "damage":3
     },
     "assets":{
-      "gfx":"cwt_anim/inventions/CWT_BHMC-W.png",
+      "gfx":"cwt_tileset/inventions(C)/CWT_BHMC-W.png",
       "fireSound":"cannon.wav",
       "fireAnimation":[
         "object_firing/CWT_BHMC-W.png",
@@ -502,7 +502,7 @@
       "damage"    : 5
     },
     "assets":{
-      "gfx"       : "cwt_anim/inventions/CWT_BHCN-S.png",
+      "gfx"       : "cwt_tileset/inventions(C)/CWT_BHCN-S.png",
       "gfxOffset" : [
         48,64,
         -32,-32
@@ -527,7 +527,7 @@
       "damage"      : 3
     },
     "assets":{
-      "gfx"         : "cwt_anim/inventions/CWT_BHLZ.png",
+      "gfx"         : "cwt_tileset/inventions(C)/CWT_BHLZ.png",
       "fireSound"   : "laser.wav",
       "animated"    : false,
       "chargeAnimation":[
@@ -598,7 +598,7 @@
     "defense":0,
     "vision": 0,
     "assets":{
-      "gfx":"cwt_anim/inventions/CWT_SRBL.png"
+      "gfx":"cwt_tileset/inventions(C)/CWT_SRBL.png"
     }
   },
 
@@ -607,7 +607,7 @@
     "defense":0,
     "vision": 0,
     "assets":{
-      "gfx":"cwt_anim/inventions/CWT_BRBL-S.png"
+      "gfx":"cwt_tileset/inventions(C)/CWT_BRBL-S.png"
     }
   }
 ]

@@ -24,15 +24,24 @@ cwt.test.evaluateTests = function (whenDoneCb) {
         try {
           el.test();
           console.info("PASSED");
-        } catch(e) {
+        } catch (e) {
           console.warn("FAILED");
         }
         next();
       });
     });
-    
+
     pushJob(function () {
       whenDoneCb();
     })
   });
 };
+
+/*
+var gameDict = {};
+
+requireNonNull(gameDict.wuff);
+gameDict.wuff = function (x) {
+  console.log("X: " + x);
+};
+*/
