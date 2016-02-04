@@ -120,12 +120,26 @@ cwtBuild.readFolder = function (builder, path, filter) {
   return builder;
 };
 
+cwtBuild.appendCodeHeader = function (builder) {
+  builder.append("gameServices = {}; \r\n");
+};
+
 cwtBuild.readFile = function (builder, path) {
-  var content;
+  var content, dotJsIndex;
 
   content = fs.readFileSync(path).toString();
-  builder.append(content);
-  builder.append("\r\n");
+
+  dotJsIndex = path.indexOf(".js");
+  if (dotJsIndex != -1 && dotJsIndex == path.length - 3) {
+    builder.append("(function(gameServices){");
+    builder.append("\r\n");
+    builder.append(content);
+    builder.append("\r\n");
+    builder.append("})(gameServices);");
+    builder.append("\r\n");
+  } else {
+    builder.append(content);
+  }
   return builder;
 };
 

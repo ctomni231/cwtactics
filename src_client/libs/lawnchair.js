@@ -168,3 +168,5 @@ Lawnchair.prototype = {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = Lawnchair;
 }
+
+window.Lawnchair = Lawnchair;

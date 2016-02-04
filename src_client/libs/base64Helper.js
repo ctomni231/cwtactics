@@ -1,7 +1,7 @@
 /**
  * @namespace
  */
-var Base64Helper = {};
+Base64Helper = {};
 
 /**
  * 

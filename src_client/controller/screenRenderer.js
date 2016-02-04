@@ -1,4 +1,3 @@
-var TILE_LENGTH = 16;
 
 /**
  *

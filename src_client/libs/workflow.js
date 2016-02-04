@@ -138,3 +138,5 @@ var jWorkflow = (function () {
 if (typeof module === "object" && typeof require === "function") {
   module.exports = jWorkflow;
 }
+
+window.jWorkflow = jWorkflow;

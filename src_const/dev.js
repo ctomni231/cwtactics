@@ -1,2 +1,2 @@
-var DEBUG = true;
-var MOD_PATH = "http://localhost/src_gamedata/";
+DEBUG = true;
+MOD_PATH = "http://localhost/src_gamedata/";
