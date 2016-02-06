@@ -1,30 +1,34 @@
-controller.cutImages = util.singleLazyCall(function( err, baton ){
+var addJob = function (queue, nameList, handler, filter) {
+  util.forEachWithFilter(nameList, function (el) {
+    queue.pushSynchronJob(function () {
+      handler(el);
+    });
+  }, filter);
+};
 
+controller.cutImages = util.oneTimeCallable(function (err, baton) {
+  var queue;
+
+  queue = new cwt.Queue();
+
+  queue.pushSynchronJob(function () {
+    baton.take(); // TODO remove this legacy thing
+  });
+
+  queue.pushSynchronJob(util.logCallback("start cropping images"));
+
+  addJob(queue, model.data_unitTypes, view.imageProcessor_cropUnitSprite, function (unitTypeId) {
+    return !!model.data_unitSheets[unitTypeId].assets.gfx;
+  });
   
-  baton.take();
+  addJob(queue, model.data_graphics.misc, view.imageProcessor_cropMiscSprite, null);
 
-  var flow = jWorkflow.order(function(){
-    if( DEBUG ) util.log("crop images");
+  queue.pushSynchronJob(util.logCallback("finished cropping images"));
+
+  queue.pushSynchronJob(function () {
+    baton.pass(); // TODO remove this legacy thing
   });
 
-  // units
-  model.data_unitTypes.forEach(function(el){
-    if( ! model.data_unitSheets[el].assets.gfx ) return;
+  queue.execute(function () {});
 
-    flow.andThen(function(){
-      view.imageProcessor_cropUnitSprite(el);
-    });
-  });
-
-  // misc
-  model.data_graphics.misc.forEach(function(el){
-    flow.andThen(function(){
-      view.imageProcessor_cropMiscSprite(el);
-    });
-  });
-
-  flow.start(function(){
-    if( DEBUG ) util.log("cropped images");
-    baton.pass();
-  });
 });
