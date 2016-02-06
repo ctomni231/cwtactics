@@ -28,6 +28,10 @@ util.scoped(function(){
     toolTipId = parseInt( Math.random()*model.data_tips.length, 10);
     updateTooltip();
     controller.screenStateMachine.structure.MOBILE.timer = TIMEOUT_TIPS;
+    
+    if (gameServices.evaluateTests) {
+      gameServices.evaluateTests(function(){});
+    }
   };
 
   controller.screenStateMachine.structure.MOBILE.decreaseTimer = function( _,delta ){
