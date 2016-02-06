@@ -1,3 +1,2 @@
-// fake stub to help ternJS for code completion :)
-var gameServices = {};
-
+/** the global object which is shared between every module. */
+cwt = {};

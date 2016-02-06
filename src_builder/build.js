@@ -8,6 +8,7 @@ var ARG_LIVE_BUILD = "-live";
 var BASE_CONSTANTS_FILE = "src_const/base.js";
 var DEV_CONSTANTS_FILE = "src_const/dev.js";
 var LIVE_CONSTANTS_FILE = "src_const/live.js";
+var BASE_STUB_FILE = "src_const/stub.js";
 
 var cwtBuild = require("./lib").cwtBuild;
 var args = process.argv.slice(2);
@@ -51,6 +52,7 @@ var startFlow = function () {
 
   var gameSource = new cwtBuild.StringBuilder();
   
+  cwtBuild.readFile(gameSource, BASE_STUB_FILE);
   cwtBuild.readFile(gameSource, BASE_CONSTANTS_FILE);
   cwtBuild.readFile(gameSource, devMode ? DEV_CONSTANTS_FILE : LIVE_CONSTANTS_FILE);
 

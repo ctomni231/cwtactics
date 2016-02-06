@@ -1,4 +1,4 @@
-cwt.synchronTest("util/list", "forEachWithFilter - no filter given", function () {
+cwt.synchronTest("util-list", "forEachWithFilter - no filter given", function () {
   var counter, LIST = [1, 2, 3, 4];
 
   counter = 0;
@@ -8,7 +8,7 @@ cwt.synchronTest("util/list", "forEachWithFilter - no filter given", function ()
   assert(counter == 4, "all elements should be evaluated");
 });
 
-cwt.synchronTest("util/list", "forEachWithFilter - filter given", function () {
+cwt.synchronTest("util-list", "forEachWithFilter - filter given", function () {
   var checkList, LIST = [1, 2, 3, 4];
 
   checkList = [];
