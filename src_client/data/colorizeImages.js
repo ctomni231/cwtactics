@@ -1,50 +1,43 @@
-controller.colorizeImages = util.singleLazyCall(function( err, baton ){
-  baton.take();
-
-  var flow = jWorkflow.order(function(){
-      if( DEBUG ) util.log("colorize images");
-  });
-
-  // units
-  model.data_unitTypes.forEach(function(el){
-    if( ! model.data_unitSheets[el].assets.gfx ) return;
-
-    flow.andThen(function(){
-      view.imageProcessor_colorizeUnit(el);
+var forEachType = function (queue, nameList, typeList, handler) {
+  nameList.forEach(function (el) {
+    if (typeList && !typeList[el].assets.gfx) return;
+    queue.pushSynchronJob(function () {
+      handler(el);
     });
   });
+};
 
-  // properties
-  model.data_propertyTypes.forEach(function(el){
-    if( ! model.data_tileSheets[el].assets.gfx ) return;
+controller.colorizeImages = util.oneTimeCallable(function (err, baton) {
+  var queue;
 
-    flow.andThen(function(){
-      view.imageProcessor_colorizeProperty(el);
-    });
+  queue = new cwt.Queue();
+
+  queue.pushSynchronJob(function () {
+    baton.take(); // TODO remove legacy code protection
   });
 
-  // tiles
-  model.data_tileTypes.forEach(function(el){
-    flow.andThen(function(){
-      view.imageProcessor_colorizeTile(el);
-    });
-  });
+  queue.pushSynchronJob(util.logCallback("started colorizing images"));
 
-  // tile variants
-  model.data_tileTypes.forEach(function( el ){
+  forEachType(queue, model.data_unitTypes, model.data_unitSheets, view.imageProcessor_colorizeUnit);
+  forEachType(queue, model.data_propertyTypes, model.data_tileSheets, view.imageProcessor_colorizeProperty);
+  forEachType(queue, model.data_tileTypes, null, view.imageProcessor_colorizeTile);
+  
+  model.data_tileTypes.forEach(function (el) {
     var obj = model.data_tileSheets[el];
-    if( obj.assets.gfx_variants ){
-      obj.assets.gfx_variants[1].forEach(function( sel ){
-        flow.andThen(function(){
-          view.imageProcessor_colorizeTile( sel[0] );
+    if (obj.assets.gfx_variants) {
+      obj.assets.gfx_variants[1].forEach(function (sel) {
+        queue.pushSynchronJob(function () {
+          view.imageProcessor_colorizeTile(sel[0]);
         });
       });
     }
   });
 
-  flow.start(function(){
-    if( DEBUG ) util.log("colorized images");
-    baton.pass();
+  queue.pushSynchronJob(util.logCallback("finished colorizing images"));
+
+  queue.pushSynchronJob(function () {
+    baton.pass(); // TODO remove legacy code protection
   });
 
+  queue.execute(function () {});
 });

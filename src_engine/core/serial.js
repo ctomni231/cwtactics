@@ -1,3 +1,28 @@
+cwt.Queue = function () {
+  this.jobs = [];
+};
+
+cwt.Queue.prototype.pushSynchronJob = function(job) {
+  this.jobs.push(function (next) {
+    job();
+    next();
+  });
+};
+
+cwt.Queue.prototype.pushAsynchronJob = function(job) {
+  this.jobs.push(job);
+};
+
+cwt.Queue.prototype.execute = function(whenDone) {
+  var jobs = this.jobs;
+  cwt.serialExecution(function(builder){
+    for (var i = 0; i < jobs.length; i++) {
+      builder(jobs[i]);
+    }
+    builder(whenDone);
+  });
+};
+
 cwt.serialExecution = function (queueBuilder) {
   var jobs = null;
   var cIndex = 0;

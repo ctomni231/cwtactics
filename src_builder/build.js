@@ -13,7 +13,7 @@ var cwtBuild = require("./lib").cwtBuild;
 var args = process.argv.slice(2);
 
 var checkDirectory = function () {
-  if (process.cwd().indexOf("/src_builder")) {
+  if (process.cwd().indexOf("src_builder") != -1) {
     process.chdir('../');
     console.log("change into root directory");
   }
