@@ -6,7 +6,7 @@ var addJob = function (queue, nameList, handler, filter) {
   }, filter);
 };
 
-controller.cutImages = util.oneTimeCallable(function (err, baton) {
+controller.cutImages = cwt.oneTimeCallable(function (err, baton) {
   var queue;
 
   queue = new cwt.Queue();
@@ -15,7 +15,7 @@ controller.cutImages = util.oneTimeCallable(function (err, baton) {
     baton.take(); // TODO remove this legacy thing
   });
 
-  queue.pushSynchronJob(util.logCallback("start cropping images"));
+  queue.pushSynchronJob(cwt.logCallback("start cropping images"));
 
   addJob(queue, model.data_unitTypes, view.imageProcessor_cropUnitSprite, function (unitTypeId) {
     return !!model.data_unitSheets[unitTypeId].assets.gfx;
@@ -23,7 +23,7 @@ controller.cutImages = util.oneTimeCallable(function (err, baton) {
   
   addJob(queue, model.data_graphics.misc, view.imageProcessor_cropMiscSprite, null);
 
-  queue.pushSynchronJob(util.logCallback("finished cropping images"));
+  queue.pushSynchronJob(cwt.logCallback("finished cropping images"));
 
   queue.pushSynchronJob(function () {
     baton.pass(); // TODO remove this legacy thing

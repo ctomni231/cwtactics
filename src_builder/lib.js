@@ -105,7 +105,8 @@ cwtBuild.readFolderFileList = function (path) {
  * 
  * @param   {cwtBuild.StringBuilder} builder string builder
  * @param   {string}                 path    path that will be readed
- * @param   {function()}             filter  if filter returns false, then the current selected file will be ignored
+ * @param   {function()}             filter  if filter returns false, then the current selected file
+ *                                           will be ignored
  * @returns {cwtBuild.StringBuilder} builder  
  */
 cwtBuild.readFolder = function (builder, path, filter) {

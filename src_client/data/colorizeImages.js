@@ -7,7 +7,7 @@ var forEachType = function (queue, nameList, typeList, handler) {
   });
 };
 
-controller.colorizeImages = util.oneTimeCallable(function (err, baton) {
+controller.colorizeImages = cwt.oneTimeCallable(function (err, baton) {
   var queue;
 
   queue = new cwt.Queue();
@@ -16,7 +16,7 @@ controller.colorizeImages = util.oneTimeCallable(function (err, baton) {
     baton.take(); // TODO remove legacy code protection
   });
 
-  queue.pushSynchronJob(util.logCallback("started colorizing images"));
+  queue.pushSynchronJob(cwt.logCallback("started colorizing images"));
 
   forEachType(queue, model.data_unitTypes, model.data_unitSheets, view.imageProcessor_colorizeUnit);
   forEachType(queue, model.data_propertyTypes, model.data_tileSheets, view.imageProcessor_colorizeProperty);
@@ -33,7 +33,7 @@ controller.colorizeImages = util.oneTimeCallable(function (err, baton) {
     }
   });
 
-  queue.pushSynchronJob(util.logCallback("finished colorizing images"));
+  queue.pushSynchronJob(cwt.logCallback("finished colorizing images"));
 
   queue.pushSynchronJob(function () {
     baton.pass(); // TODO remove legacy code protection
