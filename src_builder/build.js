@@ -51,7 +51,6 @@ var startFlow = function () {
 
   var gameSource = new cwtBuild.StringBuilder();
   
-  cwtBuild.appendCodeHeader(gameSource);
   cwtBuild.readFile(gameSource, BASE_CONSTANTS_FILE);
   cwtBuild.readFile(gameSource, devMode ? DEV_CONSTANTS_FILE : LIVE_CONSTANTS_FILE);
 

@@ -29,8 +29,8 @@ util.scoped(function(){
     updateTooltip();
     controller.screenStateMachine.structure.MOBILE.timer = TIMEOUT_TIPS;
     
-    if (gameServices.evaluateTests) {
-      gameServices.evaluateTests(function(){});
+    if (cwt.evaluateTests) {
+      cwt.evaluateTests(function(){});
     }
   };
 

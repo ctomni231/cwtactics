@@ -1,5 +1,5 @@
 var addJob = function (queue, nameList, handler, filter) {
-  util.forEachWithFilter(nameList, function (el) {
+  cwt.listFilteredForEach(nameList, function (el) {
     queue.pushSynchronJob(function () {
       handler(el);
     });

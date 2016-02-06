@@ -3,7 +3,15 @@ var TEST_IDENTIFIER_LENGTH = 100;
 
 var tests = [];
 
-gameServices.asynchronTest = function (groupName, caseName, test) {
+/**
+ * Adds an asynchron test to the test map. This test can do asynchron tasks and needs
+ * to call the whenDone function when all tasks are completed.
+ * 
+ * @param {string}             groupName group of the test  
+ * @param {string}             caseName  name of the test
+ * @param {function(whenDone)} test      test function
+ */
+cwt.asynchronTest = function (groupName, caseName, test) {
   tests.push({
     group: groupName,
     name: caseName,
@@ -11,7 +19,15 @@ gameServices.asynchronTest = function (groupName, caseName, test) {
   });
 };
 
-gameServices.synchronTest = function (groupName, caseName, test) {
+/**
+ * Adds a synchron test to the test map. This test cannot do asynchron tasks, 
+ * else it wont be recognized correctly by the test manager.
+ * 
+ * @param {string}   groupName group of the test
+ * @param {string}   caseName  name of the test
+ * @param {function} test      test function 
+ */
+cwt.synchronTest = function (groupName, caseName, test) {
   tests.push({
     group: groupName,
     name: caseName,
@@ -34,7 +50,7 @@ var expandStringToSize = function (str, size) {
   return str;
 };
 
-gameServices.evaluateTests = function (whenDoneCb) {
+cwt.evaluateTests = function (whenDoneCb) {
   var numOfSucceedTests, numOfFailedTests, testIdentifier;
 
   console.log("start tests");
