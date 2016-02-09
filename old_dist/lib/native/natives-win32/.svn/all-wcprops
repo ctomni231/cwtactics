@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/68/trunk/lib/native/natives-win32
+END
+jinput-dx8.dll
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/68/trunk/lib/native/natives-win32/jinput-dx8.dll
+END
+lwjgl.dll
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/68/trunk/lib/native/natives-win32/lwjgl.dll
+END
+jinput-raw.dll
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/68/trunk/lib/native/natives-win32/jinput-raw.dll
+END
+OpenAL32.dll
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/68/trunk/lib/native/natives-win32/OpenAL32.dll
+END

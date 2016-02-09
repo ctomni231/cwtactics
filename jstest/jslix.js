@@ -36,7 +36,7 @@ var imgview;
 var i;
 
 var newImg = new Image();
-newImgReady = -1;
+var newImgReady = -1;
 
 // This is the game test itself
 function run(sec){

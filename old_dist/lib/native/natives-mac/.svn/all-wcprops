@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/68/trunk/lib/native/natives-mac
+END
+openal.dylib
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/68/trunk/lib/native/natives-mac/openal.dylib
+END
+liblwjgl.jnilib
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/68/trunk/lib/native/natives-mac/liblwjgl.jnilib
+END
+libluajava-1.1.jnilib
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/68/trunk/lib/native/natives-mac/libluajava-1.1.jnilib
+END
+libjinput-osx.jnilib
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/68/trunk/lib/native/natives-mac/libjinput-osx.jnilib
+END
