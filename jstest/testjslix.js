@@ -25,6 +25,8 @@ var viewArray = [];
 var locxArray = [];
 var locyArray = [];
 var imgQueue = [];
+var imgArray = [];
+var imgReady = [];
 var busy = 0;
 
 // Drastically decrease copy times
@@ -86,7 +88,8 @@ function runGame(){
 	if( step == 3 ) step = 0;
 	
 	for(var i = 0; i < intArray.length; i++){
-		ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
+		//ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
+		ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
 	}
 	
 	// Keeps track of the FPS
@@ -103,6 +106,7 @@ function runGame(){
 	ctx.font = 'bold 10px sans-serif';
 	ctx.fillText('FPS: ' + fps , 4, 10);
 	ctx.fillText('Mouse:(' + mousex + ',' + mousey + ')' , 4, 20);
+	ctx.fillText('Image Count:' + intArray.length, 4, 30);
 	
 	lastTime = new Date();
 }
@@ -159,6 +163,10 @@ function addImage(text){
 	imgStorage.setAttribute("src", text);
 	imgStorage.setAttribute("onload", "storeImage()");
 	imgStorage.setAttribute("style", "display:none");
+	
+	//Makes a new storage spot for an image
+	imgArray.push(new Image());
+	imgReady.push(-1);
 }
 
 // This function is literally a callback function to actually store the image
@@ -271,18 +279,21 @@ function canvasImg(num){
 
 // The getImage stuff - to get rid of the slow time of Internet Explorer
 function getImg(num){
-	if(newImgReady != num){
+	//if(newImgReady != num){
+	if(imgReady[num] != num){
 		//console.log("Goes here "+newImgReady);
 		addLoadEvent(loadImage(num));
 	}
 
-	return newImg;
+	return imgArray[num];
+	//return newImg;
 }
 
 function loadImage(num){
 	tempImg = new Image();
 	tempImg.onload = function(){
-		newImg.src = this.src;
+		imgArray[num].src = this.src;
+		//newImg.src = this.src;
 		if(this.height == locyArray[num] && this.width == locxArray[num]){
 			newImgReady = num;
 		}	
