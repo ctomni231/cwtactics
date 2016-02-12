@@ -1,3 +1,5 @@
+/*global cwt*/
+
 cwt.requireFunction = function (value) {
   cwt.assertTrue(cwt.isFunction(value));
   return value;
@@ -30,6 +32,36 @@ cwt.requireNumber = function (value) {
   return value;
 };
 
+var n = 0;
+n++;
+
 cwt.isNumber = function (value) {
   return typeof value === "number";
+};
+
+cwt.requireNonNull = function (value) {
+  cwt.assertTrue(cwt.isNonNull(value));
+  return value;
+};
+
+cwt.isNonNull = function (value) {
+  return value !== null;
+};
+
+cwt.requireNull = function (value) {
+  cwt.assertTrue(!cwt.isNonNull(value));
+  return value;
+};
+
+cwt.isNull = function (value) {
+  return !cwt.isNonNull(value);
+};
+
+cwt.requireNothing = function (value) {
+  cwt.assertTrue(cwt.isNothing(value));
+  return value;
+};
+
+cwt.isNothing = function (value) {
+  return value === undefined;
 };

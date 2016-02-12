@@ -1,0 +1,62 @@
+<div id="cwt_errorPanel"
+     class="cwt_panel centerIt w_400 detachedtInFront"
+     style="display:none; margin: auto; margin-top: 96px; left: calc(50% - 200px);" >
+
+   <!--
+     Some values are already set here when an error will be thrown
+     before the language will be loaded.
+   -->
+
+  <p class="cwt_panel_header cwt_panel_header_small" style="color:red;">
+    <span key="error.panel.header">
+        Error
+    </span>
+  </p>
+
+  <!-- ###### ERROR REASON ######-->
+  <table>
+
+    <tr>
+      <td class="cwt_panel_header_small w_100">
+        <span key="error.panel.reason">Type</span>:
+      </td>
+      <td class="cwt_panel_header_small w_300">
+        <span id="cwt_errorPanel_reason"></span>
+      </td>
+    </tr>
+
+    <tr>
+      <td class="cwt_panel_header_small w_100">
+        <span key="error.panel.data">Stack</span>:
+      </td>
+      <td class="cwt_panel_header_small w_300">
+        <span id="cwt_errorPanel_data"></span>
+      </td>
+    </tr>
+
+  </table>
+
+  <!-- ###### ERROR ACTIONS ######-->
+  <p class="cwt_panel_footer cwt_panel_header_small"
+     key="error.panel.action" style="color: #3A3A3A;">
+      Reset game data and reload?
+  </p>
+
+  <p style="text-align: center; margin-bottom: 4px;">
+
+    <button key="error.panel.yes" onclick="
+       if( controller.storage_wipeOut ){
+         controller.storage_wipeOut(function(){
+           document.location.reload();
+         });
+       } else document.location.reload();
+      ">
+      Yes
+    </button>
+
+    <button key="error.panel.no" onclick="document.location.reload();" >
+      No
+    </button>
+
+  </p>
+</div>

@@ -1,0 +1,128 @@
+
+<div id="cwt_game_screen"
+     class=""
+     style="display:none;" >
+
+  <!-- #################################################################################################### -->
+
+  <div id="cwt_game_canvas">
+    <canvas id="cwt_canvas"></canvas>
+  </div>
+
+  <!-- #################################################################################################### -->
+
+  <div id="cwt_info_box"
+       style="opacity:0; left: calc( 50% - 200px); top: -1000px; padding-bottom: 4px;"
+       class="cwt_panel w_400 detachedInFront fadeAnimation">
+
+    <p class="cwt_panel_header cwt_panel_header_small">
+      <span key="message.panel.header"></span>
+    </p>
+
+    <span id="cwt_info_box_content"
+          class="cwt_panel_header_small"
+          style="text-align: center;"></span>
+
+  </div>
+
+  <!-- #################################################################################################### -->
+
+  <div id="cwt_menu"
+       style="opacity:0; left: calc( 50% - 100px); top: -1000px;"
+       class="cwt_panel w_200 detachedInFront fadeAnimation">
+
+    <p class="cwt_panel_header cwt_panel_header_small">
+      <span key="menu.header"></span>
+    </p>
+
+    <div id="cwt_menu_content"
+         class="">
+
+      <ul id="cwt_menu_entries"
+          class=""></ul>
+
+    </div>
+
+  </div>
+
+  <!-- #################################################################################################### -->
+
+  <div id="cwt_game_infoBar"
+       style="bottom: 4px;"
+       class="cwt_panel w_120 detachedInFront" >
+
+    <table style="text-align: left; word-break: break-word;">
+      <tbody>
+
+        <!-- *************************************************** -->
+
+        <tr>
+          <td colspan="2" id="infoBox_playerName" class=""></td>
+        </tr>
+
+        <tr>
+          <td colspan="2">G. <span id="infoBox_playergold"></span></td>
+        </tr>
+
+        <tr>
+          <td colspan="2">P. <span id="infoBox_playerpower"></span></td>
+        </tr>
+
+
+        <!-- *************************************************** -->
+
+        <tr id="infoBox_tileRow1" >
+          <td colspan="2" id="infoBox_tilename" class="lightPanelTopBorder"></td>
+        </tr>
+
+        <tr id="infoBox_tileRow2" >
+          <td class="icontd" >
+            <canvas height="8" width="8" id="infoBox_defense_d"></canvas>
+            <span id="infoBox_defense"></span>
+          </td>
+
+          <td class="icontd" id="infoBox_tileRow2d2" >
+            <canvas height="8" width="8" id="infoBox_capPt_d"></canvas>
+            <canvas height="8" width="8" style="display: none;" id="infoBox_pr_hp_d"></canvas>
+            <span id="infoBox_capPt"></span>/<span class="colBold" id="infoBox_capPt2"></span>
+          </td>
+        </tr>
+
+        <!-- *************************************************** -->
+
+        <tr id="infoBox_unitRow1" >
+          <td colspan="2" id="infoBox_name" class="lightPanelTopBorder" ></td>
+        </tr>
+
+        <tr id="infoBox_unitRow2" >
+          <td class="icontd w_60">
+            <canvas height="8" width="8" id="infoBox_hp_d"></canvas>
+            <span class="colBold" id="infoBox_hp"></span>
+          </td>
+          <td class="icontd w_60" >
+            <canvas height="8" width="8" id="infoBox_ammo_d"></canvas>
+            <span id="infoBox_ammo"></span>/<span class="colBold" id="infoBox_ammo2"></span>
+          </td>
+        </tr>
+
+        <tr id="infoBox_unitRow3" >
+          <td class="icontd w_60" >
+            <canvas height="8" width="8" id="infoBox_fuel_d"></canvas>
+            <span id="infoBox_fuel"></span>/<span class="colBold" id="infoBox_fuel2"></span>
+          </td>
+          <td class="icontd w_60" >
+            <canvas height="8" width="8" id="infoBox_attrange_d"></canvas>
+            <span class="colBold" id="infoBox_attrange"></span>-<span class="colBold" id="infoBox_attrange2"></span>
+          </td>
+        </tr>
+
+        <!-- *************************************************** -->
+
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- #################################################################################################### -->
+
+</div>

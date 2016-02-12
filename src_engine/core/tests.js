@@ -1,4 +1,4 @@
-//#MACRO:IF DEV
+/*global cwt, console*/
 
 cwt.model.tests = [];
 
@@ -34,7 +34,5 @@ cwt.test.invokeAll = function (whenDone) {
     console.log("invoke test [" + test.name + "]");
     test.cb();
   });
-  console.log("finished tests")
+  console.log("finished tests");
 };
-
-//#MACRO:ENDIF

@@ -1,3 +1,5 @@
+/*global console, cwt*/
+
 var EXPANDER_CHAR = " ";
 var TEST_IDENTIFIER_LENGTH = 100;
 
@@ -43,7 +45,7 @@ var expandStringToSize = function (str, size) {
     return str;
   }
 
-  for (i = 0; i < neededSpaces; i++) {
+  for (i = 0; i < neededSpaces; i += 1) {
     str += EXPANDER_CHAR;
   }
 
@@ -66,11 +68,11 @@ cwt.evaluateTests = function (whenDoneCb) {
         try {
           el.test();
           console.info(testIdentifier + "[PASSED]");
-          numOfSucceedTests++;
+          numOfSucceedTests += 1;
         } catch (e) {
           console.warn(testIdentifier + "[FAILED]");
           console.error(e);
-          numOfFailedTests++;
+          numOfFailedTests += 1;
         }
 
         next();
@@ -83,6 +85,6 @@ cwt.evaluateTests = function (whenDoneCb) {
       console.log("     PASSED: " + numOfSucceedTests);
       console.log("     FAILED: " + numOfFailedTests);
       whenDoneCb();
-    })
+    });
   });
 };

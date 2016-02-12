@@ -1,0 +1,86 @@
+#loading_text {
+  font-family: 'dosisbook';
+}
+
+#loading_bar_table{
+  width: 94%;
+  margin-left: 3%;
+  border-collapse: collapse;
+  border: 1px solid #36a0c5;
+}
+
+#loading_bar_table td {
+  height: 3px;
+
+  -webkit-transition:all .2s;
+  -moz-transition:all .2s;
+  -ms-transition:all .2s;
+  -o-transition:all .2s;
+  transition:all .2s;
+}
+
+#loading_bar {
+  background-color: #36a0c5;
+}
+
+#loading_bar_bg{
+  background-color: white;
+}
+
+/* DIFFERENT LOADING STATES */
+
+.loadBar_0 {
+  width: 1%;
+}
+
+.loadBar_5 {
+  width: 5%;
+}
+
+.loadBar_10 {
+  width: 10%;
+}
+
+.loadBar_15 {
+  width: 15%;
+}
+
+.loadBar_20 {
+  width: 20%;
+}
+
+.loadBar_30 {
+  width: 30%;
+}
+
+.loadBar_40 {
+  width: 40%;
+}
+
+.loadBar_60 {
+  width: 60%;
+}
+
+.loadBar_65 {
+  width: 65%;
+}
+
+.loadBar_70 {
+  width: 70%;
+}
+
+.loadBar_90 {
+  width: 90%;
+}
+
+.loadBar_93 {
+  width: 93%;
+}
+
+.loadBar_95 {
+  width: 95%;
+}
+
+.loadBar_100 {
+  width: 99%;
+}

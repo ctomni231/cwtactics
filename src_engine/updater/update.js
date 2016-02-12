@@ -1,24 +1,31 @@
-var updates = [];
+/*global cwt*/
 
-var Update = function (version, updaterCallback) {
-  this.version         = cwt.requireString(version);
-  this.updaterCallback = cwt.requireFunction(updaterCallback);
+cwt.gameUpdater = {};
+
+cwt.gameUpdater.init = function (logger) {
+  cwt.requireNothing(this.updates);
+
+  this.logger = cwt.requireNonNull(logger);
+  this.updates = [];
 };
 
-cwt.addUpdate = function (version, updaterCallback) {
-  updates.push(new Update(version, updaterCallback));
+cwt.gameUpdater.addUpdate = function (version, updaterCallback) {
+  this.updates.push({
+    version: cwt.requireString(version),
+    callback: cwt.requireFunction(updaterCallback)
+  });
 };
 
-cwt.evaluateNecessaryUpdates = function (whenDone) {
+cwt.gameUpdater.evaluateNecessaryUpdates = function (whenDone) {
   var i, update;
 
   cwt.requireFunction(whenDone);
 
-  for (i = 0; i < updates.length; i++) {
-    update = updates[i];
+  for (i = 0; i < this.updates.length; i++) {
+    update = this.updates[i];
 
     // TODO support asynchron updates
-    update.updaterCallback();
+    update.callback();
   }
 
   whenDone();
