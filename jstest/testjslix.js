@@ -4,14 +4,14 @@
 // I need mouse functionality to make this one truly feel special
 // And better get keyboard functionality while I'm at it
 
-// Main features.
+// Main features (Got the main features completed.
 
 // Point and click draw (Did it, but it is pretty slow, still got to work on it).
 // point and click animate
-
-// Future features
-
 // Able to change the color of an image
+
+// Now I have to get these features to work properly, it isn't 100% on IE (as usual)
+// and it makes molasses look fast.
 
 //http://localhost:8000/testjslix.html
 
@@ -36,6 +36,7 @@ var imgnum = -1;
 var imgsData;
 var imgview;
 var i;
+var j;
 
 //animation stuff
 var step = 0;
@@ -214,6 +215,7 @@ function canvasImg(num){
 	if(num == imgnum){
 		return imgcanvas;
 	}
+	var color = document.getElementById("colorBox");
 	
 	var change = 0;
 
@@ -257,7 +259,39 @@ function canvasImg(num){
 			imgsData.data[i+2]=0;
 			imgsData.data[i+3]=100;
 		}
-	}else{
+	}else if(color.value >= 0 && color.value <= 18 ){
+		var imgStorage = document.getElementById("color");
+		
+		var canvas = document.getElementById("colorCanvas");
+		if(canvas == null){
+			canvas = document.createElement("canvas");
+			document.body.appendChild(canvas);
+		}
+		canvas.setAttribute("id", "colorCanvas");
+		
+		canvas.setAttribute("width", imgStorage.width);
+		canvas.setAttribute("height", imgStorage.height);
+		canvas.setAttribute("style", "display:none");
+
+		var ctx = canvas.getContext("2d");
+		ctx.drawImage(imgStorage, 0, 0);
+		var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+		
+		for (i = 0; i < imgsData.data.length; i+=4){
+			imgsData.data[i]=view[i];
+			imgsData.data[i+1]=view[i+1];
+			imgsData.data[i+2]=view[i+2];
+			imgsData.data[i+3]=view[i+3];
+			for(j = 0; j < imgStorage.width*4; j+=4){
+				if(imgData.data[j] == view[i] && imgData.data[j+1] == view[i+1] && imgData.data[j+2] == view[i+2]){
+					imgsData.data[i] = imgData.data[4*imgStorage.width*color.value+j];
+					imgsData.data[i+1] = imgData.data[4*imgStorage.width*color.value+j+1];
+					imgsData.data[i+2] = imgData.data[4*imgStorage.width*color.value+j+2];
+				}
+			}
+		}
+	}
+	else{
 		for (i = 0; i < imgsData.data.length; i+=8){
 			imgsData.data[i]=view[i];
 			imgsData.data[i+1]=view[i+1];
