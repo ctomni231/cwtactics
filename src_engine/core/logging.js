@@ -1,3 +1,12 @@
+cwt.Logger = {
+
+  info: function () {},
+
+  warn: function () {},
+
+  error: function () {}
+};
+
 cwt.ConsoleLogger = {
 
   info: function (msg) {
@@ -13,11 +22,4 @@ cwt.ConsoleLogger = {
   }
 };
 
-cwt.NullLogger = {
-
-  info: function () {},
-
-  warn: function () {},
-
-  error: function () {}
-};
+cwt.NullLogger = cwt.Logger;

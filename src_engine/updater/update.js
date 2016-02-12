@@ -1,32 +1,28 @@
-/*global cwt*/
+var updates = [];
 
-cwt.gameUpdater = {};
-
-cwt.gameUpdater.init = function (logger) {
-  cwt.requireNothing(this.updates);
-
-  this.logger = cwt.requireNonNull(logger);
-  this.updates = [];
-};
-
-cwt.gameUpdater.addUpdate = function (version, updaterCallback) {
-  this.updates.push({
+cwt.update_add = function (version, name, updaterCallback) {
+  updates.push({
     version: cwt.requireString(version),
+    name: cwt.requireString(name),
     callback: cwt.requireFunction(updaterCallback)
   });
 };
 
-cwt.gameUpdater.evaluateNecessaryUpdates = function (whenDone) {
-  var i, update;
-
+/**
+ * checks for necessary updates, calls them and pushes the version.
+ *
+ * @param {cwt.Logger} logger   logger
+ * @param {function}   whenDone called when process is done
+ */
+cwt.update_evaluate_all = function (logger, whenDone) {
+  cwt.requireNonNull(logger);
   cwt.requireFunction(whenDone);
 
-  for (i = 0; i < this.updates.length; i++) {
-    update = this.updates[i];
+  logger.info("checking for updates");
 
-    // TODO support asynchron updates
-    update.callback();
-  }
+  cwt.queue_async_execute_list(updates, function (update, when_done) {
+    logger.info("evaluating update " + update.name + " for version " + update.version);
+    update.callback(when_done);
 
-  whenDone();
+  }, whenDone);
 };
