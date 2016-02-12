@@ -1,5 +1,3 @@
-/*global cwt*/
-
 cwt.requireFunction = function (value) {
   cwt.assertTrue(cwt.isFunction(value));
   return value;
@@ -31,9 +29,6 @@ cwt.requireNumber = function (value) {
   cwt.assertTrue(cwt.isNumber(value));
   return value;
 };
-
-var n = 0;
-n++;
 
 cwt.isNumber = function (value) {
   return typeof value === "number";

@@ -1,3 +1,6 @@
 {
-  "plusplus": true
+  "plusplus": true,
+  "globals": {
+    "cwt": true
+  }
 }
