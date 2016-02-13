@@ -1,44 +1,44 @@
-cwt.synchronTest("core-types", "isType-checks", function () {
+cwt.test_synchron("core-types", "isType-checks", function () {
 
-  cwt.assertTrue(cwt.isFunction(function () {}));
-  cwt.assertTrue(!cwt.isFunction(null));
-  cwt.assertTrue(!cwt.isFunction(undefined));
-  cwt.assertTrue(!cwt.isFunction("function () {}"));
+  cwt.assert_true(cwt.type_is_function(function () {}));
+  cwt.assert_true(!cwt.type_is_function(null));
+  cwt.assert_true(!cwt.type_is_function(undefined));
+  cwt.assert_true(!cwt.type_is_function("function () {}"));
 
-  cwt.assertTrue(cwt.isInteger(1));
-  cwt.assertTrue(!cwt.isInteger(1.5));
-  cwt.assertTrue(!cwt.isInteger("1"));
-  cwt.assertTrue(!cwt.isInteger("abc"));
-  cwt.assertTrue(!cwt.isInteger(null));
-  cwt.assertTrue(!cwt.isInteger(undefined));
+  cwt.assert_true(cwt.type_is_integer(1));
+  cwt.assert_true(!cwt.type_is_integer(1.5));
+  cwt.assert_true(!cwt.type_is_integer("1"));
+  cwt.assert_true(!cwt.type_is_integer("abc"));
+  cwt.assert_true(!cwt.type_is_integer(null));
+  cwt.assert_true(!cwt.type_is_integer(undefined));
 
-  cwt.assertTrue(cwt.isString("abc"));
-  cwt.assertTrue(!cwt.isString(1));
-  cwt.assertTrue(!cwt.isString(null));
-  cwt.assertTrue(!cwt.isString(undefined));
+  cwt.assert_true(cwt.type_is_string("abc"));
+  cwt.assert_true(!cwt.type_is_string(1));
+  cwt.assert_true(!cwt.type_is_string(null));
+  cwt.assert_true(!cwt.type_is_string(undefined));
 
-  cwt.assertTrue(cwt.isNumber(1));
-  cwt.assertTrue(cwt.isNumber(1.5));
-  cwt.assertTrue(!cwt.isNumber("1"));
-  cwt.assertTrue(!cwt.isNumber(null));
-  cwt.assertTrue(!cwt.isNumber(undefined));
+  cwt.assert_true(cwt.type_is_number(1));
+  cwt.assert_true(cwt.type_is_number(1.5));
+  cwt.assert_true(!cwt.type_is_number("1"));
+  cwt.assert_true(!cwt.type_is_number(null));
+  cwt.assert_true(!cwt.type_is_number(undefined));
 });
 
-cwt.synchronTest("core-types", "requireType-checks", function () {
+cwt.test_synchron("core-types", "requireType-checks", function () {
 
-  cwt.requireFunction(function () {});
-  cwt.requireInteger(1);
-  cwt.requireNumber(1.5);
-  cwt.requireString("abs");
+  cwt.require_function(function () {});
+  cwt.require_integer(1);
+  cwt.require_number(1.5);
+  cwt.require_string("abs");
 
-  function callWithNull(fn) {
-    return function() {
+  function call_with_value_null(fn) {
+    return function () {
       fn(null);
     };
   }
 
-  cwt.assertFails(callWithNull(cwt.requireFunction));
-  cwt.assertFails(callWithNull(cwt.requireInteger));
-  cwt.assertFails(callWithNull(cwt.requireNumber));
-  cwt.assertFails(callWithNull(cwt.requireString));
+  cwt.assert_fails(call_with_value_null(cwt.require_function));
+  cwt.assert_fails(call_with_value_null(cwt.require_integer));
+  cwt.assert_fails(call_with_value_null(cwt.require_number));
+  cwt.assert_fails(call_with_value_null(cwt.require_string));
 });

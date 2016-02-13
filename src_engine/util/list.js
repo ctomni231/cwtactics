@@ -16,6 +16,12 @@ cwt.createFilledList = function (size, value) {
   return list;
 };
 
+cwt.list_forEach = function (list, iterator) {
+  for (var i = 0; i < list.length; i++) {
+    iterator(list[i], i, list);
+  }
+};
+
 /**
  * 
  * @param {Array}                     list    list that will be iterated
@@ -23,7 +29,7 @@ cwt.createFilledList = function (size, value) {
  * @param {function(element):boolean} filter  filter which prevents the evaluating of the handler for the
  *                                            checked element when return false
  */
-cwt.listFilteredForEach = function (list, handler, filter) {
+cwt.list_filtered_for_each = function (list, handler, filter) {
   var i, e, el;
   for (i = 0, e = list.length; i < e; i++) {
     el = list[i];

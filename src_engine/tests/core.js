@@ -29,7 +29,7 @@ cwt.asynchronTest = function (groupName, caseName, test) {
  * @param {string}   caseName  name of the test
  * @param {function} test      test function 
  */
-cwt.synchronTest = function (groupName, caseName, test) {
+cwt.test_synchron = function (groupName, caseName, test) {
   tests.push({
     group: groupName,
     name: caseName,
@@ -50,6 +50,14 @@ var expandStringToSize = function (str, size) {
   }
 
   return str;
+};
+
+cwt.test_mock_object = function (obj, key) {
+  return simple.mock(obj, key);
+};
+
+var test_mock_restore = function () {
+  simple.restore();
 };
 
 cwt.evaluateTests = function (whenDoneCb) {
@@ -74,6 +82,8 @@ cwt.evaluateTests = function (whenDoneCb) {
           console.error(e);
           numOfFailedTests += 1;
         }
+
+        test_mock_restore();
 
         next();
       });

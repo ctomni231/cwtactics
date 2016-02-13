@@ -1,41 +1,41 @@
-cwt.requireFunction = function (value) {
-  cwt.assertTrue(cwt.isFunction(value));
+cwt.require_function = function (value) {
+  cwt.assert_true(cwt.type_is_function(value));
   return value;
 };
 
-cwt.isFunction = function (value) {
+cwt.type_is_function = function (value) {
   return typeof value === "function";
 };
 
-cwt.requireString = function (value) {
-  cwt.assertTrue(cwt.isString(value));
+cwt.require_string = function (value) {
+  cwt.assert_true(cwt.type_is_string(value));
   return value;
 };
 
-cwt.isString = function (value) {
+cwt.type_is_string = function (value) {
   return typeof value === "string";
 };
 
-cwt.requireInteger = function (value) {
-  cwt.assertTrue(cwt.isInteger(value));
+cwt.require_integer = function (value) {
+  cwt.assert_true(cwt.type_is_integer(value));
   return value;
 };
 
-cwt.isInteger = function (value) {
+cwt.type_is_integer = function (value) {
   return typeof value === "number" && value % 1 === 0;
 };
 
-cwt.requireNumber = function (value) {
-  cwt.assertTrue(cwt.isNumber(value));
+cwt.require_number = function (value) {
+  cwt.assert_true(cwt.type_is_number(value));
   return value;
 };
 
-cwt.isNumber = function (value) {
+cwt.type_is_number = function (value) {
   return typeof value === "number";
 };
 
-cwt.requireNonNull = function (value) {
-  cwt.assertTrue(cwt.isNonNull(value));
+cwt.require_non_null = function (value) {
+  cwt.assert_true(cwt.isNonNull(value));
   return value;
 };
 
@@ -44,7 +44,7 @@ cwt.isNonNull = function (value) {
 };
 
 cwt.requireNull = function (value) {
-  cwt.assertTrue(!cwt.isNonNull(value));
+  cwt.assert_true(!cwt.isNonNull(value));
   return value;
 };
 
@@ -53,7 +53,7 @@ cwt.isNull = function (value) {
 };
 
 cwt.requireNothing = function (value) {
-  cwt.assertTrue(cwt.isNothing(value));
+  cwt.assert_true(cwt.isNothing(value));
   return value;
 };
 
