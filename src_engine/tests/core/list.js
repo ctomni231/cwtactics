@@ -17,5 +17,6 @@ cwt.test_synchron("util-list", "list_filtered_for_each - filter given", function
   }, function (number) {
     return number % 2 === 0;
   });
-  cwt.assert_true(check_list.length == 2 && check_list[0] == 2 && check_list[1] === 4, "filter should only allowed odd numbers");
+
+  cwt.assert_array_equals(check_list, [2, 4], "filter should only allowed odd numbers");
 });
