@@ -4,14 +4,16 @@
 // I need mouse functionality to make this one truly feel special
 // And better get keyboard functionality while I'm at it
 
-// Main features (Got the main features completed.
+// Main features (Got the main features completed)
 
-// Point and click draw (Did it, but it is pretty slow, still got to work on it).
+// Point and click draw
 // point and click animate
 // Able to change the color of an image
+// Able to store different colored images
+// Speed runs optimally on all browsers
 
-// Now I have to get these features to work properly, it isn't 100% on IE (as usual)
-// and it makes molasses look fast.
+// I have to get rid of the errors in the system. Funnily, the internal queue work best in...
+// Internet Explorer, followed By Firefox, Chrome, and Opera.
 
 //http://localhost:8000/testjslix.html
 
@@ -329,7 +331,8 @@ function loadImage(num){
 		imgArray[num].src = this.src;
 		//newImg.src = this.src;
 		if(this.height == locyArray[num] && this.width == locxArray[num]){
-			newImgReady = num;
+			//newImgReady = num;
+			imgReady[num] = num;
 		}	
 	};
 	tempImg.src = canvasImg(num).toDataURL();
