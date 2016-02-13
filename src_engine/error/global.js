@@ -1,6 +1,6 @@
 /*global window, console*/
 
 window.onerror = function (error) {
-  // TODO send email options ?
-  console.error("[SYSTEM ERROR] " + error);
+  error = "[SYSTEM ERROR] " + error;
+  controller.showErrorPanel("Critical Game Fault", error);
 };

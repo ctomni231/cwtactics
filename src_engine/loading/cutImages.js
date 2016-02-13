@@ -6,16 +6,14 @@ var addJob = function (queue, nameList, handler, filter) {
   }, filter);
 };
 
-controller.cutImages = cwt.oneTimeCallable(function (err, baton) {
+cwt.loading_crop_images = function (when_done, error_receiver) {
   var queue;
 
   queue = new cwt.Queue();
 
   queue.pushSynchronJob(function () {
-    baton.take(); // TODO remove this legacy thing
+    cwt.log_info("started cropping images");
   });
-
-  queue.pushSynchronJob(cwt.logCallback("start cropping images"));
 
   addJob(queue, model.data_unitTypes, view.imageProcessor_cropUnitSprite, function (unitTypeId) {
     return !!model.data_unitSheets[unitTypeId].assets.gfx;
@@ -23,12 +21,11 @@ controller.cutImages = cwt.oneTimeCallable(function (err, baton) {
 
   addJob(queue, model.data_graphics.misc, view.imageProcessor_cropMiscSprite, null);
 
-  queue.pushSynchronJob(cwt.logCallback("finished cropping images"));
-
   queue.pushSynchronJob(function () {
-    baton.pass(); // TODO remove this legacy thing
+    cwt.log_info("finished cropping images");
   });
 
-  queue.execute(function () {});
+  queue.execute(when_done);
+};
 
-});
+cwt.make_only_callable_once(cwt.loading_crop_images);

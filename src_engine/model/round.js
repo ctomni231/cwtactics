@@ -20,13 +20,3 @@ model.round_isTurnOwner = function (pid) {
 model.round_daysToTurns = function (v) {
   return model.player_data.length * v;
 };
-
-//#MACRO:IF DEV
-cwt.test.define("round to day conversion", function () {
-  cwt.test.assertEquals(model.round_daysToTurns(4), 4 * MAX_PLAYER);
-  cwt.test.assertEquals(model.round_daysToTurns(4), 5 * MAX_PLAYER, "error #1");
-  cwt.test.assertFails(function () {
-    // no I will not fail :P
-  }, "error #2");
-});
-//#MACRO:ENDIF

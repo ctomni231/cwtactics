@@ -23,9 +23,9 @@ cwt.Queue.prototype.execute = function (whenDone) {
   });
 };
 
-var queue_create_async_caller = function (entry) {
+var queue_create_async_caller = function (iterator, entry) {
   return function (when_done) {
-    entry(entry, when_done);
+    iterator(entry, when_done);
   };
 };
 
@@ -34,7 +34,29 @@ cwt.queue_async_execute_list = function (list, list_iterator, when_done) {
 
   queue = new cwt.Queue;
   for (i = 0; i < list.length; i++) {
-    queue.pushAsynchronJob(queue_create_async_caller(list[i]));
+    queue.pushAsynchronJob(queue_create_async_caller(list_iterator, list[i]));
+  }
+
+  queue.execute(when_done);
+};
+
+cwt.queue_async_execute_joblist = function (list, when_done) {
+  var i, queue;
+
+  queue = new cwt.Queue;
+  for (i = 0; i < list.length; i++) {
+    queue.pushAsynchronJob(list[i]);
+  }
+
+  queue.execute(when_done);
+};
+
+cwt.queue_sync_execute_list = function (list, when_done) {
+  var i, queue;
+
+  queue = new cwt.Queue;
+  for (i = 0; i < list.length; i++) {
+    queue.pushSynchronJob(list[i]);
   }
 
   queue.execute(when_done);
@@ -51,7 +73,9 @@ cwt.serialExecution = function (queueBuilder) {
     }
     var job = jobs[cIndex];
     cIndex++;
-    job(cIndex == jobs.length ? null : executionIterator);
+    job(cIndex == jobs.length ? null : function () {
+      setTimeout(executionIterator, 10);
+    });
   }
 
   queueBuilder(function (job) {

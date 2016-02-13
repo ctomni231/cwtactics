@@ -60,6 +60,7 @@ var startFlow = function () {
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/libs");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/core");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/util");
+  cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/error");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/controller");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/model");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/events");
@@ -70,7 +71,7 @@ var startFlow = function () {
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/libs");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/core_client");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/controller_client");
-  cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/data");
+  cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/loading");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/gui");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/hooks");
   cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/states");

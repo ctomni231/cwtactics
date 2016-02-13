@@ -20,7 +20,7 @@ controller.audio_gainNode_sfx_ = null;
 
 // Initializes the audio context.
 //
-controller.audio_initialize = function (p, b) {
+controller.audio_initialize = function () {
   util.log("initializing audio context");
 
   // if audio sfx and music is deactivated then do not initialize the audio context

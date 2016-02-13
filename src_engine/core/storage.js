@@ -1,8 +1,6 @@
-/*global cwt,localforage*/
+/*global localforage*/
 
-cwt.storage = {};
-
-cwt.storage.itemSaver = function (itemKey, itemValue, callback, errorReceiver) {
+cwt.storage_item_save = function (itemKey, itemValue, callback, errorReceiver) {
   localforage.setItem(itemKey, itemValue, function (err, value) {
     if (err === null) {
       errorReceiver(err);
@@ -12,7 +10,7 @@ cwt.storage.itemSaver = function (itemKey, itemValue, callback, errorReceiver) {
   });
 };
 
-cwt.storage.itemLoader = function (itemKey, itemReceiver, errorReceiver) {
+cwt.storage_item_load = function (itemKey, itemReceiver, errorReceiver) {
   localforage.getItem(itemKey, function (err, value) {
     if (err === null) {
       errorReceiver(err);
@@ -22,7 +20,7 @@ cwt.storage.itemLoader = function (itemKey, itemReceiver, errorReceiver) {
   });
 };
 
-cwt.storage.itemKeys = function (valuesReceiver, errorReceiver) {
+cwt.storage_item_keys = function (valuesReceiver, errorReceiver) {
   localforage.keys(function (error, keys) {
     if (error === null) {
       errorReceiver(error);
@@ -32,7 +30,7 @@ cwt.storage.itemKeys = function (valuesReceiver, errorReceiver) {
   });
 };
 
-cwt.storage.storageClearer = function (callback, errorReceiver) {
+cwt.storage_clear = function (callback, errorReceiver) {
   localforage.clear(function (err) {
     if (err === null) {
       errorReceiver(err);

@@ -11,6 +11,20 @@ cwt.assert_fails = function (callback, msg) {
   } catch (ignore) {}
 };
 
+cwt.assert_equals = function (actual, expected, msg) {
+  if (actual !== expected) {
+    throw new Error(msg || "AssertionFailed: actual and expected are not the same");
+  }
+};
+
+/**
+ * asserts that two arrays contains the same content.
+ *
+ * @throws {Error} when arrays are not equal
+ * @param {Array}  actual_array            left array
+ * @param {Array}  expected_array          right array
+ * @param {string} [msg="AssertionFailed:] message that will be used as error
+ */
 cwt.assert_array_equals = function (actual_array, expected_array, msg) {
   var i, e;
 

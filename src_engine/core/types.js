@@ -35,28 +35,28 @@ cwt.type_is_number = function (value) {
 };
 
 cwt.require_non_null = function (value) {
-  cwt.assert_true(cwt.isNonNull(value));
+  cwt.assert_true(cwt.type_is_not_null(value));
   return value;
 };
 
-cwt.isNonNull = function (value) {
+cwt.type_is_not_null = function (value) {
   return value !== null;
 };
 
-cwt.requireNull = function (value) {
-  cwt.assert_true(!cwt.isNonNull(value));
+cwt.require_null = function (value) {
+  cwt.assert_true(!cwt.type_is_not_null(value));
   return value;
 };
 
-cwt.isNull = function (value) {
-  return !cwt.isNonNull(value);
+cwt.type_is_null = function (value) {
+  return !cwt.type_is_not_null(value);
 };
 
-cwt.requireNothing = function (value) {
-  cwt.assert_true(cwt.isNothing(value));
+cwt.require_nothing = function (value) {
+  cwt.assert_true(cwt.type_is_nothing(value));
   return value;
 };
 
-cwt.isNothing = function (value) {
+cwt.type_is_nothing = function (value) {
   return value === undefined;
 };

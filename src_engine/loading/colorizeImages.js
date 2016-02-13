@@ -7,16 +7,14 @@ var forEachType = function (queue, nameList, typeList, handler) {
   });
 };
 
-controller.colorizeImages = cwt.oneTimeCallable(function (err, baton) {
+cwt.loading_colorize_images = function (when_done, error_receiver) {
   var queue;
 
   queue = new cwt.Queue();
 
   queue.pushSynchronJob(function () {
-    baton.take(); // TODO remove legacy code protection
+    cwt.log_info("started colorizing images");
   });
-
-  queue.pushSynchronJob(cwt.logCallback("started colorizing images"));
 
   forEachType(queue, model.data_unitTypes, model.data_unitSheets, view.imageProcessor_colorizeUnit);
   forEachType(queue, model.data_propertyTypes, model.data_tileSheets, view.imageProcessor_colorizeProperty);
@@ -33,11 +31,11 @@ controller.colorizeImages = cwt.oneTimeCallable(function (err, baton) {
     }
   });
 
-  queue.pushSynchronJob(cwt.logCallback("finished colorizing images"));
-
   queue.pushSynchronJob(function () {
-    baton.pass(); // TODO remove legacy code protection
+    cwt.log_info("finished colorizing images");
   });
 
-  queue.execute(function () {});
-});
+  queue.execute(when_done);
+};
+
+cwt.make_only_callable_once(cwt.loading_colorize_images);
