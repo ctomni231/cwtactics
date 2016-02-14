@@ -55,7 +55,7 @@ var cy = 0;
 
 // getImage stuff
 var newImg = new Image();
-var tempImg = new Image();
+//var tempImg = new Image();
 newImgReady = -1;
 
 //Init stuff
@@ -72,7 +72,7 @@ function init(){
 
 function createImage(event){
 	var text = document.getElementById("textBox");
-	
+
 	intArray.push(viewArray.length);
 	mxArray.push(mousex);
 	myArray.push(mousey);
@@ -214,9 +214,9 @@ function storeImage(){
 //Canvas Image with a speed mechanic included
 function canvasImg(num){
 
-	if(num == imgnum){
-		return imgcanvas;
-	}
+	//if(num == imgnum){
+	//	return imgcanvas;
+	//}
 	var color = document.getElementById("colorBox");
 	
 	var change = 0;
@@ -256,12 +256,12 @@ function canvasImg(num){
 		
 	if(view == null){
 		for (i = 0; i < imgsData.data.length; i += 4){
-			imgsData.data[i+0]=255;
-			imgsData.data[i+1]=0;
-			imgsData.data[i+2]=0;
-			imgsData.data[i+3]=100;
+			imgsData.data[i+0]=255;//255
+			imgsData.data[i+1]=0;//255
+			imgsData.data[i+2]=0;//255
+			imgsData.data[i+3]=100;//0
 		}
-	}else if(color.value >= 0 && color.value <= 18 ){
+	}else if(color.value >= 0 && color.value <= 19 ){
 		var imgStorage = document.getElementById("color");
 		
 		var canvas = document.getElementById("colorCanvas");
@@ -279,21 +279,25 @@ function canvasImg(num){
 		ctx.drawImage(imgStorage, 0, 0);
 		var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 		
-		for (i = 0; i < imgsData.data.length; i+=4){
+		for (var i = 0; i < imgsData.data.length; i+=4){
+			//if(view[i] > 0 || view[i+1] > 0 || view[i+2] > 0)
+			//	console.log("Color "+num+": "+view[i]+","+view[i+1]+","+view[i+2]);
 			imgsData.data[i]=view[i];
 			imgsData.data[i+1]=view[i+1];
 			imgsData.data[i+2]=view[i+2];
 			imgsData.data[i+3]=view[i+3];
-			for(j = 0; j < imgStorage.width*4; j+=4){
-				if(imgData.data[j] == view[i] && imgData.data[j+1] == view[i+1] && imgData.data[j+2] == view[i+2]){
+			for(var j = 0; j < imgStorage.width*4; j+=4){
+				//if(imgData.data[j] === view[i] && imgData.data[j+1] === view[i+1] && imgData.data[j+2] === view[i+2]){
+				if((imgData.data[j] == view[i] || imgData.data[j]-1 == view[i]) && 
+				   (imgData.data[j+1] == view[i+1] || imgData.data[j+1]+1 == view[i+1]) && 
+				   (imgData.data[j+2] == view[i+2] || imgData.data[j+2]+1 == view[i+2])){
 					imgsData.data[i] = imgData.data[4*imgStorage.width*color.value+j];
 					imgsData.data[i+1] = imgData.data[4*imgStorage.width*color.value+j+1];
 					imgsData.data[i+2] = imgData.data[4*imgStorage.width*color.value+j+2];
 				}
 			}
 		}
-	}
-	else{
+	}else{
 		for (i = 0; i < imgsData.data.length; i+=8){
 			imgsData.data[i]=view[i];
 			imgsData.data[i+1]=view[i+1];
@@ -308,7 +312,7 @@ function canvasImg(num){
 	//Draws the image
 	imgctx.putImageData(imgsData,0,0);
 	
-	imgnum = num;
+	//imgnum = num;
 	
 	return imgcanvas;
 }
@@ -326,7 +330,7 @@ function getImg(num){
 }
 
 function loadImage(num){
-	tempImg = new Image();
+	var tempImg = new Image();
 	tempImg.onload = function(){
 		imgArray[num].src = this.src;
 		//newImg.src = this.src;
