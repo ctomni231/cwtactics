@@ -150,12 +150,15 @@ view.imageProcessor_replaceColors = function (image, colorData, numColors, oriIn
         var sG = colorData[oriStart + n + 1];
         var sB = colorData[oriStart + n + 2];
 
-        // we may allow a little gap here because colors
+        var ALLOWED_GAP = 20;
+
+        // we may allow a little gap here because the color management
+        // seems to be a little bit different in the newest FF and Chrome
         var disR = Math.abs(sR - oR);
         var disG = Math.abs(sG - oG);
         var disB = Math.abs(sB - oB);
 
-        if (disR < 20 && disG < 20 && disB < 20) {
+        if (disR < ALLOWED_GAP && disG < ALLOWED_GAP && disB < ALLOWED_GAP) {
 
           var r = replStart + n;
           var rR = colorData[r];
