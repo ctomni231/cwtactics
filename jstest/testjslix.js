@@ -357,6 +357,17 @@ function addLoadEvent(func) {
   }
 }
 
+var enabledAutoCreate = false;
+
+function stopAutoCreate() {
+  enabledAutoCreate = false;
+}
+
+function startAutoCreate() {
+  enabledAutoCreate = true;
+  autoCreate();
+}
+
 function autoCreate() {
   var c = document.getElementById("myCanvas");
 
@@ -367,5 +378,5 @@ function autoCreate() {
   });
   createImage({});
 
-  setTimeout(autoCreate, 250);
+  enabledAutoCreate && setTimeout(autoCreate, 250);
 }
