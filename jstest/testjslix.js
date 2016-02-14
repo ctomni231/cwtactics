@@ -100,6 +100,9 @@ function runGame() {
   var diffTime = nowTime - lastTime;
   fps = parseInt(1000 / (diffTime || 1), 10);
 
+
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, 100, 40);
   ctx.fillStyle = '#000000';
   ctx.font = 'bold 10px sans-serif';
   ctx.fillText('FPS: ' + fps, 4, 10);
@@ -379,5 +382,5 @@ function autoCreate() {
   });
   createImage({});
 
-  enabledAutoCreate && setTimeout(autoCreate, 100);
+  enabledAutoCreate && setTimeout(autoCreate, 10);
 }
