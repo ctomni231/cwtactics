@@ -96,22 +96,17 @@ function runGame() {
   }
 
   // Keeps track of the FPS
-  var nowTime = new Date();
-  var diffTime = nowTime.getTime() - lastTime.getTime();
-  frame += diffTime;
-  count++;
-  if (frame > 1000) {
-    frame -= 1000;
-    fps = count;
-    count = 0;
-  }
+  var nowTime = new Date().getTime();
+  var diffTime = nowTime - lastTime;
+  fps = parseInt(1000 / (diffTime || 1), 10);
+
   ctx.fillStyle = '#000000';
   ctx.font = 'bold 10px sans-serif';
   ctx.fillText('FPS: ' + fps, 4, 10);
   ctx.fillText('Mouse:(' + mousex + ',' + mousey + ')', 4, 20);
   ctx.fillText('Image Count:' + intArray.length, 4, 30);
 
-  lastTime = new Date();
+  lastTime = nowTime;
 
   requestAnimationFrame(runGame);
 }
@@ -119,10 +114,12 @@ function runGame() {
 
 // This is the game test itself
 function run(sec) {
+  /*
   if (interval == null)
     init();
   else
     clearInterval(interval);
+    */
   var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
   var h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
   var imgStorage = document.getElementById("myCanvas");
@@ -212,7 +209,7 @@ function storeImage() {
     addImage(imgQueue.pop());
   }
 
-  run(sec);
+  // run(sec);
 }
 
 //Canvas Image with a speed mechanic included
