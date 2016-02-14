@@ -112,6 +112,8 @@ function runGame() {
   ctx.fillText('Image Count:' + intArray.length, 4, 30);
 
   lastTime = new Date();
+
+  requestAnimationFrame(runGame);
 }
 
 
@@ -134,7 +136,9 @@ function run(sec) {
   imgStorage.setAttribute("onmousemove", "getDimensions(event)");
   imgStorage.setAttribute("onclick", "createImage(event)");
   imgStorage.innerHTML = "Your browser does not support the HTML5 canvas tag.";
-  interval = setInterval(runGame, sec);
+
+  // interval = setInterval(runGame, sec);
+  requestAnimationFrame(runGame);
 }
 
 function getDimensions(event) {
