@@ -378,5 +378,5 @@ function autoCreate() {
   });
   createImage({});
 
-  enabledAutoCreate && setTimeout(autoCreate, 250);
+  enabledAutoCreate && setTimeout(autoCreate, 100);
 }
