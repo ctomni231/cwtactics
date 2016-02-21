@@ -1,10 +1,3 @@
-//
-//
-model.event_on( "capture_check",function(  prid, uid ){
-  if( !model.property_isCapturableBy( prid, uid ) ){
-    return false;
-  }
-});
 
 // Lets an unit captures a property. If the capture points of the property falls to
 // zero then the owner of the property will be changed to the owner of the capturer.

@@ -81,6 +81,10 @@ model.property_countProperties = function( pid ){
   return n;
 };
 
+model.property_capture = function(prop_id, capturer_id) {
+
+};
+
 // Returns true if the property can be captured by the unit, else ( no capturable and/or
 // no capturing unit ) false.
 //

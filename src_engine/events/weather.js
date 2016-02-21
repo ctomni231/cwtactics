@@ -34,4 +34,6 @@ model.event_on("weather_calculateNext",function( wth ){
 model.event_on("weather_change",function( wth ){
   model.weather_data = model.data_weatherSheets[wth];
   model.events.recalculateFogMap();
+
+  cwt.game_event_weather_changes(wth, 0);
 });
