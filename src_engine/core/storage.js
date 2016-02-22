@@ -1,41 +1,51 @@
 /*global localforage*/
 
-cwt.storage_item_save = function (itemKey, itemValue, callback, errorReceiver) {
-  localforage.setItem(itemKey, itemValue, function (err, value) {
+cwt.storage_save = function (key, item, when_done, error_receiver) {
+  localforage.setItem(key, item, function (err, value) {
     if (err === null) {
-      errorReceiver(err);
+      error_receiver(err);
     } else {
-      callback();
+      when_done();
     }
   });
 };
 
-cwt.storage_item_load = function (itemKey, itemReceiver, errorReceiver) {
-  localforage.getItem(itemKey, function (err, value) {
+cwt.storage_load = function (key, item_receiver, error_receiver) {
+  localforage.getItem(key, function (err, value) {
     if (err === null) {
-      errorReceiver(err);
+      error_receiver(err);
     } else {
-      itemReceiver(value);
+      item_receiver(value);
     }
   });
 };
 
-cwt.storage_item_keys = function (valuesReceiver, errorReceiver) {
-  localforage.keys(function (error, keys) {
-    if (error === null) {
-      errorReceiver(error);
+cwt.storage_remove_item = function (key, when_done, error_receiver) {
+  localforage.removeItem(key, function (err) {
+    if (err === null) {
+      error_receiver(err);
     } else {
-      valuesReceiver(keys);
+      when_done();
     }
   });
 };
 
-cwt.storage_clear = function (callback, errorReceiver) {
+cwt.storage_remove_all = function (when_done, error_receiver) {
   localforage.clear(function (err) {
     if (err === null) {
-      errorReceiver(err);
+      error_receiver(err);
     } else {
-      callback();
+      when_done();
+    }
+  });
+};
+
+cwt.storage_for_each_key = function (keys_receiver, error_receiver) {
+  localforage.keys(function (error, keys) {
+    if (error === null) {
+      error_receiver(error);
+    } else {
+      keys_receiver(keys);
     }
   });
 };
