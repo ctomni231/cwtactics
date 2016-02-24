@@ -14,26 +14,26 @@ var BASE_STUB_FILE = "src_const/stub.js";
 var cwtBuild = require("./lib").cwtBuild;
 var args = process.argv.slice(2);
 
-var checkDirectory = function () {
+var checkDirectory = function() {
   if (process.cwd().indexOf("src_builder") != -1) {
     process.chdir('../');
     console.log("change into root directory");
   }
 };
 
-var isDevMode = function (args) {
+var isDevMode = function(args) {
   return args.indexOf(ARG_DEV_BUILD) != -1;
 };
 
-var isLiveMode = function (args) {
+var isLiveMode = function(args) {
   return args.indexOf(ARG_LIVE_BUILD) != -1;
 };
 
-var removeDevMacros = function (string) {
+var removeDevMacros = function(string) {
   return string.replace(/(\/\/#MACRO:IF DEV)([\s\S]*)(\/\/#MACRO:ENDIF)/gm, "");
 };
 
-var startFlow = function () {
+var startFlow = function() {
   var devMode = isDevMode(args);
   var liveMode = isLiveMode(args);
 
@@ -80,6 +80,7 @@ var startFlow = function () {
   if (devMode) {
     cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/tests");
     cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/tests/core");
+    cwtBuild.readFolder(gameSource, GAME_SOURCE_DIRECTORY + "/tests/game_logic");
   }
 
   var cssSource = new cwtBuild.StringBuilder();

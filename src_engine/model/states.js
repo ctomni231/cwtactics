@@ -1,0 +1,1 @@
+cwt.model_gamestate = cwt.gamestate_create_context();

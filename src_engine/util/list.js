@@ -1,11 +1,15 @@
 /**
- * 
+ *
  * @param   {number} size  size of the list
  * @param   {object} value value that will be placed in every slot
  *                       of the list
  * @returns {Array}  created list
  */
-cwt.createFilledList = function (size, value) {
+cwt.createFilledList = function(size, value) {
+  return cwt.list_created_filled_list(size, value);
+};
+
+cwt.list_created_filled_list = function(size, value) {
   var list, i;
 
   list = [];
@@ -16,20 +20,24 @@ cwt.createFilledList = function (size, value) {
   return list;
 };
 
-cwt.list_forEach = function (list, iterator) {
+cwt.list_forEach = function(list, iterator) {
+  cwt.list_for_each(list, iterator);
+};
+
+cwt.list_for_each = function(list, iterator) {
   for (var i = 0; i < list.length; i++) {
     iterator(list[i], i, list);
   }
 };
 
 /**
- * 
+ *
  * @param {Array}                     list    list that will be iterated
  * @param {function(element)}         handler handler which does something with the list element
  * @param {function(element):boolean} filter  filter which prevents the evaluating of the handler for the
  *                                            checked element when return false
  */
-cwt.list_filtered_for_each = function (list, handler, filter) {
+cwt.list_filtered_for_each = function(list, handler, filter) {
   var i, e, el;
   for (i = 0, e = list.length; i < e; i++) {
     el = list[i];
@@ -40,9 +48,9 @@ cwt.list_filtered_for_each = function (list, handler, filter) {
 };
 
 
-(function () {
+(function() {
 
-  var fill = function () {
+  var fill = function() {
     var defValue = this.__defValue__;
     var len = this.__length__;
     var isFN = typeof defValue === 'function';
@@ -54,7 +62,7 @@ cwt.list_filtered_for_each = function (list, handler, filter) {
     }
   };
 
-  var clone = function (list) {
+  var clone = function(list) {
     var lenA = this.__length__;
     var lenB = list.__length__;
     if (typeof lenB) lenB = list.length;
@@ -66,7 +74,7 @@ cwt.list_filtered_for_each = function (list, handler, filter) {
     }
   };
 
-  var grab = function (list) {
+  var grab = function(list) {
     var lenA = this.__length__;
     var lenB = list.__length__;
     if (typeof lenB) lenB = list.length;
@@ -81,7 +89,7 @@ cwt.list_filtered_for_each = function (list, handler, filter) {
   // Creates a list with a given length and fills it with a
   // default value.
   //
-  util.list = function (len, defaultValue) {
+  util.list = function(len, defaultValue) {
     if (defaultValue === undefined) {
       defaultValue = null;
     }

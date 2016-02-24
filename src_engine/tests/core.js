@@ -8,12 +8,12 @@ var tests = [];
 /**
  * Adds an asynchron test to the test map. This test can do asynchron tasks and needs
  * to call the whenDone function when all tasks are completed.
- * 
- * @param {string}             groupName group of the test  
+ *
+ * @param {string}             groupName group of the test
  * @param {string}             caseName  name of the test
  * @param {function(whenDone)} test      test function
  */
-cwt.asynchronTest = function (groupName, caseName, test) {
+cwt.asynchronTest = function(groupName, caseName, test) {
   tests.push({
     group: groupName,
     name: caseName,
@@ -22,14 +22,14 @@ cwt.asynchronTest = function (groupName, caseName, test) {
 };
 
 /**
- * Adds a synchron test to the test map. This test cannot do asynchron tasks, 
+ * Adds a synchron test to the test map. This test cannot do asynchron tasks,
  * else it wont be recognized correctly by the test manager.
- * 
+ *
  * @param {string}   groupName group of the test
  * @param {string}   caseName  name of the test
- * @param {function} test      test function 
+ * @param {function} test      test function
  */
-cwt.test_synchron = function (groupName, caseName, test) {
+cwt.test_synchron = function(groupName, caseName, test) {
   tests.push({
     group: groupName,
     name: caseName,
@@ -37,7 +37,7 @@ cwt.test_synchron = function (groupName, caseName, test) {
   });
 };
 
-var expandStringToSize = function (str, size) {
+var expandStringToSize = function(str, size) {
   var neededSpaces, i;
 
   neededSpaces = size - str.length;
@@ -52,15 +52,7 @@ var expandStringToSize = function (str, size) {
   return str;
 };
 
-cwt.test_mock_object = function (obj, key) {
-  return simple.mock(obj, key);
-};
-
-var test_mock_restore = function () {
-  simple.restore();
-};
-
-cwt.evaluateTests = function (whenDoneCb) {
+cwt.evaluateTests = function(whenDoneCb) {
   var numOfSucceedTests, numOfFailedTests, testIdentifier;
 
   console.log("start tests");
@@ -68,9 +60,9 @@ cwt.evaluateTests = function (whenDoneCb) {
   numOfFailedTests = 0;
   numOfSucceedTests = 0;
 
-  cwt.serialExecution(function (pushJob) {
-    tests.forEach(function (el) {
-      pushJob(function (next) {
+  cwt.serialExecution(function(pushJob) {
+    tests.forEach(function(el) {
+      pushJob(function(next) {
 
         testIdentifier = expandStringToSize(el.group + ":" + el.name, TEST_IDENTIFIER_LENGTH);
         try {
@@ -79,17 +71,15 @@ cwt.evaluateTests = function (whenDoneCb) {
           numOfSucceedTests += 1;
         } catch (e) {
           console.warn(testIdentifier + "[FAILED]");
-          console.error(e);
+          console.error(e.stack || e);
           numOfFailedTests += 1;
         }
-
-        test_mock_restore();
 
         next();
       });
     });
 
-    pushJob(function () {
+    pushJob(function() {
       console.log("finished tests");
       console.log("     AMOUNT: " + (numOfFailedTests + numOfSucceedTests));
       console.log("     PASSED: " + numOfSucceedTests);
