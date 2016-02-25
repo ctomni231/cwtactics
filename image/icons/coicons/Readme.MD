@@ -37,12 +37,12 @@ Real Commanding Officers Icon Completion
 * [x] Jugger (AWDS)
 
 * [ ] Brenner (AWDR)
-* [ ] Lin (AWDR)
+* [x] Lin (AWDR)
 * [ ] Will (AWDR)
 * [ ] Catleya [Isabella] (AWDR)
 
-* [ ] Sigismundo [Greyfield] (AWDR)
-* [ ] Waylon (AWDR)
+* [x] Sigismundo [Greyfield] (AWDR)
+* [x] Waylon (AWDR)
 
 * [ ] Forsythe (AWDR)
 * [ ] Gage (AWDR)
