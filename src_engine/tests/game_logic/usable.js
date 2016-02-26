@@ -28,7 +28,7 @@ cwt.test_synchron("game-logic/usable", "make_all_usable", function() {
   var ctx, TURN_OWNER = 0;
 
   ctx = cwt.usable_create_context();
-
+  
   cwt.usable_make_all_usable(ctx);
   cwt.list_for_each(ctx, function(element, index) {
 

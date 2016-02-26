@@ -3,6 +3,10 @@
 //
 model.actions_leftActors = util.list(MAX_UNITS_PER_PLAYER, false);
 
+cwt.usable_data = function() {
+  return model.actions_leftActors;
+};
+
 // Returns true if the selected uid can act in the current active turn, else false.
 //
 model.actions_canAct = function(uid) {

@@ -29,7 +29,7 @@ cwt.log_null_logger = function(message, log_level, arg) {
   // null logger ignores logging messages
 };
 
-cwt.log_active_logger = DEBUG ? cwt.log_console_logger : cwt.log_null_logger;
+cwt.log_active_logger = (DEBUG ? cwt.log_console_logger : cwt.log_null_logger);
 
 /**
  *

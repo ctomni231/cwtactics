@@ -5,6 +5,10 @@ var TEST_IDENTIFIER_LENGTH = 100;
 
 var tests = [];
 
+cwt.test_prepare_model = function() {
+  cwt.log_info("prepare model for new test");
+};
+
 /**
  * Adds an asynchron test to the test map. This test can do asynchron tasks and needs
  * to call the whenDone function when all tasks are completed.
@@ -13,7 +17,7 @@ var tests = [];
  * @param {string}             caseName  name of the test
  * @param {function(whenDone)} test      test function
  */
-cwt.asynchronTest = function(groupName, caseName, test) {
+cwt.test_asynchron = function(groupName, caseName, test) {
   tests.push({
     group: groupName,
     name: caseName,
