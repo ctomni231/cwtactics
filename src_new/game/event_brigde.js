@@ -14,6 +14,8 @@ cwt.game_event_units_joined = function(source_unit_id, target_unit_id, target_x,
 
 cwt.game_event_unit_moved = function(unit_id, start_x, start_y, end_x, end_y, way) {};
 
+cwt.game_event_unit_placed_at_position = function(unit_id, x, y) {};
+
 cwt.game_event_turn_changed = function(day, turn, turn_owner_id) {};
 
 cwt.game_event_weather_changes = function(weather_id, duration) {};
@@ -46,14 +48,12 @@ cwt.client_event_prepare_battle = function(map) {};
 
 cwt.client_event_start_battle = function() {};
 
-cwt.map_for_each_property(cwt, function(key, value) {
-  if (key.indexOf("game_event_") === 0) {
-    cwt[key] = function() {
-      cwt.log_info("no UI handler defined for '" + key + "'");
-    };
-  } else if (key.indexOf("client_event_") === 0) {
-    cwt[key] = function() {
-      cwt.log_info("no model handler defined for '" + key + "'");
-    };
-  }
-});
+cwt.game_event_inject_logging_aspect = function() {
+  cwt.map_for_each_property(cwt, function(key, value) {
+    if (key.indexOf("game_event_") === 0) {
+      cwt[key] = function() {
+        cwt.log_info("called game event '" + key + "' with arguments " + JSON.stringify(cwt.list_convert_arguments_to_list(arguments)));
+      };
+    }
+  });
+};

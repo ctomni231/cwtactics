@@ -12,6 +12,8 @@ document.onkeydown = function(event) {
   if (cwt.type_is_something(key)) {
     cwt.input_press_key(key);
   }
+
+  return false;
 };
 
 document.onkeyup = function(event) {
@@ -19,4 +21,6 @@ document.onkeyup = function(event) {
   if (cwt.type_is_something(key)) {
     cwt.input_release_key(key);
   }
+
+  return false;
 };

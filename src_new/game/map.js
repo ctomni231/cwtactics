@@ -1,15 +1,13 @@
-var map = (function() {
-  var map = [];
+var map;
+var height = 0;
+var width = 0;
 
+cwt.map_initialize = function() {
+  map = [];
   for (var x = 0; x < MAX_MAP_WIDTH; x += 1) {
     map[x] = [];
   }
-
-  return map;
-})();
-
-var height = 0;
-var width = 0;
+};
 
 cwt.map_set_size = function(map_width, map_height) {
   cwt.assert_true(cwt.type_is_integer(map_width) && map_width > 0);
@@ -25,7 +23,7 @@ cwt.map_fill_with_tiles = function(type) {
   cwt.assert_true(width > 0 && height > 0);
   cwt.assert_true(width < MAX_MAP_WIDTH && height < MAX_MAP_HEIGHT);
 
-  cwt.require_something(cwt.sheets_get_tile_type(type));
+  cwt.require_something(cwt.tiles_get_type(type));
 
   for (var x = 0; x < width; x += 1) {
     for (var y = 0; y < height; y += 1) {
