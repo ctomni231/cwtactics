@@ -1,0 +1,520 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"shee",
+				"sheets_register_tile_type(data)	types.js"
+			],
+			[
+				"ti",
+				"tile_type	map.js"
+			],
+			[
+				"requ",
+				"require_something(value)	types.js"
+			],
+			[
+				"req",
+				"require_nothing(value)	types.js"
+			],
+			[
+				"as",
+				"assert_valid_id(id)	types.js"
+			],
+			[
+				"re",
+				"require_string(value)	types.js"
+			],
+			[
+				"game_eve",
+				"game_event_tile_got_type(x, y, type)	event_brigde.js"
+			],
+			[
+				"map",
+				"map_set_size(map_width, map_height)	map.js"
+			],
+			[
+				"he",
+				"height	map.js"
+			],
+			[
+				"ty",
+				"type_is_integer(value)	types.js"
+			],
+			[
+				"is",
+				"isInt(value)	functional.js"
+			],
+			[
+				"ac",
+				"active_state	statemachine.js"
+			],
+			[
+				"game",
+				"game_state_render_state(delta)	statemachine.js"
+			],
+			[
+				"ga",
+				"game_state_set_state(id)	statemachine.js"
+			],
+			[
+				"loo",
+				"loop()	main.js"
+			],
+			[
+				"buil",
+				"buildNewGame()	build.js"
+			],
+			[
+				"ar",
+				"args	build.js"
+			],
+			[
+				"ins",
+				"instance	objects.js"
+			],
+			[
+				"cr",
+				"create( impl, config )	statemachine.js"
+			],
+			[
+				"crea",
+				"create( impl, config )	statemachine.js"
+			],
+			[
+				"input",
+				"input_press_key(key)	input.js"
+			],
+			[
+				"inp",
+				"input_press_key(key)	input.js"
+			],
+			[
+				"gam",
+				"gamestate_set_state(ctx, id)	statemachine.js"
+			],
+			[
+				"ma",
+				"map_actions()	start_screen.js"
+			],
+			[
+				"press",
+				"pressed_keys	input.js"
+			],
+			[
+				"asser",
+				"assert_true(expr, msg)	asserts.js"
+			],
+			[
+				"act",
+				"actions_leftActors	actions.js"
+			],
+			[
+				"log",
+				"log_info(message)	logging.js"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"model",
+				"persistence_serialize_model(model)	savegame.js"
+			],
+			[
+				"my",
+				"my_function(my_par)	test.js"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/types.js",
+			"settings":
+			{
+				"buffer_size": 500,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "sublime/Data/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+			"settings":
+			{
+				"buffer_size": 1123,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 357.0,
+		"last_filter": "insta",
+		"selected_items":
+		[
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"colo",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"re",
+				"Package Control: Remove Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"color",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"co",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 125.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/game_states",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/gfx_bridge",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_const",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/util",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_builder"
+	],
+	"file_history":
+	[
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/types.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/load_map.js",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/SublimeLinter/Default (Windows).sublime-keymap",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/MySignaturePlugin/MySignaturePlugin.sublime-settings",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_builder/build.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/map.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/util/list.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/types.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/event_brigde.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/gfx_bridge/bridge.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/start_game.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/main.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/statemachine.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/storage.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/base.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core.cs",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/state.cs",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/core/statemachine.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/state.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/start.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/log.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/core/logging.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/objects.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/core/storage.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/core/input.js",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/JSLint.sublime-settings",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/JSLint/linter.js",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/JSLint/README.md",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/JSLint/jslint.js",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/JSLint/JSLint.py",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/JSLint/JSLint.sublime-settings",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/controller/update.js",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/TodoReview/TodoReview.sublime-settings",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/TodoReview/Default.sublime-keymap",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/controller/input.js",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/GitGutter/Default (Windows).sublime-keymap",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/GitGutter.sublime-settings",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/GitGutter/GitGutter.sublime-settings",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/game_states/loading.js",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/Git/Git.sublime-settings",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/jshintify/Default.sublime-keymap",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/loading/setupKeyboard.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/controller/modification.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/game_states/start_screen.js",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/Colorsublime.sublime-settings",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/MySignaturePlugin.sublime-settings",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/model/actions.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/tests/core.js",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/JavascriptBeautify.sublime-settings",
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/Javascript Beautify/JavascriptBeautify.sublime-settings",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/tests/game_logic/usable.js",
+		"/C/Users/Alexander/Desktop/test_js/test3.js",
+		"/C/Users/Alexander/Desktop/test_js/test2.js",
+		"/C/Users/Alexander/Desktop/test_js/test.js",
+		"/C/Users/Alexander/Desktop/STEXT2/Data/Packages/SublimeCodeIntel/SublimeCodeIntel.sublime-settings"
+	],
+	"find":
+	{
+		"height": 38.0
+	},
+	"find_in_files":
+	{
+		"height": 120.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"gamestate_",
+			"use stric",
+			"map_actions",
+			"actions",
+			"test_asynchron"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"game_state_",
+			"map_input_actions",
+			"pressed_actions"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/types.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 500,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								69,
+								69
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "sublime/Data/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1123,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 30.0
+	},
+	"input":
+	{
+		"height": 44.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 218.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "testproject.sublime-project",
+	"replace":
+	{
+		"height": 70.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 197.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

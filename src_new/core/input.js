@@ -7,26 +7,35 @@ cwt.input_map_key_to_action = function(key, action) {
 };
 
 cwt.input_press_key = function(key) {
-  DEBUG && cwt.log_info("[INPUT] pressed key " + key);
+  if (pressed_keys[key]) {
+    // ignore this event because the key is already pressed
+    return;
+  }
+
+  if (DEBUG) cwt.log_info("[INPUT] pressed key " + key);
 
   var mapping = keys[key];
   if (mapping) {
     pressed_actions[mapping] += 1;
 
-    DEBUG && pressed_actions[mapping] == 1 && cwt.log_info("[INPUT] pressed action " + mapping);
+    if (DEBUG && pressed_actions[mapping] == 1) {
+      cwt.log_info("[INPUT] pressed action " + mapping);
+    }
   }
   pressed_keys[key] = true;
 };
 
 cwt.input_release_key = function(key) {
-  DEBUG && cwt.log_info("[INPUT] released key " + key);
+  if (DEBUG) cwt.log_info("[INPUT] released key " + key);
 
   var mapping = keys[key];
   if (mapping) {
     pressed_actions[mapping] -= 1;
     cwt.assert_true(pressed_actions[mapping] >= 0, "negative action input counter detected");
 
-    DEBUG && pressed_actions[mapping] == 0 && cwt.log_info("[INPUT] released action " + mapping);
+    if (DEBUG && pressed_actions[mapping] === 0) {
+      cwt.log_info("[INPUT] released action " + mapping);
+    }
   }
 
   pressed_keys[key] = false;
