@@ -48,6 +48,14 @@ cwt.units_get_unit_by_id = function(id) {
   return units[cwt.require_integer(id)];
 };
 
+cwt.units_get_unit_by_position = function(x, y) {
+  var unit_id = positions[get_position_code(x, y)];
+  if (!cwt.type_is_nothing(unit_id)) {
+    return units[unit_id];
+  }
+  cwt.assert_true(false, "no unit at {" + x + ", " + y + "}");
+};
+
 cwt.units_set_unit_owner = function(id, owner_id) {
   cwt.assert_true(cwt.players_is_player_id(owner_id));
   var unit = cwt.units_get_unit_by_id(id);

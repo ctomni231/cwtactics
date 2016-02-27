@@ -11,8 +11,11 @@ cwt.game_state_add_state("load_map", {
       name: "development fake map",
       height: 10,
       width: 10,
+      day: 10,
       fill_type: "PLIN",
-      players: 2,
+      players: [{
+        team: 3
+      }, {}],
       units: [{
         type: "INFT",
         x: 2,

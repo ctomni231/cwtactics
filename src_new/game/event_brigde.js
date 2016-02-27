@@ -16,7 +16,7 @@ cwt.game_event_unit_moved = function(unit_id, start_x, start_y, end_x, end_y, wa
 
 cwt.game_event_unit_placed_at_position = function(unit_id, x, y) {};
 
-cwt.game_event_turn_changed = function(day, turn, turn_owner_id) {};
+cwt.game_event_turn_changed = function(day, turn_owner_id) {};
 
 cwt.game_event_weather_changes = function(weather_id, duration) {};
 

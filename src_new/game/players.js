@@ -3,9 +3,24 @@ var players;
 cwt.players_initialize = function() {
   players = cwt.list_created_filled_list_with_provider(MAX_PLAYERS, function(index) {
     return {
-      id: index
+      id: index,
+      team: -1
     };
   });
+};
+
+cwt.players_deactivate_all = function() {
+  for (var i = 0; i < players.length; i += 1) {
+    players[i].team = -1;
+  }
+};
+
+cwt.players_set_team = function(id, team) {
+  cwt.players_get_player(id).team = cwt.require_integer(team);
+};
+
+cwt.players_is_active_player = function(id) {
+  return cwt.players_get_player(id).team > -1;
 };
 
 cwt.players_is_neutral_id = function(id) {
