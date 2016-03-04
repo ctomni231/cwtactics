@@ -46,7 +46,11 @@ cwt.game_state_render_state = function(delta) {
 cwt.game_state_set_state = function(id) {
   cwt.assert_true(is_state(id), id + " is not a valid state");
 
-  active_state && states[active_state].on_exit();
+  cwt.log_info("leave " + active_state + " state");
+  if (active_state) states[active_state].on_exit();
+
   active_state = id;
+
+  cwt.log_info("enter " + active_state + " state");
   states[active_state].on_enter();
 };
