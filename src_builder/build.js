@@ -49,6 +49,7 @@ var buildGame = function(devMode) {
   cwtBuild.readFolder(gameSource, NEW_GAME_SOURCE_DIRECTORY + "/game");
   cwtBuild.readFolder(gameSource, NEW_GAME_SOURCE_DIRECTORY + "/states");
   cwtBuild.readFolder(gameSource, NEW_GAME_SOURCE_DIRECTORY + "/controller");
+  cwtBuild.readFolder(gameSource, NEW_GAME_SOURCE_DIRECTORY + "/commands");
   cwtBuild.readFile(gameSource, NEW_GAME_SOURCE_DIRECTORY + "/main.js");
 
   var cssSource = new cwtBuild.StringBuilder();

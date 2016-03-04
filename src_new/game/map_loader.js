@@ -1,3 +1,9 @@
+/**
+ * Loads a map into the game model. The map can be a plain map or
+ * sa save game.
+ *
+ * @param  {object} map map or save object
+ */
 cwt.map_loader_load_map = function(map) {
   cwt.log_info(cwt.require_string(map.name));
 
@@ -13,11 +19,13 @@ cwt.map_loader_load_map = function(map) {
     if (cwt.type_is_integer(map.players)) {
       for (var i = 0; i < map.players; i += 1) {
         cwt.players_set_team(i, i);
+        cwt.players_set_name(i, "Player " + i);
       }
 
     } else {
       cwt.list_for_each(map.players, function(data, player_id) {
         cwt.players_set_team(player_id, cwt.type_is_something(data.team) ? data.team : player_id);
+        cwt.players_set_name(player_id, cwt.type_is_something(data.name) ? data.name : "Player " + player_id);
       });
     }
   }

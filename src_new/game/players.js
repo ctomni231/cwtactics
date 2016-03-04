@@ -4,7 +4,8 @@ cwt.players_initialize = function() {
   players = cwt.list_created_filled_list_with_provider(MAX_PLAYERS, function(index) {
     return {
       id: index,
-      team: -1
+      team: -1,
+      name: null
     };
   });
 };
@@ -13,6 +14,10 @@ cwt.players_deactivate_all = function() {
   for (var i = 0; i < players.length; i += 1) {
     players[i].team = -1;
   }
+};
+
+cwt.players_set_name = function(id, name) {
+  cwt.players_get_player(id).name = cwt.require_string(name);
 };
 
 cwt.players_set_team = function(id, team) {

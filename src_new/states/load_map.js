@@ -14,8 +14,11 @@ cwt.game_state_add_state("load_map", {
       day: 10,
       fill_type: "PLIN",
       players: [{
-        team: 3
-      }, {}],
+        team: 3,
+        name: "Willy Wonker"
+      }, {
+        team: 1
+      }],
       units: [{
         type: "INFT",
         x: 2,
