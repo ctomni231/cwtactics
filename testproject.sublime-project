@@ -2,16 +2,19 @@
 	"folders":
 	[
 		{
-			"path": "C:\\Users\\Alexander\\Documents\\Projekte\\cwtactics\\src_engine"
+			"path": "src_engine"
 		},
 		{
-			"path": "C:\\Users\\Alexander\\Documents\\Projekte\\cwtactics\\src_const"
+			"path": "src_const"
 		},
 		{
-			"path": "C:\\Users\\Alexander\\Documents\\Projekte\\cwtactics\\src_new"
+			"path": "src_new"
 		},
 		{
-			"path": "C:\\Users\\Alexander\\Documents\\Projekte\\cwtactics\\src_builder"
+			"path": "src_builder"
+		},
+		{
+			"path": "src_gamedata"
 		}
 	]
 }
