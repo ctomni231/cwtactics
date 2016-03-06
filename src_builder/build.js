@@ -6,6 +6,7 @@ var NEW_GAME_SOURCE_DIRECTORY = "src_new";
 
 var ARG_DEV_BUILD = "-dev";
 var ARG_LIVE_BUILD = "-live";
+var ARG_AUTOTEST_BUILD = "-test";
 
 var BASE_CONSTANTS_FILE = "src_const/base.js";
 var DEV_CONSTANTS_FILE = "src_const/dev.js";
@@ -30,6 +31,10 @@ var isLiveMode = function(args) {
   return args.indexOf(ARG_LIVE_BUILD) != -1;
 };
 
+var calledWithArgument = function(arg) {
+  return args.indexOf(arg) != -1;
+};
+
 var isOldGameMode = function(args) {
   return args.indexOf(ARG_OLD_GAME) != -1;
 };
@@ -51,6 +56,11 @@ var buildGame = function(devMode) {
   cwtBuild.readFolder(gameSource, NEW_GAME_SOURCE_DIRECTORY + "/controller");
   cwtBuild.readFolder(gameSource, NEW_GAME_SOURCE_DIRECTORY + "/commands");
   cwtBuild.readFile(gameSource, NEW_GAME_SOURCE_DIRECTORY + "/main.js");
+
+  if (calledWithArgument(ARG_AUTOTEST_BUILD)) {
+    cwtBuild.readFile(gameSource, NEW_GAME_SOURCE_DIRECTORY + "/test/test_core.js");
+    cwtBuild.readFile(gameSource, NEW_GAME_SOURCE_DIRECTORY + "/test/game_test.js");
+  }
 
   var cssSource = new cwtBuild.StringBuilder();
 

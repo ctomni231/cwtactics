@@ -34,13 +34,13 @@ cwt.assert_not_equals = function(actual, expected, msg) {
 cwt.assert_array_equals = function(actual_array, expected_array, msg) {
   var i, e;
 
-  msg = msg || "AssertionFailed: arrays are not equal";
+  msg = msg || "AssertionFailed: expected array " + JSON.stringify(expected_array) + " but got " + JSON.stringify(actual_array);
 
   if (actual_array.length !== expected_array.length) {
     throw new Error(msg);
   }
 
   for (i = 0, e = actual_array.length; i < e; i += 1) {
-    cwt.assert_true(actual_array[i] === expected_array[i]);
+    cwt.assert_true(actual_array[i] === expected_array[i], msg);
   }
 };

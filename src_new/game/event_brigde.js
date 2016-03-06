@@ -1,3 +1,7 @@
+cwt.game_event_entered_state = function(state_id) {};
+
+cwt.game_event_error = function(error) {};
+
 cwt.game_event_unit_attacks = function(attacker_id, attacker_x, attacker_y, defender_id, defender_x, defender_y) {};
 
 cwt.game_event_unit_will_be_attacked = function(unit_id, unit_x, unit_y) {};
@@ -47,13 +51,3 @@ cwt.client_event_player_leaves_battle = function() {};
 cwt.client_event_prepare_battle = function(map) {};
 
 cwt.client_event_start_battle = function() {};
-
-cwt.game_event_inject_logging_aspect = function() {
-  cwt.map_for_each_property(cwt, function(key, value) {
-    if (key.indexOf("game_event_") === 0) {
-      cwt[key] = function() {
-        cwt.log_info("called game event '" + key + "' with arguments " + JSON.stringify(cwt.list_convert_arguments_to_list(arguments)));
-      };
-    }
-  });
-};

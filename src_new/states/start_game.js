@@ -6,7 +6,6 @@ cwt.game_state_add_state("start_game", {
     cwt.map_initialize();
     cwt.players_initialize();
     cwt.units_initialize();
-    cwt.game_event_inject_logging_aspect();
 
     cwt.game_state_set_state("loading_state");
   },
