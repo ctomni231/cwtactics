@@ -117,7 +117,7 @@ function runGame() {
   var ctx = c.getContext("2d");
 
   ctx.clearRect(0, 0, c.width, c.height);
-  
+
   render(ctx);
 
   // Keeps track of the FPS
@@ -147,10 +147,16 @@ function runGame() {
 function render(ctx){
 	step++;
 	if( step == 3 ) step = 0;
-	
-	for(var i = 0; i < intArray.length; i++){
-		ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
-	}
+
+  // For animation testing
+	//for(var i = 0; i < intArray.length; i++){
+	//	ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
+	//}
+
+  // For ratation testing only
+  for(var i = 0; i < intArray.length; i++){
+    ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
+  }
 }
 
 // -----------------------------------------
@@ -220,6 +226,112 @@ function storeImage(){
 	}
 }
 
+// Works with canvas Image to flip image horizontally
+function flipX(data, sx, sy){
+  var temp = new Uint8ClampedArray(data);
+  for(var i = 0; i < sx; i++){
+    for(var j = 0; j < sy; j++){
+      temp[((sx-i-1)+(j*sx))*4] = data[(i+j*sx)*4];
+      temp[((sx-i-1)+(j*sx))*4+1] = data[(i+j*sx)*4+1];
+      temp[((sx-i-1)+(j*sx))*4+2] = data[(i+j*sx)*4+2];
+      temp[((sx-i-1)+(j*sx))*4+3] = data[(i+j*sx)*4+3];
+    }
+  }
+  return temp;
+}
+
+// This is used to shift all pixels in a certain direction
+function shiftY(data, sx, sy, py){
+  var temp = new Uint8ClampedArray(data);
+  for(var i = 0; i < sx; i++){
+      for(var j = 0; j < sy; j++){
+        temp[(i+((j+py)%sy)*sx)*4] = data[(i+j*sx)*4];
+        temp[(i+((j+py)%sy)*sx)*4+1] = data[(i+j*sx)*4+1];
+        temp[(i+((j+py)%sy)*sx)*4+2] = data[(i+j*sx)*4+2];
+        temp[(i+((j+py)%sy)*sx)*4+3] = data[(i+j*sx)*4+3];
+      }
+  }
+  return temp;
+}
+
+// Used to shift pixels in a certain direction dependant on row.
+function slitY(data, sx, sy, px, py){
+  var temp = new Uint8ClampedArray(data);
+  for(var i = 0; i < sx; i++){
+    if(i == px){
+      for(var j = 0; j < sy; j++){
+        temp[(i+((j+py)%sy)*sx)*4] = data[(i+j*sx)*4];
+        temp[(i+((j+py)%sy)*sx)*4+1] = data[(i+j*sx)*4+1];
+        temp[(i+((j+py)%sy)*sx)*4+2] = data[(i+j*sx)*4+2];
+        temp[(i+((j+py)%sy)*sx)*4+3] = data[(i+j*sx)*4+3];
+      }
+    }
+  }
+  return temp;
+}
+
+// Works with canvas Image to flip image vertically
+function flipY(data, sx, sy){
+  var temp = new Uint8ClampedArray(data);
+  for(var i = 0; i < sx; i++){
+    for(var j = 0; j < sy; j++){
+      temp[(i+((sy-j-1)*sx))*4] = data[(i+j*sx)*4];
+      temp[(i+((sy-j-1)*sx))*4+1] = data[(i+j*sx)*4+1];
+      temp[(i+((sy-j-1)*sx))*4+2] = data[(i+j*sx)*4+2];
+      temp[(i+((sy-j-1)*sx))*4+3] = data[(i+j*sx)*4+3];
+    }
+  }
+  return temp;
+}
+
+// This is used to shift all pixels in a certain direction
+function shiftX(data, sx, sy, px){
+  var temp = new Uint8ClampedArray(data);
+  for(var i = 0; i < sx; i++){
+      for(var j = 0; j < sy; j++){
+        temp[(((i+px)%sx)+j*sx)*4] = data[(i+j*sx)*4];
+        temp[(((i+px)%sx)+j*sx)*4+1] = data[(i+j*sx)*4+1];
+        temp[(((i+px)%sx)+j*sx)*4+2] = data[(i+j*sx)*4+2];
+        temp[(((i+px)%sx)+j*sx)*4+3] = data[(i+j*sx)*4+3];
+      }
+  }
+  return temp;
+}
+
+// Used to shift pixels in a certain direction dependant on column.
+function slitX(data, sx, sy, px, py){
+  var temp = new Uint8ClampedArray(data);
+  for(var i = 0; i < sx; i++){
+      for(var j = 0; j < sy; j++){
+        if(py == j){
+          temp[(((i+px)%sx)+j*sx)*4] = data[(i+j*sx)*4];
+          temp[(((i+px)%sx)+j*sx)*4+1] = data[(i+j*sx)*4+1];
+          temp[(((i+px)%sx)+j*sx)*4+2] = data[(i+j*sx)*4+2];
+          temp[(((i+px)%sx)+j*sx)*4+3] = data[(i+j*sx)*4+3];
+        }
+      }
+  }
+  return temp;
+}
+
+// Used to rotate an image 90 degrees
+function rotate90(data, sx, sy){
+  var temp = new Uint8ClampedArray(data);
+  for(var i = 0; i < sy; i++){
+    for(var j = 0; j < sx; j++){
+      temp[(i+j*sy)*4] = data[(j+i*sx)*4];
+      temp[(i+j*sy)*4+1] = data[(j+i*sx)*4+1];
+      temp[(i+j*sy)*4+2] = data[(j+i*sx)*4+2];
+      temp[(i+j*sy)*4+3] = data[(j+i*sx)*4+3];
+    }
+  }
+
+  lx = sy;
+  ly = sx;
+
+  return temp;
+}
+
 //Canvas Image with a speed mechanic included
 function canvasImg(num){
 
@@ -228,12 +340,21 @@ function canvasImg(num){
 	var change = 0;
 
 	if(num >= 0 && num < viewArray.length){
-		view = viewArray[num];
+    view = viewArray[num];
+
 		if(lx != locxArray[num] || ly != locyArray[num]){
-			lx = locxArray[num];
+      lx = locxArray[num];
 			ly = locyArray[num];
 			change = 1;
 		}
+
+    //It is important these manipulations are done after the checks
+    //due to the rotations.
+    //view = flipY(view, lx, ly);
+    //view = flipX(view, lx, ly);
+    view = slitX(view, lx, ly, 16, 16);
+    //view = rotate90(view, lx, ly);
+
 	}else{
 		view = null;
 		if(lx != 100 || ly != 100){
@@ -312,16 +433,7 @@ function canvasImg(num){
 			imgsData.data[i+7]=view[i+7];
 		}//*/
 	}
-	
-	// Working on flip function
-	/*
-	view = imgsData.data;
-	var j = canvas.width;
-	for(var i = 0; i < imgsData.data.length; i++){
-		imgsData.data[i] = view[j-i];
-	}
-	//*/
-	
+
 	//Draws the image
 	imgctx.putImageData(imgsData,0,0);
 
@@ -342,7 +454,8 @@ function loadImage(num){
 	var tempImg = new Image();
 	tempImg.onload = function(){
 		imgArray[num].src = this.src;
-		if(this.height == locyArray[num] && this.width == locxArray[num]){
+		if((this.height == locyArray[num] && this.width == locxArray[num]) ||
+       (this.width == locyArray[num] && this.height == locxArray[num])){
 			imgReady[num] = num;
 		}
 	};
