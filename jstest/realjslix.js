@@ -28,6 +28,7 @@ var mousey = 0;
 var view;
 var lx = 0;
 var ly = 0;
+var blend = new Uint8ClampedArray(32)
 
 //These are arrays that store multiple images
 var viewArray = [];
@@ -149,14 +150,14 @@ function render(ctx){
 	if( step == 3 ) step = 0;
 
   // For animation testing
-	//for(var i = 0; i < intArray.length; i++){
-	//	ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
-	//}
+	for(var i = 0; i < intArray.length; i++){
+		ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
+	}
 
   // For ratation testing only
-  for(var i = 0; i < intArray.length; i++){
-    ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
-  }
+  //for(var i = 0; i < intArray.length; i++){
+    //ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
+  //}
 }
 
 // -----------------------------------------
@@ -336,6 +337,9 @@ function rotate90(data, sx, sy){
 function canvasImg(num){
 
 	var color = document.getElementById("colorBox");
+  var iflipx = document.getElementById("flipX");
+  var iflipy = document.getElementById("flipY");
+  var irotate = document.getElementById("rotate90");
 
 	var change = 0;
 
@@ -350,10 +354,12 @@ function canvasImg(num){
 
     //It is important these manipulations are done after the checks
     //due to the rotations.
-    //view = flipY(view, lx, ly);
-    //view = flipX(view, lx, ly);
-    view = slitX(view, lx, ly, 16, 16);
-    //view = rotate90(view, lx, ly);
+    if(iflipx.checked == 1)
+      view = flipX(view, lx, ly);
+    if(iflipy.checked == 1)
+      view = flipY(view, lx, ly);
+    //if(irotate.checked == 1)
+      //view = rotate90(view, lx, ly);
 
 	}else{
 		view = null;
@@ -423,13 +429,13 @@ function canvasImg(num){
 		}
 	}else{
 		for (var i = 0; i < imgsData.data.length; i+=8){
-			imgsData.data[i]=view[i];
-			imgsData.data[i+1]=view[i+1];
-			imgsData.data[i+2]=view[i+2];
+			imgsData.data[i]=(view[i]+0)/2;
+			imgsData.data[i+1]=(view[i+1]+0)/2;
+			imgsData.data[i+2]=(view[i+2]+0)/2;
 			imgsData.data[i+3]=view[i+3];
-			imgsData.data[i+4]=view[i+4];
-			imgsData.data[i+5]=view[i+5];
-			imgsData.data[i+6]=view[i+6];
+			imgsData.data[i+4]=(view[i+4]+0)/2;
+			imgsData.data[i+5]=(view[i+5]+0)/2;
+			imgsData.data[i+6]=(view[i+6]+0)/2;
 			imgsData.data[i+7]=view[i+7];
 		}//*/
 	}
