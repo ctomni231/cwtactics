@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"lo",
+				"log_styled(style, message)	logging.js"
+			],
+			[
 				"HEADER_",
 				"HEADER_STYLE	logging.js"
 			],
@@ -70,10 +74,6 @@
 			[
 				"ad",
 				"add_event(key, args)	game_test.js"
-			],
-			[
-				"lo",
-				"log_info(message)	logging.js"
 			],
 			[
 				"ca",
@@ -372,29 +372,18 @@
 	"buffers":
 	[
 		{
-			"file": "src_new/test/game_test.js",
-			"settings":
-			{
-				"buffer_size": 518,
-				"line_ending": "Windows"
-			}
-		},
-		{
 			"file": "src_new/test/test_core.js",
 			"settings":
 			{
-				"buffer_size": 3076,
+				"buffer_size": 3670,
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"contents": "/*global DEBUG, console*/\n\nvar HEADER_INFO = \"%c[FINE ] \";\nvar HEADER_WARN = \"%c[WARN ] \";\nvar HEADER_ERROR = \"%c[ERROR] \";\nvar HEADER_STYLE = \"%c \";\n\ncwt.log_LEVEL_INFO = 1;\ncwt.log_LEVEL_WARN = 2;\ncwt.log_LEVEL_ERROR = 3;\ncwt.log_LEVEL_CUSTOM = 4;\n\ncwt.log_console_logger = function(message, log_level, arg) {\n  switch (log_level || cwt.log_LEVEL_INFO) {\n\n    case cwt.log_LEVEL_CUSTOM:\n      console.info(HEADER_STYLE + message, arg);\n      break;\n\n    case cwt.log_LEVEL_INFO:\n      console.info(HEADER_INFO + message,);\n      break;\n\n    case cwt.log_LEVEL_WARN:\n      console.warn(HEADER_WARN + message);\n      break;\n\n    case cwt.log_LEVEL_ERROR:\n      console.warn(HEADER_ERROR + message);\n      console.error(arg);\n      break;\n  }\n};\n\ncwt.log_null_logger = function(message, log_level, arg) {\n  // null logger ignores logging messages\n};\n\ncwt.log_active_logger = (DEBUG ? cwt.log_console_logger : cwt.log_null_logger);\n\ncwt.log_styled = function(message) {\n  cwt.log_active_logger(message, cwt.log_LEVEL_INFO, null);\n};\n\ncwt.log_info = function(message) {\n  cwt.log_active_logger(message, cwt.log_LEVEL_INFO, null);\n};\n\n/**\n *\n * @param {string} message message that will be logged\n */\ncwt.log_warn = function(message) {\n  cwt.log_active_logger(message, cwt.log_LEVEL_WARN, null);\n};\n\n/**\n *\n * @param {string} message message that will be logged\n */\ncwt.log_error = function(message, error) {\n  cwt.log_active_logger(message, cwt.log_LEVEL_ERROR, error);\n};",
-			"file": "src_new/core/logging.js",
-			"file_size": 1530,
-			"file_write_time": 131017375395706462,
+			"file": "src_new/test/game_test.js",
 			"settings":
 			{
-				"buffer_size": 1469,
+				"buffer_size": 294,
 				"line_ending": "Windows"
 			}
 		}
@@ -516,11 +505,6 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/controller",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/core",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/core_client",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/loading",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/util",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_const",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core",
@@ -532,12 +516,14 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/test_core.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/game_test.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/logging.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/asserts.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/statemachine.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/start_game.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/event_brigde.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_builder/build.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/test_core.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/error.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/testing.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/loading_state.js",
@@ -628,6 +614,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"cwt.log_info(",
+			"log_LEVEL_CUSTOM",
 			"\");",
 			"failCallback",
 			"winCallback",
@@ -645,6 +633,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"cwt.log_styled(LOG_STYLE, ",
+			"log_LEVEL_STYLED",
 			"when_failed",
 			"when_done",
 			"create_request",
@@ -662,57 +652,24 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src_new/test/game_test.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 518,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								291,
-								291
-							]
-						],
-						"settings":
-						{
-							"rulers":
-							[
-								80
-							],
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
 					"file": "src_new/test/test_core.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3076,
+						"buffer_size": 3670,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								74,
-								74
+								745,
+								745
 							]
 						],
 						"settings":
@@ -729,30 +686,28 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "src_new/core/logging.js",
+					"buffer": 1,
+					"file": "src_new/test/game_test.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1469,
+						"buffer_size": 294,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								522,
-								522
+								0,
+								0
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
 						},
-						"translation.x": -0.0,
-						"translation.y": 101.0,
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -804,7 +759,7 @@
 	"project": "testproject.sublime-project",
 	"replace":
 	{
-		"height": 74.0
+		"height": 66.0
 	},
 	"save_all_on_build": true,
 	"select_file":

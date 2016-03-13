@@ -5,7 +5,11 @@
  * @param  {object} map map or save object
  */
 cwt.map_loader_load_map = function(map) {
-  cwt.log_info(cwt.require_string(map.name));
+  cwt.log_info("load map '" + cwt.require_string(map.name) + "'");
+
+  // --------------- DEV ---------------
+  cwt.stress_simulate_a_lot_of_it(50);
+  // --------------- DEV ---------------
 
   cwt.turn_set_day(cwt.type_is_something(map.day) ? map.day : 0);
 
