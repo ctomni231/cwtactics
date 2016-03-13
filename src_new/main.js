@@ -45,6 +45,7 @@ function enter_loop() {
 
 cwt.main = function() {
   cwt.log_info("starting CustomWars Tactics");
+  cwt.client_intialize_workers();
   cwt.game_state_set_state("start_game");
   enter_loop();
 };

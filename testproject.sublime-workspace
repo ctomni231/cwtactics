@@ -4,8 +4,92 @@
 		"selected_items":
 		[
 			[
+				"GA",
+				"GAME_THREAD_JS_FILE	build.js"
+			],
+			[
+				"client_",
+				"client_intialize_worker_interface()	main_core.js"
+			],
+			[
+				"GAME",
+				"GAME_THREAD_JS_FILE	build.js"
+			],
+			[
+				"write_c",
+				"write_client_thread_js_file()	build.js"
+			],
+			[
+				"write_ga",
+				"write_game_core_into_buffer(buffer)	build.js"
+			],
+			[
+				"is_in",
+				"is_in_dualcore_mode()	build.js"
+			],
+			[
+				"ARG_",
+				"ARG_AUTOTEST	build.js"
+			],
+			[
+				"ARG",
+				"ARG_DEV_BUILD	build.js"
+			],
+			[
+				"is_in_de",
+				"is_in_development_mode()	build.js"
+			],
+			[
+				"write_",
+				"write_client_thread_js_file()	build.js"
+			],
+			[
+				"is_inde",
+				"is_in_development_mode()	build.js"
+			],
+			[
 				"lo",
-				"log_styled(style, message)	logging.js"
+				"log_message(msg)	build.js"
+			],
+			[
+				"check",
+				"check_program_arguments()	build.js"
+			],
+			[
+				"wr",
+				"write_game_thread_js_file()	build.js"
+			],
+			[
+				"clean",
+				"cleanup_dist_folder()	build.js"
+			],
+			[
+				"fps",
+				"fpsMax	main.js"
+			],
+			[
+				"ass",
+				"assert_true(expr, msg)	asserts.js"
+			],
+			[
+				"client",
+				"client_event_register_object_type(type, sheet)	events.js"
+			],
+			[
+				"f",
+				"function"
+			],
+			[
+				"log",
+				"log_info(message)	logging.js"
+			],
+			[
+				"AR",
+				"ARG_DUAL_CORE	build.js"
+			],
+			[
+				"call",
+				"calledWithArgument(arg)	build.js"
 			],
 			[
 				"HEADER_",
@@ -32,20 +116,12 @@
 				"input_release_key(key)	input.js"
 			],
 			[
-				"log",
-				"log_info(message)	logging.js"
-			],
-			[
 				"assert_",
 				"assert_array_equals(actual_array, expected_array, msg)	asserts.js"
 			],
 			[
 				"eve",
 				"event( ev )	statemachine.js"
-			],
-			[
-				"call",
-				"call_map	test_core.js"
 			],
 			[
 				"re",
@@ -62,10 +138,6 @@
 			[
 				"ga",
 				"game_event_entered_state(state_id)	event_brigde.js"
-			],
-			[
-				"AR",
-				"ARG_AUTOTEST_BUILD	build.js"
 			],
 			[
 				"game_event",
@@ -198,10 +270,6 @@
 			[
 				"get_",
 				"get_free_unit_id()	units.js"
-			],
-			[
-				"ass",
-				"assert_true(expr, msg)	asserts.js"
 			],
 			[
 				"for",
@@ -372,18 +440,10 @@
 	"buffers":
 	[
 		{
-			"file": "src_new/test/test_core.js",
+			"file": "src_builder/build.js",
 			"settings":
 			{
-				"buffer_size": 3670,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "src_new/test/game_test.js",
-			"settings":
-			{
-				"buffer_size": 294,
+				"buffer_size": 6772,
 				"line_ending": "Windows"
 			}
 		}
@@ -507,33 +567,48 @@
 	[
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_const",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/commands",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/events",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/util",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/workers",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_builder"
 	],
 	"file_history":
 	[
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/map_loader.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/workers/main_core.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/error.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/dualcore/main_core.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/dualcore/single_core.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/main.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/events/events.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/dualcore/game_core.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_builder/build.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/start_game.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/commands/next_turn.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/stress.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/load_map.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/event_handling.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/main_menu.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/types.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/core.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/maps.js",
+		"/C/Users/Alexander/Documents/Programme/sublime/Data/Packages/User/JavascriptBeautify.sublime-settings",
+		"/C/Users/Alexander/Documents/Programme/sublime/Data/Packages/Javascript Beautify/JavascriptBeautify.sublime-settings",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/test_core.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/game_test.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/logging.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/asserts.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/statemachine.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/start_game.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/event_brigde.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_builder/build.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/error.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/testing.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/loading_state.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/util/request.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/util/functional.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/main_menu.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/load_map.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/controller/commands.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/commands/next_turn.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/map_loader.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/players.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/turn.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/units.js",
@@ -550,9 +625,7 @@
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/sublime/Data/Packages/SublimeLinter/SublimeLinter.sublime-settings",
 		"/C/Users/Alexander/Desktop/sublime/Data/Packages/SublimeLinter/Default (Windows).sublime-keymap",
 		"/C/Users/Alexander/Desktop/sublime/Data/Packages/MySignaturePlugin/MySignaturePlugin.sublime-settings",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/types.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/gfx_bridge/bridge.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/main.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/storage.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/base.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core.cs",
@@ -600,7 +673,7 @@
 	],
 	"find":
 	{
-		"height": 40.0
+		"height": 43.0
 	},
 	"find_in_files":
 	{
@@ -614,6 +687,26 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"dualcore",
+			"DEST_DIRECTORY",
+			"NEW_buffer_DIRECTORY",
+			"write_test_files_into_buffer",
+			"write_user_interface_files_into_buffer",
+			"write_game_files_into_buffer",
+			"write_core_files_into_buffer",
+			"MAIN_THREAD_JS_FILE",
+			"html_source",
+			"css_source",
+			"workerSource",
+			"game_source",
+			"gameSource",
+			"htmlSource",
+			"ARG_AUTOTEST_BUILD",
+			"cwtBuild",
+			"check_call_arguments",
+			"is_called_with_argument",
+			"calledWithArgument",
+			"i",
 			"cwt.log_info(",
 			"log_LEVEL_CUSTOM",
 			"\");",
@@ -633,6 +726,23 @@
 		"regex": false,
 		"replace_history":
 		[
+			"workers",
+			"DESTINATION_DIRECTORY",
+			"SOURCE_DIRECTORY",
+			"insert_test_files_into_buffer",
+			"insert_user_interface_files_into_buffer",
+			"insert_game_files_into_buffer",
+			"insert_core_files_into_buffer",
+			"USER_INTERFACE_THREAD_JS_FILE",
+			"buffer",
+			"game_source",
+			"html_source",
+			"ARG_AUTOTEST",
+			"build_tools",
+			"check_program_arguments",
+			"in_program_arguments",
+			"is_called_with_argument",
+			"iterations",
 			"cwt.log_styled(LOG_STYLE, ",
 			"log_LEVEL_STYLED",
 			"when_failed",
@@ -652,24 +762,24 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src_new/test/test_core.js",
+					"file": "src_builder/build.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3670,
+						"buffer_size": 6772,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								745,
-								745
+								4542,
+								4542
 							]
 						],
 						"settings":
@@ -679,35 +789,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "src_new/test/game_test.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 294,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2187.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -718,7 +800,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 32.0
+		"height": 43.0
 	},
 	"input":
 	{
@@ -759,7 +841,7 @@
 	"project": "testproject.sublime-project",
 	"replace":
 	{
-		"height": 66.0
+		"height": 80.0
 	},
 	"save_all_on_build": true,
 	"select_file":

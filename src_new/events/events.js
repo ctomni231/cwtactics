@@ -45,6 +45,7 @@ cwt.game_event_tile_is_not_visible = function(tile_x, tile_y) {};
 cwt.game_event_tile_got_type = function(x, y, type) {};
 
 cwt.client_event_initialize_model = function() {};
+
 cwt.client_event_load_map = function(map) {};
 
 cwt.client_event_register_object_type = function(type, sheet) {};
