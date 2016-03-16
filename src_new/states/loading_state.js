@@ -13,6 +13,38 @@ function selectRandomTip() {
   cwt.log_info("changed tooltip [" + tip_active + "]");
 }
 
+function load_object_types() {
+  var load_jobs;
+
+  function loading_done() {
+    cwt.log_info("completed loading data");
+  }
+
+  function loading_failed(err) {
+    cwt.log_error("failed to load data", err);
+  }
+
+  function load_objects_json(job_list, file_name, type) {
+    load_jobs.push(function(when_done) {
+      cwt.request_get_json("../src_gamedata/" + file_name + ".json", function(data) {
+        cwt.list_for_each(data, function(el) {
+          cwt.client_event_register_object_type(type, el);
+        });
+        when_done();
+      }, cwt.error_thrower_callback("DataLoader(" + type + ")"));
+    });
+  }
+
+  load_jobs = [];
+
+  load_objects_json(load_jobs, "tiles", "tile");
+  load_objects_json(load_jobs, "units", "unit");
+  load_objects_json(load_jobs, "movetypes", "movetype");
+  load_objects_json(load_jobs, "weathers", "weather");
+
+  cwt.jobs_execute(load_jobs, loading_done, loading_failed);
+}
+
 cwt.game_state_add_state("loading_state", {
 
   on_enter: function() {
@@ -26,6 +58,8 @@ cwt.game_state_add_state("loading_state", {
     }, function(err) {
       cwt.log_error("error", err);
     });
+
+    load_object_types();
 
     tip_timer = 0;
     tip_active = "";

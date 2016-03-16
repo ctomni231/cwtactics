@@ -4,3 +4,9 @@ if (!cwt.CONST_DUALCORE_MODE) {
     cwt.game_event_error(err);
   };
 }
+
+cwt.error_thrower_callback = function(message) {
+  return function(err) {
+    throw new Error("[" + message + "] " + err);
+  };
+};

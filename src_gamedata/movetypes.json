@@ -1,8 +1,7 @@
-[
-  {
-    "ID"    : "MV_INFT",
-    "sound" : null,
-    "costs" : {
+[{
+    "id": "MVIN",
+    "sound": null,
+    "costs": {
       "MNTN": 2,
       "WATER": -1,
       "REEF": -1,
@@ -11,9 +10,9 @@
   },
 
   {
-    "ID"    : "MV_MECH",
-    "sound" : null,
-    "costs" : {
+    "id": "MVME",
+    "sound": null,
+    "costs": {
       "WATER": -1,
       "REEF": -1,
       "*": 1
@@ -21,9 +20,9 @@
   },
 
   {
-    "ID"    : "TIRE_A",
-    "sound" : null,
-    "costs" : {
+    "id": "MVTA",
+    "sound": null,
+    "costs": {
       "PLIN": 2,
       "FRST": 3,
       "MNTN": -1,
@@ -35,9 +34,9 @@
   },
 
   {
-    "ID"    : "TANK",
-    "sound" : null,
-    "costs" : {
+    "id": "MVTK",
+    "sound": null,
+    "costs": {
       "FRST": 2,
       "MNTN": -1,
       "RIVER": -1,
@@ -48,17 +47,17 @@
   },
 
   {
-    "ID"    : "AIR",
-    "sound" : null,
-    "costs" : {
+    "id": "MVAR",
+    "sound": null,
+    "costs": {
       "*": 1
     }
   },
 
   {
-    "ID"    : "SHIP",
-    "sound" : null,
-    "costs" : {
+    "id": "MVSH",
+    "sound": null,
+    "costs": {
       "WATER": 1,
       "PORT": 1,
       "REEF": 2,
@@ -67,9 +66,9 @@
   },
 
   {
-    "ID"    : "WATER_TRANSPORT",
-    "sound" : null,
-    "costs" : {
+    "id": "MVWT",
+    "sound": null,
+    "costs": {
       "WATER": 1,
       "PORT": 1,
       "REEF": 2,
@@ -79,9 +78,9 @@
   },
 
   {
-    "ID"    : "SLIME",
-    "sound" : null,
-    "costs" : {
+    "id": "MVSL",
+    "sound": null,
+    "costs": {
       "WATER": -1,
       "REEF": -1,
       "*": 1

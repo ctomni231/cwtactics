@@ -1,43 +1,42 @@
 [
 
   {
-    "ID": "PLIN",
+    "id": "PLIN",
     "defense": 1,
-    "assets":{
-      "gfx":"cwt_tileset/terrain(C)/CWT_PLIN.png"
+    "assets": {
+      "gfx": "cwt_tileset/terrain(C)/CWT_PLIN.png"
     }
   },
 
   {
-    "ID": "FRST",
+    "id": "FRST",
     "defense": 2,
-    "blocksVision":true,
-    "assets":{
-      "gfx":"cwt_tileset/terrain(C)/CWT_FRST.png",
-      "gfxOverlay":true
+    "blocksVision": true,
+    "assets": {
+      "gfx": "cwt_tileset/terrain(C)/CWT_FRST.png",
+      "gfxOverlay": true
     }
   },
 
   {
-    "ID": "MNTN",
+    "id": "MNTN",
     "defense": 4,
-    "assets":{
-      "gfx":"cwt_tileset/terrain(C)/CWT_MNTN.png",
-      "gfxOverlay":true
+    "assets": {
+      "gfx": "cwt_tileset/terrain(C)/CWT_MNTN.png",
+      "gfxOverlay": true
     }
   },
 
 
   {
-    "ID": "ROAD",
+    "id": "ROAD",
     "defense": 0,
-    "assets":{
-      "gfx":"cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",
-      "gfx_variants":[
-        {
+    "assets": {
+      "gfx": "cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",
+      "gfx_variants": [{
           "ROAD": "R",
-          "WATER": "S",
-          "RIVER": "RV",
+          "WATR": "S",
+          "RIVR": "RV",
           "PLIN": "L",
           "FRST": "L",
           "MNTN": "L",
@@ -45,63 +44,61 @@
           "DEFAULT": ""
         },
         [
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OOOO~~~~.png",  "R","R","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~OOO~~~~.png",  "","R","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$O~OO~~~~.png",  "R","R","","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~O~~~~.png",  "R","R","R","" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OOO~~~~~.png",  "R","","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",  "","R","","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~O~O~~~~.png",  "","R","R","" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~OO~~~~~.png",  "","","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$O~~O~~~~.png",  "R","R","","" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$O~O~~~~~.png",  "R","","","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~~~~~~.png",  "R","","R","" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~~~~~~.png",  "","","R","" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~~~~~~.png",  "R","","","" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",  "","","","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",  "","R","","" ],
-          [ "cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png",  "","","","" ]
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$OOOO~~~~.png", "R", "R", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$~OOO~~~~.png", "", "R", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$O~OO~~~~.png", "R", "R", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~O~~~~.png", "R", "R", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$OOO~~~~~.png", "R", "", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png", "", "R", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$~O~O~~~~.png", "", "R", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$~OO~~~~~.png", "", "", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$O~~O~~~~.png", "R", "R", "", ""],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$O~O~~~~~.png", "R", "", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~~~~~~.png", "R", "", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~~~~~~.png", "", "", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$OO~~~~~~.png", "R", "", "", ""],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png", "", "", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png", "", "R", "", ""],
+          ["cwt_tileset/terrain(C)/CWT_ROAD(O)$~~OO~~~~.png", "", "", "", ""]
         ]
       ]
     }
   },
 
   {
-    "ID": "RIVER",
+    "id": "RIVR",
     "defense": 0,
-    "assets":{
+    "assets": {
       "animated": 2,
-      "gfx":"cwt_tileset/terrain(C)/CWT_RIVR(R)$~~RR~~~~.png",
-      "gfx_variants":[
-        {
-          "RIVER": "R",
+      "gfx": "cwt_tileset/terrain(C)/CWT_RIVR(R)$~~RR~~~~.png",
+      "gfx_variants": [{
+          "RIVR": "R",
           "DEFAULT": ""
         },
         [
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$RRRR~~~~.png",  "R","R","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$~RRR~~~~.png",  "","R","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$R~RR~~~~.png",  "R","R","","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$RR~R~~~~.png",  "R","R","R","" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$RRR~~~~~.png",  "R","","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$~~RR~~~~.png",  "","R","","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$~R~R~~~~.png",  "","R","R","" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$~RR~~~~~.png",  "","","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$R~~R~~~~.png",  "R","R","","" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$R~R~~~~~.png",  "R","","","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$RR~~~~~~.png",  "R","","R","" ],
-          [ "cwt_tileset/terrain(C)/CWT_RIVR(R)$~~RR~~~~.png",  "","","","" ]
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$RRRR~~~~.png", "R", "R", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$~RRR~~~~.png", "", "R", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$R~RR~~~~.png", "R", "R", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$RR~R~~~~.png", "R", "R", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$RRR~~~~~.png", "R", "", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$~~RR~~~~.png", "", "R", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$~R~R~~~~.png", "", "R", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$~RR~~~~~.png", "", "", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$R~~R~~~~.png", "R", "R", "", ""],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$R~R~~~~~.png", "R", "", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$RR~~~~~~.png", "R", "", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_RIVR(R)$~~RR~~~~.png", "", "", "", ""]
         ]
       ]
     }
   },
 
   {
-    "ID": "BRDG",
+    "id": "BRDG",
     "defense": 0,
-    "assets":{
-      "gfx":"cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",
-      "gfx_variants":[
-        {
+    "assets": {
+      "gfx": "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",
+      "gfx_variants": [{
           "ROAD": "R",
           "BRDG": "R",
           "SEAS": "S",
@@ -109,120 +106,119 @@
         },
         [
 
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$OOOO~~~~.png",  "R","R","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$~OOO~~~~.png",  "","R","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$O~OO~~~~.png",  "R","R","","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$OO~O~~~~.png",  "R","R","R","" ],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$OOO~~~~~.png",  "R","","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$~OO~~~~~.png",  "","","R","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$O~O~~~~~.png",  "R","","","R" ],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$O~~O~~~~.png",  "R","R","","" ],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$~O~O~~~~.png",  "","R","R","" ],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSB)$OOSS~~~~.png",  "R","S","R","S"],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(OSB)$SSOO~~~~.png",  "S","R","S","R"],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$OO~~~~~~.png",  "R","","R",""],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$OO~~~~~~.png",  "","","R",""],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$OO~~~~~~.png",  "R","","",""],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",  "","R","","R"],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",  "","","","R"],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",  "","R","",""],
-          [ "cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png",  "","","","" ]
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$OOOO~~~~.png", "R", "R", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$~OOO~~~~.png", "", "R", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$O~OO~~~~.png", "R", "R", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$OO~O~~~~.png", "R", "R", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$OOO~~~~~.png", "R", "", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$~OO~~~~~.png", "", "", "R", "R"],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$O~O~~~~~.png", "R", "", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$O~~O~~~~.png", "R", "R", "", ""],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSRB)$~O~O~~~~.png", "", "R", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSB)$OOSS~~~~.png", "R", "S", "R", "S"],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(OSB)$SSOO~~~~.png", "S", "R", "S", "R"],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(ORB)$OO~~~~~~.png", "R", "", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(ORB)$OO~~~~~~.png", "", "", "R", ""],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(ORB)$OO~~~~~~.png", "R", "", "", ""],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png", "", "R", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png", "", "", "", "R"],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png", "", "R", "", ""],
+          ["cwt_tileset/terrain(C)/CWT_BRDG(ORB)$~~OO~~~~.png", "", "", "", ""]
         ]
       ]
     }
   },
 
   {
-    "ID": "WATER",
+    "id": "WATR",
     "defense": 0,
-    "assets":{
-      "gfx":"cwt_tileset/terrain(C)/CWT_SEAS(S).png",
+    "assets": {
+      "gfx": "cwt_tileset/terrain(C)/CWT_SEAS(S).png",
       "animated": 2,
-      "gfx_variants":[
-        {
+      "gfx_variants": [{
           "ROAD": "L",
           "PLIN": "L",
           "FRST": "L",
           "MNTN": "L",
           "BRDG": "S",
           "REEF": "S",
-          "WATER": "S",
-          "RIVER": "RV",
+          "WATR": "S",
+          "RIVR": "RV",
           "DEFAULT": ""
         },
         [
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S).png", "S","S","S","S","S","S","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~~~~~~~~.png", "L","L","L","L","L","L","L","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~~SS~~~~.png", "L","","S","","L","","S","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SS~~~~~~.png", "S","","L","","S","","L","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~~~S~~~~.png", "L","","S","","L","","L","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~~S~~~~~.png", "L","","L","","L","","S","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~~~~~~.png", "L","","L","","S","","L","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~~~~~~.png", "S","","L","","L","","L","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~S~~~S.png", "L","L","S","S","S","L","L","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~S~~~S.png", "L","","S","S","S","","L","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SS~~~S~.png", "L","L","L","L","S","S","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SS~~~S~.png", "L","","L","","S","S","S","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L","L","S","S","S","S","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$RSSS~~SS.png", "RV","L","S","S","S","S","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$S~~~~~~~.png", "S","L","L","L","L","L","L","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$S~~S~S~~.png", "S","S","S","L","L","L","L","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$S~S~S~~~.png", "S","","L","","L","","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$S~SSSS~~.png", "S","","S","","L","","S","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SRSSSS~~.png", "S","S","S","L","RV","L","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SS~S~S~S.png", "S","","S","","S","","L","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSRS~S~S.png", "S","S","S","S","S","L","RV","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSS~S~S~.png", "S","","L","","S","","","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSRS~S~.png", "S","L","RV","L","S","S","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~~~.png", "S","L","S","L","S","L","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~~S.png", "S","L","S","S","S","L","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~S~.png", "S","L","S","L","S","S","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~SS.png", "S","L","S","S","S","S","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~S~~.png", "S","S","S","L","S","L","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~S~S.png", "S","S","S","S","S","L","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~SS~.png", "S","S","S","L","S","S","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~SSS.png", "S","S","S","S","S","S","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~~~.png", "S","L","S","L","S","L","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~~S.png", "S","L","S","S","S","L","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~S~.png", "S","L","S","L","S","S","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~SS.png", "S","L","S","S","S","S","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSS~~.png", "S","S","S","L","S","L","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSSS~.png", "S","S","S","L","S","S","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSS~S.png", "S","S","S","S","S","L","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L","L","S","S","S","S","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L","S","S","S","S","S","S","S" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~S~.png", "L","L","S","L","S","","S","L" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~SS.png", "S","L","S","","","","","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSSS~.png", "","","S","L","S","","","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSS~S.png", "","","","","S","L","S","" ],
-          [ "cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~SSS.png", "S","","","","","","S","L" ]
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S).png", "S", "S", "S", "S", "S", "S", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~~~~~~~~.png", "L", "L", "L", "L", "L", "L", "L", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~~SS~~~~.png", "L", "", "S", "", "L", "", "S", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SS~~~~~~.png", "S", "", "L", "", "S", "", "L", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~~~S~~~~.png", "L", "", "S", "", "L", "", "L", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~~S~~~~~.png", "L", "", "L", "", "L", "", "S", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~~~~~~.png", "L", "", "L", "", "S", "", "L", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~~~~~~.png", "S", "", "L", "", "L", "", "L", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~S~~~S.png", "L", "L", "S", "S", "S", "L", "L", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~S~S~~~S.png", "L", "", "S", "S", "S", "", "L", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~SS~~~S~.png", "L", "L", "L", "L", "S", "S", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~SS~~~S~.png", "L", "", "L", "", "S", "S", "S", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L", "L", "S", "S", "S", "S", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$RSSS~~SS.png", "RV", "L", "S", "S", "S", "S", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$S~~~~~~~.png", "S", "L", "L", "L", "L", "L", "L", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$S~~S~S~~.png", "S", "S", "S", "L", "L", "L", "L", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$S~S~S~~~.png", "S", "", "L", "", "L", "", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$S~SSSS~~.png", "S", "", "S", "", "L", "", "S", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SRSSSS~~.png", "S", "S", "S", "L", "RV", "L", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SS~S~S~S.png", "S", "", "S", "", "S", "", "L", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSRS~S~S.png", "S", "S", "S", "S", "S", "L", "RV", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSS~S~S~.png", "S", "", "L", "", "S", "", "", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSRS~S~.png", "S", "L", "RV", "L", "S", "S", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~~~.png", "S", "L", "S", "L", "S", "L", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~~S.png", "S", "L", "S", "S", "S", "L", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~S~.png", "S", "L", "S", "L", "S", "S", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~~SS.png", "S", "L", "S", "S", "S", "S", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~S~~.png", "S", "S", "S", "L", "S", "L", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~S~S.png", "S", "S", "S", "S", "S", "L", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~SS~.png", "S", "S", "S", "L", "S", "S", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~SSS.png", "S", "S", "S", "S", "S", "S", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~~~.png", "S", "L", "S", "L", "S", "L", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~~S.png", "S", "L", "S", "S", "S", "L", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~S~.png", "S", "L", "S", "L", "S", "S", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~SS.png", "S", "L", "S", "S", "S", "S", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSS~~.png", "S", "S", "S", "L", "S", "L", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSSS~.png", "S", "S", "S", "L", "S", "S", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSS~S.png", "S", "S", "S", "S", "S", "L", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L", "L", "S", "S", "S", "S", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L", "S", "S", "S", "S", "S", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~SS.png", "L", "S", "S", "S", "S", "S", "S", "S"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$~SSS~~S~.png", "L", "L", "S", "L", "S", "", "S", "L"],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSS~SS.png", "S", "L", "S", "", "", "", "", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSSS~.png", "", "", "S", "L", "S", "", "", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSSSS~S.png", "", "", "", "", "S", "L", "S", ""],
+          ["cwt_tileset/terrain(C)/CWT_SEAS(S)$SSSS~SSS.png", "S", "", "", "", "", "", "S", "L"]
         ]
       ]
     }
   },
 
   {
-    "ID": "REEF",
+    "id": "REEF",
     "defense": 1,
-    "blocksVision":true,
-    "assets":{
+    "blocksVision": true,
+    "assets": {
       "animated": 2,
-      "gfx":"cwt_tileset/terrain(C)/CWT_REEF(S).png"
+      "gfx": "cwt_tileset/terrain(C)/CWT_REEF(S).png"
     }
   },
 
   {
-    "ID": "SHOAL",
+    "id": "SHOL",
     "defense": 0,
-    "assets":{
+    "assets": {
       "animated": 2,
-      "gfx":"cwt_tileset/terrain(C)/CWT_SHOA(BS)$BB~S~S~S.png"
+      "gfx": "cwt_tileset/terrain(C)/CWT_SHOA(BS)$BB~S~S~S.png"
     }
   },
 
   {
-    "ID": "CITY",
+    "id": "CITY",
     "vision": 0,
     "defense": 3,
     "capturePoints": 20,
@@ -235,20 +231,20 @@
       "TANK"
     ],
     "repairs": {
-      "INFT":2,
-      "MECH":2,
-      "TIRE_A":2,
-      "TIRE_B":2,
-      "TANK":2
+      "INFT": 2,
+      "MECH": 2,
+      "TIRE_A": 2,
+      "TIRE_B": 2,
+      "TANK": 2
     },
-    "assets":{
-      "gfx":"cwt_tileset/properties(C)/CWT_CITY.png"
+    "assets": {
+      "gfx": "cwt_tileset/properties(C)/CWT_CITY.png"
     }
   },
 
 
   {
-    "ID": "BASE",
+    "id": "BASE",
     "vision": 0,
     "defense": 3,
     "capturePoints": 20,
@@ -261,11 +257,11 @@
       "TANK"
     ],
     "repairs": {
-      "MV_INFT":2,
-      "MV_MECH":2,
-      "TIRE_A":2,
-      "TIRE_B":2,
-      "TANK":2
+      "MV_INFT": 2,
+      "MV_MECH": 2,
+      "TIRE_A": 2,
+      "TIRE_B": 2,
+      "TANK": 2
     },
     "builds": [
       "MV_INFT",
@@ -274,13 +270,13 @@
       "TIRE_B",
       "TANK"
     ],
-    "assets":{
-      "gfx":"cwt_tileset/properties(C)/CWT_BASE.png"
+    "assets": {
+      "gfx": "cwt_tileset/properties(C)/CWT_BASE.png"
     }
   },
 
   {
-    "ID": "APRT",
+    "id": "APRT",
     "vision": 0,
     "defense": 3,
     "capturePoints": 20,
@@ -289,18 +285,18 @@
       "AIR"
     ],
     "repairs": {
-      "AIR":2
+      "AIR": 2
     },
     "builds": [
       "AIR"
     ],
-    "assets":{
-      "gfx":"cwt_tileset/properties(C)/CWT_APRT.png"
+    "assets": {
+      "gfx": "cwt_tileset/properties(C)/CWT_APRT.png"
     }
   },
 
   {
-    "ID": "PORT",
+    "id": "PORT",
     "vision": 0,
     "defense": 3,
     "capturePoints": 20,
@@ -310,53 +306,53 @@
       "WATER_TRANSPORT"
     ],
     "repairs": {
-      "SHIP":2,
-      "WATER_TRANSPORT":2
+      "SHIP": 2,
+      "WATER_TRANSPORT": 2
     },
     "builds": [
       "SHIP",
       "WATER_TRANSPORT"
     ],
-    "assets":{
-      "gfx":"cwt_tileset/properties(C)/CWT_PORT(SBR).png"
+    "assets": {
+      "gfx": "cwt_tileset/properties(C)/CWT_PORT(SBR).png"
     }
   },
 
   {
-    "ID": "SILO",
+    "id": "SILO",
     "defense": 3,
     "vision": 0,
-    "rocketsilo":{
-      "fireable":["INFT","MECH"],
-      "range":2,
-      "damage":3
+    "rocketsilo": {
+      "fireable": ["INFT", "MECH"],
+      "range": 2,
+      "damage": 3
     },
-    "changeTo":"SILO_EMPTY",
-    "assets":{
-      "fireSound":"rocketImpact.mp3",
-      "gfx":"cwt_tileset/properties(C)/CWT_SILO.png"
+    "changeTo": "SILE",
+    "assets": {
+      "fireSound": "rocketImpact.mp3",
+      "gfx": "cwt_tileset/properties(C)/CWT_SILO.png"
     }
   },
 
   {
-    "ID": "SILO_EMPTY",
+    "id": "SILE",
     "defense": 3,
     "vision": 0,
-    "rocketsilo":{},
-    "assets":{
-      "gfx":"cwt_tileset/properties(C)/CWT_PLTF.png"
+    "rocketsilo": {},
+    "assets": {
+      "gfx": "cwt_tileset/properties(C)/CWT_PLTF.png"
     }
   },
 
   {
-    "ID": "HQTR",
+    "id": "HQTR",
     "vision": 0,
     "defense": 4,
     "capturePoints": 20,
     "funds": 1000,
     "looseAfterCaptured": true,
     "changeAfterCaptured": "CITY",
-    "notTransferable":true,
+    "notTransferable": true,
     "supply": [
       "INFT",
       "MECH",
@@ -365,250 +361,236 @@
       "TANK"
     ],
     "repairs": {
-      "INFT":2,
-      "MECH":2,
-      "TIRE_A":2,
-      "TIRE_B":2,
-      "TANK":2
+      "INFT": 2,
+      "MECH": 2,
+      "TIRE_A": 2,
+      "TIRE_B": 2,
+      "TANK": 2
     },
-    "assets":{
-      "gfx":"cwt_tileset/properties(C)/CWT_HQTR.png",
-      "factionSprites":{
-        "ORST":"cwt_tileset/properties(C)/CWT_HQTR_OS.png",
-        "BLMN":"cwt_tileset/properties(C)/CWT_HQTR_BM.png",
-        "GRET":"cwt_tileset/properties(C)/CWT_HQTR_GE.png",
-        "YLCM":"cwt_tileset/properties(C)/CWT_HQTR_YC.png"
+    "assets": {
+      "gfx": "cwt_tileset/properties(C)/CWT_HQTR.png",
+      "factionSprites": {
+        "ORST": "cwt_tileset/properties(C)/CWT_HQTR_OS.png",
+        "BLMN": "cwt_tileset/properties(C)/CWT_HQTR_BM.png",
+        "GRET": "cwt_tileset/properties(C)/CWT_HQTR_GE.png",
+        "YLCM": "cwt_tileset/properties(C)/CWT_HQTR_YC.png"
       }
     }
   },
 
   {
-    "ID": "RADAR",
+    "id": "RADR",
     "vision": 4,
     "defense": 3,
     "points": 20,
-    "assets":{
-      "gfx":"cwt_tileset/properties(C)/CWT_RADR.png"
+    "assets": {
+      "gfx": "cwt_tileset/properties(C)/CWT_RADR.png"
     }
   },
 
   {
-    "ID": "BHMC_E",
+    "id": "BMCE",
     "vision": 0,
-    "defense":0,
+    "defense": 0,
     "hp": 99,
-    "destroyedType":"RUIS",
-    "cannon":{
-      "direction":"E",
-      "range":3,
-      "damage":3
+    "destroyedType": "RUIS",
+    "cannon": {
+      "direction": "E",
+      "range": 3,
+      "damage": 3
     },
-    "assets":{
-      "gfx":"cwt_tileset/inventions(C)/CWT_BHMC-E.png",
-      "fireSound" : "cannon.wav",
-      "fireAnimation":[
+    "assets": {
+      "gfx": "cwt_tileset/inventions(C)/CWT_BHMC-E.png",
+      "fireSound": "cannon.wav",
+      "fireAnimation": [
         "object_firing/CWT_BHMC-E.png",
-        32,32,
-        8,-12
+        32, 32,
+        8, -12
       ],
-      "animated":false
+      "animated": false
     }
   },
 
   {
-    "ID": "BHMC_N",
+    "id": "BMCN",
     "vision": 0,
-    "defense":0,
+    "defense": 0,
     "hp": 99,
-    "destroyedType":"RUIS",
-    "cannon":{
-      "direction":"N",
-      "range":3,
-      "damage":3
+    "destroyedType": "RUIS",
+    "cannon": {
+      "direction": "N",
+      "range": 3,
+      "damage": 3
     },
-    "assets":{
-      "gfx":"cwt_tileset/inventions(C)/CWT_BHMC-N.png",
-      "fireSound" : "cannon.wav",
-      "animated":false,
-      "fireAnimation":[
+    "assets": {
+      "gfx": "cwt_tileset/inventions(C)/CWT_BHMC-N.png",
+      "fireSound": "cannon.wav",
+      "animated": false,
+      "fireAnimation": [
         "object_firing/CWT_BHMC-N.png",
-        32,32,
-        -12,-8
+        32, 32, -12, -8
       ]
     }
   },
 
   {
-    "ID": "BHMC_S",
+    "id": "BMCS",
     "vision": 0,
-    "defense":0,
+    "defense": 0,
     "hp": 99,
-    "destroyedType":"RUIS",
-    "cannon":{
-      "direction":"S",
-      "range":3,
-      "damage":3
+    "destroyedType": "RUIS",
+    "cannon": {
+      "direction": "S",
+      "range": 3,
+      "damage": 3
     },
-    "assets":{
-      "gfx":"cwt_tileset/inventions(C)/CWT_BHMC-S.png",
-      "fireSound" : "cannon.wav",
-      "animated"  : false,
-      "fireAnimation":[
+    "assets": {
+      "gfx": "cwt_tileset/inventions(C)/CWT_BHMC-S.png",
+      "fireSound": "cannon.wav",
+      "animated": false,
+      "fireAnimation": [
         "object_firing/CWT_BHMC-S.png",
-        32,32,
-        -12,8
+        32, 32, -12, 8
       ]
     }
   },
 
   {
-    "ID": "BHMC_W",
+    "id": "BMCW",
     "vision": 0,
-    "defense":0,
+    "defense": 0,
     "hp": 99,
-    "destroyedType":"RUIS",
-    "cannon":{
-      "direction":"W",
-      "range":3,
-      "damage":3
+    "destroyedType": "RUIS",
+    "cannon": {
+      "direction": "W",
+      "range": 3,
+      "damage": 3
     },
-    "assets":{
-      "gfx":"cwt_tileset/inventions(C)/CWT_BHMC-W.png",
-      "fireSound":"cannon.wav",
-      "fireAnimation":[
+    "assets": {
+      "gfx": "cwt_tileset/inventions(C)/CWT_BHMC-W.png",
+      "fireSound": "cannon.wav",
+      "fireAnimation": [
         "object_firing/CWT_BHMC-W.png",
-        32,32,
-        8,-12
+        32, 32,
+        8, -12
       ],
-      "animated":false
+      "animated": false
     }
   },
 
   {
-    "ID": "BHCN",
+    "id": "BHCN",
     "vision": 0,
-    "defense":0,
+    "defense": 0,
     "hp": 99,
-    "destroyedType":"RUIB",
-    "bigProperty":{
-      "y"     : 3,
-      "x"     : 3,
-      "actor" : [1,0]
+    "destroyedType": "RUIB",
+    "bigProperty": {
+      "y": 3,
+      "x": 3,
+      "actor": [1, 0]
     },
-    "blocker":true,
-    "cannon":{
-      "direction" : "S",
-      "range"     : 9,
-      "damage"    : 5
+    "blocker": true,
+    "cannon": {
+      "direction": "S",
+      "range": 9,
+      "damage": 5
     },
-    "assets":{
-      "gfx"       : "cwt_tileset/inventions(C)/CWT_BHCN-S.png",
-      "gfxOffset" : [
-        48,64,
-        -32,-32
+    "assets": {
+      "gfx": "cwt_tileset/inventions(C)/CWT_BHCN-S.png",
+      "gfxOffset": [
+        48, 64, -32, -32
       ],
-      "fireSound" : "cannon.wav",
-      "animated":false,
-      "fireAnimation":[
+      "fireSound": "cannon.wav",
+      "animated": false,
+      "fireAnimation": [
         "object_firing/CWT_BHCN-S.png",
-        48,64,
-        -16,-36
+        48, 64, -16, -36
       ]
     }
   },
 
   {
-    "ID"            : "BHLZ",
-    "vision"        : 0,
-    "defense"       : 0,
-    "hp"            : 99,
-    "destroyedType" : "RUIS",
-    "laser"         : {
-      "damage"      : 3
+    "id": "BHLZ",
+    "vision": 0,
+    "defense": 0,
+    "hp": 99,
+    "destroyedType": "RUIS",
+    "laser": {
+      "damage": 3
     },
-    "assets":{
-      "gfx"         : "cwt_tileset/inventions(C)/CWT_BHLZ.png",
-      "fireSound"   : "laser.wav",
-      "animated"    : false,
-      "chargeAnimation":[
+    "assets": {
+      "gfx": "cwt_tileset/inventions(C)/CWT_BHLZ.png",
+      "fireSound": "laser.wav",
+      "animated": false,
+      "chargeAnimation": [
         "object_charge/CWT_BHLZ-E.png",
-        32,32,
-        8,-12
+        32, 32,
+        8, -12
       ],
-      "fireAnimation":[
+      "fireAnimation": [
         "object_firing/CWT_BHLZ-E.png",
-        32,32,
-        8,-12
+        32, 32,
+        8, -12
       ],
-      "streamAnimation":[
+      "streamAnimation": [
         "object_stream/CWT_BHLZ-E.png",
-        32,32,
-        8,-12
+        32, 32,
+        8, -12
       ],
-      "chargeAnimation2":[
+      "chargeAnimation2": [
         "object_charge/CWT_BHLZ-S.png",
-        32,32,
-        -10,2
+        32, 32, -10, 2
       ],
-      "fireAnimation2":[
+      "fireAnimation2": [
         "object_firing/CWT_BHLZ-S.png",
-        32,32,
-        -9,2
+        32, 32, -9, 2
       ],
-      "streamAnimation2":[
+      "streamAnimation2": [
         "object_stream/CWT_BHLZ-S.png",
-        32,32,
-        -10,2
+        32, 32, -10, 2
       ],
-      "chargeAnimation3":[
+      "chargeAnimation3": [
         "object_charge/CWT_BHLZ-W.png",
-        32,32,
-        -24,-12
+        32, 32, -24, -12
       ],
-      "fireAnimation3":[
+      "fireAnimation3": [
         "object_firing/CWT_BHLZ-W.png",
-        32,32,
-        -24,-12
+        32, 32, -24, -12
       ],
-      "streamAnimation3":[
+      "streamAnimation3": [
         "object_stream/CWT_BHLZ-W.png",
-        32,32,
-        -24,-12
+        32, 32, -24, -12
       ],
-      "chargeAnimation4":[
+      "chargeAnimation4": [
         "object_charge/CWT_BHLZ-N.png",
-        32,32,
-        -10,-26
+        32, 32, -10, -26
       ],
-      "fireAnimation4":[
+      "fireAnimation4": [
         "object_firing/CWT_BHLZ-N.png",
-        32,32,
-        -9,-26
+        32, 32, -9, -26
       ],
-      "streamAnimation4":[
+      "streamAnimation4": [
         "object_stream/CWT_BHLZ-N.png",
-        32,32,
-        -10,-26
+        32, 32, -10, -26
       ]
     }
   },
 
   {
-    "ID": "RUIS",
-    "defense":0,
+    "id": "RUIS",
+    "defense": 0,
     "vision": 0,
-    "assets":{
-      "gfx":"cwt_tileset/inventions(C)/CWT_SRBL.png"
+    "assets": {
+      "gfx": "cwt_tileset/inventions(C)/CWT_SRBL.png"
     }
   },
 
   {
-    "ID": "RUIB",
-    "defense":0,
+    "id": "RUIB",
+    "defense": 0,
     "vision": 0,
-    "assets":{
-      "gfx":"cwt_tileset/inventions(C)/CWT_BRBL-S.png"
+    "assets": {
+      "gfx": "cwt_tileset/inventions(C)/CWT_BRBL-S.png"
     }
   }
 ]
-

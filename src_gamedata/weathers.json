@@ -1,57 +1,78 @@
-[
-  {
-    "ID": "SUN",
-    "rules":[],
+[{
+    "id": "WSUN",
+    "rules": [],
     "defaultWeather": true
   },
 
   {
-    "ID": "RAIN",
-    "rules":[
-      { "vision":-1 },
-      { "$when":[ "TILE_TYPE", ["PLIN","FRST"],
-                  "MOVE_TYPE", ["TANK","TIRE_A"] ],
-        "movecost": 1 }
+    "id": "WRAI",
+    "rules": [{
+      "vision": -1
+    }, {
+      "$when": ["TILE_TYPE", ["PLIN", "FRST"],
+        "MOVE_TYPE", ["MVTK", "MVTA"]
+      ],
+      "movecost": 1
+    }]
+  },
+
+  {
+    "id": "WSNW",
+    "rules": [
+
+      {
+        "vision": -1
+      },
+
+      {
+        "$when": ["MOVE_TYPE", ["MVTA", "MVTK"],
+          "TILE_TYPE", ["PLIN", "FRST"]
+        ],
+        "movecost": 1
+      },
+
+      {
+        "$when": ["MOVE_TYPE", ["MVSH", "MVWT"],
+          "TILE_TYPE", ["WATR", "PORT"]
+        ],
+        "movecost": 1
+      },
+
+      {
+        "$when": ["MOVE_TYPE", ["MVME"],
+          "TILE_TYPE", ["MNTN"]
+        ],
+        "movecost": 1
+      },
+
+      {
+        "$when": ["MOVE_TYPE", ["MVIN"],
+          "TILE_TYPE", ["PLIN", "RIVR", "FRST"]
+        ],
+        "movecost": 1
+      },
+
+      {
+        "$when": ["MOVE_TYPE", ["MVIN"],
+          "TILE_TYPE", ["MNTN"]
+        ],
+        "movecost": 2
+      },
+
+      {
+        "$when": ["MOVE_TYPE", ["MVAR"]],
+        "movecost": 1
+      }
     ]
   },
 
   {
-    "ID": "SNOW",
-    "rules":[
-
-      { "vision":-1 },
-
-      { "$when":[ "MOVE_TYPE", ["TIRE_A","TANK"], 
-                  "TILE_TYPE", ["PLIN","FRST"] ],
-        "movecost": 1 },
-
-      { "$when":[ "MOVE_TYPE", ["SHIP","WATER_TRANSPORT"], 
-                  "TILE_TYPE", ["WATER","PORT"] ],
-        "movecost": 1 },
-
-      { "$when":[ "MOVE_TYPE", ["MV_MECH"], 
-                  "TILE_TYPE", ["MNTN"] ],
-        "movecost": 1 },
-
-      { "$when":[ "MOVE_TYPE", ["MV_INFT"], 
-                  "TILE_TYPE", ["PLIN","RIVER","FRST"] ],
-        "movecost": 1 },
-
-      { "$when":[ "MOVE_TYPE", ["MV_INFT"], 
-                  "TILE_TYPE", ["MNTN"] ],
-        "movecost": 2 },
-
-      { "$when":[ "MOVE_TYPE", ["AIR"] ],
-        "movecost": 1 }
-    ]
-  },
-
-  {
-    "ID": "SNST",
-    "rules":[
-      { "att": -30 },
-      { "$when":[ "ATTACK_TYPE", ["INDIRECT"] ],
-        "maxRange": -1 }
-    ]
+    "id": "WSDS",
+    "rules": [{
+      "att": -30
+    }, {
+      "$when": ["ATTACK_TYPE", ["INDIRECT"]],
+      "maxRange": -1
+    }]
   }
 ]

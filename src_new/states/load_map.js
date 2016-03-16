@@ -3,10 +3,6 @@ cwt.game_state_add_state("load_map", {
   on_enter: function() {
     cwt.log_info("loading fake map");
 
-    cwt.client_event_register_object_type("tile", {
-      id: "PLIN"
-    });
-
     cwt.client_event_load_map({
       name: "development fake map",
       height: 10,

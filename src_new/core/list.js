@@ -1,3 +1,14 @@
+cwt.list_clone = function(source_list) {
+  var list, i;
+
+  list = [];
+  for (i = 0; i < source_list.length; i += 1) {
+    list[i] = source_list[i];
+  }
+
+  return list;
+};
+
 cwt.list_created_filled_list = function(size, value) {
   return cwt.list_created_filled_list_with_provider(size, function() {
     return value;
