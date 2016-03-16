@@ -1,152 +1,102 @@
-var IDLE_TIMEOUT = 100;
 var LOG_STYLE = "padding-left: 2px; padding-right: 2px; font-weight: bold; background: black; color:yellow";
 var LOG_HEAD = "[TEST-SYSTEM] ";
 
-var call_map = {};
+var last_group = "no group";
+var events_stack = {};
 var tasks = [];
+var task_index = 0;
 
-function add_event(key, args) {
-  call_map[key].push({
+function tests_failed() {
+  alert("Failed to complete tests. \n\nFailed at: " + last_group);
+}
+
+function tests_succeed() {
+  alert("Successfully completed tests without errors.");
+}
+
+function cache_event_data(key, args) {
+  events_stack[key].push({
     args: cwt.list_convert_arguments_to_list(args)
   });
 }
 
-function setup() {
+function inject_event_listeners() {
+  var orig;
+
   cwt.map_for_each_property(cwt, function(key, value) {
-    if (key.indexOf("game_event_") === 0) {
-      call_map[key] = [];
-      var orig = cwt[key];
+    if (key === "game_event_error") {
+      cwt[key] = tests_failed;
+
+    } else if (key.indexOf("game_event_") === 0 || key.indexOf("client_event_") === 0) {
+      events_stack[key] = [];
+      orig = cwt[key];
       cwt[key] = function() {
-        cwt.log_styled(LOG_STYLE, LOG_HEAD + "game_event: " + key + JSON.stringify(cwt.list_convert_arguments_to_list(arguments)));
-        add_event(key, arguments);
+        cache_event_data(key, arguments);
         orig.apply(cwt, arguments);
       };
     }
   });
 }
 
-function a_wait(event, max_time, data) {
-  cwt.log_styled(LOG_STYLE, LOG_HEAD + "waiting for " + event + " with data " + JSON.stringify(data));
-  var old_count = call_map[event].length;
-  var waited = 0;
-  max_time *= 1000;
-
-  function wait() {
-    waited += IDLE_TIMEOUT;
-
-    if (waited > max_time) {
-      cwt.log_styled(LOG_STYLE, LOG_HEAD + "- error - waited for " + event + " with data " + JSON.stringify(data) + ", but not happend after " + max_time / 1000 + " seconds");
-      return;
-    }
-
-    var event_data = call_map[event][0];
-    if (event_data) {
-      cwt.assert_array_equals(event_data.args, data);
-      cwt.log_styled(LOG_STYLE, LOG_HEAD + "got event " + event + " with expected data");
-      call_map[event].splice(0, 1);
-      setTimeout(pull_next_command, IDLE_TIMEOUT);
-    } else {
-      setTimeout(wait, IDLE_TIMEOUT);
-    }
-  }
-  setTimeout(wait, IDLE_TIMEOUT);
-}
-
-function a_key_press(key, time) {
-  cwt.input_press_key(key);
-  setTimeout(function() {
-    cwt.input_release_key(key);
-    setTimeout(pull_next_command, IDLE_TIMEOUT);
-  }, time);
-}
-
-function a_wipe() {
-  cwt.map_for_each_property(call_map, function(key, value) {
-    call_map[key].splice(0);
-  });
-  setTimeout(pull_next_command, IDLE_TIMEOUT);
-}
-
-function a_wait_time(time) {
-  setTimeout(pull_next_command, time);
-}
-
-function pull_next_command() {
+cwt.test_pull_next_command = function() {
   var data, handler;
 
-  data = tasks[0];
-  if (!data) {
-    finished_tests();
+  if (task_index === tasks.length) {
+    tasks = null;
+    tests_succeed();
     return;
   }
-  tasks.splice(0, 1);
 
-  switch (data.cmd) {
-    case "wait":
-      handler = a_wait;
-      break;
+  data = tasks[task_index];
+  task_index += 1;
 
-    case "wipe":
-      handler = a_wipe;
-      break;
+  cwt.log_styled(LOG_STYLE, LOG_HEAD + data.cmd + JSON.stringify(data.args));
 
-    case "key_press":
-      handler = a_key_press;
-      break;
+  cwt.require_something(cwt["test_action_" + data.cmd]).apply(cwt, data.args);
+};
 
-    case "wait_time":
-      handler = a_wait_time;
-      break;
+cwt.test_drop_first_event_when_data_matches = function(event, args) {
+  var event_data;
+
+  cwt.assert_true(cwt.type_is_something(events_stack[event]), "UnknownEvent:" + event);
+
+  event_data = events_stack[event][0];
+  if (event_data) {
+    cwt.assert_array_equals(event_data.args, args);
+    events_stack[event].splice(0, 1);
+    return true;
+  } else {
+    return false;
   }
-
-  cwt.require_something(handler);
-
-  handler.apply(cwt, data.args);
-}
-
-function finished_tests() {
-  cwt.log_styled(LOG_STYLE, LOG_HEAD + "finished tests without errors");
-}
+};
 
 cwt.test_setup = function() {
-  cwt.log_styled(LOG_STYLE, LOG_HEAD + "game is in automated end to end test mode");
-  cwt.log_styled(LOG_STYLE, LOG_HEAD + "please do not interact with your browser");
-  cwt.log_styled(LOG_STYLE, LOG_HEAD + "all inputs will be simulated by the test system");
-  cwt.log_styled(LOG_STYLE, LOG_HEAD + "the results will be visible in the console after the test completes");
+  var text = "";
+
+  text += "game is in automated test mode\n";
+  text += "please do not interact with your browser\n";
+  text += "all inputs will be simulated by the test system\n";
+  text += "the results will be visible in the console after the test completes";
+
+  alert(text);
 
   cwt.log_styled(LOG_STYLE, LOG_HEAD + "init test system");
-  setup();
-};
-
-cwt.test_wait_for = function(event, max_time, data) {
-  tasks.push({
-    cmd: "wait",
-    args: arguments
-  });
-};
-
-cwt.test_wipe_tracked_events = function() {
-  tasks.push({
-    cmd: "wipe",
-    args: []
-  });
-};
-
-cwt.test_wait = function(time) {
-  tasks.push({
-    cmd: "wait_time",
-    args: [time]
-  });
-};
-
-cwt.test_press_key = function(key, time) {
-  tasks.push({
-    cmd: "key_press",
-    args: [key, time || 250]
-  });
+  inject_event_listeners();
 };
 
 cwt.test_start = function() {
   cwt.log_styled(LOG_STYLE, LOG_HEAD + "starting tests");
-  pull_next_command();
+  cwt.test_pull_next_command();
+};
+
+cwt.test_group = function(group_name) {
+  last_group = cwt.require_string(group_name);
+  cwt.log_info("start testing group " + group_name);
+};
+
+cwt.test_action = function(action) {
+  tasks.push({
+    cmd: action,
+    args: cwt.list_convert_arguments_to_list(arguments).slice(1)
+  });
 };

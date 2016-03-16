@@ -1,5 +1,3 @@
-cwt.game_event_entered_state = function(state_id) {};
-
 cwt.game_event_error = function(error) {};
 
 cwt.game_event_unit_attacks = function(attacker_id, attacker_x, attacker_y, defender_id, defender_x, defender_y) {};
@@ -57,3 +55,5 @@ cwt.client_event_player_leaves_battle = function() {};
 cwt.client_event_prepare_battle = function(map) {};
 
 cwt.client_event_start_battle = function() {};
+
+cwt.client_event_entered_state = function(state_id) {};

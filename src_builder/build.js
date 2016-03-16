@@ -104,6 +104,7 @@ function insert_user_interface_files_into_buffer(buffer) {
 
 function insert_test_files_into_buffer(buffer) {
   build_tools.readFile(buffer, SOURCE_DIRECTORY + "/test/test_core.js");
+  build_tools.readFile(buffer, SOURCE_DIRECTORY + "/test/test_commands.js");
   build_tools.readFile(buffer, SOURCE_DIRECTORY + "/test/game_test.js");
 }
 

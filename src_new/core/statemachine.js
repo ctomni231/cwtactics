@@ -52,6 +52,6 @@ cwt.game_state_set_state = function(id) {
   active_state = id;
 
   cwt.log_info("enter " + active_state + " state");
-  cwt.game_event_entered_state(id);
+  cwt.client_event_entered_state(id);
   states[active_state].on_enter();
 };

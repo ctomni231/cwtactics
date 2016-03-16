@@ -1,2 +1,1 @@
-cwt.client_intialize_workers = function() {
-};
+cwt.client_intialize_workers = function() {};
