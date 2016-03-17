@@ -6,6 +6,10 @@ var events_stack = {};
 var tasks = [];
 var task_index = 0;
 
+cwt.test_dev_stack = function() {
+  return events_stack;
+};
+
 function tests_failed() {
   alert("Failed to complete tests. \n\nFailed at: " + last_group);
 }
@@ -29,14 +33,20 @@ function inject_event_listeners() {
 
     } else if (key.indexOf("game_event_") === 0 || key.indexOf("client_event_") === 0) {
       events_stack[key] = [];
-      orig = cwt[key];
       cwt[key] = function() {
+        cwt.log_styled(LOG_STYLE, LOG_HEAD + "got event " + key + " with data " + JSON.stringify(cwt.list_convert_arguments_to_list(arguments)));
         cache_event_data(key, arguments);
-        orig.apply(cwt, arguments);
+        value.apply(cwt, arguments);
       };
     }
   });
 }
+
+cwt.test_wipe_events = function() {
+  cwt.map_for_each_property(events_stack, function(key, value) {
+    events_stack[key].splice(0);
+  });
+};
 
 cwt.test_pull_next_command = function() {
   var data, handler;

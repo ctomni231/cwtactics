@@ -18,6 +18,7 @@ cwt.client_intialize_workers = function() {
 
     } else if (key.indexOf("client_event_") === 0) {
       cwt[key] = function() {
+        cwt.log_info("[MAIN-THREAD] sending event " + key + " with data " + JSON.stringify(cwt.list_convert_arguments_to_list(arguments)));
         cwt.game_worker.postMessage(JSON.stringify({
           event: key,
           args: cwt.list_convert_arguments_to_list(arguments)

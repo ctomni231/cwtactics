@@ -48,8 +48,6 @@ function load_object_types() {
 cwt.game_state_add_state("loading_state", {
 
   on_enter: function() {
-    cwt.log_info("mocking load and moving into the main menu after some time");
-
     cwt.request_get_json("../src_gamedata/tips.json", function(data) {
       tips = cwt.require_something(data);
       // this leads into a selection of a new timeout

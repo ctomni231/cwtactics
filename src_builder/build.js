@@ -96,9 +96,9 @@ function insert_game_files_into_buffer(buffer) {
 }
 
 function insert_user_interface_files_into_buffer(buffer) {
-  build_tools.readFolder(buffer, SOURCE_DIRECTORY + "/states");
-  build_tools.readFolder(buffer, SOURCE_DIRECTORY + "/controller");
-  build_tools.readFile(buffer, SOURCE_DIRECTORY + "/main.js");
+  build_tools.readFolder(buffer, SOURCE_DIRECTORY + "/controller/states");
+  build_tools.readFolder(buffer, SOURCE_DIRECTORY + "/controller/input");
+  build_tools.readFile(buffer, SOURCE_DIRECTORY + "/controller/main.js");
 }
 
 function insert_test_files_into_buffer(buffer) {
@@ -116,7 +116,7 @@ function write_main_game_js_file() {
   insert_core_files_into_buffer(buffer);
   insert_game_files_into_buffer(buffer);
   insert_user_interface_files_into_buffer(buffer);
-  build_tools.readFile(buffer, SOURCE_DIRECTORY + "/workers/single_core.js");
+  build_tools.readFile(buffer, SOURCE_DIRECTORY + "/events/fake_handler.js");
   if (is_in_autotest_mode()) {
     insert_test_files_into_buffer(buffer);
   }
@@ -133,7 +133,7 @@ function write_client_thread_js_file() {
   insert_core_files_into_buffer(buffer);
   insert_user_interface_files_into_buffer(buffer);
   buffer.append("cwt.CONST_GAME_TH_FILE = '" + GAME_THREAD_JS_FILE + "';");
-  build_tools.readFile(buffer, SOURCE_DIRECTORY + "/workers/main_core.js");
+  build_tools.readFile(buffer, SOURCE_DIRECTORY + "/events/controller_handler.js");
   if (in_program_arguments(ARG_AUTOTEST)) {
     insert_test_files_into_buffer(buffer);
   }
@@ -149,7 +149,7 @@ function write_game_thread_js_file() {
   buffer = new build_tools.StringBuilder();
   insert_core_files_into_buffer(buffer);
   insert_game_files_into_buffer(buffer);
-  build_tools.readFile(buffer, SOURCE_DIRECTORY + "/workers/game_core.js");
+  build_tools.readFile(buffer, SOURCE_DIRECTORY + "/events/game_handler.js");
 
   build_tools.writeFile(buffer.toString(), DESTINATION_DIRECTORY + "/" + GAME_THREAD_JS_FILE);
 }

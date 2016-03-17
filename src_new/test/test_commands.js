@@ -28,6 +28,23 @@ cwt.test_action_raise_input = function(key, time) {
   }, time);
 };
 
+cwt.test_action_wipe_events = function() {
+  cwt.test_wipe_events();
+  setTimeout(cwt.test_pull_next_command, 1000);
+};
+
 cwt.test_action_sleep = function(time) {
   setTimeout(cwt.test_pull_next_command, time);
+};
+
+cwt.test_action_game_command = function() {
+  cwt.client_event_push_command({
+    key: arguments[0],
+    p1: arguments[1],
+    p2: arguments[2],
+    p3: arguments[3],
+    p4: arguments[4],
+    p5: arguments[5]
+  });
+  setTimeout(cwt.test_pull_next_command, 1000);
 };
