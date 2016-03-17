@@ -35,6 +35,7 @@ function enter_loop() {
       }
     }
 
+    cwt.input_decrease_block_timer(delta);
     cwt.game_state_update_state(delta);
     cwt.game_state_render_state(delta);
 

@@ -46,6 +46,8 @@ cwt.client_event_initialize_model = function() {};
 
 cwt.client_event_load_map = function(map) {};
 
+cwt.client_event_push_command = function(data) {};
+
 cwt.client_event_register_object_type = function(type, sheet) {};
 
 cwt.client_event_player_joins_battle = function(player_id, player_type, name) {};

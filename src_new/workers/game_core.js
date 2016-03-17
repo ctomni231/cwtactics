@@ -7,14 +7,12 @@ onmessage = function(event) {
 
 cwt.map_for_each_property(cwt, function(key, value) {
   if (key.indexOf("game_event_") === 0) {
-    if (!cwt[key]) {
-      cwt[key] = function() {
-        postMessage(JSON.stringify({
-          event: key,
-          args: cwt.list_convert_arguments_to_list(arguments)
-        }));
-      };
-    }
+    cwt[key] = function() {
+      postMessage(JSON.stringify({
+        event: key,
+        args: cwt.list_convert_arguments_to_list(arguments)
+      }));
+    };
 
   } else if (key.indexOf("client_event_") === 0) {
     if (!cwt[key]) {

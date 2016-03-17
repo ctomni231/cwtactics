@@ -86,14 +86,13 @@ function insert_core_files_into_buffer(buffer) {
   build_tools.readFile(buffer, BASE_CONSTANTS_FILE);
   buffer.append("cwt.CONST_" + VAR_DUAL_CODE_MODE + " = " + (is_in_workers_mode() ? "true" : "false") + "; \r\n");
   build_tools.readFile(buffer, is_in_development_mode() ? DEV_CONSTANTS_FILE : LIVE_CONSTANTS_FILE);
-  build_tools.readFolder(buffer, SOURCE_DIRECTORY + "/util");
   build_tools.readFolder(buffer, SOURCE_DIRECTORY + "/core");
   build_tools.readFile(buffer, SOURCE_DIRECTORY + "/events/events.js");
 }
 
 function insert_game_files_into_buffer(buffer) {
   build_tools.readFolder(buffer, SOURCE_DIRECTORY + "/game");
-  build_tools.readFolder(buffer, SOURCE_DIRECTORY + "/commands");
+  build_tools.readFolder(buffer, SOURCE_DIRECTORY + "/game/commands");
 }
 
 function insert_user_interface_files_into_buffer(buffer) {

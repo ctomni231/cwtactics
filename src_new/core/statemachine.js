@@ -54,4 +54,6 @@ cwt.game_state_set_state = function(id) {
   cwt.log_info("enter " + active_state + " state");
   cwt.client_event_entered_state(id);
   states[active_state].on_enter();
+
+  cwt.input_place_blocker();
 };
