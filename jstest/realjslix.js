@@ -28,7 +28,7 @@ var mousey = 0;
 var view;
 var lx = 0;
 var ly = 0;
-var blend = new Uint8ClampedArray(32);
+var blend = new Uint8ClampedArray(32)
 
 //These are arrays that store multiple images
 var viewArray = [];

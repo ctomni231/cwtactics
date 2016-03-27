@@ -57,3 +57,37 @@ cwt.log_warn = function(message) {
 cwt.log_error = function(message, error) {
   cwt.log_active_logger(message, cwt.log_LEVEL_ERROR, error);
 };
+
+class LoggerFactory {
+
+  static create() {
+    if (!LoggerFactory.LOG) {
+      LoggerFactory.LOG = new LegacyLogger();
+    }
+    return LoggerFactory.LOG;
+  }
+}
+
+class Logger {
+  info(msg) {
+
+  }
+  warn(msg) {
+
+  }
+  error(msg, error) {
+
+  }
+}
+
+class LegacyLogger extends Logger {
+  info(msg) {
+    cwt.log_info(msg);
+  }
+  warn(msg) {
+    cwt.log_warn(msg);
+  }
+  error(msg, error) {
+    cwt.log_error(msg);
+  }
+}
