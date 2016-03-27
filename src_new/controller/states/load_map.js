@@ -1,10 +1,12 @@
 cwt.game_state_add_state("load_map", {
 
   on_enter: function() {
+    cwt.log_info("loading fake map");
+
     cwt.client_event_load_map({
       name: "development fake map",
-      height: 15,
-      width: 15,
+      height: 10,
+      width: 10,
       day: 10,
       fill_type: "PLIN",
       players: [{

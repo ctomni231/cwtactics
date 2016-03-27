@@ -1,28 +1,9 @@
-const fs = require('fs');
-const util = require('util');
-const isWindows = (process.platform === 'win32');
-const readline = require('readline');
-const es6CS = require("es6-class");
-const es6AF = require("es6-arrow-function");
-const es6OS = require("es6-object-short");
-const es6OC = require("es6-object-concise");
-const es6DP = require("es6-default-params");
+var fs = require('fs');
+var isWindows = (process.platform === 'win32');
 
-const ARG_TRACE_MODE = "-trace";
+var cwtBuild = {};
 
-exports.log_message = function(msg) {
-  console.log("[BUILD] " + msg);
-};
-
-exports.in_program_arguments = function(arg) {
-  return process.argv.indexOf(arg) != -1;
-};
-
-exports.is_in_trace_mode = function() {
-  return exports.in_program_arguments(ARG_TRACE_MODE);
-};
-
-exports.maskPathSlashes = function(path) {
+cwtBuild.maskPathSlashes = function (path) {
   if (isWindows) {
     return path.replace(/\//g, "\\");
   } else {
@@ -30,22 +11,60 @@ exports.maskPathSlashes = function(path) {
   }
 };
 
-exports.requireNonNull = function(obj, error) {
+cwtBuild.requireNonNull = function (obj, error) {
   if (obj === undefined || obj == null) {
     throw new Error(error || "ValueNotPresent");
   }
   return obj;
 };
 
+cwtBuild.Flow = function () {
+  this.jobs = [];
+};
 
-exports.wipeFolderContent = function(path) {
+cwtBuild.Flow.prototype.doSync = function (job) {
+  cwtBuild.requireNonNull(job);
+  this.jobs.push(function (next) {
+    job();
+    next();
+  });
+  return this;
+};
+
+cwtBuild.Flow.prototype.doAsync = function (job) {
+  this.jobs.push(cwtBuild.requireNonNull(job));
+  return this;
+};
+
+cwtBuild.Flow.prototype.execute = function (whenDone) {
+  var jobs = this.jobs;
+  var currentIndex = 0;
+
+  function invokeNext() {
+    var job;
+
+    if (currentIndex == jobs.length) {
+      whenDone();
+
+    } else {
+      job = jobs[currentIndex];
+      currentIndex++;
+
+      job(invokeNext);
+    }
+  }
+
+  invokeNext();
+};
+
+cwtBuild.wipeFolderContent = function (path) {
   var files = [];
   if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function(file, index) {
+    fs.readdirSync(path).forEach(function (file, index) {
       var curPath = path + "/" + file;
 
       if (fs.statSync(curPath).isDirectory()) {
-        exports.wipeFolderContent(curPath);
+        cwtBuild.wipeFolderContent(curPath);
       } else {
         fs.unlinkSync(curPath);
       }
@@ -55,25 +74,25 @@ exports.wipeFolderContent = function(path) {
   }
 };
 
-exports.StringBuilder = function() {
+cwtBuild.StringBuilder = function () {
   this.strings = [];
 };
 
-exports.StringBuilder.prototype.append = function(str) {
-  this.strings.push(exports.requireNonNull(str));
+cwtBuild.StringBuilder.prototype.append = function (str) {
+  this.strings.push(cwtBuild.requireNonNull(str));
   return this;
 };
 
-exports.StringBuilder.prototype.appendNewLine = function() {
+cwtBuild.StringBuilder.prototype.appendNewLine = function () {
   this.strings.push("\n");
   return this;
 };
 
-exports.StringBuilder.prototype.toString = function() {
+cwtBuild.StringBuilder.prototype.toString = function () {
   return this.strings.join("");
 };
 
-exports.readFolderFileList = function(path) {
+cwtBuild.readFolderFileList = function (path) {
   var result = fs.readdirSync(path);
   for (var i = 0, e = result.length; i < e; i++) {
     result[i] = path + "/" + result[i];
@@ -83,18 +102,18 @@ exports.readFolderFileList = function(path) {
 };
 
 /**
- *
- * @param   {exports.StringBuilder} builder string builder
+ * 
+ * @param   {cwtBuild.StringBuilder} builder string builder
  * @param   {string}                 path    path that will be readed
  * @param   {function()}             filter  if filter returns false, then the current selected file
  *                                           will be ignored
- * @returns {exports.StringBuilder} builder
+ * @returns {cwtBuild.StringBuilder} builder  
  */
-exports.readFolder = function(builder, path, filter) {
-  exports.readFolderFileList(path).forEach(function(file, i) {
+cwtBuild.readFolder = function (builder, path, filter) {
+  cwtBuild.readFolderFileList(path).forEach(function (file, i) {
     if (!filter || !filter(file)) {
       if (fs.lstatSync(file).isFile()) {
-        exports.readFile(builder, file);
+        cwtBuild.readFile(builder, file);
         builder.append("\r\n");
       }
     }
@@ -102,96 +121,29 @@ exports.readFolder = function(builder, path, filter) {
   return builder;
 };
 
-exports.readFile = function(builder, path) {
-  builder.append(fs.readFileSync(path).toString());
+cwtBuild.readFile = function (builder, path) {
+  var content, dotJsIndex;
+
+  content = fs.readFileSync(path).toString();
+
+  dotJsIndex = path.indexOf(".js");
+  if (dotJsIndex != -1 && dotJsIndex == path.length - 3) {
+    builder.append("(function(){");
+    builder.append("\r\n");
+    builder.append(content);
+    builder.append("\r\n");
+    builder.append("})();");
+    builder.append("\r\n");
+  } else {
+    builder.append(content);
+  }
   return builder;
 };
 
-exports.writeFile = function(code, path) {
+cwtBuild.writeFile = function (code, path) {
   var out = fs.openSync(path, 'w+');
   fs.writeSync(out, code);
   fs.closeSync(out);
 };
 
-exports.convertCodeFromES6toES5 = function(code) {
-  try {
-    code = es6CS.compile(code).code;
-    code = es6AF.compile(code).code;
-    code = es6OS.compile(code).code;
-    code = es6OC.compile(code).code;
-    code = es6DP.compile(code).code;
-
-    return code;
-
-  } catch (e) {
-    exports.log_message("ERROR: cannot convert es6 source back to es5 [" + e.message + "]");
-    exports.writeFile(buffer, DESTINATION_DIRECTORY + "/error_source.js");
-    const errorLine = parseInt(e.message.substr(5, e.message.indexOf(":") - 5), 10);
-
-    var lineCounter = 0;
-    readline.createInterface({
-      input: fs.createReadStream(DESTINATION_DIRECTORY + "/error_source.js")
-    }).on('line', function(line) {
-      lineCounter++;
-      if ((errorLine > 0 && lineCounter == errorLine - 1) || (lineCounter == errorLine) || (lineCounter == errorLine + 1)) {
-        exports.log_message("ERROR: ...[" + lineCounter + "] " + line);
-      }
-    }).on("end", function() {
-      process.exit();
-    });
-  }
-}
-
-exports.JSCacheReader = function(cachePath, wipe) {
-  this.path = cachePath;
-  this.cache = {};
-  if (!wipe) {
-    try {
-      var buffer = new exports.StringBuilder();
-      exports.readFile(buffer, ".cwt-build-cache");
-      this.cache = JSON.parse(buffer.toString());
-    } catch (e) {
-      exports.log_message("no or invalid code cache found, generating new one");
-    }
-  }
-};
-
-exports.JSCacheReader.prototype.readFile = function(buffer, path) {
-  var cacheEntry = this.cache[path];
-  var cacheLastModified = cacheEntry ? cacheEntry.lastModified : 0;
-  var fileLastModified = fs.lstatSync(path).mtime.getTime();
-
-  if (fileLastModified > cacheLastModified) {
-    if (exports.is_in_trace_mode()) {
-      exports.log_message("generating new cache for " + path);
-    }
-
-    var code = fs.readFileSync(path).toString();
-    code = exports.convertCodeFromES6toES5(code);
-    
-    buffer.append(code);
-    this.cache[path] = {
-      code: code,
-      lastModified: fileLastModified
-    }
-
-  } else {
-    if (exports.is_in_trace_mode()) {
-      exports.log_message("using cached code for " + path);
-    }
-
-    buffer.append(cacheEntry.code);
-  }
-};
-
-exports.JSCacheReader.prototype.readFolder = function(buffer, path) {
-  exports.readFolderFileList(path).forEach((function(file, i) {
-    if (fs.lstatSync(file).isFile()) {
-      this.readFile(buffer, file);
-    }
-  }).bind(this));
-};
-
-exports.JSCacheReader.prototype.flushCacheToDisk = function() {
-  exports.writeFile(JSON.stringify(this.cache), this.path);
-};
+exports.cwtBuild = cwtBuild;
