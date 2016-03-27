@@ -4,6 +4,222 @@
 		"selected_items":
 		[
 			[
+				"get",
+				"getNeutralPlayerId"
+			],
+			[
+				"re",
+				"require_integer"
+			],
+			[
+				"play",
+				"players"
+			],
+			[
+				"pl",
+				"playerIdA"
+			],
+			[
+				"pal",
+				"playerId"
+			],
+			[
+				"pla",
+				"playerIdA"
+			],
+			[
+				"mock",
+				"mockedGameFactory"
+			],
+			[
+				"mo",
+				"mockedGameFactory"
+			],
+			[
+				"isS",
+				"isSomething"
+			],
+			[
+				"turn",
+				"turn_owner"
+			],
+			[
+				"setT",
+				"setTurnOwner"
+			],
+			[
+				"fill",
+				"fillWithTiles	(map.js)"
+			],
+			[
+				"ti",
+				"tileDB"
+			],
+			[
+				"Is",
+				"InstanceOf	(0_#Utility.js)"
+			],
+			[
+				"set",
+				"set	(turn.js)"
+			],
+			[
+				"is",
+				"isTrue	(0_#Utility.js)"
+			],
+			[
+				"no",
+				"noSavedScope"
+			],
+			[
+				"te",
+				"testbuffer"
+			],
+			[
+				"bui",
+				"build_tools"
+			],
+			[
+				"bo",
+				"bottom"
+			],
+			[
+				"thenRe",
+				"thenReturn(6	(jsmockito.js)"
+			],
+			[
+				"has",
+				"hasItems"
+			],
+			[
+				"mocked",
+				"mockedBuffer"
+			],
+			[
+				"pick",
+				"pickNextTurnOwner	(turn.js)"
+			],
+			[
+				"reg",
+				"registerHandler	(commands.js)"
+			],
+			[
+				"hand",
+				"handlers"
+			],
+			[
+				"han",
+				"handlers"
+			],
+			[
+				"co",
+				"commandkey"
+			],
+			[
+				"pi",
+				"pushItem"
+			],
+			[
+				"ite",
+				"items"
+			],
+			[
+				"spl",
+				"splice"
+			],
+			[
+				"i",
+				"items"
+			],
+			[
+				"push",
+				"pushItem"
+			],
+			[
+				"h",
+				"highLevelBuffer"
+			],
+			[
+				"ex",
+				"executeSoonAsPossible"
+			],
+			[
+				"ins",
+				"instanceof"
+			],
+			[
+				"lo",
+				"lowLevelBuffer"
+			],
+			[
+				"insta",
+				"instanceof	(Utility.js)"
+			],
+			[
+				"she",
+				"sheetParser"
+			],
+			[
+				"shee",
+				"sheetParser"
+			],
+			[
+				"regi",
+				"registerSheet	(sheets.js)"
+			],
+			[
+				"sh",
+				"sheets"
+			],
+			[
+				"sheet_",
+				"sheet_map"
+			],
+			[
+				"nex",
+				"next_possible_owner_id"
+			],
+			[
+				"isPl",
+				"isPlayerActive	(players.js)"
+			],
+			[
+				"tur",
+				"turnOwner"
+			],
+			[
+				"Play",
+				"Players	(players.js)"
+			],
+			[
+				"id",
+				"players_get_neutral_id"
+			],
+			[
+				"da",
+				"damageMap"
+			],
+			[
+				"fu",
+				"fuel"
+			],
+			[
+				"src",
+				"src_builder"
+			],
+			[
+				"pr",
+				"prepare_output"
+			],
+			[
+				"to",
+				"toString"
+			],
+			[
+				"es",
+				"es6_arrow_fn_compiler"
+			],
+			[
 				"event",
 				"events_stack	test_core.js"
 			],
@@ -24,20 +240,12 @@
 				"game_event_turn_changed(day, turn_owner_id)	events.js"
 			],
 			[
-				"lo",
-				"log_info(message)	logging.js"
-			],
-			[
 				"commands_",
 				"commands_has_buffered_commands()	commands.js"
 			],
 			[
 				"list",
 				"list_convert_arguments_to_list(args)	list.js"
-			],
-			[
-				"re",
-				"require_string(value)	types.js"
 			],
 			[
 				"group_nam",
@@ -244,10 +452,6 @@
 				"length"
 			],
 			[
-				"turn",
-				"turn_pick_next_owner()	turn.js"
-			],
-			[
 				"comman",
 				"command_handlers	commands.js"
 			],
@@ -268,20 +472,12 @@
 				"players_deactivate_all()	players.js"
 			],
 			[
-				"pl",
-				"players_get_player(id)	players.js"
-			],
-			[
 				"types",
 				"type_is_something(value)	types.js"
 			],
 			[
 				"game_eve",
 				"game_event_turn_changed(day, turn, turn_owner_id)	event_brigde.js"
-			],
-			[
-				"nex",
-				"next_possible_owner_id	turn.js"
 			],
 			[
 				"cu",
@@ -294,10 +490,6 @@
 			[
 				"type",
 				"type_is_nothing(value)	types.js"
-			],
-			[
-				"get",
-				"get_position_code(x, y)	units.js"
 			],
 			[
 				"res",
@@ -322,163 +514,22 @@
 			[
 				"units_get",
 				"units_get_unit_by_id(id)	units.js"
-			],
-			[
-				"units_set",
-				"units_set_unit_position(id, x, y)	units.js"
-			],
-			[
-				"til",
-				"tiles_get_type(id)	tiles.js"
-			],
-			[
-				"players_is",
-				"players_is_player_id(id)	players.js"
-			],
-			[
-				"uni",
-				"units_get_unit_by_id(id)	units.js"
-			],
-			[
-				"units_",
-				"units_remove_all_from_map()	units.js"
-			],
-			[
-				"play",
-				"players_get_neutral_id()	player.js"
-			],
-			[
-				"list_f",
-				"list_for_each(list, iterator)	list.js"
-			],
-			[
-				"shee",
-				"sheets_register_base_type(data, sheet_map)	sheets.js"
-			],
-			[
-				"requi",
-				"require_something(value)	types.js"
-			],
-			[
-				"sheets_i",
-				"sheets_is_valid_type_id(id)	sheets.js"
-			],
-			[
-				"she",
-				"sheets_register_base_type(data, sheet_map)	sheets.js"
-			],
-			[
-				"players_",
-				"players_get_neutral_id()	player.js"
-			],
-			[
-				"playe",
-				"players_get_neutral_id(id)	player.js"
-			],
-			[
-				"onk",
-				"onkeydown(ev)	setupkeyboard.js"
-			],
-			[
-				"game",
-				"game_state_set_state(id)	statemachine.js"
-			],
-			[
-				"inp",
-				"input_is_key_pressed(key)	input.js"
-			],
-			[
-				"ti",
-				"tile_type	map.js"
-			],
-			[
-				"requ",
-				"require_something(value)	types.js"
-			],
-			[
-				"as",
-				"assert_valid_id(id)	types.js"
-			],
-			[
-				"map",
-				"map_set_size(map_width, map_height)	map.js"
-			],
-			[
-				"he",
-				"height	map.js"
-			],
-			[
-				"is",
-				"isInt(value)	functional.js"
-			],
-			[
-				"ac",
-				"active_state	statemachine.js"
-			],
-			[
-				"loo",
-				"loop()	main.js"
-			],
-			[
-				"buil",
-				"buildNewGame()	build.js"
-			],
-			[
-				"ar",
-				"args	build.js"
-			],
-			[
-				"ins",
-				"instance	objects.js"
-			],
-			[
-				"cr",
-				"create( impl, config )	statemachine.js"
-			],
-			[
-				"crea",
-				"create( impl, config )	statemachine.js"
-			],
-			[
-				"input",
-				"input_press_key(key)	input.js"
-			],
-			[
-				"gam",
-				"gamestate_set_state(ctx, id)	statemachine.js"
-			],
-			[
-				"ma",
-				"map_actions()	start_screen.js"
-			],
-			[
-				"press",
-				"pressed_keys	input.js"
-			],
-			[
-				"asser",
-				"assert_true(expr, msg)	asserts.js"
-			],
-			[
-				"act",
-				"actions_leftActors	actions.js"
-			],
-			[
-				"fun",
-				"function"
-			],
-			[
-				"model",
-				"persistence_serialize_model(model)	savegame.js"
-			],
-			[
-				"my",
-				"my_function(my_par)	test.js"
 			]
 		]
 	},
 	"buffers":
 	[
+		{
+			"contents": "class GameFactory {\n  static create() {\n\n    var msgBrooker = new MessageBrooker();\n    var weatherDB = WeatherDBFactory.create();\n    var playerCtx = PlayerContextFactory.create();\n    var weather = new WeatherHandler(weatherDB, msgBrooker);\n    var turn = new Turn(playerCtx);\nnew \n    var game = new Game({\n      playerCtx: playerCtx,\n      tileDB: null,\n      weather: weather,\n      turn: turn,\n      msgBrooker: msgBrooker\n    });\n  }\n}\n\nclass Game {\n\n  constructor(deps) {\n    this.tileDB = Require.InstanceOf(deps.tileDB, SheetDatabase);\n    this.playerCtx = Require.InstanceOf(deps.playerCtx, PlayerContext);\n    this.turn = Require.InstanceOf(deps.turn, Turn);\n    this.map = new Map(deps.tileDB, deps.msgBrooker);\n    this.weather = Require.InstanceOf(deps.weather, WeatherHandler);\n  }\n}\n",
+			"file": "src_new/game/game.js",
+			"file_size": 825,
+			"file_write_time": 131035587355909531,
+			"settings":
+			{
+				"buffer_size": 800,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -487,17 +538,33 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 104.0,
-		"last_filter": "remove",
+		"height": 392.0,
+		"last_filter": "c",
 		"selected_items":
 		[
 			[
-				"remove",
+				"c",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"r",
 				"Package Control: Remove Package"
 			],
 			[
 				"pack",
-				"Package Control: Install Package"
+				"Package Control: Enable Package"
+			],
+			[
+				"Pack",
+				"Package Control: Disable Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
 			],
 			[
 				"color",
@@ -530,10 +597,6 @@
 			[
 				"re",
 				"Package Control: Remove Package"
-			],
-			[
-				"in",
-				"Package Control: Install Package"
 			],
 			[
 				"pac",
@@ -599,25 +662,61 @@
 	[
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_const",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/commands",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/workers"
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_builder"
 	],
 	"file_history":
 	[
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/folders.md",
+		"/C/Users/Alexander/Documents/Programme/sublime/Data/Packages/TernJS/TernJS.sublime-settings",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/dist/game.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/players.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/0_#Utility.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_builder/build.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/GameConstructionTest.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/MoveTest.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/CommandTest.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/dist/test.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/Battle.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/map_loader.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/movetypes.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/turn.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/map.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/game.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/units.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/tiles.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/commands.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/commands/next_turn.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/sheets.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/event_handling.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_builder/lib.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/Move.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/dist/game.css",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/dist/game.html",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/ext/htmlCode.html",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/Utility.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/ext/jsmockito.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/ext/qunit.css",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/ext/qunit.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/ext/jshamcrest.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/list.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/Weapons.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/weather.js",
+		"/C/Users/Alexander/Documents/Programme/sublime/Data/Packages/SublimeCodeIntel/SublimeCodeIntel.sublime-settings",
+		"/C/Users/Alexander/Documents/Programme/sublime/Data/Packages/User/SublimeCodeIntel.sublime-settings",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/dist/game_th_game.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_builder/babel.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/node_modules/es6-class/lib/index.js",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/node_modules/es6-class/bin/es6-class",
+		"/C/Users/Alexander/Documents/Programme/sublime/Data/Packages/User/SublimeLinter.sublime-settings",
+		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/folders.md",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/game_test.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/test_commands.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/test_core.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/workers/game_core.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/workers/main_core.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/commands.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/main.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/loading_state.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/start_game.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/commands/next_turn.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/turn.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/event_handling.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/events/events.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/controller/commands.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/statemachine.js",
@@ -627,24 +726,16 @@
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/main_menu.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/game_test_b.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/test/game_enter_test.test",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/sheets.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_gamedata/weathers.json",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/weather.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/movetypes.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_gamedata/movetypes.json",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/types.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/players.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_gamedata/units.json",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/tiles.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/load_map.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_gamedata/tiles.json",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/asserts.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/units.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/states/test.cs",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/jobs.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/core/list.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/core/serial.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/map_loader.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/dualcore/main_core.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/dualcore/single_core.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/dualcore/game_core.js",
@@ -661,7 +752,6 @@
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/util/functional.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/controller/keyboard.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/util/list.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/map.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_const/base.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/player.js",
 		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_new/game/types.js",
@@ -704,20 +794,11 @@
 		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/Preferences.sublime-settings",
 		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/Colorsublime.sublime-settings",
 		"/C/Users/Alexander/Desktop/sublime/Data/Packages/Default/Preferences.sublime-settings",
-		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/MySignaturePlugin.sublime-settings",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/model/actions.js",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/tests/core.js",
-		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/JavascriptBeautify.sublime-settings",
-		"/C/Users/Alexander/Desktop/sublime/Data/Packages/Javascript Beautify/JavascriptBeautify.sublime-settings",
-		"/C/Users/Alexander/Documents/Projekte/cwtactics/src_engine/tests/game_logic/usable.js",
-		"/C/Users/Alexander/Desktop/test_js/test3.js",
-		"/C/Users/Alexander/Desktop/test_js/test2.js",
-		"/C/Users/Alexander/Desktop/test_js/test.js",
-		"/C/Users/Alexander/Desktop/STEXT2/Data/Packages/SublimeCodeIntel/SublimeCodeIntel.sublime-settings"
+		"/C/Users/Alexander/Desktop/sublime/Data/Packages/User/MySignaturePlugin.sublime-settings"
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 36.0
 	},
 	"find_in_files":
 	{
@@ -728,9 +809,19 @@
 	},
 	"find_state":
 	{
-		"case_sensitive": false,
+		"case_sensitive": true,
 		"find_history":
 		[
+			"maxPlayerHandler",
+			"Players",
+			"players",
+			"Players",
+			"assert",
+			"sheet_map",
+			"}\n",
+			");\n",
+			"cwt.players_get_player",
+			"compile",
 			"commands.",
 			"  \n",
 			"add_event",
@@ -801,6 +892,10 @@
 		"regex": false,
 		"replace_history":
 		[
+			"maxPlayers",
+			"PlayerHandler",
+			"data",
+			"getPlayer",
 			"cwt.test_action_",
 			"cache_event_data",
 			"events_stack",
@@ -867,14 +962,43 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "src_new/game/game.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 800,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								283,
+								283
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 23.0
+		"height": 28.0
 	},
 	"input":
 	{
@@ -915,7 +1039,7 @@
 	"project": "testproject.sublime-project",
 	"replace":
 	{
-		"height": 62.0
+		"height": 66.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -953,7 +1077,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 271.0,
+	"side_bar_width": 185.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

@@ -1,11 +1,15 @@
 [{
     "id": "WSUN",
+    "minDuration": 1,
+    "maxDuration": 5,
     "rules": [],
     "defaultWeather": true
   },
 
   {
     "id": "WRAI",
+    "minDuration": 1,
+    "maxDuration": 1,
     "rules": [{
       "vision": -1
     }, {
@@ -18,6 +22,8 @@
 
   {
     "id": "WSNW",
+    "minDuration": 1,
+    "maxDuration": 1,
     "rules": [
 
       {
@@ -68,6 +74,8 @@
 
   {
     "id": "WSDS",
+    "minDuration": 1,
+    "maxDuration": 1,
     "rules": [{
       "att": -30
     }, {
