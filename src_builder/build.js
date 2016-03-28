@@ -62,14 +62,14 @@ function print_program_info() {
   build_tools.log_message("cannot build game with the given arguments!");
   build_tools.log_message("");
   build_tools.log_message("correct usage:");
-  build_tools.log_message("  node build.js (" + ARG_DEV_BUILD + "|" + ARG_LIVE_BUILD + ") (" + ARG_AUTOTEST + ")? (" + ARG_DUAL_CORE + ")?");
+  build_tools.log_message("  node build.js ...parameters");
   build_tools.log_message("");
   build_tools.log_message("parameters:");
-  build_tools.log_message("-dev        => All development statements will be included in the build");
-  build_tools.log_message("-live       => The build does not contains any development statements");
+  build_tools.log_message("-dev        => The build will be optimized for development (e.g. assertions)");
+  build_tools.log_message("-live       => The build will be optimized for release");
   build_tools.log_message("-test       => The build will run acceptance tests on startup");
   build_tools.log_message("-multicore  => The build will be optimized for multicore systems");
-  build_tools.log_message("-wipecache  => The build will create a new code cache for the ESNext convertion");
+  build_tools.log_message("-wipecache  => The builder will create a new code cache for the ESNext convertion");
   build_tools.log_message("-trace      => The builder will log out more information... build will may be slower with this option");
 }
 
