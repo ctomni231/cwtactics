@@ -9,11 +9,11 @@ const GAME_JS_FILE = "game.js";
 const GAME_CSS_FILE = "game.css";
 const GAME_HTML_FILE = "game.html";
 
-const ARG_AUTOTEST = "-autotest";
+const ARG_AUTOTEST = "-test";
 const ARG_DEV_BUILD = "-dev";
 const ARG_LIVE_BUILD = "-live";
-const ARG_DUAL_CORE = "-dualcore";
-const ARG_CLEAN_CACHE = "-cleanCache";
+const ARG_DUAL_CORE = "-multicore";
+const ARG_CLEAN_CACHE = "-wipecache";
 
 const VAR_DUAL_CODE_MODE = "DUALCORE_MODE";
 
@@ -65,10 +65,12 @@ function print_program_info() {
   build_tools.log_message("  node build.js (" + ARG_DEV_BUILD + "|" + ARG_LIVE_BUILD + ") (" + ARG_AUTOTEST + ")? (" + ARG_DUAL_CORE + ")?");
   build_tools.log_message("");
   build_tools.log_message("parameters:");
-  build_tools.log_message(ARG_DEV_BUILD + " :: All development statements will be included in the build");
-  build_tools.log_message(ARG_LIVE_BUILD + " :: The build does not contains any development statements");
-  build_tools.log_message(ARG_AUTOTEST + " :: The build will run acceptance tests on startup");
-  build_tools.log_message(ARG_DUAL_CORE + " :: The build will be optimized for multicore systems");
+  build_tools.log_message("-dev        => All development statements will be included in the build");
+  build_tools.log_message("-live       => The build does not contains any development statements");
+  build_tools.log_message("-test       => The build will run acceptance tests on startup");
+  build_tools.log_message("-multicore  => The build will be optimized for multicore systems");
+  build_tools.log_message("-wipecache  => The build will create a new code cache for the ESNext convertion");
+  build_tools.log_message("-trace      => The builder will log out more information... build will may be slower with this option");
 }
 
 function cleanup_dist_folder() {
