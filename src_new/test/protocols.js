@@ -29,7 +29,7 @@ class Protocol {
     });
   }
 
-  static implements(object, protocol) {
+  static implements(object, protocol, testCase) {
     Require.isSomething(object, "IllegalArguments: no valid object to test");
     Require.isTrue(protocol instanceof Protocol, "IllegalArguments: no valid protocol");
 
