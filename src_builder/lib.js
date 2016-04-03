@@ -124,21 +124,21 @@ exports.convertCodeFromES6toES5 = function(code) {
     return code;
 
   } catch (e) {
-    exports.log_message("ERROR: cannot convert es6 source back to es5 [" + e.message + "]");
-    exports.writeFile(buffer, DESTINATION_DIRECTORY + "/error_source.js");
-    const errorLine = parseInt(e.message.substr(5, e.message.indexOf(":") - 5), 10);
 
-    var lineCounter = 0;
-    readline.createInterface({
-      input: fs.createReadStream(DESTINATION_DIRECTORY + "/error_source.js")
-    }).on('line', function(line) {
-      lineCounter++;
-      if ((errorLine > 0 && lineCounter == errorLine - 1) || (lineCounter == errorLine) || (lineCounter == errorLine + 1)) {
-        exports.log_message("ERROR: ...[" + lineCounter + "] " + line);
-      }
-    }).on("end", function() {
-      process.exit();
-    });
+    exports.log_message("ERROR: cannot convert es6 source back to es5 [" + e.message + "]");
+    const errorLine = parseInt(e.message.substr(5, e.message.indexOf(":") - 5), 10);
+    const lines = code.split("\n");
+    const printErrorLine = (line) => exports.log_message("ERROR: ...[" + line + "] " + lines[line]);
+
+    if (errorLine > 0) {
+      printErrorLine(errorLine - 1);
+    }
+    printErrorLine(errorLine);
+    if (lines.length >= errorLine + 1) {
+      printErrorLine(errorLine + 1);
+    }
+
+    process.exit();
   }
 }
 
@@ -168,7 +168,7 @@ exports.JSCacheReader.prototype.readFile = function(buffer, path) {
 
     var code = fs.readFileSync(path).toString();
     code = exports.convertCodeFromES6toES5(code);
-    
+
     buffer.append(code);
     this.cache[path] = {
       code: code,

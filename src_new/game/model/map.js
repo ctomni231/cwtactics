@@ -8,7 +8,7 @@ class Map {
     this.width = 10;
     this.height = 10;
     this.tileDB = Require.InstanceOf(tileDB, SheetDatabase);
-    this.msgBrooker = Require.InstanceOf(msgBrooker, MessageBrooker);
+    this.msgBrooker = msgBrooker;
   }
 
   setSize(width, height) {

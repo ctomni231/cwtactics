@@ -25,7 +25,7 @@ class SheetDatabase {
   }
 
   getRandomSheet() {
-    return this.sheet[this.names[parseInt(Math.random() * this.names.length, 10)]];
+    return this.sheets[this.names[parseInt(Math.random() * this.names.length, 10)]];
   }
 
   getSheet(id) {
@@ -34,5 +34,20 @@ class SheetDatabase {
 
   isValidId(id) {
     return Types.isSomething(this.sheets[id]);
+  }
+}
+
+class TargetList {
+
+  constructor(list) {
+    this.targets = Require.isArray(list);
+  }
+
+  containsId(target) {
+    return this.targets.indexOf(target) !== -1;
+  }
+
+  containsSheet(sheet) {
+    return this.containsId(Require.isString(sheet.id));
   }
 }

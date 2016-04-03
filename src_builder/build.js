@@ -68,7 +68,7 @@ function print_program_info() {
   build_tools.log_message("-dev        => The build will be optimized for development (e.g. assertions)");
   build_tools.log_message("-live       => The build will be optimized for release");
   build_tools.log_message("-test       => The build will run acceptance tests on startup");
-  build_tools.log_message("-multicore  => The build will be optimized for multicore systems");
+  build_tools.log_message("-multicore  => The build will be optimized for multicore systems (may deprecated in future - may not needed)");
   build_tools.log_message("-wipecache  => The builder will create a new code cache for the ESNext convertion");
   build_tools.log_message("-trace      => The builder will log out more information... build will may be slower with this option");
 }
@@ -99,12 +99,9 @@ function insert_user_interface_files_into_buffer(buffer) {
 }
 
 function insert_test_files_into_buffer(buffer) {
-  //reader.readFile(buffer, SOURCE_DIRECTORY + "/test/test_core.js");
-  //reader.readFile(buffer, SOURCE_DIRECTORY + "/test/test_commands.js");
-  //reader.readFile(buffer, SOURCE_DIRECTORY + "/test/game_test.js");
-
-  reader.readFile(buffer, SOURCE_DIRECTORY + "/test/CommandTest.js");
-  reader.readFile(buffer, SOURCE_DIRECTORY + "/test/GameConstructionTest.js");
+  reader.readFolder(buffer, SOURCE_DIRECTORY + "/test");
+  reader.readFolder(buffer, SOURCE_DIRECTORY + "/test/protocols");
+  reader.readFolder(buffer, SOURCE_DIRECTORY + "/test/unit-test");
 }
 
 function write_main_game_js_file() {
@@ -170,10 +167,8 @@ function write_game_css_file() {
   buffer = new build_tools.StringBuilder();
 
   if (is_in_autotest_mode()) {
-    build_tools.readFile(buffer, SOURCE_DIRECTORY + "/test/ext/qunit.css");
+    build_tools.readFile(buffer, SOURCE_DIRECTORY + "/test/external/qunit.css");
   }
-
-  // still empty :[
 
   build_tools.writeFile(buffer.toString(), DESTINATION_DIRECTORY + "/" + GAME_CSS_FILE);
 }
@@ -189,13 +184,10 @@ function write_game_html_file() {
   buffer.append("<link href='" + GAME_CSS_FILE + "' rel='stylesheet' type='text/css' /> \r\n");
 
   if (is_in_autotest_mode()) {
-    testbuffer = new build_tools.StringBuilder();
-    build_tools.readFile(testbuffer, SOURCE_DIRECTORY + "/test/ext/qunit.js");
-    build_tools.readFile(testbuffer, SOURCE_DIRECTORY + "/test/ext/jshamcrest.js", true);
-    build_tools.readFile(testbuffer, SOURCE_DIRECTORY + "/test/ext/jsmockito.js");
-    testbuffer.append("JsMockito.Integration.QUnit();");
-    build_tools.writeFile(testbuffer.toString(), DESTINATION_DIRECTORY + "/test.js");
-    buffer.append("<script type='text/javascript' src='test.js'></script>    \r\n");
+    var testbuffer = new build_tools.StringBuilder();
+    build_tools.readFile(testbuffer, SOURCE_DIRECTORY + "/test/external/qunit.js");
+    build_tools.writeFile(testbuffer.toString(), DESTINATION_DIRECTORY + "/test-helper.js");
+    buffer.append("<script type='text/javascript' src='test-helper.js'></script>    \r\n");
   }
 
   if (build_tools.in_program_arguments(ARG_DUAL_CORE)) {
@@ -212,7 +204,7 @@ function write_game_html_file() {
   }
 
   if (is_in_autotest_mode()) {
-    build_tools.readFile(buffer, SOURCE_DIRECTORY + "/test/ext/htmlCode.html");
+    build_tools.readFile(buffer, SOURCE_DIRECTORY + "/test/external/htmlCode.html");
   }
 
   buffer.append("</body></html> \r\n");

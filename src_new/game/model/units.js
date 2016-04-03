@@ -10,7 +10,7 @@ class UnitHandler {
     this.types = Require.InstanceOf(unitDB, SheetDatabase);
     this.units = Utility.createFilledListBySupplier(maxUnits, (index) => new Unit());
     this.positions = {};
-    this.msgBrooker = Require.InstanceOf(msgBrooker, MessageBrooker);
+    this.msgBrooker = msgBrooker;
 
     this.releaseAllUnits();
   }

@@ -92,30 +92,37 @@ window.Require = class Require {
     return value;
   }
 
-  static isBoolean(value, msg) {
+  static isBoolean(value, msg = "IsNotABoolean") {
     if (!Types.isBoolean(value)) {
-      throw new Error("IsNotABoolean");
+      throw new Error(msg);
     }
     return value;
   }
 
-  static isSomething(value) {
+  static isSomething(value, msg = "IsNothing") {
     if (!Types.isSomething(value)) {
-      throw new Error("IsNothing");
+      throw new Error(msg);
     }
     return value;
   }
 
-  static isNothing(value) {
+  static isNothing(value, msg = "IsNotNothing") {
     if (Types.isSomething(value)) {
-      throw new Error("IsNotNothing");
+      throw new Error(msg);
     }
     return value;
   }
 
-  static isString(value) {
+  static isFunction(value, msg = "IsNotAFunction") {
+    if (!Types.isFunction(value)) {
+      throw new Error(msg);
+    }
+    return value;
+  }
+
+  static isString(value, msg = "IsNotAString") {
     if (!Types.isString(value)) {
-      throw new Error("IsNotAString");
+      throw new Error(msg);
     }
     return value;
   }
@@ -126,11 +133,27 @@ window.Require = class Require {
     }
     return value;
   }
+
+  static isArray(value, msg = "IsNotAnArray") {
+    if (!Types.isArray(value)) {
+      throw new Error(msg);
+    }
+    return value;
+  }
 }
 
 window.Types = class Types {
+
+  static isArray(value) {
+    return Array.isArray(value);
+  }
+
   static isSomething(value) {
     return value !== null && value !== undefined;
+  }
+
+  static isNothing(value) {
+    return value === null || value === undefined;
   }
 
   static isInteger(value) {
@@ -144,4 +167,9 @@ window.Types = class Types {
   static isString(value) {
     return (typeof value === "string");
   }
+
+  static isFunction(value) {
+    return (typeof value === "function");
+  }
+
 }

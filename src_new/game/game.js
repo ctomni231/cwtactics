@@ -1,7 +1,7 @@
 class GameFactory {
   static create() {
 
-    var msgBrooker = new MessageBrooker();
+    var msgBrooker = new SimpleMessageBrooker();
     var playerCtx = PlayerContextFactory.create();
     var tileDB = TileDBFactory.create();
     var unitDB = UnitDBFactory.create();

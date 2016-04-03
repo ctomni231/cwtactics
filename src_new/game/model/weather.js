@@ -11,7 +11,7 @@ class WeatherDBFactory {
 class WeatherHandler {
   constructor(weatherDB, msgBrooker) {
     this.weatherDB = Require.InstanceOf(weatherDB, SheetDatabase);
-    this.msgBrooker = Require.InstanceOf(msgBrooker, MessageBrooker);
+    this.msgBrooker = msgBrooker;
     this.active = null;
     this.leftDays = 0;
 

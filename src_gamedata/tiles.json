@@ -230,13 +230,13 @@
       "TIRE_B",
       "TANK"
     ],
-    "repairs": {
-      "INFT": 2,
-      "MECH": 2,
-      "TIRE_A": 2,
-      "TIRE_B": 2,
-      "TANK": 2
-    },
+    "repairs": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
     "assets": {
       "gfx": "cwt_tileset/properties(C)/CWT_CITY.png"
     }
@@ -256,13 +256,13 @@
       "TIRE_B",
       "TANK"
     ],
-    "repairs": {
-      "MV_INFT": 2,
-      "MV_MECH": 2,
-      "TIRE_A": 2,
-      "TIRE_B": 2,
-      "TANK": 2
-    },
+    "repairs": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
     "builds": [
       "MV_INFT",
       "MV_MECH",
@@ -284,9 +284,9 @@
     "supply": [
       "AIR"
     ],
-    "repairs": {
-      "AIR": 2
-    },
+    "repairs": [
+      "AIR"
+    ],
     "builds": [
       "AIR"
     ],
@@ -305,10 +305,10 @@
       "SHIP",
       "WATER_TRANSPORT"
     ],
-    "repairs": {
-      "SHIP": 2,
-      "WATER_TRANSPORT": 2
-    },
+    "repairs": [
+      "SHIP",
+      "WATER_TRANSPORT"
+    ],
     "builds": [
       "SHIP",
       "WATER_TRANSPORT"
@@ -360,13 +360,13 @@
       "TIRE_B",
       "TANK"
     ],
-    "repairs": {
-      "INFT": 2,
-      "MECH": 2,
-      "TIRE_A": 2,
-      "TIRE_B": 2,
-      "TANK": 2
-    },
+    "repairs": [
+      "INFT",
+      "MECH",
+      "TIRE_A",
+      "TIRE_B",
+      "TANK"
+    ],
     "assets": {
       "gfx": "cwt_tileset/properties(C)/CWT_HQTR.png",
       "factionSprites": {
@@ -382,7 +382,7 @@
     "id": "RADR",
     "vision": 4,
     "defense": 3,
-    "points": 20,
+    "capturePoints": 20,
     "assets": {
       "gfx": "cwt_tileset/properties(C)/CWT_RADR.png"
     }
