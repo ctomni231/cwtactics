@@ -1,56 +1,44 @@
-function enter_loop() {
-  var last_timestamp, timestamp, delta, fps, fpsMin, fpsMax, fpsCount, fpsNum, FPS_UPDATE_INTERVAL;
+cwt.produceControllerInstance = function(loop) {
+  cwt.produceLoggerContext("UI");
 
-  FPS_UPDATE_INTERVAL = 100;
+  const realInput = cwt.produceInputHandler();
+  const fakeInput = cwt.produceFakeInputHandler();
 
-  last_timestamp = new Date().getTime();
+  const eventHandler = cwt.produceEventHandler();
 
-  fpsTime = 0;
-  fpsCount = 0;
-  fpsNum = 0;
-  fpsMin = 99;
-  fpsMax = 0;
+  const states = cwt.produceGamestates(eventHandler);
+  const statemachine = cwt.produceStateMachine(eventHandler, states);
 
-  function loop() {
+  const gameMsgPush = cwt.connectMessagePusher("GAME");
 
-    timestamp = new Date().getTime();
-    delta = timestamp - last_timestamp;
-    last_timestamp = timestamp;
-
-    if (DEBUG && delta > 0) {
-      fpsCount += parseInt(1000 / delta, 10);
-      fpsNum += 1;
-      fpsTime += delta;
-      if (fpsTime >= FPS_UPDATE_INTERVAL) {
-        fps = parseInt(fpsCount / fpsNum, 10);
-
-        if (fps < fpsMin) fpsMin = fps;
-        if (fps > fpsMax) fpsMax = fps;
-
-        document.getElementById("fpsCounter").innerHTML = "FPS[NOW:" + fps + " MIN:" + fpsMin + " MAX:" + fpsMax + "]";
-
-        fpsTime = 0;
-        fpsCount = 0;
-        fpsNum = 0;
-      }
+  eventHandler.subscribe("*", function(key) {
+    // shift controller events inside model
+    if (key.startsWith("game:")) {
+      gameMsgPush(JSON.stringify([].slice.call(arguments, 0)));
     }
+  });
 
-    cwt.input_decrease_block_timer(delta);
-    cwt.game_state_update_state(delta);
-    cwt.game_state_render_state(delta);
+  const eventLog = cwt.produceLogger("ISOLATE-MESSAGES");
+  const eventPipe = cwt.produceDataBuffer(function(data) {
+    eventLog.info("handle game event " + JSON.stringify(data));
+    eventHandler.publish.apply(eventHandler, data);
+  });
 
-    requestAnimationFrame(loop);
-  }
-  requestAnimationFrame(loop);
-}
+  cwt.connectMessageHandler("CONTROLLER", (data) => eventPipe.pushData(JSON.parse(data)));
 
-cwt.main = function() {
-  cwt.log_info("starting CustomWars Tactics");
-  cwt.GAME = GameFactory.create();
-  cwt.client_intialize_workers();
-  if (cwt.type_is_function(cwt.client_intialize_tester)) {
-    cwt.client_intialize_tester();
-  }
-  cwt.game_state_set_state("start_game");
-  enter_loop();
+  cwt.clearLoggerContext();
+
+  var blockInputTimer = 0;
+  return cwt.produceGameloop(delta => {
+    blockInputTimer -= delta;
+
+    eventPipe.evaluateData();
+
+    var nextState = statemachine.activeState.update(delta, blockInputTimer <= 0 ? realInput : fakeInput);
+    statemachine.activeState.render(delta);
+    cwt.optional(nextState).ifPresent(next => {
+      blockInputTimer = 250;
+      statemachine.setState(next);
+    });
+  });
 };

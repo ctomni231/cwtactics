@@ -1,14 +1,11 @@
-cwt.game_state_add_state("start_game", {
+var startGameState = {
 
-  on_enter: function() {
-    cwt.log_info("starting game");
+	update() {
+		this.log.info("starting game");
+		return "LOADING";
+	},
 
-    cwt.client_event_initialize_model();
-
-    cwt.game_state_set_state("loading_state");
-  },
-
-  render: function(delta) {
-    // TODO render the loading status here
-  }
-});
+	render(delta) {
+		// TODO render the loading status here
+	}
+};

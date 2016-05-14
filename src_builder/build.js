@@ -1,4 +1,5 @@
 /*global require,process,console*/
+const fs = require('fs');
 
 const DESTINATION_DIRECTORY = "dist";
 const SOURCE_DIRECTORY = "src_new";
@@ -14,6 +15,7 @@ const ARG_DEV_BUILD = "-dev";
 const ARG_LIVE_BUILD = "-live";
 const ARG_DUAL_CORE = "-multicore";
 const ARG_CLEAN_CACHE = "-wipecache";
+const ARG_WATCH = "-watch";
 
 const VAR_DUAL_CODE_MODE = "DUALCORE_MODE";
 
@@ -24,6 +26,8 @@ const BASE_STUB_FILE = "src_const/stub.js";
 
 const build_tools = require("./lib");
 var reader;
+
+var buildIsRunning = false;
 
 function check_working_directory() {
   if (process.cwd().indexOf("src_builder") != -1) {
@@ -68,7 +72,7 @@ function print_program_info() {
   build_tools.log_message("-dev        => The build will be optimized for development (e.g. assertions)");
   build_tools.log_message("-live       => The build will be optimized for release");
   build_tools.log_message("-test       => The build will run acceptance tests on startup");
-  build_tools.log_message("-multicore  => The build will be optimized for multicore systems (may deprecated in future - may not needed)");
+  build_tools.log_message("-multicore  => The build will be optimized for multicore systems");
   build_tools.log_message("-wipecache  => The builder will create a new code cache for the ESNext convertion");
   build_tools.log_message("-trace      => The builder will log out more information... build will may be slower with this option");
 }
@@ -83,16 +87,16 @@ function insert_core_files_into_buffer(buffer) {
   buffer.append("cwt.CONST_" + VAR_DUAL_CODE_MODE + " = " + (is_in_workers_mode() ? "true" : "false") + "; \r\n");
   reader.readFile(buffer, is_in_development_mode() ? DEV_CONSTANTS_FILE : LIVE_CONSTANTS_FILE);
   reader.readFolder(buffer, SOURCE_DIRECTORY + "/core");
-  reader.readFile(buffer, SOURCE_DIRECTORY + "/events/events.js");
 }
 
 function insert_game_files_into_buffer(buffer) {
-  reader.readFolder(buffer, SOURCE_DIRECTORY + "/game");
-  reader.readFolder(buffer, SOURCE_DIRECTORY + "/game/commands");
   reader.readFolder(buffer, SOURCE_DIRECTORY + "/game/model");
+  reader.readFolder(buffer, SOURCE_DIRECTORY + "/game/modelSerializer");
+  reader.readFile(buffer, SOURCE_DIRECTORY + "/game/main.js");
 }
 
 function insert_user_interface_files_into_buffer(buffer) {
+  reader.readFolder(buffer, SOURCE_DIRECTORY + "/controller/model");
   reader.readFolder(buffer, SOURCE_DIRECTORY + "/controller/states");
   reader.readFolder(buffer, SOURCE_DIRECTORY + "/controller/input");
   reader.readFile(buffer, SOURCE_DIRECTORY + "/controller/main.js");
@@ -196,7 +200,7 @@ function write_game_html_file() {
     buffer.append("<script type='text/javascript' src='" + GAME_JS_FILE + "'></script>    \r\n");
   }
 
-  buffer.append("<script type='text/javascript'>cwt.main();</script>    \r\n");
+  buffer.append("<script type='text/javascript'>cwt.produceGameInstance().start(); cwt.produceControllerInstance().start();</script>    \r\n");
   buffer.append("</head><body> \r\n");
 
   if (is_in_development_mode()) {
@@ -213,26 +217,51 @@ function write_game_html_file() {
 }
 
 function build_game() {
-  check_program_arguments();
+  if (buildIsRunning) {
+    build_tools.log_message("ignoring build command because previous build is running");
+    return;
+  }
 
-  build_tools.log_message("building 'CustomWars: Tactics'");
+  try {
+    check_program_arguments();
 
-  build_tools.log_message("checking environment");
-  check_working_directory();
-  reader = new build_tools.JSCacheReader(".cwt-build-cache", build_tools.in_program_arguments(ARG_CLEAN_CACHE));
+    build_tools.log_message("building 'CustomWars: Tactics'");
+    buildIsRunning = true;
 
-  build_tools.log_message("preparing folders");
-  cleanup_dist_folder();
+    build_tools.log_message("checking environment");
+    check_working_directory();
+    reader = new build_tools.JSCacheReader(".cwt-build-cache", build_tools.in_program_arguments(ARG_CLEAN_CACHE));
 
-  build_tools.log_message("deploying files");
-  write_game_files();
-  write_game_css_file();
-  write_game_html_file();
+    build_tools.log_message("preparing folders");
+    cleanup_dist_folder();
 
-  build_tools.log_message("caching compiled code");
-  reader.flushCacheToDisk();
+    build_tools.log_message("deploying files");
+    write_game_files();
+    write_game_css_file();
+    write_game_html_file();
 
-  build_tools.log_message("done");
+    build_tools.log_message("caching compiled code");
+    reader.flushCacheToDisk();
+
+    build_tools.log_message("done");
+  } catch (e) {
+    build_tools.log_message("failed to build game [" + e + "]");
+  }
+  buildIsRunning = false;
 }
 
-build_game();
+if (build_tools.in_program_arguments(ARG_WATCH)) {
+  build_tools.log_message("starting server mode");
+
+  var blockedUntil = Date.now();
+  fs.watch(SOURCE_DIRECTORY, {
+    recursive: true
+  }, function(event, filename) {
+    if (Date.now() > blockedUntil) {
+      blockedUntil = Date.now() + 2000;
+      build_game();
+    }
+  });
+} else {
+  build_game();
+}

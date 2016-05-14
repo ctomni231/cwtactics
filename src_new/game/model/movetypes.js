@@ -1,6 +1,7 @@
-class MovetypeDBFactory {
-  static create() {
-    return new SheetDatabase((sheet, data) => {
-    });
-  }
-}
+var movetypeValidator = function(sheet) {
+
+};
+
+cwt.getMovetypeValidator = function() {
+  return movetypeValidator;
+};

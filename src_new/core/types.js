@@ -1,71 +1,63 @@
-cwt.require_function = function(value) {
-  cwt.assert_true(cwt.type_is_function(value));
-  return value;
+var typeCheck = {
+
+  isInteger(value) {
+    return typeof value === 'number' && value % 1 === 0;
+  },
+
+  isNumber(value) {
+    return typeof value === 'number';
+  },
+
+  isString(value) {
+    return typeof value === 'string';
+  },
+
+  isFunction(value) {
+    return typeof value === 'function';
+  },
+
+  isBoolean(value) {
+    return value === true || value === false;
+  },
+
+  isSomething(value) {
+    return value !== null && value !== undefined;
+  },
+
+  isListOf(value, valueTypeCheck) {
+    return value.every(element => valueTypeCheck(element));
+  },
+
+  isMapOf(value, valueTypeCheck) {
+    return Object.keys(value).every(key => valueTypeCheck(value[key]));
+  }
 };
 
-cwt.type_is_function = function(value) {
-  return typeof value === "function";
+var typeAssert = (function() {
+  var buildRequirer = function(fn) {
+    return function(value) {
+      if (!fn.apply(null, arguments)) throw new Error('TypeAssertionFailed');
+      return value;
+    };
+  };
+
+  var checker = typeCheck;
+  Object.keys(typeCheck).forEach(key => checker[key] = buildRequirer(typeCheck[key]));
+
+  return checker;
+}());
+
+// @return { is[Integer|Number|String|Something|Function|Boolean](value): boolean } 
+cwt.produceTypeChecker = function() {
+  return typeCheck;
 };
 
-cwt.require_string = function(value) {
-  cwt.assert_true(cwt.type_is_string(value));
-  return value;
+// @return { is[Integer|Number|String|Something|Function|Boolean](value): boolean } 
+cwt.getTypeCheckAPI = function() {
+  return typeCheck;
 };
 
-cwt.type_is_string = function(value) {
-  return typeof value === "string";
-};
-
-cwt.require_integer = function(value) {
-  cwt.assert_true(cwt.type_is_integer(value));
-  return value;
-};
-
-cwt.type_is_integer = function(value) {
-  return typeof value === "number" && value % 1 === 0;
-};
-
-cwt.require_number = function(value) {
-  cwt.assert_true(cwt.type_is_number(value));
-  return value;
-};
-
-cwt.type_is_number = function(value) {
-  return typeof value === "number";
-};
-
-cwt.require_non_null = function(value) {
-  cwt.assert_true(cwt.type_is_not_null(value));
-  return value;
-};
-
-cwt.type_is_not_null = function(value) {
-  return value !== null;
-};
-
-cwt.require_null = function(value) {
-  cwt.assert_true(!cwt.type_is_not_null(value));
-  return value;
-};
-
-cwt.type_is_null = function(value) {
-  return !cwt.type_is_not_null(value);
-};
-
-cwt.require_nothing = function(value) {
-  cwt.assert_true(cwt.type_is_nothing(value));
-  return value;
-};
-
-cwt.type_is_nothing = function(value) {
-  return value === undefined;
-};
-
-cwt.require_something = function(value) {
-  cwt.assert_true(cwt.type_is_something(value));
-  return value;
-};
-
-cwt.type_is_something = function(value) {
-  return value !== undefined && value !== null;
+// @return { is[Integer|Number|String|Something|Function|Boolean](value): value } 
+cwt.produceTypeAsserter = function() {
+  return typeAssert;
 };

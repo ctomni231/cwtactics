@@ -1,22 +1,17 @@
-cwt.jobs_execute = function(job_list, when_done, when_fail) {
-  var jobs = cwt.list_clone(job_list);
-  var cIndex = 0;
+var serialExecutor = function(jobList, cbDone, cbFail) {
+  var jobs = jobList.slice(0);
 
-  function executionIterator() {
-    if (cIndex == jobs.length) {
-      setTimeout(when_done, 10);
-      return;
-    }
-
+  function executionIterator(index) {
     try {
-      jobs[cIndex](cIndex == jobs.length ? null : function() {
-        cIndex += 1;
-        setTimeout(executionIterator, 10);
-      });
+      jobs[index](function() {
+        setTimeout(index + 1 === jobs.length ? cbDone : () => executionIterator(index + 1), 10);
+      }, cbFail);
     } catch (err) {
-      when_fail(err);
+      cbFail(err);
     }
   }
 
-  executionIterator();
+  executionIterator(0);
 };
+
+cwt.executeJobs = serialExecutor;

@@ -138,7 +138,7 @@ exports.convertCodeFromES6toES5 = function(code) {
       printErrorLine(errorLine + 1);
     }
 
-    process.exit();
+    throw e;
   }
 }
 

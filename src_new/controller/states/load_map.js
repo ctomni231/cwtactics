@@ -1,6 +1,6 @@
-cwt.game_state_add_state("load_map", {
+var loadMapState = {
 
-  on_enter: function() {
+  enter(){
     cwt.client_event_load_map({
       name: "development fake map",
       height: 15,
@@ -31,4 +31,4 @@ cwt.game_state_add_state("load_map", {
       }]
     });
   }
-});
+};

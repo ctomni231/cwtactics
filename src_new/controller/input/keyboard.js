@@ -1,26 +1,26 @@
-var KEY_MAP = {
-  "38": "KEY_UP",
-  "40": "KEY_DOWN",
-  "37": "KEY_LEFT",
-  "39": "KEY_RIGHT",
-  "13": "KEY_ENTER",
-  "8": "KEY_BACKSPACE"
+var keyboardInput = {
+  bind() {
+    document.onkeydown = (event) => {
+      this.keyHandler.pressKey("KB_" + event.keyCode);
+      return false;
+    };
+
+    document.onkeyup = (event) => {
+      this.keyHandler.releaseKey("KB_" + event.keyCode);
+      return false;
+    };
+  },
+
+  unbind() {
+    document.onkeydown = null;
+    document.onkeyup = null;
+  }
 };
 
-document.onkeydown = function(event) {
-  var key = KEY_MAP[event.keyCode];
-  if (cwt.type_is_something(key)) {
-    cwt.input_press_key(key);
-  }
+// TODO use html event handler
 
-  return false;
-};
-
-document.onkeyup = function(event) {
-  var key = KEY_MAP[event.keyCode];
-  if (cwt.type_is_something(key)) {
-    cwt.input_release_key(key);
-  }
-
-  return false;
+cwt.produceKeyboardBackend = function(keyHandler) {
+  return Object.assign(Object.create(keyboardInput), {
+    keyHandler
+  });
 };
