@@ -25,7 +25,7 @@ cwt.produceControllerInstance = function(loop) {
   });
 
   cwt.connectMessageHandler("CONTROLLER", (data) => eventPipe.pushData(JSON.parse(data)));
-
+ 
   cwt.clearLoggerContext();
 
   var blockInputTimer = 0;

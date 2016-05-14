@@ -1,4 +1,4 @@
-var startGameState = {
+cwt.startGameState = {
 
 	update() {
 		this.log.info("starting game");

@@ -1,6 +1,6 @@
 var TOOLTIP_TIMEOUT = 5000;
 
-var loadingState = {
+cwt.loadingState = {
 
   _initTips() {
     this.tips = [];
@@ -24,11 +24,11 @@ var loadingState = {
     this._initTips();
 
     this.serial([
-        createDataHandler("TIPS", "../src_gamedata/tips.json"),
-        createDataHandler("TILES", "../src_gamedata/tiles.json"),
-        createDataHandler("UNITS", "../src_gamedata/units.json"),
-        createDataHandler("MOVETYPES", "../src_gamedata/movetypes.json"),
-        createDataHandler("WEATHERS", "../src_gamedata/weathers.json")
+        createDataHandler("TIPS", cwt.MOD_PATH + "/tips.json"),
+        createDataHandler("TILES", cwt.MOD_PATH + "/tiles.json"),
+        createDataHandler("UNITS", cwt.MOD_PATH + "/units.json"),
+        createDataHandler("MOVETYPES", cwt.MOD_PATH + "/movetypes.json"),
+        createDataHandler("WEATHERS", cwt.MOD_PATH + "/weathers.json")
       ],
       () => this.doneLoading = true,
       (error) => this.log.error(error)

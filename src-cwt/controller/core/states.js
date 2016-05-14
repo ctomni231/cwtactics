@@ -13,14 +13,14 @@ cwt.produceGamestates = function(events) {
   }
 
   return {
-    STARTGAME: produceState(startGameState, "STARTGAME"),
-    LOADING: produceState(loadingState, "LOADING", {
+    STARTGAME: produceState(cwt.startGameState, "STARTGAME"),
+    LOADING: produceState(cwt.loadingState, "LOADING", {
       requestData: cwt.requestResource,
       generateTimer: cwt.produceTimer,
       serial: cwt.executeJobs,
       events
     }),
-    MAINMENU: produceState(mainMenuState, "MAINMENU"),
-    LOADMAP: produceState(loadMapState, "LOADMAP")
+    MAINMENU: produceState(cwt.mainMenuState, "MAINMENU"),
+    LOADMAP: produceState(cwt.loadMapState, "LOADMAP")
   };
 };

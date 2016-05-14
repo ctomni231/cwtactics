@@ -1,4 +1,4 @@
-var loadMapState = {
+cwt.loadMapState = {
 
   enter(){
     cwt.client_event_load_map({
