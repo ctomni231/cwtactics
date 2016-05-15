@@ -32,6 +32,6 @@ var setIntervalLoop = function(loop) {
 cwt.produceGameloop = function(handler) {
   return Object.assign(Object.create(loopHandler), {
     loopAction: handler,
-    nextLoop: !!requestAnimationFrame ? requestAnimationFrameLoop : setIntervalLoop
+    nextLoop: !!this.requestAnimationFrame ? requestAnimationFrameLoop : setIntervalLoop
   });
 };

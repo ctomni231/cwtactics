@@ -1,4 +1,4 @@
-cwt.produceControllerInstance = function(loop) {
+const produceControllerInstance = function(loop) {
   cwt.produceLoggerContext("UI");
 
   const realInput = cwt.produceInputHandler();
@@ -25,7 +25,7 @@ cwt.produceControllerInstance = function(loop) {
   });
 
   cwt.connectMessageHandler("CONTROLLER", (data) => eventPipe.pushData(JSON.parse(data)));
- 
+
   cwt.clearLoggerContext();
 
   var blockInputTimer = 0;
@@ -42,3 +42,5 @@ cwt.produceControllerInstance = function(loop) {
     });
   });
 };
+
+setTimeout(() => produceControllerInstance().start(), 1000);

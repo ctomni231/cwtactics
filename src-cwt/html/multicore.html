@@ -1,6 +1,5 @@
-<script type='text/javascript' src='game.js'></script> 
-<script type='text/javascript' src='ui.js'  ></script>   
 <script type='text/javascript'>
-  cwt.produceGameInstance().start(); 
-  cwt.produceControllerInstance().start();
+  var cwt = cwt || {};
+  cwt._WRK_GAME_ = new Worker("game.js");
 </script> 
+<script type='text/javascript' src='ui.js'  ></script>   

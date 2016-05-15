@@ -1,4 +1,4 @@
-cwt.produceGameInstance = function(loop) {
+const produceGameInstance = function(loop) {
   cwt.produceLoggerContext("GAME");
 
   const eventHandler = cwt.produceEventHandler();
@@ -8,10 +8,10 @@ cwt.produceGameInstance = function(loop) {
   var moveTypeDB;
   var weatherTypeDB;
 
-  eventHandler.subscribe("game:loadtype:UNITS", data => unitTypeDB = cwt.produceSheetDB(data, () => true));
-  eventHandler.subscribe("game:loadtype:TILES", data => tileTypeDB = cwt.produceSheetDB(data, cwt.produceTiletypeNormalizer()));
-  eventHandler.subscribe("game:loadtype:MOVETYPES", data => moveTypeDB = cwt.produceSheetDB(data, () => true));
-  eventHandler.subscribe("game:loadtype:WEATHERS", data => weatherTypeDB = cwt.produceSheetDB(data, () => true));
+  eventHandler.subscribe("game:loadtype:units", data => unitTypeDB = cwt.produceSheetDB(data, () => true));
+  eventHandler.subscribe("game:loadtype:tiles", data => tileTypeDB = cwt.produceSheetDB(data, cwt.produceTiletypeNormalizer()));
+  eventHandler.subscribe("game:loadtype:movetypes", data => moveTypeDB = cwt.produceSheetDB(data, () => true));
+  eventHandler.subscribe("game:loadtype:weathers", data => weatherTypeDB = cwt.produceSheetDB(data, () => true));
 
   eventHandler.subscribe("game:construct", () => {
     if (!unitTypeDB || !tileTypeDB || !moveTypeDB || !weatherTypeDB) {
@@ -39,6 +39,8 @@ cwt.produceGameInstance = function(loop) {
 
   const controllerMsgPush = cwt.connectMessagePusher("CONTROLLER");
 
+  const eventLog = cwt.produceLogger("ISOLATE-MESSAGES");
+
   eventHandler.subscribe("*", function(key) {
     // shift model events outside
     if (!key.startsWith("game:")) {
@@ -46,15 +48,13 @@ cwt.produceGameInstance = function(loop) {
     }
   });
 
-  const eventLog = cwt.produceLogger("ISOLATE-MESSAGES");
-  const eventPipe = cwt.produceDataBuffer(function(data) {
-    eventLog.info("handle game event " + cwt.stringWithLimitedLength(JSON.stringify(data), 100));
-    eventHandler.publish.apply(eventHandler, data);
+  cwt.connectMessageHandler("GAME", (data) => {
+    eventLog.info("handle game event " + cwt.stringWithLimitedLength(data, 100));
+    eventHandler.publish.apply(eventHandler, JSON.parse(data));
   });
 
-  cwt.connectMessageHandler("GAME", (data) => eventPipe.pushData(JSON.parse(data)));
-
   cwt.clearLoggerContext();
-
-  return cwt.produceGameloop(() => eventPipe.evaluateData());
 };
+
+// starts the game isolate
+produceGameInstance();

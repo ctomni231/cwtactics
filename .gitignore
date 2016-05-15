@@ -201,3 +201,5 @@ ja2.log
 
 mvn/
 .tern-project
+
+cwt-code-cache.json
