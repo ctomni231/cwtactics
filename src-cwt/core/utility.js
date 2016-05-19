@@ -1,41 +1,3 @@
-cwt.partialApplyLeft = function(fn) {
-  var slice = Array.prototype.slice;
-  var args = slice.call(arguments, 1);
-
-  return fn.bind.apply(fn, [null].concat(args));
-};
-
-cwt.partialApplyRight = function(fn) {
-  var slice = Array.prototype.slice;
-  var args = slice.call(arguments, 1);
-
-  return function() {
-    return fn.apply(this, slice.call(arguments, 0).concat(args));
-  };
-};
-
-cwt.nTimes = function(n, fn) {
-  let i = 1;
-  while (i <= n) {
-    fn(i);
-    i++;
-  }
-};
-
-cwt.raiseError = function(error) {
-  throw new Error(error);
-};
-
-cwt.mustReturn = function(fn, expectedValue) {
-  return function() {
-    var returnValue = fn.apply(null, arguments);
-    if (returnValue !== expectedValue) {
-      cwt.raiseError("UnexpectedFunctionReturn");
-    }
-    return returnValue;
-  }
-};
-
 var optionalValue = {
 
   _valueExists() {
@@ -53,15 +15,121 @@ var optionalValue = {
   }
 };
 
+/**
+  @param fn 
+          function that will be used for the partial application
+  @param varargs<any>
+          the rest arguments will be used as fixed arguments for 
+          the returned function
+  @return partial applicated function which uses the rest arguments 
+          as fixed parameters from the left side of the arguments of fn 
+ */
+cwt.partialApplyLeft = function(fn) {
+  var slice = Array.prototype.slice;
+  var args = slice.call(arguments, 1);
+
+  return fn.bind.apply(fn, [null].concat(args));
+};
+
+/**
+  @param fn 
+          function that will be used for the partial application
+  @param varargs<any>
+          the rest arguments will be used as fixed arguments for 
+          the returned function
+  @return partial applicated function which uses the rest arguments 
+          as fixed parameters from the right side of the arguments of fn 
+ */
+cwt.partialApplyRight = function(fn) {
+  var slice = Array.prototype.slice;
+  var args = slice.call(arguments, 1);
+
+  return function() {
+    return fn.apply(this, slice.call(arguments, 0).concat(args));
+  };
+};
+
+/**
+   @param n integer 
+          number of times fn will be called
+   @param fn function(iteration:int)
+          will be called with the current iteration number as 
+          first argument each time
+ */
+cwt.nTimes = function(n, fn) {
+  let i = 1;
+  while (i <= n) {
+    fn(i);
+    i++;
+  }
+};
+
+/**
+  @param value 
+          value that is set or maybe null
+  @return {
+    ifPresend(callback:function(value))
+          callback will be called if the value of the optional 
+          is not null nor undefined
+    orElse(else-value:any)
+          returns the else-value if the value of the optional
+          is null or undefined
+  }
+ */
 cwt.optional = function(value) {
-  return Object.assign(Object.create(optionalValue), {
+  return cwt.produceInstance(optionalValue, {
     value
   });
 };
 
+/**
+  @param value:string
+          string under test
+  @param length:integer
+          maximum length of the returned string (without appendix)
+  @param appendix:string (default="...")
+          the appendix will be appended to the returned string if 
+          the length of the value is greater then length 
+  @return a string with limited length and appended appendix 
+          when the value is longer than length
+ */
 cwt.stringWithLimitedLength = function(value, length, appendix = "...") {
   if (value.length > length) {
     value = value.substring(0, length) + appendix;
   }
   return value;
+};
+
+/**
+  @param varargs<boolean>
+  @return true if all arguments are true, else false
+ */
+cwt.all = function() {
+  for (var i = 0, e = arguments.length; i < e; i++) {
+    if (arguments[i] !== true) {
+      return false;
+    }
+  }
+  return true;
+};
+
+// FIXME: too much ?
+cwt.isTrue = function(expected, error, value) {
+  if (expected !== value) {
+    cwt.raiseError(error);
+  }
+};
+
+cwt.raiseError = function(error) {
+  throw new Error(error);
+};
+
+cwt.mustReturn = function(fn, expectedValue) {
+  return function() {
+    var returnValue = fn.apply(null, arguments);
+    if (returnValue !== expectedValue) {
+      cwt.raiseError("UnexpectedFunctionReturn");
+    }
+    return returnValue;
+  }
 };

@@ -5,35 +5,58 @@ const mapChanger = {
     this.model.height = this.types.isInteger(height);
     if (!(width > 0 && height > 0)) cwt.raiseError("IllegalMapSize");
   },
-
+  
   setTile(x, y, type) {
     this.map[x][y] = this.typeDB.getSheet(type);
     this.events.sendMessage("map:tile:set", x, y, type);
-  }, 
-
+  },
+  
   fillWithType(type) {
     for (var x = 0; x < this.model.width; x += 1) {
-      for (var y = 0; y < this.model.height; y += 1) { 
+      for (var y = 0; y < this.model.height; y += 1) {
         this.setTile(x, y, type);
       }
     }
   }
 };
 
-const tiletypeNormalizer = function(types, sheet) {
-  types.isInteger(data.defense);
+const tileType = {
+  defense: 0,
+  blocksVision: false,
+  capturePoints: -1,
+  looseAfterCaptured: false,
+  changeAfterCaptured: false,
+  notTransferable: false,
+  funds: 0,
+  vision: 0,
+  supply: [],
+  repairs: [],
+  produces: []
+};
 
-  /*
-  sheet.blocksVision = !!data.blocksVision;
-  sheet.capturePoints = Types.isInteger(data.capturePoints) ? data.capturePoints : -1;
-  sheet.looseAfterCaptured = !!data.looseAfterCaptured;
-  sheet.changeAfterCaptured = !!data.changeAfterCaptured;
-  sheet.notTransferable = !!data.notTransferable;
-  sheet.funds = Types.isInteger(data.funds) ? data.funds : 0;
-  sheet.vision = Types.isInteger(data.vision) ? data.vision : 0;
-  */
-  sheet.supply = cwt.optional(sheet.supply).orElse([]);
-  sheet.repairs = cwt.optional(sheet.repairs).orElse([]);
+const isValidTileType = function(types, data) {
+  return cwt.all(
+    types.isInteger(data.defense),
+    types.isBoolean(data.blocksVision),
+    types.isInteger(data.capturePoints),
+    types.isBoolean(data.looseAfterCaptured),
+    types.isBoolean(data.changeAfterCaptured),
+    types.isBoolean(data.notTransferable),
+    types.isInteger(data.funds),
+    types.isInteger(data.vision)
+  );
+};
+
+/**
+   @param data object
+            data object which contains the whole data for a tile sheet
+   @return sheet
+            a sheet object which is a valid tile-type object
+ */
+cwt.produceTileType = function(data) {
+  var tile = cwt.produceInstance(tileType, data);
+  cwt.isTrue(true, "InvalidTiletype: " + data.id, data);
+  return tile;
 };
 
 cwt.produceMapData = function() {
@@ -55,8 +78,4 @@ cwt.produceMapChanger = function(map, events, typeDB) {
     events,
     types: cwt.produceTypeAsserter()
   });
-};
-
-cwt.produceTiletypeNormalizer = function() {
-  return cwt.partialApplyLeft(tiletypeNormalizer, cwt.produceTypeAsserter());
 };

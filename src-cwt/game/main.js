@@ -8,10 +8,13 @@ const produceGameInstance = function(loop) {
   var moveTypeDB;
   var weatherTypeDB;
 
-  eventHandler.subscribe("game:loadtype:units", data => unitTypeDB = cwt.produceSheetDB(data, () => true));
-  eventHandler.subscribe("game:loadtype:tiles", data => tileTypeDB = cwt.produceSheetDB(data, cwt.produceTiletypeNormalizer()));
-  eventHandler.subscribe("game:loadtype:movetypes", data => moveTypeDB = cwt.produceSheetDB(data, () => true));
-  eventHandler.subscribe("game:loadtype:weathers", data => weatherTypeDB = cwt.produceSheetDB(data, () => true));
+  // DOING: load data into type 
+  //          -> check type 
+  //          -> may throw invalid type event
+  eventHandler.subscribe("game:loadtype:units", data => unitTypeDB = cwt.produceSheetDB(data, data => data));
+  eventHandler.subscribe("game:loadtype:tiles", data => tileTypeDB = cwt.produceSheetDB(data, cwt.produceTiletype));
+  eventHandler.subscribe("game:loadtype:movetypes", data => moveTypeDB = cwt.produceSheetDB(data, data => data));
+  eventHandler.subscribe("game:loadtype:weathers", data => weatherTypeDB = cwt.produceSheetDB(data, data => data));
 
   eventHandler.subscribe("game:construct", () => {
     if (!unitTypeDB || !tileTypeDB || !moveTypeDB || !weatherTypeDB) {

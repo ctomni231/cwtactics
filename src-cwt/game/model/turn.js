@@ -32,13 +32,14 @@ var turnHandler = {
 };
 
 cwt.produceTurn = function(events, players) {
-  let types = cwt.produceTypeAsserter();
+  var types = cwt.produceTypeAsserter();
 
-  let turn = Object.assign(Object.create(turnHandler), {
+  var turn = cwt.produceInstance(turnHandler, {
     events: events,
     players: players
   });
 
+  // TODO factory should no doing things like that 
   turn.setDay(0);
   turn.setTurnOwner(0);
 

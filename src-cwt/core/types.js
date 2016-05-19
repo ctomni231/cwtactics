@@ -41,11 +41,25 @@ var typeAssert = (function() {
     };
   };
 
-  var checker = typeCheck;
+  var checker = Object.create(typeCheck);
   Object.keys(typeCheck).forEach(key => checker[key] = buildRequirer(typeCheck[key]));
 
   return checker;
 }());
+
+cwt.types = typeCheck;
+
+
+cwt.raiseError = (error) =>  {
+  throw new Error("failed");
+};
+
+cwt.visit = (value, visitor) => {
+  visitor(value);
+  return value;
+}
+
+cwt.expect = (value, toFullfill) => cwt.visit(value, value => toFullfill(value) || cwt.raiseError("failed"));
 
 // @return { is[Integer|Number|String|Something|Function|Boolean](value): boolean } 
 cwt.produceTypeChecker = function() {
