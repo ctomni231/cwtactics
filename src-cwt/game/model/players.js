@@ -9,7 +9,7 @@ var playerChanger = {
   },
 
   activatePlayer(name, team) {
-    var slot = this.types.isSomething(this.model.first(player => player.team === -1));
+    var slot = this.types.isSomething(this.model.find(player => player.team === -1));
     slot.team = team;
     slot.name = name;
   }

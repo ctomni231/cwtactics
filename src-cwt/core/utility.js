@@ -16,13 +16,13 @@ var optionalValue = {
 };
 
 /**
-  @param fn 
+  @param fn
           function that will be used for the partial application
   @param varargs<any>
-          the rest arguments will be used as fixed arguments for 
+          the rest arguments will be used as fixed arguments for
           the returned function
-  @return partial applicated function which uses the rest arguments 
-          as fixed parameters from the left side of the arguments of fn 
+  @return partial applicated function which uses the rest arguments
+          as fixed parameters from the left side of the arguments of fn
  */
 cwt.partialApplyLeft = function(fn) {
   var slice = Array.prototype.slice;
@@ -32,13 +32,13 @@ cwt.partialApplyLeft = function(fn) {
 };
 
 /**
-  @param fn 
+  @param fn
           function that will be used for the partial application
   @param varargs<any>
-          the rest arguments will be used as fixed arguments for 
+          the rest arguments will be used as fixed arguments for
           the returned function
-  @return partial applicated function which uses the rest arguments 
-          as fixed parameters from the right side of the arguments of fn 
+  @return partial applicated function which uses the rest arguments
+          as fixed parameters from the right side of the arguments of fn
  */
 cwt.partialApplyRight = function(fn) {
   var slice = Array.prototype.slice;
@@ -50,10 +50,10 @@ cwt.partialApplyRight = function(fn) {
 };
 
 /**
-   @param n integer 
+   @param n integer
           number of times fn will be called
    @param fn function(iteration:int)
-          will be called with the current iteration number as 
+          will be called with the current iteration number as
           first argument each time
  */
 cwt.nTimes = function(n, fn) {
@@ -65,11 +65,11 @@ cwt.nTimes = function(n, fn) {
 };
 
 /**
-  @param value 
+  @param value
           value that is set or maybe null
   @return {
     ifPresend(callback:function(value))
-          callback will be called if the value of the optional 
+          callback will be called if the value of the optional
           is not null nor undefined
     orElse(else-value:any)
           returns the else-value if the value of the optional
@@ -88,9 +88,9 @@ cwt.optional = function(value) {
   @param length:integer
           maximum length of the returned string (without appendix)
   @param appendix:string (default="...")
-          the appendix will be appended to the returned string if 
-          the length of the value is greater then length 
-  @return a string with limited length and appended appendix 
+          the appendix will be appended to the returned string if
+          the length of the value is greater then length
+  @return a string with limited length and appended appendix
           when the value is longer than length
  */
 cwt.stringWithLimitedLength = function(value, length, appendix = "...") {
@@ -101,12 +101,12 @@ cwt.stringWithLimitedLength = function(value, length, appendix = "...") {
 };
 
 /**
-  @param varargs<boolean>
+  @param list<boolean>
   @return true if all arguments are true, else false
  */
-cwt.all = function() {
-  for (var i = 0, e = arguments.length; i < e; i++) {
-    if (arguments[i] !== true) {
+cwt.all = function(list) {
+  for (var i = 0, e = list.length; i < e; i++) {
+    if (list[i] !== true) {
       return false;
     }
   }
@@ -117,6 +117,12 @@ cwt.all = function() {
 cwt.isTrue = function(expected, error, value) {
   if (expected !== value) {
     cwt.raiseError(error);
+  }
+};
+
+cwt.untilFalse = function(fn) {
+  while(fn()) {
+
   }
 };
 

@@ -1,7 +1,7 @@
 cwt.loadMapState = {
 
-  enter(){
-    cwt.client_event_load_map({
+  enter() {
+    this.events.publish("game:map:load", {
       name: "development fake map",
       height: 15,
       width: 15,

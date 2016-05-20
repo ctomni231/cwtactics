@@ -21,6 +21,8 @@ cwt.produceGamestates = function(events) {
       events
     }),
     MAINMENU: produceState(cwt.mainMenuState, "MAINMENU"),
-    LOADMAP: produceState(cwt.loadMapState, "LOADMAP")
+    LOADMAP: produceState(cwt.loadMapState, "LOADMAP", {
+      events
+    })
   };
 };

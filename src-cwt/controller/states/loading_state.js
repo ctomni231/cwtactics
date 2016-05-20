@@ -37,6 +37,7 @@ cwt.loadingState = {
     this.tipTimer.tick(delta);
     if (this.doneLoading && input.isActionPressed("ACTION")) {
       this.log.info("completed data loading");
+      this.events.publish("game:construct");
       return "MAINMENU";
     }
     return;

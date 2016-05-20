@@ -1,8 +1,9 @@
 const mapLoader = {
-  loadMap(mapData) {
+  loadMap(map) {
+    this.logger.info("loading map");
     
     this.mapChanger.setSize(map.width, map.height);
-    this.mapChanger.fillWithTiles(map.fill_type);
+    this.mapChanger.fillWithType(map.fill_type);
 
     this.turn.setDay(cwt.optional(map.day).orElse(0));
     this.turn.setTurnOwner(cwt.optional(map.turn_owner).orElse(0));
@@ -18,7 +19,7 @@ const mapLoader = {
     }
 
     this.unitFactory.cleanUnits();
-    cwt.optional(map.units).ifPresent(units => units.forEach(data => this.units.createUnitAt(data.type, data.x, data.y)));
+    cwt.optional(map.units).ifPresent(units => units.forEach(data => this.unitFactory.createUnit(data.type, data.x, data.y)));
   }
 };
 

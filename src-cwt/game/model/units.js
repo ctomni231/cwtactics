@@ -13,6 +13,7 @@ var unitFactory = {
 
   createUnit(type, x, y) {
     this.units.find(unit => !unit.type).type = type;
+    this.events.publish("game:unit:created", type, x, y);
   }
 }
 
@@ -22,9 +23,10 @@ cwt.produceUnitData = function() {
   return list;
 };
 
-cwt.produceUnitFactory = function(units) {
+cwt.produceUnitFactory = function(events, units) {
   return Object.assign(Object.create(unitFactory), {
-    units
+    units,
+    events
   });
 };
 

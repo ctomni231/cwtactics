@@ -49,7 +49,6 @@ var typeAssert = (function() {
 
 cwt.types = typeCheck;
 
-
 cwt.raiseError = (error) =>  {
   throw new Error("failed");
 };
@@ -57,21 +56,21 @@ cwt.raiseError = (error) =>  {
 cwt.visit = (value, visitor) => {
   visitor(value);
   return value;
-}
+};
 
 cwt.expect = (value, toFullfill) => cwt.visit(value, value => toFullfill(value) || cwt.raiseError("failed"));
 
-// @return { is[Integer|Number|String|Something|Function|Boolean](value): boolean } 
+// @return { is[Integer|Number|String|Something|Function|Boolean](value): boolean }
 cwt.produceTypeChecker = function() {
   return typeCheck;
 };
 
-// @return { is[Integer|Number|String|Something|Function|Boolean](value): boolean } 
+// @return { is[Integer|Number|String|Something|Function|Boolean](value): boolean }
 cwt.getTypeCheckAPI = function() {
   return typeCheck;
 };
 
-// @return { is[Integer|Number|String|Something|Function|Boolean](value): value } 
+// @return { is[Integer|Number|String|Something|Function|Boolean](value): value }
 cwt.produceTypeAsserter = function() {
   return typeAssert;
 };

@@ -5,12 +5,12 @@ const mapChanger = {
     this.model.height = this.types.isInteger(height);
     if (!(width > 0 && height > 0)) cwt.raiseError("IllegalMapSize");
   },
-  
+
   setTile(x, y, type) {
-    this.map[x][y] = this.typeDB.getSheet(type);
-    this.events.sendMessage("map:tile:set", x, y, type);
+    this.model.map[x][y] = this.typeDB.getSheet(type);
+    this.events.publish("map:tile:set", x, y, type);
   },
-  
+
   fillWithType(type) {
     for (var x = 0; x < this.model.width; x += 1) {
       for (var y = 0; y < this.model.height; y += 1) {
@@ -25,7 +25,7 @@ const tileType = {
   blocksVision: false,
   capturePoints: -1,
   looseAfterCaptured: false,
-  changeAfterCaptured: false,
+  changeAfterCaptured: "",
   notTransferable: false,
   funds: 0,
   vision: 0,
@@ -35,16 +35,16 @@ const tileType = {
 };
 
 const isValidTileType = function(types, data) {
-  return cwt.all(
+  return cwt.all([
     types.isInteger(data.defense),
     types.isBoolean(data.blocksVision),
     types.isInteger(data.capturePoints),
     types.isBoolean(data.looseAfterCaptured),
-    types.isBoolean(data.changeAfterCaptured),
+    types.isString(data.changeAfterCaptured),
     types.isBoolean(data.notTransferable),
     types.isInteger(data.funds),
     types.isInteger(data.vision)
-  );
+  ]);
 };
 
 /**
@@ -55,7 +55,9 @@ const isValidTileType = function(types, data) {
  */
 cwt.produceTileType = function(data) {
   var tile = cwt.produceInstance(tileType, data);
-  cwt.isTrue(true, "InvalidTiletype: " + data.id, data);
+  if (!isValidTileType(cwt.types, tile)) {
+    cwt.raiseError("InvalidTiletype: " + data.id);
+  }
   return tile;
 };
 
@@ -63,7 +65,7 @@ cwt.produceMapData = function() {
   return {
     map: (function() {
       var map = [];
-      cwt.nTimes(MAX_MAP_WIDTH, () => map.push([]));
+      cwt.nTimes(cwt.MAX_MAP_WIDTH, () => map.push([]));
       return map;
     }()),
     width: 0,
@@ -72,8 +74,8 @@ cwt.produceMapData = function() {
 };
 
 cwt.produceMapChanger = function(map, events, typeDB) {
-  Object.assign(Object.create(mapChanger), {
-    map,
+  return cwt.produceInstance(mapChanger, {
+    model:map,
     typeDB,
     events,
     types: cwt.produceTypeAsserter()
