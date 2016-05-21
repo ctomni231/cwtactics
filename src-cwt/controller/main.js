@@ -22,13 +22,13 @@ const produceControllerInstance = function(loop) {
 
   const eventLog = cwt.produceLogger("ISOLATE-MESSAGES");
   const eventPipe = cwt.produceDataBuffer(function(data) {
-    data.forEach(eventData => {
-      eventLog.info("handle game event " + JSON.stringify(eventData));
-      eventHandler.publish.apply(eventHandler, eventData);
-    });
+    eventLog.info("handle game event " + JSON.stringify(data));
+    eventHandler.publish.apply(eventHandler, data);
   });
 
-  cwt.connectMessageHandler("CONTROLLER", (data) => eventPipe.pushData(JSON.parse(data)));
+  cwt.connectMessageHandler("CONTROLLER", (data) => {
+    JSON.parse(data).forEach(dataRow => eventPipe.pushData(dataRow));
+  });
 
   cwt.clearLoggerContext();
 
@@ -40,7 +40,7 @@ const produceControllerInstance = function(loop) {
       gameMsgPush(JSON.stringify(sharedEvents.splice(0)));
     }
 
-    cwt.untilFalse(() => eventPipe.evaluateData());
+    cwt.nTimes(100, () => eventPipe.evaluateData());
 
     var nextState = statemachine.activeState.update(delta, blockInputTimer <= 0 ? realInput : fakeInput);
     statemachine.activeState.render(delta);

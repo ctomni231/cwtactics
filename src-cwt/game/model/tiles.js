@@ -31,20 +31,47 @@ const tileType = {
   vision: 0,
   supply: [],
   repairs: [],
-  produces: []
+  produces: [],
+  builds: [],
+  rocketsilo: {},
+  cannon: {},
+  bigProperty: {},
+  laser: {},
+  blocker: false,
+  changeTo: "",
+  hp: 0,
+  destroyedType: ""
+};
+
+const tileTypeValidators = {
+  id: cwt.types.isString,
+  defense: cwt.types.isInteger,
+  blocksVision: cwt.types.isBoolean,
+  capturePoints: cwt.types.isInteger,
+  looseAfterCaptured: cwt.types.isBoolean,
+  changeAfterCaptured: cwt.types.isString,
+  notTransferable: cwt.types.isBoolean,
+  funds: cwt.types.isInteger,
+  vision: cwt.types.isInteger,
+  supply: cwt.types.isSomething, 
+  repairs: cwt.types.isSomething,
+  produces: cwt.types.isSomething,
+  builds: cwt.types.isSomething,
+  // to be optimized
+  cannon: cwt.types.isSomething,
+  laser: cwt.types.isSomething,
+  bigProperty: cwt.types.isSomething,
+  rocketsilo: cwt.types.isSomething,
+  changeTo: cwt.types.isString,
+  hp: cwt.types.isInteger,
+  destroyedType: cwt.types.isString,
+  blocker: cwt.types.isBoolean,
+  // must be removed somehow
+  assets: cwt.types.isSomething
 };
 
 const isValidTileType = function(types, data) {
-  return cwt.all([
-    types.isInteger(data.defense),
-    types.isBoolean(data.blocksVision),
-    types.isInteger(data.capturePoints),
-    types.isBoolean(data.looseAfterCaptured),
-    types.isString(data.changeAfterCaptured),
-    types.isBoolean(data.notTransferable),
-    types.isInteger(data.funds),
-    types.isInteger(data.vision)
-  ]);
+  return Object.keys(data).every(key => tileTypeValidators[key](data[key]));
 };
 
 /**
@@ -61,13 +88,9 @@ cwt.produceTileType = function(data) {
   return tile;
 };
 
-cwt.produceMapData = function() {
+cwt.produceMapStruct = function() {
   return {
-    map: (function() {
-      var map = [];
-      cwt.nTimes(cwt.MAX_MAP_WIDTH, () => map.push([]));
-      return map;
-    }()),
+    map: cwt.makeArray(cwt.MAX_MAP_WIDTH, () => []),
     width: 0,
     height: 0
   };

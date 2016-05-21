@@ -82,6 +82,21 @@ cwt.optional = function(value) {
   });
 };
 
+cwt.makeArray = function(n, supplier) {
+  var list = [];
+  for (var i = 0; i < n; i++) {
+    list[i] = supplier(i);
+  };
+  return list;
+};
+
+cwt.listToObject = function(list, keySupplier = (k) => k, valueSupplier = (v) => v) {
+  return list.reduce((object, value) => {
+    object[keySupplier(value)] = valueSupplier(value);
+    return object;
+  }, {});
+};
+
 /**
   @param value:string
           string under test

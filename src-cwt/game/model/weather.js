@@ -1,7 +1,9 @@
-const weathertypeValidator = function(sheet) {
-  sheet.defaultWeather = Types.isBoolean(data.defaultWeather) ? data.defaultWeather : false;
-  sheet.minDuration = Require.isInteger(data.minDuration, data.id + ":minDuration");
-  sheet.maxDuration = Require.isInteger(data.maxDuration, data.id + ":maxDuration");
+const weathertypeValidator = function(data) {
+  return cwt.all([
+    cwt.types.isBoolean(data.defaultWeather),
+    cwt.types.isInteger(data.minDuration),
+    cwt.types.isBoolean(data.maxDuration)
+  ]);
 };
 
 const weather = {
