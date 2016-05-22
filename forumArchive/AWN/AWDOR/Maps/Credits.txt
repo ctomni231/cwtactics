@@ -1,0 +1,6 @@
+Advance Wars: Days of Ruin
+Campaign Maps
+
+Made by Tsuruya <http://www.advancewarsnet.com/forums/index.php?showtopic=32947>
+
+Includes reinforcementes (displayed as transparent units), unit AI and unfogged versions of maps.

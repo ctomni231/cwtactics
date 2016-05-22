@@ -1,0 +1,1 @@
+java -jar AWNPlus.jar awdor wal
