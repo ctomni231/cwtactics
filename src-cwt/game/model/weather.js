@@ -1,9 +1,17 @@
+const baseWeatherType = {
+  defaultWeather: false,
+  minDuration: 1,
+  maxDuration: 4
+};
+
+const weatherTypeValidators = {
+  defaultWeather: cwt.types.isBoolean,
+  minDuration: cwt.types.isInteger,
+  maxDuration: cwt.types.isBoolean
+};
+
 const weathertypeValidator = function(data) {
-  return cwt.all([
-    cwt.types.isBoolean(data.defaultWeather),
-    cwt.types.isInteger(data.minDuration),
-    cwt.types.isBoolean(data.maxDuration)
-  ]);
+  return Object.keys(data).every(key => weatherTypeValidators[key](data[key]));
 };
 
 const weather = {
