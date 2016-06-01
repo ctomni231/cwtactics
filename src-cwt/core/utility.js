@@ -12,6 +12,29 @@ var optionalValue = {
 
   orElse(fallback) {
     return this._valueExists() ? this.value : fallback;
+  },
+
+  peek(peekFn) {
+    this.ifPresent(peekFn);
+    return this;
+  },
+
+  map(mapper) {
+    if (this._valueExists()) {
+      return cwt.produceInstance(optionalValue, {
+        value: mapper(this.value)
+      });
+    }
+    return this;
+  },
+
+  filter(filter) {
+    if (this._valueExists()) {
+      return filter(this.value) ? this : cwt.produceInstance(optionalValue, {
+        value: null
+      });
+    }
+    return this;
   }
 };
 
@@ -136,7 +159,7 @@ cwt.isTrue = function(expected, error, value) {
 };
 
 cwt.untilFalse = function(fn) {
-  while(fn()) {
+  while (fn()) {
 
   }
 };

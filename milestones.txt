@@ -4,15 +4,17 @@ Milestones 0.36 - BlackCat
 M1:
 ===
 
-[ ] Event Management System 
-  [ ] Signals -> does nothing on the side of the invoker 
-  [ ] Callbacks -> invokes a callback after computed
-[ ] List of object actions [OAL]
+[x] Event Management System 
+  [x] Signals -> does nothing on the side of the invoker 
+[x] List of object actions [OAL]
   - Callback-Event
     - Input-1: object x
     - Input-2: object y
-    - Output: callback(map<positionCode:string, actions:list<{ action:string, additonalArgs }>>)
+    - Output: 
+      another event 
+        map<positionCode:string, actions:list<{ action:string, additonalArgs }>>)
   - Throws error event when game is not constructed
+[ ] Simple connection between threads via event stack
 
 M2:
 ===
@@ -55,6 +57,7 @@ M5:
   [ ] Load Unit
   [ ] Unload Unit
   [ ] Supply Unit
+  [ ] Next Turn
 
 M6:
 ===

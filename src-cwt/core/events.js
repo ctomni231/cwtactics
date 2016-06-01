@@ -1,24 +1,24 @@
-var eventHandler = {
-
-  _getHandler(key) {
-    if (!this.handlers) this.handlers = {};
-    if (!this.handlers.hasOwnProperty(key)) this.handlers[key] = [];
-    return this.handlers[key];
-  },
-
-  publish(key, p1, p2, p3, p4, p5) {
-    if (!key) {
-      cwt.raiseError("IllgalEvent");
-    }
-    this._getHandler(key).forEach(handler => handler(p1, p2, p3, p4, p5));
-    this._getHandler("*").forEach(handler => handler(key, p1, p2, p3, p4, p5));
-  },
-
-  subscribe(key, handler) {
-    this._getHandler(key).push(handler);
-  }
-};
-
 cwt.produceEventHandler = function() {
-  return Object.create(eventHandler);
+  const handlers = {};
+
+  const getHandler = function(key) {
+    if (!handlers.hasOwnProperty(key)) {
+      handlers[key] = [];
+    }
+    return handlers[key];
+  };
+
+  return {
+    publish(key, p1, p2, p3, p4, p5) {
+      if (!key) {
+        cwt.raiseError("IllgalEvent");
+      }
+      getHandler(key).forEach(handler => handler(p1, p2, p3, p4, p5));
+      getHandler("*").forEach(handler => handler(key, p1, p2, p3, p4, p5));
+    },
+
+    subscribe(key, handler) {
+      getHandler(key).push(handler);
+    }
+  }
 };

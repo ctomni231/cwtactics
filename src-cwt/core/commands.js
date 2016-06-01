@@ -1,20 +1,18 @@
-var commandPool = {
-  pushData(msg) {
-    this.buffer.push(msg);
-  },
+cwt.produceDataBuffer = function(handler) {
+  const buffer = [];
 
-  evaluateData() {
-    if (this.buffer.length > 0) {
-      this.handler(this.buffer.shift());
-      return true;
+  return {
+
+    pushData(msg) {
+      buffer.push(msg);
+    },
+
+    evaluateData() {
+      if (buffer.length > 0) {
+        handler(buffer.shift());
+        return true;
+      }
+      return false;
     }
-    return false;
-  }
-};
-
-cwt.produceDataBuffer = function(dataHandler) {
-  return Object.assign(Object.create(commandPool), {
-    buffer: [],
-    handler: dataHandler
-  });
+  };
 };

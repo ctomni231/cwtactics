@@ -7,8 +7,10 @@
  *          which means the results sheet is check and valid
  *
  * @return {
+ *
  *   getRandomSheet(): sheet
  *          returns a random from the sheetList list
+ *
  *   getSheet(id): sheet throws Error 
  *          returns a sheet with the given id or throws an error when no sheet with 
  *          the id exists in the sheet list

@@ -1,47 +1,43 @@
-var turnHandler = {
+/**
+  @param events
+  @param players
 
-  setDay(day) {
-    this.day = day;
-    this.events.publish("turn:day", day);
-  },
-
-  setTurnOwner(id) {
-    this.turnOwner = id;
-    this.events.publish("turn:owner", id);
-  },
-
-  pickNextTurnOwner() {
-    let currentOwnerId = this.turnOwner;
-    let nextOwnerId = currentOwnerId;
-    do {
-
-      nextOwnerId++;
-      if (nextOwnerId === this.players.getNeutralPlayerId()) {
-        nextOwnerId = 0;
-        this.setDay(this.day + 1);
-      }
-
-      if (this.players.isPlayerActive(nextOwnerId)) {
-        this.setTurnOwner(nextOwnerId);
-      }
-
-    } while (currentOwnerId != nextOwnerId);
-
-    cwt.raiseError("unable to pick a new turn owner");
+  @return {
+    setDay(day)
+    setTurnOwner(id)
+    pickNextTurnOwner()
   }
-};
-
+ */ 
 cwt.produceTurn = function(events, players) {
   var types = cwt.produceTypeAsserter();
 
-  var turn = cwt.produceInstance(turnHandler, {
-    events: events,
-    players: players
-  });
+  var day = 0;
+  var owner = 0;
 
-  // TODO factory should no doing things like that 
-  turn.setDay(0);
-  turn.setTurnOwner(0);
+  var turn = {
+
+    setDay(day) {
+      day = day;
+      events.publish("turn:day", day);
+    },
+
+    setTurnOwner(id) {
+      owner = id;
+      events.publish("turn:owner", id);
+    },
+
+    pickNextTurnOwner() {
+      const currentOwnerId = owner;
+      const nextOwnerId = players.rotate(currentOwnerId + 1).findIndex(el => el.team >= 0);
+      if (nextOwnerId < owner) {
+        this.setDay(day + 1);
+      }
+      if (currentOwnerId == nextOwnerId) {
+        cwt.raiseError("same owner selected");
+      }
+      this.setTurnOwner(nextOwnerId);
+    }
+  };
 
   return turn;
 };

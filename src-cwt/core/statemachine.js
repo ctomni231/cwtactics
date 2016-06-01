@@ -1,18 +1,22 @@
-var stateMachine = {
-  setState(id) {
-    this.activeState.exit();
-    this.activeState = this.states[id];
-    this.activeState.enter();
-    this.logger.info("entered state " + id);
-    this.events.publish("state:entered:" + id);
-  }
-};
+cwt.produceStateMachine = function(events, states) {
+  var activeState = states[Object.keys(states)[0]];
+  const logger = cwt.produceLogger("STATEMACHINE");
 
-cwt.produceStateMachine = function(eventHandler, states) {
-  return Object.assign(Object.create(stateMachine), {
-    states: states,
-    events: eventHandler,
-    logger: cwt.produceLogger("STATEMACHINE"),
-    activeState: states[Object.keys(states)[0]]
-  });
+  return {
+    update(delta, input) {
+      return activeState.update(delta, input);
+    },
+
+    render(delta) {
+      activeState.render(delta);
+    },
+
+    setState(id) {
+      activeState.exit();
+      activeState = states[id];
+      activeState.enter();
+      logger.info("entered state " + id);
+      events.publish("state:entered:" + id);
+    }
+  };
 };

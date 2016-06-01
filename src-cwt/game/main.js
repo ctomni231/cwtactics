@@ -33,6 +33,18 @@ const produceGameInstance = function(loop) {
     const mapLoader = cwt.produceMapLoader(eventHandler, unitFactory, mapChanger, playerChanger, turn);
 
     eventHandler.subscribe("game:map:load", data => mapLoader.loadMap(data));
+
+    const model = {
+      turn
+    };
+    
+    eventHandler.subscribe("game:oal:post", cwt.produceModelOalPusher(model));
+
+    const grabber = cwt.produceModelOalGrabber(model);
+    eventHandler.subscribe("game:oal:request", (x, y) => {
+      eventHandler.publish("client:oal:response", grabber(x, y));
+    });
+
   });
 
   const controllerMsgPush = cwt.connectMessagePusher("CONTROLLER");
@@ -41,10 +53,9 @@ const produceGameInstance = function(loop) {
 
   const sharedEvents = [];
 
-  eventHandler.subscribe("*", function(key) {
-    // shift model events outside
+  eventHandler.subscribe("*", function(key, p1, p2, p3, p4, p5) {
     if (!key.startsWith("game:")) {
-      sharedEvents.push([].slice.call(arguments, 0));
+      sharedEvents.push([key, p1, p2, p3, p4, p5]);
     }
   });
 
