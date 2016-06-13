@@ -67,34 +67,47 @@ var enabledAutoCreate = false;
 var mousex = 0;
 var mousey = 0;
 
+// ImageLibrary Stuff
+var view;
+var lx = 0;
+var ly = 0;
+
+var busy = 0;
+var imgQueue = [];
+var addQueue = [];
+
+var redirAlpha;
+var redirBeta;
+var redirTree;
+
 // --------------------------------------
 // Base Functions start here
 // --------------------------------------
 
 // This runs the requestAnimationFrame form of the game
-function run() {
+function run(){
   run(0);
 }
 
 // This runs the setInterval form of the game
 function run(sec) {
 
-  if (sec > 0 && interval != null)
-    clearInterval(interval);
+  if(sec > 0 && interval != null)
+		clearInterval(interval);
 
   var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  var h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-  var imgStorage = document.getElementById("myCanvas");
-  if (imgStorage == null) {
-    imgStorage = document.createElement("canvas");
-    document.body.appendChild(imgStorage);
-  }
-  imgStorage.setAttribute("id", "myCanvas");
-  //imgStorage.setAttribute("width", w);
-  //imgStorage.setAttribute("height", h);
-  imgStorage.setAttribute("onmousemove", "getDimensions(event)");
+	var h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+	var imgStorage = document.getElementById("myCanvas");
+	if(imgStorage == null){
+		imgStorage = document.createElement("canvas");
+		document.body.appendChild(imgStorage);
+	}
+	imgStorage.setAttribute("id", "myCanvas");
+	//imgStorage.setAttribute("width", w);
+	//imgStorage.setAttribute("height", h);
+	imgStorage.setAttribute("onmousemove", "getDimensions(event)");
   imgStorage.setAttribute("onclick", "createImage(event)");
-  imgStorage.innerHTML = "Your browser does not support the HTML5 canvas tag.";
+	imgStorage.innerHTML = "Your browser does not support the HTML5 canvas tag.";
 
   if (sec > 0)
     interval = setInterval(runGame, sec);
@@ -109,9 +122,9 @@ function runFrame() {
 }
 
 // Gets the location of the mouse
-function getDimensions(event) {
-  mousex = event.clientX - 8;
-  mousey = event.clientY - 8;
+function getDimensions(event){
+	mousex = event.clientX - 8;
+	mousey = event.clientY - 8;
 }
 
 // ----------------------------------
@@ -119,31 +132,31 @@ function getDimensions(event) {
 // ----------------------------------
 
 // Creates the image specified
-function createImage(event) {
-  var text = document.getElementById("textBox");
+function createImage(event){
+	var text = document.getElementById("textBox");
 
-  intArray.push(viewArray.length);
-  mxArray.push(mousex);
-  myArray.push(mousey);
+	intArray.push(viewArray.length);
+	mxArray.push(mousex);
+	myArray.push(mousey);
 
-  // Chances are very high that the recoloring code 
-  // and flip code will happen here from now on.
-  addImage(text.value);
+	// Chances are very high that the recoloring code 
+	// and flip code will happen here from now on.
+	addImage(text.value);
 }
 
 // The true rendering function
-function render(ctx) {
-  step++;
-  if (step == 3) step = 0;
+function render(ctx){
+	step++;
+	if( step == 3 ) step = 0;
 
   // For animation testing
-  for (var i = 0; i < intArray.length; i++) {
-    ctx.drawImage(getImg(intArray[i]), step * 32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
-  }
+	for(var i = 0; i < intArray.length; i++){
+		ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
+	}
 
   // For ratation testing only
   //for(var i = 0; i < intArray.length; i++){
-  //ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
+    //ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
   //}
 }
 
@@ -191,10 +204,10 @@ function runGame() {
   tfps = parseInt(1000 / (diffTime || 1), 10);
   frame += diffTime;
   count++;
-  if (frame > 1000) {
-    frame -= 1000;
-    jfps = count;
-    count = 0;
+  if(frame > 1000){
+	   frame -= 1000;
+	   jfps = count;
+	   count = 0;
   }
 
   ctx.fillStyle = '#FFFFFF';
@@ -202,14 +215,87 @@ function runGame() {
   ctx.fillStyle = '#000000';
   ctx.font = 'bold 10px sans-serif';
   ctx.fillText('FPS: ' + jfps + ' [' + tfps + ']', 4, 10);
-  ctx.fillText('Mouse:(' + mousex + ',' + mousey + ')', 4, 20);
+  ctx.fillText('Mouse:(' + mousex + ',' + mousey + ')' , 4, 20);
   ctx.fillText('Image Count:' + intArray.length, 4, 30);
 
   lastTime = nowTime;
 }
 
+// --------------------------------
+// ImageLibrary
+// --------------------------------
 
+// Stupid redirection arrays, I have to make them in storeImage
 
+// This function adds an image from text.
+function addImage(text){
+
+	//This will combine both queue and addImage.
+	if(busy == 1){
+		imgQueue.push(text);
+		return;
+	}
+
+	busy = 1;
+	//This grabs an image and temporarily stores it in memory
+	var imgStorage = document.getElementById("image");
+	if(imgStorage == null){
+		imgStorage = document.createElement("img");
+		document.body.appendChild(imgStorage);
+	}
+	imgStorage.setAttribute("id", "image");
+	imgStorage.setAttribute("src", text);
+	imgStorage.setAttribute("onload", "storeImage()");
+	imgStorage.setAttribute("style", "display:none");
+}
+
+// This function is literally a callback function to actually store the image
+function storeImage(){
+
+	var imgStorage = document.getElementById("image");
+	if(imgStorage == null){
+		imgStorage = document.createElement("img");
+		document.body.appendChild(imgStorage);
+	}
+	imgStorage.setAttribute("id", "image");
+
+	var canvas = document.getElementById("store");
+	if(canvas == null){
+		canvas = document.createElement("canvas");
+		document.body.appendChild(canvas);
+	}
+	canvas.setAttribute("id", "store");
+	canvas.setAttribute("width", imgStorage.width);
+	canvas.setAttribute("height", imgStorage.height);
+	canvas.setAttribute("style", "display:none");
+
+	console.log("("+imgStorage.width+","+imgStorage.height+")");
+
+	var ctx = canvas.getContext("2d");
+	ctx.drawImage(imgStorage, 0, 0);
+	var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+	//We have to check to see if this was created before, and if so, set up a redirection
+	for(var i = 0; i < viewArray.length; i++){
+		if(imgData.data.length == viewArray[i].length){
+			for(var j = 0; j < viewArray.length; j++){
+				if(imgData.data[j] != viewArray[j]){
+					//redirect it here.
+				}
+			}
+		}
+	}
+	
+	//This pushes the images into an array
+	viewArray.push(new Uint8ClampedArray(imgData.data));
+	locxArray.push(imgStorage.width);
+	locyArray.push(imgStorage.height);
+
+	busy = 0;
+	if(imgQueue.length > 0){
+		addImage(imgQueue.pop());
+	}
+}
 
 
 // --------------------------------
@@ -229,3 +315,4 @@ function addLoadEvent(func) {
     }
   }
 }
+
