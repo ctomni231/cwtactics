@@ -13,6 +13,9 @@ const produceControllerInstance = function(loop) {
   const eventLog = cwt.produceLogger("ISOLATE-MESSAGES");
   const oalLog = cwt.produceLogger("OAL");
 
+  // NEW: m1x1
+  // NEW: m1x4
+
   eventHandler.subscribe("*", (key, p1, p2, p3, p4, p5) =>
     eventLog.info("handle game event " + key + " with data " + [p1, p2, p3, p4, p5]));
 
@@ -25,20 +28,24 @@ const produceControllerInstance = function(loop) {
     .forEach(entry => oalLog.info(entry)));
 
   cwt.connectMessageHandler("CONTROLLER", data => JSON.parse(data).forEach(eventDataBuffer.pushData));
+  // NEW: cwt.connectMessageHandler("CONTROLLER", eventDataBuffer.pushData);
 
   cwt.clearLoggerContext();
   cwt.GLOBAL_EVENT = eventHandler;
 
+  // NEW: m1x5
   var blockInputTimer = 0;
   return cwt.produceGameloop(delta => {
     blockInputTimer -= delta;
-
-    //sharedEvents.filter(data => !!data).map(JSON.stringify).forEach(data => gameMsgPush(data));
+    
     if (sharedEvents) {
       gameMsgPush(JSON.stringify(sharedEvents));
       sharedEvents.splice(0);
     }
+    // NEW: m1x3
+
     cwt.nTimes(100, () => eventDataBuffer.evaluateData());
+    // NEW: m1x2
 
     cwt.optional(statemachine.update(delta, blockInputTimer <= 0 ? realInput : fakeInput))
       .peek(next => blockInputTimer = 250)

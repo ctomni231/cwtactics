@@ -1,37 +1,33 @@
-var loopHandler = Object.freeze({
+const INTERVAL_LOOP_TIME = 50;
 
-  start() {
-    const loop = () => {
-      if (this.lastTime === -1) {
-        return;
-      }
+const animationFrameFactory = loop => requestAnimationFrame(loop);
 
-      var now = Date.now();
-      this.loopAction(now - this.lastTime);
-      this.lastTime = now;
-      this.nextLoop(loop);
-    };
+const setIntervalFactory = loop => setTimeout(loop, INTERVAL_LOOP_TIME);
 
-    this.lastTime = Date.now();
-    this.nextLoop(loop);
-  },
+cwt.produceGameloop = function(loopAction) {
+  var nextLoop = !!this.requestAnimationFrame ? animationFrameFactory : setIntervalFactory;
+  var lastTime = 0;
 
-  stop() {
-    this.lastTime = -1;
-  }
-});
+  return {
 
-var requestAnimationFrameLoop = function(loop) {
-  requestAnimationFrame(loop);
-};
+    start() {
+      const loop = () => {
+        if (lastTime === -1) {
+          return;
+        }
 
-var setIntervalLoop = function(loop) {
-  setTimeout(loop, 50);
-};
+        var now = Date.now();
+        loopAction(now - lastTime);
+        lastTime = now;
+        nextLoop(loop);
+      };
 
-cwt.produceGameloop = function(handler) {
-  return Object.assign(Object.create(loopHandler), {
-    loopAction: handler,
-    nextLoop: !!this.requestAnimationFrame ? requestAnimationFrameLoop : setIntervalLoop
-  });
+      lastTime = Date.now();
+      nextLoop(loop);
+    },
+
+    stop() {
+      lastTime = -1;
+    }
+  };
 };

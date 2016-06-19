@@ -1,0 +1,24 @@
+This is my thought map about the code.
+
+
+Q: What is important for good code?
+A: It must be self-explaining!
+
+         SOLID
+========================
+
+Single responsibility
+
+Open close
+
+Liskorv substitution 
+
+Interface segretation
+
+Dependency injection
+
+        KISS
+========================
+
+        COC
+========================

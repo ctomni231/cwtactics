@@ -10,38 +10,47 @@ const weatherTypeValidators = {
   maxDuration: cwt.types.isBoolean
 };
 
-const weathertypeValidator = function(data) {
-  return Object.keys(data).every(key => weatherTypeValidators[key](data[key]));
+/**
+  @return (data) => xyz..
+*/
+cwt.produceWeathertypeValidator = function() {
+  return data => Object
+    .keys(data)
+    .every(key => weatherTypeValidators[key](data[key]));
 };
 
-const weather = {
+/**
 
-  setWeather(id) {
-    this.active = this.types.getSheet(id);
-    let duration = this.active.minDuration;
-    duration += parseInt(Math.random() * (this.active.maxDuration - duration), 10);
-    this.leftDays = duration;
-    this.events.publish("weather:changed:" + id, duration);
-  },
+  @return {
+    setWeather(id:string)
+      throws event weather:changed:{id}
 
-  decreaseLeftDays() {
-    this.leftDays--;
-    if (this.leftDays == 0) {
-      this.setWeather(this.types.getRandom().id);
-    }
+    decreaseLeftDays()
   }
-};
-
-cwt.getWeathertypeValidator = function() {
-  return weathertypeValidator;
-};
-
-cwt.produceWeather = function(events) {
-  var weather = Object.assign(Object.create(weather), {
-    events
-  });
-
+*/
+cwt.produceWeather = function(types, events) {
   events.subscribe("turn:day", () => weather.decreaseLeftDays());
 
-  return weather;
+  var leftDays = 0;
+  var active = null;
+
+  const setWeather = function(id) {
+    active = types.getSheet(id);
+    let duration = active.minDuration;
+    duration += parseInt(Math.random() * (active.maxDuration - duration), 10);
+    leftDays = duration;
+    events.publish("weather:changed:" + id, duration);
+  };
+
+  const decreaseLeftDays = function() {
+    leftDays--;
+    if (leftDays == 0) {
+      setWeather(types.getRandom().id);
+    }
+  };
+
+  return {
+    setWeather,
+    decreaseLeftDays
+  };
 };

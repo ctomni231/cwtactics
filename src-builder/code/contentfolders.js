@@ -20,5 +20,9 @@ exports.getGameFolders = function(sourceFolder, constantsFolder, mode, multicore
   folders.push(sourceFolder.subFolderPath("game/model"));
   folders.push(sourceFolder.subFolderPath("game/modelSerializer"));
   if (multicore) folders.push(sourceFolder.subFolderPath("game/multicore"));
+  if (mode == "dev") {
+    folders.push(sourceFolder.subFolderPath("test"));
+    folders.push(sourceFolder.subFolderPath("test/game-test"));
+  }
   return folders;
 };
