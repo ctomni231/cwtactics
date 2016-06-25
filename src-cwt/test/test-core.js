@@ -44,7 +44,7 @@ cwt.testCase = function(name, meta, test) {
     },
 
     equals(a, b) {
-      if (a !== b) throws new Error("AssertionFailed");
+      if (a !== b) throw new Error("AssertionFailed");
     }
   };
 

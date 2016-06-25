@@ -1,6 +1,21 @@
+cwt.move = {
+
+  getMoveCosts(movetype, tile) {
+    return movetype.costs[tile.type];
+  },
+  
+  getWayCosts(movetype, way) {
+    return way
+      .map(tile => cwt.move.getMoveCosts(movetype, tile))
+      .reduce(cwt.add, 0);
+  }
+};
+
+cwt.add = (a, b) => a + b;
+
 cwt.produceMovingController = function() {
   return {
-    
+
     moveUnit(map, x, y, way) {
 
     },

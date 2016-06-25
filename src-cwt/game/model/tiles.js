@@ -43,7 +43,7 @@ const tileType = {
   destroyedType: ""
 };
 
-const tileTypeValidators = {
+const tileTypeValidators = {/*
   id: cwt.types.isString,
   defense: cwt.types.isInteger,
   blocksVision: cwt.types.isBoolean,
@@ -53,7 +53,7 @@ const tileTypeValidators = {
   notTransferable: cwt.types.isBoolean,
   funds: cwt.types.isInteger,
   vision: cwt.types.isInteger,
-  supply: cwt.types.isSomething, 
+  supply: cwt.types.isSomething,
   repairs: cwt.types.isSomething,
   produces: cwt.types.isSomething,
   builds: cwt.types.isSomething,
@@ -67,11 +67,11 @@ const tileTypeValidators = {
   destroyedType: cwt.types.isString,
   blocker: cwt.types.isBoolean,
   // must be removed somehow
-  assets: cwt.types.isSomething
+  assets: cwt.types.isSomething */
 };
 
 const isValidTileType = function(types, data) {
-  return Object.keys(data).every(key => tileTypeValidators[key](data[key]));
+  return false; // return Object.keys(data).every(key => tileTypeValidators[key](data[key]));
 };
 
 /**

@@ -1,76 +1,23 @@
-var typeCheck = {
+// (any) -> boolean
+cwt.isInteger = (value) => typeof value === 'number' && value % 1 === 0;
 
-  isInteger(value) {
-    return typeof value === 'number' && value % 1 === 0;
-  },
+// (any) -> boolean
+cwt.isNumber = (value) => typeof value === 'number';
 
-  isNumber(value) {
-    return typeof value === 'number';
-  },
+// (any) -> boolean
+cwt.isString = (value) => typeof value === 'string';
 
-  isString(value) {
-    return typeof value === 'string';
-  },
+// (any) -> boolean
+cwt.isFunction = (value) => typeof value === 'function';
 
-  isFunction(value) {
-    return typeof value === 'function';
-  },
+// (any) -> boolean
+cwt.isBoolean = (value) => value === true || value === false;
 
-  isBoolean(value) {
-    return value === true || value === false;
-  },
+// (any) -> boolean
+cwt.isSomething = (value) => value !== null && value !== undefined;
 
-  isSomething(value) {
-    return value !== null && value !== undefined;
-  },
+// (list<any>, (any) -> boolean) -> boolean
+cwt.isListOf = (value, valueTypeCheck) => value.every(element => valueTypeCheck(element));
 
-  isListOf(value, valueTypeCheck) {
-    return value.every(element => valueTypeCheck(element));
-  },
-
-  isMapOf(value, valueTypeCheck) {
-    return Object.keys(value).every(key => valueTypeCheck(value[key]));
-  }
-};
-
-var typeAssert = (function() {
-  var buildRequirer = function(fn) {
-    return function(value) {
-      if (!fn.apply(null, arguments)) throw new Error('TypeAssertionFailed');
-      return value;
-    };
-  };
-
-  var checker = Object.create(typeCheck);
-  Object.keys(typeCheck).forEach(key => checker[key] = buildRequirer(typeCheck[key]));
-
-  return checker;
-}());
-
-cwt.types = typeCheck;
-
-cwt.raiseError = (error) =>  {
-  throw new Error("failed");
-};
-
-cwt.visit = (value, visitor) => {
-  visitor(value);
-  return value;
-};
-
-cwt.expect = (value, toFullfill) => cwt.visit(value, value => toFullfill(value) || cwt.raiseError("failed"));
-
-// @return { is[Integer|Number|String|Something|Function|Boolean](value): boolean }
-cwt.produceTypeChecker = function() {
-  return typeCheck;
-};
-
-// @return { is[Integer|Number|String|Something|Function|Boolean](value): boolean }
-cwt.getTypeCheckAPI = function() {
-  return typeCheck;
-};
-
-// @return { is[Integer|Number|String|Something|Function|Boolean](value): value }
-cwt.produceTypeAsserter = function() {
-  return typeAssert;
-};
+// (map<any>, (any) -> boolean) -> boolean
+cwt.isMapOf = (value, valueTypeCheck) => Object.keys(value).every(key => valueTypeCheck(value[key]));

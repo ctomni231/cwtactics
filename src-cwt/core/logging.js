@@ -1,3 +1,9 @@
+const log = (logger, msg) => logger(msg);
+
+const consoleLogger = (msg) => console.log(msg);
+
+const nullLogger = (msg) => undefined;
+
 var consoleLog = {
 
   LEVEL: {
@@ -30,8 +36,8 @@ var consoleLog = {
 
 var nullLog = {
   info() {},
-  warn() {},
-  error() {}
+    warn() {},
+    error() {}
 };
 
 var loggerContext = "";
@@ -46,13 +52,13 @@ cwt.clearLoggerContext = function() {
 
 /**
   @return {
-    
-    info(string) 
+
+    info(string)
       logs an info message
-    
+
     warn(string)
       logs a warning message
-    
+
     error(string, Error)
       logs an error
   }

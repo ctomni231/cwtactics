@@ -1,6 +1,8 @@
 const produceControllerInstance = function(loop) {
   cwt.produceLoggerContext("UI");
 
+  /*
+
   const sharedEvents = [];
 
   const realInput = cwt.produceInputHandler();
@@ -37,7 +39,7 @@ const produceControllerInstance = function(loop) {
   var blockInputTimer = 0;
   return cwt.produceGameloop(delta => {
     blockInputTimer -= delta;
-    
+
     if (sharedEvents) {
       gameMsgPush(JSON.stringify(sharedEvents));
       sharedEvents.splice(0);
@@ -53,6 +55,6 @@ const produceControllerInstance = function(loop) {
 
     statemachine.render(delta);
   });
+  */
 }
-
-setTimeout(() => produceControllerInstance().start(), 1000);
+// setTimeout(() => produceControllerInstance().start(), 1000);

@@ -1,24 +1,17 @@
-This is my thought map about the code.
+M aintain
+R eadable
 
 
-Q: What is important for good code?
-A: It must be self-explaining!
 
-         SOLID
-========================
 
-Single responsibility
+E
+D
+G
+E
 
-Open close
+E easy
+P erformance
+S tability
+E xtendable
 
-Liskorv substitution 
 
-Interface segretation
-
-Dependency injection
-
-        KISS
-========================
-
-        COC
-========================
