@@ -1,5 +1,5 @@
 // CustomWarsTactics Source File
-// Why one file? Easier for us and we have no time.. so please do not explain "Hey use XYZ..."
+// Why one file? Easier for us and we have no time.. so please do not try to explain "this is an anti pattern!"
 
 // =========================================================================================================
 //                                                STUB
@@ -90,6 +90,38 @@ cwt.rotate = function(arr, count) {
   return arr;
 };
 
+cwt.either = {
+
+  // (a) => either<a>
+  fromNullable: value => value === null || value === undefined ?
+    cwt.left("ValueIsNotDefined") : cwt.right(value),
+
+  // (() => a) => either<a>
+  tryIt: (f) => {
+    try {
+      return cwt.right(f(value))
+    } catch (e) {
+      return cwt.left(e)
+    }
+  }
+};
+
+cwt.left = function(value) {
+  return {
+    map: f => this,
+    bind: f => this,
+    fold: (leftHandle, rightHandle) => leftHandle(value)
+  };
+};
+
+cwt.right = function(value) {
+  return {
+    map: f => cwt.right(f(value)),
+    bind: f => f(value),
+    fold: (leftHandle, rightHandle) => rightHandle(value)
+  };
+};
+
 // () -> Int
 cwt.random = (from, to) => cwt.just(from + parseInt(Math.random() * (to - from), 10));
 
@@ -104,22 +136,18 @@ cwt.just = (value) => ({
     return f(value) ? this : cwt.nothing();
   },
   isPresent: () => true,
+  ifPresent: (f) => f(value),
   orElse: (v) => value,
   get: () => value,
   toString: () => "just(" + value + ")"
 });
 
 const nothing = cwt.immutable({
-  map(f) {
-    return this;
-  },
-  bind(f) {
-    return this;
-  },
-  filter(f) {
-    return this;
-  },
+  map: (f) => nothing,
+  bind: (f) => nothing,
+  filter: (f) => nothing,
   isPresent: () => false,
+  ifPresent: (f) => nothing,
   orElse: (v) => v,
   get() {
     throw new Error("Nothing");
@@ -317,7 +345,7 @@ cwt.weatherModelFactory = (weatherModel, nextWeather) => {
 };
 
 cwt.getRandomWeatherModel = () =>
-  random(0, weathers.length)
+  cwt.random(0, weathers.length)
   .map(value => just(weatherModelFactory({}, weathers[value])))
   .get();
 
@@ -345,12 +373,13 @@ cwt.getMoveCosts = (movetype, tileType) =>
       cwt.just(0)));
 
 // (Int ?= 0, Int ?= 0) -> turnModel
-cwt.turnModelFactory = (day = 0, owner = 0) => ({
+cwt.turnModelFactory = (day = 0, owner = 0, elapsedTime = 0) => ({
   day,
-  owner
+  owner,
+  elapsedTime
 });
 
-// (players, turnModel) -> maybe<int>
+// ([PlayerModel], TurnModel) -> maybe<Int>
 cwt.getNextTurnOwner = function(players, model) {
   const currentId = model.turnOwner;
   const relativeNextId = cwt
@@ -361,10 +390,10 @@ cwt.getNextTurnOwner = function(players, model) {
   return currentId != absoluteNextId ? cwt.something(absoluteNextId) : cwt.nothing();
 };
 
-// (Int, Int) -> boolean
+// (Int, Int) -> Boolean
 cwt.isDayChangeBetweenOwners = (idA, idB) => idB < idA;
 
-// (players, turnModel) -> turnModel
+// ([PlayerModel], TurnModel) -> TurnModel
 cwt.xxx = (players, turns) => cwt
   .getNextTurnOwner(players, turns)
   .map(nextOwner => {
@@ -376,18 +405,48 @@ cwt.xxx = (players, turns) => cwt
   })
   .ifNotPresent(cwt.error("GAME: no next turn owner found"));
 
+// () -> PropertyModel
+cwt.propertyFactory = () => ({
+  owner: -1,
+  points: 20
+});
+
+// () -> GameLimitsModel
+cwt.gameLimitFactory = () => ({
+  dayLimit: Number.POSITIVE_INFINITY,
+  turnTimeLimit: Number.POSITIVE_INFINITY,
+  gameTimeLimit: Number.POSITIVE_INFINITY
+});
+
+// (GameModel) -> Boolean
+cwt.isTurnTimeLimitReached = (gameModel) => gameModel.turnOwner.elapsedTime >= gameModel.limits.turnTimeLimit;
+
+// WRONG
+cwt.isGameTimeLimitReached = (gameModel) => gameModel.turnOwner.elapsedTime >= gameModel.limits.gameTimeLimit;
+
+// (GameModel) -> Boolean
+cwt.isTurnLimitReached = (gameModel) => gameModel.turnOwner.day >= gameModel.limits.dayLimit;
+
+// TYPE:: 
+// GameModel = {
+//    map: MapModel, 
+//    turn: TurnModel, 
+//    players: [PlayerModel], 
+//    properties: [PropertyModel],
+//    units: [UnitModel]
+//    weather: WeatherModel
+//    limits: GameLimitsModel
+// }
+
 // (GameData) -> GameModel
 cwt.gameModelFactory = (data) => ({
-
   map: cwt.mapModelFactory(data.width, data.height),
-
-  turn: cwt.turnModelFactory(data.day, cwt.maybe(data.turnOwner).orElse(0)),
-
-  players: cwt.intRange(1, cwt.MAX_PLAYERS)
-    .map(i => cwt.playerFactory()),
-
-  units: cwt.intRange(1, cwt.MAX_UNITS * cwt.MAX_PLAYERS)
-    .map(i => cwt.unitFactory("INFT"))
+  turn: cwt.turnModelFactory(data.day, cwt.maybe(data.turnOwner).orElse(0), data.turnOwner.elapsedTime),
+  players: cwt.intRange(1, cwt.MAX_PLAYERS).map(i => cwt.playerFactory()),
+  properties: cwt.intRange(1, cwt.MAX_PROPERTIES).map(i => cwt.propertyFactory()),
+  units: cwt.intRange(1, cwt.MAX_UNITS * cwt.MAX_PLAYERS).map(i => cwt.unitFactory("INFT")),
+  weather: cwt.weatherModelFactory(),
+  limits: cwt.gameLimitFactory()
 });
 
 // (MapData) -> GameData
@@ -400,18 +459,35 @@ cwt.gameDataBySaveFactory = (save) => {
 
 };
 
-
 // =========================================================================================================
 //                                                GUI 
 // =========================================================================================================
 
+cwt.canvasIO = (id) => {
+  const canvas = document.getElementById(id);
+  const ctx = canvas.getContext("2d");
+
+  return {
+    map: f => {
+      f(canvas);
+      return this;
+    },
+    bind: f => f(canvas),
+    putText: (x, y, text) => {
+      return this;
+    }
+  };
+};
 
 // =========================================================================================================
 //                                              STARTUP
 // =========================================================================================================
 
+const log = str => document.getElementById("devOUT").innerHTML += "&nbsp;" + str;
+
+/*
 cwt.logIO()
   .putLn("STARTING CustomWarsTactics")
   .putLn("VERSION: " + cwt.VERSION)
-  .bind(() => cwt.loop())
-  .bind(delta => console.log("TICK"));
+  .bind(() => cwt.loop());
+  */
