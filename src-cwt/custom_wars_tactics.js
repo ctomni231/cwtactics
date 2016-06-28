@@ -117,6 +117,8 @@ cwt.either = {
   fromNullable: value => value === null || value === undefined ?
     cwt.left("ValueIsNotDefined") : cwt.right(value),
 
+  expectTrue: value => value === true ? cwt.left(value) : cwt.right(value),
+
   // (() -> a) -> left Error | right a (same as either Error, a)
   tryIt: (f) => {
     try {
@@ -130,18 +132,23 @@ cwt.either = {
 cwt.left = function(value) {
   return {
     map: f => this,
+    biMap: (fLeft, fRight) => cwt.left(fLeft(value)),
     bind: f => this,
-    fold: (leftHandle, rightHandle) => leftHandle(value)
+    fold: (leftHandle, rightHandle) => cwt.just(leftHandle(value))
   };
 };
 
 cwt.right = function(value) {
   return {
     map: f => cwt.right(f(value)),
+    biMap: (fLeft, fRight) => cwt.right(fRight(value)),
     bind: f => f(value),
-    fold: (leftHandle, rightHandle) => rightHandle(value)
+    fold: (leftHandle, rightHandle) => cwt.just(rightHandle(value))
   };
 };
+
+cwt.validation = (expression) => expression ? cwt.right("PASSED") : cwt.left("FAILED");
+
 
 // () -> Int
 cwt.random = (from, to) => cwt.just(from + parseInt(Math.random() * (to - from), 10));
@@ -266,7 +273,9 @@ cwt.loop = () => {
 //                                                 GAME
 // =========================================================================================================
 
-const tileTypeBase = cwt.immutable({
+cwt.containsId = (data) => cwt.isString(data.id) && data.id.length === 4;
+
+cwt.tileTypeBase = cwt.immutable({
   defense: 0,
   blocksVision: false,
   capturePoints: -1,
@@ -323,9 +332,6 @@ cwt.thereAreAtLeastTwoOppositeTeams = (players) => players.reduce((result, playe
     (result == -1 ? player.team :
       (result != player.team ? -2 : result))), -1) == -2;
 
-// (Int, Int) -> PropertyModel
-cwt.propertyModelFactory = (type, points = 20, owner = -1) => ({ type, points, owner });
-
 // (String) -> UnitModel
 cwt.unitFactory = (type) => ({ hp: 99, x: 0, y: 0, type });
 
@@ -359,6 +365,33 @@ let duration = active.minDuration;
     duration += parseInt(Math.random() * (active.maxDuration - duration), 10);
     leftDays = duration;
     */
+
+/** @signature PropertyTypeModel */
+cwt.basePropertyType = cwt.immutable({
+  capturable: false,
+  funds: 0,
+  builds: [],
+  repairs: []
+});
+
+/** @signature Map -> Boolean */
+cwt.isPropertyType = (data) => cwt
+  .maybe(data)
+  .filter(cwt.containsId)
+  .filter(data => cwt.isBoolean(data.capturable))
+  .filter(data => cwt.isInteger(data.funds) && data.funds >= 0)
+  .filter(data => cwt.isListOf(data.builds, cwt.isString))
+  .filter(data => cwt.isListOf(data.repairs, cwt.isString))
+  .isPresent();
+
+/** @signature Map -> maybe PropertyTypeModel */
+cwt.propertyTypeFactory = (data) => cwt
+  .maybe(data)
+  .map(data => cwt.flyweight(cwt.basePropertyType, data))
+  .filter(cwt.isPropertyType);
+
+// (Int, Int) -> PropertyModel
+cwt.propertyModelFactory = (type, points = 20, owner = -1) => ({ type, points, owner });
 
 // (PropertyModel, UnitModel) -> PropertyModel
 cwt.captureProperty = (propertyModel, capturerUnitModel) => {
@@ -401,9 +434,6 @@ cwt.getNextTurn = (players, turn) => cwt
   })
   .get();
 
-// () -> PropertyModel
-cwt.propertyFactory = (owner = -1, points = 20) => ({ owner, points });
-
 // () -> GameLimitsModel
 cwt.gameLimitFactory = (elapsedTime = 0, elapsedTurns = 0) => ({
   elapsedTime,
@@ -425,11 +455,15 @@ cwt.isTurnLimitReached = (gameModel) => gameModel.turnOwner.day >= gameModel.lim
 // (GameData) -> GameModel
 cwt.gameModelFactory = (data) => ({
   map: cwt.mapModelFactory(data.width, data.height),
+  tileTypes: {},
   turn: cwt.turnModelFactory(data.day, cwt.maybe(data.turnOwner).orElse(0), cwt.maybe(data.gameTime).orElse(0)),
   players: cwt.intRange(1, cwt.MAX_PLAYERS).map(i => cwt.playerFactory()),
-  properties: cwt.intRange(1, cwt.MAX_PROPERTIES).map(i => cwt.propertyFactory("CITY")),
+  properties: cwt.intRange(1, cwt.MAX_PROPERTIES).map(i => cwt.propertyModelFactory("CITY")),
+  propertyTypes: {},
   units: cwt.intRange(1, cwt.MAX_UNITS * cwt.MAX_PLAYERS).map(i => cwt.unitFactory("INFT")),
+  unitTypes: {},
   weather: cwt.weatherModelFactory("WSUN", cwt.maybe(data.weatherLeftDays).orElse(0)),
+  weatherTypes: {},
   limits: cwt.gameLimitFactory(0, data.day)
 });
 
@@ -441,6 +475,21 @@ cwt.gameDataByMapFactory = (map) => {
 // (SaveData) -> GameData
 cwt.gameDataBySaveFactory = (save) => {
 
+};
+
+// (SaveData) -> GameData
+cwt.gameDataForDemoPurposes = () => {
+  var model = cwt.gameModelFactory({
+    day: 5,
+    turnOwner: 0
+  });
+
+  model.players[0].team = 0;
+  model.players[1].team = 1;
+  model.players[2].team = 2;
+  model.players[3].team = -1;
+
+  return model;
 };
 
 // =========================================================================================================
@@ -481,14 +530,10 @@ var gameState;
 
 if (cwt.DEBUGMODE) {
 
-  const testIt = (name, msg, expression) => {
-    if (!expression) {
-      log("TEST:: " + name + " [" + msg + "] FAILED");
-      throw new Error(msg);
-    } else {
-      log("TEST:: " + name + " [" + msg + "] PASSED");
-    }
-  };
+  const testIt = (name, msg, expression) => cwt.either.expectTrue(expression)
+    .fold(result => "PASSED", result => "FAILED")
+    .map(result => "TEST:: " + name + " [" + msg + "] " + result)
+    .map(log);
 
   testIt("day between", "0 is before 1 and is a day change", cwt.isDayChangeBetweenOwners(1, 0));
   testIt("day between", "0 is not before 0 and is no day change", !cwt.isDayChangeBetweenOwners(0, 0));
@@ -501,22 +546,22 @@ if (cwt.DEBUGMODE) {
   testIt("get move costs", "returns value on direct mapping", cwt.getMoveCosts({ "KNWN": 5 }, "KNWN") === 5);
   testIt("get move costs", "returns wildcard on missing value", cwt.getMoveCosts({ "*": 1 }, "UKWN") === 1);
   testIt("get move costs", "fallbacks to zero", cwt.getMoveCosts({}, "UKWN") === 0);
+
+  testIt("is property type", "missing id will be declined", !cwt.propertyTypeFactory({}).isPresent());
+  testIt("is property type", "base type + id is valid", cwt.propertyTypeFactory({ id: "TEST" }).isPresent());
 }
 
 // =========================================================================================================
 //                                              STARTUP
 // =========================================================================================================
 
-gameState = cwt.gameModelFactory({ day: 5, turnOwner: 0 });
-gameState.players[0].team = 0;
-gameState.players[1].team = 1;
-gameState.players[2].team = 2;
-gameState.players[3].team = -1;
-
 cwt.logIO()
   .putLn("STARTING CustomWarsTactics")
   .putLn("VERSION: " + cwt.VERSION)
-  .bind(() => cwt.loop())
+  .bind(() => {
+    gameState = cwt.gameDataForDemoPurposes();
+    return cwt.loop();
+  })
   .then(delta => gameState = cwt.cloneMap(gameState, {
     limits: cwt.gameLimitFactory(gameState.limits.elapsedTime + delta, gameState.limits.elapsedTurns)
   }))
