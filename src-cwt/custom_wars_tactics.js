@@ -9,6 +9,11 @@
 
 const cwt = {};
 
+cwt.DEBUGMODE = true;
+
+cwt.CANVAS_WIDTH = 320;
+cwt.CANVAS_HEIGHT = 240;
+
 cwt.INACTIVE_ID = -1;
 cwt.DESELECT_ID = -2;
 cwt.ACTIONS_BUFFER_SIZE = 200;
@@ -90,13 +95,29 @@ cwt.rotate = function(arr, count) {
   return arr;
 };
 
+/** @signature (Int ?= 0, Int ?= 10) -> Int */
+cwt.random = (from = 0, to = 10) => {
+  const randomValue = from + parseInt(Math.random() * to, 10);
+  return {
+
+    /** @signature (Int -> b) -> maybe b */
+    map: f => cwt.maybe(f(randomValue)),
+
+    /** @signature (a -> M b) -> M b */
+    bind: f => f(randomValue),
+
+    /** @signature -> Int */
+    get: () => randomValue
+  };
+};
+
 cwt.either = {
 
-  // (a) => either<a>
+  // (a) -> left String | right a (same as either String, a)
   fromNullable: value => value === null || value === undefined ?
     cwt.left("ValueIsNotDefined") : cwt.right(value),
 
-  // (() => a) => either<a>
+  // (() -> a) -> left Error | right a (same as either Error, a)
   tryIt: (f) => {
     try {
       return cwt.right(f(value))
@@ -125,12 +146,15 @@ cwt.right = function(value) {
 // () -> Int
 cwt.random = (from, to) => cwt.just(from + parseInt(Math.random() * (to - from), 10));
 
-// (a) -> just a | nothing
+// a -> just a | nothing
 cwt.maybe = (value) => value == null || value == undefined ? nothing : cwt.just(value);
 
-// (a) -> just a
+// a -> just a
 cwt.just = (value) => ({
   map: (f) => cwt.just(f(value)),
+  elseMap(f) {
+    return this;
+  },
   bind: (f) => f(value),
   filter(f) {
     return f(value) ? this : cwt.nothing();
@@ -144,6 +168,7 @@ cwt.just = (value) => ({
 
 const nothing = cwt.immutable({
   map: (f) => nothing,
+  elseMap: (f) => cwt.maybe(f()),
   bind: (f) => nothing,
   filter: (f) => nothing,
   isPresent: () => false,
@@ -155,10 +180,10 @@ const nothing = cwt.immutable({
   toString: () => "nothing"
 });
 
-// () -> nothing
+// -> nothing
 cwt.nothing = () => nothing;
 
-// (String) -> Promise
+// String -> Promise
 cwt.jsonIO = (path) => new Promise((resolve, reject) => {
   const request = new XMLHttpRequest();
 
@@ -210,16 +235,15 @@ cwt.logIO = () => _logIO;
 
 // LoopMonad :: () -> LoopMonad Int
 cwt.loop = () => {
-  var lastTime = 0;
+  var lastTime = (new Date()).getTime();
 
   const loop = () => {
     const now = (new Date()).getTime();
     const delta = now - lastTime;
     lastTime = now;
 
-    var data = delta;
     for (var i = mappers.length - 1; i >= 0; i--) {
-      data = mappers[i](data);
+      mappers[i](delta);
     }
 
     requestAnimationFrame(loop);
@@ -229,7 +253,7 @@ cwt.loop = () => {
   const mappers = [];
 
   const stub = {
-    bind: (fn) => {
+    then: (fn) => {
       mappers.push(fn);
       return stub;
     }
@@ -300,7 +324,8 @@ cwt.thereAreAtLeastTwoOppositeTeams = (players) => players.reduce((result, playe
       (result != player.team ? -2 : result))), -1) == -2;
 
 // (Int, Int) -> PropertyModel
-cwt.propertyModelFactory = (points = 20, owner = -1) => ({
+cwt.propertyModelFactory = (type, points = 20, owner = -1) => ({
+  type,
   points,
   owner
 });
@@ -320,7 +345,7 @@ cwt.baseWeather = cwt.immutable({
   maxDuration: 4
 });
 
-// weather -> boolean
+// Weather -> Boolean
 cwt.isWeather = (weather) => cwt.just(weather)
   .filter(w => cwt.isString(w.id) && w.id.length === 4)
   .filter(w => cwt.isInteger(w.minDuration) && w.minDuration >= 1)
@@ -328,19 +353,17 @@ cwt.isWeather = (weather) => cwt.just(weather)
   .filter(w => cwt.isBoolean(w.defaultWeather))
   .isPresent();
 
-// ([map]) -> (() -> [weather])
+// ([Map]) -> (() -> [Weather])
 cwt.loadWeathers = (data) => data
   .map(weather => cwt.flyweight(baseWeather, weather))
   .bind(data => data.map(weather => cwt.isWeather(weather) ? cwt.just(weather) : cwt.nothing()))
   .get();
 
-// (weatherModel, weather) -> weatherModel
-cwt.weatherModelFactory = (weatherModel, nextWeather) => {
-  const day = Math.max(model.day - 1, 0);
-  const type = model.day === 0 ? nextWeather : weatherModel.type;
+// (Weather, Int) -> WeatherModel
+cwt.weatherModelFactory = (weather, day = 0) => {
   return {
     day,
-    type
+    weather
   };
 };
 
@@ -366,53 +389,49 @@ cwt.captureProperty = (propertyModel, capturerUnitModel) => {
 
 const baseMoveType = cwt.immutable({});
 
-// (MoveType, String) -> Int
-cwt.getMoveCosts = (movetype, tileType) =>
-  cwt.either(cwt.maybe(movetype.costs[tileType]),
-    cwt.either(cwt.maybe(movetype.costs["*"]),
-      cwt.just(0)));
+// (Map String:Int, String) -> Int
+cwt.getMoveCosts = (costs, tileType) => cwt
+  .maybe(costs[tileType])
+  .elseMap(() => costs["*"])
+  .elseMap(() => 0)
+  .get()
 
 // (Int ?= 0, Int ?= 0) -> turnModel
-cwt.turnModelFactory = (day = 0, owner = 0, elapsedTime = 0) => ({
+cwt.turnModelFactory = (day = 0, owner = 0) => ({
   day,
-  owner,
-  elapsedTime
+  owner
 });
 
 // ([PlayerModel], TurnModel) -> maybe<Int>
-cwt.getNextTurnOwner = function(players, model) {
-  const currentId = model.turnOwner;
-  const relativeNextId = cwt
-    .rotate(players, currentId + 1)
-    .findIndex(el => el.team >= 0) + 1;
-  const absoluteNextId = (relativeNextId + currentId) % data.players.length;
-
-  return currentId != absoluteNextId ? cwt.something(absoluteNextId) : cwt.nothing();
+cwt.predictNextTurnOwner = function(players, model) {
+  const currentId = model.owner;
+  const relativeNextId = cwt.rotate(players, currentId + 1).findIndex(el => el.team >= 0) + 1;
+  const absoluteNextId = (relativeNextId + currentId) % players.length;
+  return currentId != absoluteNextId ? cwt.just(absoluteNextId) : cwt.nothing();
 };
 
 // (Int, Int) -> Boolean
 cwt.isDayChangeBetweenOwners = (idA, idB) => idB < idA;
 
 // ([PlayerModel], TurnModel) -> TurnModel
-cwt.xxx = (players, turns) => cwt
-  .getNextTurnOwner(players, turns)
+cwt.getNextTurn = (players, turn) => cwt
+  .predictNextTurnOwner(players, turn)
   .map(nextOwner => {
-    const day = turnModel.day + (cwt.isDayBetweenTurnOwners(data.turnOwner, nextOwner) ? 1 : 0);
-    return {
-      day,
-      nextOwner
-    };
+    const nextDay = turn.day + (cwt.isDayChangeBetweenOwners(turn.owner, nextOwner) ? 1 : 0);
+    return cwt.turnModelFactory(nextDay, nextOwner);
   })
-  .ifNotPresent(cwt.error("GAME: no next turn owner found"));
+  .get();
 
 // () -> PropertyModel
-cwt.propertyFactory = () => ({
-  owner: -1,
-  points: 20
+cwt.propertyFactory = (owner = -1, points = 20) => ({
+  owner,
+  points
 });
 
 // () -> GameLimitsModel
-cwt.gameLimitFactory = () => ({
+cwt.gameLimitFactory = (elapsedTime = 0, elapsedTurns = 0) => ({
+  elapsedTime,
+  elapsedTurns,
   dayLimit: Number.POSITIVE_INFINITY,
   turnTimeLimit: Number.POSITIVE_INFINITY,
   gameTimeLimit: Number.POSITIVE_INFINITY
@@ -427,26 +446,15 @@ cwt.isGameTimeLimitReached = (gameModel) => gameModel.turnOwner.elapsedTime >= g
 // (GameModel) -> Boolean
 cwt.isTurnLimitReached = (gameModel) => gameModel.turnOwner.day >= gameModel.limits.dayLimit;
 
-// TYPE:: 
-// GameModel = {
-//    map: MapModel, 
-//    turn: TurnModel, 
-//    players: [PlayerModel], 
-//    properties: [PropertyModel],
-//    units: [UnitModel]
-//    weather: WeatherModel
-//    limits: GameLimitsModel
-// }
-
 // (GameData) -> GameModel
 cwt.gameModelFactory = (data) => ({
   map: cwt.mapModelFactory(data.width, data.height),
-  turn: cwt.turnModelFactory(data.day, cwt.maybe(data.turnOwner).orElse(0), data.turnOwner.elapsedTime),
+  turn: cwt.turnModelFactory(data.day, cwt.maybe(data.turnOwner).orElse(0), cwt.maybe(data.gameTime).orElse(0)),
   players: cwt.intRange(1, cwt.MAX_PLAYERS).map(i => cwt.playerFactory()),
-  properties: cwt.intRange(1, cwt.MAX_PROPERTIES).map(i => cwt.propertyFactory()),
+  properties: cwt.intRange(1, cwt.MAX_PROPERTIES).map(i => cwt.propertyFactory("CITY")),
   units: cwt.intRange(1, cwt.MAX_UNITS * cwt.MAX_PLAYERS).map(i => cwt.unitFactory("INFT")),
-  weather: cwt.weatherModelFactory(),
-  limits: cwt.gameLimitFactory()
+  weather: cwt.weatherModelFactory("WSUN", cwt.maybe(data.weatherLeftDays).orElse(0)),
+  limits: cwt.gameLimitFactory(0, data.day)
 });
 
 // (MapData) -> GameData
@@ -460,34 +468,109 @@ cwt.gameDataBySaveFactory = (save) => {
 };
 
 // =========================================================================================================
-//                                                GUI 
+//                                           GAME ACTIONS 
 // =========================================================================================================
 
-cwt.canvasIO = (id) => {
-  const canvas = document.getElementById(id);
-  const ctx = canvas.getContext("2d");
+/** @signature Map String:(GameModel -> GameModel) */
+cwt.actions = {};
 
-  return {
-    map: f => {
-      f(canvas);
-      return this;
-    },
-    bind: f => f(canvas),
-    putText: (x, y, text) => {
-      return this;
+cwt.actions.nextTurn = (gameModel) => cwt
+  .just(gameModel)
+  .map(model => cwt.cloneMap(model, {
+    turn: cwt.getNextTurn(model.players, model.turn)
+  }))
+  .get();
+
+// =========================================================================================================
+//                                           GUI (IMPURE)
+// =========================================================================================================
+
+const gameCanvas = document.getElementById("gamecanvas");
+const gameCanvasCtx = gameCanvas.getContext("2d");
+
+gameCanvas.width = cwt.CANVAS_WIDTH;
+gameCanvas.height = cwt.CANVAS_HEIGHT;
+
+// =========================================================================================================
+//                                           DATA (IMPURE)
+// =========================================================================================================
+
+const log = str => document.getElementById("devOUT").innerHTML += "&nbsp;" + str + "</br>";
+
+var gameState;
+
+// =========================================================================================================
+//                                               TEST
+// =========================================================================================================
+
+if (cwt.DEBUGMODE) {
+
+  const testIt = (name, msg, expression) => {
+    if (!expression) {
+      log("TEST:: " + name + " [" + msg + "] FAILED");
+      throw new Error(msg);
+    } else {
+      log("TEST:: " + name + " [" + msg + "] PASSED");
     }
   };
-};
+
+  testIt("day between", "0 is before 1 and is a day change", cwt.isDayChangeBetweenOwners(1, 0));
+  testIt("day between", "0 is not before 0 and is no day change", !cwt.isDayChangeBetweenOwners(0, 0));
+  testIt("day between", "1 is not before 0 and is no day change", !cwt.isDayChangeBetweenOwners(0, 1));
+
+  testIt("same team", "active and inactive player not in same team", !cwt.areOnSameTeam({
+    team: -1
+  }, {
+    team: 0
+  }));
+  testIt("same team", "diff. team numbers means not in same team", !cwt.areOnSameTeam({
+    team: 1
+  }, {
+    team: 0
+  }));
+  testIt("same team", "same team numbers means in same team", cwt.areOnSameTeam({
+    team: 1
+  }, {
+    team: 1
+  }));
+
+  testIt("get move costs", "returns value on direct mapping", cwt.getMoveCosts({
+    "KNWN": 5
+  }, "KNWN") === 5);
+  testIt("get move costs", "returns wildcard on missing value", cwt.getMoveCosts({
+    "*": 1
+  }, "UKWN") === 1);
+  testIt("get move costs", "fallbacks to zero", cwt.getMoveCosts({}, "UKWN") === 0);
+}
 
 // =========================================================================================================
 //                                              STARTUP
 // =========================================================================================================
 
-const log = str => document.getElementById("devOUT").innerHTML += "&nbsp;" + str;
+gameState = cwt.gameModelFactory({
+  day: 5,
+  turnOwner: 0
+});
+gameState.players[0].team = 0;
+gameState.players[1].team = 1;
+gameState.players[2].team = 2;
+gameState.players[3].team = -1;
 
-/*
 cwt.logIO()
   .putLn("STARTING CustomWarsTactics")
   .putLn("VERSION: " + cwt.VERSION)
-  .bind(() => cwt.loop());
-  */
+  .bind(() => cwt.loop())
+  .then(delta => gameState = cwt.cloneMap(gameState, {
+    limits: cwt.gameLimitFactory(gameState.limits.elapsedTime + delta, gameState.limits.elapsedTurns)
+  }))
+  .then(delta => gameState = Math.random() < 0.1 ? cwt.actions.nextTurn(gameState) : gameState)
+  .then(delta => {
+    gameCanvasCtx.clearRect(0, 0, cwt.CANVAS_WIDTH, cwt.CANVAS_HEIGHT);
+    gameCanvasCtx.fillStyle = "white";
+
+    gameCanvasCtx.fillText("DAY = " + gameState.turn.day, 4, 12);
+    gameCanvasCtx.fillText("TURNOWNER = " + gameState.turn.owner, 4, 22);
+
+    gameCanvasCtx.fillText("GAME TIME = " + gameState.limits.elapsedTime + "ms", 4, 222);
+    gameCanvasCtx.fillText("DELTA = " + delta + "ms", 4, 232);
+  });
