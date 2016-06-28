@@ -324,26 +324,13 @@ cwt.thereAreAtLeastTwoOppositeTeams = (players) => players.reduce((result, playe
       (result != player.team ? -2 : result))), -1) == -2;
 
 // (Int, Int) -> PropertyModel
-cwt.propertyModelFactory = (type, points = 20, owner = -1) => ({
-  type,
-  points,
-  owner
-});
+cwt.propertyModelFactory = (type, points = 20, owner = -1) => ({ type, points, owner });
 
 // (String) -> UnitModel
-cwt.unitFactory = (type) => ({
-  hp: 99,
-  x: 0,
-  y: 0,
-  type
-});
+cwt.unitFactory = (type) => ({ hp: 99, x: 0, y: 0, type });
 
 // weather
-cwt.baseWeather = cwt.immutable({
-  defaultWeather: false,
-  minDuration: 1,
-  maxDuration: 4
-});
+cwt.baseWeather = cwt.immutable({ defaultWeather: false, minDuration: 1, maxDuration: 4 });
 
 // Weather -> Boolean
 cwt.isWeather = (weather) => cwt.just(weather)
@@ -360,12 +347,7 @@ cwt.loadWeathers = (data) => data
   .get();
 
 // (Weather, Int) -> WeatherModel
-cwt.weatherModelFactory = (weather, day = 0) => {
-  return {
-    day,
-    weather
-  };
-};
+cwt.weatherModelFactory = (weather, day = 0) => ({ day, weather });
 
 cwt.getRandomWeatherModel = () =>
   cwt.random(0, weathers.length)
@@ -397,10 +379,7 @@ cwt.getMoveCosts = (costs, tileType) => cwt
   .get()
 
 // (Int ?= 0, Int ?= 0) -> turnModel
-cwt.turnModelFactory = (day = 0, owner = 0) => ({
-  day,
-  owner
-});
+cwt.turnModelFactory = (day = 0, owner = 0) => ({ day, owner });
 
 // ([PlayerModel], TurnModel) -> maybe<Int>
 cwt.predictNextTurnOwner = function(players, model) {
@@ -423,10 +402,7 @@ cwt.getNextTurn = (players, turn) => cwt
   .get();
 
 // () -> PropertyModel
-cwt.propertyFactory = (owner = -1, points = 20) => ({
-  owner,
-  points
-});
+cwt.propertyFactory = (owner = -1, points = 20) => ({ owner, points });
 
 // () -> GameLimitsModel
 cwt.gameLimitFactory = (elapsedTime = 0, elapsedTurns = 0) => ({
@@ -518,28 +494,12 @@ if (cwt.DEBUGMODE) {
   testIt("day between", "0 is not before 0 and is no day change", !cwt.isDayChangeBetweenOwners(0, 0));
   testIt("day between", "1 is not before 0 and is no day change", !cwt.isDayChangeBetweenOwners(0, 1));
 
-  testIt("same team", "active and inactive player not in same team", !cwt.areOnSameTeam({
-    team: -1
-  }, {
-    team: 0
-  }));
-  testIt("same team", "diff. team numbers means not in same team", !cwt.areOnSameTeam({
-    team: 1
-  }, {
-    team: 0
-  }));
-  testIt("same team", "same team numbers means in same team", cwt.areOnSameTeam({
-    team: 1
-  }, {
-    team: 1
-  }));
+  testIt("same team", "active and inactive player not in same team", !cwt.areOnSameTeam({ team: -1 }, { team: 0 }));
+  testIt("same team", "diff. team numbers means not in same team", !cwt.areOnSameTeam({ team: 1 }, { team: 0 }));
+  testIt("same team", "same team numbers means in same team", cwt.areOnSameTeam({ team: 1 }, { team: 1 }));
 
-  testIt("get move costs", "returns value on direct mapping", cwt.getMoveCosts({
-    "KNWN": 5
-  }, "KNWN") === 5);
-  testIt("get move costs", "returns wildcard on missing value", cwt.getMoveCosts({
-    "*": 1
-  }, "UKWN") === 1);
+  testIt("get move costs", "returns value on direct mapping", cwt.getMoveCosts({ "KNWN": 5 }, "KNWN") === 5);
+  testIt("get move costs", "returns wildcard on missing value", cwt.getMoveCosts({ "*": 1 }, "UKWN") === 1);
   testIt("get move costs", "fallbacks to zero", cwt.getMoveCosts({}, "UKWN") === 0);
 }
 
@@ -547,10 +507,7 @@ if (cwt.DEBUGMODE) {
 //                                              STARTUP
 // =========================================================================================================
 
-gameState = cwt.gameModelFactory({
-  day: 5,
-  turnOwner: 0
-});
+gameState = cwt.gameModelFactory({ day: 5, turnOwner: 0 });
 gameState.players[0].team = 0;
 gameState.players[1].team = 1;
 gameState.players[2].team = 2;
