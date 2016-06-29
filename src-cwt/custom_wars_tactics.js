@@ -383,20 +383,24 @@ cwt.propertyTypeFactory = (data) => cwt
 // (Int, Int) -> PropertyModel
 cwt.propertyModelFactory = (type, owner = -1, points = 20) => ({ type, points, owner });
 
-// (PropertyModel, UnitModel) -> PropertyModel
-cwt.captureProperty = (propertyModel, capturerUnitModel) => {
-  const points = propertyModel.points - parseInt(capturerUnitModel.hp / 10, 10);
+// (PropertyModel, PropertyTypeModel, UnitModel) -> PropertyModel
+cwt.captureProperty = (property, propertyType, capturer) => {
+  const points = property.points - parseInt(capturer.hp / 10, 10);
   const captured = points <= 0;
   const owner = captured ? capturerUnitModel.owner : propertyModel.owner;
-  // TODO change type
-  return cwt.propertyModelFactory(captured ? 20 : points, owner);
+  const type = captured && propertyType.capturedType ? propertyType.capturedType : property.type;
+
+  return cwt.cloneMap(property, { type, points: (captured ? 20 : points), owner });
 };
 
+// (Int, [PropertyModel]) -> Boolean
+cwt.hasHeadquarter = (owner, properties) => properties.any(el => el.owner === owner && el.type === "HQTR");
+
 // MoveType
-const baseMoveType = cwt.immutable({
+const baseMoveType = {
   range: 0,
   costs: { "*": -1 }
-});
+};
 
 // (Map String:Int, String) -> Int
 cwt.getMoveCosts = (costs, tileType) => cwt
@@ -533,6 +537,9 @@ cwt.actions.nextTurn = (gameModel) => cwt
     var units = model.units.map(unit => unit.owner != turn.owner ? unit : cwt.cloneMap(unit, { fuel: unit.fuel - 1 }));
 
     // repair units (!!! critical performance impact !!!)
+    //  ==> less than expected... possible to do in a 16 ms frame
+    //      but the algorithm is still very unoptimized.. it should 
+    //      be easier to find unit-property pairs
     units = units.map(unit =>
       unit.owner != turn.owner ? unit :
       cwt.maybe(model.properties.reduce((result, prop) => (
@@ -549,6 +556,10 @@ cwt.actions.nextTurn = (gameModel) => cwt
     return cwt.cloneMap(model, { turn, players, units });
   })
   .get();
+
+// =========================================================================================================
+//                                       CONTROLLER (IMPURE)
+// =========================================================================================================
 
 // =========================================================================================================
 //                                           GUI (IMPURE)
