@@ -95,21 +95,8 @@ cwt.rotate = function(arr, count) {
   return arr;
 };
 
-/** @signature (Int ?= 0, Int ?= 10) -> Int */
-cwt.random = (from = 0, to = 10) => {
-  const randomValue = from + parseInt(Math.random() * to, 10);
-  return {
-
-    /** @signature (Int -> b) -> maybe b */
-    map: f => cwt.maybe(f(randomValue)),
-
-    /** @signature (a -> M b) -> M b */
-    bind: f => f(randomValue),
-
-    /** @signature -> Int */
-    get: () => randomValue
-  };
-};
+/** @signature (Int ?= 0, Int ?= 10) -> just Int */
+cwt.random = (from = 0, to = 10) => cwt.just(from + parseInt(Math.random() * to, 10));
 
 cwt.either = {
 
@@ -158,10 +145,11 @@ cwt.maybe = (value) => value == null || value == undefined ? nothing : cwt.just(
 
 // a -> just a
 cwt.just = (value) => ({
-  map: (f) => cwt.just(f(value)),
+  map: (f) => cwt.maybe(f(value)),
   elseMap(f) {
     return this;
   },
+  biMap: (fPresent, fNotPresent) => cwt.maybe(fPresent(value)),
   bind: (f) => f(value),
   filter(f) {
     return f(value) ? this : cwt.nothing();
@@ -176,6 +164,7 @@ cwt.just = (value) => ({
 const nothing = cwt.immutable({
   map: (f) => nothing,
   elseMap: (f) => cwt.maybe(f()),
+  biMap: (fPresent, fNotPresent) => cwt.maybe(fNotPresent()),
   bind: (f) => nothing,
   filter: (f) => nothing,
   isPresent: () => false,
@@ -275,7 +264,7 @@ cwt.loop = () => {
 
 cwt.containsId = (data) => cwt.isString(data.id) && data.id.length === 4;
 
-cwt.tileTypeBase = cwt.immutable({
+cwt.tileTypeBase = {
   defense: 0,
   blocksVision: false,
   capturePoints: -1,
@@ -296,7 +285,7 @@ cwt.tileTypeBase = cwt.immutable({
   changeTo: "",
   hp: 0,
   destroyedType: ""
-});
+};
 
 // () -> MapModel
 cwt.mapModelFactory = (width, height) => ({
@@ -306,9 +295,7 @@ cwt.mapModelFactory = (width, height) => ({
 });
 
 // (String) -> TileModel
-cwt.tileModelFactory = (type) => ({
-  type
-});
+cwt.tileModelFactory = (type) => ({ type });
 
 // (Map) -> TileTypeModel
 cwt.tileTypeModelFactory = (data) => cwt.flyweight(tileTypeBase, data);
@@ -317,11 +304,7 @@ cwt.tileTypeModelFactory = (data) => cwt.flyweight(tileTypeBase, data);
 cwt.getMapTile = (mapModel, x, y) => mapModel.tiles[x][y];
 
 // () -> PlayerModel
-cwt.playerFactory = () => ({
-  name: "Player",
-  team: -1,
-  money: 0
-});
+cwt.playerFactory = (team = -1, money = 0, name = "Player") => ({ name, team, money });
 
 // (playerModel, playerModel) -> Boolean
 cwt.areOnSameTeam = (playerA, playerB) => playerA.team === playerB.team;
@@ -333,10 +316,10 @@ cwt.thereAreAtLeastTwoOppositeTeams = (players) => players.reduce((result, playe
       (result != player.team ? -2 : result))), -1) == -2;
 
 // (String) -> UnitModel
-cwt.unitFactory = (type) => ({ hp: 99, x: 0, y: 0, type });
+cwt.unitFactory = (type, owner = -1) => ({ hp: 99, owner, x: 0, y: 0, type, fuel: 0 });
 
 // weather
-cwt.baseWeather = cwt.immutable({ defaultWeather: false, minDuration: 1, maxDuration: 4 });
+cwt.baseWeather = { defaultWeather: false, minDuration: 1, maxDuration: 4 };
 
 // Weather -> Boolean
 cwt.isWeather = (weather) => cwt.just(weather)
@@ -367,12 +350,12 @@ let duration = active.minDuration;
     */
 
 /** @signature PropertyTypeModel */
-cwt.basePropertyType = cwt.immutable({
+cwt.basePropertyType = {
   capturable: false,
   funds: 0,
   builds: [],
   repairs: []
-});
+};
 
 /** @signature Map -> Boolean */
 cwt.isPropertyType = (data) => cwt
@@ -391,7 +374,7 @@ cwt.propertyTypeFactory = (data) => cwt
   .filter(cwt.isPropertyType);
 
 // (Int, Int) -> PropertyModel
-cwt.propertyModelFactory = (type, points = 20, owner = -1) => ({ type, points, owner });
+cwt.propertyModelFactory = (type, owner = -1, points = 20) => ({ type, points, owner });
 
 // (PropertyModel, UnitModel) -> PropertyModel
 cwt.captureProperty = (propertyModel, capturerUnitModel) => {
@@ -402,14 +385,20 @@ cwt.captureProperty = (propertyModel, capturerUnitModel) => {
   return cwt.propertyModelFactory(captured ? 20 : points, owner);
 };
 
-const baseMoveType = cwt.immutable({});
+// MoveType
+const baseMoveType = cwt.immutable({
+  range: 0,
+  costs: { "*": -1 }
+});
 
 // (Map String:Int, String) -> Int
 cwt.getMoveCosts = (costs, tileType) => cwt
   .maybe(costs[tileType])
   .elseMap(() => costs["*"])
   .elseMap(() => 0)
-  .get()
+  .get();
+
+cwt.getMoveCostsOfType = (moveType, tileType) => cwt.getMoveCosts(moveType.costs, tileType);
 
 // (Int ?= 0, Int ?= 0) -> turnModel
 cwt.turnModelFactory = (day = 0, owner = 0) => ({ day, owner });
@@ -428,10 +417,7 @@ cwt.isDayChangeBetweenOwners = (idA, idB) => idB < idA;
 // ([PlayerModel], TurnModel) -> TurnModel
 cwt.getNextTurn = (players, turn) => cwt
   .predictNextTurnOwner(players, turn)
-  .map(nextOwner => {
-    const nextDay = turn.day + (cwt.isDayChangeBetweenOwners(turn.owner, nextOwner) ? 1 : 0);
-    return cwt.turnModelFactory(nextDay, nextOwner);
-  })
+  .map(nextOwner => cwt.turnModelFactory(turn.day + (cwt.isDayChangeBetweenOwners(turn.owner, nextOwner) ? 1 : 0), nextOwner))
   .get();
 
 // () -> GameLimitsModel
@@ -458,9 +444,9 @@ cwt.gameModelFactory = (data) => ({
   tileTypes: {},
   turn: cwt.turnModelFactory(data.day, cwt.maybe(data.turnOwner).orElse(0), cwt.maybe(data.gameTime).orElse(0)),
   players: cwt.intRange(1, cwt.MAX_PLAYERS).map(i => cwt.playerFactory()),
-  properties: cwt.intRange(1, cwt.MAX_PROPERTIES).map(i => cwt.propertyModelFactory("CITY")),
+  properties: cwt.intRange(1, cwt.MAX_PROPERTIES).map(i => cwt.propertyModelFactory("PFNY", 0)),
   propertyTypes: {},
-  units: cwt.intRange(1, cwt.MAX_UNITS * cwt.MAX_PLAYERS).map(i => cwt.unitFactory("INFT")),
+  units: cwt.intRange(1, cwt.MAX_UNITS * cwt.MAX_PLAYERS).map(i => cwt.unitFactory("INFT", 0)),
   unitTypes: {},
   weather: cwt.weatherModelFactory("WSUN", cwt.maybe(data.weatherLeftDays).orElse(0)),
   weatherTypes: {},
@@ -479,15 +465,41 @@ cwt.gameDataBySaveFactory = (save) => {
 
 // (SaveData) -> GameData
 cwt.gameDataForDemoPurposes = () => {
-  var model = cwt.gameModelFactory({
-    day: 5,
-    turnOwner: 0
-  });
+  var model = cwt.gameModelFactory({ width: 20, height: 20, day: 5, turnOwner: 0 });
+
+  model.properties = model.properties.map((property, n) =>
+    cwt.cloneMap(property, { x: parseInt(n / 19), y: n % 19 }));
+
+  model.units = model.units.map((unit, n) =>
+    cwt.cloneMap(unit, { x: parseInt(n / 19), y: n % 19 }));
 
   model.players[0].team = 0;
   model.players[1].team = 1;
   model.players[2].team = 2;
   model.players[3].team = -1;
+
+  model.units[1].owner = 1;
+  model.properties[1].owner = 1;
+
+  // P2 - but not standing on property
+  model.units[2].owner = 1;
+  model.units[2].x = 19;
+  model.units[2].y = 19;
+  model.properties[2].owner = 1;
+
+  // P2 - standing on property but not repairable
+  model.units[3].owner = 1;
+  model.units[3].type = "NORP";
+  model.properties[3].owner = 1;
+
+  model.propertyTypes.PFNY = cwt.propertyTypeFactory({
+    id: "PFNY",
+    funds: 1000,
+    repairs: [
+      "INGT", "INBT", "INBH", "INBB", "INBA", "INBC", "INFT"
+    ]
+  }).get();
+  model.propertyTypes.PFNN = cwt.propertyTypeFactory({ id: "PFNY" }).get();
 
   return model;
 };
@@ -501,9 +513,33 @@ cwt.actions = {};
 
 cwt.actions.nextTurn = (gameModel) => cwt
   .just(gameModel)
-  .map(model => cwt.cloneMap(model, {
-    turn: cwt.getNextTurn(model.players, model.turn)
-  }))
+  .map(model => {
+
+    const turn = cwt.getNextTurn(model.players, model.turn);
+
+    const newFunds = model.properties.reduce((sum, property) =>
+      sum + (property.owner === turn.owner ? model.propertyTypes[property.type].funds : 0), 0);
+
+    // give funds
+    const players = model.players.map((player, id) =>
+      id === turn.owner ? cwt.playerFactory(player.team, player.money + newFunds, player.name) : player);
+
+    var units = model.units.map(unit => unit.owner != turn.owner ? unit : cwt.cloneMap(unit, { fuel: unit.fuel - 1 }));
+
+    // repair units (!!! critical performance impact !!!)
+    units = units.map(unit =>
+      unit.owner != turn.owner ? unit :
+      cwt.maybe(model.properties.reduce((result, prop) => (result == null &&
+        unit.x == prop.x &&
+        unit.y == prop.y &&
+        unit.owner == prop.owner) ? prop : result, null))
+      .map((prop) => model.propertyTypes[prop.type].repairs.indexOf(unit.type) !== -1 ? prop : null)
+      .biMap(() => cwt.cloneMap(unit, { hp: parseInt(Math.random() * 99, 10) }),
+        () => unit)
+      .get());
+
+    return cwt.cloneMap(model, { turn, players, units });
+  })
   .get();
 
 // =========================================================================================================
@@ -565,13 +601,25 @@ cwt.logIO()
   .then(delta => gameState = cwt.cloneMap(gameState, {
     limits: cwt.gameLimitFactory(gameState.limits.elapsedTime + delta, gameState.limits.elapsedTurns)
   }))
-  .then(delta => gameState = Math.random() < 0.1 ? cwt.actions.nextTurn(gameState) : gameState)
+  .then(delta => gameState = Math.random() < 0.05 ? cwt.actions.nextTurn(gameState) : gameState)
   .then(delta => {
     gameCanvasCtx.clearRect(0, 0, cwt.CANVAS_WIDTH, cwt.CANVAS_HEIGHT);
     gameCanvasCtx.fillStyle = "white";
+    gameCanvasCtx.font = "9px Arial";
 
     gameCanvasCtx.fillText("DAY = " + gameState.turn.day, 4, 12);
     gameCanvasCtx.fillText("TURNOWNER = " + gameState.turn.owner, 4, 22);
+
+    gameCanvasCtx.fillText("PLAYER 0 MONEY = " + gameState.players[0].money, 4, 102);
+    gameCanvasCtx.fillText("PLAYER 1 MONEY = " + gameState.players[1].money, 4, 112);
+    gameCanvasCtx.fillText("PLAYER 2 MONEY = " + gameState.players[2].money, 4, 122);
+
+    gameCanvasCtx.fillText("UNIT 0 (P1) HP = " + gameState.units[0].hp, 4, 172);
+    gameCanvasCtx.fillText("FUEL = " + gameState.units[0].fuel, 104, 172);
+
+    gameCanvasCtx.fillText("UNIT 1 (P2) HP = " + gameState.units[1].hp, 4, 182);
+    gameCanvasCtx.fillText("UNIT 2 (P2) HP = " + gameState.units[2].hp, 4, 192);
+    gameCanvasCtx.fillText("UNIT 3 (P2) HP = " + gameState.units[3].hp, 4, 202);
 
     gameCanvasCtx.fillText("GAME TIME = " + gameState.limits.elapsedTime + "ms", 4, 222);
     gameCanvasCtx.fillText("DELTA = " + delta + "ms", 4, 232);
