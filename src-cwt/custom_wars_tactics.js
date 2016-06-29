@@ -83,6 +83,9 @@ cwt.isMapOf = (value, valueTypeCheck) => Object.keys(value).every(key => valueTy
 // (Int, (Int, a) -> a', a) -> nothing
 cwt.nTimes = (n, fn, argument = cwt.nothing()) => n > 0 ? cwt.nTimes(n - 1, fn, fn(n, argument)) : argument;
 
+// ([a], (a) -> Int) -> Int
+cwt.listSumUp = (list, fn) => list.reduce((sum, obj) => sum + fn(obj), 0);
+
 // ([a], Int) -> [a]
 cwt.rotate = function(arr, count) {
   arr = arr.map(el => el);
@@ -367,6 +370,10 @@ cwt.isPropertyType = (data) => cwt
   .filter(data => cwt.isListOf(data.repairs, cwt.isString))
   .isPresent();
 
+/** @signature (Player, [PropertyModel], {PropertyTypeModel}) -> Int */
+cwt.sumUpFunds = (owner, properties, propertyTypes) =>
+  cwt.listSumUp(properties, property => property.owner === owner ? propertyTypes[property.type].funds : 0);
+
 /** @signature Map -> maybe PropertyTypeModel */
 cwt.propertyTypeFactory = (data) => cwt
   .maybe(data)
@@ -517,24 +524,25 @@ cwt.actions.nextTurn = (gameModel) => cwt
 
     const turn = cwt.getNextTurn(model.players, model.turn);
 
-    const newFunds = model.properties.reduce((sum, property) =>
-      sum + (property.owner === turn.owner ? model.propertyTypes[property.type].funds : 0), 0);
+    const newFunds = cwt.sumUpFunds(turn.owner, model.properties, model.propertyTypes);
 
     // give funds
     const players = model.players.map((player, id) =>
-      id === turn.owner ? cwt.playerFactory(player.team, player.money + newFunds, player.name) : player);
+      id === turn.owner ? cwt.cloneMap(player, { money: player.money + newFunds }) : player);
 
     var units = model.units.map(unit => unit.owner != turn.owner ? unit : cwt.cloneMap(unit, { fuel: unit.fuel - 1 }));
 
     // repair units (!!! critical performance impact !!!)
     units = units.map(unit =>
       unit.owner != turn.owner ? unit :
-      cwt.maybe(model.properties.reduce((result, prop) => (result == null &&
+      cwt.maybe(model.properties.reduce((result, prop) => (
+        result == null &&
         unit.x == prop.x &&
         unit.y == prop.y &&
         unit.owner == prop.owner) ? prop : result, null))
       .map((prop) => model.propertyTypes[prop.type].repairs.indexOf(unit.type) !== -1 ? prop : null)
-      .biMap(() => cwt.cloneMap(unit, { hp: parseInt(Math.random() * 99, 10) }),
+      .biMap(
+        () => cwt.cloneMap(unit, { hp: parseInt(Math.random() * 99, 10) }),
         () => unit)
       .get());
 
