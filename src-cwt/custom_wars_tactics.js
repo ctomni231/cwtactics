@@ -1,3 +1,5 @@
+"use strict";
+
 // CustomWarsTactics Source File
 // Why one file? Easier for us and we have no time.. so please do not try to explain "this is an anti pattern!"
 
@@ -5,50 +7,101 @@
 //                                                STUB
 // =========================================================================================================
 
-"use strict";
+const DEBUGMODE = true;
 
-const cwt = {};
+const CANVAS_WIDTH = 320;
+const CANVAS_HEIGHT = 240;
 
-cwt.DEBUGMODE = true;
+const INACTIVE_ID = -1;
+const DESELECT_ID = -2;
+const ACTIONS_BUFFER_SIZE = 200;
+const MAX_PLAYERS = 4;
+const MAX_UNITS = 50;
+const MAX_MAP_WIDTH = 100;
+const MAX_MAP_HEIGHT = 100;
+const MAX_PROPERTIES = 300;
+const MAX_SELECTION_RANGE = 15;
+const MAX_BUFFER_SIZE = 200;
+const TILE_LENGTH = 16;
 
-cwt.CANVAS_WIDTH = 320;
-cwt.CANVAS_HEIGHT = 240;
-
-cwt.INACTIVE_ID = -1;
-cwt.DESELECT_ID = -2;
-cwt.ACTIONS_BUFFER_SIZE = 200;
-cwt.MAX_PLAYERS = 4;
-cwt.MAX_UNITS = 50;
-cwt.MAX_MAP_WIDTH = 100;
-cwt.MAX_MAP_HEIGHT = 100;
-cwt.MAX_PROPERTIES = 300;
-cwt.MAX_SELECTION_RANGE = 15;
-cwt.MAX_BUFFER_SIZE = 200;
-cwt.TILE_LENGTH = 16;
-
-cwt.VERSION = "0.36";
-cwt.AI_VERSION = "DumbBoy v. 0.1 Alpha";
+const VERSION = "0.36";
+const AI_VERSION = "DumbBoy v. 0.1 Alpha";
 
 // =========================================================================================================
 //                                                CORE
 // =========================================================================================================
 
-// (Map) -> Map
-cwt.immutable = (obj) => Object.freeze(obj);
+const raiseError = function(msg = "UnknownError") {
+  throw new Error(msg);
+};
 
-// (Map, Map ?= {}) -> Map
-cwt.flyweight = (prototype, data = {}) => Object.assign(Object.create(prototype), data);
+const testStatement = (expectedResult, fnThatReturnsActual, name) =>
+  either.tryIt(fnThatReturnsActual)
+  .bind(actual => actual != expectedResult ?
+    left(new Error("expected:" + expectedResult + " but was:" + actual)) :
+    right(actual))
+  .fold(error => "FAILED, reason: " + error.message + " stack: " + error.stack[0],
+    result => "PASSED")
+  .map(result => "[TEST-CASE] " + name + " [" + result + "]");
 
-// (Map, Map ?= {}) -> Map
-cwt.cloneMap = (source, data = null) =>
+const testFunction = (a, b, c) => {
+  const time = Date.now();
+  testStatement(a, b, c)
+    .map(msg => msg + " [TIME: " + (Date.now() - time) + "ms]")
+    .ifPresent(console.log);
+};
+
+const testTrueValue = testFunction.bind(null, true);
+const testFalseValue = testFunction.bind(null, false);
+
+const compose = function() {
+  switch (arguments.length) {
+    case 2:
+      return compose2.apply(this, arguments);
+    case 3:
+      return compose3.apply(this, arguments);
+    case 4:
+      return compose4.apply(this, arguments);
+    case 5:
+      return compose5.apply(this, arguments);
+    case 6:
+      return compose6.apply(this, arguments);
+    case 7:
+      return compose7.apply(this, arguments);
+    case 8:
+      return compose8.apply(this, arguments);
+    case 9:
+      return compose9.apply(this, arguments);
+    default:
+      throw new Error("Unsupported arity");
+  }
+};
+
+const compose2 = (f, g) => (value) => f(g(value));
+const compose3 = (f, g, h) => (value) => h(f(g(value)));
+const compose4 = (f, g, h, i) => (value) => i(h(f(g(value))));
+const compose5 = (f, g, h, i, j) => (value) => j(i(h(f(g(value)))));
+const compose6 = (f, g, h, i, j, k) => (value) => k(j(i(h(f(g(value))))));
+const compose7 = (f, g, h, i, j, k, l) => (value) => l(k(j(i(h(f(g(value)))))));
+const compose8 = (f, g, h, i, j, k, l, m) => (value) => m(l(k(j(i(h(f(g(value))))))));
+const compose9 = (f, g, h, i, j, k, l, m, n) => (value) => n(m(l(k(j(i(h(f(g(value)))))))));
+
+// (Map) => Map
+const immutable = (obj) => Object.freeze(obj);
+
+// (Map, Map ?= {}) => Map
+const flyweight = (prototype, data = {}) => Object.assign(Object.create(prototype), data);
+
+// (Map, Map ?= {}) => Map
+const createCopy = (source, data = null) =>
   Object.assign(
     Object.keys(source).reduce((obj, key) => {
       obj[key] = source[key];
       return obj;
     }, {}), data);
 
-// (Int, Int) -> [Int]
-cwt.intRange = (from, to) => {
+// (Int, Int) => [Int]
+const intRange = (from, to) => {
   var arr = [];
   for (; from <= to; from++) {
     arr.push(from);
@@ -56,38 +109,38 @@ cwt.intRange = (from, to) => {
   return arr;
 };
 
-// (any) -> boolean
-cwt.isInteger = (value) => typeof value === 'number' && value % 1 === 0;
+// (any) => boolean
+const isInteger = (value) => typeof value === 'number' && value % 1 === 0;
 
-// (any) -> boolean
-cwt.isNumber = (value) => typeof value === 'number';
+// (any) => boolean
+const isNumber = (value) => typeof value === 'number';
 
-// (any) -> boolean
-cwt.isString = (value) => typeof value === 'string';
+// (any) => boolean
+const isString = (value) => typeof value === 'string';
 
-// (any) -> boolean
-cwt.isFunction = (value) => typeof value === 'function';
+// (any) => boolean
+const isFunction = (value) => typeof value === 'function';
 
-// (any) -> boolean
-cwt.isBoolean = (value) => value === true || value === false;
+// (any) => boolean
+const isBoolean = (value) => value === true || value === false;
 
-// (any) -> boolean
-cwt.isSomething = (value) => value !== null && value !== undefined;
+// (any) => boolean
+const isSomething = (value) => value !== null && value !== undefined;
 
-// (list<any>, (any) -> boolean) -> boolean
-cwt.isListOf = (value, valueTypeCheck) => value.every(element => valueTypeCheck(element));
+// (list<any>, (any) => boolean) => boolean
+const isListOf = (value, valueTypeCheck) => value.every(element => valueTypeCheck(element));
 
-// (map<any>, (any) -> boolean) -> boolean
-cwt.isMapOf = (value, valueTypeCheck) => Object.keys(value).every(key => valueTypeCheck(value[key]));
+// (map<any>, (any) => boolean) => boolean
+const isMapOf = (value, valueTypeCheck) => Object.keys(value).every(key => valueTypeCheck(value[key]));
 
-// (Int, (Int, a) -> a', a) -> nothing
-cwt.nTimes = (n, fn, argument = cwt.nothing()) => n > 0 ? cwt.nTimes(n - 1, fn, fn(n, argument)) : argument;
+// (Int, (Int, a) => a', a) => nothing
+const nTimes = (n, fn, argument = nothing()) => n > 0 ? nTimes(n - 1, fn, fn(n, argument)) : argument;
 
-// ([a], (a) -> Int) -> Int
-cwt.listSumUp = (list, fn) => list.reduce((sum, obj) => sum + fn(obj), 0);
+// ([a], (a) => Int) => Int
+const listSumUp = (list, fn) => list.reduce((sum, obj) => sum + fn(obj), 0);
 
-// ([a], Int) -> [a]
-cwt.rotate = function(arr, count) {
+// ([a], Int) => [a]
+const rotate = function(arr, count) {
   arr = arr.map(el => el);
   count = count % arr.length;
   if (count < 0) {
@@ -98,65 +151,61 @@ cwt.rotate = function(arr, count) {
   return arr;
 };
 
-/** @signature (Int ?= 0, Int ?= 10) -> just Int */
-cwt.random = (from = 0, to = 10) => cwt.just(from + parseInt(Math.random() * to, 10));
+/** @signature (Int ?= 0, Int ?= 10) => just Int */
+const random = (from = 0, to = 10) => just(from + parseInt(Math.random() * to, 10));
 
-cwt.either = {
+const either = {
 
-  // (a) -> left String | right a (same as either String, a)
+  // (a) => left String | right a (same as either String, a)
   fromNullable: value => value === null || value === undefined ?
-    cwt.left("ValueIsNotDefined") : cwt.right(value),
+    left("ValueIsNotDefined") : right(value),
 
-  expectTrue: value => value === true ? cwt.left(value) : cwt.right(value),
+  expectTrue: value => value === true ? left(value) : right(value),
 
-  // (() -> a) -> left Error | right a (same as either Error, a)
+  // (() => a) => left Error | right a (same as either Error, a)
   tryIt: (f) => {
     try {
-      return cwt.right(f(value))
+      return right(f())
     } catch (e) {
-      return cwt.left(e)
+      return left(e)
     }
   }
 };
 
-cwt.left = function(value) {
+const left = function(value) {
   return {
-    map: f => this,
-    biMap: (fLeft, fRight) => cwt.left(fLeft(value)),
-    bind: f => this,
-    fold: (leftHandle, rightHandle) => cwt.just(leftHandle(value))
+    map: f => left(value),
+    biMap: (fLeft, fRight) => left(fLeft(value)),
+    bind: f => left(value),
+    fold: (leftHandle, rightHandle) => just(leftHandle(value))
   };
 };
 
-cwt.right = function(value) {
+const right = function(value) {
   return {
-    map: f => cwt.right(f(value)),
-    biMap: (fLeft, fRight) => cwt.right(fRight(value)),
+    map: f => right(f(value)),
+    biMap: (fLeft, fRight) => right(fRight(value)),
     bind: f => f(value),
-    fold: (leftHandle, rightHandle) => cwt.just(rightHandle(value))
+    fold: (leftHandle, rightHandle) => just(rightHandle(value))
   };
 };
 
-cwt.validation = (expression) => expression ? cwt.right("PASSED") : cwt.left("FAILED");
+const validation = (expression) => expression ? right("PASSED") : left("FAILED");
 
 
-// () -> Int
-cwt.random = (from, to) => cwt.just(from + parseInt(Math.random() * (to - from), 10));
+// () => Int
+const randomInt = (from, to) => just(from + parseInt(Math.random() * (to - from), 10));
 
-// a -> just a | nothing
-cwt.maybe = (value) => value == null || value == undefined ? nothing : cwt.just(value);
+// a => just a | nothing
+const maybe = (value) => value == null || value == undefined ? nothing() : just(value);
 
-// a -> just a
-cwt.just = (value) => ({
-  map: (f) => cwt.maybe(f(value)),
-  elseMap(f) {
-    return this;
-  },
-  biMap: (fPresent, fNotPresent) => cwt.maybe(fPresent(value)),
+// a => just a
+const just = (value) => ({
+  map: (f) => maybe(f(value)),
+  elseMap: f => just(value),
+  biMap: (fPresent, fNotPresent) => maybe(fPresent(value)),
   bind: (f) => f(value),
-  filter(f) {
-    return f(value) ? this : cwt.nothing();
-  },
+  filter: (f) => f(value) ? just(value) : nothing(),
   isPresent: () => true,
   ifPresent: (f) => f(value),
   orElse: (v) => value,
@@ -164,14 +213,14 @@ cwt.just = (value) => ({
   toString: () => "just(" + value + ")"
 });
 
-const nothing = cwt.immutable({
-  map: (f) => nothing,
-  elseMap: (f) => cwt.maybe(f()),
-  biMap: (fPresent, fNotPresent) => cwt.maybe(fNotPresent()),
-  bind: (f) => nothing,
-  filter: (f) => nothing,
+const _nothing = immutable({
+  map: (f) => _nothing,
+  elseMap: (f) => maybe(f()),
+  biMap: (fPresent, fNotPresent) => maybe(fNotPresent()),
+  bind: (f) => _nothing,
+  filter: (f) => _nothing,
   isPresent: () => false,
-  ifPresent: (f) => nothing,
+  ifPresent: (f) => _nothing,
   orElse: (v) => v,
   get() {
     throw new Error("Nothing");
@@ -179,95 +228,16 @@ const nothing = cwt.immutable({
   toString: () => "nothing"
 });
 
-// -> nothing
-cwt.nothing = () => nothing;
-
-// String -> Promise
-cwt.jsonIO = (path) => new Promise((resolve, reject) => {
-  const request = new XMLHttpRequest();
-
-  request.onreadystatechange = () => {
-    if (request.readyState == 4) {
-      if (request.status == 200) {
-        try {
-          resolve(JSON.parse(request.responseText));
-        } catch (error) {
-          reject("JSONException: " + error);
-        }
-      } else {
-        reject(request.statusText);
-      }
-    }
-  };
-
-  request.open("get", path + (path.indexOf("?") < 0 ? "?" : "&") + (parseInt(Math.random() * 100000, 10)), true);
-  request.send();
-});
-
-// (String) -> Promise
-cwt.cachedJsonIO = (path) => new Promise((resolve, reject) => localforage
-  .getItem(path)
-  .then(value => {
-    if (value == null) {
-      cwt.jsonIO(path)
-        .then(data => localforage.setItem(path, data))
-        .then(data => resolve(data));
-    } else {
-      resolve(value);
-    }
-  })
-  .catch(function(err) {
-    reject(err);
-  }));
-
-const _logIO = {
-  putLn: (str) => {
-    console.log(str);
-    return _logIO;
-  },
-
-  bind: (fn) => fn()
-};
-
-// () -> { putLn }
-cwt.logIO = () => _logIO;
-
-// LoopMonad :: () -> LoopMonad Int
-cwt.loop = () => {
-  var lastTime = (new Date()).getTime();
-
-  const loop = () => {
-    const now = (new Date()).getTime();
-    const delta = now - lastTime;
-    lastTime = now;
-
-    for (var i = mappers.length - 1; i >= 0; i--) {
-      mappers[i](delta);
-    }
-
-    requestAnimationFrame(loop);
-  };
-  requestAnimationFrame(loop);
-
-  const mappers = [];
-
-  const stub = {
-    then: (fn) => {
-      mappers.push(fn);
-      return stub;
-    }
-  };
-
-  return stub;
-};
+// => nothing
+const nothing = () => _nothing;
 
 // =========================================================================================================
 //                                                 GAME
 // =========================================================================================================
 
-cwt.containsId = (data) => cwt.isString(data.id) && data.id.length === 4;
+const containsId = (data) => isString(data.id) && data.id.length === 4;
 
-cwt.tileTypeBase = {
+const tileTypeBase = {
   defense: 0,
   blocksVision: false,
   capturePoints: -1,
@@ -290,60 +260,95 @@ cwt.tileTypeBase = {
   destroyedType: ""
 };
 
-// () -> MapModel
-cwt.mapModelFactory = (width, height) => ({
-  tiles: cwt.intRange(1, width).map(columnId =>
-    cwt.intRange(1, height).map(rowId =>
-      cwt.tileModelFactory("PLIN")))
+// () => MapModel
+const mapModelFactory = (width, height) => ({
+  tiles: intRange(1, width).map(columnId =>
+    intRange(1, height).map(rowId =>
+      tileModelFactory("PLIN")))
 });
 
-// (String) -> TileModel
-cwt.tileModelFactory = (type) => ({ type });
+// (String) => TileModel
+const tileModelFactory = (type) => ({ type });
 
-// (Map) -> TileTypeModel
-cwt.tileTypeModelFactory = (data) => cwt.flyweight(tileTypeBase, data);
+// (Map) => TileTypeModel
+const tileTypeModelFactory = (data) => flyweight(tileTypeBase, data);
 
-// (MapModel, Int, Int) -> TileModel
-cwt.getMapTile = (mapModel, x, y) => mapModel.tiles[x][y];
+// (MapModel, Int, Int) => TileModel
+const getMapTile = (mapModel, x, y) => mapModel.tiles[x][y];
 
-// () -> PlayerModel
-cwt.playerFactory = (team = -1, money = 0, name = "Player") => ({ name, team, money });
+// (Int, Int, Int, Int) => Int
+const distanceBetweenPositions = (sx, sy, tx, ty) => Math.abs(sx - tx) + Math.abs(sy - ty);
 
-// (playerModel, playerModel) -> Boolean
-cwt.areOnSameTeam = (playerA, playerB) => playerA.team === playerB.team;
+// ({x,y}, {x,y}) => Int
+const distanceBetweenObjects = (a, b) => distanceBetweenPositions(a.x, a.y, b.x, b.y);
 
-// ([PlayerModel]) -> Boolean
-cwt.thereAreAtLeastTwoOppositeTeams = (players) => players.reduce((result, player) => result =
+// ({x,y}, {x,y}) => Boolean
+const areOnSamePosition = (a, b) => distanceBetweenObjects(a, b) === 0;
+
+// () => PlayerModel
+const playerFactory = (team = -1, money = 0, name = "Player") => ({ name, team, money });
+
+// (playerModel, playerModel) => Boolean
+const areOwnedBySameTeam = (playerA, playerB) => playerA.team === playerB.team;
+
+// ({owner}, {owner}) => Boolean
+const areOwnedBySamePlayer = (a, b) => a.owner === b.owner;
+
+// ([PlayerModel]) => Boolean
+const thereAreAtLeastTwoOppositeTeams = (players) => players.reduce((result, player) => result =
   (player.team == -1 ? result :
     (result == -1 ? player.team :
       (result != player.team ? -2 : result))), -1) == -2;
 
-// (String) -> UnitModel
-cwt.unitFactory = (type, owner = -1) => ({ hp: 99, owner, x: 0, y: 0, type, fuel: 0 });
+const baseUnitType = {
+  turnStartFuelConsumption: 0,
+  maxAmmo: 1,
+  maxFuel: 50,
+  supplies: []
+};
+
+// isConsumingFuelOnTurnStart:: (UnitModel, {UnitType}) => Boolean
+const isConsumingFuelOnTurnStart = (unit, types) => types[unit.type].fuelConsumption > 0;
+
+// drainFuelOnTurnOwnerUnits:: (GameModel) => GameModel'
+const drainFuelOnTurnOwnerUnits = (model) => createCopy(model, {
+  units: model.units.map(unit => {
+    if (areOwnedBySamePlayer(unit, model.turn)) {
+      return createCopy(unit, {
+        owner: unit.fuel - (isConsumingFuelOnTurnStart(unit, model.unitTypes) ? unit.owner : -1),
+        fuel: unit.fuel - model.unitTypes[unit.type].turnStartFuelConsumption
+      });
+    }
+    return unit;
+  })
+});
+
+// (String) => UnitModel
+const unitFactory = (type, owner = -1) => ({ hp: 99, owner, x: 0, y: 0, type, fuel: 0 });
 
 // weather
-cwt.baseWeather = { defaultWeather: false, minDuration: 1, maxDuration: 4 };
+const baseWeather = { defaultWeather: false, minDuration: 1, maxDuration: 4 };
 
-// Weather -> Boolean
-cwt.isWeather = (weather) => cwt.just(weather)
-  .filter(w => cwt.isString(w.id) && w.id.length === 4)
-  .filter(w => cwt.isInteger(w.minDuration) && w.minDuration >= 1)
-  .filter(w => cwt.isInteger(w.maxDuration) && w.maxDuration >= w.minDuration)
-  .filter(w => cwt.isBoolean(w.defaultWeather))
+// Weather => Boolean
+const isWeather = (weather) => just(weather)
+  .filter(w => isString(w.id) && w.id.length === 4)
+  .filter(w => isInteger(w.minDuration) && w.minDuration >= 1)
+  .filter(w => isInteger(w.maxDuration) && w.maxDuration >= w.minDuration)
+  .filter(w => isBoolean(w.defaultWeather))
   .isPresent();
 
-// ([Map]) -> (() -> [Weather])
-cwt.loadWeathers = (data) => data
-  .map(weather => cwt.flyweight(baseWeather, weather))
-  .bind(data => data.map(weather => cwt.isWeather(weather) ? cwt.just(weather) : cwt.nothing()))
+// ([Map]) => (() => [Weather])
+const loadWeathers = (data) => data
+  .map(weather => flyweight(baseWeather, weather))
+  .bind(data => data.map(weather => isWeather(weather) ? just(weather) : nothing()))
   .get();
 
-// (Weather, Int) -> WeatherModel
-cwt.weatherModelFactory = (weather, day = 0) => ({ day, weather });
+// (Weather, Int) => WeatherModel
+const weatherModelFactory = (type, day = 0) => ({ day, type });
 
-cwt.getRandomWeatherModel = () =>
-  cwt.random(0, weathers.length)
-  .map(value => just(weatherModelFactory({}, weathers[value])))
+const getRandomWeatherModel = (weathers) =>
+  randomInt(0, weathers.length)
+  .map(value => just(weatherModelFactory(weathers[value], 4)))
   .get();
 
 /*
@@ -353,48 +358,77 @@ let duration = active.minDuration;
     */
 
 /** @signature PropertyTypeModel */
-cwt.basePropertyType = {
+const basePropertyType = {
   capturable: false,
   funds: 0,
   builds: [],
-  repairs: []
+  repairs: [],
+  supplies: []
 };
 
-/** @signature Map -> Boolean */
-cwt.isPropertyType = (data) => cwt
-  .maybe(data)
-  .filter(cwt.containsId)
-  .filter(data => cwt.isBoolean(data.capturable))
-  .filter(data => cwt.isInteger(data.funds) && data.funds >= 0)
-  .filter(data => cwt.isListOf(data.builds, cwt.isString))
-  .filter(data => cwt.isListOf(data.repairs, cwt.isString))
+/** @signature Map => Boolean */
+const isPropertyType = (data) => maybe(data)
+  .filter(containsId)
+  .filter(data => isBoolean(data.capturable))
+  .filter(data => isInteger(data.funds) && data.funds >= 0)
+  .filter(data => isListOf(data.builds, isString))
+  .filter(data => isListOf(data.repairs, isString))
   .isPresent();
 
-/** @signature (Player, [PropertyModel], {PropertyTypeModel}) -> Int */
-cwt.sumUpFunds = (owner, properties, propertyTypes) =>
-  cwt.listSumUp(properties, property => property.owner === owner ? propertyTypes[property.type].funds : 0);
+// sumUpFunds:: (Player, [PropertyModel], {PropertyTypeModel}) => Int
+const sumUpFunds = (owner, properties, propertyTypes) =>
+  listSumUp(properties, property => property.owner === owner ? propertyTypes[property.type].funds : 0);
 
-/** @signature Map -> maybe PropertyTypeModel */
-cwt.propertyTypeFactory = (data) => cwt
-  .maybe(data)
-  .map(data => cwt.flyweight(cwt.basePropertyType, data))
-  .filter(cwt.isPropertyType);
+// payFundsToTurnOwner:: (GameModel) => GameModel'
+const payFundsToTurnOwner = (model) => createCopy(model, {
+  players: model.players.map((player, owner) => {
+    if (areOwnedBySamePlayer({ owner }, model.turn)) {
+      return createCopy(player, {
+        money: player.money + sumUpFunds(model.turn.owner, model.properties, model.propertyTypes)
+      });
+    }
+    return player;
+  })
+});
 
-// (Int, Int) -> PropertyModel
-cwt.propertyModelFactory = (type, owner = -1, points = 20) => ({ type, points, owner });
+/** @signature Map => maybe PropertyTypeModel */
+const propertyTypeFactory = (data) => maybe(data)
+  .map(data => flyweight(basePropertyType, data))
+  .filter(isPropertyType);
 
-// (PropertyModel, PropertyTypeModel, UnitModel) -> PropertyModel
-cwt.captureProperty = (property, propertyType, capturer) => {
+// (Int, Int) => PropertyModel
+const propertyModelFactory = (type, owner = -1, points = 20) => ({ type, points, owner });
+
+// (PropertyModel, PropertyTypeModel, UnitModel) => PropertyModel
+const captureProperty = (property, propertyType, capturer) => {
   const points = property.points - parseInt(capturer.hp / 10, 10);
   const captured = points <= 0;
   const owner = captured ? capturerUnitModel.owner : propertyModel.owner;
   const type = captured && propertyType.capturedType ? propertyType.capturedType : property.type;
 
-  return cwt.cloneMap(property, { type, points: (captured ? 20 : points), owner });
+  return createCopy(property, { type, points: (captured ? 20 : points), owner });
 };
 
-// (Int, [PropertyModel]) -> Boolean
-cwt.hasHeadquarter = (owner, properties) => properties.any(el => el.owner === owner && el.type === "HQTR");
+// canPropertyRepairType:: (PropertyType, String) => Boolean
+const canPropertyRepairType = (propertyType, unitType) => propertyType.repairs.indexOf(unitType) > -1;
+
+// repairTurnOwnerUnitsOnProperties:: (GameModel) => GameModel'
+const repairTurnOwnerUnitsOnProperties = (model) => createCopy(model, {
+  units: model.units.map(unit => {
+    if (areOwnedBySamePlayer(unit, model.turn)) {
+      return maybe(model.properties.find(prop => areOnSamePosition(unit, prop) && areOwnedBySamePlayer(unit, prop)))
+        .map(prop => createCopy(unit, {
+          hp: canPropertyRepairType(model.propertyTypes[prop.type], unit.type) ?
+            Math.min(parseInt(unit.hp + 20, 10), 99) : unit.hp
+        }))
+        .orElse(unit)
+    }
+    return unit;
+  })
+});
+
+// (Int, [PropertyModel]) => Boolean
+const hasHeadquarter = (owner, properties) => properties.any(el => el.owner === owner && el.type === "HQTR");
 
 // MoveType
 const baseMoveType = {
@@ -402,100 +436,126 @@ const baseMoveType = {
   costs: { "*": -1 }
 };
 
-// (Map String:Int, String) -> Int
-cwt.getMoveCosts = (costs, tileType) => cwt
-  .maybe(costs[tileType])
+// (Map String:Int, String) => Int
+const getMoveCosts = (costs, tileType) => maybe(costs[tileType])
   .elseMap(() => costs["*"])
   .elseMap(() => 0)
   .get();
 
-cwt.getMoveCostsOfType = (moveType, tileType) => cwt.getMoveCosts(moveType.costs, tileType);
+const getMoveCostsOfType = (moveType, tileType) => getMoveCosts(moveType.costs, tileType);
 
-// (Int ?= 0, Int ?= 0) -> turnModel
-cwt.turnModelFactory = (day = 0, owner = 0) => ({ day, owner });
+// (Int ?= 0, Int ?= 0) => turnModel
+const turnModelFactory = (day = 0, owner = 0) => ({ day, owner });
 
-// ([PlayerModel], TurnModel) -> maybe<Int>
-cwt.predictNextTurnOwner = function(players, model) {
+// ([PlayerModel], TurnModel) => maybe<Int>
+const predictNextTurnOwner = function(players, model) {
   const currentId = model.owner;
-  const relativeNextId = cwt.rotate(players, currentId + 1).findIndex(el => el.team >= 0) + 1;
+  const relativeNextId = rotate(players, currentId + 1).findIndex(el => el.team >= 0) + 1;
   const absoluteNextId = (relativeNextId + currentId) % players.length;
-  return currentId != absoluteNextId ? cwt.just(absoluteNextId) : cwt.nothing();
+  return currentId != absoluteNextId ? just(absoluteNextId) : nothing();
 };
 
-// (Int, Int) -> Boolean
-cwt.isDayChangeBetweenOwners = (idA, idB) => idB < idA;
+// (Int, Int) => Boolean
+const isDayChangeBetweenOwners = (idA, idB) => idB < idA;
 
-// ([PlayerModel], TurnModel) -> TurnModel
-cwt.getNextTurn = (players, turn) => cwt
-  .predictNextTurnOwner(players, turn)
-  .map(nextOwner => cwt.turnModelFactory(turn.day + (cwt.isDayChangeBetweenOwners(turn.owner, nextOwner) ? 1 : 0), nextOwner))
+// ([PlayerModel], TurnModel) => TurnModel
+const getNextTurn = (players, turn) => predictNextTurnOwner(players, turn)
+  .map(nextOwner => turnModelFactory(turn.day + (isDayChangeBetweenOwners(turn.owner, nextOwner) ? 1 : 0), nextOwner))
   .get();
 
-// () -> GameLimitsModel
-cwt.gameLimitFactory = (elapsedTime = 0, elapsedTurns = 0) => ({
-  elapsedTime,
-  elapsedTurns,
-  dayLimit: Number.POSITIVE_INFINITY,
-  turnTimeLimit: Number.POSITIVE_INFINITY,
-  gameTimeLimit: Number.POSITIVE_INFINITY
+// (GameModel) => GameModel'
+const tickTurn = (model) => {
+  const turn = getNextTurn(model.players, model.turn);
+  const changedDay = isDayChangeBetweenOwners(model.turn.owner, turn.owner);
+  const limits = createCopy(model.limits, {
+    leftDays: model.limits.leftDays + (changedDay ? -1 : 0)
+  });
+  const weatherLeftDays = model.weather.day + (changedDay ? -1 : 0);
+  const weather = createCopy(model.weather, {
+    day: weatherLeftDays,
+    type: weatherLeftDays > 0 ? model.weather.type : getRandomWeatherModel(model.weatherTypes)
+  });
+
+  return createCopy(model, { turn, limits, weather });
+};
+
+// () => GameLimitsModel
+const gameLimitFactory = () => ({
+  leftDays: Number.POSITIVE_INFINITY,
+  leftTurnTime: Number.POSITIVE_INFINITY,
+  leftGameTime: Number.POSITIVE_INFINITY
 });
 
-// (GameModel) -> Boolean
-cwt.isTurnTimeLimitReached = (gameModel) => gameModel.turnOwner.elapsedTime >= gameModel.limits.turnTimeLimit;
+// (GameModel) => Boolean
+const isTurnTimeLimitReached = (gameModel) => gameModel.turnOwner.elapsedTime >= gameModel.limits.turnTimeLimit;
 
 // WRONG
-cwt.isGameTimeLimitReached = (gameModel) => gameModel.turnOwner.elapsedTime >= gameModel.limits.gameTimeLimit;
+const isGameTimeLimitReached = (gameModel) => gameModel.turnOwner.elapsedTime >= gameModel.limits.gameTimeLimit;
 
-// (GameModel) -> Boolean
-cwt.isTurnLimitReached = (gameModel) => gameModel.turnOwner.day >= gameModel.limits.dayLimit;
+// (GameModel) => Boolean
+const isTurnLimitReached = (gameModel) => gameModel.turnOwner.day >= gameModel.limits.dayLimit;
 
-// (GameData) -> GameModel
-cwt.gameModelFactory = (data) => ({
-  map: cwt.mapModelFactory(data.width, data.height),
+// (GameData) => GameModel
+const gameModelFactory = (data) => ({
+  map: mapModelFactory(data.width, data.height),
   tileTypes: {},
-  turn: cwt.turnModelFactory(data.day, cwt.maybe(data.turnOwner).orElse(0), cwt.maybe(data.gameTime).orElse(0)),
-  players: cwt.intRange(1, cwt.MAX_PLAYERS).map(i => cwt.playerFactory()),
-  properties: cwt.intRange(1, cwt.MAX_PROPERTIES).map(i => cwt.propertyModelFactory("PFNY", 0)),
+  turn: turnModelFactory(data.day, maybe(data.turnOwner).orElse(0), maybe(data.gameTime).orElse(0)),
+  players: intRange(1, MAX_PLAYERS).map(i => playerFactory()),
+  properties: intRange(1, MAX_PROPERTIES).map(i => propertyModelFactory("PFNY", 0)),
   propertyTypes: {},
-  units: cwt.intRange(1, cwt.MAX_UNITS * cwt.MAX_PLAYERS).map(i => cwt.unitFactory("INFT", 0)),
+  units: intRange(1, MAX_UNITS * MAX_PLAYERS).map(i => unitFactory("INFT", 0)),
   unitTypes: {},
-  weather: cwt.weatherModelFactory("WSUN", cwt.maybe(data.weatherLeftDays).orElse(0)),
+  weather: weatherModelFactory("WSUN", maybe(data.weatherLeftDays).orElse(0)),
   weatherTypes: {},
-  limits: cwt.gameLimitFactory(0, data.day)
+  limits: gameLimitFactory()
 });
 
-// (MapData) -> GameData
-cwt.gameDataByMapFactory = (map) => {
+// (MapData) => GameData
+const gameDataByMapFactory = (map) => {
 
 };
 
-// (SaveData) -> GameData
-cwt.gameDataBySaveFactory = (save) => {
+// (SaveData) => GameData
+const gameDataBySaveFactory = (save) => {
 
 };
 
-// (SaveData) -> GameData
-cwt.gameDataForDemoPurposes = () => {
-  var model = cwt.gameModelFactory({ width: 20, height: 20, day: 5, turnOwner: 0 });
+// (SaveData) => GameData
+const gameDataForDemoPurposes = () => {
+  var model = gameModelFactory({ width: 20, height: 20, day: 5, turnOwner: 0 });
 
   model.properties = model.properties.map((property, n) =>
-    cwt.cloneMap(property, { x: parseInt(n / 19), y: n % 19 }));
+    createCopy(property, {
+      x: parseInt(n / 19),
+      y: n % 19,
+      type: "PFNY"
+    }));
 
   model.units = model.units.map((unit, n) =>
-    cwt.cloneMap(unit, { x: parseInt(n / 19), y: n % 19 }));
+    createCopy(unit, {
+      x: parseInt(n / 19),
+      y: n % 19,
+      type: "INFT"
+    }));
 
   model.players[0].team = 0;
   model.players[1].team = 1;
   model.players[2].team = 2;
   model.players[3].team = -1;
 
+  model.units[0].fuel = 999999999999999;
+  model.units[0].type = "FUEL";
+  model.units[0].hp = 20;
+
   model.units[1].owner = 1;
+  model.units[1].fuel = 999999999999999;
   model.properties[1].owner = 1;
 
   // P2 - but not standing on property
   model.units[2].owner = 1;
   model.units[2].x = 19;
   model.units[2].y = 19;
+  model.units[2].fuel = 999999999999999;
   model.properties[2].owner = 1;
 
   // P2 - standing on property but not repairable
@@ -503,14 +563,25 @@ cwt.gameDataForDemoPurposes = () => {
   model.units[3].type = "NORP";
   model.properties[3].owner = 1;
 
-  model.propertyTypes.PFNY = cwt.propertyTypeFactory({
+  model.units[4].hp = 90;
+
+  model.units[5].hp = 90;
+  model.units[5].owner = 0;
+  model.properties[5].owner = 1;
+
+  model.propertyTypes.PFNY = propertyTypeFactory({
     id: "PFNY",
     funds: 1000,
     repairs: [
-      "INGT", "INBT", "INBH", "INBB", "INBA", "INBC", "INFT"
+      "INGT", "INBT", "INBH", "INBB", "INBA", "INBC", "INFT", "FUEL"
     ]
   }).get();
-  model.propertyTypes.PFNN = cwt.propertyTypeFactory({ id: "PFNY" }).get();
+  model.propertyTypes.PFNN = propertyTypeFactory({ id: "PFNY" }).get();
+
+  model.unitTypes.NORP = flyweight(baseUnitType);
+  model.unitTypes.INFT = flyweight(baseUnitType);
+  model.unitTypes.FUEL = flyweight(baseUnitType);
+  model.unitTypes.FUEL.turnStartFuelConsumption = 5;
 
   return model;
 };
@@ -519,127 +590,175 @@ cwt.gameDataForDemoPurposes = () => {
 //                                           GAME ACTIONS 
 // =========================================================================================================
 
-/** @signature Map String:(GameModel -> GameModel) */
-cwt.actions = {};
+// Map String:(GameModel => { model: GameModel, changes: [?]}) 
+const actions = {};
 
-cwt.actions.nextTurn = (gameModel) => cwt
-  .just(gameModel)
-  .map(model => {
+const resupplyTurnOwnerUnitsOnProperties = (model) => createCopy(model, {
+  units: model.units.map(unit => unit.owner != model.turn.owner ?
+    unit :
+    maybe(model.properties.reduce((result, prop) => (
+      result == null &&
+      areOnSamePosition(unit, prop) &&
+      areOwnedBySamePlayer(unit, prop)) ? prop : result, null))
+    .biMap(
+      (prop) => {
+        const canSupply = model.propertyTypes[prop.type].supplies.indexOf(unit.type) !== -1;
+        return createCopy(unit, {
+          fuel: canSupply ? model.unitTypes[unit.type].maxFuel : unit.fuel,
+          ammo: canSupply ? model.unitTypes[unit.type].maxAmmo : unit.ammo
+        });
+      },
+      () => unit)
+    .get())
+});
 
-    const turn = cwt.getNextTurn(model.players, model.turn);
+const resupplyTurnOwnerUnitsBySupplierUnits = (model) => createCopy(model, {
+  units: model.units.map(unit => unit.owner != model.turn.owner ?
+    unit :
+    maybe(model.units.reduce((result, tUnit) => (
+      result == null &&
+      distanceBetweenObjects(unit, tUnit) == 1 &&
+      areOwnedBySamePlayer(unit, tUnit)) ? tUnit : result, null))
+    .map((tUnit) => model.unitTypes[tUnit.type].supplies.indexOf(unit.type) !== -1 ?
+      tUnit : null)
+    .biMap(
+      (tUnit) => {
+        const canSupply = model.unitTypes[tUnit.type].supplies.indexOf(unit.type) !== -1;
+        return createCopy(unit, {
+          fuel: canSupply ? model.unitTypes[unit.type].maxFuel : unit.fuel,
+          ammo: canSupply ? model.unitTypes[unit.type].maxAmmo : unit.ammo
+        });
+      },
+      () => unit)
+    .get())
+});
 
-    const newFunds = cwt.sumUpFunds(turn.owner, model.properties, model.propertyTypes);
+const gameAction = (action) =>
+  (model) => {
+    const newModel = action(model);
+    const events = [];
 
-    // give funds
-    const players = model.players.map((player, id) =>
-      id === turn.owner ? cwt.cloneMap(player, { money: player.money + newFunds }) : player);
+    if (isDayChangeBetweenOwners(model.turn.owner, newModel.turn.owner)) {
+      events.push({ event: "changedDay" });
+    }
+    if (newModel.limits.leftDays == 0) {
+      events.push({ event: "dayLimitReached" });
+    }
 
-    var units = model.units.map(unit => unit.owner != turn.owner ? unit : cwt.cloneMap(unit, { fuel: unit.fuel - 1 }));
+    return { model: newModel, changes: events };
+  };
 
-    // repair units (!!! critical performance impact !!!)
-    //  ==> less than expected... possible to do in a 16 ms frame
-    //      but the algorithm is still very unoptimized.. it should 
-    //      be easier to find unit-property pairs
-    units = units.map(unit =>
-      unit.owner != turn.owner ? unit :
-      cwt.maybe(model.properties.reduce((result, prop) => (
-        result == null &&
-        unit.x == prop.x &&
-        unit.y == prop.y &&
-        unit.owner == prop.owner) ? prop : result, null))
-      .map((prop) => model.propertyTypes[prop.type].repairs.indexOf(unit.type) !== -1 ? prop : null)
-      .biMap(
-        () => cwt.cloneMap(unit, { hp: parseInt(Math.random() * 99, 10) }),
-        () => unit)
-      .get());
-
-    return cwt.cloneMap(model, { turn, players, units });
-  })
-  .get();
-
-// =========================================================================================================
-//                                       CONTROLLER (IMPURE)
-// =========================================================================================================
-
-// =========================================================================================================
-//                                           GUI (IMPURE)
-// =========================================================================================================
-
-const gameCanvas = document.getElementById("gamecanvas");
-const gameCanvasCtx = gameCanvas.getContext("2d");
-
-gameCanvas.width = cwt.CANVAS_WIDTH;
-gameCanvas.height = cwt.CANVAS_HEIGHT;
-
-// =========================================================================================================
-//                                           DATA (IMPURE)
-// =========================================================================================================
-
-const log = str => document.getElementById("devOUT").innerHTML += "&nbsp;" + str + "</br>";
-
-var gameState;
+// most critical action (performance wise) in the game!! -.-
+// 
+// performance test ATOM X5 - 8300
+// 
+// v1 181ms 
+// v2 140ms
+// v3 120ms
+// v4  35ms 
+// v5 ???ms
+//
+actions.nextTurn =
+  gameAction(
+    compose(
+      tickTurn,
+      payFundsToTurnOwner,
+      drainFuelOnTurnOwnerUnits,
+      repairTurnOwnerUnitsOnProperties,
+      resupplyTurnOwnerUnitsOnProperties,
+      resupplyTurnOwnerUnitsBySupplierUnits));
 
 // =========================================================================================================
 //                                               TEST
 // =========================================================================================================
 
-if (cwt.DEBUGMODE) {
+const defaultTestModel = gameDataForDemoPurposes();
 
-  const testIt = (name, msg, expression) => cwt.either.expectTrue(expression)
-    .fold(result => "PASSED", result => "FAILED")
-    .map(result => "TEST:: " + name + " [" + msg + "] " + result)
-    .map(log);
+testTrueValue(() => isDayChangeBetweenOwners(1, 0), "day between: 0 is before 1 and is a day change");
+testFalseValue(() => isDayChangeBetweenOwners(0, 0), "day between: 0 is not before 0 and is no day change");
+testFalseValue(() => isDayChangeBetweenOwners(0, 1), "day between: 1 is not before 0 and is no day change");
 
-  testIt("day between", "0 is before 1 and is a day change", cwt.isDayChangeBetweenOwners(1, 0));
-  testIt("day between", "0 is not before 0 and is no day change", !cwt.isDayChangeBetweenOwners(0, 0));
-  testIt("day between", "1 is not before 0 and is no day change", !cwt.isDayChangeBetweenOwners(0, 1));
+testFalseValue(() => areOwnedBySameTeam({ team: -1 }, { team: 0 }), "same team: active and inactive player not in same team");
+testFalseValue(() => areOwnedBySameTeam({ team: 1 }, { team: 0 }), "same team: diff. team numbers means not in same team");
+testTrueValue(() => areOwnedBySameTeam({ team: 1 }, { team: 1 }), "same team: same team numbers means in same team");
 
-  testIt("same team", "active and inactive player not in same team", !cwt.areOnSameTeam({ team: -1 }, { team: 0 }));
-  testIt("same team", "diff. team numbers means not in same team", !cwt.areOnSameTeam({ team: 1 }, { team: 0 }));
-  testIt("same team", "same team numbers means in same team", cwt.areOnSameTeam({ team: 1 }, { team: 1 }));
+testFunction(5, () => getMoveCosts({ "KNWN": 5 }, "KNWN"), "get move costs: returns value on direct mapping");
+testFunction(1, () => getMoveCosts({ "*": 1 }, "UKWN"), "get move costs: returns wildcard on missing value");
+testFunction(0, () => getMoveCosts({}, "UKWN"), "get move costs: fallbacks to zero");
 
-  testIt("get move costs", "returns value on direct mapping", cwt.getMoveCosts({ "KNWN": 5 }, "KNWN") === 5);
-  testIt("get move costs", "returns wildcard on missing value", cwt.getMoveCosts({ "*": 1 }, "UKWN") === 1);
-  testIt("get move costs", "fallbacks to zero", cwt.getMoveCosts({}, "UKWN") === 0);
+testFalseValue(() => propertyTypeFactory({}).isPresent(), "is property type: missing id will be declined");
 
-  testIt("is property type", "missing id will be declined", !cwt.propertyTypeFactory({}).isPresent());
-  testIt("is property type", "base type + id is valid", cwt.propertyTypeFactory({ id: "TEST" }).isPresent());
-}
+testTrueValue(() => propertyTypeFactory({ id: "TEST" }).isPresent(), "is property type: base type + id is valid");
 
-// =========================================================================================================
-//                                              STARTUP
-// =========================================================================================================
+testFunction(0, () => distanceBetweenPositions(0, 0, 0, 0), "distance 0,0 and 0,0 is 0");
+testFunction(1, () => distanceBetweenPositions(0, 1, 0, 0), "distance 0,1 and 0,0 is 1");
+testFunction(1, () => distanceBetweenPositions(0, 0, 0, 1), "distance 0,0 and 0,1 is 1");
+testFunction(2, () => distanceBetweenPositions(0, 1, 1, 0), "distance 0,1 and 1,0 is 2");
+testFunction(2, () => distanceBetweenPositions(1, 0, 0, 1), "distance 1,0 and 0,1 is 2");
 
-cwt.logIO()
-  .putLn("STARTING CustomWarsTactics")
-  .putLn("VERSION: " + cwt.VERSION)
-  .bind(() => {
-    gameState = cwt.gameDataForDemoPurposes();
-    return cwt.loop();
+testFunction(
+  distanceBetweenPositions(1, 1, 2, 2),
+  () => distanceBetweenObjects({ x: 1, y: 1 }, { x: 2, y: 2 }),
+  "distanceBetweenObjects and distanceBetweenPositions works same way");
+
+testTrueValue(() => !!actions.nextTurn(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 2)
+})).changes.find(ev => ev.event === "changedDay"), "next turn changes day");
+
+testTrueValue(() => !!actions.nextTurn(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 2),
+  limits: createCopy(defaultTestModel.limits, {
+    leftDays: 1
   })
-  .then(delta => gameState = cwt.cloneMap(gameState, {
-    limits: cwt.gameLimitFactory(gameState.limits.elapsedTime + delta, gameState.limits.elapsedTurns)
-  }))
-  .then(delta => gameState = Math.random() < 0.05 ? cwt.actions.nextTurn(gameState) : gameState)
-  .then(delta => {
-    gameCanvasCtx.clearRect(0, 0, cwt.CANVAS_WIDTH, cwt.CANVAS_HEIGHT);
-    gameCanvasCtx.fillStyle = "white";
-    gameCanvasCtx.font = "9px Arial";
+})).changes.find(ev => ev.event === "dayLimitReached"), "next turn day limit reaches zero");
 
-    gameCanvasCtx.fillText("DAY = " + gameState.turn.day, 4, 12);
-    gameCanvasCtx.fillText("TURNOWNER = " + gameState.turn.owner, 4, 22);
+testFunction(1, () => tickTurn(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 2),
+  weather: weatherModelFactory("TEST", 1)
+})).turn.day, "tick turn with day change increases turn day");
 
-    gameCanvasCtx.fillText("PLAYER 0 MONEY = " + gameState.players[0].money, 4, 102);
-    gameCanvasCtx.fillText("PLAYER 1 MONEY = " + gameState.players[1].money, 4, 112);
-    gameCanvasCtx.fillText("PLAYER 2 MONEY = " + gameState.players[2].money, 4, 122);
+testFunction(0, () => tickTurn(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 2),
+  weather: weatherModelFactory("TEST", 1)
+})).weather.day, "tick turn with day change decreases weather left days");
 
-    gameCanvasCtx.fillText("UNIT 0 (P1) HP = " + gameState.units[0].hp, 4, 172);
-    gameCanvasCtx.fillText("FUEL = " + gameState.units[0].fuel, 104, 172);
+testFunction(0, () => tickTurn(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 2),
+  weather: weatherModelFactory("TEST", 1),
+  limits: createCopy(defaultTestModel.limits, { leftDays: 1 })
+})).limits.leftDays, "tick turn with day change decreases turn limit");
 
-    gameCanvasCtx.fillText("UNIT 1 (P2) HP = " + gameState.units[1].hp, 4, 182);
-    gameCanvasCtx.fillText("UNIT 2 (P2) HP = " + gameState.units[2].hp, 4, 192);
-    gameCanvasCtx.fillText("UNIT 3 (P2) HP = " + gameState.units[3].hp, 4, 202);
+testFunction(4000, () => payFundsToTurnOwner(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 1)
+})).players[1].money, "pay funds to turn owner increases gold on turn-owner gold depot");
 
-    gameCanvasCtx.fillText("GAME TIME = " + gameState.limits.elapsedTime + "ms", 4, 222);
-    gameCanvasCtx.fillText("DELTA = " + delta + "ms", 4, 232);
-  });
+testFunction(0, () => payFundsToTurnOwner(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 1)
+})).players[2].money, "pay funds to turn owner does not changes gold on non-turn-owners gold depot");
+
+testFunction(defaultTestModel.units[0].fuel - 5, () => drainFuelOnTurnOwnerUnits(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 0)
+})).units[0].fuel, "drain fuel lowers fuel on turn-owner units which have turnStartFuelConsumption");
+
+testFunction(defaultTestModel.units[5].fuel, () => drainFuelOnTurnOwnerUnits(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 0)
+})).units[5].fuel, "drain fuel ignores turn-owner units which not have turnStartFuelConsumption");
+
+testFunction(defaultTestModel.units[1].fuel, () => drainFuelOnTurnOwnerUnits(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 0)
+})).units[1].fuel, "drain fuel ignores non turn-owner units");
+
+testFunction(defaultTestModel.units[0].hp + 20, () => repairTurnOwnerUnitsOnProperties(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 0)
+})).units[0].hp, "property repairs own unit on turn start");
+
+testFunction(99, () => repairTurnOwnerUnitsOnProperties(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 0)
+})).units[4].hp, "property repair goes not higher than 99");
+
+testFunction(defaultTestModel.units[5].hp, () => repairTurnOwnerUnitsOnProperties(createCopy(defaultTestModel, {
+  turn: turnModelFactory(0, 0)
+})).units[5].hp, "property repair ignores allied and enemy units");
+
+const inc = x => x + 1;
+testFunction(inc(inc(1)), () => compose(inc, inc)(1), "composition f.g with a is same as f(g(a))");
