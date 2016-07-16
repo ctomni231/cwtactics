@@ -1,651 +1,683 @@
-"use strict";
+(function(exports) {
+  "use strict";
 
-// CustomWarsTactics Source File
-// Why one file? Easier for us and we have no time.. so please do not try to explain "this is an anti pattern!"
+  const compose = cwtCore.compose;
+  const immutable = cwtCore.immutable;
+  const flyweight = cwtCore.flyweight;
+  const createCopy = cwtCore.createCopy;
+  const intRange = cwtCore.intRange;
+  const isInteger = cwtCore.isInteger;
+  const isNumber = cwtCore.isNumber;
+  const isString = cwtCore.isString;
+  const isFunction = cwtCore.isFunction;
+  const isBoolean = cwtCore.isBoolean;
+  const isSomething = cwtCore.isSomething;
+  const isListOf = cwtCore.isListOf;
+  const isMapOf = cwtCore.isMapOf;
+  const nTimes = cwtCore.nTimes;
+  const listSumUp = cwtCore.listSumUp;
+  const rotate = cwtCore.rotate;
+  const random = cwtCore.random;
+  const either = cwtCore.either;
+  const eitherLeft = cwtCore.eitherLeft;
+  const eitherRight = cwtCore.eitherRight;
+  const validation = cwtCore.validation;
+  const randomInt = cwtCore.randomInt;
+  const maybe = cwtCore.maybe;
+  const just = cwtCore.just;
+  const nothing = cwtCore.nothing;
+  const identity = cwtCore.identity;
 
-// =========================================================================================================
-//                                                STUB
-// =========================================================================================================
+  const containsId = (data) => isString(data.id) && data.id.length === 4;
 
-const DEBUGMODE = true;
+  const tileTypeBase = {
+    defense: 0,
+    blocksVision: false,
 
-const CANVAS_WIDTH = 320;
-const CANVAS_HEIGHT = 240;
+    capture_loose_after_captured: false,
+    capture_change_to: "",
 
-const INACTIVE_ID = -1;
-const DESELECT_ID = -2;
-const ACTIONS_BUFFER_SIZE = 200;
-const MAX_PLAYERS = 4;
-const MAX_UNITS = 50;
-const MAX_MAP_WIDTH = 100;
-const MAX_MAP_HEIGHT = 100;
-const MAX_PROPERTIES = 300;
-const MAX_SELECTION_RANGE = 15;
-const MAX_BUFFER_SIZE = 200;
-const TILE_LENGTH = 16;
+    notTransferable: false,
+    funds: 0,
+    vision: 0,
+    supply: [],
+    repairs: [],
+    produces: [],
+    builds: [],
 
-const VERSION = "0.36";
-const AI_VERSION = "DumbBoy v. 0.1 Alpha";
+    rocket_range: -1,
+    rocket_change_to: "",
 
-// =========================================================================================================
-//                                                CORE
-// =========================================================================================================
-
-const compose = function() {
-  switch (arguments.length) {
-    case 2:
-      return compose2.apply(this, arguments);
-    case 3:
-      return compose3.apply(this, arguments);
-    case 4:
-      return compose4.apply(this, arguments);
-    case 5:
-      return compose5.apply(this, arguments);
-    case 6:
-      return compose6.apply(this, arguments);
-    case 7:
-      return compose7.apply(this, arguments);
-    case 8:
-      return compose8.apply(this, arguments);
-    case 9:
-      return compose9.apply(this, arguments);
-    default:
-      throw new Error("Unsupported arity");
-  }
-};
-
-const compose2 = (f, g) => (value) => f(g(value));
-const compose3 = (f, g, h) => (value) => h(f(g(value)));
-const compose4 = (f, g, h, i) => (value) => i(h(f(g(value))));
-const compose5 = (f, g, h, i, j) => (value) => j(i(h(f(g(value)))));
-const compose6 = (f, g, h, i, j, k) => (value) => k(j(i(h(f(g(value))))));
-const compose7 = (f, g, h, i, j, k, l) => (value) => l(k(j(i(h(f(g(value)))))));
-const compose8 = (f, g, h, i, j, k, l, m) => (value) => m(l(k(j(i(h(f(g(value))))))));
-const compose9 = (f, g, h, i, j, k, l, m, n) => (value) => n(m(l(k(j(i(h(f(g(value)))))))));
-
-// (Map) => Map
-const immutable = (obj) => Object.freeze(obj);
-
-// (Map, Map ?= {}) => Map
-const flyweight = (prototype, data = {}) => Object.assign(Object.create(prototype), data);
-
-// (Map, Map ?= {}) => Map
-const createCopy = (source, data = null) =>
-  Object.assign(
-    Object.keys(source).reduce((obj, key) => {
-      obj[key] = source[key];
-      return obj;
-    }, {}), data);
-
-// (Int, Int) => [Int]
-const intRange = (from, to) => {
-  var arr = [];
-  for (; from <= to; from++) {
-    arr.push(from);
-  }
-  return arr;
-};
-
-// (any) => boolean
-const isInteger = (value) => typeof value === 'number' && value % 1 === 0;
-
-// (any) => boolean
-const isNumber = (value) => typeof value === 'number';
-
-// (any) => boolean
-const isString = (value) => typeof value === 'string';
-
-// (any) => boolean
-const isFunction = (value) => typeof value === 'function';
-
-// (any) => boolean
-const isBoolean = (value) => value === true || value === false;
-
-// (any) => boolean
-const isSomething = (value) => value !== null && value !== undefined;
-
-// (list<any>, (any) => boolean) => boolean
-const isListOf = (value, valueTypeCheck) => value.every(element => valueTypeCheck(element));
-
-// (map<any>, (any) => boolean) => boolean
-const isMapOf = (value, valueTypeCheck) => Object.keys(value).every(key => valueTypeCheck(value[key]));
-
-// (Int, (Int, a) => a', a) => nothing
-const nTimes = (n, fn, argument = nothing()) => n > 0 ? nTimes(n - 1, fn, fn(n, argument)) : argument;
-
-// ([a], (a) => Int) => Int
-const listSumUp = (list, fn) => list.reduce((sum, obj) => sum + fn(obj), 0);
-
-// ([a], Int) => [a]
-const rotate = function(arr, count) {
-  arr = arr.map(el => el);
-  count = count % arr.length;
-  if (count < 0) {
-    arr.unshift.apply(arr, arr.splice(count))
-  } else {
-    arr.push.apply(arr, arr.splice(0, count))
-  }
-  return arr;
-};
-
-/** @signature (Int ?= 0, Int ?= 10) => just Int */
-const random = (from = 0, to = 10) => just(from + parseInt(Math.random() * to, 10));
-
-const either = {
-
-  // (a) => left String | right a (same as either String, a)
-  fromNullable: value => value === null || value === undefined ?
-    left("ValueIsNotDefined") : right(value),
-
-  expectTrue: value => value === true ? left(value) : right(value),
-
-  // (() => a) => left Error | right a (same as either Error, a)
-  tryIt: (f) => {
-    try {
-      return right(f())
-    } catch (e) {
-      return left(e)
-    }
-  }
-};
-
-const left = function(value) {
-  return {
-    map: f => left(value),
-    biMap: (fLeft, fRight) => left(fLeft(value)),
-    bind: f => left(value),
-    fold: (leftHandle, rightHandle) => just(leftHandle(value))
+    cannon: {},
+    bigProperty: {},
+    laser: {},
+    blocker: false,
+    changeTo: "",
+    hp: 0,
+    destroyedType: ""
   };
-};
 
-const right = function(value) {
-  return {
-    map: f => right(f(value)),
-    biMap: (fLeft, fRight) => right(fRight(value)),
-    bind: f => f(value),
-    fold: (leftHandle, rightHandle) => just(rightHandle(value))
-  };
-};
-
-const validation = (expression) => expression ? right("PASSED") : left("FAILED");
-
-
-// () => Int
-const randomInt = (from, to) => just(from + parseInt(Math.random() * (to - from), 10));
-
-// a => just a | nothing
-const maybe = (value) => value == null || value == undefined ? nothing() : just(value);
-
-// a => just a
-const just = (value) => ({
-  map: (f) => maybe(f(value)),
-  elseMap: f => just(value),
-  biMap: (fPresent, fNotPresent) => maybe(fPresent(value)),
-  bind: (f) => f(value),
-  filter: (f) => f(value) ? just(value) : nothing(),
-  isPresent: () => true,
-  ifPresent: (f) => f(value),
-  orElse: (v) => value,
-  get: () => value,
-  toString: () => "just(" + value + ")"
-});
-
-const _nothing = immutable({
-  map: (f) => _nothing,
-  elseMap: (f) => maybe(f()),
-  biMap: (fPresent, fNotPresent) => maybe(fNotPresent()),
-  bind: (f) => _nothing,
-  filter: (f) => _nothing,
-  isPresent: () => false,
-  ifPresent: (f) => _nothing,
-  orElse: (v) => v,
-  get() {
-    throw new Error("Nothing");
-  },
-  toString: () => "nothing"
-});
-
-// => nothing
-const nothing = () => _nothing;
-
-// =========================================================================================================
-//                                                 GAME
-// =========================================================================================================
-
-const containsId = (data) => isString(data.id) && data.id.length === 4;
-
-const tileTypeBase = {
-  defense: 0,
-  blocksVision: false,
-  capturePoints: -1,
-  looseAfterCaptured: false,
-  changeAfterCaptured: "",
-  notTransferable: false,
-  funds: 0,
-  vision: 0,
-  supply: [],
-  repairs: [],
-  produces: [],
-  builds: [],
-  rocketsilo: {},
-  cannon: {},
-  bigProperty: {},
-  laser: {},
-  blocker: false,
-  changeTo: "",
-  hp: 0,
-  destroyedType: ""
-};
-
-// () => MapModel
-const mapModelFactory = (width, height) => ({
-  tiles: intRange(1, width).map(columnId =>
-    intRange(1, height).map(rowId =>
-      tileModelFactory("PLIN")))
-});
-
-// (String) => TileModel
-const tileModelFactory = (type) => ({ type });
-
-// (Map) => TileTypeModel
-const tileTypeModelFactory = (data) => flyweight(tileTypeBase, data);
-
-// (MapModel, Int, Int) => TileModel
-const getMapTile = (mapModel, x, y) => mapModel.tiles[x][y];
-
-// (Int, Int, Int, Int) => Int
-const distanceBetweenPositions = (sx, sy, tx, ty) => Math.abs(sx - tx) + Math.abs(sy - ty);
-
-// ({x,y}, {x,y}) => Int
-const distanceBetweenObjects = (a, b) => distanceBetweenPositions(a.x, a.y, b.x, b.y);
-
-// ({x,y}, {x,y}) => Boolean
-const areOnSamePosition = (a, b) => distanceBetweenObjects(a, b) === 0;
-
-// () => PlayerModel
-const playerFactory = (team = -1, money = 0, name = "Player") => ({ name, team, money });
-
-// (playerModel, playerModel) => Boolean
-const areOwnedBySameTeam = (playerA, playerB) => playerA.team === playerB.team;
-
-// ({owner}, {owner}) => Boolean
-const areOwnedBySamePlayer = (a, b) => a.owner === b.owner;
-
-// ([PlayerModel]) => Boolean
-const thereAreAtLeastTwoOppositeTeams = (players) => players.reduce((result, player) => result =
-  (player.team == -1 ? result :
-    (result == -1 ? player.team :
-      (result != player.team ? -2 : result))), -1) == -2;
-
-const baseUnitType = {
-  turnStartFuelConsumption: 0,
-  maxAmmo: 1,
-  maxFuel: 50,
-  supplies: []
-};
-
-// isConsumingFuelOnTurnStart:: (UnitModel, {UnitType}) => Boolean
-const isConsumingFuelOnTurnStart = (unit, types) => types[unit.type].fuelConsumption > 0;
-
-// drainFuelOnTurnOwnerUnits:: (GameModel) => GameModel'
-const drainFuelOnTurnOwnerUnits = (model) => createCopy(model, {
-  units: model.units.map(unit => {
-    if (areOwnedBySamePlayer(unit, model.turn)) {
-      return createCopy(unit, {
-        owner: unit.fuel - (isConsumingFuelOnTurnStart(unit, model.unitTypes) ? unit.owner : -1),
-        fuel: unit.fuel - model.unitTypes[unit.type].turnStartFuelConsumption
-      });
-    }
-    return unit;
-  })
-});
-
-// (String) => UnitModel
-const unitFactory = (type, owner = -1) => ({ hp: 99, owner, x: 0, y: 0, type, fuel: 0 });
-
-// weather
-const baseWeather = { defaultWeather: false, minDuration: 1, maxDuration: 4 };
-
-// Weather => Boolean
-const isWeather = (weather) => just(weather)
-  .filter(w => isString(w.id) && w.id.length === 4)
-  .filter(w => isInteger(w.minDuration) && w.minDuration >= 1)
-  .filter(w => isInteger(w.maxDuration) && w.maxDuration >= w.minDuration)
-  .filter(w => isBoolean(w.defaultWeather))
-  .isPresent();
-
-// ([Map]) => (() => [Weather])
-const loadWeathers = (data) => data
-  .map(weather => flyweight(baseWeather, weather))
-  .bind(data => data.map(weather => isWeather(weather) ? just(weather) : nothing()))
-  .get();
-
-// (Weather, Int) => WeatherModel
-const weatherModelFactory = (type, day = 0) => ({ day, type });
-
-const getRandomWeatherModel = (weathers) =>
-  randomInt(0, weathers.length)
-  .map(value => just(weatherModelFactory(weathers[value], 4)))
-  .get();
-
-/*
-let duration = active.minDuration;
-    duration += parseInt(Math.random() * (active.maxDuration - duration), 10);
-    leftDays = duration;
-    */
-
-/** @signature PropertyTypeModel */
-const basePropertyType = {
-  capturable: false,
-  funds: 0,
-  builds: [],
-  repairs: [],
-  supplies: []
-};
-
-/** @signature Map => Boolean */
-const isPropertyType = (data) => maybe(data)
-  .filter(containsId)
-  .filter(data => isBoolean(data.capturable))
-  .filter(data => isInteger(data.funds) && data.funds >= 0)
-  .filter(data => isListOf(data.builds, isString))
-  .filter(data => isListOf(data.repairs, isString))
-  .isPresent();
-
-// sumUpFunds:: (Player, [PropertyModel], {PropertyTypeModel}) => Int
-const sumUpFunds = (owner, properties, propertyTypes) =>
-  listSumUp(properties, property => property.owner === owner ? propertyTypes[property.type].funds : 0);
-
-// payFundsToTurnOwner:: (GameModel) => GameModel'
-const payFundsToTurnOwner = (model) => createCopy(model, {
-  players: model.players.map((player, owner) => {
-    if (areOwnedBySamePlayer({ owner }, model.turn)) {
-      return createCopy(player, {
-        money: player.money + sumUpFunds(model.turn.owner, model.properties, model.propertyTypes)
-      });
-    }
-    return player;
-  })
-});
-
-/** @signature Map => maybe PropertyTypeModel */
-const propertyTypeFactory = (data) => maybe(data)
-  .map(data => flyweight(basePropertyType, data))
-  .filter(isPropertyType);
-
-// (Int, Int) => PropertyModel
-const propertyModelFactory = (type, owner = -1, points = 20) => ({ type, points, owner });
-
-// (PropertyModel, PropertyTypeModel, UnitModel) => PropertyModel
-const captureProperty = (property, propertyType, capturer) => {
-  const points = property.points - parseInt(capturer.hp / 10, 10);
-  const captured = points <= 0;
-  const owner = captured ? capturerUnitModel.owner : propertyModel.owner;
-  const type = captured && propertyType.capturedType ? propertyType.capturedType : property.type;
-
-  return createCopy(property, { type, points: (captured ? 20 : points), owner });
-};
-
-// canPropertyRepairType:: (PropertyType, String) => Boolean
-const canPropertyRepairType = (propertyType, unitType) => propertyType.repairs.indexOf(unitType) > -1;
-
-// repairTurnOwnerUnitsOnProperties:: (GameModel) => GameModel'
-const repairTurnOwnerUnitsOnProperties = (model) => createCopy(model, {
-  units: model.units.map(unit => {
-    if (areOwnedBySamePlayer(unit, model.turn)) {
-      return maybe(model.properties.find(prop => areOnSamePosition(unit, prop) && areOwnedBySamePlayer(unit, prop)))
-        .map(prop => createCopy(unit, {
-          hp: canPropertyRepairType(model.propertyTypes[prop.type], unit.type) ?
-            Math.min(parseInt(unit.hp + 20, 10), 99) : unit.hp
-        }))
-        .orElse(unit)
-    }
-    return unit;
-  })
-});
-
-// (Int, [PropertyModel]) => Boolean
-const hasHeadquarter = (owner, properties) => properties.any(el => el.owner === owner && el.type === "HQTR");
-
-// MoveType
-const baseMoveType = {
-  range: 0,
-  costs: { "*": -1 }
-};
-
-// (Map String:Int, String) => Int
-const getMoveCosts = (costs, tileType) => maybe(costs[tileType])
-  .elseMap(() => costs["*"])
-  .elseMap(() => 0)
-  .get();
-
-const getMoveCostsOfType = (moveType, tileType) => getMoveCosts(moveType.costs, tileType);
-
-// (Int ?= 0, Int ?= 0) => turnModel
-const turnModelFactory = (day = 0, owner = 0) => ({ day, owner });
-
-// ([PlayerModel], TurnModel) => maybe<Int>
-const predictNextTurnOwner = function(players, model) {
-  const currentId = model.owner;
-  const relativeNextId = rotate(players, currentId + 1).findIndex(el => el.team >= 0) + 1;
-  const absoluteNextId = (relativeNextId + currentId) % players.length;
-  return currentId != absoluteNextId ? just(absoluteNextId) : nothing();
-};
-
-// (Int, Int) => Boolean
-const isDayChangeBetweenOwners = (idA, idB) => idB < idA;
-
-// ([PlayerModel], TurnModel) => TurnModel
-const getNextTurn = (players, turn) => predictNextTurnOwner(players, turn)
-  .map(nextOwner => turnModelFactory(turn.day + (isDayChangeBetweenOwners(turn.owner, nextOwner) ? 1 : 0), nextOwner))
-  .get();
-
-// (GameModel) => GameModel'
-const tickTurn = (model) => {
-  const turn = getNextTurn(model.players, model.turn);
-  const changedDay = isDayChangeBetweenOwners(model.turn.owner, turn.owner);
-  const limits = createCopy(model.limits, {
-    leftDays: model.limits.leftDays + (changedDay ? -1 : 0)
-  });
-  const weatherLeftDays = model.weather.day + (changedDay ? -1 : 0);
-  const weather = createCopy(model.weather, {
-    day: weatherLeftDays,
-    type: weatherLeftDays > 0 ? model.weather.type : getRandomWeatherModel(model.weatherTypes)
+  // () => MapModel
+  const mapModelFactory = (width, height) => ({
+    tiles: intRange(1, width).map(columnId =>
+      intRange(1, height).map(rowId =>
+        tileModelFactory("PLIN")))
   });
 
-  return createCopy(model, { turn, limits, weather });
-};
+  const postionFactory = (x, y) => ({ x: x, y: y });
 
-// () => GameLimitsModel
-const gameLimitFactory = () => ({
-  leftDays: Number.POSITIVE_INFINITY,
-  leftTurnTime: Number.POSITIVE_INFINITY,
-  leftGameTime: Number.POSITIVE_INFINITY
-});
+  // (String) => TileModel
+  const tileModelFactory = (type) => ({ type });
 
-// (GameModel) => Boolean
-const isTurnTimeLimitReached = (gameModel) => gameModel.turnOwner.elapsedTime >= gameModel.limits.turnTimeLimit;
+  // (Map) => TileTypeModel
+  const tileTypeModelFactory = (data) => flyweight(tileTypeBase, data);
 
-// WRONG
-const isGameTimeLimitReached = (gameModel) => gameModel.turnOwner.elapsedTime >= gameModel.limits.gameTimeLimit;
+  // (Int, Int, Int, Int) => Int
+  const distanceBetweenPositions = (sx, sy, tx, ty) => Math.abs(sx - tx) + Math.abs(sy - ty);
 
-// (GameModel) => Boolean
-const isTurnLimitReached = (gameModel) => gameModel.turnOwner.day >= gameModel.limits.dayLimit;
+  // ({x,y}, {x,y}) => Int
+  const distanceBetweenObjects = (a, b) => distanceBetweenPositions(a.x, a.y, b.x, b.y);
 
-// (GameData) => GameModel
-const gameModelFactory = (data) => ({
-  map: mapModelFactory(data.width, data.height),
-  tileTypes: {},
-  turn: turnModelFactory(data.day, maybe(data.turnOwner).orElse(0), maybe(data.gameTime).orElse(0)),
-  players: intRange(1, MAX_PLAYERS).map(i => playerFactory()),
-  properties: intRange(1, MAX_PROPERTIES).map(i => propertyModelFactory("PFNY", 0)),
-  propertyTypes: {},
-  units: intRange(1, MAX_UNITS * MAX_PLAYERS).map(i => unitFactory("INFT", 0)),
-  unitTypes: {},
-  weather: weatherModelFactory("WSUN", maybe(data.weatherLeftDays).orElse(0)),
-  weatherTypes: {},
-  limits: gameLimitFactory()
-});
+  // ({x,y}, {x,y}) => Boolean
+  const areOnSamePosition = (a, b) => distanceBetweenObjects(a, b) === 0;
 
-// (MapData) => GameData
-const gameDataByMapFactory = (map) => {
+  const INACTIVE_POWER = 1;
+  const ACTIVE_POWER = 2;
+  const ACTIVE_SUPER_POWER = 3;
 
-};
+  // () => PlayerModel
+  const playerFactory = (team = -1, money = 0, name = "Player") => ({
+    name,
+    team,
+    money,
+    power: 0,
+    activePowerLevel: INACTIVE_POWER
+  });
 
-// (SaveData) => GameData
-const gameDataBySaveFactory = (save) => {
+  // (playerModel, playerModel) => Boolean
+  const areOwnedBySameTeam = (playerA, playerB) => playerA.team === playerB.team;
 
-};
+  // ({owner}, {owner}) => Boolean
+  const areOwnedBySamePlayer = (a, b) => a.owner === b.owner;
 
-// (SaveData) => GameData
-const gameDataForDemoPurposes = () => {
-  var model = gameModelFactory({ width: 20, height: 20, day: 5, turnOwner: 0 });
+  // ([PlayerModel]) => Boolean
+  const thereAreAtLeastTwoOppositeTeams = (players) => players.reduce((result, player) => result =
+    (player.team == -1 ? result :
+      (result == -1 ? player.team :
+        (result != player.team ? -2 : result))), -1) == -2;
 
-  model.properties = model.properties.map((property, n) =>
-    createCopy(property, {
-      x: parseInt(n / 19),
-      y: n % 19,
-      type: "PFNY"
+  const baseUnitType = {
+    turnStartFuelConsumption: 0,
+    maxAmmo: 1,
+    maxFuel: 50,
+    costs: 0,
+    supplies: [],
+    attackMap: {}
+  };
+
+  const unitTypeFactory = data => flyweight(baseUnitType, data);
+
+  const getValueOrWildCardOrZero = (map, id) => maybe(map[id]).elseMap(() => map["*"]).orElse(0);
+
+  const getAttackDamage = (attackerTypeModel, defenderType) =>
+    getValueOrWildCardOrZero(attackerTypeModel.attackMap, defenderType);
+
+  // isConsumingFuelOnTurnStart:: (UnitModel, {UnitType}) => Boolean
+  const isConsumingFuelOnTurnStart = (unit, types) => types[unit.type].turnStartFuelConsumption > 0;
+
+  // drainFuelOnTurnOwnerUnits:: (GameModel) => GameModel'
+  const drainFuelOnTurnOwnerUnits = (model) => createCopy(model, {
+    units: model.units.map(unit => {
+      if (areOwnedBySamePlayer(unit, model.turn)) {
+        return createCopy(unit, {
+          owner: unit.fuel - (isConsumingFuelOnTurnStart(unit, model.unitTypes) ? unit.owner : -1),
+          fuel: unit.fuel - model.unitTypes[unit.type].turnStartFuelConsumption
+        });
+      }
+      return unit;
+    })
+  });
+
+  // resupplyTurnOwnerUnitsBySupplierUnits:: (GameModel) => GameModel'
+  const resupplyTurnOwnerUnitsBySupplierUnits = (model) => createCopy(model, {
+    units: model.units.map(unit => unit.owner != model.turn.owner ?
+      unit :
+      maybe(model.units.reduce((result, tUnit) => (
+        result == null &&
+        distanceBetweenObjects(unit, tUnit) == 1 &&
+        areOwnedBySamePlayer(unit, tUnit)) ? tUnit : result, null))
+      .map((tUnit) => model.unitTypes[tUnit.type].supplies.indexOf(unit.type) !== -1 ?
+        tUnit : null)
+      .biMap(
+        (tUnit) => {
+          const canSupply = model.unitTypes[tUnit.type].supplies.indexOf(unit.type) !== -1;
+          return createCopy(unit, {
+            fuel: canSupply ? model.unitTypes[unit.type].maxFuel : unit.fuel,
+            ammo: canSupply ? model.unitTypes[unit.type].maxAmmo : unit.ammo
+          });
+        },
+        () => unit)
+      .get())
+  });
+
+  // ([Boolean], PlayersUnitId) => [Boolean]
+  const setUnitIntoWaitingMode = (actableModel, unitId) =>
+    actableModel.map((el, index) => index == unitId ? false : el);
+
+  // (Int) => Boolean [when result is true, then v is a PlayersUnitId]
+  const isPlayersUnitId = (v) => isInteger(v) && v >= 0 && v <= 49;
+
+  // ([Boolean], PlayersUnitId) => Boolean
+  const canUnitAct = (actableModel, unitId) => actableModel[unitId];
+
+  // (String) => UnitModel
+  const unitFactory = (type, owner = -1) => ({ hp: 99, owner, x: 0, y: 0, type, fuel: 0 });
+
+  // weather
+  const baseWeather = { defaultWeather: false, minDuration: 1, maxDuration: 4 };
+
+  // Weather => Boolean
+  const isWeather = (weather) => just(weather)
+    .filter(w => isString(w.id) && w.id.length === 4)
+    .filter(w => isInteger(w.minDuration) && w.minDuration >= 1)
+    .filter(w => isInteger(w.maxDuration) && w.maxDuration >= w.minDuration)
+    .filter(w => isBoolean(w.defaultWeather))
+    .isPresent();
+
+  // ([Map]) => (() => [Weather])
+  const loadWeathers = (data) => data
+    .map(weather => flyweight(baseWeather, weather))
+    .bind(data => data.map(weather => isWeather(weather) ? just(weather) : nothing()))
+    .get();
+
+  // (Weather, Int) => WeatherModel
+  const weatherModelFactory = (type, day = 0) => ({ day, type });
+
+  const getRandomWeatherModel = (weathers) =>
+    randomInt(0, weathers.length)
+    .map(value => just(weatherModelFactory(weathers[value], 4)))
+    .get();
+
+  /*
+  let duration = active.minDuration;
+      duration += parseInt(Math.random() * (active.maxDuration - duration), 10);
+      eitherLeftDays = duration;
+      */
+
+  /** @signature PropertyTypeModel */
+  const basePropertyType = {
+    capturable: false,
+    funds: 0,
+    builds: [],
+    repairs: [],
+    supplies: []
+  };
+
+  /** @signature Map => Boolean */
+  const isPropertyType = (data) => maybe(data)
+    .filter(data => isBoolean(data.capturable))
+    .filter(data => isInteger(data.funds) && data.funds >= 0)
+    .filter(data => isListOf(data.builds, isString))
+    .filter(data => isListOf(data.repairs, isString))
+    .isPresent();
+
+  // sumUpFunds:: (Player, [PropertyModel], {PropertyTypeModel}) => Int
+  const sumUpFunds = (owner, properties, propertyTypes) =>
+    listSumUp(properties, property => property.owner === owner ? propertyTypes[property.type].funds : 0);
+
+  // payFundsToTurnOwner:: (GameModel) => GameModel'
+  const payFundsToTurnOwner = (model) => createCopy(model, {
+    players: model.players.map((player, owner) => {
+      if (areOwnedBySamePlayer({ owner }, model.turn)) {
+        return createCopy(player, {
+          money: player.money + sumUpFunds(model.turn.owner, model.properties, model.propertyTypes)
+        });
+      }
+      return player;
+    })
+  });
+
+  /** @signature Map => maybe PropertyTypeModel */
+  const propertyTypeFactory = (data) => maybe(data)
+    .map(data => flyweight(basePropertyType, data))
+    .filter(isPropertyType);
+
+  // (Int, Int) => PropertyModel
+  const propertyModelFactory = (type, owner = -1, points = 20) => ({ type, points, owner });
+
+  // (PropertyModel, PropertyTypeModel, UnitModel) => PropertyModel
+  const captureProperty = (property, propertyType, capturer) => {
+    const points = property.points - parseInt(capturer.hp / 10, 10);
+    const captured = points <= 0;
+    const owner = captured ? capturerUnitModel.owner : propertyModel.owner;
+    const type = captured && propertyType.capturedType ? propertyType.capturedType : property.type;
+
+    return createCopy(property, { type, points: (captured ? 20 : points), owner });
+  };
+
+  // canPropertyRepairType:: (PropertyType, String) => Boolean
+  const canPropertyRepairType = (propertyType, unitType) => propertyType.repairs.indexOf(unitType) > -1;
+
+  // repairTurnOwnerUnitsOnProperties:: (GameModel) => GameModel'
+  const repairTurnOwnerUnitsOnProperties = (model) => createCopy(model, {
+    units: model.units.map(unit => {
+      if (areOwnedBySamePlayer(unit, model.turn)) {
+        return maybe(model.properties.find(prop => areOnSamePosition(unit, prop) && areOwnedBySamePlayer(unit, prop)))
+          .map(prop => createCopy(unit, {
+            hp: canPropertyRepairType(model.propertyTypes[prop.type], unit.type) ?
+              Math.min(parseInt(unit.hp + 20, 10), 99) : unit.hp
+          }))
+          .orElse(unit)
+      }
+      return unit;
+    })
+  });
+
+  // resupplyTurnOwnerUnitsOnProperties:: (GameModel) => GameModel'
+  const resupplyTurnOwnerUnitsOnProperties = (model) => createCopy(model, {
+    units: model.units.map(unit => unit.owner != model.turn.owner ?
+      unit :
+      maybe(model.properties.reduce((result, prop) => (
+        result == null &&
+        areOnSamePosition(unit, prop) &&
+        areOwnedBySamePlayer(unit, prop)) ? prop : result, null))
+      .biMap(
+        (prop) => {
+          const canSupply = model.propertyTypes[prop.type].supplies.indexOf(unit.type) !== -1;
+          return createCopy(unit, {
+            fuel: canSupply ? model.unitTypes[unit.type].maxFuel : unit.fuel,
+            ammo: canSupply ? model.unitTypes[unit.type].maxAmmo : unit.ammo
+          });
+        },
+        () => unit)
+      .get())
+  });
+
+  // (Int, [PropertyModel]) => Boolean
+  const hasHeadquarter = (owner, properties) => properties.any(el => el.owner === owner && el.type === "HQTR");
+
+  // MoveType
+  const baseMoveType = {
+    range: 0,
+    costs: { "*": -1 }
+  };
+
+  const getMoveCostsOfType = (moveType, tileType) =>
+    getValueOrWildCardOrZero(moveType.costs, tileType);
+
+  // (Int ?= 0, Int ?= 0) => turnModel
+  const turnModelFactory = (day = 0, owner = 0) => ({ day, owner });
+
+  // ([PlayerModel], TurnModel) => maybe<Int>
+  const predictNextTurnOwner = function(players, model) {
+    const currentId = model.owner;
+    const relativeNextId = rotate(players, currentId + 1).findIndex(el => el.team >= 0) + 1;
+    const absoluteNextId = (relativeNextId + currentId) % players.length;
+    return currentId != absoluteNextId ? just(absoluteNextId) : nothing();
+  };
+
+  // (Int, Int) => Boolean
+  const isDayChangeBetweenOwners = (idA, idB) => idB < idA;
+
+  // (GameModel) => GameModel'
+  const tickTurn = (model) => {
+    const nextOwner = predictNextTurnOwner(model.players, model.turn).get();
+    // TODO: HANDLE NOTHING
+
+    const changedDay = isDayChangeBetweenOwners(model.turn.owner, nextOwner);
+
+    const turn = turnModelFactory(model.turn.day + (changedDay ? 1 : 0), nextOwner);
+    const limits = createCopy(model.limits, {
+      eitherLeftDays: model.limits.eitherLeftDays + (changedDay ? -1 : 0)
+    });
+    const weathereitherLeftDays = model.weather.day + (changedDay ? -1 : 0);
+    const weather = createCopy(model.weather, {
+      day: weathereitherLeftDays,
+      type: weathereitherLeftDays > 0 ? model.weather.type : getRandomWeatherModel(model.weatherTypes)
+    });
+
+    return createCopy(model, { turn, limits, weather });
+  };
+
+  const infinity = Number.POSITIVE_INFINITY;
+
+  // () => GameLimitsModel
+  const gameLimitFactory = (leftTurnTime = infinity, leftGameTime = infinity) => ({
+    leftDays: Number.POSITIVE_INFINITY,
+    leftTurnTime,
+    leftGameTime
+  });
+
+  // (GameModel) => Boolean
+  const isTurnTimeLimitReached = (model) => model.limits.eitherLeftTurnTime <= 0;
+
+  // (GameModel) => Boolean
+  const isGameTimeLimitReached = (model) => model.limits.eitherLeftGameTime <= 0;
+
+  // (GameModel) => Boolean
+  const isTurnLimitReached = (model) => model.limits.eitherLeftDays <= 0;
+
+  const isValidGameData = (data) => just(data)
+    .filter(data => isInteger(data.width) && data.width >= 10 && data.width <= 50)
+    .filter(data => isInteger(data.height) && data.height >= 10 && data.height <= 50)
+    .isPresent()
+
+  // (GameData) => either Error, GameModel
+  const gameModelFactory = data => eitherRight(data)
+    .bind(data => isValidGameData(data) ? eitherRight(data) : eitherLeft("IAE: illegal data"))
+    .map(data => {
+      const MAX_PLAYERS = 4;
+      const MAX_UNITS = 50;
+      const MAX_MAP_WIDTH = 100;
+      const MAX_MAP_HEIGHT = 100;
+      const MAX_PROPERTIES = 300;
+
+      const dataUnits = maybe(data.units).orElse([]);
+      const defaultUnits = R.times(i => unitFactory(""), MAX_PROPERTIES);
+      const dataProperties = maybe(data.properties).orElse([]);
+      const defaultProperties = R.times(i => propertyModelFactory(""), MAX_PROPERTIES);
+
+      return {
+        fog: intRange(1, data.width).map(columnId => intRange(1, data.height).map(identity(false).get)),
+        map: mapModelFactory(data.width, data.height),
+        tileTypes: {},
+        turn: turnModelFactory(data.day, maybe(data.turnOwner).orElse(0)),
+        players: intRange(1, MAX_PLAYERS).map(i => playerFactory(i)),
+        properties: R.flatten(
+          R.append(
+            R.takeLast((MAX_PROPERTIES) - dataProperties.length, defaultProperties),
+            R.zipWith(
+              (custom, source) => R.merge(source, custom),
+              dataProperties,
+              defaultProperties))),
+        units: R.flatten(
+          R.append(
+            R.takeLast((MAX_UNITS * MAX_PLAYERS) - dataUnits.length, defaultUnits),
+            R.zipWith(
+              (dataUnit, sourceUnit) => R.merge(sourceUnit, dataUnit),
+              dataUnits,
+              defaultUnits))),
+        weather: weatherModelFactory("", maybe(data.changesWeatherInDays).orElse(0)),
+        actables: intRange(1, MAX_UNITS).map(identity(false).get),
+        limits: gameLimitFactory(),
+        unitTypes: R.mapObjIndexed(
+          (data, id) => unitTypeFactory(data),
+          maybe(data.unitTypes).orElse({})),
+        moveTypes: R.mapObjIndexed(
+          (data, id) => flyweight(baseMoveType, data),
+          maybe(data.moveTypes).orElse({})),
+        propertyTypes: R.mapObjIndexed(
+          (data, id) => propertyTypeFactory(data).get(),
+          maybe(data.propertyTypes).orElse({})),
+        weatherTypes: R.mapObjIndexed(
+          (data, id) => flyweight(baseWeather, data),
+          maybe(data.weatherTypes).orElse({}))
+      }
+    });
+
+  //
+  // ({}) => either Error, GameModel
+  exports.createGame = gameModelFactory;
+
+  exports.yieldGame = (model, playerId) => eitherRight(model)
+    .bind(model => createCopy(model, {
+      players: fjs.map((player, id) => playerId != id ?
+        player :
+        createCopy(player, { team: -1 }),
+        model.players)
     }));
 
-  model.units = model.units.map((unit, n) =>
-    createCopy(unit, {
-      x: parseInt(n / 19),
-      y: n % 19,
-      type: "INFT"
+  const moveUnitByCode = (data, code) => {
+    const newX = data.unit.x + (code == 1 ? +1 : code == 3 ? -1 : 0);
+    const newY = data.unit.y + (code == 0 ? -1 : code == 2 ? +1 : 0);
+
+    return ({
+      model: data.model,
+      unit: createCopy(unit, {
+        fuel: data.unit.fuel - getMoveCostsOfType(
+          model.moveTypes[model.unitTypes[data.unit.type].moveType],
+          model.map.tiles[newX][newY]),
+        x: newX,
+        y: newY
+      })
+    })
+  };
+
+  exports.moveUnit = (model, unitId, way) => eitherRight(model)
+    .bind(model => {
+      const movingUnit = model.units[unitId];
+      const newMovingUnit = fjs.fold(moveUnitByCode, {
+        model: model,
+        unit: movingUnit
+      }, fjs.while(() => true, way));
+
+      // TODO: fog
+
+      return createCopy(model, {
+        units: fjs.map(unit => unit == movingUnit ? newMovingUnit : unit, model.units)
+      })
+    });
+
+  exports.produceUnit = (model, factoryId, type) => eitherRight(model)
+    .bind(model => {
+
+      const producedType = model.unitTypes[type];
+      const factory = model.properties[factoryId];
+      const possibleNewUnit = fjs.fold((selected, unit) => !selected && unit.owner == -1 ?
+        unit : selected, null, model.units);
+
+      return createCopy(model, {
+
+        players: fjs.map((player, id) => id === factory.owner ?
+          createCopy(player, {
+            money: player.money - producedType.costs
+          }) : player, model.players),
+
+        units: fjs.map(unit => possibleNewUnit == unit ?
+          createCopy(unit, {
+            x: factory.x,
+            y: factory.y,
+            owner: factory.owner,
+            type: type
+          }) : unit,
+          model.units)
+      })
+    });
+
+  exports.destroyUnit = (model, unitId) => eitherRight(model)
+    .bind(model => createCopy(model, {
+      units: fjs.map((unit, id) => unitId != id ?
+        unit :
+        createCopy(unit, { owner: -1 }),
+        model.units)
     }));
 
-  model.players[0].team = 0;
-  model.players[1].team = 1;
-  model.players[2].team = 2;
-  model.players[3].team = -1;
+  const numberToInt = x => parseInt(x, 10);
 
-  model.units[0].fuel = 999999999999999;
-  model.units[0].type = "FUEL";
-  model.units[0].hp = 20;
+  exports.attackUnit = (model, attackerId, defenderId) => eitherRight(model)
+    .bind(model => {
+      const attacker = model.units[attackerId];
+      const defender = model.units[defenderId];
 
-  model.units[1].owner = 1;
-  model.units[1].fuel = 999999999999999;
-  model.properties[1].owner = 1;
+      const attackDamage = 0;
+      const counterDamage = 0;
 
-  // P2 - but not standing on property
-  model.units[2].owner = 1;
-  model.units[2].x = 19;
-  model.units[2].y = 19;
-  model.units[2].fuel = 999999999999999;
-  model.properties[2].owner = 1;
+      const defenderNewHP = Math.max(0, defender.hp - attackDamage);
+      const defenderHpDiff = defender.hp - defenderNewHP;
 
-  // P2 - standing on property but not repairable
-  model.units[3].owner = 1;
-  model.units[3].type = "NORP";
-  model.properties[3].owner = 1;
+      const attackerNewHp = defenderNewHP > 0 ? Math.max(0, attacker.hp - counterDamage) : attacker.hp;
+      const attackerHpDiff = attackerNewHp - attacker.hp;
 
-  model.units[4].hp = 90;
+      const attackerPowerResult = numberToInt(
+        numberToInt(defenderHpDiff) * 0.1 * model.unitTypes[defender.type].costs);
 
-  model.units[5].hp = 90;
-  model.units[5].owner = 0;
-  model.properties[5].owner = 1;
+      const defenderPowerResult = numberToInt(
+        numberToInt(attackerHpDiff) * 0.1 * model.unitTypes[attacker.type].costs);
 
-  model.propertyTypes.PFNY = propertyTypeFactory({
-    id: "PFNY",
-    funds: 1000,
-    repairs: [
-      "INGT", "INBT", "INBH", "INBB", "INBA", "INBC", "INFT", "FUEL"
-    ]
-  }).get();
-  model.propertyTypes.PFNN = propertyTypeFactory({ id: "PFNY" }).get();
+      const attackerPowerGain = defenderPowerResult + numberToInt(attackerPowerResult * 0.5);
+      const defenderPowerGain = attackerPowerResult + numberToInt(defenderPowerResult * 0.5);
 
-  model.unitTypes.NORP = flyweight(baseUnitType);
-  model.unitTypes.INFT = flyweight(baseUnitType);
-  model.unitTypes.FUEL = flyweight(baseUnitType);
-  model.unitTypes.FUEL.turnStartFuelConsumption = 5;
+      const newAttacker = createCopy(attacker, {
+        hp: attackerNewHp,
+        owner: attackerNewHp > 0 ? -1 : attacker.owner
+      });
 
-  return model;
-};
+      const newDefender = createCopy(defender, {
+        hp: defenderNewHP,
+        owner: defenderNewHP > 0 ? -1 : defender.owner
+      });
 
-// =========================================================================================================
-//                                           GAME ACTIONS 
-// =========================================================================================================
+      const attackerOwner = model.players[attacker.owner];
+      const newAttackerOwner = createCopy(attackerOwner, {
+        power: attackerOwner.power + attackerPowerGain
+      });
 
-// Map String:(GameModel => { model: GameModel, changes: [?]}) 
-const actions = {};
+      const defenderOwner = model.players[defender.owner];
+      const newDefenderOwner = createCopy(defenderOwner, {
+        power: defenderOwner.power + defenderPowerGain
+      });
 
-// gameModelDifference:: (GameModel, GameModel) => [{ name: String }]
-const gameModelDifference = (oldModel, newModel) => {
-  const events = [];
+      return createCopy(model, {
+        units: fjs.map(unit =>
+          unit == attacker ? newAttacker :
+          unit == defender ? newDefender :
+          unit, model.units),
 
-  if (isDayChangeBetweenOwners(oldModel.turn.owner, newModel.turn.owner)) {
-    events.push({ name: "changedDay" });
-  }
-  if (newModel.limits.leftDays == 0) {
-    events.push({ name: "dayLimitReached" });
-  }
+        players: fjs.map(player =>
+          player == attackerOwner ? newAttackerOwner :
+          player == defenderOwner ? newDefenderOwner :
+          player, model.players)
+      });
+    });
 
-  return events;
-};
+  exports.resupplyNeightbours = model => eitherRight(model);
 
-// gameAction:: ((GameModel) => GameModel') => (GameModel => { model: GameModel', changes: [{ name: String }]})
-const gameAction = (action) => (model) => {
-  const newModel = action(model);
-  return { model: newModel, changes: gameModelDifference(model, newModel) }
-};
+  exports.loadUnit = model => eitherRight(model);
 
-const resupplyTurnOwnerUnitsOnProperties = (model) => createCopy(model, {
-  units: model.units.map(unit => unit.owner != model.turn.owner ?
-    unit :
-    maybe(model.properties.reduce((result, prop) => (
-      result == null &&
-      areOnSamePosition(unit, prop) &&
-      areOwnedBySamePlayer(unit, prop)) ? prop : result, null))
-    .biMap(
-      (prop) => {
-        const canSupply = model.propertyTypes[prop.type].supplies.indexOf(unit.type) !== -1;
-        return createCopy(unit, {
-          fuel: canSupply ? model.unitTypes[unit.type].maxFuel : unit.fuel,
-          ammo: canSupply ? model.unitTypes[unit.type].maxAmmo : unit.ammo
-        });
-      },
-      () => unit)
-    .get())
-});
+  exports.unloadUnit = model => eitherRight(model);
 
-const resupplyTurnOwnerUnitsBySupplierUnits = (model) => createCopy(model, {
-  units: model.units.map(unit => unit.owner != model.turn.owner ?
-    unit :
-    maybe(model.units.reduce((result, tUnit) => (
-      result == null &&
-      distanceBetweenObjects(unit, tUnit) == 1 &&
-      areOwnedBySamePlayer(unit, tUnit)) ? tUnit : result, null))
-    .map((tUnit) => model.unitTypes[tUnit.type].supplies.indexOf(unit.type) !== -1 ?
-      tUnit : null)
-    .biMap(
-      (tUnit) => {
-        const canSupply = model.unitTypes[tUnit.type].supplies.indexOf(unit.type) !== -1;
-        return createCopy(unit, {
-          fuel: canSupply ? model.unitTypes[unit.type].maxFuel : unit.fuel,
-          ammo: canSupply ? model.unitTypes[unit.type].maxAmmo : unit.ammo
-        });
-      },
-      () => unit)
-    .get())
-});
+  const activateCoPower = (model, playerId, power) => eitherRight(model)
+    .bind(model => {
+      return createCopy(model, {
+        players: fjs.map((player, index) => index != playerId ? player : createCopy(player, {
+          power: 0,
+          activePowerLevel: power
+        }), model.plaers)
+      });
+    });
 
-// most critical action (performance wise) in the game!! -.-
-// 
-// performance test ATOM X5 - 8300
-// 
-// v1 181ms 
-// v2 140ms
-// v3 120ms
-// v4  35ms 
-// v5 ???ms
-//
-actions.nextTurn =
-  gameAction(
-    compose(
-      tickTurn,
-      payFundsToTurnOwner,
-      drainFuelOnTurnOwnerUnits,
-      repairTurnOwnerUnitsOnProperties,
-      resupplyTurnOwnerUnitsOnProperties,
-      resupplyTurnOwnerUnitsBySupplierUnits));
+  exports.activatePower = (model, playerId) => activateCoPower(model, playerId, ACTIVE_POWER);
+
+  exports.activateSuperPower = (model, playerId) => activateCoPower(model, playerId, ACTIVE_SUPER_POWER);
+
+  exports.fireRocket = (model, rocketId, firerId, tx, ty) => eitherRight(model)
+    .bind(model => {
+      const oldRocket = model.properties[rocketId];
+      const rocketType = model.propertyTypes[oldRocket.type];
+      const rocketRange = rocketType.rocket_range;
+      const newType = rocketType.rocket_change_to;
+      const newRocket = createCopy(oldRocket, {
+        type: newType
+      });
+
+      const target = postionFactory(tx, ty);
+
+      return createCopy(model, {
+        properties: fjs.map((prop, index) => index == rocketId ? newRocket : prop, model.properties),
+        units: fjs.map((unit) => {
+          if (distanceBetweenObjects(target, unit) <= rocketRange) {
+            return createCopy(unit, {
+              hp: Math.max(9, unit.hp - 20)
+            })
+          }
+          return unit;
+        }, model.units)
+      });
+    });
+
+  // (GameModel, PlayersUnitId, PropertyId) => either Error, GameModel'
+  exports.captureProperty = (model, unitId, propertyId) => eitherRight(model)
+    .bind(model => isPlayersUnitId(unitId) ?
+      eitherRight(model) : eitherLeft("IAE: unitId must be player relative"))
+    .bind(model => canUnitAct(unitId) ?
+      eitherRight(model) : eitherLeft("IAE: unit cannot act"))
+    .bind(model => areOwnedBySameTeam(model.units[unitId], model.properties[propertyId]) ?
+      eitherRight(model) : eitherLeft("IAE: cannot capture "))
+    .bind(model => {
+
+      const capturer = model.units[capturer];
+
+      const properties = fjs.map((property, index) => {
+        if (index === propertyId) {
+          const rest = property.points - parseInt(0.2 * (capturer.hp + 1), 10);
+          const propType = model.propertyTypes[property.type];
+          return createCopy(property, {
+            points: rest <= 0 ? 20 : rest,
+            owner: rest <= 0 ? capturer.owner : property.owner,
+            type: rest <= 0 && propType.capture_change_to ? propType.capture_change_to : property.type
+          });
+        }
+        return property;
+      }, model.properties);
+
+      // TODO: loose after captured
+
+      return createCopy(model, {
+        properties
+      });
+    });
+
+  // (GameModel, PlayersUnitId) => either Error, GameModel'
+  exports.wait = (model, unitId) => eitherRight(model)
+    .bind(model => isPlayersUnitId(unitId) ? eitherRight(model) : eitherLeft("IAE: unitId must be player relative"))
+    .bind(model => canUnitAct(unitId) ? eitherRight(model) : eitherLeft("IAE: unit cannot act"))
+    .map(model => createCopy(model, {
+      actables: setUnitIntoWaitingMode(model.actables, unitId)
+    }));
+
+  // (GameModel, Int) => either Error, GameModel'
+  exports.elapseTime = (model, time) => eitherRight(time)
+    .bind(time => isInteger(time) ? eitherRight(time) : eitherLeft("IAE: time must be int"))
+    .bind(time => time >= 0 ? eitherRight(time) : eitherLeft("IAE: negative time"))
+    .map(time => createCopy(model, {
+      limits: gameLimitFactory(
+        Math.max(model.limits.leftTurnTime - time, 0),
+        Math.max(model.limits.leftGameTime - time, 0))
+    }));
+
+  // most critical action (performance wise) in the game because there is so much stuff happening. 
+  // this may breaks the 60FPS target (because it immutability costs a lot) but we're easily able 
+  // to move this whole game logic into a new thread (because of it's immutability) and run in in new
+  // threads. A different strategy is to serialize the game model and run only the actions itself 
+  // in a new thread. Another different approach is to change the api of next turns actions. When they 
+  // return only their sub part (like unit model, turn model etc.) then we could run some of the sub 
+  // actions in parallel.
+  // 
+  // performance test ATOM X5 - 8300
+  // 
+  // v1 181ms 
+  // v2 140ms
+  // v3 120ms
+  // v4  35ms 
+  // v5  20ms
+  // v6  10ms
+  //
+  exports.nextTurn = compose(
+    tickTurn,
+    payFundsToTurnOwner,
+    drainFuelOnTurnOwnerUnits,
+    repairTurnOwnerUnitsOnProperties,
+    resupplyTurnOwnerUnitsOnProperties,
+    resupplyTurnOwnerUnitsBySupplierUnits,
+    // TODO: may deacctivate CO powers here
+    // TODO: change weather
+    eitherRight
+  );
+
+  exports.GAME_VERSION = "0.36";
+  exports.GAME_AI_VERSION = "DumbBoy v. 0.1 Alpha";
+
+})(window.cwtGame || (window.cwtGame = {}));
+
+// freeze API
+window.cwtGame = cwtCore.immutable(cwtGame);

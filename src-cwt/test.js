@@ -1,179 +1,150 @@
-const raiseError = function(msg = "UnknownError") {
-  throw new Error(msg);
-};
+(function(exports) {
 
-const devLog = (msg) => just(msg) 
-  .map(msg => msg.replace(/\n/gi, "</br>").replace(/\s/gi, "&nbsp;"))
-  .map(msg => msg + "</br>")
-  .ifPresent(msg => document.getElementById("devOUT").innerHTML += msg);
+  const compose = cwtCore.compose;
+  const either = cwtCore.either;
+  const eitherLeft = cwtCore.eitherLeft;
+  const eitherRight = cwtCore.eitherRight;
+  const validation = cwtCore.validation;
+  const maybe = cwtCore.maybe;
+  const just = cwtCore.just;
+  const nothing = cwtCore.nothing;
+  const createCopy = cwtCore.createCopy;
+  const identity = cwtCore.identity;
+  const id = cwtCore.id;
 
-const testGroup = (name) => devLog("[TEST-GROUP] " + name);
+  const assertNeverCalled = () => assertThat(false, "unreachable point was reached");
 
-const testStatement = (expectedResult, fnThatReturnsActual, name) =>
-  either.tryIt(fnThatReturnsActual)
-  .bind(actual => actual != expectedResult ?
-    left(new Error("expected:" + expectedResult + " but was:" + actual)) :
-    right(actual))
-  .fold(error => "FAILED, \n            reason: " + error.message, // + " stack: " + error.stack,
-    result => "PASSED")
-  .map(result => "[TEST-CASE][" + result + "] " + name);
+  const printOnScreen = (msg) => just(msg)
+    .map(msg => msg.replace(/\n/gi, "</br>").replace(/\s/gi, "&nbsp;") + "</br>")
+    .ifPresent(msg => document.getElementById("devOUT").innerHTML += msg);
 
-const testFunction = (a, b, c) => {
-  const time = Date.now();
-  testStatement(a, b, c)
-    .map(msg => msg + " [TIME: " + (Date.now() - time) + "ms]")
-    .ifPresent(devLog);
-};
+  const assertThat = (expression, msg) => {
+    if (!expression) {
+      throw new Error(msg);
+    }
+  };
 
-const testTrueValue = testFunction.bind(null, true);
-const testFalseValue = testFunction.bind(null, false);
+  const assertEquals = R.curry(
+    (expected, actual) => assertThat(expected === actual, "expected: " + expected + ", but was: " + actual));
 
-const testContainsModelChange = (changeName, fn, name) => // WRONG IMPL
-  testTrueValue(() => !!fn().changes.find(ev => changeName.find(el => el == ev.name)), name);
+  const assertTrue = assertEquals(true);
 
-const defaultTestModel = gameDataForDemoPurposes();
+  const assertFalse = assertEquals(false);
 
-testGroup("                                                                    ");
-testGroup("------------------------------- CORE -------------------------------");
-testGroup("                                                                    ");
+  const assertNotEquals = R.curry(
+    (expected, actual) => assertThat(expected !== actual, "expected actual not to be: " + expected + ", but it was"));
 
-const inc = x => x + 1;
-testFunction(inc(inc(1)), () => compose(inc, inc)(1), "composition f.g with a is same as f(g(a))");
+  // (String, () => [String]) => #
+  const testSuite = (name, testImpl) => testImpl()
+    .map(result => "TEST-CASE [" + name + "]" + result)
+    .map(printOnScreen);
 
-testGroup("                                                                    ");
-testGroup("---------------------------- GAME CORE -----------------------------");
-testGroup("                                                                    ");
+  // (String, () => either FAILED, SUCCESS) => String
+  const testCase = (desc, fn) => just(true)
+    .map(any => Date.now())
+    .ifPresent(time => either.tryIt(fn)
+      .biMap(
+        error => "[FAILED, " + error.message + "] " + error.stack,
+        any => "[PASSED]")
+      .fold(just, just)
+      .map(result => " " + desc + " " + result + " [TIME: " + (Date.now() - time) + "ms]")
+      .get());
 
-testTrueValue(() => isDayChangeBetweenOwners(1, 0), "day between: 0 is before 1 and is a day change");
-testFalseValue(() => isDayChangeBetweenOwners(0, 0), "day between: 0 is not before 0 and is no day change");
-testFalseValue(() => isDayChangeBetweenOwners(0, 1), "day between: 1 is not before 0 and is no day change");
+  // ------------------------------- CORE ------------------------------- 
 
-testFalseValue(() => areOwnedBySameTeam({ team: -1 }, { team: 0 }), "same team: active and inactive player not in same team");
-testFalseValue(() => areOwnedBySameTeam({ team: 1 }, { team: 0 }), "same team: diff. team numbers means not in same team");
-testTrueValue(() => areOwnedBySameTeam({ team: 1 }, { team: 1 }), "same team: same team numbers means in same team");
+  testSuite("test-API", () => ([
+    testCase("equals 1, 1 will pass", () => assertEquals(1, 1)),
+    testCase("equals 1, 2 will fail", () => assertEquals(1, 2))
+  ]));
 
-testFunction(5, () => getMoveCosts({ "KNWN": 5 }, "KNWN"), "get move costs: returns value on direct mapping");
-testFunction(1, () => getMoveCosts({ "*": 1 }, "UKWN"), "get move costs: returns wildcard on missing value");
-testFunction(0, () => getMoveCosts({}, "UKWN"), "get move costs: fallbacks to zero");
+  testSuite("compose", () => ([
 
-testFalseValue(() => propertyTypeFactory({}).isPresent(), "is property type: missing id will be declined");
+    testCase("(f.g x) is the same as f(g(x))", () => {
+      const inc = x => x + 1;
+      const composedInc = compose(inc, inc);
 
-testTrueValue(() => propertyTypeFactory({ id: "TEST" }).isPresent(), "is property type: base type + id is valid");
+      assertEquals(inc(inc(1)), composedInc(1));
+    }),
 
-testFunction(0, () => distanceBetweenPositions(0, 0, 0, 0), "distance 0,0 and 0,0 is 0");
-testFunction(1, () => distanceBetweenPositions(0, 1, 0, 0), "distance 0,1 and 0,0 is 1");
-testFunction(1, () => distanceBetweenPositions(0, 0, 0, 1), "distance 0,0 and 0,1 is 1");
-testFunction(2, () => distanceBetweenPositions(0, 1, 1, 0), "distance 0,1 and 1,0 is 2");
-testFunction(2, () => distanceBetweenPositions(1, 0, 0, 1), "distance 1,0 and 0,1 is 2");
+    testCase("(f.g.h.i x) is the same as ((f.g (h.i x)))", () => {
+      const inc = x => x + 1;
+      const composedInc = compose(inc, inc);
+      const multiComposedInc = compose(composedInc, composedInc);
 
-testFunction(
-  distanceBetweenPositions(1, 1, 2, 2),
-  () => distanceBetweenObjects({ x: 1, y: 1 }, { x: 2, y: 2 }),
-  "distanceBetweenObjects and distanceBetweenPositions works same way");
+      assertEquals(composedInc(composedInc(1)), multiComposedInc(1));
+    })
+  ]));
 
-testGroup("                                                                    ");
-testGroup("---------------------------- GAME LOGIC ----------------------------");
-testGroup("                                                                    ");
+  // ------------------------------- GAME ------------------------------- 
 
-testFunction(1, () => tickTurn(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 2),
-  weather: weatherModelFactory("TEST", 1)
-})).turn.day, "tick turn with day change increases turn day");
+  const demoData = {
+    width: 10,
+    height: 10,
+    day: 0,
+    turnOwner: 0,
+    units: [
+      { type: "UNTA", x: 8, y: 8 }
+    ],
+    unitTypes: {
+      UNTA: {
+        moveType: "TITA"
+      }
+    },
+    properties: [
+      { type: "PRTA", x: 9, y: 10 },
+      { type: "PRTB", x: 10, y: 10 },
+    ],
+    propertyTypes: {
+      PRTA: {
+        funds: 1000
+      },
+      PRTB: {}
+    },
+    moveTypes: {
+      MVTA: {
+        costs: {
+          TITA: 2,
+          "*": 1
+        }
+      }
+    },
+    weatherTypes: {
+      WSUN: {}
+    }
+  };
 
-testFunction(0, () => tickTurn(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 2),
-  weather: weatherModelFactory("TEST", 1)
-})).weather.day, "tick turn with day change decreases weather left days");
+  const testGameModel = cwtGame.createGame(demoData).fold(assertNeverCalled, id);
 
-testFunction(0, () => tickTurn(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 2),
-  weather: weatherModelFactory("TEST", 1),
-  limits: createCopy(defaultTestModel.limits, { leftDays: 1 })
-})).limits.leftDays, "tick turn with day change decreases turn limit");
+  window.demoModel = cwtGame.createGame(demoData).fold(assertNeverCalled, id);
 
-testFunction(4000, () => payFundsToTurnOwner(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 1)
-})).players[1].money, "pay funds to turn owner increases gold on turn-owner gold depot");
+  testSuite("nextTurn", () => ([
 
-testFunction(0, () => payFundsToTurnOwner(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 1)
-})).players[2].money, "pay funds to turn owner does not changes gold on non-turn-owners gold depot");
+    testCase("changes turn owner", () =>
+      eitherRight(testGameModel)
+      .bind(cwtGame.nextTurn)
+      .fold(assertNeverCalled,
+        model => assertNotEquals(testGameModel.turn.owner, model.turn.owner))),
 
-testFunction(defaultTestModel.units[0].fuel - 5, () => drainFuelOnTurnOwnerUnits(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[0].fuel, "drain fuel lowers fuel on turn-owner units which have turnStartFuelConsumption");
+    testCase("when the last player ends his turn, then the day counter increases", () =>
+      eitherRight(testGameModel)
+      .map(model => createCopy(model, {
+        turn: createCopy(model.turn, { owner: 3 })
+      }))
+      .bind(cwtGame.nextTurn)
+      .fold(assertNeverCalled,
+        model => assertEquals(testGameModel.turn.day + 1, model.turn.day))),
 
-testFunction(defaultTestModel.units[5].fuel, () => drainFuelOnTurnOwnerUnits(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[5].fuel, "drain fuel ignores turn-owner units which not have turnStartFuelConsumption");
+    testCase("after a day change the day limit counter decreases", () =>
+      eitherRight(testGameModel)
+      .map(model => createCopy(model, {
+        turn: createCopy(model.turn, { owner: 3 })
+      }))
+      .bind(cwtGame.nextTurn)
+      .fold(assertNeverCalled,
+        model => assertEquals(testGameModel.limits.leftDays - 1, model.limits.leftDays)))
+  ]));
 
-testFunction(defaultTestModel.units[1].fuel, () => drainFuelOnTurnOwnerUnits(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[1].fuel, "drain fuel ignores non turn-owner units");
+  // ------------------------------- CLIENT ------------------------------- 
 
-testFunction(defaultTestModel.units[0].hp + 20, () => repairTurnOwnerUnitsOnProperties(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[0].hp, "property repairs own unit on turn start");
 
-testFunction(99, () => repairTurnOwnerUnitsOnProperties(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[4].hp, "property repair goes not higher than 99");
-
-testFunction(defaultTestModel.units[5].hp, () => repairTurnOwnerUnitsOnProperties(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[5].hp, "property repair ignores allied and enemy units");
-
-testGroup("                                                                    ");
-testGroup("----------------------------- ACTIONS ------------------------------");
-testGroup("                                                                    ");
-
-testContainsModelChange(
-  ["changedDay"],
-  () => actions.nextTurn(createCopy(defaultTestModel, {
-    turn: turnModelFactory(0, 2)
-  })),
-  "next turn changes day");
-
-testContainsModelChange(
-  ["earnsMoney"],
-  () => actions.nextTurn(createCopy(defaultTestModel, {
-    turn: turnModelFactory(0, 2)
-  })),
-  "next turn increases turn owners gold depot");
-
-testTrueValue(() => !!actions.nextTurn(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 2),
-  limits: createCopy(defaultTestModel.limits, {
-    leftDays: 1
-  })
-})).changes.find(ev => ev.name === "dayLimitReached"), "next turn day limit reaches zero");
-
-testContainsModelChange(
-  ["movedUnit"],
-  () => actions.moveUnit(defaultTestModel, 0, [1, 1, 1, 1]),
-  "moving unit should move the unit on map");
-
-testContainsModelChange(
-  ["movedUnit"],
-  () => actions.moveUnit(defaultTestModel, 0, [1, 1, 1, 2, 2]),
-  "moving unit cannot be trapped by allied units");
-
-testContainsModelChange(
-  ["movedUnit", "trappedMove"],
-  () => actions.moveUnit(defaultTestModel, 0, [1, 2, 2]),
-  "moving unit can be trapped by enemy units");
-
-testContainsModelChange(
-  ["unitDepletesFuel"],
-  () => actions.moveUnit(defaultTestModel, 0, [1, 1, 1, 1]),
-  "moving unit depletes fuel");
-
-testContainsModelChange(
-  ["createdUnit", "producedUnit"],
-  () => actions.produceUnit(defaultTestModel, 10, "INFT"),
-  "production creates unit");
-
-testContainsModelChange(
-  ["paysMoney"],
-  () => actions.produceUnit(defaultTestModel, 10, "INFT"),
-  "production decreases producers gold depot");
+})(window.cwtTest || (window.cwtTest = {}));
