@@ -31,29 +31,6 @@ const AI_VERSION = "DumbBoy v. 0.1 Alpha";
 //                                                CORE
 // =========================================================================================================
 
-const raiseError = function(msg = "UnknownError") {
-  throw new Error(msg);
-};
-
-const testStatement = (expectedResult, fnThatReturnsActual, name) =>
-  either.tryIt(fnThatReturnsActual)
-  .bind(actual => actual != expectedResult ?
-    left(new Error("expected:" + expectedResult + " but was:" + actual)) :
-    right(actual))
-  .fold(error => "FAILED, reason: " + error.message + " stack: " + error.stack[0],
-    result => "PASSED")
-  .map(result => "[TEST-CASE] " + name + " [" + result + "]");
-
-const testFunction = (a, b, c) => {
-  const time = Date.now();
-  testStatement(a, b, c)
-    .map(msg => msg + " [TIME: " + (Date.now() - time) + "ms]")
-    .ifPresent(console.log);
-};
-
-const testTrueValue = testFunction.bind(null, true);
-const testFalseValue = testFunction.bind(null, false);
-
 const compose = function() {
   switch (arguments.length) {
     case 2:
@@ -593,6 +570,26 @@ const gameDataForDemoPurposes = () => {
 // Map String:(GameModel => { model: GameModel, changes: [?]}) 
 const actions = {};
 
+// gameModelDifference:: (GameModel, GameModel) => [{ name: String }]
+const gameModelDifference = (oldModel, newModel) => {
+  const events = [];
+
+  if (isDayChangeBetweenOwners(oldModel.turn.owner, newModel.turn.owner)) {
+    events.push({ name: "changedDay" });
+  }
+  if (newModel.limits.leftDays == 0) {
+    events.push({ name: "dayLimitReached" });
+  }
+
+  return events;
+};
+
+// gameAction:: ((GameModel) => GameModel') => (GameModel => { model: GameModel', changes: [{ name: String }]})
+const gameAction = (action) => (model) => {
+  const newModel = action(model);
+  return { model: newModel, changes: gameModelDifference(model, newModel) }
+};
+
 const resupplyTurnOwnerUnitsOnProperties = (model) => createCopy(model, {
   units: model.units.map(unit => unit.owner != model.turn.owner ?
     unit :
@@ -633,21 +630,6 @@ const resupplyTurnOwnerUnitsBySupplierUnits = (model) => createCopy(model, {
     .get())
 });
 
-const gameAction = (action) =>
-  (model) => {
-    const newModel = action(model);
-    const events = [];
-
-    if (isDayChangeBetweenOwners(model.turn.owner, newModel.turn.owner)) {
-      events.push({ event: "changedDay" });
-    }
-    if (newModel.limits.leftDays == 0) {
-      events.push({ event: "dayLimitReached" });
-    }
-
-    return { model: newModel, changes: events };
-  };
-
 // most critical action (performance wise) in the game!! -.-
 // 
 // performance test ATOM X5 - 8300
@@ -667,98 +649,3 @@ actions.nextTurn =
       repairTurnOwnerUnitsOnProperties,
       resupplyTurnOwnerUnitsOnProperties,
       resupplyTurnOwnerUnitsBySupplierUnits));
-
-// =========================================================================================================
-//                                               TEST
-// =========================================================================================================
-
-const defaultTestModel = gameDataForDemoPurposes();
-
-testTrueValue(() => isDayChangeBetweenOwners(1, 0), "day between: 0 is before 1 and is a day change");
-testFalseValue(() => isDayChangeBetweenOwners(0, 0), "day between: 0 is not before 0 and is no day change");
-testFalseValue(() => isDayChangeBetweenOwners(0, 1), "day between: 1 is not before 0 and is no day change");
-
-testFalseValue(() => areOwnedBySameTeam({ team: -1 }, { team: 0 }), "same team: active and inactive player not in same team");
-testFalseValue(() => areOwnedBySameTeam({ team: 1 }, { team: 0 }), "same team: diff. team numbers means not in same team");
-testTrueValue(() => areOwnedBySameTeam({ team: 1 }, { team: 1 }), "same team: same team numbers means in same team");
-
-testFunction(5, () => getMoveCosts({ "KNWN": 5 }, "KNWN"), "get move costs: returns value on direct mapping");
-testFunction(1, () => getMoveCosts({ "*": 1 }, "UKWN"), "get move costs: returns wildcard on missing value");
-testFunction(0, () => getMoveCosts({}, "UKWN"), "get move costs: fallbacks to zero");
-
-testFalseValue(() => propertyTypeFactory({}).isPresent(), "is property type: missing id will be declined");
-
-testTrueValue(() => propertyTypeFactory({ id: "TEST" }).isPresent(), "is property type: base type + id is valid");
-
-testFunction(0, () => distanceBetweenPositions(0, 0, 0, 0), "distance 0,0 and 0,0 is 0");
-testFunction(1, () => distanceBetweenPositions(0, 1, 0, 0), "distance 0,1 and 0,0 is 1");
-testFunction(1, () => distanceBetweenPositions(0, 0, 0, 1), "distance 0,0 and 0,1 is 1");
-testFunction(2, () => distanceBetweenPositions(0, 1, 1, 0), "distance 0,1 and 1,0 is 2");
-testFunction(2, () => distanceBetweenPositions(1, 0, 0, 1), "distance 1,0 and 0,1 is 2");
-
-testFunction(
-  distanceBetweenPositions(1, 1, 2, 2),
-  () => distanceBetweenObjects({ x: 1, y: 1 }, { x: 2, y: 2 }),
-  "distanceBetweenObjects and distanceBetweenPositions works same way");
-
-testTrueValue(() => !!actions.nextTurn(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 2)
-})).changes.find(ev => ev.event === "changedDay"), "next turn changes day");
-
-testTrueValue(() => !!actions.nextTurn(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 2),
-  limits: createCopy(defaultTestModel.limits, {
-    leftDays: 1
-  })
-})).changes.find(ev => ev.event === "dayLimitReached"), "next turn day limit reaches zero");
-
-testFunction(1, () => tickTurn(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 2),
-  weather: weatherModelFactory("TEST", 1)
-})).turn.day, "tick turn with day change increases turn day");
-
-testFunction(0, () => tickTurn(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 2),
-  weather: weatherModelFactory("TEST", 1)
-})).weather.day, "tick turn with day change decreases weather left days");
-
-testFunction(0, () => tickTurn(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 2),
-  weather: weatherModelFactory("TEST", 1),
-  limits: createCopy(defaultTestModel.limits, { leftDays: 1 })
-})).limits.leftDays, "tick turn with day change decreases turn limit");
-
-testFunction(4000, () => payFundsToTurnOwner(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 1)
-})).players[1].money, "pay funds to turn owner increases gold on turn-owner gold depot");
-
-testFunction(0, () => payFundsToTurnOwner(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 1)
-})).players[2].money, "pay funds to turn owner does not changes gold on non-turn-owners gold depot");
-
-testFunction(defaultTestModel.units[0].fuel - 5, () => drainFuelOnTurnOwnerUnits(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[0].fuel, "drain fuel lowers fuel on turn-owner units which have turnStartFuelConsumption");
-
-testFunction(defaultTestModel.units[5].fuel, () => drainFuelOnTurnOwnerUnits(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[5].fuel, "drain fuel ignores turn-owner units which not have turnStartFuelConsumption");
-
-testFunction(defaultTestModel.units[1].fuel, () => drainFuelOnTurnOwnerUnits(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[1].fuel, "drain fuel ignores non turn-owner units");
-
-testFunction(defaultTestModel.units[0].hp + 20, () => repairTurnOwnerUnitsOnProperties(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[0].hp, "property repairs own unit on turn start");
-
-testFunction(99, () => repairTurnOwnerUnitsOnProperties(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[4].hp, "property repair goes not higher than 99");
-
-testFunction(defaultTestModel.units[5].hp, () => repairTurnOwnerUnitsOnProperties(createCopy(defaultTestModel, {
-  turn: turnModelFactory(0, 0)
-})).units[5].hp, "property repair ignores allied and enemy units");
-
-const inc = x => x + 1;
-testFunction(inc(inc(1)), () => compose(inc, inc)(1), "composition f.g with a is same as f(g(a))");
