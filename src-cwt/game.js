@@ -28,6 +28,13 @@
   const nothing = cwtCore.nothing;
   const identity = cwtCore.identity;
 
+
+  // propertyPath:: [a] -> Lens
+  const propertyPath = R.pipe(
+    R.map(R.ifElse(R.is(Number), R.lensIndex, R.lensProp)),
+    R.apply(R.compose));
+
+
   const containsId = (data) => isString(data.id) && data.id.length === 4;
 
   const tileTypeBase = {
@@ -95,7 +102,7 @@
   });
 
   // (playerModel, playerModel) => Boolean
-  const areOwnedBySameTeam = (playerA, playerB) => playerA.team === playerB.team;
+  const areInSameTeam = (playerA, playerB) => playerA.team === playerB.team;
 
   // ({owner}, {owner}) => Boolean
   const areOwnedBySamePlayer = (a, b) => a.owner === b.owner;
@@ -167,8 +174,7 @@
   // (Int) => Boolean [when result is true, then v is a PlayersUnitId]
   const isPlayersUnitId = (v) => isInteger(v) && v >= 0 && v <= 49;
 
-  // ([Boolean], PlayersUnitId) => Boolean
-  const canUnitAct = (actableModel, unitId) => actableModel[unitId];
+  const canUnitAct = R.curry((unitId, model) => R.view(R.lensPath(["actables", unitId]), model));
 
   // (String) => UnitModel
   const unitFactory = (type, owner = -1) => ({ hp: 99, owner, x: 0, y: 0, type, fuel: 0 });
@@ -207,6 +213,7 @@
   /** @signature PropertyTypeModel */
   const basePropertyType = {
     capturable: false,
+    capture_change_to: null,
     funds: 0,
     builds: [],
     repairs: [],
@@ -415,6 +422,14 @@
       }
     });
 
+
+  const lensUnitList = R.lensProp("units");
+  const evolveUnit = R.curry((id, evolveDesc, model) => R.over(lensUnitList, R.over(R.lensIndex(id), R.evolve(evolveDesc))));
+  const readUnit = (id, model) => R.view(R.lensIndex(id), R.view(lensUnitList, model));
+  const ownerWipeEvolve = { owner: R.identity(-1) };
+  const evolvePutLoadCounter = { loadedIn: R.dec };
+  const evolvePopLoadCounter = { loadedIn: R.inc };
+
   //
   // ({}) => either Error, GameModel
   exports.createGame = gameModelFactory;
@@ -485,12 +500,7 @@
     });
 
   exports.destroyUnit = (model, unitId) => eitherRight(model)
-    .bind(model => createCopy(model, {
-      units: fjs.map((unit, id) => unitId != id ?
-        unit :
-        createCopy(unit, { owner: -1 }),
-        model.units)
-    }));
+    .map(envolveUnit(unitId, ownerWipeEvolve));
 
   const numberToInt = x => parseInt(x, 10);
 
@@ -552,9 +562,19 @@
 
   exports.resupplyNeightbours = model => eitherRight(model);
 
-  exports.loadUnit = model => eitherRight(model);
+  exports.loadUnit = (model, loadId, transporterId) => eitherRight(model)
+    .map(evolveUnit(transporterId, evolvePutLoadCounter))
+    .map(evolveUnit(loadId, { loadedIn: R.identity(transporterId) }));
 
-  exports.unloadUnit = model => eitherRight(model);
+  exports.unloadUnit = (model, loadId, transporterId, unloadDir) => Either.of(model)
+    .bind(model => Either.cond(lt(-1, readUnit(transporterId, model).loadedIn), "transporter is loaded", model))
+    .map(evolveUnit(transporterId, evolvePopLoadCounter))
+    .map(model => evolveUnit(loadId, {
+      loadedIn: R.identity(-1),
+      x: R.identity(readUnit(transporterId, model).x),
+      y: R.identity(readUnit(transporterId, model).y)
+    }))
+    .map(model => moveUnit(model, loadId, [unloadDir]));
 
   const activateCoPower = (model, playerId, power) => eitherRight(model)
     .bind(model => {
@@ -596,44 +616,64 @@
     });
 
   // (GameModel, PlayersUnitId, PropertyId) => either Error, GameModel'
-  exports.captureProperty = (model, unitId, propertyId) => eitherRight(model)
-    .bind(model => isPlayersUnitId(unitId) ?
-      eitherRight(model) : eitherLeft("IAE: unitId must be player relative"))
-    .bind(model => canUnitAct(unitId) ?
-      eitherRight(model) : eitherLeft("IAE: unit cannot act"))
-    .bind(model => areOwnedBySameTeam(model.units[unitId], model.properties[propertyId]) ?
-      eitherRight(model) : eitherLeft("IAE: cannot capture "))
-    .bind(model => {
+  exports.captureProperty = (unitId, propertyId, model) => eitherRight(model)
+    .bind(eitherCond(() => isPlayersUnitId(unitId), R.always("IAE-IUI")))
+    .bind(eitherCond(canUnitAct(unitId), R.always("IAE-UCA")))
+    .bind(eitherCond(() => areOnSamePosition(
+      R.view(propertyPath(["units", unitId]), model),
+      R.view(propertyPath(["properties", propertyId]), model)
+    ), R.always("IAE-SFE")))
+    .bind(eitherCond(() => {
+      const unitOwner = R.view(propertyPath(["units", unitId, "owner"]), model);
+      const propOwner = R.view(propertyPath(["properties", propertyId, "owner"]), model);
+      return !areInSameTeam(
+        R.view(propertyPath(["players", unitOwner]), model),
+        R.view(propertyPath(["players", propOwner]), model));
+    }, R.always("IAE-DTE")))
+    .map(model => {
 
-      const capturer = model.units[capturer];
+      const capturer = model.units[unitId];
+      const property = R.view(propertyPath(["properties", propertyId]), model);
+      const propType = model.propertyTypes[property.type];
+      const previousOwner = property.owner;
+      const loosesAfterCaptured = propType.capture_loose_after_captured;
+      const changesAfterCapturedTo = maybe(propType.capture_change_to).orElse(property.type);
+      const restPoints = property.points - numberToInt(0.1 * (capturer.hp + 1));
+      const captured = R.lte(restPoints, 0);
 
-      const properties = fjs.map((property, index) => {
-        if (index === propertyId) {
-          const rest = property.points - parseInt(0.2 * (capturer.hp + 1), 10);
-          const propType = model.propertyTypes[property.type];
-          return createCopy(property, {
-            points: rest <= 0 ? 20 : rest,
-            owner: rest <= 0 ? capturer.owner : property.owner,
-            type: rest <= 0 && propType.capture_change_to ? propType.capture_change_to : property.type
-          });
-        }
-        return property;
-      }, model.properties);
+      const modelA = R.over(propertyPath(["properties", propertyId]), R.evolve({
+        points: R.ifElse(
+          R.always(captured),
+          R.always(20),
+          R.always(restPoints)),
+        owner: R.ifElse(
+          R.always(captured),
+          R.always(capturer.owner),
+          R.identity),
+        type: R.ifElse(
+          R.and(R.always(captured)),
+          R.always(changesAfterCapturedTo),
+          R.identity)
+      }), model);
 
-      // TODO: loose after captured
+      const modelB = R.over(propertyPath(["properties"]), R.ifElse(
+        R.always(loosesAfterCaptured),
+        R.map(R.ifElse(
+          R.pipe(R.prop("owner"), R.equals(previousOwner)),
+          R.evolve({ owner: R.always(-1) }),
+          R.identity)),
+        R.identity), modelA);
 
-      return createCopy(model, {
-        properties
-      });
+      return modelB;
     });
 
+  const eitherCond = R.curry((ifFn, elseFn, x) => ifFn(x) ? eitherRight(x) : eitherLeft(elseFn(x)));
+
   // (GameModel, PlayersUnitId) => either Error, GameModel'
-  exports.wait = (model, unitId) => eitherRight(model)
-    .bind(model => isPlayersUnitId(unitId) ? eitherRight(model) : eitherLeft("IAE: unitId must be player relative"))
-    .bind(model => canUnitAct(unitId) ? eitherRight(model) : eitherLeft("IAE: unit cannot act"))
-    .map(model => createCopy(model, {
-      actables: setUnitIntoWaitingMode(model.actables, unitId)
-    }));
+  exports.wait = (unitId, model) => eitherRight(model)
+    .bind(eitherCond(() => isPlayersUnitId(unitId), R.always("IAE-IUI")))
+    .bind(eitherCond(canUnitAct(unitId), R.always("IAE-UCA")))
+    .map(R.over(R.lensProp("actables"), R.over(R.lensIndex(unitId), R.F)));
 
   // (GameModel, Int) => either Error, GameModel'
   exports.elapseTime = (model, time) => eitherRight(time)
