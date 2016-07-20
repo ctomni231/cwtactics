@@ -352,7 +352,8 @@
   const gameLimitFactory = (leftTurnTime = infinity, leftGameTime = infinity) => ({
     leftDays: Number.POSITIVE_INFINITY,
     leftTurnTime,
-    leftGameTime
+    leftGameTime,
+    minimumProperties: 0
   });
 
   // (GameModel) => Boolean
@@ -636,7 +637,6 @@
       const property = R.view(propertyPath(["properties", propertyId]), model);
       const propType = model.propertyTypes[property.type];
       const previousOwner = property.owner;
-      const loosesAfterCaptured = propType.capture_loose_after_captured;
       const changesAfterCapturedTo = maybe(propType.capture_change_to).orElse(property.type);
       const restPoints = property.points - numberToInt(0.1 * (capturer.hp + 1));
       const captured = R.lte(restPoints, 0);
@@ -655,6 +655,12 @@
           R.always(changesAfterCapturedTo),
           R.identity)
       }), model);
+
+      const numOfProps = R.reduce((a, b) => b.owner === propertyId ? a + 1 : a, 0, modelA.properties);
+
+      const loosesAfterCaptured = R.or(
+        propType.capture_loose_after_captured, 
+        R.lt(numOfProps, model.limits.minimumProperties));
 
       const modelB = R.over(propertyPath(["properties"]), R.ifElse(
         R.always(loosesAfterCaptured),

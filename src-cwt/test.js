@@ -244,6 +244,22 @@
         eitherFold(assertStartsWith("IAE-UCA"), assertNeverCalled)
       )),
 
+    testCase("game declines call when capturer and property are in the same team",
+      R.pipe(
+        getTestModel,
+        R.set(propertyPath(["actables", 0]), true),
+        R.set(propertyPath(["units", 0, "x"]), 1),
+        R.set(propertyPath(["units", 0, "y"]), 1),
+        R.set(propertyPath(["units", 0, "owner"]), 0),
+        R.set(propertyPath(["properties", 0, "x"]), 1),
+        R.set(propertyPath(["properties", 0, "y"]), 1),
+        R.set(propertyPath(["properties", 0, "owner"]), 1),
+        R.set(propertyPath(["players", 0, "team"]), 1),
+        R.set(propertyPath(["players", 1, "team"]), 1),
+        R.curry(cwtGame.captureProperty)(0, 0),
+        eitherFold(assertStartsWith("IAE-DTE"), assertNeverCalled)
+      )),
+
     testCase("a capture lowers the capture points of the property",
       R.pipe(
         getTestModel,
@@ -299,29 +315,7 @@
           R.tap(R.propSatisfies(assertEquals(0), "owner"))))
       )),
 
-    testCase("changing owner leads into a loss of the previous owner when capture_loose_after_captured is enabled",
-      R.pipe(
-        getTestModel,
-        R.set(propertyPath(["actables", 0]), true),
-        R.set(propertyPath(["units", 0, "x"]), 1),
-        R.set(propertyPath(["units", 0, "y"]), 1),
-        R.set(propertyPath(["units", 0, "owner"]), 0),
-        R.set(propertyPath(["properties", 0, "x"]), 1),
-        R.set(propertyPath(["properties", 0, "y"]), 1),
-        R.set(propertyPath(["properties", 0, "owner"]), 1),
-        R.set(propertyPath(["properties", 0, "points"]), 1),
-        R.set(propertyPath(["properties", 0, "type"]), "PRTA"),
-        R.set(propertyPath(["propertyTypes", "PRTA", "capture_loose_after_captured"]), true),
-        R.curry(cwtGame.captureProperty)(0, 0),
-        eitherFold(assertNeverCalled, R.pipe(
-          R.where({ 
-            properties: R.pipe(R.reduce((a, b) => b.owner == 1 ? a + 1 : a, 0), assertEquals(0)),
-            players: R.pipe(R.nth(0), R.prop("team"), assertEquals(-1))
-          })
-        ))
-      )),
-
-    testCase("game declines call when capturer and property are in the same team",
+    testCase("property changes its type when capture_change_to is given",
       R.pipe(
         getTestModel,
         R.set(propertyPath(["actables", 0]), true),
@@ -339,6 +333,49 @@
         R.curry(cwtGame.captureProperty)(0, 0),
         R.map(R.view(propertyPath(["properties", 0, "type"]))),
         eitherFold(assertNeverCalled, assertEquals("PRTB"))
+      )),
+
+    testCase("changing owner leads into a loss of the previous owner when capture_loose_after_captured is enabled",
+      R.pipe(
+        getTestModel,
+        R.set(propertyPath(["actables", 0]), true),
+        R.set(propertyPath(["units", 0, "x"]), 1),
+        R.set(propertyPath(["units", 0, "y"]), 1),
+        R.set(propertyPath(["units", 0, "owner"]), 0),
+        R.set(propertyPath(["properties", 0, "x"]), 1),
+        R.set(propertyPath(["properties", 0, "y"]), 1),
+        R.set(propertyPath(["properties", 0, "owner"]), 1),
+        R.set(propertyPath(["properties", 0, "points"]), 1),
+        R.set(propertyPath(["properties", 0, "type"]), "PRTA"),
+        R.set(propertyPath(["propertyTypes", "PRTA", "capture_loose_after_captured"]), true),
+        R.curry(cwtGame.captureProperty)(0, 0),
+        eitherFold(assertNeverCalled, R.pipe(
+          R.where({
+            properties: R.pipe(R.reduce((a, b) => b.owner == 1 ? a + 1 : a, 0), assertEquals(0)),
+            players: R.pipe(R.nth(0), R.prop("team"), assertEquals(-1))
+          })
+        ))
+      )),
+
+    testCase("changing owner leads into loss of the old owner when its left properties are lower than the minimum amount",
+      R.pipe(
+        getTestModel,
+        R.set(propertyPath(["actables", 0]), true),
+        R.set(propertyPath(["units", 0, "x"]), 1),
+        R.set(propertyPath(["units", 0, "y"]), 1),
+        R.set(propertyPath(["units", 0, "owner"]), 0),
+        R.set(propertyPath(["properties", 0, "x"]), 1),
+        R.set(propertyPath(["properties", 0, "y"]), 1),
+        R.set(propertyPath(["properties", 0, "owner"]), 1),
+        R.set(propertyPath(["properties", 0, "points"]), 1),
+        R.set(propertyPath(["players", 0, "team"]), 1),
+        R.set(propertyPath(["players", 1, "team"]), 2),
+        R.set(propertyPath(["limits", "minimumProperties"]), 5),
+        R.curry(cwtGame.captureProperty)(0, 0),
+        eitherFold(assertNeverCalled, R.where({
+          properties: R.pipe(R.reduce((a, b) => b.owner == 1 ? a + 1 : a, 0), assertEquals(0)),
+          players: R.pipe(R.nth(1), R.prop("team"), assertEquals(-1))
+        }))
       ))
   ]));
 
