@@ -1,3 +1,5 @@
+var CW = window.CW || (window.CW = {});
+
 (function(exports) {
   "use strict";
 
@@ -41,9 +43,6 @@
     defense: 0,
     blocksVision: false,
 
-    capture_loose_after_captured: false,
-    capture_change_to: "",
-
     notTransferable: false,
     funds: 0,
     vision: 0,
@@ -51,9 +50,6 @@
     repairs: [],
     produces: [],
     builds: [],
-
-    rocket_range: -1,
-    rocket_change_to: "",
 
     cannon: {},
     bigProperty: {},
@@ -88,6 +84,13 @@
   // ({x,y}, {x,y}) => Boolean
   const areOnSamePosition = (a, b) => distanceBetweenObjects(a, b) === 0;
 
+  // x, y, GameModel -> Boolean
+  const isValidPosition = (x, y, model) =>
+    R.and(
+      R.and(R.gte(x, 0), R.lt(x, model.map.tiles.length)),
+      R.and(R.gte(y, 0), R.lt(y, model.map.tiles[0].length)));
+
+
   const INACTIVE_POWER = 1;
   const ACTIVE_POWER = 2;
   const ACTIVE_SUPER_POWER = 3;
@@ -119,6 +122,7 @@
     maxFuel: 50,
     costs: 0,
     supplies: [],
+    canFireRockets: false,
     attackMap: {}
   };
 
@@ -207,17 +211,23 @@
   /*
   let duration = active.minDuration;
       duration += parseInt(Math.random() * (active.maxDuration - duration), 10);
-      eitherLeftDays = duration;
+      leftDays = duration;
       */
 
   /** @signature PropertyTypeModel */
   const basePropertyType = {
     capturable: false,
-    capture_change_to: null,
+
     funds: 0,
     builds: [],
     repairs: [],
-    supplies: []
+    supplies: [],
+
+    capture_loose_after_captured: false,
+    capture_change_to: "",
+
+    rocket_range: -1,
+    rocket_change_to: "",
   };
 
   /** @signature Map => Boolean */
@@ -335,12 +345,12 @@
 
     const turn = turnModelFactory(model.turn.day + (changedDay ? 1 : 0), nextOwner);
     const limits = createCopy(model.limits, {
-      eitherLeftDays: model.limits.eitherLeftDays + (changedDay ? -1 : 0)
+      leftDays: model.limits.leftDays + (changedDay ? -1 : 0)
     });
-    const weathereitherLeftDays = model.weather.day + (changedDay ? -1 : 0);
+    const weatherleftDays = model.weather.day + (changedDay ? -1 : 0);
     const weather = createCopy(model.weather, {
-      day: weathereitherLeftDays,
-      type: weathereitherLeftDays > 0 ? model.weather.type : getRandomWeatherModel(model.weatherTypes)
+      day: weatherleftDays,
+      type: weatherleftDays > 0 ? model.weather.type : getRandomWeatherModel(model.weatherTypes)
     });
 
     return createCopy(model, { turn, limits, weather });
@@ -363,7 +373,7 @@
   const isGameTimeLimitReached = (model) => model.limits.eitherLeftGameTime <= 0;
 
   // (GameModel) => Boolean
-  const isTurnLimitReached = (model) => model.limits.eitherLeftDays <= 0;
+  const isTurnLimitReached = (model) => model.limits.leftDays <= 0;
 
   const isValidGameData = (data) => just(data)
     .filter(data => isInteger(data.width) && data.width >= 10 && data.width <= 50)
@@ -435,12 +445,14 @@
   // ({}) => either Error, GameModel
   exports.createGame = gameModelFactory;
 
-  exports.yieldGame = (model, playerId) => eitherRight(model)
-    .bind(model => createCopy(model, {
+  const isPlayerId = R.allPass([R.gte(R.__, 0), R.lt(R.__, 4)]);
+
+  exports.yieldGame = (playerId, model) => eitherRight(model)
+    .bind(eitherCond(() => isPlayerId(playerId), R.always("iae:ipi")))
+    .bind(eitherCond(() => R.gt(model.players[playerId].team, -1), R.always("iae:pad")))
+    .map(model => createCopy(model, {
       players: fjs.map((player, id) => playerId != id ?
-        player :
-        createCopy(player, { team: -1 }),
-        model.players)
+        player : createCopy(player, { team: -1 }), model.players)
     }));
 
   const moveUnitByCode = (data, code) => {
@@ -505,7 +517,7 @@
 
   const numberToInt = x => parseInt(x, 10);
 
-  exports.attackUnit = (model, attackerId, defenderId) => eitherRight(model)
+  exports.attackUnit = (attackerId, defenderId, model) => eitherRight(model)
     .bind(model => {
       const attacker = model.units[attackerId];
       const defender = model.units[defenderId];
@@ -561,13 +573,13 @@
       });
     });
 
-  exports.resupplyNeightbours = model => eitherRight(model);
+  exports.resupplyNeightbours = (supplierId, model) => eitherRight(model);
 
-  exports.loadUnit = (model, loadId, transporterId) => eitherRight(model)
+  exports.loadUnit = (loadId, transporterId, model) => eitherRight(model)
     .map(evolveUnit(transporterId, evolvePutLoadCounter))
     .map(evolveUnit(loadId, { loadedIn: R.identity(transporterId) }));
 
-  exports.unloadUnit = (model, loadId, transporterId, unloadDir) => Either.of(model)
+  exports.unloadUnit = (loadId, transporterId, unloadDir, model) => Either.of(model)
     .bind(model => Either.cond(lt(-1, readUnit(transporterId, model).loadedIn), "transporter is loaded", model))
     .map(evolveUnit(transporterId, evolvePopLoadCounter))
     .map(model => evolveUnit(loadId, {
@@ -591,8 +603,16 @@
 
   exports.activateSuperPower = (model, playerId) => activateCoPower(model, playerId, ACTIVE_SUPER_POWER);
 
-  exports.fireRocket = (model, rocketId, firerId, tx, ty) => eitherRight(model)
-    .bind(model => {
+  const isPropertyId = R.allPass([R.flip(R.gte)(0), R.flip(R.lt)(300)]);
+
+  exports.fireRocket = (rocketId, firerId, tx, ty, model) => eitherRight(model)
+    .bind(eitherCond(() => isValidPosition(tx, ty, model), R.always("IAE-IPV")))
+    .bind(eitherCond(() => isPlayersUnitId(firerId), R.always("IAE-IUI")))
+    .bind(eitherCond(() => isPropertyId(rocketId), R.always("IAE-IPI")))
+    .bind(eitherCond(() => areOnSamePosition(model.units[firerId], model.properties[rocketId]), R.always("iae:spe")))
+    .bind(eitherCond(() => R.gt(model.propertyTypes[model.properties[rocketId].type].rocket_range, 0), R.always("iae:ipt")))
+    .bind(eitherCond(() => model.unitTypes[model.units[firerId].type].canFireRockets, R.always("iae:iut")))
+    .map(model => {
       const oldRocket = model.properties[rocketId];
       const rocketType = model.propertyTypes[oldRocket.type];
       const rocketRange = rocketType.rocket_range;
@@ -659,7 +679,7 @@
       const numOfProps = R.reduce((a, b) => b.owner === propertyId ? a + 1 : a, 0, modelA.properties);
 
       const loosesAfterCaptured = R.or(
-        propType.capture_loose_after_captured, 
+        propType.capture_loose_after_captured,
         R.lt(numOfProps, model.limits.minimumProperties));
 
       const modelB = R.over(propertyPath(["properties"]), R.ifElse(
@@ -682,14 +702,31 @@
     .map(R.over(R.lensProp("actables"), R.over(R.lensIndex(unitId), R.F)));
 
   // (GameModel, Int) => either Error, GameModel'
-  exports.elapseTime = (model, time) => eitherRight(time)
-    .bind(time => isInteger(time) ? eitherRight(time) : eitherLeft("IAE: time must be int"))
-    .bind(time => time >= 0 ? eitherRight(time) : eitherLeft("IAE: negative time"))
-    .map(time => createCopy(model, {
-      limits: gameLimitFactory(
-        Math.max(model.limits.leftTurnTime - time, 0),
-        Math.max(model.limits.leftGameTime - time, 0))
-    }));
+  exports.elapseTime = (time, model) => eitherRight(model)
+    .bind(eitherCond(() => isInteger(time) && time >= 0, R.always("IAE-PIE")))
+    .map(R.over(R.lensProp("limits"), R.evolve({
+      leftTurnTime: R.subtract(R.__, time),
+      leftGameTime: R.subtract(R.__, time)
+    })))
+    .map(R.ifElse(
+      R.pipe(
+        R.view(propertyPath(["limits", "leftGameTime"])),
+        R.lte(R.__, 0)),
+      R.over(
+        R.lensProp("players"),
+        R.map(R.evolve({
+          team: R.always(-1)
+        }))),
+      R.identity))
+    .bind(R.ifElse(
+      R.pipe(
+        R.view(R.lensProp("limits")),
+        R.where({
+          leftTurnTime: R.lte(R.__, 0),
+          leftGameTime: R.gt(R.__, 0)
+        })),
+      exports.nextTurn,
+      eitherRight));
 
   // most critical action (performance wise) in the game because there is so much stuff happening. 
   // this may breaks the 60FPS target (because it immutability costs a lot) but we're easily able 

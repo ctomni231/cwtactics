@@ -1,52 +1,6 @@
-  // =========================================================================================================
-  //                                                 GAME STATE
-  // =========================================================================================================
+var CW = window.CW || (window.CW = {});
 
-  // [GameModel]
-  let history = [];
-
-  // maybe GameModel
-  let gameState = cwtCore.nothing();
-
-  // GameAction:: {id: Int, actionName: String, actionMeta: ?}
-
-  // [GameAction]
-  let allowedActions = [];
-
-  /*
-    // ((GameModel) => GameModel') => (GameModel => { model: maybe GameModel', changes: [GameModelChange]})
-    const gameAction = (action) =>
-      (model) => maybe(action(model))
-      .biMap(
-        (data) => [data, gameModelDifference(model, data)],
-        () => [null, []])
-      .map({
-        model: maybe(data[0]),
-        changes: data[1]
-      })
-      .get();
-  */
-
-  // TODO: may end game here ?
-  // (Int) => { changes: [GameModelChange], allowedActions: [GameAction] }
-  exports.doActionAndReturnNextPossibleOnes = () => ({
-    changes: [],
-    allowedActions
-  });
-
-  // TODO: MAYBE TO UNSAFE ?
-  exports.devInitGame = (data) => null;
-
-  // TODO: MAYBE TO UNSAFE ?
-  exports.wipeEverything = () => {
-    gameState = nothing();
-    return [];
-  };
-
-  // =========================================================================================================
-  //                                           CONTROLLER 
-  // =========================================================================================================
-
+(function() {
 
   // String -> Promise
   const jsonIO = (path) => new Promise((resolve, reject) => {
@@ -86,3 +40,5 @@
     .catch(function(err) {
       reject(err);
     }));
+
+}());

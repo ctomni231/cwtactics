@@ -1,3 +1,14 @@
+var CW = window.CW || (window.CW = {});
+
+// propertyPath:: [NumberOrInt] -> Lens 
+R.propertyPath = R.pipe(
+  R.map(
+    R.ifElse(
+      R.is(Number),
+      R.lensIndex,
+      R.lensProp)),
+  R.apply(R.compose));
+
 (function(exports) {
   "use strict";
 
