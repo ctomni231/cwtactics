@@ -104,7 +104,7 @@
       { type: "PRTA", x: 13, y: 10, owner: 1 }
     ],
     propertyTypes: {
-      PRTA: { funds: 1000 },
+      PRTA: { funds: 1000, builds: ["UNTA"] },
       PRTB: {}
     },
     moveTypes: {
@@ -613,17 +613,113 @@
   ]));
 
   testSuite("produce unit", () => ([
-    testCase("declined when factory does not belongs to the turn owner", assertNeverCalled),
-    testCase("declined when factory id is invalid", assertNeverCalled),
-    testCase("declined when unit type is invalid", assertNeverCalled),
-    testCase("declined when player has too much units", assertNeverCalled),
-    testCase("declined when player has not enough gold", assertNeverCalled),
-    testCase("declined when factory is neutral", assertNeverCalled),
-    testCase("declined when factory is occuppied by an unit", assertNeverCalled),
-    testCase("declined when factory cannot build the given unit type", assertNeverCalled),
-    testCase("subtracts the unit costs from the factory owners gold", assertNeverCalled),
-    testCase("creates a new unit on the factory", assertNeverCalled),
-    testCase("created new unit cannot act in the active turn", assertNeverCalled)
+
+    testCase("declined when factory does not belongs to the turn owner",
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["properties", 0, "owner"]), 1),
+        R.set(R.propertyPath(["players", 0, "gold"]), 99999),
+        R.curry(cwtGame.produceUnit)(0, "UNTA"),
+        eitherFold(assertStartsWith("iae:nto"), assertNeverCalled))),
+
+    testCase("declined when factory id is invalid (roob)",
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["players", 0, "gold"]), 99999),
+        R.curry(cwtGame.produceUnit)(-1, "UNTA"),
+        eitherFold(assertStartsWith("iae:ipi"), assertNeverCalled))),
+
+    testCase("declined when factory id is invalid (loob)",
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["players", 0, "gold"]), 99999),
+        R.curry(cwtGame.produceUnit)(-1, "UNTA"),
+        eitherFold(assertStartsWith("iae:ipi"), assertNeverCalled))),
+
+    testCase("declined when unit type is invalid",
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["players", 0, "gold"]), 99999),
+        R.curry(cwtGame.produceUnit)(0, "UNKN"),
+        eitherFold(assertStartsWith("iae:utn"), assertNeverCalled))),
+
+    testCase("declined when player has too much units",
+      R.pipe(
+        getTestModel,
+        R.over(
+          R.propertyPath(["units"]),
+          R.map(R.evolve({ owner: R.always(0) }))),
+        R.set(R.propertyPath(["players", 0, "gold"]), 99999),
+        R.curry(cwtGame.produceUnit)(0, "UNTA"),
+        eitherFold(assertStartsWith("iae:nfs"), assertNeverCalled))),
+
+    testCase("declined when player has not enough gold",
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["players", 0, "gold"]), 0),
+        R.set(R.propertyPath(["unitTypes", "UNTA", "costs"]), 1),
+        R.curry(cwtGame.produceUnit)(0, "UNTA"),
+        eitherFold(assertStartsWith("iae:isf"), assertNeverCalled))),
+
+    testCase("declined when factory is occuppied by an unit",
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["players", 0, "gold"]), 99999),
+        R.set(R.propertyPath(["units", 0, "x"]), 1),
+        R.set(R.propertyPath(["units", 0, "y"]), 1),
+        R.set(R.propertyPath(["units", 0, "owner"]), 0),
+        R.set(R.propertyPath(["properties", 0, "x"]), 1),
+        R.set(R.propertyPath(["properties", 0, "y"]), 1),
+        R.curry(cwtGame.produceUnit)(0, "UNTA"),
+        eitherFold(assertStartsWith("iae:tio"), assertNeverCalled))),
+
+    testCase("declined when factory cannot build the given unit type", 
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["players", 0, "gold"]), 1),
+        R.set(R.propertyPath(["unitTypes", "UNTA", "costs"]), 1),
+        R.over(R.propertyPath(["propertyTypes", "PRTA", "builds"]), R.without(["UNTA"])),
+        R.curry(cwtGame.produceUnit)(0, "UNTA"),
+        eitherFold(assertStartsWith("iae:cbt"), assertNeverCalled))),
+
+    testCase("subtracts the unit costs from the factory owners gold", 
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["players", 0, "gold"]), 1),
+        R.set(R.propertyPath(["unitTypes", "UNTA", "costs"]), 1),
+        R.curry(cwtGame.produceUnit)(0, "UNTA"),
+        eitherFold(
+          assertNeverCalled, 
+          R.pipe( R.view(R.propertyPath(["players", 0, "gold"])), assertEquals(0))))),
+
+    testCase("creates a new unit on the factory",
+      R.pipe(
+        getTestModel,
+        R.over(
+          R.propertyPath(["units"]),
+          R.map(R.evolve({ owner: R.always(-1) }))),
+        R.set(R.propertyPath(["players", 0, "gold"]), 99999),
+        R.set(R.propertyPath(["unitTypes", "UNTA", "costs"]), 1),
+        R.set(R.propertyPath(["properties", 0, "x"]), 0),
+        R.set(R.propertyPath(["properties", 0, "y"]), 0),
+        R.curry(cwtGame.produceUnit)(0, "UNTA"),
+        eitherFold(assertNeverCalled, R.pipe(
+          R.view(R.propertyPath(["units", 0])),
+          unit => "{" + unit.x + "," + unit.y + "}",
+          assertEquals("{0,0}"))))),
+
+    testCase("created new unit cannot act in the active turn",
+      R.pipe(
+        getTestModel,
+        R.over(
+          R.propertyPath(["units"]),
+          R.map(R.evolve({ owner: R.always(-1) }))),
+        R.set(R.propertyPath(["players", 0, "gold"]), 99999),
+        R.set(R.propertyPath(["unitTypes", "UNTA", "costs"]), 1),
+        R.curry(cwtGame.produceUnit)(0, "UNTA"),
+        eitherFold(assertNeverCalled, R.pipe(
+          R.view(R.propertyPath(["actables", 0])),
+          assertEquals(false))))),
   ]));
 
   testSuite("destroy unit", () => ([
@@ -647,13 +743,26 @@
         R.map(R.view(R.propertyPath(["units", 0, "owner"]))),
         eitherFold(assertNeverCalled, assertEquals(-1)))),
 
+    testCase("player does looses game when he/she has at least one units left an noUnitsLeftMeansLoose is enabled",
+      R.pipe(
+        getTestModel,
+        R.over(
+          R.propertyPath(["units"]),
+          R.map(R.evolve({ owner: R.always(-1) }))),
+        R.set(R.propertyPath(["units", 0, "owner"]), 0),
+        R.set(R.propertyPath(["units", 1, "owner"]), 0),
+        R.set(R.propertyPath(["cfg", "noUnitsLeftMeansLoose"]), true),
+        R.curry(cwtGame.destroyUnit)(0),
+        R.map(R.view(R.propertyPath(["players", 0, "team"]))),
+        eitherFold(assertNeverCalled, assertEquals(1)))),
+
     testCase("player looses game when he/she has no units left an noUnitsLeftMeansLoose is enabled",
       R.pipe(
         getTestModel,
         R.over(
           R.propertyPath(["units"]),
           R.map(R.evolve({ owner: R.always(-1) }))),
-        R.set(R.propertyPath(["units", 0, "owner"]), 1),
+        R.set(R.propertyPath(["units", 0, "owner"]), 0),
         R.set(R.propertyPath(["cfg", "noUnitsLeftMeansLoose"]), true),
         R.curry(cwtGame.destroyUnit)(0),
         R.map(R.view(R.propertyPath(["players", 0, "team"]))),
@@ -692,7 +801,7 @@
         R.curry(cwtGame.attackUnit)(50, 0),
         eitherFold(assertStartsWith("iae:iui:att"), assertNeverCalled))),
 
-    testCase("declined when attacker cannot act", 
+    testCase("declined when attacker cannot act",
       R.pipe(
         getTestModel,
         R.set(R.propertyPath(["actables", 0]), true),

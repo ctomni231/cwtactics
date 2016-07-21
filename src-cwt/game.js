@@ -399,6 +399,7 @@ var CW = window.CW || (window.CW = {});
         fog: intRange(1, data.width).map(columnId => intRange(1, data.height).map(identity(false).get)),
         map: mapModelFactory(data.width, data.height),
         tileTypes: {},
+        cfg: {},
         turn: turnModelFactory(data.day, maybe(data.turnOwner).orElse(0)),
         players: intRange(1, MAX_PLAYERS).map(i => playerFactory(i)),
         properties: R.flatten(
@@ -435,9 +436,8 @@ var CW = window.CW || (window.CW = {});
 
 
   const lensUnitList = R.lensProp("units");
-  const evolveUnit = R.curry((id, evolveDesc, model) => R.over(lensUnitList, R.over(R.lensIndex(id), R.evolve(evolveDesc))));
   const readUnit = (id, model) => R.view(R.lensIndex(id), R.view(lensUnitList, model));
-  const ownerWipeEvolve = { owner: R.identity(-1) };
+  const ownerWipeEvolve = { owner: R.always(-1) };
   const evolvePutLoadCounter = { loadedIn: R.dec };
   const evolvePopLoadCounter = { loadedIn: R.inc };
 
@@ -486,8 +486,31 @@ var CW = window.CW || (window.CW = {});
       })
     });
 
-  exports.produceUnit = (model, factoryId, type) => eitherRight(model)
-    .bind(model => {
+  exports.produceUnit = (factoryId, type, model) => eitherRight(model)
+    .bind(eitherCond(() => isPropertyId(factoryId), R.always("iae:ipi")))
+    .bind(eitherCond(() => model.properties[factoryId].owner === model.turn.owner, R.always("iae:nto")))
+    .bind(eitherCond(() => R.complement(R.isNil)(model.unitTypes[type]), R.always("iae:utn")))
+    .bind(eitherCond(() => 
+      R.contains(type, model.propertyTypes[model.properties[factoryId].type].builds), 
+      R.always("iae:cbt")))
+    .bind(eitherCond(() => R.gte(
+      model.players[model.properties[factoryId].owner].gold, 
+      model.unitTypes[type].costs), R.always("iae:isf")))
+    .bind(eitherCond(
+      R.pipe(
+        R.view(R.propertyPath(["units"])),
+        units => [model.turn.owner, units],
+        data => R.reduce((sum, unit) => unit.owner === data[0] ? sum + 1 : sum, 0, data[1]),
+        R.flip(R.lt)(50)), 
+      R.always("iae:nfs")))
+    .bind(eitherCond(
+      R.pipe(
+        R.view(R.propertyPath(["units"])),
+        units => [model.properties[factoryId].x, model.properties[factoryId].y, units],
+        data => R.any(unit => unit.owner != -1 && unit.x === data[0] && unit.y === data[1], data[2]),
+        R.equals(false)), 
+      R.always("iae:tio")))
+    .map(model => {
 
       const producedType = model.unitTypes[type];
       const factory = model.properties[factoryId];
@@ -498,7 +521,7 @@ var CW = window.CW || (window.CW = {});
 
         players: fjs.map((player, id) => id === factory.owner ?
           createCopy(player, {
-            money: player.money - producedType.costs
+            gold: player.gold - producedType.costs
           }) : player, model.players),
 
         units: fjs.map(unit => possibleNewUnit == unit ?
@@ -512,8 +535,27 @@ var CW = window.CW || (window.CW = {});
       })
     });
 
-  exports.destroyUnit = (model, unitId) => eitherRight(model)
-    .map(envolveUnit(unitId, ownerWipeEvolve));
+  exports.destroyUnit = (unitId, model) => eitherRight(model)
+    .bind(eitherCond(() => isPlayersUnitId(unitId), R.always("iae:iui")))
+    .map(R.ifElse(
+      R.allPass([
+        R.pipe(
+          R.view(R.propertyPath(["cfg", "noUnitsLeftMeansLoose"])),
+          R.equals(true)),
+        R.pipe(
+          R.view(R.propertyPath(["units"])),
+          units => [units[unitId].owner, units],
+          data => R.reduce(
+            (sum, unit) => unit.owner === data[0] ? sum + 1 : sum, 0, data[1]),
+          R.equals(1))
+      ]),
+      R.over(
+        R.propertyPath(["players",
+          R.view(R.propertyPath(["units", unitId, "owner"]), model)
+        ]),
+        R.evolve({ team: R.always(-1) })),
+      R.identity))
+    .map(R.over(R.propertyPath(["units", unitId]), R.evolve(ownerWipeEvolve)));
 
   const numberToInt = x => parseInt(x, 10);
 

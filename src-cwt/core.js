@@ -9,6 +9,8 @@ R.propertyPath = R.pipe(
       R.lensProp)),
   R.apply(R.compose));
 
+R.tapLog = R.tap(x => console.log(x));
+
 (function(exports) {
   "use strict";
 
