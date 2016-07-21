@@ -94,7 +94,18 @@
       { type: "UNTA", x: 8, y: 8 }
     ],
     unitTypes: {
-      UNTA: { moveType: "MVTA" }
+      UNTA: { moveType: "MVTA" },
+      UNTD: {
+        minRange: 1,
+        maxRange: 1,
+        mainWeaponDamage: { "UNTD": 10, "UNTI": 20 },
+        secondaryWeaponDamage: { "UNTD": 10 }
+      },
+      UNTI: {
+        minRange: 2,
+        maxRange: 3,
+        mainWeaponDamage: { "UNTD": 30, "UNTI": 30 }
+      }
     },
     properties: [
       { type: "PRTA", x: 9, y: 10, owner: 0 },
@@ -132,18 +143,16 @@
   //
   //               CWT GAME SPECIFICATION
   //
-  //               VERSION 0.35.902 [TARGET 0.36]
+  //               VERSION 0.35.905 [TARGET 0.36]
   // 
-  // TODO: INTEGRATE MOVING API INTO THE ACTIONS
+  // TODO: MERGE MOVING API INTO THE ACTIONS
   // TODO: ADD FOG MECHANIC INTO THE SPECIFICATION
-  // TODO: ADD ANDY CO MECHANIC
-  // TODO: ADD MAX CO MECHANIC
-  // TODO: ADD SAMI CO MECHANIC
   // TODO: ADD HEALTH-RELATIVE CAPTURE VALUE
-  // TODO: FINISH ATTACK MECHANIC
   // TODO: ADD GET ACTIONS FOR POSITION 
   // TODO: ADD GET MOVE TARGETS 
   // TODO: ADD GET ATTACK RANGE 
+  // TODO: COMPLETE ATTACK MECHANIC
+  // TODO: ADD RANDOM SEED FOR ATTACK
   //
   // -------------------------------------------------------------------------------------
   // -------------------------------------------------------------------------------------
@@ -181,10 +190,17 @@
     testCase("increases the gold of the turn owner by the sum of all funds given by properties",
       R.pipe(
         getTestModel,
-        R.lensProp("players"),
-        R.lensIndex(0),
+        R.over(R.propertyPath(["properties"]), R.map(R.evolve({ owner: R.always(-1) }))),
+        R.set(R.propertyPath(["properties", 0, "owner"]), 1),
+        R.set(R.propertyPath(["properties", 0, "type"]), "PRTA"),
+        R.set(R.propertyPath(["properties", 1, "owner"]), 1),
+        R.set(R.propertyPath(["properties", 1, "type"]), "PRTA"),
+        R.set(R.propertyPath(["propertyTypes", "PRTA", "funds"]), 1000),
+        R.set(R.propertyPath(["players", 1, "gold"]), 0),
+        R.set(R.propertyPath(["turn", "owner"]), 0),
         cwtGame.nextTurn,
-        eitherFold(assertNeverCalled, assertEquals(testGameModel.players[1].gold + 2000))))
+        R.map(R.view(R.propertyPath(["players", 1, "gold"]))),
+        eitherFold(assertNeverCalled, assertEquals(2000))))
   ]));
 
   testSuite("wait action", () => ([
@@ -227,8 +243,6 @@
   ]));
 
   testSuite("capture action", () => ([
-
-    testCase("declined when capturer does not belongs to the turn owner", assertNeverCalled),
 
     testCase("game declines call when capturer and property aren't on the same tile",
       R.pipe(
@@ -401,8 +415,6 @@
 
   // rocketId, firerId, tx, ty
   testSuite("fire rocket", () => ([
-
-    testCase("declined when unit does not belongs to the turn owner", assertNeverCalled),
 
     testCase("illegal position will be declined",
       R.pipe(
@@ -673,7 +685,7 @@
         R.curry(cwtGame.produceUnit)(0, "UNTA"),
         eitherFold(assertStartsWith("iae:tio"), assertNeverCalled))),
 
-    testCase("declined when factory cannot build the given unit type", 
+    testCase("declined when factory cannot build the given unit type",
       R.pipe(
         getTestModel,
         R.set(R.propertyPath(["players", 0, "gold"]), 1),
@@ -682,15 +694,15 @@
         R.curry(cwtGame.produceUnit)(0, "UNTA"),
         eitherFold(assertStartsWith("iae:cbt"), assertNeverCalled))),
 
-    testCase("subtracts the unit costs from the factory owners gold", 
+    testCase("subtracts the unit costs from the factory owners gold",
       R.pipe(
         getTestModel,
         R.set(R.propertyPath(["players", 0, "gold"]), 1),
         R.set(R.propertyPath(["unitTypes", "UNTA", "costs"]), 1),
         R.curry(cwtGame.produceUnit)(0, "UNTA"),
         eitherFold(
-          assertNeverCalled, 
-          R.pipe( R.view(R.propertyPath(["players", 0, "gold"])), assertEquals(0))))),
+          assertNeverCalled,
+          R.pipe(R.view(R.propertyPath(["players", 0, "gold"])), assertEquals(0))))),
 
     testCase("creates a new unit on the factory",
       R.pipe(
@@ -783,36 +795,133 @@
         R.curry(cwtGame.attackUnit)(-1, 0),
         eitherFold(assertStartsWith("iae:iui:att"), assertNeverCalled))),
 
-    testCase("declined when attacker id is invalid (roob)",
+    testCase("declined when defender id is invalid (roob)",
       R.pipe(
         getTestModel,
         R.curry(cwtGame.attackUnit)(0, 50),
         eitherFold(assertStartsWith("iae:iui:def"), assertNeverCalled))),
 
-    testCase("declined when attacker id is invalid (loob)",
+    testCase("declined when defender id is invalid (loob)",
       R.pipe(
         getTestModel,
         R.curry(cwtGame.attackUnit)(0, -1),
         eitherFold(assertStartsWith("iae:iui:def"), assertNeverCalled))),
 
-    testCase("declined when attacker id is invalid (roob)",
-      R.pipe(
-        getTestModel,
-        R.curry(cwtGame.attackUnit)(50, 0),
-        eitherFold(assertStartsWith("iae:iui:att"), assertNeverCalled))),
-
     testCase("declined when attacker cannot act",
       R.pipe(
         getTestModel,
-        R.set(R.propertyPath(["actables", 0]), true),
-        R.curry(cwtGame.attackUnit)(50, 0),
-        eitherFold(assertStartsWith("iae:iui:att"), assertNeverCalled))),
+        R.set(R.propertyPath(["actables", 0]), false),
+        R.curry(cwtGame.attackUnit)(0, 0),
+        eitherFold(assertStartsWith("iae:uca"), assertNeverCalled))),
 
-    testCase("attack lowers defenders health", assertNeverCalled),
-    testCase("defender lowers attackers health when he/she survives and is direct and standing on a neighbour tile", assertNeverCalled),
-    testCase("defender does not lowers attackers health when he/she dies", assertNeverCalled),
-    testCase("defender does not lowers attackers health when he/she does not standing on a neighbour tile", assertNeverCalled),
-    testCase("attack lowers defenders health", assertNeverCalled)
+    testCase("attack lowers defenders health", 
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["units", 0, "owner"]), 0),
+        R.set(R.propertyPath(["units", 0, "hp"]), 99),
+        R.set(R.propertyPath(["units", 0, "type"]), "UNTD"),
+        R.set(R.propertyPath(["units", 0, "x"]), 0),
+        R.set(R.propertyPath(["units", 0, "y"]), 0),
+        R.set(R.propertyPath(["units", 1, "owner"]), 1),
+        R.set(R.propertyPath(["units", 1, "hp"]), 99),
+        R.set(R.propertyPath(["units", 1, "x"]), 1),
+        R.set(R.propertyPath(["units", 1, "y"]), 0),
+        R.set(R.propertyPath(["units", 1, "type"]), "UNTD"),
+        R.set(R.propertyPath(["actables", 0]), true),
+        R.curry(cwtGame.attackUnit)(0, 1),
+        R.map(R.view(R.propertyPath(["units", 1, "hp"]))),
+        eitherFold(assertNeverCalled, assertNotEquals(99)))),
+
+    testCase("defender lowers attackers health when he/she survives and is direct and standing on a neighbour tile", 
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["units", 0, "owner"]), 0),
+        R.set(R.propertyPath(["units", 0, "hp"]), 99),
+        R.set(R.propertyPath(["units", 0, "type"]), "UNTD"),
+        R.set(R.propertyPath(["units", 0, "x"]), 0),
+        R.set(R.propertyPath(["units", 0, "y"]), 0),
+        R.set(R.propertyPath(["units", 1, "owner"]), 1),
+        R.set(R.propertyPath(["units", 1, "hp"]), 99),
+        R.set(R.propertyPath(["units", 1, "x"]), 1),
+        R.set(R.propertyPath(["units", 1, "y"]), 0),
+        R.set(R.propertyPath(["units", 1, "type"]), "UNTD"),
+        R.set(R.propertyPath(["actables", 0]), true),
+        R.curry(cwtGame.attackUnit)(0, 1),
+        R.map(R.view(R.propertyPath(["units", 0, "hp"]))),
+        eitherFold(assertNeverCalled, assertNotEquals(99)))),
+
+    testCase("defender does not lowers attackers health when he/she dies", 
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["units", 0, "owner"]), 0),
+        R.set(R.propertyPath(["units", 0, "hp"]), 99),
+        R.set(R.propertyPath(["units", 0, "type"]), "UNTD"),
+        R.set(R.propertyPath(["units", 0, "x"]), 0),
+        R.set(R.propertyPath(["units", 0, "y"]), 0),
+        R.set(R.propertyPath(["units", 1, "owner"]), 1),
+        R.set(R.propertyPath(["units", 1, "hp"]), 1),
+        R.set(R.propertyPath(["units", 1, "x"]), 1),
+        R.set(R.propertyPath(["units", 1, "y"]), 0),
+        R.set(R.propertyPath(["units", 1, "type"]), "UNTD"),
+        R.set(R.propertyPath(["actables", 0]), true),
+        R.curry(cwtGame.attackUnit)(0, 1),
+        R.map(R.view(R.propertyPath(["units", 0, "hp"]))),
+        eitherFold(assertNeverCalled, assertEquals(99)))),
+
+    testCase("defender does not lowers attackers health when he/she does not standing on a neighbour tile", 
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["units", 0, "owner"]), 0),
+        R.set(R.propertyPath(["units", 0, "hp"]), 99),
+        R.set(R.propertyPath(["units", 0, "type"]), "UNTI"),
+        R.set(R.propertyPath(["units", 0, "x"]), 0),
+        R.set(R.propertyPath(["units", 0, "y"]), 0),
+        R.set(R.propertyPath(["units", 1, "owner"]), 1),
+        R.set(R.propertyPath(["units", 1, "hp"]), 99),
+        R.set(R.propertyPath(["units", 1, "x"]), 3),
+        R.set(R.propertyPath(["units", 1, "y"]), 0),
+        R.set(R.propertyPath(["units", 1, "type"]), "UNTD"),
+        R.set(R.propertyPath(["actables", 0]), true),
+        R.curry(cwtGame.attackUnit)(0, 1),
+        R.map(R.view(R.propertyPath(["units", 0, "hp"]))),
+        eitherFold(assertNeverCalled, assertEquals(99)))),
+
+    testCase("defender does not lowers attackers health when he/she is indirect", 
+      R.pipe(
+        getTestModel,
+        R.set(R.propertyPath(["units", 0, "owner"]), 0),
+        R.set(R.propertyPath(["units", 0, "hp"]), 99),
+        R.set(R.propertyPath(["units", 0, "type"]), "UNTD"),
+        R.set(R.propertyPath(["units", 0, "x"]), 0),
+        R.set(R.propertyPath(["units", 0, "y"]), 0),
+        R.set(R.propertyPath(["units", 1, "owner"]), 1),
+        R.set(R.propertyPath(["units", 1, "hp"]), 99),
+        R.set(R.propertyPath(["units", 1, "x"]), 1),
+        R.set(R.propertyPath(["units", 1, "y"]), 0),
+        R.set(R.propertyPath(["units", 1, "type"]), "UNTI"),
+        R.set(R.propertyPath(["actables", 0]), true),
+        R.curry(cwtGame.attackUnit)(0, 1),
+        R.map(R.view(R.propertyPath(["units", 0, "hp"]))),
+        eitherFold(assertNeverCalled, assertEquals(99)))),
+
+    testCase("attackers damage is relative to it's hp", assertNeverCalled),
+    testCase("defenders couter attack damage is relative to it's hp", assertNeverCalled),
+
+    testCase("attackers damage is relative to defenders tile defence", assertNeverCalled),
+    testCase("defenders couter attack damage is relative to attackers tile defence", assertNeverCalled),
+
+    testCase("attacker uses main weapon if given and ammo is greater zero", assertNeverCalled),
+    testCase("attacker uses secondary weapon if exists and ammo is zero", assertNeverCalled),
+    testCase("attacker uses secondary weapon if exists and main weapon not", assertNeverCalled),
+
+    testCase("defender uses main weapon if given and ammo is greater zero", assertNeverCalled),
+    testCase("defender uses secondary weapon if exists and ammo is zero", assertNeverCalled),
+    testCase("defender uses secondary weapon if exists and main weapon not", assertNeverCalled),
+
+    testCase("attackers owner power value increases by damage dealt", assertNeverCalled),
+    testCase("attackers owner power value increases by damage received from counter", assertNeverCalled),
+    testCase("defenders owner power value increases by damage dealt from counter", assertNeverCalled),
+    testCase("defenders owner power value increases by damage received ", assertNeverCalled)
   ]));
 
   testSuite("activate power", () => ([

@@ -91,15 +91,16 @@ var CW = window.CW || (window.CW = {});
       R.and(R.gte(y, 0), R.lt(y, model.map.tiles[0].length)));
 
 
+  // TODO: merge into something... side effect :(
   const INACTIVE_POWER = 1;
   const ACTIVE_POWER = 2;
   const ACTIVE_SUPER_POWER = 3;
 
   // () => PlayerModel
-  const playerFactory = (team = -1, money = 0, name = "Player") => ({
+  const playerFactory = (team = -1, gold = 0, name = "Player") => ({
     name,
     team,
-    money,
+    gold,
     power: 0,
     activePowerLevel: INACTIVE_POWER
   });
@@ -123,7 +124,10 @@ var CW = window.CW || (window.CW = {});
     costs: 0,
     supplies: [],
     canFireRockets: false,
-    attackMap: {}
+    minRange: 0,
+    maxRange: 0,
+    mainWeaponDamage: {},
+    secondaryWeaponDamage: {}
   };
 
   const unitTypeFactory = data => flyweight(baseUnitType, data);
@@ -246,8 +250,9 @@ var CW = window.CW || (window.CW = {});
   const payFundsToTurnOwner = (model) => createCopy(model, {
     players: model.players.map((player, owner) => {
       if (areOwnedBySamePlayer({ owner }, model.turn)) {
+
         return createCopy(player, {
-          money: player.money + sumUpFunds(model.turn.owner, model.properties, model.propertyTypes)
+          gold: player.gold + sumUpFunds(model.turn.owner, model.properties, model.propertyTypes)
         });
       }
       return player;
@@ -490,25 +495,25 @@ var CW = window.CW || (window.CW = {});
     .bind(eitherCond(() => isPropertyId(factoryId), R.always("iae:ipi")))
     .bind(eitherCond(() => model.properties[factoryId].owner === model.turn.owner, R.always("iae:nto")))
     .bind(eitherCond(() => R.complement(R.isNil)(model.unitTypes[type]), R.always("iae:utn")))
-    .bind(eitherCond(() => 
-      R.contains(type, model.propertyTypes[model.properties[factoryId].type].builds), 
+    .bind(eitherCond(() =>
+      R.contains(type, model.propertyTypes[model.properties[factoryId].type].builds),
       R.always("iae:cbt")))
     .bind(eitherCond(() => R.gte(
-      model.players[model.properties[factoryId].owner].gold, 
+      model.players[model.properties[factoryId].owner].gold,
       model.unitTypes[type].costs), R.always("iae:isf")))
     .bind(eitherCond(
       R.pipe(
         R.view(R.propertyPath(["units"])),
         units => [model.turn.owner, units],
         data => R.reduce((sum, unit) => unit.owner === data[0] ? sum + 1 : sum, 0, data[1]),
-        R.flip(R.lt)(50)), 
+        R.flip(R.lt)(50)),
       R.always("iae:nfs")))
     .bind(eitherCond(
       R.pipe(
         R.view(R.propertyPath(["units"])),
         units => [model.properties[factoryId].x, model.properties[factoryId].y, units],
         data => R.any(unit => unit.owner != -1 && unit.x === data[0] && unit.y === data[1], data[2]),
-        R.equals(false)), 
+        R.equals(false)),
       R.always("iae:tio")))
     .map(model => {
 
@@ -560,12 +565,52 @@ var CW = window.CW || (window.CW = {});
   const numberToInt = x => parseInt(x, 10);
 
   exports.attackUnit = (attackerId, defenderId, model) => eitherRight(model)
-    .bind(model => {
+    .bind(eitherCond(() => isPlayersUnitId(attackerId), R.always("iae:iui:att")))
+    .bind(eitherCond(() => isPlayersUnitId(defenderId), R.always("iae:iui:def")))
+    .bind(eitherCond(canUnitAct(attackerId), R.always("iae:uca")))
+    .map(model => {
+
+      // BASE * (AHP * 0.01) * ((100 - (TERRAIN_STARS * 10 * DHP * 0.01)) * 0.01)
+
       const attacker = model.units[attackerId];
       const defender = model.units[defenderId];
 
-      const attackDamage = 0;
-      const counterDamage = 0;
+      const attackerType = model.unitTypes[attacker.type];
+      const defenderType = model.unitTypes[defender.type];
+
+      const attackDamage = R.cond([
+        [R.pipe(
+            R.always(R.view(R.lensProp(defender.type), attackerType.mainWeaponDamage)),
+            R.complement(R.isNil)),
+          R.always(attackerType.mainWeaponDamage[defender.type])
+        ],
+        [R.pipe(
+            R.always(R.view(R.lensProp(defender.type), attackerType.secondaryWeaponDamage)),
+            R.complement(R.isNil)),
+          R.always(attackerType.secondaryWeaponDamage[defender.type])
+        ],
+        [R.T, R.always(0)]
+      ])(null);
+
+      const counterDamage = R.cond([
+        [R.pipe(
+            R.always(distanceBetweenObjects(attacker, defender)),
+            R.complement(R.equals(1))),
+          R.always(0)
+        ],
+        [R.always(defenderType.minRange > 1), R.always(0)],
+        [R.pipe(
+            R.always(R.view(R.lensProp(attacker.type), defenderType.mainWeaponDamage)),
+            R.complement(R.isNil)),
+          R.always(defenderType.mainWeaponDamage[attacker.type])
+        ],
+        [R.pipe(
+            R.always(R.view(R.lensProp(attacker.type), defenderType.secondaryWeaponDamage)),
+            R.complement(R.isNil)),
+          R.always(defenderType.secondaryWeaponDamage[attacker.type])
+        ],
+        [R.T, R.always(0)]
+      ])(null);
 
       const defenderNewHP = Math.max(0, defender.hp - attackDamage);
       const defenderHpDiff = defender.hp - defenderNewHP;
@@ -574,10 +619,10 @@ var CW = window.CW || (window.CW = {});
       const attackerHpDiff = attackerNewHp - attacker.hp;
 
       const attackerPowerResult = numberToInt(
-        numberToInt(defenderHpDiff) * 0.1 * model.unitTypes[defender.type].costs);
+        numberToInt(defenderHpDiff) * 0.1 * defenderType.costs);
 
       const defenderPowerResult = numberToInt(
-        numberToInt(attackerHpDiff) * 0.1 * model.unitTypes[attacker.type].costs);
+        numberToInt(attackerHpDiff) * 0.1 * attackerType.costs);
 
       const attackerPowerGain = defenderPowerResult + numberToInt(attackerPowerResult * 0.5);
       const defenderPowerGain = attackerPowerResult + numberToInt(defenderPowerResult * 0.5);
@@ -787,7 +832,7 @@ var CW = window.CW || (window.CW = {});
   // v5  20ms
   // v6  10ms
   //
-  exports.nextTurn = compose(
+  exports.nextTurn = R.pipe(
     tickTurn,
     payFundsToTurnOwner,
     drainFuelOnTurnOwnerUnits,
