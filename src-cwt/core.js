@@ -1,6 +1,31 @@
 var CwGame = window.CwGame || (window.CwGame = {});
 var RExt = window.RExt || (window.RExt = {});
 
+// Maybe:: a -> Just a | Nothing
+RExt.Maybe = (value) => value == null || value == undefined ? nothing() : just(value);
+
+RExt.Just = (value) => ({
+  map: (f) => maybe(f(value)),
+  chain: (f) => f(value),
+  filter: (f) => f(value) ? just(value) : nothing(),
+  isPresent: () => true,
+  ifPresent: (f) => f(value),
+  orElse: (v) => value,
+  toString: () => "Just(" + value + ")"
+});
+
+RExt._nothing = Object.freeze({
+  map: (f) => _nothing,
+  chain: (f) => _nothing,
+  filter: (f) => _nothing,
+  isPresent: () => false,
+  ifPresent: (f) => _nothing,
+  orElse: (v) => v,
+  toString: () => "Nothing"
+});
+
+RExt.Nothing = () => RExt._nothing;
+  
 // nestedPath:: [NumberOrInt] -> Lens 
 RExt.nestedPath = R.pipe(
   R.map( R.ifElse( R.is(Number), R.lensIndex, R.lensProp) ),
