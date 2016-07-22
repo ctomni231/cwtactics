@@ -1,13 +1,15 @@
-var CwGame = window.CwGame || (window.CwGame = {});
 var RExt = window.RExt || (window.RExt = {});
+
+// notEquals a -> b -> Boolean
+RExt.notEquals = R.complement(R.equals);
 
 // Maybe:: a -> Just a | Nothing
 RExt.Maybe = (value) => value == null || value == undefined ? RExt.Nothing() : RExt.Just(value);
 
 RExt.Just = (value) => ({
-  map: (f) => maybe(f(value)),
+  map: (f) => RExt.Maybe(f(value)),
   chain: (f) => f(value),
-  filter: (f) => f(value) ? just(value) : nothing(),
+  filter: (f) => f(value) ? RExt.Just(value) : RExt.Nothing(),
   isPresent: () => true,
   ifPresent: (f) => f(value),
   orElse: (v) => value,
@@ -15,25 +17,61 @@ RExt.Just = (value) => ({
 });
 
 RExt._nothing = Object.freeze({
-  map: (f) => _nothing,
-  chain: (f) => _nothing,
-  filter: (f) => _nothing,
+  map: (f) => RExt._nothing,
+  chain: (f) => RExt._nothing,
+  filter: (f) => RExt._nothing,
   isPresent: () => false,
-  ifPresent: (f) => _nothing,
+  ifPresent: (f) => RExt._nothing,
   orElse: (v) => v,
   toString: () => "Nothing"
 });
 
 RExt.Nothing = () => RExt._nothing;
-  
+
+RExt.Either = {};
+
+RExt.Either.Left = function(value) {
+  return {
+    map: f => left(value),
+    mapLeft: f => left(f(value)),
+    biMap: (fLeft, fRight) => left(fLeft(value)),
+    bind: f => left(value),
+    chain: f => left(value),
+    bindLeft: f => f(value),
+    swap: () => right(value),
+    isLeft: () => true,
+    isRight: () => false,
+    fold: (leftHandle, rightHandle) => leftHandle(value),
+  };
+};
+
+RExt.Either.Right = function(value) {
+  return {
+    map: f => right(f(value)),
+    mapLeft: f => right(value),
+    biMap: (fLeft, fRight) => right(fRight(value)),
+    bind: f => f(value),
+    chain: f => f(value),
+    bindLeft: f => right(value),
+    swap: () => left(value),
+    isLeft: () => false,
+    isRight: () => true,
+    fold: (leftHandle, rightHandle) => rightHandle(value)
+  };
+};
+
 // nestedPath:: [NumberOrInt] -> Lens 
 RExt.nestedPath = R.pipe(
-  R.map( R.ifElse( R.is(Number), R.lensIndex, R.lensProp) ),
+  R.map(R.ifElse(R.is(Number), R.lensIndex, R.lensProp)),
   R.apply(R.compose));
-  
-// RExt.nestedPath(["x", 0, "y"]) 
-// [lens "x", lens 0, lens "y"]
-// 
+
+// tapLogger:: a -> a  
+RExt.tapLogger = R.tap(x => console.log(x));
+
+// mappedTapLogger:: a -> a
+RExt.mappedTapLogger = R.map(RExt.tapLogger);
+
+// ---------------------------------------------------------
 
 // propertyPath:: [NumberOrInt] -> Lens 
 R.propertyPath = RExt.nestedPath;

@@ -1,4 +1,4 @@
-var CW = window.CW || (window.CW = {});
+var CwGame = window.CwGame || (window.CwGame = {});
 
 (function(exports) {
   "use strict";
@@ -234,7 +234,7 @@ var CW = window.CW || (window.CW = {});
     rocket_change_to: "",
   };
 
-  /** @signature Map => Boolean */
+  // isPropertyType Map => Boolean
   const isPropertyType = (data) => maybe(data)
     .filter(data => isBoolean(data.capturable))
     .filter(data => isInteger(data.funds) && data.funds >= 0)
@@ -619,10 +619,10 @@ var CW = window.CW || (window.CW = {});
       const attackerHpDiff = attackerNewHp - attacker.hp;
 
       const attackerPowerResult = numberToInt(
-        numberToInt(defenderHpDiff) * 0.1 * defenderType.costs);
+        numberToInt(defenderHpDiff / 10) * 0.1 * defenderType.costs);
 
       const defenderPowerResult = numberToInt(
-        numberToInt(attackerHpDiff) * 0.1 * attackerType.costs);
+        numberToInt(attackerHpDiff / 10) * 0.1 * attackerType.costs);
 
       const attackerPowerGain = defenderPowerResult + numberToInt(attackerPowerResult * 0.5);
       const defenderPowerGain = attackerPowerResult + numberToInt(defenderPowerResult * 0.5);
@@ -676,19 +676,18 @@ var CW = window.CW || (window.CW = {});
     }))
     .map(model => moveUnit(model, loadId, [unloadDir]));
 
-  const activateCoPower = (model, playerId, power) => eitherRight(model)
-    .bind(model => {
-      return createCopy(model, {
-        players: fjs.map((player, index) => index != playerId ? player : createCopy(player, {
-          power: 0,
-          activePowerLevel: power
-        }), model.plaers)
-      });
-    });
+  const activateCoPower = (playerId, power, model) => eitherRight(model)
+    .bind(eitherCond(() => R.and(R.gte(playerId, 0), R.lt(playerId, 4)), R.always("iae:ipl")))
+    .bind(eitherCond(() => RExt.notEquals(-1, R.view(RExt.nestedPath(["players", playerId, "team"]), model)), R.always("iae:ipl")))
+    .bind(eitherCond(() => R.equals(R.view(RExt.nestedPath(["players", playerId, "activePowerLevel"]), model), 1), R.always("ise:paa")))
+    .map(R.over(RExt.nestedPath(["players", playerId]), R.evolve({
+      power: R.always(0),
+      activePowerLevel: R.always(power)
+    })));
 
-  exports.activatePower = (model, playerId) => activateCoPower(model, playerId, ACTIVE_POWER);
+  exports.activatePower = (playerId, model) => activateCoPower(playerId, 2, model);
 
-  exports.activateSuperPower = (model, playerId) => activateCoPower(model, playerId, ACTIVE_SUPER_POWER);
+  exports.activateSuperPower = (playerId, model) => activateCoPower(playerId, 3, model);
 
   const isPropertyId = R.allPass([R.flip(R.gte)(0), R.flip(R.lt)(300)]);
 
