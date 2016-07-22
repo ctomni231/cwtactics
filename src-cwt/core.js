@@ -2,7 +2,7 @@ var CwGame = window.CwGame || (window.CwGame = {});
 var RExt = window.RExt || (window.RExt = {});
 
 // Maybe:: a -> Just a | Nothing
-RExt.Maybe = (value) => value == null || value == undefined ? nothing() : just(value);
+RExt.Maybe = (value) => value == null || value == undefined ? RExt.Nothing() : RExt.Just(value);
 
 RExt.Just = (value) => ({
   map: (f) => maybe(f(value)),
