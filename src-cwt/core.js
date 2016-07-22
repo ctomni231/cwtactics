@@ -1,14 +1,17 @@
 var CwGame = window.CwGame || (window.CwGame = {});
 var RExt = window.RExt || (window.RExt = {});
 
-// propertyPath:: [NumberOrInt] -> Lens 
-R.propertyPath = R.pipe(
-  R.map(
-    R.ifElse(
-      R.is(Number),
-      R.lensIndex,
-      R.lensProp)),
+// nestedPath:: [NumberOrInt] -> Lens 
+RExt.nestedPath = R.pipe(
+  R.map( R.ifElse( R.is(Number), R.lensIndex, R.lensProp) ),
   R.apply(R.compose));
+  
+// RExt.nestedPath(["x", 0, "y"]) 
+// [lens "x", lens 0, lens "y"]
+// 
+
+// propertyPath:: [NumberOrInt] -> Lens 
+R.propertyPath = RExt.nestedPath;
 
 R.tapLog = R.tap(x => console.log(x));
 
