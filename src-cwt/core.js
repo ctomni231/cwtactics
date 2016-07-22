@@ -1,4 +1,5 @@
-var CW = window.CW || (window.CW = {});
+var CwGame = window.CwGame || (window.CwGame = {});
+var RExt = window.RExt || (window.RExt = {});
 
 // propertyPath:: [NumberOrInt] -> Lens 
 R.propertyPath = R.pipe(
