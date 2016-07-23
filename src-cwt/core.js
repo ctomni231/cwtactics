@@ -1,3 +1,8 @@
+//
+// Core file contains extensions for RamdaJS. All extensions will be stored in the 
+// object RExt.
+//
+
 var RExt = window.RExt || (window.RExt = {});
 
 // notEquals a -> b -> Boolean
@@ -13,6 +18,7 @@ RExt.Just = (value) => ({
   isPresent: () => true,
   ifPresent: (f) => f(value),
   orElse: (v) => value,
+  fold: (presentF, notPresentF) => presentF(value),
   toString: () => "Just(" + value + ")"
 });
 
@@ -23,6 +29,7 @@ RExt._nothing = Object.freeze({
   isPresent: () => false,
   ifPresent: (f) => RExt._nothing,
   orElse: (v) => v,
+  fold: (presentF, notPresentF) => notPresentF(value),
   toString: () => "Nothing"
 });
 
@@ -30,15 +37,24 @@ RExt.Nothing = () => RExt._nothing;
 
 RExt.Either = {};
 
+// (() -> a) -> Either error, a
+RExt.Either.tryIt = (f) => {
+  try {
+    return RExt.Either.Right(f())
+  } catch (e) {
+    return RExt.Either.Left(e)
+  }
+};
+
 RExt.Either.Left = function(value) {
   return {
-    map: f => left(value),
-    mapLeft: f => left(f(value)),
-    biMap: (fLeft, fRight) => left(fLeft(value)),
-    bind: f => left(value),
-    chain: f => left(value),
+    map: f => RExt.Either.Left(value),
+    mapLeft: f => RExt.Either.Left(f(value)),
+    biMap: (fLeft, fRight) => RExt.Either.Left(fLeft(value)),
+    bind: f => RExt.Either.Left(value),
+    chain: f => RExt.Either.Left(value),
     bindLeft: f => f(value),
-    swap: () => right(value),
+    swap: () => RExt.Either.Right(value),
     isLeft: () => true,
     isRight: () => false,
     fold: (leftHandle, rightHandle) => leftHandle(value),
@@ -47,18 +63,25 @@ RExt.Either.Left = function(value) {
 
 RExt.Either.Right = function(value) {
   return {
-    map: f => right(f(value)),
-    mapLeft: f => right(value),
-    biMap: (fLeft, fRight) => right(fRight(value)),
+    map: f => RExt.Either.Right(f(value)),
+    mapLeft: f => RExt.Either.Right(value),
+    biMap: (fLeft, fRight) => RExt.Either.Right(fRight(value)),
     bind: f => f(value),
     chain: f => f(value),
-    bindLeft: f => right(value),
-    swap: () => left(value),
+    bindLeft: f => RExt.Either.Right(value),
+    swap: () => RExt.Either.Left(value),
     isLeft: () => false,
     isRight: () => true,
     fold: (leftHandle, rightHandle) => rightHandle(value)
   };
 };
+
+// (() -> a) -> IO a
+RExt.IO = sideEffectFn => ({
+  chain: sideEffectFnB => RExt.IO(() => sideEffectFnB(sideEffectFn()).run()),
+  map: f => RExt.IO(() => f(sideEffectFn())),
+  run: () => sideEffectFn()
+});
 
 // nestedPath:: [NumberOrInt] -> Lens 
 RExt.nestedPath = R.pipe(
@@ -68,8 +91,28 @@ RExt.nestedPath = R.pipe(
 // tapLogger:: a -> a  
 RExt.tapLogger = R.tap(x => console.log(x));
 
-// mappedTapLogger:: a -> a
-RExt.mappedTapLogger = R.map(RExt.tapLogger);
+// mapTapLogger:: a -> a
+RExt.mapTapLogger = R.map(RExt.tapLogger);
+
+// Converts an string into a string with a fixed length by either extending it 
+// with spaces until it reaches the given length or cutting at the given length.
+// When the string will be cutted, then ... will be appended to the rest, means 
+// string that are too long will be cut down to the wanted length - 3 and appended
+// with the string "..."
+//
+// mapToFixedLength :: String -> String
+RExt.mapToFixedLength = R.curry((wantedLength, s) => R.cond([
+  [R.propSatisfies(R.gt(R.__, wantedLength), "length"), R.pipe(R.take(wantedLength - 3), R.append("..."), R.join(""))],
+  [R.propSatisfies(R.lt(R.__, wantedLength), "length"), s => {
+    const rest = wantedLength - s.length;
+    return R.join("", R.times(R.always(" "), rest)) + s;
+  }],
+  [R.T, R.identity]
+])(s));
+
+RExt.raiseError = error => {
+  throw new Error(error);
+};
 
 // ---------------------------------------------------------
 

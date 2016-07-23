@@ -123,6 +123,8 @@ var CwGame = window.CwGame || (window.CwGame = {});
     maxFuel: 50,
     costs: 0,
     supplies: [],
+    loadable: [],
+    maxLoadCount: 0,
     canFireRockets: false,
     minRange: 0,
     maxRange: 0,
@@ -212,13 +214,7 @@ var CwGame = window.CwGame || (window.CwGame = {});
     .map(value => just(weatherModelFactory(weathers[value], 4)))
     .get();
 
-  /*
-  let duration = active.minDuration;
-      duration += parseInt(Math.random() * (active.maxDuration - duration), 10);
-      leftDays = duration;
-      */
-
-  /** @signature PropertyTypeModel */
+  // PropertyTypeModel
   const basePropertyType = {
     capturable: false,
 
@@ -259,12 +255,12 @@ var CwGame = window.CwGame || (window.CwGame = {});
     })
   });
 
-  /** @signature Map => maybe PropertyTypeModel */
+  // Map -> Maybe PropertyTypeModel
   const propertyTypeFactory = (data) => maybe(data)
     .map(data => flyweight(basePropertyType, data))
     .filter(isPropertyType);
 
-  // (Int, Int) => PropertyModel
+  // Int -> Int -> Int -> PropertyModel
   const propertyModelFactory = (type, owner = -1, points = 20) => ({ type, points, owner });
 
   // (PropertyModel, PropertyTypeModel, UnitModel) => PropertyModel
@@ -787,7 +783,7 @@ var CwGame = window.CwGame || (window.CwGame = {});
     .bind(eitherCond(canUnitAct(unitId), R.always("IAE-UCA")))
     .map(R.over(R.lensProp("actables"), R.over(R.lensIndex(unitId), R.F)));
 
-  // (GameModel, Int) => either Error, GameModel'
+  // Int -> GameModel -> Either Error, GameModel
   exports.elapseTime = (time, model) => eitherRight(model)
     .bind(eitherCond(() => isInteger(time) && time >= 0, R.always("IAE-PIE")))
     .map(R.over(R.lensProp("limits"), R.evolve({
@@ -842,6 +838,21 @@ var CwGame = window.CwGame || (window.CwGame = {});
     // TODO: change weather
     eitherRight
   );
+
+  exports.getActableObjects = R.pipe(
+    R.converge(
+      R.concat, [
+        R.pipe(
+          R.view(R.lensProp("actables")),
+          R.addIndex(R.map)((v, i) => v ? i : -1),
+          R.filter(R.flip(R.gt)(-1)),
+          R.map(v => ({ object: v, type: "unit" }))),
+        R.pipe(
+          R.view(R.lensProp("properties")),
+          R.addIndex(R.map)((v, i) => v.owner === 0 ? i : -1),
+          R.map(v => ({ object: v, type: "property" })))
+      ]),
+    R.append({ object: -1, type: "map" }));
 
   exports.GAME_VERSION = "0.36";
   exports.GAME_AI_VERSION = "DumbBoy v. 0.1 Alpha";

@@ -1,25 +1,18 @@
+cwtGame.doTest = () => {
+
+
+};
+
 (function(exports) {
-
-  const compose = cwtCore.compose;
-  const either = cwtCore.either;
-  const eitherLeft = cwtCore.eitherLeft;
-  const eitherRight = cwtCore.eitherRight;
-  const validation = cwtCore.validation;
-  const maybe = cwtCore.maybe;
-  const just = cwtCore.just;
-  const nothing = cwtCore.nothing;
-  const createCopy = cwtCore.createCopy;
-  const identity = cwtCore.identity;
-  const id = cwtCore.id;
-
-  const assertNeverCalled = any =>
-    assertThat(false, "unreachable point was reached: " + any);
 
   const assertThat = (expression, msg) => {
     if (!expression) {
       throw new Error(msg);
     }
   };
+
+  const assertNeverCalled = any =>
+    assertThat(false, "unreachable point was reached: " + any);
 
   const assertStartsWith = R.curry(
     (startsWith, string) => assertThat(string.indexOf(startsWith) === 0, "expected: " + string + " to starts with " + startsWith));
@@ -34,20 +27,6 @@
   const assertNotEquals = R.curry(
     (expected, actual) => assertThat(expected !== actual, "expected actual not to be: " + expected + ", but it was"));
 
-  // toFixedLength :: String -> String
-  var toFixedLength = R.curry((wantedLength, s) => R.cond([
-    [R.propSatisfies(R.gt(R.__, wantedLength), "length"),
-      R.pipe(R.take(wantedLength - 3), R.append("..."), R.join(""))
-    ],
-    [R.propSatisfies(R.lt(R.__, wantedLength), "length"), s => {
-      const rest = wantedLength - s.length;
-      return R.join("", R.times(R.always(" "), rest)) + s;
-    }],
-    [R.T,
-      R.identity
-    ]
-  ])(s));
-
   const testSuite = (name, testImpl) => {
 
     const groupTime = Date.now();
@@ -55,14 +34,18 @@
     const groupTimeDiff = Date.now() - groupTime;
 
     const numTests = R.length(results);
-    const numFailed = R.length(R.filter(s => s.indexOf("[FAILED]") !== -1, results));
-    const numPassed = R.length(R.filter(s => s.indexOf("[PASSED]") !== -1, results));
+    const numFailed = R.length(R.filter(R.test(/\[FAILED\]/), results));
+    const numPassed = R.length(R.filter(R.test(/\[PASSED\]/), results));
 
-    console.groupCollapsed("SPEC-GROUP: " + toFixedLength(25, name) +
-      " [SPECS: " + toFixedLength(2, numTests.toString()) +
-      " PASSED: " + toFixedLength(2, numPassed.toString()) +
-      " FAILED: " + toFixedLength(2, numFailed.toString()) + "] " +
-      " [TIME: " + toFixedLength(4, groupTimeDiff.toString()) + "ms]");
+    const lineDesc = R.join(" ", [
+      "SPEC-GROUP:", RExt.mapToFixedLength(25, name),
+      "[SPECS: ", RExt.mapToFixedLength(2, numTests.toString()),
+      "PASSED: ", RExt.mapToFixedLength(2, numPassed.toString()),
+      "FAILED: ", RExt.mapToFixedLength(2, numFailed.toString()), "] ",
+      "[TIME: ", RExt.mapToFixedLength(4, groupTimeDiff.toString()), "ms]"
+    ]);
+
+    console.groupCollapsed(lineDesc);
     results.map(msg => console.log(msg));
     console.groupEnd();
 
@@ -70,17 +53,19 @@
   };
 
   // (String, () => either FAILED, SUCCESS) => String
-  const testCase = (desc, fn) => just(true)
+  const testCase = (desc, fn) => RExt.Maybe(true)
     .map(any => Date.now())
-    .ifPresent(time => either.tryIt(fn)
+    .ifPresent(time => RExt.Either.tryIt(fn)
       .biMap(
         error => "[FAILED] " + error.stack,
         any => "[PASSED]")
-      .fold(just, just)
+      .fold(RExt.Maybe, RExt.Maybe)
       .map(result => result + " " + desc + " [TIME: " + (Date.now() - time) + "ms]")
-      .get());
+      .fold(R.identity, R.identity));
 
-  const demoData = {
+  // Default test data set
+  //
+  const testGameModel = cwtGame.createGame({
     width: 10,
     height: 10,
     day: 0,
@@ -119,9 +104,7 @@
     weatherTypes: {
       WSUN: {}
     }
-  };
-
-  const testGameModel = cwtGame.createGame(demoData).fold(assertNeverCalled, id);
+  }).fold(assertNeverCalled, R.identity);
 
   const propertyTurnOwner = R.lensPath(["turn", "owner"]);
   const propertyTurnDay = R.lensPath(["turn", "day"]);
@@ -131,35 +114,38 @@
 
   const eitherFold = R.invoker(2, "fold");
 
-  window.demoModel = cwtGame.createGame(demoData).fold(assertNeverCalled, id);
-
   // -------------------------------------------------------------------------------------
   // -------------------------------------------------------------------------------------
   //
   //               CWT GAME SPECIFICATION
   //
-  //               VERSION 0.35.906
-  // 
-  // TODO: 0.36 - GAME MECHANIC
-  //   MERGE MOVING API INTO THE ACTIONS
-  //   ADD FOG MECHANIC INTO THE SPECIFICATION
-  //   ADD HEALTH-RELATIVE CAPTURE VALUE
-  //   ADD GET ACTIONS FOR POSITION 
-  //   ADD GET MOVE TARGETS 
-  //   ADD GET ATTACK RANGE 
-  //   COMPLETE ATTACK MECHANIC
-  //   ADD RANDOM SEED FOR ATTACK
-  //   PROPERTY OVERRULES TILE DATA
+  //               VERSION 0.36
   //
   // TODO: 0.37 - COMMANDERS
   //   ADD ANDY HP HEAL MECHANIC
+  //   ADD RANDOM SEED FOR ATTACK
   //
   // -------------------------------------------------------------------------------------
   // -------------------------------------------------------------------------------------
 
 
   testSuite("creating game", () => ([
-    testCase("TBD", assertNeverCalled)
+    testCase("declines illegal weather types", assertNeverCalled),
+    testCase("declines illegal property types", assertNeverCalled),
+    testCase("declines illegal unit types", assertNeverCalled),
+    testCase("declines illegal move types", assertNeverCalled),
+    testCase("declines illegal limits", assertNeverCalled),
+    testCase("declines illegal actables", assertNeverCalled),
+    testCase("declines illegal weathers", assertNeverCalled),
+    testCase("declines illegal units", assertNeverCalled),
+    testCase("declines illegal properties", assertNeverCalled),
+    testCase("declines illegal players", assertNeverCalled),
+    testCase("declines illegal turn", assertNeverCalled),
+    testCase("declines illegal config", assertNeverCalled),
+    testCase("declines illegal tile types", assertNeverCalled),
+    testCase("declines illegal map", assertNeverCalled),
+    testCase("declines illegal fog", assertNeverCalled),
+    testCase("creates valid model", assertNeverCalled)
   ]));
 
   testSuite("nextTurn", () => ([
@@ -200,7 +186,9 @@
         R.set(RExt.nestedPath(["turn", "owner"]), 0),
         cwtGame.nextTurn,
         R.map(R.view(RExt.nestedPath(["players", 1, "gold"]))),
-        eitherFold(assertNeverCalled, assertEquals(2000))))
+        eitherFold(assertNeverCalled, assertEquals(2000)))),
+
+    testCase("updates fog according to the objects of the new turn owner", assertNeverCalled)
   ]));
 
   testSuite("wait action", () => ([
@@ -310,6 +298,22 @@
         eitherFold(assertNeverCalled, assertEquals(10))
       )),
 
+    testCase("the capture value is hp relative",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["actables", 0]), true),
+        R.set(RExt.nestedPath(["units", 0, "hp"]), 49),
+        R.set(RExt.nestedPath(["units", 0, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 1),
+        R.set(RExt.nestedPath(["properties", 0, "x"]), 1),
+        R.set(RExt.nestedPath(["properties", 0, "y"]), 1),
+        R.set(RExt.nestedPath(["properties", 0, "points"]), 20),
+        R.set(RExt.nestedPath(["properties", 0, "owner"]), 1),
+        R.curry(cwtGame.captureProperty)(0, 0),
+        R.map(R.view(RExt.nestedPath(["properties", 0, "points"]))),
+        eitherFold(assertNeverCalled, assertEquals(15))
+      )),
+
     testCase("a capture changes the owner of the property if points fall down to zero",
       R.pipe(
         getTestModel,
@@ -410,10 +414,11 @@
           properties: R.pipe(R.reduce((a, b) => b.owner == 1 ? a + 1 : a, 0), assertEquals(0)),
           players: R.pipe(R.nth(1), R.prop("team"), assertEquals(-1))
         }))
-      ))
+      )),
+
+    testCase("updates fog when property is captured", assertNeverCalled)
   ]));
 
-  // rocketId, firerId, tx, ty
   testSuite("fire rocket", () => ([
 
     testCase("illegal position will be declined",
@@ -778,7 +783,9 @@
         R.set(RExt.nestedPath(["cfg", "noUnitsLeftMeansLoose"]), true),
         R.curry(cwtGame.destroyUnit)(0),
         R.map(R.view(RExt.nestedPath(["players", 0, "team"]))),
-        eitherFold(assertNeverCalled, assertEquals(-1))))
+        eitherFold(assertNeverCalled, assertEquals(-1)))),
+
+    testCase("updates fog", assertNeverCalled)
   ]));
 
   testSuite("attack units", () => ([
@@ -961,6 +968,29 @@
         R.map(R.view(RExt.nestedPath(["units", 1, "hp"]))),
         eitherFold(assertNeverCalled, assertEquals(74)))),
 
+    testCase("attackers damage is relative to defenders property defence when tile is occuppied by a property",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "owner"]), 0),
+        R.set(RExt.nestedPath(["units", 0, "hp"]), 49),
+        R.set(RExt.nestedPath(["units", 0, "type"]), "UNTD"),
+        R.set(RExt.nestedPath(["units", 0, "x"]), 0),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 0),
+        R.set(RExt.nestedPath(["units", 1, "owner"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "hp"]), 99),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 0),
+        R.set(RExt.nestedPath(["units", 1, "type"]), "UNTD"),
+        R.set(RExt.nestedPath(["properties", 0, "x"]), 1),
+        R.set(RExt.nestedPath(["properties", 0, "y"]), 0),
+        R.set(RExt.nestedPath(["unitTypes", "UNTD", "mainWeaponDamage", "UNTD"]), 50),
+        R.set(RExt.nestedPath(["tileTypes", "TITA", "defence"]), 5),
+        R.set(RExt.nestedPath(["propertyTypes", "PRTA", "defence"]), 2),
+        R.set(RExt.nestedPath(["actables", 0]), true),
+        R.curry(cwtGame.attackUnit)(0, 1),
+        R.map(R.view(RExt.nestedPath(["units", 1, "hp"]))),
+        eitherFold(assertNeverCalled, assertEquals(89)))),
+
     testCase("defenders couter attack damage is relative to attackers tile defence",
       R.pipe(
         getTestModel,
@@ -981,6 +1011,29 @@
         R.curry(cwtGame.attackUnit)(0, 1),
         R.map(R.view(RExt.nestedPath(["units", 0, "hp"]))),
         eitherFold(assertNeverCalled, assertEquals(74)))),
+
+    testCase("defenders couter attack damage is relative to attackers property defence when tile is occuppied by a property",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "owner"]), 0),
+        R.set(RExt.nestedPath(["units", 0, "hp"]), 49),
+        R.set(RExt.nestedPath(["units", 0, "type"]), "UNTD"),
+        R.set(RExt.nestedPath(["units", 0, "x"]), 0),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 0),
+        R.set(RExt.nestedPath(["units", 1, "owner"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "hp"]), 99),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 0),
+        R.set(RExt.nestedPath(["units", 1, "type"]), "UNTD"),
+        R.set(RExt.nestedPath(["properties", 0, "x"]), 0),
+        R.set(RExt.nestedPath(["properties", 0, "y"]), 0),
+        R.set(RExt.nestedPath(["unitTypes", "UNTD", "mainWeaponDamage", "UNTD"]), 50),
+        R.set(RExt.nestedPath(["tileTypes", "TITA", "defence"]), 0),
+        R.set(RExt.nestedPath(["propertyTypes", "PRTA", "defence"]), 2),
+        R.set(RExt.nestedPath(["actables", 0]), true),
+        R.curry(cwtGame.attackUnit)(0, 1),
+        R.map(R.view(RExt.nestedPath(["units", 1, "hp"]))),
+        eitherFold(assertNeverCalled, assertEquals(79)))),
 
     testCase("attacker uses main weapon if given and ammo is greater zero",
       R.pipe(
@@ -1154,31 +1207,34 @@
         R.set(RExt.nestedPath(["players", 0, "power"]), 0),
         R.curry(cwtGame.attackUnit)(0, 1),
         R.map(R.view(RExt.nestedPath(["players", 0, "power"]))),
-        eitherFold(assertNeverCalled, assertThat(R.gte(R.__, 1500)))))
+        eitherFold(assertNeverCalled, assertThat(R.gte(R.__, 1500))))),
+
+    testCase("updates fog when counter attack kills attacker and fog is enabled", assertNeverCalled),
+    testCase("does not updates fog when counter attack kills attacker and fog is disabled", assertNeverCalled)
   ]));
 
   testSuite("activate power", () => ([
 
-    testCase("declined when the player is is invalid (loob)", 
+    testCase("declined when the player is is invalid (loob)",
       R.pipe(
         getTestModel,
         R.curry(cwtGame.activatePower)(-1),
         eitherFold(assertStartsWith("iae:ipl"), assertNeverCalled))),
-    
-    testCase("declined when the player is is invalid (roob)", 
+
+    testCase("declined when the player is is invalid (roob)",
       R.pipe(
         getTestModel,
         R.curry(cwtGame.activatePower)(4),
         eitherFold(assertStartsWith("iae:ipl"), assertNeverCalled))),
-    
-    testCase("declined when the player is is invalid (deactivated)", 
+
+    testCase("declined when the player is is invalid (deactivated)",
       R.pipe(
         getTestModel,
         R.set(RExt.nestedPath(["players", 0, "team"]), -1),
         R.curry(cwtGame.activatePower)(0),
         eitherFold(assertStartsWith("iae:ipl"), assertNeverCalled))),
 
-    testCase("declined when the player has already an activated power", 
+    testCase("declined when the player has already an activated power",
       R.pipe(
         getTestModel,
         R.set(RExt.nestedPath(["players", 0, "activePowerLevel"]), 2),
@@ -1187,7 +1243,7 @@
 
     testCase("declined when the player has not enough power to activate", assertNeverCalled),
 
-    testCase("set the power level of the player to POWER", 
+    testCase("set the power level of the player to POWER",
       R.pipe(
         getTestModel,
         R.set(RExt.nestedPath(["players", 0, "activePowerLevel"]), 1),
@@ -1195,7 +1251,7 @@
         R.map(R.view(RExt.nestedPath(["players", 0, "activePowerLevel"]))),
         eitherFold(assertNeverCalled, assertEquals(2)))),
 
-    testCase("sets the power value of the player to zero", 
+    testCase("sets the power value of the player to zero",
       R.pipe(
         getTestModel,
         R.set(RExt.nestedPath(["players", 0, "activePowerLevel"]), 1),
@@ -1207,26 +1263,26 @@
 
   testSuite("activate super power", () => ([
 
-    testCase("declined when the player is is invalid (loob)", 
+    testCase("declined when the player is is invalid (loob)",
       R.pipe(
         getTestModel,
         R.curry(cwtGame.activateSuperPower)(-1),
         eitherFold(assertStartsWith("iae:ipl"), assertNeverCalled))),
-    
-    testCase("declined when the player is is invalid (roob)", 
+
+    testCase("declined when the player is is invalid (roob)",
       R.pipe(
         getTestModel,
         R.curry(cwtGame.activateSuperPower)(4),
         eitherFold(assertStartsWith("iae:ipl"), assertNeverCalled))),
-    
-    testCase("declined when the player is is invalid (deactivated)", 
+
+    testCase("declined when the player is is invalid (deactivated)",
       R.pipe(
         getTestModel,
         R.set(RExt.nestedPath(["players", 0, "team"]), -1),
         R.curry(cwtGame.activateSuperPower)(0),
         eitherFold(assertStartsWith("iae:ipl"), assertNeverCalled))),
 
-    testCase("declined when the player has already an activated power", 
+    testCase("declined when the player has already an activated power",
       R.pipe(
         getTestModel,
         R.set(RExt.nestedPath(["players", 0, "activePowerLevel"]), 2),
@@ -1235,7 +1291,7 @@
 
     testCase("declined when the player has not enough power to activate", assertNeverCalled),
 
-    testCase("set the power level of the player to POWER", 
+    testCase("set the power level of the player to POWER",
       R.pipe(
         getTestModel,
         R.set(RExt.nestedPath(["players", 0, "activePowerLevel"]), 1),
@@ -1243,7 +1299,7 @@
         R.map(R.view(RExt.nestedPath(["players", 0, "activePowerLevel"]))),
         eitherFold(assertNeverCalled, assertEquals(3)))),
 
-    testCase("sets the power value of the player to zero",  
+    testCase("sets the power value of the player to zero",
       R.pipe(
         getTestModel,
         R.set(RExt.nestedPath(["players", 0, "activePowerLevel"]), 1),
@@ -1254,37 +1310,429 @@
   ]));
 
   testSuite("resupply neightbours", () => ([
-    testCase("declines when supplier id is invalid", assertNeverCalled),
-    testCase("declines when supplier cannot act", assertNeverCalled),
-    testCase("declines when no target is surrouding the supplier", assertNeverCalled),
-    testCase("refills fuel in all own units in range", assertNeverCalled),
-    testCase("refills ammo in all own units in range", assertNeverCalled),
-    testCase("ignores allied units", assertNeverCalled),
-    testCase("ignores enemy units", assertNeverCalled)
+
+    testCase("declines when supplier id is invalid (loob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.unloadUnit)(-1),
+        eitherFold(assertStartsWith("iae:iui"), assertNeverCalled))),
+
+    testCase("declines when supplier id is invalid (roob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.unloadUnit)(50),
+        eitherFold(assertStartsWith("iae:iui"), assertNeverCalled))),
+
+    testCase("declines when supplier cannot act",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["actables", 0]), false),
+        R.curry(cwtGame.unloadUnit)(0),
+        eitherFold(assertStartsWith("iae:uca"), assertNeverCalled))),
+
+    testCase("declines when no target is surrouding the supplier",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "x"]), 5),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 5),
+        R.curry(cwtGame.unloadUnit)(0),
+        eitherFold(assertStartsWith("iae:nis"), assertNeverCalled))),
+
+    testCase("refills fuel in all own units in range",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "x"]), 5),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 5),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 6),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 5),
+        R.set(RExt.nestedPath(["units", 1, "fuel"]), 0),
+        R.set(RExt.nestedPath(["units", 2, "x"]), 4),
+        R.set(RExt.nestedPath(["units", 2, "y"]), 5),
+        R.set(RExt.nestedPath(["units", 2, "fuel"]), 20),
+        R.set(RExt.nestedPath(["unitTypes", "UNTA", "maxFuel"]), 35),
+        R.curry(cwtGame.unloadUnit)(0),
+        R.map(model => {
+          return [
+            R.view(RExt.nestedPath(["units", 1, "fuel"]))(model),
+            R.view(RExt.nestedPath(["units", 2, "fuel"]))(model)
+          ];
+        }),
+        eitherFold(assertNeverCalled, assertEquals([35, 35])))),
+
+    testCase("refills ammo in all own units in range",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "x"]), 5),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 5),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 6),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 5),
+        R.set(RExt.nestedPath(["units", 1, "ammo"]), 1),
+        R.set(RExt.nestedPath(["units", 2, "x"]), 4),
+        R.set(RExt.nestedPath(["units", 2, "y"]), 5),
+        R.set(RExt.nestedPath(["units", 2, "ammo"]), 0),
+        R.set(RExt.nestedPath(["unitTypes", "UNTA", "maxAmmo"]), 5),
+        R.curry(cwtGame.unloadUnit)(0),
+        R.map(model => {
+          return [
+            R.view(RExt.nestedPath(["units", 1, "ammo"]))(model),
+            R.view(RExt.nestedPath(["units", 2, "ammo"]))(model)
+          ];
+        }),
+        eitherFold(assertNeverCalled, assertEquals([5, 5])))),
+
+    testCase("ignores allied units",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "x"]), 5),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 5),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 6),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 5),
+        R.set(RExt.nestedPath(["units", 1, "ammo"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "owner"]), 1),
+        R.set(RExt.nestedPath(["players", 0, "team"]), 1),
+        R.set(RExt.nestedPath(["players", 1, "team"]), 1),
+        R.set(RExt.nestedPath(["unitTypes", "UNTA", "maxAmmo"]), 5),
+        R.curry(cwtGame.unloadUnit)(0),
+        R.map(R.view(RExt.nestedPath(["units", 1, "ammo"]))),
+        eitherFold(assertNeverCalled, assertEquals(1)))),
+
+    testCase("ignores enemy units",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "x"]), 5),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 5),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 6),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 5),
+        R.set(RExt.nestedPath(["units", 1, "ammo"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "owner"]), 1),
+        R.set(RExt.nestedPath(["players", 0, "team"]), 1),
+        R.set(RExt.nestedPath(["players", 1, "team"]), 2),
+        R.set(RExt.nestedPath(["unitTypes", "UNTA", "maxAmmo"]), 5),
+        R.curry(cwtGame.unloadUnit)(0),
+        R.map(R.view(RExt.nestedPath(["units", 1, "ammo"]))),
+        eitherFold(assertNeverCalled, assertEquals(1))))
   ]));
 
   testSuite("unload unit", () => ([
-    testCase("declines when load id is invalid", assertNeverCalled),
-    testCase("declines when transporter id is invalid", assertNeverCalled),
-    testCase("declines when load is not loaded by transporter", assertNeverCalled),
-    testCase("declines when transporter cannot act", assertNeverCalled),
-    testCase("declines when the tile in target direction is not empty", assertNeverCalled),
-    testCase("declines when the load cannot act", assertNeverCalled)
+
+    testCase("declines when load id is invalid (loob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.unloadUnit)(-1, 0, 0),
+        eitherFold(assertStartsWith("iae:iui:lod"), assertNeverCalled))),
+
+    testCase("declines when load id is invalid (roob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.unloadUnit)(50, 0, 0),
+        eitherFold(assertStartsWith("iae:iui:lod"), assertNeverCalled))),
+
+    testCase("declines when transporter id is invalid (loob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.unloadUnit)(0, -1, 0),
+        eitherFold(assertStartsWith("iae:iui:trp"), assertNeverCalled))),
+
+    testCase("declines when transporter id is invalid (roob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.unloadUnit)(0, 50, 0),
+        eitherFold(assertStartsWith("iae:iui:trp"), assertNeverCalled))),
+
+    testCase("declines when direction is invalid (loob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.unloadUnit)(0, 1, 4),
+        eitherFold(assertStartsWith("iae:idv"), assertNeverCalled))),
+
+    testCase("declines when direction is invalid (roob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.unloadUnit)(0, 1, -1),
+        eitherFold(assertStartsWith("iae:idv"), assertNeverCalled))),
+
+    testCase("declines when load is not loaded by transporter",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "loadedIn"]), 2),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -2),
+        R.curry(cwtGame.unloadUnit)(0, 1, 1),
+        eitherFold(assertStartsWith("iae:nal"), assertNeverCalled))),
+
+    testCase("does nothing when the tile in target direction is not empty",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "loadedIn"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -2),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 1),
+        R.curry(cwtGame.unloadUnit)(0, 1, 1),
+        R.map(R.view(RExt.nestedPath(["units", 0, "loadedIn"]))),
+        eitherFold(assertNeverCalled, assertEquals(1)))),
+
+    testCase("removes loaded in when target direction is empty",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "loadedIn"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -2),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 1),
+        R.curry(cwtGame.unloadUnit)(0, 1, 1),
+        eitherFold(assertNeverCalled, assertEquals(-1)))),
+
+    testCase("sets position when target direction is empty",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "loadedIn"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -2),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 1),
+        R.curry(cwtGame.unloadUnit)(0, 1, 1),
+        R.map(R.view(RExt.nestedPath(["units", 0]))),
+        R.map(unit => "{" + unit.x + "," + unit.y + "}"),
+        eitherFold(assertNeverCalled, assertEquals("{2,1}")))),
+
+    testCase("sets load into wait mode when target direction is empty",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "loadedIn"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -2),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 1),
+        R.curry(cwtGame.unloadUnit)(0, 1, 1),
+        R.map(R.view(RExt.nestedPath(["actables", 0]))),
+        eitherFold(assertNeverCalled, assertEquals(false)))),
+
+    testCase("sets transporter into wait mode when target direction is empty",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "loadedIn"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -2),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 1),
+        R.map(R.view(RExt.nestedPath(["actables", 1]))),
+        eitherFold(assertNeverCalled, assertEquals(false)))),
+
+    testCase("sets transporter into wait mode when target direction is not empty",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "loadedIn"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -2),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 1),
+        R.set(RExt.nestedPath(["units", 2, "x"]), 2),
+        R.set(RExt.nestedPath(["units", 2, "y"]), 1),
+        R.curry(cwtGame.unloadUnit)(0, 1, 1),
+        R.map(R.view(RExt.nestedPath(["actables", 1]))),
+        eitherFold(assertNeverCalled, assertEquals(false)))),
+
+    testCase("declines when the transporter cannot act",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "loadedIn"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -2),
+        R.set(RExt.nestedPath(["actables", 1]), false),
+        R.curry(cwtGame.unloadUnit)(0, 1, 0),
+        eitherFold(assertStartsWith("iae:uca"), assertNeverCalled)))
   ]));
 
   testSuite("load unit", () => ([
-    testCase("declines when load id is invalid", assertNeverCalled),
-    testCase("declines when transporter id is invalid", assertNeverCalled),
-    testCase("declines when load id is already loaded", assertNeverCalled),
-    testCase("declines when transporter cannot load unit", assertNeverCalled),
-    testCase("declines when transporter has no room left", assertNeverCalled),
-    testCase("declines when the load cannot act", assertNeverCalled),
-    testCase("load looses its position", assertNeverCalled),
-    testCase("load is loaded in transporter", assertNeverCalled),
-    testCase("transporters load count increases", assertNeverCalled)
+
+    testCase("declines when load id is invalid (loob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.loadUnit)(-1, 0),
+        eitherFold(assertStartsWith("iae:iui:lod"), assertNeverCalled))),
+
+    testCase("declines when load id is invalid (roob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.loadUnit)(50, 0),
+        eitherFold(assertStartsWith("iae:iui:lod"), assertNeverCalled))),
+
+    testCase("declines when transporter id is invalid (loob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.loadUnit)(0, -1),
+        eitherFold(assertStartsWith("iae:iui:trp"), assertNeverCalled))),
+
+    testCase("declines when transporter id is invalid (roob)",
+      R.pipe(
+        getTestModel,
+        R.curry(cwtGame.loadUnit)(0, 50),
+        eitherFold(assertStartsWith("iae:iui:trp"), assertNeverCalled))),
+
+    testCase("declines when load id is already loaded",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "loadedIn"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -2),
+        R.curry(cwtGame.loadUnit)(0, 1),
+        eitherFold(assertStartsWith("iae:arl"), assertNeverCalled))),
+
+    testCase("declines when transporter cannot load unit",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "x"]), 0),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -1),
+        R.set(RExt.nestedPath(["units", 1, "type"]), "UNTA"),
+        R.set(RExt.nestedPath(["units", "UNTA", "loadable"]), ["UNTB"]),
+        R.set(RExt.nestedPath(["units", "UNTA", "maxLoadCount"]), 2),
+        R.curry(cwtGame.loadUnit)(0, 1),
+        R.view(RExt.nestedPath(["units", 0, "loadedIn"])),
+        eitherFold(assertStartsWith("iae:clu"), assertNeverCalled))),
+
+    testCase("declines when transporter has no room left",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -3),
+        R.set(RExt.nestedPath(["units", 1, "type"]), "UNTA"),
+        R.set(RExt.nestedPath(["units", "UNTA", "loadable"]), ["UNTA"]),
+        R.set(RExt.nestedPath(["units", "UNTA", "maxLoadCount"]), 2),
+        R.curry(cwtGame.loadUnit)(0, 1),
+        eitherFold(assertStartsWith("iae:mlr"), assertNeverCalled))),
+
+    testCase("declines when the load cannot act",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["actables", 0]), false),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -1),
+        R.set(RExt.nestedPath(["units", 1, "type"]), "UNTA"),
+        R.set(RExt.nestedPath(["units", "UNTA", "loadable"]), ["UNTA"]),
+        R.set(RExt.nestedPath(["units", "UNTA", "maxLoadCount"]), 2),
+        R.curry(cwtGame.loadUnit)(0, 1),
+        eitherFold(assertStartsWith("iae:uca"), assertNeverCalled))),
+
+    testCase("load looses its position",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "x"]), 0),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -1),
+        R.set(RExt.nestedPath(["units", 1, "type"]), "UNTA"),
+        R.set(RExt.nestedPath(["units", "UNTA", "loadable"]), ["UNTA"]),
+        R.set(RExt.nestedPath(["units", "UNTA", "maxLoadCount"]), 2),
+        R.curry(cwtGame.loadUnit)(0, 1),
+        R.view(RExt.nestedPath(["units", 0])),
+        R.map(unit => "{" + unit.x + "," + unit.y + "}"),
+        eitherFold(assertNeverCalled, assertEquals("{-1,-1}")))),
+
+    testCase("load is loaded in transporter",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "x"]), 0),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -1),
+        R.set(RExt.nestedPath(["units", 1, "type"]), "UNTA"),
+        R.set(RExt.nestedPath(["units", "UNTA", "loadable"]), ["UNTA"]),
+        R.set(RExt.nestedPath(["units", "UNTA", "maxLoadCount"]), 2),
+        R.curry(cwtGame.loadUnit)(0, 1),
+        R.view(RExt.nestedPath(["units", 0, "loadedIn"])),
+        eitherFold(assertNeverCalled, assertEquals(-1)))),
+
+    testCase("transporters load count increases",
+      R.pipe(
+        getTestModel,
+        R.set(RExt.nestedPath(["units", 0, "x"]), 0),
+        R.set(RExt.nestedPath(["units", 0, "y"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "x"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "y"]), 1),
+        R.set(RExt.nestedPath(["units", 1, "loadedIn"]), -1),
+        R.set(RExt.nestedPath(["units", 1, "type"]), "UNTA"),
+        R.set(RExt.nestedPath(["units", "UNTA", "loadable"]), ["UNTA"]),
+        R.set(RExt.nestedPath(["units", "UNTA", "maxLoadCount"]), 2),
+        R.curry(cwtGame.loadUnit)(0, 1),
+        R.view(RExt.nestedPath(["units", 1, "loadedIn"])),
+        eitherFold(assertNeverCalled, assertEquals(-2))))
   ]));
 
-  // ------------------------------- CLIENT ------------------------------- 
+  testSuite("get actables objects", () => ([
+    testCase("returns all actable units of the turn owner", 
+      R.pipe(
+        getTestModel,
+        R.over(RExt.nestedPath(["actables"]), R.map(R.always(false))),
+        R.set(RExt.nestedPath(["actables", 0]), true),
+        R.set(RExt.nestedPath(["actables", 1]), true),
+        cwtGame.getActableObjects,
+        R.filter(R.where({ type: R.equals("unit") })),
+        R.pipe(R.length, assertEquals(2)))),
 
+    testCase("returns all actable properties of the turn owner", 
+      R.pipe(
+        getTestModel,
+        R.over(RExt.nestedPath(["actables"]), R.map(R.always(false))),
+        R.over(RExt.nestedPath(["properties"]), R.evolve({ owner: R.always(-1) })),
+        R.set(RExt.nestedPath(["properties", 0, "owner"]), 0),
+        R.set(RExt.nestedPath(["properties", 1, "owner"]), 0),
+        cwtGame.getActableObjects,
+        R.filter(R.where({ type: R.equals("property") })),
+        R.pipe(R.length, assertEquals(2)))),
+
+    testCase("contains the object-less map actions", 
+      R.pipe(
+        getTestModel,
+        cwtGame.getActableObjects,
+        R.filter(R.where({ type: R.equals("map") })),
+        R.pipe(R.length, assertEquals(1)))),
+  ]));
+
+  testSuite("get position actions", () => ([
+    testCase("shows wait when unit is selected", assertNeverCalled),
+    testCase("shows fire rocket when unit is selected and position contains a silo", assertNeverCalled),
+    testCase("shows capture when unit is selected, can capture and position contains an enemy property", assertNeverCalled),
+    testCase("shows capture when unit is selected, can capture and position contains an neutral property", assertNeverCalled),
+    testCase("shows no capture when unit is selected, can capture and position contains an allied property", assertNeverCalled),
+    testCase("shows produce unit when nothing is selcted and position contains an own factory", assertNeverCalled),
+    testCase("shows destroy unit when unit is selcted and position contains nothing special", assertNeverCalled),
+    testCase("shows attack unit when unit is selcted, it moved, is direct and target in sight", assertNeverCalled),
+    testCase("shows attack unit when unit is selcted, it does not moved, is indirect and target in sight", assertNeverCalled),
+    testCase("shows no attack unit when unit is selcted, it moved, is indirect and target in sight", assertNeverCalled),
+    testCase("shows activate power when nothing is selcted and player has enough power", assertNeverCalled),
+    testCase("shows activate super power when nothing is selcted and player has enough power", assertNeverCalled),
+    testCase("shows resupply neightbours when unit is selected, unit can resupply and targets are nearby", assertNeverCalled),
+    testCase("shows no resupply neightbours when unit is selected, unit can resupply and no targets are nearby", assertNeverCalled),
+    testCase("shows unload unit when unit is selected, has loads and target has empty or hidden fields nearby", assertNeverCalled),
+    testCase("shows no unload unit when unit is selected, has loads and target has no empty or hidden field nearby", assertNeverCalled),
+    testCase("shows load unit when unit is selected, own transporter is at the target and transporter can load unit", assertNeverCalled),
+    testCase("shows yield game when nothing is selected", assertNeverCalled),
+    testCase("shows nextTurn when nothing is selected", assertNeverCalled)]));
+
+  testSuite("get unit move map", () => ([
+    testCase("recognizes move range", assertNeverCalled),
+    testCase("recognizes left fuel", assertNeverCalled),
+    testCase("recognizes movable fields that are visible and occuppied by enemy units as non-movable", assertNeverCalled),
+    testCase("recognizes movable fields that are visible and occuppied by allied units as movable", assertNeverCalled),
+    testCase("recognizes movable fields that are visible and occuppied by own units as movable", assertNeverCalled),
+    testCase("recognizes movable fields that are not visible and occuppied allied units as movable", assertNeverCalled),
+    testCase("recognizes movable fields that are not visible and occuppied enemy units as movable", assertNeverCalled),
+    testCase("returned data contains move map", assertNeverCalled),
+    testCase("returned data contains move range", assertNeverCalled),
+    testCase("returned move range is minimum type.moveRange, unit.fuel", assertNeverCalled)
+  ]));
+
+  testSuite("get unit attack map", () => ([
+    testCase("recognizes move range of direct units", assertNeverCalled),
+    testCase("recognizes left fuel of direct units", assertNeverCalled),
+    testCase("ignores move range of indirect units", assertNeverCalled),
+    testCase("returned data contains attack map", assertNeverCalled)
+  ]));
+
+  testSuite("moving", () => ([
+    testCase("declines when move path is illegal", assertNeverCalled),
+    testCase("declines when costs of move path exceeds move range", assertNeverCalled),
+    testCase("declines when costs of move path exceeds fuel", assertNeverCalled),
+    testCase("declines when move path is blocked by an enemy unit", assertNeverCalled),
+    testCase("can move through own units", assertNeverCalled),
+    testCase("own unit as move target is accepted because handled by action itself", assertNeverCalled),
+    testCase("updates fog when moving from a to b", assertNeverCalled),
+    testCase("falls down to wait action when move path is blocked", assertNeverCalled)
+  ]));
 
 })(window.cwtTest || (window.cwtTest = {}));
