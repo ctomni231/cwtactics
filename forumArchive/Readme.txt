@@ -11,3 +11,9 @@ Advance Wars Network
 ---------------------
 
 As a token of appreciation for reaching 25,000 page views. Here is a dump of all the data we managed to save from Advance Wars Network. A great site with a lot of good memories, and one of the places that helped build this team and keep Advance Wars alive.
+
+-----------
+Lord Spyro
+-----------
+
+A long time fan and contributor to the series. Devoted to writing a campiagn and to preserving as much of the Advance Wars lore as he can. This is the collection of items he has pulled for the Custom Wars Tactics team.
