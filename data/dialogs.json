@@ -34,7 +34,7 @@
 		"id": "forum",
 		"title":"Community Forum Links",
 		"text": [
-			"Talk to us in our forum, or browse the old Custom Wars Archive.",
+			"Contains the various locations where anyone can publicly can talk to the development team. Feel free to browse the old Custom Wars Forum while your here.",
 			"<ul class='linkList'><li><a target='_blank' href='http://www.takeyourturn.net/f8-custom-wars-tactics'>Advance Wars By Web</a></li><li><a target='_blank' href='http://forums.warsworldnews.com/viewtopic.php?f=37&t=13419'>Wars World News</a></li><li><a target='_blank' href='https://www.reddit.com/r/Advance_Wars/'>Reddit!</a></li><li><a target='_blank' href='http://forums.customwars.com'>Custom Wars Forum (Archive)</a></li></ul>"
 		]
 	},
@@ -44,7 +44,7 @@
 		"title":"Youtube Links",
 		"text": [
 			"Watch and grab videos from our Youtube Channel Links.",
-			"<ul class='linkList'><li><a target='_blank' href='http://www.youtube.com/channel/UCY9_WmJVNgPSh-zVC6vBEVQ'>Programming Development Channel</a></li><li><a target='_blank' href='https://www.youtube.com/playlist?list=PLFOpXFlYHQTkUm7UHDattfnFZaAsfx3ha'>User Contribution Playlist</a></li></ul>"
+			"<ul class='linkList'><li><a target='_blank' href='http://www.youtube.com/channel/UCY9_WmJVNgPSh-zVC6vBEVQ'>Programming Development Channel</a></li><li><a target='_blank' href='https://www.youtube.com/playlist?list=PLFOpXFlYHQTkUm7UHDattfnFZaAsfx3ha'>User Contribution Playlist</a></li><li><a target='_blank' href=https://www.youtube.com/playlist?list=PLFOpXFlYHQTmjBMVlnbOAkxny2CW7IizT'>Custom Wars: Tactics Soundtrack</a></li></ul>"
 		]
 	}
 ]
