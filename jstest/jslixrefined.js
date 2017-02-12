@@ -1,11 +1,22 @@
-// I need to rebuild JSlix to work with the requestAnimationFrame correctly
-// Currently, there is problems when using this with Firefox
+// Since Final JSlix was not final. This will be the last attempt to make it work
 
-// Request Animation Frame
-// http://localhost:8000/realjslix.html
-
-// Set Interval
-// http://localhost:8000/realjslixold.html
+/*
+ * JSlixRefined
+ *
+ * The redirect array will be there, but separate from the main process. It will only
+ * get images that completely match the originals and store them in an array for quick
+ * access
+ *
+ * We are going to mostly use realjslix to build this, with the redirection array
+ * produced from finaljslix. This should give the most in speed and efficiency.
+ * 
+ * All manipulations to images will be done while an image is being created. This will
+ * make a lot of new images, but at the very least, it will also make the images
+ * load and display the fastest.
+ *
+ * Slit X and Slit Y will take an offset parameter so negative values can be put into
+ * the position for every-other operations
+ */
 
 // This is the timing variable of the second (setInterval)
 var sec = 16;
@@ -102,7 +113,7 @@ function getDimensions(event){
 function createImage(event){
 	var text = document.getElementById("textBox");
 
-	intArray.push(viewArray.length);
+	//intArray.push(viewArray.length);
 	mxArray.push(mousex);
 	myArray.push(mousey);
 
@@ -216,8 +227,34 @@ function storeImage(){
 	ctx.drawImage(imgStorage, 0, 0);
 	var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
+	var data = new Uint8ClampedArray(imgData.data);
+	
+	//Do a bunch of checks before drawing out the image
+	var iflipx = document.getElementById("flipX");
+	if(iflipx.checked == 1)
+		data = flipX(imgData.data, imgStorage.width, imgStorage.height);
+	
+	for(var i = 0, j; i < viewArray.length; i++){
+		if(data.length == viewArray[i].length){
+			for(j = 0; j < viewArray[i].length; j++){
+				if(data[j] != viewArray[i][j]){
+					break;
+				}
+			}
+			if(j == viewArray[i].length){
+				intArray.push(i);
+				busy = 0;
+				if(imgQueue.length > 0){
+					addImage(imgQueue.pop());
+				}
+				break;
+			}
+		}
+	}
+	
+	intArray.push(viewArray.length);
 	//This pushes the images into an array
-	viewArray.push(new Uint8ClampedArray(imgData.data));
+	viewArray.push(data);
 	locxArray.push(imgStorage.width);
 	locyArray.push(imgStorage.height);
 	imgArray.push(new Image());
@@ -229,6 +266,19 @@ function storeImage(){
 	}
 }
 
+//var color = document.getElementById("colorBox");
+//var iflipx = document.getElementById("flipX");
+//var iflipy = document.getElementById("flipY");
+//var irotate = document.getElementById("rotate90");
+//It is important these manipulations are done after the checks
+//due to the rotations.
+//if(iflipx.checked == 1)
+ // view = flipX(view, lx, ly);
+//if(iflipy.checked == 1)
+//  view = flipY(view, lx, ly);
+//if(irotate.checked == 1)
+//view = rotate90(view, lx, ly);
+		
 // Works with canvas Image to flip image horizontally
 function flipX(data, sx, sy){
   var temp = new Uint8ClampedArray(data);
@@ -338,11 +388,6 @@ function rotate90(data, sx, sy){
 //Canvas Image with a speed mechanic included
 function canvasImg(num){
 
-	var color = document.getElementById("colorBox");
-  var iflipx = document.getElementById("flipX");
-  var iflipy = document.getElementById("flipY");
-  var irotate = document.getElementById("rotate90");
-
 	var change = 0;
 
 	if(num >= 0 && num < viewArray.length){
@@ -353,16 +398,6 @@ function canvasImg(num){
 			ly = locyArray[num];
 			change = 1;
 		}
-
-		//It is important these manipulations are done after the checks
-		//due to the rotations.
-		if(iflipx.checked == 1)
-		  view = flipX(view, lx, ly);
-		if(iflipy.checked == 1)
-		  view = flipY(view, lx, ly);
-		//if(irotate.checked == 1)
-		//view = rotate90(view, lx, ly);
-
 	}else{
 		view = null;
 		if(lx != 100 || ly != 100){
@@ -396,50 +431,17 @@ function canvasImg(num){
 			imgsData.data[i+2]=0;//255
 			imgsData.data[i+3]=100;//0
 		}
-	}else if(color.value >= 0 && color.value <= 19 ){
-		var imgStorage = document.getElementById("color");
-
-		var canvas = document.getElementById("colorCanvas");
-		if(canvas == null){
-			canvas = document.createElement("canvas");
-			document.body.appendChild(canvas);
-		}
-		canvas.setAttribute("id", "colorCanvas");
-
-		canvas.setAttribute("width", imgStorage.width);
-		canvas.setAttribute("height", imgStorage.height);
-		canvas.setAttribute("style", "display:none");
-
-		var ctx = canvas.getContext("2d");
-		ctx.drawImage(imgStorage, 0, 0);
-		var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-		for (var i = 0; i < imgsData.data.length; i+=4){
+	}else{
+		for (var i = 0; i < imgsData.data.length; i+=8){
 			imgsData.data[i]=view[i];
 			imgsData.data[i+1]=view[i+1];
 			imgsData.data[i+2]=view[i+2];
 			imgsData.data[i+3]=view[i+3];
-			for(var j = 0; j < imgStorage.width*4; j+=4){
-				if((imgData.data[j] == view[i] || imgData.data[j]-1 == view[i]) &&
-				   (imgData.data[j+1] == view[i+1] || imgData.data[j+1]+1 == view[i+1]) &&
-				   (imgData.data[j+2] == view[i+2] || imgData.data[j+2]+1 == view[i+2])){
-					imgsData.data[i] = imgData.data[4*imgStorage.width*color.value+j];
-					imgsData.data[i+1] = imgData.data[4*imgStorage.width*color.value+j+1];
-					imgsData.data[i+2] = imgData.data[4*imgStorage.width*color.value+j+2];
-				}
-			}
-		}
-	}else{
-		for (var i = 0; i < imgsData.data.length; i+=8){
-			imgsData.data[i]=(view[i]+0)/2;
-			imgsData.data[i+1]=(view[i+1]+0)/2;
-			imgsData.data[i+2]=(view[i+2]+0)/2;
-			imgsData.data[i+3]=view[i+3];
-			imgsData.data[i+4]=(view[i+4]+0)/2;
-			imgsData.data[i+5]=(view[i+5]+0)/2;
-			imgsData.data[i+6]=(view[i+6]+0)/2;
+			imgsData.data[i+4]=view[i+4];
+			imgsData.data[i+5]=view[i+5];
+			imgsData.data[i+6]=view[i+6];
 			imgsData.data[i+7]=view[i+7];
-		}//*/
+		}
 	}
 
 	//Draws the image
@@ -462,8 +464,7 @@ function loadImage(num){
 	var tempImg = new Image();
 	tempImg.onload = function(){
 		imgArray[num].src = this.src;
-		if((this.height == locyArray[num] && this.width == locxArray[num]) ||
-       (this.width == locyArray[num] && this.height == locxArray[num])){
+		if(this.height == locyArray[num] && this.width == locxArray[num]){
 			imgReady[num] = num;
 		}
 	};

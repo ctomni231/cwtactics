@@ -43,6 +43,16 @@
 // I think I covered everything, and the only con I can think of is a slight slowdown
 // for the checks. The major pro is a reduction in memory for storage of these images.
 
+// Okay, I should store these pixels within a double array
+// Every extra image should be stored inside the pixel array
+// I think the image array should only deal with the individual pixels
+// That way the pixel array has the most difficult pipeline before the image is created
+// So get image stores a new pixel array with the pixel manipulations
+// and places where it is in the duel array
+// Then the comparisons should be rather short, as well as placing new images
+// Another thing about this is the recolors and pixel blends
+// They should have their own image pipeline because they are small and won't be shown
+
 // Request Animation Frame
 // http://localhost:8000/finaljslix.html
 
@@ -69,16 +79,28 @@ var mousey = 0;
 
 // ImageLibrary Stuff
 var view;
-var lx = 0;
-var ly = 0;
+var imgcanvas;
+var imgctx;
+var imgsData;
+var ctxlx = 0;
+var ctxly = 0;
 
-var busy = 0;
+// Image Library Array Handling
+var busy = false;
 var imgQueue = [];
-var addQueue = [];
+var viewArray = [];
+var locxArray = [];
+var locyArray = [];
+var viewRedir = [];
+var imgArray = [];
+var imgReady = [];
+var imgRedir = [];
 
-var redirAlpha;
-var redirBeta;
-var redirTree;
+// These are just for holding the test images
+var step = 0;
+var intArray = [];
+var mxArray = [];
+var myArray = [];
 
 // --------------------------------------
 // Base Functions start here
@@ -135,7 +157,7 @@ function getDimensions(event){
 function createImage(event){
 	var text = document.getElementById("textBox");
 
-	intArray.push(viewArray.length);
+	intArray.push(imgArray.length);
 	mxArray.push(mousex);
 	myArray.push(mousey);
 
@@ -146,17 +168,17 @@ function createImage(event){
 
 // The true rendering function
 function render(ctx){
-	step++;
-	if( step == 3 ) step = 0;
+	 step++;
+	 if( step == 3 ) step = 0;
 
   // For animation testing
 	for(var i = 0; i < intArray.length; i++){
 		ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
 	}
 
-  // For ratation testing only
+  // For rotation testing only
   //for(var i = 0; i < intArray.length; i++){
-    //ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
+   // ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
   //}
 }
 
@@ -231,12 +253,18 @@ function runGame() {
 function addImage(text){
 
 	//This will combine both queue and addImage.
-	if(busy == 1){
+	if(busy){
 		imgQueue.push(text);
 		return;
 	}
 
-	busy = 1;
+	//if(!fileExists(text)){
+	////	console.log("Image not found: "+text);
+	//	viewRedir.push(-1);
+	//	return;
+	//}
+		
+	busy = true;
 	//This grabs an image and temporarily stores it in memory
 	var imgStorage = document.getElementById("image");
 	if(imgStorage == null){
@@ -274,30 +302,159 @@ function storeImage(){
 	var ctx = canvas.getContext("2d");
 	ctx.drawImage(imgStorage, 0, 0);
 	var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
+	
+	var redir = false;
 	//We have to check to see if this was created before, and if so, set up a redirection
-	for(var i = 0; i < viewArray.length; i++){
+	for(var i = 0, j; i < viewArray.length; i++){
 		if(imgData.data.length == viewArray[i].length){
-			for(var j = 0; j < viewArray.length; j++){
-				if(imgData.data[j] != viewArray[j]){
-					//redirect it here.
+			for(j = 0; j < viewArray[i].length; j++){
+				if(imgData.data[j] != viewArray[i][j]){
+					break;
 				}
+			}
+			if(j == viewArray[i].length){
+				viewRedir.push(i);
+				redir = true;
+				break;
 			}
 		}
 	}
 	
+	
 	//This pushes the images into an array
-	viewArray.push(new Uint8ClampedArray(imgData.data));
-	locxArray.push(imgStorage.width);
-	locyArray.push(imgStorage.height);
-
-	busy = 0;
+	if(!redir){
+		viewRedir.push(viewArray.length);
+		viewArray.push(new Uint8ClampedArray(imgData.data));
+		locxArray.push(imgStorage.width);
+		locyArray.push(imgStorage.height);
+		imgArray.push(new Image());
+		imgReady.push(false);
+		//imgRedir.push(-1);
+	}
+		
+	busy = false;
 	if(imgQueue.length > 0){
 		addImage(imgQueue.pop());
 	}
 }
 
+// The number inserted here must be pure (from viewRedir)
+function canvasImg(num){
 
+	// Holds to see if the size of the ctx changed 
+	var ctxChange = false;
+	
+	//If we have a new image
+	if(num >= 0 && num < viewArray.length){
+		view = viewArray[num];
+		
+		if(ctxlx != locxArray[num] || ctxly != locyArray[num]){
+			ctxlx = locxArray[num];
+			ctxly = locyArray[num];
+			ctxChange = true;
+		}
+		
+	}else{
+		view = null;
+		if(ctxlx != 100 || ctxly != 100){
+			ctxlx = 100;
+			ctxly = 100;
+			ctxChange = true;
+		}
+	}
+	
+	//This makes a canvas storage module for the image
+	if(ctxChange){
+		imgcanvas = document.getElementById("store");
+		if(imgcanvas == null){
+			imgcanvas = document.createElement("canvas");
+			document.body.appendChild(imgcanvas);
+		}
+		imgcanvas.setAttribute("id", "store");
+		imgcanvas.setAttribute("width", ctxlx);
+		imgcanvas.setAttribute("height", ctxly);
+		imgcanvas.setAttribute("style", "display:none");
+		imgctx = imgcanvas.getContext("2d");
+		imgsData = imgctx.createImageData(ctxlx, ctxly);
+	}else{
+		imgctx.clearRect(0, 0, ctxlx, ctxly);
+	}
+
+	if(view == null){
+		for (var i = 0; i < imgsData.data.length; i += 4){
+			imgsData.data[i+0] = 255;//255
+			imgsData.data[i+1] = 0;//255
+			imgsData.data[i+2] = 0;//255
+			imgsData.data[i+3] = 100;//0
+		}
+	}else{
+		for (var i = 0; i < imgsData.data.length; i+=8){
+			imgsData.data[i] = view[i];
+			imgsData.data[i+1] = view[i+1];
+			imgsData.data[i+2] = view[i+2];
+			imgsData.data[i+3] = view[i+3];
+			imgsData.data[i+4] = view[i+4];
+			imgsData.data[i+5] = view[i+5];
+			imgsData.data[i+6] = view[i+6];
+			imgsData.data[i+7] = view[i+7];
+		}
+	}
+	
+	//Draws the image
+	imgctx.putImageData(imgsData,0,0);
+
+	return imgcanvas;
+}
+
+// The getImage stuff - to get rid of the slow time of Internet Explorer
+function getImg(num){
+	
+	// If this is an image out of range
+	//if(num < 0 || num >= viewRedir.length){
+	//	return canvasImg(num);
+	//}
+	
+	//Change the number to the viewRedirection
+	//num = viewRedir[num];
+	
+	// Makes a new Image if one does not exist yet
+	//if(imgRedir[num] == -1){
+	//	imgRedir[num] = imgArray.length;
+	//	imgArray.push(new Image());
+	//	imgReady.push(false);
+	//}
+	
+	// Makes sure that we get the correct image
+	//num = imgRedir[num];
+	
+	if(!imgReady[num]){	
+		addLoadEvent(num);
+		return canvasImg(num);
+	}
+
+	return imgArray[num];
+}
+
+// This function loads an image into memory
+function loadImage(num){
+	var tempImg = new Image();
+	tempImg.onload = function(){
+		imgArray[num].src = this.src;
+		if(this.height == locyArray[num] && this.width == locxArray[num]){
+			imgReady[num] = true;
+		}
+	};
+	tempImg.src = canvasImg(num).toDataURL();
+}
+
+// This is pretty overkill to test if a file exists on the server
+//function fileExists(url)
+//{
+//    var http = new XMLHttpRequest();
+//    http.open('HEAD', url, false);
+//    http.send();
+ //   return http.status == 200;
+//}
 // --------------------------------
 // Code by Simon Willison
 // --------------------------------
