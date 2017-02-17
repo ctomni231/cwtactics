@@ -16,16 +16,6 @@
  *
  * Slit X and Slit Y will take an offset parameter so negative values can be put into
  * the position for every-other operations
- *
- * Stuff still to do for this
- * --------------------------
- * 
- * Color Functionality - We need to make an array of colors (might need to hijack addImage)
- * Shift Functionality - We need to make functionality for Shift X and Y-axis
- * Slit Functionality - We need to make functionality for Slit X and Y-axis
- * Slit Interval Functionality - We need to make functionality for Slit Interval X & Y-axis
- * Blend Functionality - We need to make functionality for the Blending of colors
- * Cut Image Functionality - We need to make functionality that allows you to slice an image
  */
 
 // This is the timing variable of the second (setInterval)
@@ -71,16 +61,6 @@ var step = 0;
 var intArray = [];
 var mxArray = [];
 var myArray = [];
-
-// Manipulation
-var Xflip = 0;
-var Yflip = 0;
-var rotate = 0;
-
-// Manipulation Array
-var flipXArray = [];
-var flipYArray = [];
-var rotateArray = [];
 
 // --------------------------------------
 // Functions start here
@@ -129,19 +109,6 @@ function getDimensions(event){
 	mousey = event.clientY - 8;
 }
 
-//var color = document.getElementById("colorBox");
-//var iflipx = document.getElementById("flipX");
-//var iflipy = document.getElementById("flipY");
-//var irotate = document.getElementById("rotate90");
-//It is important these manipulations are done after the checks
-//due to the rotations.
-//if(iflipx.checked == 1)
- // view = flipX(view, lx, ly);
-//if(iflipy.checked == 1)
-//  view = flipY(view, lx, ly);
-//if(irotate.checked == 1)
-//view = rotate90(view, lx, ly);
-
 // Creates the image specified
 function createImage(event){
 	var text = document.getElementById("textBox");
@@ -150,17 +117,6 @@ function createImage(event){
 	mxArray.push(mousex);
 	myArray.push(mousey);
 
-	var iflipx = document.getElementById("flipX");
-	var iflipy = document.getElementById("flipY");
-	//var irotate = document.getElementById("rotate90");
-	
-	if(iflipx.checked == 1)
-		addFlipX();
-	if(iflipy.checked == 1)
-		addFlipY();
-	/*//if(irotate.checked == 1)
-		addRotate90();//*/
-		
 	addImage(text.value);
 }
 
@@ -207,12 +163,12 @@ function render(ctx){
   // For animation testing
 	for(var i = 0; i < intArray.length; i++){
 		ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
-	}//*/
+	}
 
-  /*// For ratation testing only
-  for(var i = 0; i < intArray.length; i++){
-    ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
-  }//*/
+  // For ratation testing only
+  //for(var i = 0; i < intArray.length; i++){
+    //ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
+  //}
 }
 
 // -----------------------------------------
@@ -222,28 +178,12 @@ function render(ctx){
 // This function adds an image from text.
 function addImage(text){
 
-	// This checks to see if a file exists on the server first
-	//if(isNaN(text)){
-	//	if(!fileExists(text)){
-	//		console.log("Image not found: "+text);
-	//		return;
-	//	}
-	//}
-	
-	//Add manipulations
-	flipXArray.push(Xflip);
-	Xflip = 0;
-	flipYArray.push(Yflip);
-	Yflip = 0;
-	rotateArray.push(rotate);
-	rotate = 0;
-	
 	//This will combine both queue and addImage.
 	if(busy == 1){
 		imgQueue.push(text);
 		return;
 	}
-	
+
 	busy = 1;
 	//This grabs an image and temporarily stores it in memory
 	var imgStorage = document.getElementById("image");
@@ -252,27 +192,14 @@ function addImage(text){
 		document.body.appendChild(imgStorage);
 	}
 	imgStorage.setAttribute("id", "image");
-	// This pretty much makes sure that a valid value is entering for numbers
-	imgStorage.setAttribute("src", isNaN(text) 
-									? text : (text >= 0 && text < intArray.length) 
-									? getImg(intArray[text]).src : getImg(text).toDataURL());
+	imgStorage.setAttribute("src", text);
 	imgStorage.setAttribute("onload", "storeImage()");
-	imgStorage.setAttribute("onerror", "imgError(this)");
 	imgStorage.setAttribute("style", "display:none");
 
 	//Makes a new storage spot for an image
 	//imgArray.push(new Image());
 	//imgReady.push(-1);
 }
-
-// This is pretty overkill to test if a file exists on the server
-//function fileExists(url)
-//{
-//    var http = new XMLHttpRequest();
-//    http.open('HEAD', url, false);
- //   http.send();
- //   return http.status == 200;
-//}
 
 // This function is literally a callback function to actually store the image
 function storeImage(){
@@ -283,9 +210,6 @@ function storeImage(){
 		document.body.appendChild(imgStorage);
 	}
 	imgStorage.setAttribute("id", "image");
-	
-	//This sets up any rotation effects we have
-	var dimSwitch = rotateArray.shift();
 
 	var canvas = document.getElementById("store");
 	if(canvas == null){
@@ -293,37 +217,25 @@ function storeImage(){
 		document.body.appendChild(canvas);
 	}
 	canvas.setAttribute("id", "store");
-	canvas.setAttribute("style", "display:none");
 	canvas.setAttribute("width", imgStorage.width);
 	canvas.setAttribute("height", imgStorage.height);
-	if(dimSwitch === 1){
-		canvas.setAttribute("height", imgStorage.width);
-		canvas.setAttribute("width", imgStorage.height);
-	}
-	
-	console.log("("+imgStorage.width+","+imgStorage.height+")");
-	
-	var ctx = canvas.getContext("2d");
-	if(dimSwitch === 0){
-		ctx.drawImage(imgStorage, 0, 0);
-	}else{
-		ctx.rotate(90*Math.PI/180);
-		ctx.drawImage(imgStorage, imgStorage.height, -imgStorage.height);
-	}
-	var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-		
-	var data = new Uint8ClampedArray(imgData.data);
-	var imgWidth = canvas.width;
-	var imgHeight = canvas.height;
-	
-	//Do a bunch of manipulation checks before drawing out the image
-	if(flipXArray.shift() == 1)
-		data = flipX(data, imgWidth, imgHeight);
-	if(flipYArray.shift() == 1)
-		data = flipY(data, imgWidth, imgHeight);
+	canvas.setAttribute("style", "display:none");
 
+	console.log("("+imgStorage.width+","+imgStorage.height+")");
+
+	var ctx = canvas.getContext("2d");
+	ctx.drawImage(imgStorage, 0, 0);
+	var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+	var data = new Uint8ClampedArray(imgData.data);
+	
+	//Do a bunch of checks before drawing out the image
+	var iflipx = document.getElementById("flipX");
+	if(iflipx.checked == 1)
+		data = flipX(imgData.data, imgStorage.width, imgStorage.height);
+	
 	for(var i = 0, j; i < viewArray.length; i++){
-		if(data.length === viewArray[i].length){
+		if(data.length == viewArray[i].length){
 			for(j = 0; j < viewArray[i].length; j++){
 				if(data[j] != viewArray[i][j]){
 					break;
@@ -333,7 +245,7 @@ function storeImage(){
 				intArray.push(i);
 				busy = 0;
 				if(imgQueue.length > 0){
-					addImage(imgQueue.shift());
+					addImage(imgQueue.pop());
 				}
 				return;
 			}
@@ -343,30 +255,29 @@ function storeImage(){
 	intArray.push(viewArray.length);
 	//This pushes the images into an array
 	viewArray.push(data);
-	locxArray.push(imgWidth);
-	locyArray.push(imgHeight);
+	locxArray.push(imgStorage.width);
+	locyArray.push(imgStorage.height);
 	imgArray.push(new Image());
 	imgReady.push(-1);
 
 	busy = 0;
 	if(imgQueue.length > 0){
-		addImage(imgQueue.shift());
+		addImage(imgQueue.pop());
 	}
 }
 
-// This function makes an image flip by its X-axis
-function addFlipX(){
-	Xflip = 1;
-}
-// This function makes an image flip by its Y-axis
-function addFlipY(){
-	Yflip = 1;
-}
-// This function rotates an image 90 degrees
-function addRotate90(){
-	rotate = 1;
-}
-
+//var color = document.getElementById("colorBox");
+//var iflipx = document.getElementById("flipX");
+//var iflipy = document.getElementById("flipY");
+//var irotate = document.getElementById("rotate90");
+//It is important these manipulations are done after the checks
+//due to the rotations.
+//if(iflipx.checked == 1)
+ // view = flipX(view, lx, ly);
+//if(iflipy.checked == 1)
+//  view = flipY(view, lx, ly);
+//if(irotate.checked == 1)
+//view = rotate90(view, lx, ly);
 		
 // Works with canvas Image to flip image horizontally
 function flipX(data, sx, sy){
@@ -392,23 +303,6 @@ function shiftY(data, sx, sy, py){
         temp[(i+((j+py)%sy)*sx)*4+2] = data[(i+j*sx)*4+2];
         temp[(i+((j+py)%sy)*sx)*4+3] = data[(i+j*sx)*4+3];
       }
-  }
-  return temp;
-}
-
-// Used to shift multiple pixels in a certain direction dependant on row.
-// rp = repeater
-function slitIntY(data, sx, sy, px, py, rp){
-  var temp = new Uint8ClampedArray(data);
-  for(var i = 0; i < sx; i++){
-    if(rp < 1 && i == px || rp > 0 && i >= px && (px-i)%rp == 0){
-      for(var j = 0; j < sy; j++){
-        temp[(i+((j+py)%sy)*sx)*4] = data[(i+j*sx)*4];
-        temp[(i+((j+py)%sy)*sx)*4+1] = data[(i+j*sx)*4+1];
-        temp[(i+((j+py)%sy)*sx)*4+2] = data[(i+j*sx)*4+2];
-        temp[(i+((j+py)%sy)*sx)*4+3] = data[(i+j*sx)*4+3];
-      }
-    }
   }
   return temp;
 }
@@ -457,23 +351,6 @@ function shiftX(data, sx, sy, px){
   return temp;
 }
 
-// Used to shift multiple pixels in a certain direction dependant on column.
-// rp = repeater
-function slitIntX(data, sx, sy, px, py, rp){
-  var temp = new Uint8ClampedArray(data);
-  for(var i = 0; i < sx; i++){
-      for(var j = 0; j < sy; j++){
-		if(rp < 1 && j == py || rp > 0 && j >= py && (py-j)%rp == 0){
-          temp[(((i+px)%sx)+j*sx)*4] = data[(i+j*sx)*4];
-          temp[(((i+px)%sx)+j*sx)*4+1] = data[(i+j*sx)*4+1];
-          temp[(((i+px)%sx)+j*sx)*4+2] = data[(i+j*sx)*4+2];
-          temp[(((i+px)%sx)+j*sx)*4+3] = data[(i+j*sx)*4+3];
-        }
-      }
-  }
-  return temp;
-}
-
 // Used to shift pixels in a certain direction dependant on column.
 function slitX(data, sx, sy, px, py){
   var temp = new Uint8ClampedArray(data);
@@ -490,6 +367,24 @@ function slitX(data, sx, sy, px, py){
   return temp;
 }
 
+// Used to rotate an image 90 degrees
+function rotate90(data, sx, sy){
+  var temp = new Uint8ClampedArray(data);
+  for(var i = 0; i < sy; i++){
+    for(var j = 0; j < sx; j++){
+      temp[(i+j*sy)*4] = data[(j+i*sx)*4];
+      temp[(i+j*sy)*4+1] = data[(j+i*sx)*4+1];
+      temp[(i+j*sy)*4+2] = data[(j+i*sx)*4+2];
+      temp[(i+j*sy)*4+3] = data[(j+i*sx)*4+3];
+    }
+  }
+
+  lx = sy;
+  ly = sx;
+
+  return temp;
+}
+
 //Canvas Image with a speed mechanic included
 function canvasImg(num){
 
@@ -498,16 +393,16 @@ function canvasImg(num){
 	if(num >= 0 && num < viewArray.length){
 		view = viewArray[num];
 
-		if(lx !== locxArray[num] || ly !== locyArray[num]){
+		if(lx != locxArray[num] || ly != locyArray[num]){
 			lx = locxArray[num];
 			ly = locyArray[num];
 			change = 1;
 		}
 	}else{
 		view = null;
-		if(lx !== 1 || ly !== 1){
-			lx = 1;
-			ly = 1;
+		if(lx != 100 || ly != 100){
+			lx = 100;
+			ly = 100;
 			change = 1;
 		}
 	}
@@ -574,13 +469,6 @@ function loadImage(num){
 		}
 	};
 	tempImg.src = canvasImg(num).toDataURL();
-}
-
-// This function handles the onError call of a dead image
-function imgError(deadImg){
-	deadImg.src = canvasImg(-1).toDataURL();
-	deadImg.onerror = "";
-	return true;
 }
 
 // Code by Simon Willison
