@@ -1,4 +1,5 @@
-// Since Final JSlix was not final. This will be the last attempt to make it work
+// Since Final JSlix was not final. This will be the last attempt to make it work.
+// Added in the code that allows this thing to work on Safari. 
 
 /*
  * JSlixRefined
@@ -17,6 +18,10 @@
  * Slit X and Slit Y will take an offset parameter so negative values can be put into
  * the position for every-other operations
  *
+ * Took out requestAnimationFrame because it does not work on Windows Safari 5.1 for
+ * some odd reason. The functionality was left in comments to allow for testing using
+ * that functionality. SetInterval works for all cases.
+ *
  * Stuff still to do for this
  * --------------------------
  * 
@@ -28,8 +33,8 @@
  * Cut Image Functionality - We need to make functionality that allows you to slice an image
  */
 
-// This is the timing variable of the second (setInterval)
-var sec = 16;
+// This is the timing variable of the second (setInterval) [currently 16 = 60FPS]
+var second = 16;
 
 // This is all timing variable stuff
 var interval = null;
@@ -49,7 +54,7 @@ var mousey = 0;
 var view;
 var lx = 0;
 var ly = 0;
-var blend = new Uint8ClampedArray(32);
+var blend = new Uint8Array(32);
 
 //These are arrays that store multiple images
 var viewArray = [];
@@ -58,6 +63,9 @@ var locyArray = [];
 var imgQueue = [];
 var imgArray = [];
 var imgReady = [];
+var imgMap = [];
+var mapX = [];
+var mapY = [];
 var busy = 0;
 
 // Drastically decrease copy times
@@ -73,27 +81,35 @@ var mxArray = [];
 var myArray = [];
 
 // Manipulation
+var colormap = 0;
 var Xflip = 0;
 var Yflip = 0;
 var rotate = 0;
+var imgColor = [];
 
 // Manipulation Array
+var mapArray = [];
 var flipXArray = [];
 var flipYArray = [];
 var rotateArray = [];
+var imgColorArray = [];
+
 
 // --------------------------------------
 // Functions start here
 // --------------------------------------
 
-// This runs the requestAnimationFrame form of the game
-function run(){
-  run(0);
-}
-
 // This runs the setInterval form of the game
 function run(sec) {
 
+  // Sets it to default if not set already (Comment out for requestAnimationFrame)
+  if(sec <= 0){
+	sec = second;
+  }//*/
+	
+  //Set up the color map once (this should do the trick)
+  addColorMap("UnitBaseColors.png");
+  
   if(sec > 0 && interval != null)
 		clearInterval(interval);
 
@@ -108,20 +124,24 @@ function run(sec) {
 	//imgStorage.setAttribute("width", w);
 	//imgStorage.setAttribute("height", h);
 	imgStorage.setAttribute("onmousemove", "getDimensions(event)");
-  imgStorage.setAttribute("onclick", "createImage(event)");
+	imgStorage.setAttribute("onclick", "createImage(event)");
 	imgStorage.innerHTML = "Your browser does not support the HTML5 canvas tag.";
 
-  if (sec > 0)
-    interval = setInterval(runGame, sec);
-  else
-    requestAnimationFrame(runFrame);
+    // Comment this out if you want to run with requestAnimationFrame
+	interval = setInterval(runGame, sec);
+	
+	/*// Un-comment this if you want to run with requestAnimationFrame
+	if (sec > 0)
+		interval = setInterval(runGame, sec);
+	else
+		requestAnimationFrame(runFrame);//*/
 }
 
-// Supplementary runner for running a requestAnimationFrame
+/*// Supplementary runner for running a requestAnimationFrame
 function runFrame() {
   runGame();
   requestAnimationFrame(runFrame);
-}
+}//*/
 
 // Gets the location of the mouse
 function getDimensions(event){
@@ -153,6 +173,7 @@ function createImage(event){
 	var iflipx = document.getElementById("flipX");
 	var iflipy = document.getElementById("flipY");
 	//var irotate = document.getElementById("rotate90");
+	var icolor = document.getElementById("colorBox");
 	
 	if(iflipx.checked == 1)
 		addFlipX();
@@ -160,6 +181,8 @@ function createImage(event){
 		addFlipY();
 	/*//if(irotate.checked == 1)
 		addRotate90();//*/
+	if(icolor.value >= 0)
+		addColorChange(0, icolor.value);
 		
 	addImage(text.value);
 }
@@ -209,7 +232,7 @@ function render(ctx){
 		ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
 	}//*/
 
-  /*// For ratation testing only
+  /*// For rotation testing only
   for(var i = 0; i < intArray.length; i++){
     ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
   }//*/
@@ -219,24 +242,33 @@ function render(ctx){
 // This starts ImageLibrary
 // -----------------------------------------
 
+function addColorMap(text){
+	colormap = 1;
+	addImage(text);
+}
+
 // This function adds an image from text.
 function addImage(text){
 
-	// This checks to see if a file exists on the server first
-	//if(isNaN(text)){
-	//	if(!fileExists(text)){
-	//		console.log("Image not found: "+text);
-	//		return;
-	//	}
-	//}
+	/*// This checks to see if a file exists on the server first
+	if(isNaN(text)){
+		if(!fileExists(text)){
+			console.log("Image not found: "+text);
+			return;
+		}
+	}//*/
 	
 	//Add manipulations
+	mapArray.push(colormap);
+	colormap = 0;
 	flipXArray.push(Xflip);
 	Xflip = 0;
 	flipYArray.push(Yflip);
 	Yflip = 0;
 	rotateArray.push(rotate);
 	rotate = 0;
+	imgColorArray.push(imgColor);
+	imgColor = [];
 	
 	//This will combine both queue and addImage.
 	if(busy == 1){
@@ -259,24 +291,20 @@ function addImage(text){
 	imgStorage.setAttribute("onload", "storeImage()");
 	imgStorage.setAttribute("onerror", "imgError(this)");
 	imgStorage.setAttribute("style", "display:none");
-
-	//Makes a new storage spot for an image
-	//imgArray.push(new Image());
-	//imgReady.push(-1);
 }
 
-// This is pretty overkill to test if a file exists on the server
-//function fileExists(url)
-//{
-//    var http = new XMLHttpRequest();
-//    http.open('HEAD', url, false);
- //   http.send();
- //   return http.status == 200;
-//}
+/*// This is pretty overkill to test if a file exists on the server
+function fileExists(url){
+    var http = new XMLHttpRequest();
+    http.open('HEAD', url, false);
+    http.send();
+   return http.status == 200;
+}//*/
 
 // This function is literally a callback function to actually store the image
 function storeImage(){
 
+	var i, j;
 	var imgStorage = document.getElementById("image");
 	if(imgStorage == null){
 		imgStorage = document.createElement("img");
@@ -310,19 +338,40 @@ function storeImage(){
 		ctx.rotate(90*Math.PI/180);
 		ctx.drawImage(imgStorage, imgStorage.height, -imgStorage.height);
 	}
+	
 	var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-		
-	var data = new Uint8ClampedArray(imgData.data);
+	
+	var data = new Uint8Array(imgData.data);
 	var imgWidth = canvas.width;
 	var imgHeight = canvas.height;
+	var tmpColor = imgColorArray.shift();
 	
 	//Do a bunch of manipulation checks before drawing out the image
 	if(flipXArray.shift() == 1)
 		data = flipX(data, imgWidth, imgHeight);
 	if(flipYArray.shift() == 1)
 		data = flipY(data, imgWidth, imgHeight);
+	if(tmpColor.length != 0){
+		for(i = 0; i < tmpColor.length; i++){
+			data = changeMapColor(data, tmpColor[i][0], tmpColor[i][1]);
+		}
+	}
+	
+	// This allows Safari to reenact onload functionality
+	if(imgStorage){
+		imgStorage.parentNode.removeChild(imgStorage);
+	}
 
-	for(var i = 0, j; i < viewArray.length; i++){
+	// Used to store things on the colormap (Have to do it after manipulations)
+	if(mapArray.shift() == 1){
+		imgMap.push(data);
+		mapX.push(imgWidth);
+		mapY.push(imgHeight);
+		queueNext();
+		return;
+	}
+	
+	for(i = 0; i < viewArray.length; i++){
 		if(data.length === viewArray[i].length){
 			for(j = 0; j < viewArray[i].length; j++){
 				if(data[j] != viewArray[i][j]){
@@ -331,10 +380,7 @@ function storeImage(){
 			}
 			if(j == viewArray[i].length){
 				intArray.push(i);
-				busy = 0;
-				if(imgQueue.length > 0){
-					addImage(imgQueue.shift());
-				}
+				queueNext();
 				return;
 			}
 		}
@@ -348,6 +394,11 @@ function storeImage(){
 	imgArray.push(new Image());
 	imgReady.push(-1);
 
+	queueNext();
+}
+
+// A wrapper function for drawing the next image since the calls are getting numerous
+function queueNext(){
 	busy = 0;
 	if(imgQueue.length > 0){
 		addImage(imgQueue.shift());
@@ -367,12 +418,19 @@ function addRotate90(){
 	rotate = 1;
 }
 
+// This function adds a color change to the image
+function addColorChange(mapIndex, colorIndex){
+	var temp = [mapIndex, colorIndex];
+	imgColor.push(temp);
+}
+
 		
 // Works with canvas Image to flip image horizontally
 function flipX(data, sx, sy){
-  var temp = new Uint8ClampedArray(data);
-  for(var i = 0; i < sx; i++){
-    for(var j = 0; j < sy; j++){
+  var i, j;
+  var temp = new Uint8Array(data);
+  for(i = 0; i < sx; i++){
+    for(j = 0; j < sy; j++){
       temp[((sx-i-1)+(j*sx))*4] = data[(i+j*sx)*4];
       temp[((sx-i-1)+(j*sx))*4+1] = data[(i+j*sx)*4+1];
       temp[((sx-i-1)+(j*sx))*4+2] = data[(i+j*sx)*4+2];
@@ -384,9 +442,10 @@ function flipX(data, sx, sy){
 
 // This is used to shift all pixels in a certain direction
 function shiftY(data, sx, sy, py){
-  var temp = new Uint8ClampedArray(data);
-  for(var i = 0; i < sx; i++){
-      for(var j = 0; j < sy; j++){
+  var i, j;
+  var temp = new Uint8Array(data);
+  for(i = 0; i < sx; i++){
+      for(j = 0; j < sy; j++){
         temp[(i+((j+py)%sy)*sx)*4] = data[(i+j*sx)*4];
         temp[(i+((j+py)%sy)*sx)*4+1] = data[(i+j*sx)*4+1];
         temp[(i+((j+py)%sy)*sx)*4+2] = data[(i+j*sx)*4+2];
@@ -399,10 +458,11 @@ function shiftY(data, sx, sy, py){
 // Used to shift multiple pixels in a certain direction dependant on row.
 // rp = repeater
 function slitIntY(data, sx, sy, px, py, rp){
-  var temp = new Uint8ClampedArray(data);
-  for(var i = 0; i < sx; i++){
+  var i, j;
+  var temp = new Uint8Array(data);
+  for(i = 0; i < sx; i++){
     if(rp < 1 && i == px || rp > 0 && i >= px && (px-i)%rp == 0){
-      for(var j = 0; j < sy; j++){
+      for(j = 0; j < sy; j++){
         temp[(i+((j+py)%sy)*sx)*4] = data[(i+j*sx)*4];
         temp[(i+((j+py)%sy)*sx)*4+1] = data[(i+j*sx)*4+1];
         temp[(i+((j+py)%sy)*sx)*4+2] = data[(i+j*sx)*4+2];
@@ -415,10 +475,11 @@ function slitIntY(data, sx, sy, px, py, rp){
 
 // Used to shift pixels in a certain direction dependant on row.
 function slitY(data, sx, sy, px, py){
-  var temp = new Uint8ClampedArray(data);
-  for(var i = 0; i < sx; i++){
+  var i, j;
+  var temp = new Uint8Array(data);
+  for(i = 0; i < sx; i++){
     if(i == px){
-      for(var j = 0; j < sy; j++){
+      for(j = 0; j < sy; j++){
         temp[(i+((j+py)%sy)*sx)*4] = data[(i+j*sx)*4];
         temp[(i+((j+py)%sy)*sx)*4+1] = data[(i+j*sx)*4+1];
         temp[(i+((j+py)%sy)*sx)*4+2] = data[(i+j*sx)*4+2];
@@ -431,9 +492,10 @@ function slitY(data, sx, sy, px, py){
 
 // Works with canvas Image to flip image vertically
 function flipY(data, sx, sy){
-  var temp = new Uint8ClampedArray(data);
-  for(var i = 0; i < sx; i++){
-    for(var j = 0; j < sy; j++){
+  var i, j;
+  var temp = new Uint8Array(data);
+  for(i = 0; i < sx; i++){
+    for(j = 0; j < sy; j++){
       temp[(i+((sy-j-1)*sx))*4] = data[(i+j*sx)*4];
       temp[(i+((sy-j-1)*sx))*4+1] = data[(i+j*sx)*4+1];
       temp[(i+((sy-j-1)*sx))*4+2] = data[(i+j*sx)*4+2];
@@ -445,9 +507,10 @@ function flipY(data, sx, sy){
 
 // This is used to shift all pixels in a certain direction
 function shiftX(data, sx, sy, px){
-  var temp = new Uint8ClampedArray(data);
-  for(var i = 0; i < sx; i++){
-      for(var j = 0; j < sy; j++){
+  var i, j;
+  var temp = new Uint8Array(data);
+  for(i = 0; i < sx; i++){
+      for(j = 0; j < sy; j++){
         temp[(((i+px)%sx)+j*sx)*4] = data[(i+j*sx)*4];
         temp[(((i+px)%sx)+j*sx)*4+1] = data[(i+j*sx)*4+1];
         temp[(((i+px)%sx)+j*sx)*4+2] = data[(i+j*sx)*4+2];
@@ -460,9 +523,10 @@ function shiftX(data, sx, sy, px){
 // Used to shift multiple pixels in a certain direction dependant on column.
 // rp = repeater
 function slitIntX(data, sx, sy, px, py, rp){
-  var temp = new Uint8ClampedArray(data);
-  for(var i = 0; i < sx; i++){
-      for(var j = 0; j < sy; j++){
+  var i, j;
+  var temp = new Uint8Array(data);
+  for(i = 0; i < sx; i++){
+      for(j = 0; j < sy; j++){
 		if(rp < 1 && j == py || rp > 0 && j >= py && (py-j)%rp == 0){
           temp[(((i+px)%sx)+j*sx)*4] = data[(i+j*sx)*4];
           temp[(((i+px)%sx)+j*sx)*4+1] = data[(i+j*sx)*4+1];
@@ -476,9 +540,10 @@ function slitIntX(data, sx, sy, px, py, rp){
 
 // Used to shift pixels in a certain direction dependant on column.
 function slitX(data, sx, sy, px, py){
-  var temp = new Uint8ClampedArray(data);
-  for(var i = 0; i < sx; i++){
-      for(var j = 0; j < sy; j++){
+  var i, j;
+  var temp = new Uint8Array(data);
+  for(i = 0; i < sx; i++){
+      for(j = 0; j < sy; j++){
         if(py == j){
           temp[(((i+px)%sx)+j*sx)*4] = data[(i+j*sx)*4];
           temp[(((i+px)%sx)+j*sx)*4+1] = data[(i+j*sx)*4+1];
@@ -488,6 +553,29 @@ function slitX(data, sx, sy, px, py){
       }
   }
   return temp;
+}
+
+// This function is for changing colors for a data map 
+function changeMapColor(data, mapIndex, columnIndex){
+	var i, j;
+	var temp = new Uint8Array(data);
+	if(mapIndex >= 0 && mapIndex < imgMap.length){
+		var colorData = new Uint8Array(imgMap[mapIndex]);
+		if(columnIndex >= 0 && columnIndex < mapY[mapIndex]){
+			for (i = 0; i < temp.length; i+=4){
+				for(j = 0; j < mapX[mapIndex]*4; j+=4){
+					if((colorData[j] == temp[i] || colorData[j]-1 == temp[i]) &&
+					   (colorData[j+1] == temp[i+1] || colorData[j+1]+1 == temp[i+1]) &&
+					   (colorData[j+2] == temp[i+2] || colorData[j+2]+1 == temp[i+2])){
+						temp[i] = colorData[4*mapX[mapIndex]*columnIndex+j];
+						temp[i+1] = colorData[4*mapX[mapIndex]*columnIndex+j+1];
+						temp[i+2] = colorData[4*mapX[mapIndex]*columnIndex+j+2];
+					}
+				}
+			}
+		}
+	}
+	return temp;
 }
 
 //Canvas Image with a speed mechanic included
@@ -505,9 +593,9 @@ function canvasImg(num){
 		}
 	}else{
 		view = null;
-		if(lx !== 1 || ly !== 1){
-			lx = 1;
-			ly = 1;
+		if(lx !== 10 || ly !== 10){
+			lx = 10;
+			ly = 10;
 			change = 1;
 		}
 	}
@@ -619,5 +707,5 @@ function autoCreate() {
   });
   createImage({});
 
-  enabledAutoCreate && setTimeout(autoCreate, 10);
+  enabledAutoCreate && setTimeout(autoCreate, 25);
 }
