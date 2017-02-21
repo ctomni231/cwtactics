@@ -1,28 +1,40 @@
-Well, it is a start. But to run this, you'll need to point the server at this folder.
+Changing this to now hold a running list of functionality for JSlix Refined
 
-Then, you'll want to run imgLibrary.html from localhost.
+----------------------
+Included So Far
+----------------------
 
-Image List:
+Works on all major popular browsers
+- Internet Explorer 11
+- Mozilla Firefox
+- Google Chrome
+- Opera
+- Apple Safari 5.1
+- Edge (Not tested, but sure it works)
 
-YellowComet.jpg
-AWDS_INFT.png
-CWT_BASE.png
-CWT_MECH.png
-CWTitle1.png
-CWTitle2.png
-day.png
-lightning bolt.png
-MinuteWars.png
-night.png
-UnitBaseColors.png
+Works on all major mobile and PC gaming architectures
+- Windows PC
+- Linux PC (not tested, but sure it works)
+- Mac PC (not tested, but sure it works)
+- Android (Nexus 7)
+- Apple (iPhone 6)
+- Apple (iPad Mini) (not tested, but sure it works)
 
-After that, you'll see buttons:
+Includes the following graphic features
+- Dynamic image organizing (can load, organize, and display run time DOM images)
+-- Can load image from server by filename ["CWT_MECH.png"]
+-- Can load images stored within by using an index ["0"] = 1st image stored
+-- Can load a blank color box canvas into the pipeline [New]
+- Dynamic image loading (low memory footprint - only load when getImg() is called)
+- Dynamic pixel editing (allows extra functionality)
+-- Image mirror (mirror an image along the x and/or y axis)
+-- Image recolor (recolor the pixels within an image dynamically)
+-- Image blending (lighten or darken pixels based on color chosen) [New]
+-- Image rotate (rotate an image by 90 degrees dynamically)
+-- Image (Blend) Opacity (Set & blend an opacity for an image) [New]
+-- Image Shift (move all row or column pixels within an image)
 
-The text box - Where you put in an image name (you can put your own if relative location)
-Store - Stores an image into memory
-Display - Displays the last image stored in memory
-Cascade - Cascades all the images stored in memory (also shows frames per second)
-Display # - Keeps a record of all images stored in memory, can be use to display an older image
-
-This is a living test, and will keep expanding. So far, works in all browsers though IE continues to ran really slowly at around half the rate of the other browsers.
-
+Has the following planned graphic features
+- Dynamic pixel editing
+-- Image Cut (Cut an image down to size)
+-- Drop Pixels (Blend stored pixels into an image)

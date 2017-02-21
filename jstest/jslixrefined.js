@@ -25,12 +25,8 @@
  * Stuff still to do for this
  * --------------------------
  * 
- * Color Functionality - We need to make an array of colors (might need to hijack addImage)
- * Shift Functionality - We need to make functionality for Shift X and Y-axis
- * Slit Functionality - We need to make functionality for Slit X and Y-axis
- * Slit Interval Functionality - We need to make functionality for Slit Interval X & Y-axis
- * Blend Functionality - We need to make functionality for the Blending of colors
  * Cut Image Functionality - We need to make functionality that allows you to slice an image
+ * Drop Pixels Functionality - This will allow you to blend drop edits directly onto an image using stored pixels
  */
 
 // This is the timing variable of the second (setInterval) [currently 16 = 60FPS]
@@ -54,7 +50,6 @@ var mousey = 0;
 var view;
 var lx = 0;
 var ly = 0;
-var blend = new Uint8Array(32);
 
 //These are arrays that store multiple images
 var viewArray = [];
@@ -86,6 +81,8 @@ var Xflip = 0;
 var Yflip = 0;
 var rotate = 0;
 var imgColor = [];
+var blend = [];
+var shift = [];
 
 // Manipulation Array
 var mapArray = [];
@@ -93,7 +90,8 @@ var flipXArray = [];
 var flipYArray = [];
 var rotateArray = [];
 var imgColorArray = [];
-
+var blendArray = [];
+var shiftArray = [];
 
 // --------------------------------------
 // Functions start here
@@ -174,6 +172,8 @@ function createImage(event){
 	var iflipy = document.getElementById("flipY");
 	//var irotate = document.getElementById("rotate90");
 	var icolor = document.getElementById("colorBox");
+	var idarken = document.getElementById("darken");
+	var itrans = document.getElementById("transparent");
 	
 	if(iflipx.checked == 1)
 		addFlipX();
@@ -183,6 +183,16 @@ function createImage(event){
 		addRotate90();//*/
 	if(icolor.value >= 0)
 		addColorChange(0, icolor.value);
+	if(itrans.checked == 1)
+		addBlendChange(0, 0, 0, 0, 150);
+	if(idarken.checked == 1)
+		addBlendChange(0, 0, 0, 0, 50);
+	
+	//manual adds here
+	
+	/*// Uncomment to see an example of the pixel shifts
+	addPixelXShift(2, 0, 4);
+	addPixelYShift(16, 16, 32);//*/
 		
 	addImage(text.value);
 }
@@ -242,9 +252,42 @@ function render(ctx){
 // This starts ImageLibrary
 // -----------------------------------------
 
+// Adds a Color map (an array of recolors using UnitBaseColors.png example) for recoloring 
 function addColorMap(text){
 	colormap = 1;
 	addImage(text);
+}
+
+// Adds a flat colored box to the list of images
+// Not all too useful yet, until extra functionality is added in
+function addColorBox(red, green, blue, alpha, sizex, sizey){
+	
+	//Simple error checking for the colors
+	var boxColors = new Uint8Array([red, green, blue, alpha]);
+	sizex = (sizex < 1) ? 1 : sizex;
+	sizey = (sizey < 1) ? 1 : sizey;
+		
+	var imgcanvas = document.getElementById("store");
+	if(imgcanvas == null){
+		imgcanvas = document.createElement("canvas");
+		document.body.appendChild(imgcanvas);
+	}
+	imgcanvas.setAttribute("id", "store");
+	imgcanvas.setAttribute("width", sizex);
+	imgcanvas.setAttribute("height", sizey);
+	imgcanvas.setAttribute("style", "display:none");
+	var ctx = imgcanvas.getContext("2d");
+	var imgData = ctx.createImageData(sizex, sizey);	
+	for (var i = 0; i < imgData.data.length; i += 4){
+		imgData.data[i+0] = boxColors[0];
+		imgData.data[i+1] = boxColors[1];
+		imgData.data[i+2] = boxColors[2];
+		imgData.data[i+3] = boxColors[3];
+	}
+	
+	ctx.putImageData(imgData,0,0);
+
+	addImage(imgcanvas.toDataURL());
 }
 
 // This function adds an image from text.
@@ -269,6 +312,10 @@ function addImage(text){
 	rotate = 0;
 	imgColorArray.push(imgColor);
 	imgColor = [];
+	blendArray.push(blend);
+	blend = [];
+	shiftArray.push(shift);
+	shift = [];
 	
 	//This will combine both queue and addImage.
 	if(busy == 1){
@@ -345,15 +392,30 @@ function storeImage(){
 	var imgWidth = canvas.width;
 	var imgHeight = canvas.height;
 	var tmpColor = imgColorArray.shift();
+	var tmpBlend = blendArray.shift();
+	var tmpShift = shiftArray.shift();
 	
 	//Do a bunch of manipulation checks before drawing out the image
 	if(flipXArray.shift() == 1)
 		data = flipX(data, imgWidth, imgHeight);
 	if(flipYArray.shift() == 1)
 		data = flipY(data, imgWidth, imgHeight);
+	if(tmpShift.length != 0){
+		for(i = 0; i < tmpShift.length; i++){
+			if(tmpShift[i][0] == 0)
+				data = slitIntX(data, imgWidth, imgHeight, tmpShift[i][1], tmpShift[i][2], tmpShift[i][3]);
+			else
+				data = slitIntY(data, imgWidth, imgHeight, tmpShift[i][1], tmpShift[i][2], tmpShift[i][3]);
+		}
+	}
 	if(tmpColor.length != 0){
 		for(i = 0; i < tmpColor.length; i++){
 			data = changeMapColor(data, tmpColor[i][0], tmpColor[i][1]);
+		}
+	}
+	if(tmpBlend.length != 0){
+		for(i = 0; i < tmpBlend.length; i++){
+			data = changeBlendColor(data, tmpBlend[i][0], tmpBlend[i][1]);
 		}
 	}
 	
@@ -417,13 +479,41 @@ function addFlipY(){
 function addRotate90(){
 	rotate = 1;
 }
-
 // This function adds a color change to the image
 function addColorChange(mapIndex, colorIndex){
 	var temp = [mapIndex, colorIndex];
 	imgColor.push(temp);
 }
+// This function adds a color blend to the image
+// rgba int[0-255] = the color to blend to
+// opacity int[0-100] = How much effect the blend has regular colors (rgb only)
+//         int[100-200] = How much effect the blend has just alpha (a only)
+//         int[200-300] = How much effect the blend has all colors (rgba)
+function addBlendChange(red, green, blue, alpha, opacity){
+	var blendColors = new Uint8Array([red, green, blue, alpha]);
+	var temp = [blendColors, opacity];
+	blend.push(temp);
+}
 
+// This gets the pixels to shift along the x-axis
+// posx - How many pixels it shifts by
+// posy - The position of the first shift
+// repeat - positive numbers will repeat a shift every # row (where # is repeat)
+//          zero and negative numbers will create a shift once at that location
+function addPixelXShift(posx, posy, repeat){
+	var temp = [0, posx, posy, repeat];
+	shift.push(temp);
+}
+
+// This gets the pixels to shift along the x-axis
+// posx - How many pixels it shifts by
+// posy - The position of the first shift
+// repeat - positive numbers will repeat a shift every # row (where # is repeat)
+//          zero and negative numbers will create a shift once at that location
+function addPixelYShift(posx, posy, repeat){
+	var temp = [1, posx, posy, repeat];
+	shift.push(temp);
+}
 		
 // Works with canvas Image to flip image horizontally
 function flipX(data, sx, sy){
@@ -440,21 +530,6 @@ function flipX(data, sx, sy){
   return temp;
 }
 
-// This is used to shift all pixels in a certain direction
-function shiftY(data, sx, sy, py){
-  var i, j;
-  var temp = new Uint8Array(data);
-  for(i = 0; i < sx; i++){
-      for(j = 0; j < sy; j++){
-        temp[(i+((j+py)%sy)*sx)*4] = data[(i+j*sx)*4];
-        temp[(i+((j+py)%sy)*sx)*4+1] = data[(i+j*sx)*4+1];
-        temp[(i+((j+py)%sy)*sx)*4+2] = data[(i+j*sx)*4+2];
-        temp[(i+((j+py)%sy)*sx)*4+3] = data[(i+j*sx)*4+3];
-      }
-  }
-  return temp;
-}
-
 // Used to shift multiple pixels in a certain direction dependant on row.
 // rp = repeater
 function slitIntY(data, sx, sy, px, py, rp){
@@ -462,23 +537,6 @@ function slitIntY(data, sx, sy, px, py, rp){
   var temp = new Uint8Array(data);
   for(i = 0; i < sx; i++){
     if(rp < 1 && i == px || rp > 0 && i >= px && (px-i)%rp == 0){
-      for(j = 0; j < sy; j++){
-        temp[(i+((j+py)%sy)*sx)*4] = data[(i+j*sx)*4];
-        temp[(i+((j+py)%sy)*sx)*4+1] = data[(i+j*sx)*4+1];
-        temp[(i+((j+py)%sy)*sx)*4+2] = data[(i+j*sx)*4+2];
-        temp[(i+((j+py)%sy)*sx)*4+3] = data[(i+j*sx)*4+3];
-      }
-    }
-  }
-  return temp;
-}
-
-// Used to shift pixels in a certain direction dependant on row.
-function slitY(data, sx, sy, px, py){
-  var i, j;
-  var temp = new Uint8Array(data);
-  for(i = 0; i < sx; i++){
-    if(i == px){
       for(j = 0; j < sy; j++){
         temp[(i+((j+py)%sy)*sx)*4] = data[(i+j*sx)*4];
         temp[(i+((j+py)%sy)*sx)*4+1] = data[(i+j*sx)*4+1];
@@ -505,21 +563,6 @@ function flipY(data, sx, sy){
   return temp;
 }
 
-// This is used to shift all pixels in a certain direction
-function shiftX(data, sx, sy, px){
-  var i, j;
-  var temp = new Uint8Array(data);
-  for(i = 0; i < sx; i++){
-      for(j = 0; j < sy; j++){
-        temp[(((i+px)%sx)+j*sx)*4] = data[(i+j*sx)*4];
-        temp[(((i+px)%sx)+j*sx)*4+1] = data[(i+j*sx)*4+1];
-        temp[(((i+px)%sx)+j*sx)*4+2] = data[(i+j*sx)*4+2];
-        temp[(((i+px)%sx)+j*sx)*4+3] = data[(i+j*sx)*4+3];
-      }
-  }
-  return temp;
-}
-
 // Used to shift multiple pixels in a certain direction dependant on column.
 // rp = repeater
 function slitIntX(data, sx, sy, px, py, rp){
@@ -528,23 +571,6 @@ function slitIntX(data, sx, sy, px, py, rp){
   for(i = 0; i < sx; i++){
       for(j = 0; j < sy; j++){
 		if(rp < 1 && j == py || rp > 0 && j >= py && (py-j)%rp == 0){
-          temp[(((i+px)%sx)+j*sx)*4] = data[(i+j*sx)*4];
-          temp[(((i+px)%sx)+j*sx)*4+1] = data[(i+j*sx)*4+1];
-          temp[(((i+px)%sx)+j*sx)*4+2] = data[(i+j*sx)*4+2];
-          temp[(((i+px)%sx)+j*sx)*4+3] = data[(i+j*sx)*4+3];
-        }
-      }
-  }
-  return temp;
-}
-
-// Used to shift pixels in a certain direction dependant on column.
-function slitX(data, sx, sy, px, py){
-  var i, j;
-  var temp = new Uint8Array(data);
-  for(i = 0; i < sx; i++){
-      for(j = 0; j < sy; j++){
-        if(py == j){
           temp[(((i+px)%sx)+j*sx)*4] = data[(i+j*sx)*4];
           temp[(((i+px)%sx)+j*sx)*4+1] = data[(i+j*sx)*4+1];
           temp[(((i+px)%sx)+j*sx)*4+2] = data[(i+j*sx)*4+2];
@@ -578,10 +604,33 @@ function changeMapColor(data, mapIndex, columnIndex){
 	return temp;
 }
 
+// This function is for blending colors within a color map
+function changeBlendColor(data, color, opacity){	
+	var i;
+	var temp = new Uint8Array(data);
+	if(opacity >= 0 || opacity < 300){
+		for (i = 0; i < temp.length; i+=4){
+			if(opacity > 200){
+				temp[i] += (color[0] - temp[i])*((opacity-200) / 100);
+				temp[i+1] += (color[1] - temp[i+1])*((opacity-200) / 100);
+				temp[i+2] += (color[2] - temp[i+2])*((opacity-200) / 100);
+				temp[i+3] += (color[3] - temp[i+3])*((opacity-200)/ 100);
+			}else if(opacity > 100){
+				temp[i+3] += (color[3] - temp[i+3])*((opacity-100)/ 100);
+			}else{
+				temp[i] += (color[0] - temp[i])*(opacity / 100);
+				temp[i+1] += (color[1] - temp[i+1])*(opacity / 100);
+				temp[i+2] += (color[2] - temp[i+2])*(opacity / 100);
+			}
+		}
+	}
+	return temp;
+}
+
 //Canvas Image with a speed mechanic included
 function canvasImg(num){
 
-	var change = 0;
+	var i, change = 0;
 
 	if(num >= 0 && num < viewArray.length){
 		view = viewArray[num];
@@ -618,14 +667,14 @@ function canvasImg(num){
 	}
 
 	if(view == null){
-		for (var i = 0; i < imgsData.data.length; i += 4){
+		for (i = 0; i < imgsData.data.length; i += 4){
 			imgsData.data[i+0]=255;//255
 			imgsData.data[i+1]=0;//255
 			imgsData.data[i+2]=0;//255
 			imgsData.data[i+3]=100;//0
 		}
 	}else{
-		for (var i = 0; i < imgsData.data.length; i+=8){
+		for (i = 0; i < imgsData.data.length; i+=8){
 			imgsData.data[i]=view[i];
 			imgsData.data[i+1]=view[i+1];
 			imgsData.data[i+2]=view[i+2];
