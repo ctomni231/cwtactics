@@ -24,17 +24,19 @@ Includes the following graphic features
 - Dynamic image organizing (can load, organize, and display run time DOM images)
 -- Can load image from server by filename ["CWT_MECH.png"]
 -- Can load images stored within by using an index ["0"] = 1st image stored
--- Can load a blank color box canvas into the pipeline [New]
+-- Can load a blank color box canvas into the pipeline [Current]
 - Dynamic image loading (low memory footprint - only load when getImg() is called)
 - Dynamic pixel editing (allows extra functionality)
 -- Image mirror (mirror an image along the x and/or y axis)
 -- Image recolor (recolor the pixels within an image dynamically)
--- Image blending (lighten or darken pixels based on color chosen) [New]
--- Image rotate (rotate an image by 90 degrees dynamically)
--- Image (Blend) Opacity (Set & blend an opacity for an image) [New]
--- Image Shift (move all row or column pixels within an image)
+-- Image blending (lighten or darken pixels based on color chosen) [Current]
+-- Image rotate (rotate an image by 90 degrees dynamically) [In Code]
+-- Image Invert (Invert the pixels within an image) [New]
+-- Image (Blend) Opacity (Set & blend an opacity for an image) [Current]
+-- Image Shift (move all row or column pixels within an image) [In Code]
+-- Drop Pixels (Blend stored pixels into an image) [New][In Code]
+-- Image Cut (Cut an image down to size) [New][In Code][Partial - Needs Error Checking]
 
 Has the following planned graphic features
-- Dynamic pixel editing
--- Image Cut (Cut an image down to size)
--- Drop Pixels (Blend stored pixels into an image)
+- DOM Draw - Draw an image directly into the DOM for quick referencing
+

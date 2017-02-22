@@ -22,11 +22,23 @@
  * some odd reason. The functionality was left in comments to allow for testing using
  * that functionality. SetInterval works for all cases.
  *
+ * After some research
+ * --------------------
+ *
+ * canvas.scale() - Will be good for zooming. In order to handle layers, I'll split the
+ * rendering into three separate layers:
+ * - Background layer [static] - Holds the backgrounds for the game
+ * - Map layer [Scaled] - Holds the map, anything in this layer is scaled up
+ * - Foreground layer [Static] - Holds the foreground for the game
+ * Note that the names of the layers don't matter much, if something needs to be scaled
+ * then just draw it in the map layer. Layers will be further separated by slides, but
+ * that manipulation is easier to show than explain (no I won't do it here).
+ *
  * Stuff still to do for this
  * --------------------------
  * 
- * Cut Image Functionality - We need to make functionality that allows you to slice an image
- * Drop Pixels Functionality - This will allow you to blend drop edits directly onto an image using stored pixels
+ * Draw DOM Images - This draws images directly to the DOM
+ * Cut functionality is partially complete, needs error checking for position
  */
 
 // This is the timing variable of the second (setInterval) [currently 16 = 60FPS]
@@ -80,9 +92,12 @@ var colormap = 0;
 var Xflip = 0;
 var Yflip = 0;
 var rotate = 0;
+var invert = 0;
 var imgColor = [];
 var blend = [];
 var shift = [];
+var drop = [];
+var cut = [];
 
 // Manipulation Array
 var mapArray = [];
@@ -92,6 +107,9 @@ var rotateArray = [];
 var imgColorArray = [];
 var blendArray = [];
 var shiftArray = [];
+var dropArray = [];
+var invertArray = [];
+var cutArray = [];
 
 // --------------------------------------
 // Functions start here
@@ -107,6 +125,8 @@ function run(sec) {
 	
   //Set up the color map once (this should do the trick)
   addColorMap("UnitBaseColors.png");
+  /*//Uncomment to test out adding a Colored Box
+  addColorBox(0,255,255,100, 64, 256);//*/
   
   if(sec > 0 && interval != null)
 		clearInterval(interval);
@@ -174,6 +194,7 @@ function createImage(event){
 	var icolor = document.getElementById("colorBox");
 	var idarken = document.getElementById("darken");
 	var itrans = document.getElementById("transparent");
+	var iinvert = document.getElementById("invert");
 	
 	if(iflipx.checked == 1)
 		addFlipX();
@@ -187,12 +208,21 @@ function createImage(event){
 		addBlendChange(0, 0, 0, 0, 150);
 	if(idarken.checked == 1)
 		addBlendChange(0, 0, 0, 0, 50);
+	if(iinvert.checked == 1)
+		addInvert();
 	
 	//manual adds here
 	
 	/*// Uncomment to see an example of the pixel shifts
 	addPixelXShift(2, 0, 4);
 	addPixelYShift(16, 16, 32);//*/
+	
+	/*// Uncomment to see unit pairs after the third image
+	if(intArray.length > 2)
+		addPixelDrop(0, 5, 5, 100);//*/
+		
+	/*//Uncomment if you want to see an image cut
+	addCut(16,16,256,200);//*/
 		
 	addImage(text.value);
 }
@@ -310,12 +340,18 @@ function addImage(text){
 	Yflip = 0;
 	rotateArray.push(rotate);
 	rotate = 0;
+	invertArray.push(invert);
+	invert = 0;
 	imgColorArray.push(imgColor);
 	imgColor = [];
 	blendArray.push(blend);
 	blend = [];
 	shiftArray.push(shift);
 	shift = [];
+	dropArray.push(drop);
+	drop = [];
+	cutArray.push(cut);
+	cut = [];
 	
 	//This will combine both queue and addImage.
 	if(busy == 1){
@@ -387,27 +423,28 @@ function storeImage(){
 	}
 	
 	var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-	
-	var data = new Uint8Array(imgData.data);
 	var imgWidth = canvas.width;
 	var imgHeight = canvas.height;
+	
+	//Deals with Cut Images
+	var tmpCut = cutArray.shift();
+	if(tmpCut.length != 0){
+		imgData = ctx.getImageData(tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3]);
+		imgWidth = (tmpCut[0] + tmpCut[2] > imgWidth) ? imgWidth - tmpCut[0] : tmpCut[2];
+		imgHeight = (tmpCut[1] + tmpCut[3] > imgHeight) ? imgHeight - tmpCut[1] : tmpCut[3];
+	}
+	
+	var data = new Uint8Array(imgData.data);
 	var tmpColor = imgColorArray.shift();
 	var tmpBlend = blendArray.shift();
 	var tmpShift = shiftArray.shift();
+	var tmpDrop = dropArray.shift();
 	
 	//Do a bunch of manipulation checks before drawing out the image
 	if(flipXArray.shift() == 1)
 		data = flipX(data, imgWidth, imgHeight);
 	if(flipYArray.shift() == 1)
 		data = flipY(data, imgWidth, imgHeight);
-	if(tmpShift.length != 0){
-		for(i = 0; i < tmpShift.length; i++){
-			if(tmpShift[i][0] == 0)
-				data = slitIntX(data, imgWidth, imgHeight, tmpShift[i][1], tmpShift[i][2], tmpShift[i][3]);
-			else
-				data = slitIntY(data, imgWidth, imgHeight, tmpShift[i][1], tmpShift[i][2], tmpShift[i][3]);
-		}
-	}
 	if(tmpColor.length != 0){
 		for(i = 0; i < tmpColor.length; i++){
 			data = changeMapColor(data, tmpColor[i][0], tmpColor[i][1]);
@@ -418,6 +455,21 @@ function storeImage(){
 			data = changeBlendColor(data, tmpBlend[i][0], tmpBlend[i][1]);
 		}
 	}
+	if(tmpDrop.length != 0){
+		for(i = 0; i < tmpDrop.length; i++){
+			data = dropPixels(data, imgWidth, imgHeight, tmpDrop[i][0], tmpDrop[i][1], tmpDrop[i][2], tmpDrop[i][3]);
+		}
+	}
+	if(tmpShift.length != 0){
+		for(i = 0; i < tmpShift.length; i++){
+			if(tmpShift[i][0] == 0)
+				data = slitIntX(data, imgWidth, imgHeight, tmpShift[i][1], tmpShift[i][2], tmpShift[i][3]);
+			else
+				data = slitIntY(data, imgWidth, imgHeight, tmpShift[i][1], tmpShift[i][2], tmpShift[i][3]);
+		}
+	}
+	if(invertArray.shift() == 1)
+		data = invertColors(data);
 	
 	// This allows Safari to reenact onload functionality
 	if(imgStorage){
@@ -434,6 +486,9 @@ function storeImage(){
 	}
 	
 	for(i = 0; i < viewArray.length; i++){
+		// This check makes sure all images are unique
+		if(imgWidth != locxArray[i] || imgHeight != locyArray[i])
+			continue;
 		if(data.length === viewArray[i].length){
 			for(j = 0; j < viewArray[i].length; j++){
 				if(data[j] != viewArray[i][j]){
@@ -479,6 +534,15 @@ function addFlipY(){
 function addRotate90(){
 	rotate = 1;
 }
+// This function inverts the colors of an image
+function addInvert(){
+	invert = 1;
+}
+// Adds a single cut to an image (will overwrite previous)
+// Note: Cut function ignores rotations, cuts exactly where you ask
+function addCut(locx, locy, sizex, sizey){
+	cut = [locx, locy, sizex, sizey];
+}
 // This function adds a color change to the image
 function addColorChange(mapIndex, colorIndex){
 	var temp = [mapIndex, colorIndex];
@@ -514,7 +578,27 @@ function addPixelYShift(posx, posy, repeat){
 	var temp = [1, posx, posy, repeat];
 	shift.push(temp);
 }
-		
+
+// This adds a image drop to the current image
+function addPixelDrop(imgIndex, posx, posy, opacity){
+	var temp = [imgIndex, posx, posy, opacity];
+	drop.push(temp);
+}
+	
+// This inverts all the colors of an image
+function invertColors(data){
+	var i;
+	var temp = new Uint8Array(data);
+	for (i = 0; i < temp.length; i+=4){
+		if(temp[i+3] !== 0){
+			temp[i] = 255-temp[i];
+			temp[i+1] = 255-temp[i+1];
+			temp[i+2] = 255-temp[i+2];
+		}
+	}
+	return temp;
+}
+	
 // Works with canvas Image to flip image horizontally
 function flipX(data, sx, sy){
   var i, j;
@@ -589,6 +673,9 @@ function changeMapColor(data, mapIndex, columnIndex){
 		var colorData = new Uint8Array(imgMap[mapIndex]);
 		if(columnIndex >= 0 && columnIndex < mapY[mapIndex]){
 			for (i = 0; i < temp.length; i+=4){
+				//Skip out alpha recoloring
+				if(temp[i+3] === 0)
+					continue;
 				for(j = 0; j < mapX[mapIndex]*4; j+=4){
 					if((colorData[j] == temp[i] || colorData[j]-1 == temp[i]) &&
 					   (colorData[j+1] == temp[i+1] || colorData[j+1]+1 == temp[i+1]) &&
@@ -608,9 +695,12 @@ function changeMapColor(data, mapIndex, columnIndex){
 function changeBlendColor(data, color, opacity){	
 	var i;
 	var temp = new Uint8Array(data);
-	if(opacity >= 0 || opacity < 300){
+	if(opacity >= 0 && opacity < 300){
 		for (i = 0; i < temp.length; i+=4){
-			if(opacity > 200){
+			// Skip out alpha recoloring
+			if(temp[i+3] === 0){
+				continue;
+			}else if(opacity > 200){
 				temp[i] += (color[0] - temp[i])*((opacity-200) / 100);
 				temp[i+1] += (color[1] - temp[i+1])*((opacity-200) / 100);
 				temp[i+2] += (color[2] - temp[i+2])*((opacity-200) / 100);
@@ -621,6 +711,30 @@ function changeBlendColor(data, color, opacity){
 				temp[i] += (color[0] - temp[i])*(opacity / 100);
 				temp[i+1] += (color[1] - temp[i+1])*(opacity / 100);
 				temp[i+2] += (color[2] - temp[i+2])*(opacity / 100);
+			}
+		}
+	}
+	return temp;
+}
+
+// This function was made to drop an already existing image over one you are creating
+// Uses for this are mostly for future proofing, but it may come in handy.
+function dropPixels(data, sx, sy, imgID, px, py, opacity){
+	var i, j;
+	var temp = new Uint8Array(data);
+	if(opacity >= 0 && opacity <= 100){
+		for(i = 0; i < sx; i++){
+			for(j = 0; j < sy; j++){
+				// If I'm planning to loop through everything, I need a k!
+				if(i >= px && i < px+locxArray[imgID] && j >= py && j < py+locyArray[imgID]){
+					// Don't blend in transparent pixels
+					if(viewArray[imgID][((i-px)+(j-py)*locxArray[imgID])*4+3] === 0)
+						continue;
+					temp[(i+j*sx)*4] += (viewArray[imgID][((i-px)+(j-py)*locxArray[imgID])*4] - temp[(i+j*sx)*4])*(opacity / 100);
+					temp[(i+j*sx)*4+1] += (viewArray[imgID][((i-px)+(j-py)*locxArray[imgID])*4+1] - temp[(i+j*sx)*4+1])*(opacity / 100);
+					temp[(i+j*sx)*4+2] += (viewArray[imgID][((i-px)+(j-py)*locxArray[imgID])*4+2] - temp[(i+j*sx)*4+2])*(opacity / 100);
+					temp[(i+j*sx)*4+3] += (viewArray[imgID][((i-px)+(j-py)*locxArray[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);			
+				}
 			}
 		}
 	}
