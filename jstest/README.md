@@ -25,6 +25,9 @@ Includes the following graphic features
 -- Can load image from server by filename ["CWT_MECH.png"]
 -- Can load images stored within by using an index ["0"] = 1st image stored
 -- Can load a blank color box canvas into the pipeline [Current]
+- Slide images - Draw an image directly into the DOM for quick referencing
+-- Can save images into the DOM (including created ones)
+-- Can load and draw images from the DOM
 - Dynamic image loading (low memory footprint - only load when getImg() is called)
 - Dynamic pixel editing (allows extra functionality)
 -- Image mirror (mirror an image along the x and/or y axis)
@@ -35,8 +38,7 @@ Includes the following graphic features
 -- Image (Blend) Opacity (Set & blend an opacity for an image) [Current]
 -- Image Shift (move all row or column pixels within an image) [In Code]
 -- Drop Pixels (Blend stored pixels into an image) [New][In Code]
--- Image Cut (Cut an image down to size) [New][In Code][Partial - Needs Error Checking]
+-- Image Cut (Cut an image down to size) [New][In Code][Fixed all Bugs]
 
-Has the following planned graphic features
-- DOM Draw - Draw an image directly into the DOM for quick referencing
+
 

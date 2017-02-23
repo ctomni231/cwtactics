@@ -1,10 +1,9 @@
+// Since Final JSlix was not final. This will be the last attempt to make it work.
+// Added in the code that allows this thing to work on Safari. 
+
 /*
- * JSlixRefined Alpha 0.1
+ * JSlixRefined
  *
- * This is the final iteration of JSlix Graphic Image Library. This image library is
- * pretty much feature complete, but needs to be packaged, contained, and properly
- * commented. For now, it should do the job though.
- * 
  * The redirect array will be there, but separate from the main process. It will only
  * get images that completely match the originals and store them in an array for quick
  * access
@@ -38,7 +37,8 @@
  * Stuff still to do for this
  * --------------------------
  * 
- * Complete :D
+ * Draw DOM Images - This draws images directly to the DOM
+ * Cut functionality is partially complete, needs error checking for position
  */
 
 // This is the timing variable of the second (setInterval) [currently 16 = 60FPS]
@@ -86,7 +86,6 @@ var step = 0;
 var intArray = [];
 var mxArray = [];
 var myArray = [];
-var aniArray = [];
 
 // Manipulation
 var colormap = 0;
@@ -125,8 +124,7 @@ function run(sec) {
   }//*/
 	
   //Set up the color map once (this should do the trick)
-	addColorMap("UnitBaseColors.png");
-	addColorMap("BuildingBaseColors.png");
+  addColorMap("UnitBaseColors.png");
   /*//Uncomment to test out adding a Colored Box
   addColorBox(0,255,255,100, 64, 256);//*/
   
@@ -192,21 +190,20 @@ function createImage(event){
 
 	var iflipx = document.getElementById("flipX");
 	var iflipy = document.getElementById("flipY");
+	var irotate = document.getElementById("rotate90");
 	var icolor = document.getElementById("colorBox");
 	var idarken = document.getElementById("darken");
 	var itrans = document.getElementById("transparent");
 	var iinvert = document.getElementById("invert");
-	var iprop = document.getElementById("prop");
 	
-	// Controls the way these things are animated
-	aniArray.push(iprop.checked ? 1 : 0);
 	if(iflipx.checked == 1)
 		addFlipX();
 	if(iflipy.checked == 1)
 		addFlipY();
-	if(icolor.value > -1){
-		addColorChange(iprop.checked ? 1 : 0, icolor.value);
-	}
+	if(irotate.checked == 1)
+		addRotate90();//*/
+	if(icolor.value >= 0)
+		addColorChange(0, icolor.value);
 	if(itrans.checked == 1)
 		addBlendChange(0, 0, 0, 0, 150);
 	if(idarken.checked == 1)
@@ -216,12 +213,6 @@ function createImage(event){
 	
 	//manual adds here
 	
-	/*// This tests the rotation code 
-	//Make sure to add the rotate functionality back in jslixrefined.html
-	var irotate = document.getElementById("rotate90");
-	if(irotate.checked == 1)
-		addRotate90();//*/
-	
 	/*// Uncomment to see an example of the pixel shifts
 	addPixelXShift(2, 0, 4);
 	addPixelYShift(16, 16, 32);//*/
@@ -230,14 +221,9 @@ function createImage(event){
 	if(intArray.length > 2)
 		addPixelDrop(0, 5, 5, 100);//*/
 		
-	/*//Uncomment if you want to see an image cut
+	//Uncomment if you want to see an image cut
 	addCut(0,0,32*11,32);//*/
-	
-	/*// For storing the temporary slide image
-	if(intArray.length == 3){
-		addSlideImage("temp", 2);
-	}//*/
-	
+		
 	addImage(text.value);
 }
 
@@ -281,22 +267,15 @@ function render(ctx){
 	step++;
 	if( step == 3 ) step = 0;
 
-  // For animation testing
+  /*// For animation testing
 	for(var i = 0; i < intArray.length; i++){
-		if(aniArray[i] == 1)
-		ctx.drawImage(getImg(intArray[i]), step*16, 0, 16, 32, mxArray[i], myArray[i], 16, 32);
-		else
-			ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
+		ctx.drawImage(getImg(intArray[i]), step*32, 0, 32, 32, mxArray[i], myArray[i], 32, 32);
 	}//*/
 
-  /*// For rotation testing only
+  // For rotation testing only
   for(var i = 0; i < intArray.length; i++){
     ctx.drawImage(getImg(intArray[i]), mxArray[i], myArray[i]);
   }//*/
-  
-  /*// For drawing the temporary slide image
-  if(intArray.length == 5)
-	ctx.drawImage(getSlideImage("temp"), 10, 10);//*/
 }
 
 // -----------------------------------------
@@ -341,44 +320,9 @@ function addColorBox(red, green, blue, alpha, sizex, sizey){
 	addImage(imgcanvas.toDataURL());
 }
 
-// This adds a basic image to the DOM with the name specified
-// Note: this is not part of the manipulation pipeline
-function addSlideImage(name, text){
-	var imgStorage = document.getElementById("cwt-"+name);
-	if(imgStorage == null){
-		imgStorage = document.createElement("img");
-		document.body.appendChild(imgStorage);
-	}
-	imgStorage.setAttribute("id", "cwt-"+name);
-	// This pretty much makes sure that a valid value is entering for numbers
-	imgStorage.setAttribute("src", isNaN(text) 
-									? text : (text >= 0 && text < intArray.length) 
-									? getImg(intArray[text]).src : getImg(text).toDataURL());
-	imgStorage.setAttribute("onerror", "imgError(this)");
-	imgStorage.setAttribute("style", "display:none");
-}
-
-// This function will draw a slide image stored in the DOM
-function getSlideImage(name){
-	var imgStorage = document.getElementById("cwt-"+name);
-	if(imgStorage == null){
-		return canvasImg(-1).toDataURL();
-	}
-	return (imgStorage.src == null) ? canvasImg(-1).toDataURL() : imgStorage;
-}
-
 // This function adds an image from text.
 function addImage(text){
 
-	//This will combine both queue and addImage.
-	//This function has to be first
-	if(busy == 1){
-		imgQueue.push(text);
-		return;
-	}
-	
-	busy = 1;
-	
 	/*// This checks to see if a file exists on the server first
 	if(isNaN(text)){
 		if(!fileExists(text)){
@@ -409,6 +353,13 @@ function addImage(text){
 	cutArray.push(cut);
 	cut = [];
 	
+	//This will combine both queue and addImage.
+	if(busy == 1){
+		imgQueue.push(text);
+		return;
+	}
+	
+	busy = 1;
 	//This grabs an image and temporarily stores it in memory
 	var imgStorage = document.getElementById("image");
 	if(imgStorage == null){
@@ -531,7 +482,7 @@ function storeImage(){
 		data = flipX(data, imgWidth, imgHeight);
 	if(flipYArray.shift() == 1)
 		data = flipY(data, imgWidth, imgHeight);
-	if(tmpColor.length > 0){
+	if(tmpColor.length != 0){
 		for(i = 0; i < tmpColor.length; i++){
 			data = changeMapColor(data, tmpColor[i][0], tmpColor[i][1]);
 		}
