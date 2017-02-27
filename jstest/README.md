@@ -1,8 +1,16 @@
 Changing this to now hold a running list of functionality for JSlix Refined
 
-----------------------
-Included So Far
-----------------------
+--------------
+Music Library
+--------------
+
+Planned features
+- Get a MP3 to play/stop
+- Get a WAV to play/stop
+
+-----------------------------
+JSlix Graphics Image Library
+-----------------------------
 
 Works on all major popular browsers
 - Internet Explorer 11
@@ -38,7 +46,9 @@ Includes the following graphic features
 -- Image (Blend) Opacity (Set & blend an opacity for an image) [Current]
 -- Image Shift (move all row or column pixels within an image) [In Code]
 -- Drop Pixels (Blend stored pixels into an image) [New][In Code]
--- Image Cut (Cut an image down to size) [New][In Code][Fixed all Bugs]
+-- Image Cut (Cut an image down to size) [New][In Code]
+
+
 
 
 
