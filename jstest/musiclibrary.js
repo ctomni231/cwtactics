@@ -21,6 +21,8 @@ window.onload = function(){
 			audio.setAttribute("style", "display:none");
 			audio.setAttribute("autoplay", "autoplay");
 			audio.innerHTML = "<source src='"+text.value+"' type='audio/mpeg' >";
+			audio.play();
+			
 		}
 	}
 	
@@ -38,8 +40,13 @@ window.onload = function(){
 			audio.setAttribute("id", "music");
 			audio.setAttribute("style", "display:none");
 			audio.setAttribute("autoplay", "autoplay");
-			audio.setAttribute("loop", "loop");
+			//audio.setAttribute("loop", "loop");
 			audio.innerHTML = "<source src='"+text.value+"' type='audio/mpeg' >";
+			audio.play();
+			audio.onended = function(){
+				audio.load();
+				audio.play();
+			}
 		}
 	}
 	
@@ -65,14 +72,17 @@ window.onload = function(){
 			
 			// This makes a whole new audio object
 			var audio = document.getElementById("sound");
-			if(audio)
+			if(audio){
+				audio.innerHTML = "";
 				audio.parentNode.removeChild(audio);
+			}
 			audio = document.createElement("audio");
 			document.body.appendChild(audio);
 			audio.setAttribute("id", "sound");
 			audio.setAttribute("style", "display:none");
 			audio.setAttribute("autoplay", "autoplay");
 			audio.innerHTML = "<source src='"+fxtext.value+"' type='audio/wav' >";
+			audio.play();
 			
 			var bgsound = document.getElementById("iesound");
 			if(bgsound)
@@ -93,15 +103,22 @@ window.onload = function(){
 			
 			// This makes a whole new audio object
 			var audio = document.getElementById("sound");
-			if(audio)
+			if(audio){
+				audio.innerHTML = "";
 				audio.parentNode.removeChild(audio);
+			}
 			audio = document.createElement("audio");
 			document.body.appendChild(audio);
 			audio.setAttribute("id", "sound");
 			audio.setAttribute("style", "display:none");
 			audio.setAttribute("autoplay", "autoplay");
-			audio.setAttribute("loop", "loop");
+			//audio.setAttribute("loop", "loop");
 			audio.innerHTML = "<source src='"+fxtext.value+"' type='audio/wav' >";
+			audio.play();
+			audio.onended = function(){
+				audio.load();
+				audio.play();
+			}
 			
 			var bgsound = document.getElementById("iesound");
 			if(bgsound)
@@ -121,8 +138,10 @@ window.onload = function(){
 			console.log("And it can sense the stop check");
 			
 			var audio = document.getElementById("sound");
-			if(audio)
+			if(audio){
+				audio.innerHTML = "";
 				audio.parentNode.removeChild(audio);
+			}
 				
 			var bgsound = document.getElementById("iesound");
 			if(bgsound){
