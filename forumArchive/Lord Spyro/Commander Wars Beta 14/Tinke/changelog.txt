@@ -1,0 +1,197 @@
+0.8.3
+*** 3D Model viewer for BMD0 (nsbmd)
+** Improved the perfomance reading roms
+** Improved image plugin.
+** Fixed problem packing two or more times the same file.
+** Support for NCCL, NCCG and NCSC files
+** Support ADX sound files.
+** Support for Procyon audio encoding (in SAD files)
+** Support script files in Layton1 (gds)
+** Support Death Note game
+** Support MEGA MAN STAR FORCE 3 - BLACK ACE game
+** Support INAZUMA11 game
+** Encoding support in NFTR fonts
+** Layton London Life supported:
+   - Unpack files DARC and DENC (by CUE)
+   - Decode LZSS files
+   - Unpack file kihira.archive
+* Support for INFO section in SDAT
+* Show GROUP record in SDAT
+* Added table support in hexadecimal editor.
+* Pack Utility.bin
+* New depth support: 1bpp
+* Removed fixed location of the main windows
+* New windows Call Plugin to force a plugin to load a file.
+* Fixed problems with "Open as->Pack"
+* New search pattern: "Header: XXXX" where XX are a byte in hexadecimal.
+
+
+0.8.2 public release (rev117)
+*** Improved Hexadecimal editor -> Now using Be.HexEditor (by Bernhard Elbl)
+*** Read BMD0 files and show the textures (if any)
+** Game GYAKUKEN (Gyajuten kenji 2) - Unpacker
+** Game DBK ULTIMATE (Dragon Ball Kai Ultimate Butouden) - Unpacker for "archiveDBK.dsa" 
+** Game MAPLESTORYDS (Maple Story DS) - Unpacker for "RESOURCE.NXARC"
+** Game NINOKUNI (Ninokuni Shikkoku no Madoushi) supported
+  - Unpacker for NPCK and KPCN files
+  - Packer for NPCK and KPCN files
+  - Text translator for SQ files
+  - Credits images supported
+** Game SUBARASHIKI (The world end with you) - Unpacker
+** Game TOKIMEKIGS3S supported (LZS and RESC)
+** Game BLOODBAHAMUT supported (.DPK by Tricky Upgrade)
+** Game RUNFACTORY3 supported (unpacker and packer)
+** Game SF FEATHER supported (unpacker for pac, support for CGx, SCx)
+** Improved Font plugin
+  - Fixed problem with rotated Font
+  - Fixed problem with char codes
+  - Change info map char (PMAC section)
+  - Fixed problems saving new fonts
+  - Add new chars
+** Fixed problem reading NCER files
+** Added new method to set the transparency color.
+** Added method to create NSCR files of NCGR subimages
+** Add button Pack (instead of using controls from button "View")
+** Improved perfomance reading ROMs
+** Supported SRL files (wifi download files)
+* Fixed problem with textures with format 2
+* Fixed problems in SDAT plugin
+* Added support for PMCP section in NCLR
+* Improved zoom function
+* Improved support for Mono 2.10
+* Fixed minor bugs
+
+0.8.1 (public release) rev100
+*** BTX0 textures supported (view only)
+** Game 999HRPERDOOR (Nine Hours, Nine Persons, Nine Doors) supported
+   - SIR0 files in folder /cha
+** Game EDGEWORTH (Ace Attorney Investigation Miles Edgeworth) supported
+   - Unpack and pack support to the file romfile.bin
+** Improved Image plugin: import and export palette in Window Palette format
+* Improved plugins NARC and LASTWINDOW, now the extract function is faster
+* Added multifile importer function
+* Improved plugin Font
+  - Added support for encodings shift-jis, unicode and unicode bigendian
+  - Select char from the map char image.
+  - Support for rotateMode value.
+* Improved plugin SDAT
+  - Compress imported audio with PCM8, PCM16 or IMA-ADPCM
+  - Fixed problems importing new SWAV and STRM audio
+  - Improved PCM8 codification.
+  - Select loop start with Seconds, MilliSeconds or Samples
+* Improved french translation by Valioukha
+* Fixed problem saving new NCGR/NCBR files
+* Fixed reading problem in NCER
+* Fixed NCER files with 0x04 as blockSize
+* Fixed problem with "Change transparency color" in NCER files
+* Fixed hotkeys
+* Fixed important bugs
+
+0.8.0 (public release) rev90
+*** Support for font files NFTR (edit and view)
+*** Support to write Game plugins in other languages (like C/C++)
+*** Improved the speed of the program, now the program it's so much faster opening roms and files.
+* Fixed important errors in SDAT plugin
+* Add "change volume" to imported WAV to SWAV audio
+* New hotkeys (T to "Open as->Tile", P to "Open as->Palette", M to "Open as->Map", D to decompress)
+* New search term: "Length: XXXX" to search files with XXXX bytes of length
+* Improved "offset" in NSCR files.
+
+0.7.7
+*** Interface to unpack "big files"
+** Improved SDAT plugin:
+   - Information dialog about sound files (STRM, SWAV and SWAR)
+   - WAV -> SWAV
+   - Play SWAV files in loop
+   - Create new SWAR
+   - Fixed some bugs
+** Improved decompress methods, now it's so much faster.
+* Improved plugin TETRIS DS
+* New option in menu "Open as..." -> Compress (you can select the start offset) 
+* Command to set a new transparent color in NCGR and NCER files
+* Improved Images plugin and TGA support
+* Improved "offset" value in files NCGR.
+
+0.7.6 (public release)
+*** Import images from NCER files
+* Add support for the game TETRIS DS
+* Fixed problems with No_Tiled images
+* Support for the game LAYTON2 (*.arc, *.plz)
+* Fixed problem with NCER files
+
+0.7.5 (public release)
+*** Improved the plugin of Nitro compression (DSDecmp proyect by Barubary)
+*** Sound plugin added with SADL audio support
+*** Added control to compress NARC files
+*** Added control to compress Nitro compress format files
+* Added support to japanese file names (it fixes the error opening some NDS games)
+* Added control with options of new maps
+* Added button in SDAT plugin to change files
+* Fixed problem with the import (wav to strm) methods in SDAT plugin
+* Improved the french translation
+* Added import and export palettes files to Windows palettes
+* Fixed problems saving new NCLR files
+* Fixed minors problems
+
+0.7.4 (public release):
+*** Import BitMaP images and convert it to NCLR,NCGR,NSCR files
+*** Header and banner editor
+*** WAV to STRM converter
+* Added option to save modified SDAT files
+* New methods and functions in IPluginHost interface
+* Added new file format in "Open As..." -> Extract FAT (files with offsets at the beggining)
+* Added new file format in "Open As..." -> Text
+* Fixed problem saving roms without arm9 overlay
+* Improved french translation (by Vix33)
+* Fixed problem with the priority in NCER files.
+* Fixed minor problems.
+
+0.7.3 (Contest release):
+* Fixed problem with some SDAT and SWAV files
+* Added option to open external files
+* Added new format file: Script
+* Multilenguage support to SDAT plugin.
+* Fixed problem with some palettes
+* Added Shift-jis, UTF-7, UTF-32 and ASCII encodings to TXT plugin.
+* Added wordwrap option to TXT plugin.
+
+0.7.2 (public release):
+* AI IGO DS game plugin support completed!
+* LASTWINDOW game support
+* Support for reading a NDS file from an console argument
+* Fixed problem saving new ROMs
+* Fix problem loading some ROMs (problem in FAT section)
+* Fixed problem with NBFP and NTFP palettes
+* Preferences saved
+* Change format file name "Screen" to "Map"
+* Improved french translation (by Vix33)
+* Play looping option in STRM sound files
+* Improved Unicode support in TXT plugin and titles in banner
+
+0.7.1 (public release):
+*** Now plugins can change files in the rom
+* TXT plugin can change text files.
+* SWAV sound files with IMA-ADPCM supported.
+* STRM sound files supported.
+* Improved NCER files with more than one palette (4bpp)
+* Fixed BIN files in KIRBY DRO games
+* Fixed 4bpp CHAR and NBFC files
+* Add Log export function
+* Fixed BGR555 codification
+* Fixed problems with strage NCLR files
+* Minor problems fixed
+
+0.7.0:
+*** Import files and save the new ROM
+*** 100% compatibility with MONO
+* Add new format file: 'System' (ie: overlays, FAT, FNT...)
+* Add support for the game AIIJ
+* Add support for SDAT files
+* Add support for SWAV sound files
+* Add support for SWAR sound files
+* Add Zoom feature
+* Add button to change the bgd color with transparency checked
+* UNICODE encoding support for text files
+* Minor problems fixed
+
+

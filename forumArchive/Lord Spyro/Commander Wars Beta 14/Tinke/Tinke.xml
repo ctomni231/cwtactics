@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Tinke>
+  <Options>
+    <Language>English</Language>
+    <InstantSearch>False</InstantSearch>
+    <WindowDebug>False</WindowDebug>
+    <WindowInformation>False</WindowInformation>
+    <ModeWindow>False</ModeWindow>
+  </Options>
+</Tinke>
