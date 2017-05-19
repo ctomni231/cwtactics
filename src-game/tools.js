@@ -1,7 +1,7 @@
 /**
   Creates a core module with functional tools. 
  */
-const createCoreModule = (function() {
+const createCoreModule = (function () {
 
   const Stream = list => ({
     map: f => Stream(list.map(f)),
@@ -23,22 +23,22 @@ const createCoreModule = (function() {
   }, (v, k) => k + from))
 
 
-  const validate = (spec, namespace = "") => 
+  const validate = (spec, namespace = "") =>
     (value, root = value) => Object
-      .keys(spec)
-      .map(key => {
-        switch (typeof spec[key]) {
-          case "function":
-            return !spec[key](value[key], value, root) ? namespace + key : null
-          case "object":
-            // TODO array support
-            return validate(spec[key], namespace + key + ".")(value[key], root)
-          default:
-            return namespace + key + "(illegal)"
-        }
-      })
-      .filter(v => !!v)
-      .reduce((result, value) => result.concat(value), [])
+    .keys(spec)
+    .map(key => {
+      switch (typeof spec[key]) {
+        case "function":
+          return !spec[key](value[key], value, root) ? namespace + key : null
+        case "object":
+          // TODO array support
+          return validate(spec[key], namespace + key + ".")(value[key], root)
+        default:
+          return namespace + key + "(illegal)"
+      }
+    })
+    .filter(v => !!v)
+    .reduce((result, value) => result.concat(value), [])
 
   const guard = (expr, msg) => {
     if (!expr) {
@@ -59,7 +59,9 @@ const createCoreModule = (function() {
   // ==================================================================
 
   return {
-    Stream, guard, validate
+    Stream,
+    guard,
+    validate
   }
 
 }())
