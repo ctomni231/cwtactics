@@ -12,6 +12,47 @@
 const createCwtGameInstance = () => {
   "use-strict";
 
+  /**
+    @param {object<sring, (predicate(A)|spec)>} spec
+    @param {string} namespace will be printed in front of the properties
+                    which will be returned
+    @return {array<string>} list of invalid properties
+   */
+  const createValidator = (spec, namespace = "") => (value, root = value) =>
+    Object
+    .keys(spec)
+    .map(key => {
+      switch (typeof spec[key]) {
+        case "function":
+          return !spec[key](value[key], value, root) ? namespace + key : null
+        case "object":
+          // TODO array support
+          return createValidator(spec[key], namespace + key + ".")(value[key], root)
+        default:
+          return namespace + key + "(illegal)"
+      }
+    })
+    .filter(v => !!v)
+    .reduce((result, value) => result.concat(value), [])
+
+  const condition = value => ({
+    case(predicate, supplier) {
+      return !!predicate(value) ? conditionSolved(supplier(value)) : condition(value)
+    },
+    default(newValue) {
+      return newValue
+    }
+  })
+
+  const conditionSolved = value => ({
+    case() {
+      return conditionSolved(value)
+    },
+    default() {
+      return value
+    }
+  })
+
   const $ = createCoreModule()
   const exports = {}
 
@@ -174,10 +215,11 @@ const createCwtGameInstance = () => {
       load: niyError,
 
       /**
-        @todo client has to overwrite this
-        @param key {string} key of the entry
-        @param value {any} value of the entry
-        @return Promise(T, error-message)
+        save:: (string, A) -> Promise(A, string)
+
+        takes a key and a value. saves the value with the unique identifier
+        key and returns a promise which resolves with the saved value, or
+        rejects with an error message.
       */
       save: niyError,
 
@@ -191,6 +233,9 @@ const createCwtGameInstance = () => {
 
   exports.model = {
 
+    /**
+      @return [string]
+     */
     isValidGameData(data) {
 
       const isEnum = (...items) => v => items.includes(v)
@@ -217,7 +262,7 @@ const createCwtGameInstance = () => {
 
       const maybe = predicate => value => value === undefined || value === null || predicate(value)
 
-      const isID = string(4, 4)
+      const isID = (prefix = "") => v => string(4, 4)(v) && v.indexOf(prefix) === 0
 
       const typeIdReference = typeName =>
         (id, _, root) => root.types[typeName].some(t => t.id === id)
@@ -234,9 +279,10 @@ const createCwtGameInstance = () => {
       const GameWorldType = {
         types: {
           units: [{
-            costs: positiveInteger(999999),
-            fuel: positiveInteger(99),
-            range: positiveInteger(15),
+            id: isID("U"),
+            costs: integer(0, 999999),
+            fuel: integer(0, 99),
+            range: integer(0, 15),
             movetype: typeIdReference("movetypes"),
             vision: integer(1, 15),
             supply: [typeIdReference("movetypes")],
@@ -248,7 +294,7 @@ const createCwtGameInstance = () => {
             },
             transport: {
               canload: exports.every(exports.isString),
-              maxloads: isIntBetween(1, 5)
+              maxloads: integer(1, 5)
             },
             attack: {
               ammo: isIntBetween(1, 14),
@@ -256,12 +302,12 @@ const createCwtGameInstance = () => {
                 min: exports.somePass(exports.isUndefined, isIntBetween(1, 14)),
                 max: exports.somePass(exports.isUndefined, isIntBetween(2, 15))
               },
-              primary: map(T, integer(0, 999)),
-              secondary: map(T, integer(0, 999))
+              primary: map(any => true, integer(0, 999)),
+              secondary: map(any => true, integer(0, 999))
             }
           }],
           tiles: [{
-            id: isID,
+            id: isID("T"),
             defense: positiveInteger(6),
             blocksVision: isBoolean,
             notTransferable: isBoolean,
@@ -271,7 +317,7 @@ const createCwtGameInstance = () => {
             produces: [typeIdReference("units")]
           }],
           weathers: [{
-            id: isID,
+            id: isID("W"),
             duration: {
               min: isInteger(0),
               max: isInteger(0),
@@ -279,9 +325,11 @@ const createCwtGameInstance = () => {
             effects: [EffectType]
           }],
           movetypes: [{
+            id: isID("M"),
             costs: map(isID, integer(0, 15))
           }],
           commanders: [{
+            id: isID("C"),
             name: string(3),
             dayEffects: [EffectType],
             superCoPower: [EffectType],
@@ -346,6 +394,7 @@ const createCwtGameInstance = () => {
           name: string(4, 20),
           visionMap: table(integer(0)),
           commanders: {
+            power: integer(0, 999999),
             timesPowerUsed: integer(0),
             firstCo: typeReference("commanders"),
             secondCo: typeReference("commanders")
@@ -353,33 +402,27 @@ const createCwtGameInstance = () => {
         }],
         turn: {
           day: integer(0, 999999),
-          owner: (value, _, root) => isEnum(root.players)(value),
+          owner: value(isEnum(root.players)),
+          leftGameTime: integer(0, Number.POSITIVE_INFINITY),
+          leftTurnTime: integer(0, Number.POSITIVE_INFINITY)
+        },
+        usables: [isBoolean],
+        async: {
           events: [{
-            daysUntilActivation: integer(0, 99),
-            actionData: Array.isArray,
-            actionCode: isEnum("changetype")
-          }],
-          limits: {
-            turns: {
-              elapsed: integer(0, 9999),
-              max: integer(0, 9999)
-            },
-            time: {
-              elapsed: integer(0, 99999999),
-              max: integer(0, 99999999)
-            }
-          }
+            leftTicks: integer(0, 99),
+            data: Array.isArray,
+            command: isEnum("changetype")
+          }]
         },
         weather: {
-          mainWeather: (value, weather) => isEnum(...weather.types),
+          mainWeather: (value, _, root) => isEnum(...root.types.weathers),
           leftDays: (value, weather) => value >= 1 && weather.active.duration.max < value,
           active: typeReference("weathers")
         }
       }
 
-
       return new Promise((resolve, reject) => {
-        const errors = validate(GameWorldType)(data)
+        const errors = createValidator(GameWorldType)(data)
         return (errors.length > 0 ? reject : resolve)(errors)
       })
     },
@@ -677,68 +720,23 @@ const createCwtGameInstance = () => {
       returns true if the buffer contains at least one command,
       false otherwise
      */
-    hasItems: exports.always(false),
+    hasItems: buffer => buffer.length > 0,
+
+    post: (buffer, command) => {
+      const MAX_SIZE = 200
+
+      // TODO check format
+      guard(buffer.length < MAX_SIZE)
+      buffer.push(command)
+      return buffer
+    },
 
     /**
-      pushes a command into the buffer and returns a list of errors
-      which occurred during the push
-     */
-    post: exports.always(Object.freeze([])),
 
-    /**
-      invokes the next command from the buffer and returns a list
-      of errors which occurred during the invocation
-     */
-    getNext: exports.always(Object.freeze([])),
-
-    init() {
-      const MAX_BUFFER_SIZE = 100
-
-      const buffer = []
-
-      exports.onAfterGame(() => buffer.splice(0))
-
-      exports.commands.hasItems = () => buffer.length > 0
-
-      exports.commands.getNext = () => {
-        exports.client.debug("command-buffer:invoke")
-
-        if (exports.isFalsy(exports.commands.hasItems())) return ["no-commands"]
-
-        let command = buffer.shift()
-        let action = exports.action_objects[command.key]
-        if (exports.isFalsy(action)) return ["invalid-action"]
-
-        // TODO command deserialization
-
-        let invokeAction = exports.method("apply", action.invoke)
-
-        invokeAction(null, command.data)
-
-        return []
-      }
-
-      // XXX: controller.actionBuilder_buildFromUserData
-      exports.commands.post = e => {
-        exports.client.debug("command-buffer:post [" + JSON.stringify(e) + "]")
-
-        exports.guard(buffer.length <= MAX_BUFFER_SIZE, "command buffer overflow")
-
-        return []
-
-        e || (e = controller.stateMachine.data);
-        var t = e.target,
-          o = e.source,
-          n = e.action,
-          a = e.movePath,
-          r = n.object,
-          l = !1;
-        return -1 !== a.data[0] && (l = model.move_trapCheck(a.data, o, t), model.events
-            .move_flushMoveData(a.data, o)), l ? controller.commandStack_sharedInvokement(
-            "trapwait_invoked", o.unitId) : r.invoke(e), (l || r.addUnitAction && !r.noAutoWait) &&
-          controller.commandStack_sharedInvokement("wait_invoked", o.unitId), l
-        // TODO put events here into place and invoke actions direclty
-      }
+      */
+    getNext: buffer => {
+      guard(exports.commands.hasItems(buffer))
+      return buffer.shift()
     }
   }
 
@@ -748,7 +746,8 @@ const createCwtGameInstance = () => {
        @param player {PlayerType}
        @return a list of values which are transferable by the given player
      */
-    getMoneyTransferPackages: player => [1000, 2500, 5000, 10000, 25000, 50000].filter(x => x <= player.gold),
+    getMoneyTransferPackages: player => [1000, 2500, 5000, 10000, 25000, 50000]
+      .filter(x => x <= player.gold),
 
     /**
       @return true when the player can transfer money, false otherwise
@@ -759,7 +758,7 @@ const createCwtGameInstance = () => {
     doMoneyTransfer(sourcePlayer, amount, targetPlayer) {
       sourcePlayer.gold -= amount
       targetPlayer.gold += amount
-      $.guard(sourcePlayer.gold >= 0)
+      guard(sourcePlayer.gold >= 0)
     },
 
     canDoPropertyTransfer: (property) => !property.type.notTransferable,
@@ -793,19 +792,32 @@ const createCwtGameInstance = () => {
       @returns a list of players which are suitable as transfer target for the
                given player
      */
-    getTransferTargetPlayers: (players, player) => players.filter(p => p.team != -1).filter(p => p != player)
+    getTransferTargetPlayers: (players, player) => players
+      .filter(p => p.team != -1)
+      .filter(p => p != player)
   }
 
-  exports.supply = {
+  const supply = {
 
     isSupplier: (unit) => !!unit.type.supply,
 
-    canSupplyAtPositon(map, unit, position) {
-      cwt.guard(exports.supply.isSupplier(unit))
+    /**
+      @return a list of units which can be supplied by the given unit
+              at a given position
+     */
+    getSupplyTargets: (map, unit, position = unit.position) => exports.model
+      .sliceRange(map, 1, position)
+      .filter(tile => !!tile.unit)
+      .map(tile => tile.unit)
+      .filter(tileUnit => tileUnit.owner === unit.owner),
 
-      // TODO
-      return false
-    },
+    /**
+      @return true if the given unit can supply surrounding units at
+      a given position
+     */
+    canSupplyNeighbours: (map, unit, position = unit.position) => supply
+      .getSupplyTargets(map, unit, unit.position)
+      .length > 0,
 
     /**
       Refills every unit of the same owner in the surrounding tiles
@@ -814,12 +826,9 @@ const createCwtGameInstance = () => {
       @param {Map} map
       @param {Unit} unit
      */
-    supplySurroundingUnits: (map, unit) => exports.model
-      .sliceRange(map, 1, exports.model.position(unit.x, unit.y))
-      .filter(tile => !!tile.unit)
-      .map(tile => tile.unit)
-      .filter(tileUnit => tileUnit.owner === unit.owner)
-      .forEach(exports.supply.refillSupplies),
+    supplyNeighbours: (map, unit) => supply
+      .getSupplyTargets(map, unit, unit.position)
+      .forEach(supply.refillSupplies),
 
     refillSupplies(unit) {
       unit.ammo = unit.type.maxAmmo
@@ -832,145 +841,82 @@ const createCwtGameInstance = () => {
 
       @param unit {Unit}
       @param amount {integer 1 <-> 99} amount that will be healed
+      @return maximum of 0 and unit.hp + amount - 99
+
+      @TODO outsource additional hp as gold
      */
     refillHP(unit, amount) {
-      $.guard(amount > 0 && amount <= 99)
+      guard(amount > 0 && amount <= 99)
       const aboveMaxHP = Math.max(0, unit.hp + amount - 99)
       unit.owner.gold += parseInt(aboveMaxHP * unit.type.cost / 100, 10)
       unit.hp = Math.min(99, unit.hp + amount)
+      return aboveMaxHP
+    },
+
+    raiseFunds: (property) => property.gold += 1000,
+
+    drainFuel: unit => condition()
+    case (unit.hidden && unit.type.dailyFuelDrainHidden > 0, unit.type.dailyFuelDrainHidden)
+    case (unit.type.dailyFuelDrain > 0, unit.type.dailyFuelDrain)
+    defaultDo(0, fuelDrain => {
+      unit.fuel = unit.fuel - fuelDrain
+    })
+  }
+
+  exports.async = {
+
+    /**
+      @effect
+      @return list of events which have to be executed now
+     */
+    tick: asyncModel => {
+      const events = asyncModel.events
+      events.forEach(el => el.leftTicks--)
+      asyncModel.events = events.filter(el => el.leftTicks > 0)
+      return events.filter(el => el.leftTicks == 0)
     }
   }
 
   exports.turn = {
 
+    /**
+
+      @return {string} (nothing|end-turn|end-game)
+     */
     evaluateTime(model, time) {
-      model.turnTime.elapsed += time
-      model.gameTime.elapsed += time
+      model.leftTurnTime = Math.max(0, model.leftTurnTime - time)
+      model.leftGameTime = Math.max(0, model.leftGameTime - time)
 
-      // TODO
-
-      model.turnTime.limit > 0 &&
-        model.turnTime.elapsed >= model.turnTime.limit &&
-        controller.commandStack_sharedInvokement("nextTurn_invoked")
-
-      model.gameTime.limit > 0 &&
-        model.gameTime.elapsed >= model.gameTime.limit &&
-        controller.update_endGameRound()
+      return condition()
+        .case(mode.leftGameTime <= 0, "end-game")
+        .case(mode.leftTurnTime <= 0, "end-turn")
+        .default("nothing")
     },
 
-    evaluateDay(turnModel) {
+    /**
 
-    },
+      @return {boolean} true if the day changed, false otherwise
+     */
+    endTurn: (turn, players) => {
 
-    /*
-      model.dayTick_dataTime = util.list(50, -1),
-      model.dayTick_dataEvent = util.list(50, null),
-      model.dayTick_dataArgs = util.list(100, -1),
-    */
-
-    endTurn() {
-      // TODO move parts into own api modules
       const currentOwner = model.round_turnOwner
       let nextOwner = currentOwner
 
       do {
         nextOwner = nextOwner < 3 ? nextOwner + 1 : 0
 
-        if (exports.equal(0, nextOwner)) {
-          model.round_day++;
-          var o = controller.configValue("round_dayLimit")
-          o > 0 && model.round_day === o && controller.update_endGameRound()
+        // break out when we find a suitable player
+        if (players[nextOwner].team != -1) break;
 
-          // TODO day events
-          void 0 === o && (o = -1), void 0 === n && (n = -1);
-          for (var a = model.dayTick_dataTime, r = 0, l = a.length; l > r; r++)
-            if (-1 === a[r]) return a[r] = model.round_daysToTurns(e), model.dayTick_dataEvent[r] = t, model.dayTick_dataArgs[2 * r] = o, model.dayTick_dataArgs[2 * r + 1] = n, void 0;
-          assert(!1, "day event buffer overflow")
-        }
+      } while (currentOwner != nextOwner)
 
-        if (exports.notEqual(-1, model.player_data[nextOwner].team)) break
-      }
-      while (exports.notEqual(currentOwner, nextOwner))
-      exports.guard(exports.notEqual(currentOwner, nextOwner))
+      guard(currentOwner != nextOwner)
 
-      // TODO model.events.recalculateFogMap()
-      model.timer_turnTimeElapsed = 0
+      const dayChanged = nextOwner < currentOwner
 
-      const propCheck = e => {
-        var t = model.property_data[e];
-        if ("number" == typeof t.type.funds) {
-          var o = t.x,
-            n = t.y;
-          controller.prepareTags(o, n);
-          var a = controller.scriptedValue(t.owner, "funds", t.type.funds);
-          model.player_data[t.owner].gold += a
-        }
-        var e = model.property_data[i];
-        if (e.type.supply) {
-          var t = e.x,
-            o = e.y,
-            n = e.owner,
-            a = model.unit_thereIsAUnit,
-            r = model.MODE_OWN;
-          if (1 === controller.configValue("supplyAlliedUnits") && (r = model.MODE_TEAM), a(t, o, n, r)) {
-            var l = model.unit_posData[t][o].type;
-            (-1 !== e.type.supply.indexOf(l.ID) || -1 !== e.type.supply.indexOf(l.movetype)) && model.events.supply_refillResources(model.unit_posData[t][o])
-          }
-        }
-        var e = model.property_data[i];
-        if (e.type.repairs) {
-          var t = e.x,
-            o = e.y,
-            n = e.owner,
-            a = model.unit_thereIsAUnit,
-            r = model.MODE_OWN;
-          if (1 === controller.configValue("repairAlliedUnits") && (r = model.MODE_TEAM), a(t, o, n, r)) {
-            var l, d = model.unit_posData[t][o].type;
-            l = e.type.repairs.get(d.ID), l || (l = e.type.repairs.get(d.movetype)), l = controller.scriptedValue(n, "propertyHeal", l), l > 0 && model.events.healUnit(model.unit_extractId(model.unit_posData[t][o]), model.unit_convertPointsToHealth(l), !0)
-          }
-        }
-      }
+      turn.day = turn.day + (dayChanged ? 1 : 0)
 
-      for (model.round_turnOwner = t, model.client_isLocalPid(t) && (model.client_lastPid =
-          t), i = 0, e = model.property_data.length; e > i; i++) model.property_data[
-        i].owner === t && propCheck(i)
-      for (1 === controller.configValue("autoSupplyAtTurnStart"), i = model.unit_firstUnitId(
-          t), e = model.unit_lastUnitId(t); e > i; i++) - 1 !== model.unit_data[i]
-        .owner && model.events.nextTurn_unitCheck(i);
-      controller.isHost() && !controller.ai_isHuman(t) && controller.ai_machine.event(
-        "tick")
-
-
-      var t = model.unit_data[e];
-      model.events.supplyUnit_check(e, t.x, t.y) && model.events.supplyUnit_invoked(e)
-
-      var t = model.unit_data[e],
-        o = t.type.dailyFuelDrain;
-      return "number" == typeof o && (t.hidden && t.type.dailyFuelDrainHidden && (o = t.type.dailyFuelDrainHidden), o = parseInt(controller.scriptedValue(t.owner, "fuelDrain", o) / 100 * controller.scriptedValue(t.owner, "fuelDrainRate", 100), 10), t.fuel -= o, t.fuel <= 0) ? (model.events.destroyUnit(e), !1) : void 0
-
-      var t = model.player_data[e].team;
-      model.client_instances[e] && (model.client_lastPid = e);
-      for (var o = model.client_lastPid, n = 0, a = 4; a > n; n++) model.fog_visibleClientPids[
-        n] = !1, model.fog_visibleTurnOwnerPids[n] = !1, -1 !== model.player_data[
-        n].team && (model.player_data[n].team === o && (model.fog_visibleClientPids[
-        n] = !0), model.player_data[n].team === t && (model.fog_visibleTurnOwnerPids[
-        n] = !0));
-      model.events.recalculateFogMap()
-
-      for (var t = model.unit_firstUnitId(e), o = model.unit_lastUnitId(e), n =
-          t; o > t; t++) model.actions_leftActors[t - n] = -1 !== model.unit_data[
-        t].owner
-
-      // TODO make better event struct
-
-      exports.map(exports.sub(1), model.dayTick_dataTime)
-
-      model.dayTick_dataTime.forEach((element, index) => {
-        if (element > 0) return
-        model.events[model.dayTick_dataEvent[t]](
-          model.dayTick_dataArgs[2 * t],
-          model.dayTick_dataArgs[2 * t + 1])
-      })
+      return dayChanged
     },
 
     yield(map, player) {
@@ -987,6 +933,7 @@ const createCwtGameInstance = () => {
 
       player.team = -1
 
+      //TODO
       api.turn.endTurn()
     }
   }
@@ -1020,7 +967,7 @@ const createCwtGameInstance = () => {
       // TODO
     },
 
-    
+
     isPowerActivatable(model, power, playerId) {
       if ([model.co_MODES.AW1, model.co_MODES.AW2, model.co_MODES.AWDS].includes(model.co_activeMode)) {
         return false
@@ -1063,7 +1010,7 @@ const createCwtGameInstance = () => {
       exports.guard(exports.stealth.canHide(unit))
       unit.stealth.hidden = true
     },
-    
+
     /**
       reveals the unit on the map and all units which can see the 
       underlying tile can see the given unit too.
@@ -1076,24 +1023,29 @@ const createCwtGameInstance = () => {
 
   exports.join = {
 
-    canJoin(sourceUnit, targetUnit) {
-      return [
+    /**
+      @return {boolean} true if source and target can join together,
+                        false otherwise
+     */
+    canJoin: (sourceUnit, targetUnit) => [
         sourceUnit.owner == targetUnit.owner,
-        sourceUnit.type == targetUnit.type, !exports.transport.isTransporter(sourceUnit) || !exports.transport.hasLoads(sourceUnit), !exports.transport.isTransporter(targetUnit) || !exports.transport.hasLoads(targetUnit),
-        targetUnit.hp >= 90
-      ].filter(x => x === false).length === 0
-    },
+        sourceUnit.type == targetUnit.type,
+        // TODO move this to the actions mediator
+        !exports.transport.isTransporter(sourceUnit),
+        !exports.transport.hasLoads(targetUnit),
+        targetUnit.hp < 90
+      ].every(x => !!x),
 
-    combine(sourceUnit, targetUnit) {
+    combine: (sourceUnit, targetUnit) => {
       exports.guard(exports.join.canJoin(sourceUnit, targetUnit))
 
       const aboveFullHp = Math.max(0, sourceUnit.hp + targetUnit.hp - 99)
-      
+
       targetUnit.hp = Math.min(targetUnit.hp + sourceUnit.hp, 99)
       targetUnit.fuel = Math.min(targetUnit.fuel + sourceUnit.fuel, targetUnit.type.fuel)
       targetUnit.ammo = Math.min(targetUnit.ammo + sourceUnit.ammo, targetUnit.type.ammo)
       sourceUnit.owner = null
-      
+
       // TODO ?
       targetUnit.owner.gold = targetUnit.owner.gold + (sourceUnit.type.cost * 0.1)
     }
@@ -1123,40 +1075,24 @@ const createCwtGameInstance = () => {
       NONE: 3
     },
 
-    isPeacePhaseActive() {
-      return model.round_day < controller.configValue("daysOfPeace")
-    },
+    isPeacePhaseActive: (model) => model.turn.day < model.cfg.daysOfPeace,
 
-    calculateTargets(e, t, o, n, a) {
-      var r = "undefined" != typeof n;
-      a || (a = !1), assert(model.unit_isValidUnitId(e)), r && n.setCenter(t, o, -1);
-      var l = model.unit_data[e],
-        i = model.player_data[l.owner].team,
-        d = l.type.attack;
-      if (1 === arguments.length && (t = l.x, o = l.y), assert(model.map_isValidPosition(t, o)), 3 === arguments.length && assert(util.isBoolean(a)), "undefined" == typeof d) return !1;
-      if (model.battle_hasMainWeapon(l.type) && !model.battle_hasSecondaryWeapon(l.type) && l.type.ammo > 0 && 0 === l.ammo) return !1;
-      var s = 1,
-        c = 1;
-      l.type.attack.minrange && (controller.prepareTags(t, o, e), s = controller.scriptedValue(l.owner, "minrange", l.type.attack.minrange), c = controller.scriptedValue(l.owner, "maxrange", l.type.attack.maxrange));
-      var m, u, _ = o - c,
-        p = o + c;
-      for (0 > _ && (_ = 0), p >= model.map_height && (p = model.map_height - 1); p >= _; _++) {
-        var f = Math.abs(_ - o);
-        for (m = t - c + f, u = t + c - f, 0 > m && (m = 0), u >= model.map_width && (u = model.map_width - 1); u >= m; m++)
-          if (a) model.map_getDistance(t, o, m, _) >= s && n.setValueAt(m, _, 1);
-          else {
-            if (0 === model.fog_turnOwnerData[m][_]) continue;
-            if (model.map_getDistance(t, o, m, _) >= s) {
-              var v = -1,
-                h = model.unit_posData[m][_];
-              if (null !== h && model.player_data[h.owner].team !== i && (v = model.battle_getBaseDamageAgainst(l, h), v > 0)) {
-                if (!r) return !0;
-                n.setValueAt(m, _, v)
-              }
-            }
-          }
-      }
-      return !1
+    /**
+      @return {array<Unit>}
+     */
+    getTargets(model, unit, position = unit.position) {
+      const minRange = unit.type.attack.range.min
+      const maxRange = unit.type.attack.range.max
+      const team = unit.owner.team
+      const visionMap = unit.owner.visionMap
+
+      return exports.model
+        .sliceRange(model.map, maxRange, position)
+        .map(tile => tile.unit)
+        .filter(u => !!u)
+        .filter(unit => visionMap[unit.position.x][unit.position.y] > 0)
+        .filter(unit => exports.model.distance(position, unit.position) >= minRange)
+        .filter(unit => unit.owner.team != team)
     },
 
     hasMainWeapon(e) {
@@ -1318,7 +1254,7 @@ const createCwtGameInstance = () => {
       }
     },
 
-    recalculate(map, fogModel) {
+    recalculate(map, owner, fogModel) {
       var e, t, o = model.map_width,
         n = model.map_height,
         a = 1 === controller.configValue("fogEnabled");
@@ -1334,6 +1270,15 @@ const createCwtGameInstance = () => {
             null !== i && (r = i.type.vision, 0 > r && (r = 0), model.events.modifyVisionAt(e, t, i.owner, r, 1))
           }
       }
+
+      var t = model.player_data[e].team;
+      model.client_instances[e] && (model.client_lastPid = e);
+      for (var o = model.client_lastPid, n = 0, a = 4; a > n; n++) model.fog_visibleClientPids[
+        n] = !1, model.fog_visibleTurnOwnerPids[n] = !1, -1 !== model.player_data[
+        n].team && (model.player_data[n].team === o && (model.fog_visibleClientPids[
+        n] = !0), model.player_data[n].team === t && (model.fog_visibleTurnOwnerPids[
+        n] = !0));
+      model.events.recalculateFogMap()
     }
   }
 
@@ -1685,6 +1630,22 @@ const createCwtGameInstance = () => {
 
   exports.move = {
 
+    getMovemap() {
+
+    },
+
+    getMoveway(map, unit, source, target) {
+
+    },
+
+    getFuelCosts(map, unit, way) {
+
+    },
+
+    move(map, unit, way) {
+
+    }
+
     model.move_pathCache = util.list(15, -1),
     model.move_getMoveCosts = function (e, t, o) {
       assert(model.map_isValidPosition(t, o));
@@ -1884,10 +1845,6 @@ const createCwtGameInstance = () => {
     })
   }
 
-  exports.actionService = {
-    // TODO mediator
-  }
-
   exports.ai = {
 
     enabled: false,
@@ -1896,7 +1853,7 @@ const createCwtGameInstance = () => {
 
     activateForPlayer: exports.noop,
 
-    about: exports.always("no-ai"),
+    about: () => "DumbBoy 0.0.1",
 
     init() {
       exports.ai.enabled = true
@@ -1904,59 +1861,337 @@ const createCwtGameInstance = () => {
     }
   }
 
+  /**
+    game logic mediator service which coordinates the
+    access of actions into the different logic modules.
+   */
   exports.actions = {
 
-    getActions(world) {
+      /*====================================================*/
 
-    }
+      const getPropertyActions = (transition, data, actionData) => {
+        const property = actionData.source.property
+        const sourceUnit = actionData.source.unit
 
+        if (!sourceUnit) return {}
+        if (!property) return {}
 
-  }
+        return {
+          produce: exports.production.isFactory(property) &&
+            exports.production.canProduce(model, property),
 
-  exports.screen = {
+          propertyTransfer: exports.transfer.canDoPropertyTransfer(property)
+        }
+      }
 
-    define(data) {
-      let screens = {}
-      exports.guard(exports.isUndefined(screens[data.id]))
+      const getUnitActions = (transition, data, unitActionData) => {
+        const actionData = unitActionData.actionData
+        const moveData = unitActionData.moveData
+        const sourceUnit = actionData.source.unit
+
+        if (!sourceUnit) return {}
+
+        const targetUnit = actionData.target.unit
+        const targetProperty = actionData.target.property
+        const unitAtTarget = !!targetUnit
+        const propertyAtTarget = !!targetProperty
+        const canAct = exports.usable.isUsable(sourceUnit)
+
+        if (!canAct) return {}
+
+        return {
+
+          attack:
+            // TODO
+            exports.every(exports.isTruthy, [
+                  model.round_day < controller.configValue("daysOfPeace"), !model.battle_isIndirectUnit(e.source.unitId) || exports.notEqual(-1, e.movePath.data[0]),
+                  model.battle_calculateTargets(e.source.unitId, e.target.x, e.target.y)
+                ]),
+          exports.battle.calculateTargets().length > 0,
+
+          fireLaser: exports.specialProperties.isLaser(sourceUnit),
+
+          fireSilo: propertyAtTarget &&
+            exports.specialProperties.isSilo(targetProperty) &&
+            exports.specialProperties.isSiloFireableBy(sourceUnit, targetProperty),
+
+          unitHide: exports.stealth.isStealthUnit(sourceUnit) &&
+            exports.stealth.canHide(sourceUnit),
+
+          unitReveal: exports.stealth.isStealthUnit(sourceUnit) &&
+            exports.stealth.canReveal(sourceUnit),
+
+          join: unitAtTarget &&
+            exports.join.canJoin(model.unit_data[actionData.source.unitId], model.unit_data[actionData.target.unitId]),
+
+          supply:
+            !unitAtTarget &&
+            supply.isSupplier(sourceUnit) &&
+            supply.canSupplyAtPositon(
+              model.map_data,
+              sourceUnit, {
+                x: actionData.target.x,
+                y: actionData.target.y
+              }),
+
+          explode:
+            !unitAtTarget &&
+            exports.explode.canExplode(sourceUnit),
+
+          wait: !unitAtTarget
+        }
+      }
+
+      const getSubMenu = (transition, data, actionData) => {
+        if (actionData.action === "produce") {
+          const ownerGold =
+            return model.data_unitSheets.some(sheet => )
+          var n = model.property_data[e];
+          assert(model.player_isValidPid(n.owner));
+          for (var a = model.player_data[n.owner].gold, r = model.data_unitTypes, l = n.type.builds, i = 0, d = r.length; d > i; i++) {
+            var s = r[i],
+              c = model.data_unitSheets[s]; - 1 !== l.indexOf(c.movetype) && (c.cost <= a || o) && t.addEntry(s, c.cost <= a)
+          }
+        } else if (["propertyTransfer", "unitTransfer"].includes(actionData.action)) {
+          return exports.transfer.getTransferTargetPlayers(
+            model.player_data,
+            model.player_data[actionData.source.property.owner])
+        }
+        return []
+      }
+
+      // TODO exports.battle.calculateTargets().length > 0
+      const getTargetSelection = (transition, data, actionData) => ({
+        needed: actionData.action === "fireSilo",
+        freestyle: true,
+        targets: actionData.action === "fireSilo" ? null : []
+      })
+
+      const getMapActions = (transition, data, actionData) => ({
+        activateCoPower: exports.co.isCoPActivatable(model, model.round_turnOwner),
+        activateSuperCoPower: exports.co.isSCoPActivatable(model, model.round_turnOwner),
+        moneyTransfer: exports.transfer.canTransferMoney(model.turn.owner),
+        toOptions: true,
+        endTurn: true
+      })
+
+      const nx = actionData.get("x")
+      const ny = actionData.get("y")
+
+      $.guard(model.map_isValidPosition(nx, ny))
+
+      const noPositionSelected = pos => pos.x == -1 && pos.y == -1
+
+      const position = Switch()
+        .Case(noPositionSelected(data.uiData.source), data.uiData.source)
+        .Case(noPositionSelected(data.uiData.target), data.uiData.target)
+        .Default(data.uiData.targetselection)
+
+      $.guard(noPositionSelected(position))
+      position.x = nx
+      position.y = ny
+
+      return Switch(position)
+        .Case(pos => pos === data.uiData.source, {
+          // TODO move
+          move: {
+            map: []
+          }
+        })
+        .Case(pos => pos === data.uiData.target, {
+          // TODO set move path if unit exists
+        })
+        .Default({
+
+        })
     },
 
-    doAction(name, ...args) {
+    clickAction(transition, data, actionData) {
+      const action = actionData.get("actionKey")
+      cwt.guard(!!action) // TODO check key
 
+      cwt.guard(!data.uiData.action.key || !data.uiData.action.subKey)
+
+      const targetProperty = !data.uiData.action.key ? "subKey" : "key"
+      data.uiData.action[targetProperty] = action
+
+      return {
+
+      }
     },
 
-    open(screenName) {
-      exports.client.debug("game:open-screen:" + screenName)
+    /*====================================================*/
 
+    pushAction: (world, actionData) => {
       // TODO
-      let activeScreen
-      let screens = {}
-      let changeEvent = exports.eventBus()
-
-      exports.guard(screenName != activeScreen)
-
-      activeScreen = screenName
-
-      const screen = screens[screenName]
-
-      // notify client about the new screen
-      // TODO refill layout data
-      exports.client.onScreenOpened(screenName, screen.layout)
-
-      screen.onenter(exports.screen.open, screen.data)
+      exports.client.debug("push command into buffer", actionData)
+      world.commands.push(JSON.stringify({
+        key: actionData.key,
+        data: actionData
+      }))
     },
 
-    init() {
+    handleEndTurn: (world, action) => {
 
-      // some helpers =)
-      const element = type => content => [type, content]
-      const box = content => element("box")
-      const header = value => element("header")
-      const text = value => element("text")
-      const whenDefined = (property, content) => ["if:exists", property, content]
+      exports.client.debug("player " + world.turn.owner.id + " ends it turn now")
 
-      exports.screen.define({
-        id: "ERROR",
-        layout: [
+      const dayChanged = exports.turn.endTurn(world)
+
+      if (dayChanged) {
+
+        exports.client.debug("day changed, now it's day " + exports.turn.day)
+
+        const nextAsyncCommands = exports.async.tick(world.async)
+
+        if (nextAsyncCommands.length > 0) {
+          exports.client.debug("found async commands which has to be invoked")
+
+          nextAsyncCommands.forEach(command => {
+            exports.client.debug("evaluate async command", command)
+            // TODO
+          })
+        }
+      }
+
+      exports.client.debug("set turn owner")
+      world.turn.owner = turnOwner
+
+      exports.client.debug("reset turn timer")
+      world.turn.limits.leftTurnTime = 0
+
+      exports.client.debug("player " + turnOwner.id + " starts it turn now")
+
+      exports.client.debug("calculating fog map")
+      exports.fog.recalculate(world.map, world.turn.owner, world.turn.owner.visionMap)
+
+      const turnOwnerProperties = world.properties.filter(prop => prop.owner == player)
+
+      // TODO config
+      export.client.debug("raising funds from properties")
+      turnOwnerProperties.forEach(exports.supply.raiseFunds)
+
+      export.client.debug("check supply units for automatical supply")
+      world
+        .units
+        .filter(exports.supply.isSupplier)
+        .filter(exports.supply.canSupplyNeighbours.bind(null, world.map))
+        .map(unit => {
+          exports.client.debug("unit " + unit.id + " is going to supply neighbours")
+          return unit
+        })
+        .forEach(exports.supply.supplyNeighbours)
+
+      // TODO repair
+
+      exports.client.debug("going to drain fuel on turnowner units")
+      world.units
+        .filter(ownable => ownable.owner == turnOwner)
+        // TODO
+        .map(tap(exports.supply.drainFuel))
+        .filter(unit => unit.fuel <= 0)
+        .forEach(..destory..)
+
+      exports.client.debug("put units into usable list")
+      world.usables = world.units
+        .filter(ownable => ownables.owner == world.turn.owner)
+        .map(unit => unit.id)
+    },
+
+    handleAttack: niyError,
+    handleFireLaser: niyError,
+    handleUnitHide: niyError,
+    handleUnitReveal: niyError,
+    handleJoin: niyError,
+    handleWait: niyError,
+    handleProduce: niyError,
+    handleFireSilo: niyError,
+    handleSupply: niyError,
+    handleMoneyTransfer: niyError,
+    handlePropertyTransfer: niyError,
+
+    handleNextCommand(world) {
+      const commands = world.commands
+
+      if (exports.commands.hasItems(commands)) {
+        exports.client.debug("no commands in buffer, skip command handling")
+        return
+      }
+      exports.client.debug("command in buffer, handle it")
+
+      const commandData = exports.commands.getNext(commands)
+      let action = exports.action_objects[command.key]
+      if (exports.isFalsy(action)) return ["invalid-action"]
+
+      const actionKey = commandData.key
+      const actionData = {
+        source: exports.model.position(commandData.sx, commandData.sy),
+        // TODO
+        sourceUnit: null,
+        sourceProperty: null,
+        target: exports.model.position(commandData.tx, commandData.ty),
+        // TODO
+        targetUnit: null,
+        targetProperty: null,
+        targetselection: exports.model.position(commandData.stx, commandData.sty)
+      }
+
+      const actionIdentifier = [
+            "handle",
+            actionKey.substring(0, 1).toUpperCase(),
+            actionKey.substring(1)
+      ].join("")
+
+      const action = exports.actions[actionIdentifier]
+      exports.guard(action)
+
+      action(world, actionData)
+    }
+}
+
+exports.screen = {
+
+  define(data) {
+    let screens = {}
+    exports.guard(exports.isUndefined(screens[data.id]))
+  },
+
+  doAction(name, ...args) {
+
+  },
+
+  open(screenName) {
+    exports.client.debug("game:open-screen:" + screenName)
+
+    // TODO
+    let activeScreen
+    let screens = {}
+    let changeEvent = exports.eventBus()
+
+    exports.guard(screenName != activeScreen)
+
+    activeScreen = screenName
+
+    const screen = screens[screenName]
+
+    // notify client about the new screen
+    // TODO refill layout data
+    exports.client.onScreenOpened(screenName, screen.layout)
+
+    screen.onenter(exports.screen.open, screen.data)
+  },
+
+  init() {
+
+    // some helpers =)
+    const element = type => content => [type, content]
+    const box = content => element("box")
+    const header = value => element("header")
+    const text = value => element("text")
+    const whenDefined = (property, content) => ["if:exists", property, content]
+
+    exports.screen.define({
+      id: "ERROR",
+      layout: [
           box([
 
             header("$header"),
@@ -1971,98 +2206,98 @@ const createCwtGameInstance = () => {
             ["button", exports.client.translated("restart"), "restart"]
           ])
         ],
-        data: {
-          header: "",
-          message: "",
-          location: ""
-        },
-        action: {
-          restart: () => exports.client.restart()
-        },
-        onenter(transition, data, eventData) {
-          data.header = cwt.getOr(eventData.header, "")
-          data.message = cwt.getOr(eventData.message, "")
-          data.location = cwt.getOr(eventData.location, "")
-        }
-      })
+      data: {
+        header: "",
+        message: "",
+        location: ""
+      },
+      action: {
+        restart: () => exports.client.restart()
+      },
+      onenter(transition, data, eventData) {
+        data.header = cwt.getOr(eventData.header, "")
+        data.message = cwt.getOr(eventData.message, "")
+        data.location = cwt.getOr(eventData.location, "")
+      }
+    })
 
-      exports.screen.define({
-        id: "NONE",
-        layout: [
+    exports.screen.define({
+      id: "NONE",
+      layout: [
           ["background-color", "black"]
         ],
-        onenter: transition => transition("LOAD")
-      })
+      onenter: transition => transition("LOAD")
+    })
 
-      exports.screen.define({
-        id: "LOAD",
-        layout: [
+    exports.screen.define({
+      id: "LOAD",
+      layout: [
           ["text", "$loadingText"],
           ["loading-bar", "$loadingPercent"]
         ],
-        data: {
-          loadingText: "",
-          loadingPercent: 0
-        },
-        onenter(transition, data) {
-          exports.client
-            .load({
-              // TODO
-              location: "",
-              onLoadItem: (item) => data.loadingText = exports.localization.text("LOAD") + " " + item,
-              // TODO
-              onFinishedItem: (item) => data.loadingPercent += 1
-            })
-            .then(data => transition("START"))
-            .catch(err => transition("ERROR"))
-        }
-      })
+      data: {
+        loadingText: "",
+        loadingPercent: 0
+      },
+      onenter(transition, data) {
+        exports.client
+          .load({
+            // TODO
+            location: "",
+            onLoadItem: (item) => data.loadingText = exports.localization.text("LOAD") + " " + item,
+            // TODO
+            onFinishedItem: (item) => data.loadingPercent += 1
+          })
+          .then(data => transition("START"))
+          .catch(err => transition("ERROR"))
+      }
+    })
 
-      exports.screen.define({
-        id: "START",
-        layout: [
+    exports.screen.define({
+      id: "START",
+      layout: [
           ["text", "$activeTooltip"],
           ["button", "$next"]
         ],
-        data: {
-          activeTooltip: "",
-          next: exports.client.translated("next")
-        },
-        onenter(transition, data) {
-          exports.client.jobs.add("start:tooltip:update", 5000, () =>
-            data.activeTooltip = exports.client.translated("tooltip." + parseInt(Math.random() * 10, 10) + 1))
-        },
-        actions: {
-          next: (transition, data) => {
-            exports.client.jobs.remove("start:tooltip:update")
-            transition("MAIN")
-          }
+      data: {
+        activeTooltip: "",
+        next: exports.client.translated("next")
+      },
+      onenter(transition, data) {
+        exports.client.jobs.add("start:tooltip:update", 5000, () =>
+          data.activeTooltip = exports.client.translated("tooltip." + parseInt(Math.random() * 10, 10) + 1))
+      },
+      actions: {
+        next: (transition, data) => {
+          exports.client.jobs.remove("start:tooltip:update")
+          transition("MAIN")
         }
-      })
+      }
+    })
 
-      exports.screen.define({
-        id: "MAIN",
-        layout: [
+    exports.screen.define({
+      id: "MAIN",
+      layout: [
           ["button-group", [
             ["button", "$versus"],
             ["button", "$options"]
           ], "vertical"],
           ["small-text", "$about", "bottom-right"]
         ],
-        data: {
-          versus: exports.client.translated("menu.versus"),
-          options: exports.client.translated("menu.options"),
-          about: "CustomWars-Tactics " + exports.VERSION
-        },
-        actions: {
-          versus: (transition, data) => transition("VERSUS"),
-          options: (transition, data) => transition("OPTIONS")
-        }
-      })
+      data: {
+        versus: exports.client.translated("menu.versus"),
+        options: exports.client.translated("menu.options"),
+        about: "CustomWars-Tactics " + exports.VERSION
+      },
+      actions: {
+        versus: (transition, data) => transition("VERSUS"),
+        options: (transition, data) => transition("OPTIONS")
+      }
+    })
 
-      exports.screen.define({
-        id: "OPTIONS",
-        layout: [
+    exports.screen.define({
+      id: "OPTIONS",
+      layout: [
           ["button-group-vertical", [
 
             ["text", "$sfxVolumeLabel"],
@@ -2083,35 +2318,35 @@ const createCwtGameInstance = () => {
             ["button", "$goBack"]
           ]]
         ],
-        data: {
-          sfxVolume: 0,
-          musicVolume: 0,
-          sfxVolumeLabel: exports.client.translated("options.sfx"),
-          musicVolumeLabel: exports.client.translated("options.music"),
-          decreaseSFX: exports.client.translated("options.sfx.decrease"),
-          increaseSFX: exports.client.translated("options.sfx.increase"),
-          decreaseMusic: exports.client.translated("options.music.decrease"),
-          increaseMusic: exports.client.translated("options.music.increase"),
-          wipeData: exports.client.translated("options.music.wipeData"),
-          goBack: exports.client.translated("options.music.goBack")
-        },
-        actions: {
-          decreaseSFX: (transition, data) => data.sfxVolume = exports.client.setSfxVolume(data.sfxVolume - 1),
-          increaseSFX: (transition, data) => data.sfxVolume = exports.client.setSfxVolume(data.sfxVolume + 1),
-          decreaseMusic: (transition, data) => data.musicVolume = exports.client.setMusicVolume(data.musicVolume - 1),
-          increaseMusic: (transition, data) => data.musicVolume = exports.client.setMusicVolume(data.musicVolume + 1),
-          wipeData: () => exports.client.storage.clear().then( /* TODO */ ),
-          goBack: (transition, data) => transition("MAIN")
-        },
-        onenter(transition, data) {
-          data.sfxVolume = exports.client.getSfxVolume()
-          data.musicVolume = exports.client.getMusicVolume()
-        }
-      })
+      data: {
+        sfxVolume: 0,
+        musicVolume: 0,
+        sfxVolumeLabel: exports.client.translated("options.sfx"),
+        musicVolumeLabel: exports.client.translated("options.music"),
+        decreaseSFX: exports.client.translated("options.sfx.decrease"),
+        increaseSFX: exports.client.translated("options.sfx.increase"),
+        decreaseMusic: exports.client.translated("options.music.decrease"),
+        increaseMusic: exports.client.translated("options.music.increase"),
+        wipeData: exports.client.translated("options.music.wipeData"),
+        goBack: exports.client.translated("options.music.goBack")
+      },
+      actions: {
+        decreaseSFX: (transition, data) => data.sfxVolume = exports.client.setSfxVolume(data.sfxVolume - 1),
+        increaseSFX: (transition, data) => data.sfxVolume = exports.client.setSfxVolume(data.sfxVolume + 1),
+        decreaseMusic: (transition, data) => data.musicVolume = exports.client.setMusicVolume(data.musicVolume - 1),
+        increaseMusic: (transition, data) => data.musicVolume = exports.client.setMusicVolume(data.musicVolume + 1),
+        wipeData: () => exports.client.storage.clear().then( /* TODO */ ),
+        goBack: (transition, data) => transition("MAIN")
+      },
+      onenter(transition, data) {
+        data.sfxVolume = exports.client.getSfxVolume()
+        data.musicVolume = exports.client.getMusicVolume()
+      }
+    })
 
-      exports.screen.define({
-        id: "MAP_SELECT",
-        layout: [
+    exports.screen.define({
+      id: "MAP_SELECT",
+      layout: [
           ["box", [
             ["text", exports.client.translated("map")],
             ["text", "$mapName"],
@@ -2120,33 +2355,33 @@ const createCwtGameInstance = () => {
           ]],
           ["button", exports.client.translated("start"), "start"]
         ],
-        data: {
-          maps: [],
-          mapIndex: 0,
-          mapName: ""
+      data: {
+        maps: [],
+        mapIndex: 0,
+        mapName: ""
+      },
+      actions: {
+
+        nextMap(transition, data) {
+          data.mapIndex = data.mapIndex + 1 < data.map.length ? data.mapIndex + 1 : 0
         },
-        actions: {
 
-          nextMap(transition, data) {
-            data.mapIndex = data.mapIndex + 1 < data.map.length ? data.mapIndex + 1 : 0
-          },
-
-          previousMap(transition, data) {
-            data.mapIndex = data.mapIndex + 1 < data.map.length ? data.mapIndex - 1 : data.map.length - 1
-          },
-
-          start(transition, data) {
-            transition("PLAYER_SETUP")
-          }
+        previousMap(transition, data) {
+          data.mapIndex = data.mapIndex + 1 < data.map.length ? data.mapIndex - 1 : data.map.length - 1
         },
-        onenter() {
-          data.maps = []
+
+        start(transition, data) {
+          transition("PLAYER_SETUP")
         }
-      })
+      },
+      onenter() {
+        data.maps = []
+      }
+    })
 
-      exports.screen.define({
-        id: "PLAYER_SETUP",
-        layout: [
+    exports.screen.define({
+      id: "PLAYER_SETUP",
+      layout: [
           ["box", [
 
             ["text", exports.client.translated("player.type")],
@@ -2160,37 +2395,37 @@ const createCwtGameInstance = () => {
             ["button", exports.client.translated("next"), "nextTeamP1"]
           ]]
         ],
-        data: $.Stream.range(1, 4).map(id => ({
-          type: 0,
-          team: id
-        })),
-        actions: {
-          // TODO this is just too  UGLY !
-          prevTeamP1: (transition, data) => data.nth(0).team = 0,
-          prevTeamP2: (transition, data) => null,
-          prevTeamP3: (transition, data) => null,
-          prevTeamP4: (transition, data) => null,
-          nextTeamP1: (transition, data) => null,
-          nextTeamP2: (transition, data) => null,
-          nextTeamP3: (transition, data) => null,
-          nextTeamP4: (transition, data) => null,
-          prevTypeP1: (transition, data) => null,
-          prevTypeP2: (transition, data) => null,
-          prevTypeP3: (transition, data) => null,
-          prevTypeP4: (transition, data) => null,
-          nextTypeP1: (transition, data) => null,
-          nextTypeP2: (transition, data) => null,
-          nextTypeP3: (transition, data) => null,
-          nextTypeP4: (transition, data) => null
-        },
-        onexit(transition, data) {
-          // TODO transfer data into model
-        }
-      })
+      data: $.Stream.range(1, 4).map(id => ({
+        type: 0,
+        team: id
+      })),
+      actions: {
+        // TODO this is just too  UGLY !
+        prevTeamP1: (transition, data) => data.nth(0).team = 0,
+        prevTeamP2: (transition, data) => null,
+        prevTeamP3: (transition, data) => null,
+        prevTeamP4: (transition, data) => null,
+        nextTeamP1: (transition, data) => null,
+        nextTeamP2: (transition, data) => null,
+        nextTeamP3: (transition, data) => null,
+        nextTeamP4: (transition, data) => null,
+        prevTypeP1: (transition, data) => null,
+        prevTypeP2: (transition, data) => null,
+        prevTypeP3: (transition, data) => null,
+        prevTypeP4: (transition, data) => null,
+        nextTypeP1: (transition, data) => null,
+        nextTypeP2: (transition, data) => null,
+        nextTypeP3: (transition, data) => null,
+        nextTypeP4: (transition, data) => null
+      },
+      onexit(transition, data) {
+        // TODO transfer data into model
+      }
+    })
 
-      exports.screen.define({
-        id: "INGAME",
-        layout: [
+    exports.screen.define({
+      id: "INGAME",
+      layout: [
           ["canvas"],
           ["box", [
             ["row", [
@@ -2207,380 +2442,320 @@ const createCwtGameInstance = () => {
             ]]
           ]]
         ],
-        data: {
-          tileUnit: null,
-          tileHP: 0,
-          uiData: {
-            source: exports.model.position(-1, -1),
-            target: exports.model.position(-1, -1),
-            targetselection: exports.model.position(-1, -1),
-            move: {
-              way: []
-            },
-            action: {
-              key: "",
-              subKey: ""
-            }
+      data: {
+        tileUnit: null,
+        tileHP: 0,
+        uiData: {
+          source: exports.model.position(-1, -1),
+          target: exports.model.position(-1, -1),
+          targetselection: exports.model.position(-1, -1),
+          move: {
+            way: []
+          },
+          action: {
+            key: "",
+            subKey: ""
           }
-        },
-        actions: {
+        }
+      },
+      actions: {
 
-          placeCursor(transition, data, actionData) {
+        placeCursor(transition, data, actionData) {
 
-            const getWay = (way, map, pos, target, points) => {
-              let queue = [{
-                way: [],
-                pos,
-                points,
-                distance: Math.abs(target.x - pos.x) + Math.abs(target.y - pos.y)
+          const getWay = (way, map, pos, target, points) => {
+            let queue = [{
+              way: [],
+              pos,
+              points,
+              distance: Math.abs(target.x - pos.x) + Math.abs(target.y - pos.y)
               }]
 
-              while (queue.length > 0) {
-                const entity = queue.pop()
+            while (queue.length > 0) {
+              const entity = queue.pop()
 
-                const nextEntities = [
+              const nextEntities = [
                   exports.model.position(entity.pos.x - 1, entity.pos.y),
                   exports.model.position(entity.pos.x + 1, entity.pos.y),
                   exports.model.position(entity.pos.x, entity.pos.y - 1),
                   exports.model.position(entity.pos.x, entity.pos.y + 1)
                 ]
 
-                nextEntities.forEach(pos =>
-                  Just(pos)
-                  .filter(pos => model.map_isValidPosition(pos.x, pos.y))
-                  .filter(pos => entity.points - movetype.costs[model.map_data[pos.y][pos.y].type.ID] >= 0)
-                  .ifPresent(pos => queue.push({
-                    pos,
-                    points: entity.points - movetype.costs[model.map_data[pos.y][pos.y].type.ID],
-                    distance: Math.abs(target.x - pos.x) + Math.abs(target.y - pos.y)
-                  })))
+              nextEntities.forEach(pos =>
+                Just(pos)
+                .filter(pos => model.map_isValidPosition(pos.x, pos.y))
+                .filter(pos => entity.points - movetype.costs[model.map_data[pos.y][pos.y].type.ID] >= 0)
+                .ifPresent(pos => queue.push({
+                  pos,
+                  points: entity.points - movetype.costs[model.map_data[pos.y][pos.y].type.ID],
+                  distance: Math.abs(target.x - pos.x) + Math.abs(target.y - pos.y)
+                })))
 
-                const targetEntity = queue.find(entity => entity.pos.x === target.x && entity.pos.y === target.y)
+              const targetEntity = queue.find(entity => entity.pos.x === target.x && entity.pos.y === target.y)
 
-                if (targetEntity) {
-                  return targetEntity.way
-                }
-
-                queue.sort((a, b) => a.distance < b.distance ? -1 : +1)
+              if (targetEntity) {
+                return targetEntity.way
               }
 
-              return []
+              queue.sort((a, b) => a.distance < b.distance ? -1 : +1)
             }
 
-            const nx = actionData.get("x")
-            const ny = actionData.get("y")
+            return []
+          }
 
-            cwt.guard(model.map_isValidPosition(nx, ny))
+          const nx = actionData.get("x")
+          const ny = actionData.get("y")
 
-            if (!data.uiData.source.unit) {
-              return []
-            }
+          cwt.guard(model.map_isValidPosition(nx, ny))
 
-            const sx = data.uiData.source.x
-            const sy = data.uiData.source.y
+          if (!data.uiData.source.unit) {
+            return []
+          }
 
-            const moveTargetX = data.uiData.move.way
-              .reduce(code =>
-                code == "L" ? -1 :
-                code == "R" ? +1 : 0, sx)
+          const sx = data.uiData.source.x
+          const sy = data.uiData.source.y
 
-            const moveTargetY = data.uiData.move.way
-              .reduce(code =>
-                code == "U" ? -1 :
-                code == "D" ? +1 : 0, sy)
+          const moveTargetX = data.uiData.move.way
+            .reduce(code =>
+              code == "L" ? -1 :
+              code == "R" ? +1 : 0, sx)
 
-            const distance = Math.abs(moveTargetX - sx) + Math.abs(moveTargetY - sy)
+          const moveTargetY = data.uiData.move.way
+            .reduce(code =>
+              code == "U" ? -1 :
+              code == "D" ? +1 : 0, sy)
 
-            if (distance == 1) {
+          const distance = Math.abs(moveTargetX - sx) + Math.abs(moveTargetY - sy)
 
-              const dir = exports.cond([
+          if (distance == 1) {
+
+            const dir = exports.cond([
                 [sx < moveTargetX, "L"],
                 [sx > moveTargetX, "R"],
                 [sy < moveTargetY, "U"],
                 [sy > moveTargetY, "D"]
               ])
 
-              exports.guard(dir)
-              data.uiData.move.way.push(dir)
+            exports.guard(dir)
+            data.uiData.move.way.push(dir)
 
-              // TODO out of range
+            // TODO out of range
 
-            } else {
+          } else {
 
-              // TODO
-              data.uiData.move.way = getWay(model.map_data, data.uiData.source, position(nx, ny), 5)
+            // TODO
+            data.uiData.move.way = getWay(model.map_data, data.uiData.source, position(nx, ny), 5)
+          }
+
+          return data.uiData.move.way
+        },
+
+        clickCursor(transition, data, actionData) {
+
+          const getPropertyActions = (transition, data, actionData) => {
+            const property = actionData.source.property
+            const sourceUnit = actionData.source.unit
+
+            if (!sourceUnit) return {}
+            if (!property) return {}
+
+            return {
+              produce: exports.production.isFactory(property) &&
+                exports.production.canProduce(model, property),
+
+              propertyTransfer: exports.transfer.canDoPropertyTransfer(property)
             }
+          }
 
-            return data.uiData.move.way
-          },
+          const getUnitActions = (transition, data, unitActionData) => {
+            const actionData = unitActionData.actionData
+            const moveData = unitActionData.moveData
+            const sourceUnit = actionData.source.unit
 
-          clickCursor(transition, data, actionData) {
+            if (!sourceUnit) return {}
 
-            const getPropertyActions = (transition, data, actionData) => {
-              const property = actionData.source.property
-              const sourceUnit = actionData.source.unit
+            const targetUnit = actionData.target.unit
+            const targetProperty = actionData.target.property
+            const unitAtTarget = !!targetUnit
+            const propertyAtTarget = !!targetProperty
+            const canAct = exports.usable.isUsable(sourceUnit)
 
-              if (!sourceUnit) return {}
-              if (!property) return {}
-
-              return {
-                produce: exports.production.isFactory(property) &&
-                  exports.production.canProduce(model, property),
-
-                propertyTransfer: exports.transfer.canDoPropertyTransfer(property)
-              }
-            }
-
-            const getUnitActions = (transition, data, unitActionData) => {
-              const actionData = unitActionData.actionData
-              const moveData = unitActionData.moveData
-              const sourceUnit = actionData.source.unit
-
-              if (!sourceUnit) return {}
-
-              const targetUnit = actionData.target.unit
-              const targetProperty = actionData.target.property
-              const unitAtTarget = !!targetUnit
-              const propertyAtTarget = !!targetProperty
-              const canAct = exports.usable.isUsable(sourceUnit)
-
-              if (!canAct) return {}
-
-              return {
-
-                attack:
-                  // TODO
-                  exports.every(exports.isTruthy, [
-                  model.round_day < controller.configValue("daysOfPeace"), !model.battle_isIndirectUnit(e.source.unitId) || exports.notEqual(-1, e.movePath.data[0]),
-                  model.battle_calculateTargets(e.source.unitId, e.target.x, e.target.y)
-                ]),
-                exports.battle.calculateTargets().length > 0,
-
-                fireLaser: exports.specialProperties.isLaser(sourceUnit),
-
-                fireSilo: propertyAtTarget &&
-                  exports.specialProperties.isSilo(targetProperty) &&
-                  exports.specialProperties.isSiloFireableBy(sourceUnit, targetProperty),
-
-                unitHide: exports.stealth.isStealthUnit(sourceUnit) &&
-                  exports.stealth.canHide(sourceUnit),
-
-                unitReveal: exports.stealth.isStealthUnit(sourceUnit) &&
-                  exports.stealth.canReveal(sourceUnit),
-
-                join: unitAtTarget &&
-                  exports.join.canJoin(model.unit_data[actionData.source.unitId], model.unit_data[actionData.target.unitId]),
-
-                supply:
-                  !unitAtTarget &&
-                  exports.supply.isSupplier(sourceUnit) &&
-                  exports.supply.canSupplyAtPositon(
-                    model.map_data,
-                    sourceUnit, {
-                      x: actionData.target.x,
-                      y: actionData.target.y
-                    }),
-
-                explode:
-                  !unitAtTarget &&
-                  exports.explode.canExplode(sourceUnit),
-
-                wait: !unitAtTarget
-              }
-            }
-
-            const getSubMenu = (transition, data, actionData) => {
-              if (actionData.action === "produce") {
-                const ownerGold =
-                  return model.data_unitSheets.some(sheet => )
-                var n = model.property_data[e];
-                assert(model.player_isValidPid(n.owner));
-                for (var a = model.player_data[n.owner].gold, r = model.data_unitTypes, l = n.type.builds, i = 0, d = r.length; d > i; i++) {
-                  var s = r[i],
-                    c = model.data_unitSheets[s]; - 1 !== l.indexOf(c.movetype) && (c.cost <= a || o) && t.addEntry(s, c.cost <= a)
-                }
-              } else if (["propertyTransfer", "unitTransfer"].includes(actionData.action)) {
-                return exports.transfer.getTransferTargetPlayers(
-                  model.player_data,
-                  model.player_data[actionData.source.property.owner])
-              }
-              return []
-            }
-
-            // TODO exports.battle.calculateTargets().length > 0
-            const getTargetSelection = (transition, data, actionData) => ({
-              needed: actionData.action === "fireSilo",
-              freestyle: true,
-              targets: actionData.action === "fireSilo" ? null : []
-            })
-
-            const getMapActions = (transition, data, actionData) => ({
-              activateCoPower: exports.co.isCoPActivatable(model, model.round_turnOwner),
-              activateSuperCoPower: exports.co.isSCoPActivatable(model, model.round_turnOwner),
-              moneyTransfer: exports.transfer.canTransferMoney(model.turn.owner),
-              toOptions: true,
-              endTurn: true
-            })
-
-            const nx = actionData.get("x")
-            const ny = actionData.get("y")
-
-            $.guard(model.map_isValidPosition(nx, ny))
-
-            const noPositionSelected = pos => pos.x == -1 && pos.y == -1
-
-            const position = Switch()
-              .Case(noPositionSelected(data.uiData.source), data.uiData.source)
-              .Case(noPositionSelected(data.uiData.target), data.uiData.target)
-              .Default(data.uiData.targetselection)
-
-            $.guard(noPositionSelected(position))
-            position.x = nx
-            position.y = ny
-
-            return Switch(position)
-              .Case(pos => pos === data.uiData.source, {
-                // TODO move
-                move: {
-                  map: []
-                }
-              })
-              .Case(pos => pos === data.uiData.target, {
-                // TODO set move path if unit exists
-              })
-              .Default({
-
-              })
-          },
-
-          clickAction(transition, data, actionData) {
-            const action = actionData.get("actionKey")
-            cwt.guard(!!action) // TODO check key
-
-            cwt.guard(!data.uiData.action.key || !data.uiData.action.subKey)
-
-            const targetProperty = !data.uiData.action.key ? "subKey" : "key"
-            data.uiData.action[targetProperty] = action
+            if (!canAct) return {}
 
             return {
 
+              attack:
+                // TODO
+                exports.every(exports.isTruthy, [
+                  model.round_day < controller.configValue("daysOfPeace"), !model.battle_isIndirectUnit(e.source.unitId) || exports.notEqual(-1, e.movePath.data[0]),
+                  model.battle_calculateTargets(e.source.unitId, e.target.x, e.target.y)
+                ]),
+              exports.battle.calculateTargets().length > 0,
+
+              fireLaser: exports.specialProperties.isLaser(sourceUnit),
+
+              fireSilo: propertyAtTarget &&
+                exports.specialProperties.isSilo(targetProperty) &&
+                exports.specialProperties.isSiloFireableBy(sourceUnit, targetProperty),
+
+              unitHide: exports.stealth.isStealthUnit(sourceUnit) &&
+                exports.stealth.canHide(sourceUnit),
+
+              unitReveal: exports.stealth.isStealthUnit(sourceUnit) &&
+                exports.stealth.canReveal(sourceUnit),
+
+              join: unitAtTarget &&
+                exports.join.canJoin(model.unit_data[actionData.source.unitId], model.unit_data[actionData.target.unitId]),
+
+              supply:
+                !unitAtTarget &&
+                supply.isSupplier(sourceUnit) &&
+                supply.canSupplyAtPositon(
+                  model.map_data,
+                  sourceUnit, {
+                    x: actionData.target.x,
+                    y: actionData.target.y
+                  }),
+
+              explode:
+                !unitAtTarget &&
+                exports.explode.canExplode(sourceUnit),
+
+              wait: !unitAtTarget
             }
-          },
+          }
 
-          deselect(transition, data, actionData) {},
+          const getSubMenu = (transition, data, actionData) => {
+            if (actionData.action === "produce") {
+              const ownerGold =
+                return model.data_unitSheets.some(sheet => )
+              var n = model.property_data[e];
+              assert(model.player_isValidPid(n.owner));
+              for (var a = model.player_data[n.owner].gold, r = model.data_unitTypes, l = n.type.builds, i = 0, d = r.length; d > i; i++) {
+                var s = r[i],
+                  c = model.data_unitSheets[s]; - 1 !== l.indexOf(c.movetype) && (c.cost <= a || o) && t.addEntry(s, c.cost <= a)
+              }
+            } else if (["propertyTransfer", "unitTransfer"].includes(actionData.action)) {
+              return exports.transfer.getTransferTargetPlayers(
+                model.player_data,
+                model.player_data[actionData.source.property.owner])
+            }
+            return []
+          }
 
-          postAction(transition, data, actionData) {
-            exports.commands.post({
-              key: actionData.action,
-              sx: actionData.source.x,
-              sy: actionData.source.y,
-              tx: actionData.target.x,
-              ty: actionData.target.y,
-              stx: actionData.targetselection.x,
-              sty: actionData.targetselection.y
+          // TODO exports.battle.calculateTargets().length > 0
+          const getTargetSelection = (transition, data, actionData) => ({
+            needed: actionData.action === "fireSilo",
+            freestyle: true,
+            targets: actionData.action === "fireSilo" ? null : []
+          })
+
+          const getMapActions = (transition, data, actionData) => ({
+            activateCoPower: exports.co.isCoPActivatable(model, model.round_turnOwner),
+            activateSuperCoPower: exports.co.isSCoPActivatable(model, model.round_turnOwner),
+            moneyTransfer: exports.transfer.canTransferMoney(model.turn.owner),
+            toOptions: true,
+            endTurn: true
+          })
+
+          const nx = actionData.get("x")
+          const ny = actionData.get("y")
+
+          $.guard(model.map_isValidPosition(nx, ny))
+
+          const noPositionSelected = pos => pos.x == -1 && pos.y == -1
+
+          const position = Switch()
+            .Case(noPositionSelected(data.uiData.source), data.uiData.source)
+            .Case(noPositionSelected(data.uiData.target), data.uiData.target)
+            .Default(data.uiData.targetselection)
+
+          $.guard(noPositionSelected(position))
+          position.x = nx
+          position.y = ny
+
+          return Switch(position)
+            .Case(pos => pos === data.uiData.source, {
+              // TODO move
+              move: {
+                map: []
+              }
             })
-            //TODO deselect
+            .Case(pos => pos === data.uiData.target, {
+              // TODO set move path if unit exists
+            })
+            .Default({
+
+            })
+        },
+
+        clickAction(transition, data, actionData) {
+          const action = actionData.get("actionKey")
+          cwt.guard(!!action) // TODO check key
+
+          cwt.guard(!data.uiData.action.key || !data.uiData.action.subKey)
+
+          const targetProperty = !data.uiData.action.key ? "subKey" : "key"
+          data.uiData.action[targetProperty] = action
+
+          return {
+
           }
         },
-        onenter() {
 
-          // TODO ANIMATIONS???
+        deselect(transition, data, actionData) {},
 
-          const gameloop = delta => {
-            if (!exports.commands.hasItems()) {
-              return
-            }
-
-            const commandData = exports.commands.getNext()
-            const actionKey = commandData.key
-            const actionData = {
-              source: exports.model.position(commandData.sx, commandData.sy),
-              target: exports.model.position(commandData.tx, commandData.ty),
-              targetselection: exports.model.position(commandData.stx, commandData.sty)
-            }
-
-            const sourceUnit = actionData.source.unit
-            const targetUnit = actionData.target.unit
-
-            // TODO INTO LOOP
-            const ACTIONS = {
-
-              // TODO
-              attack: () => exports.battle.attack(),
-
-              fireLaser: () => controller
-                .commandStack_sharedInvokement("bombs_fireLaser", e.target.x, e.target.y),
-
-              unitHide: () => exports.stealth.hide(sourceUnit),
-
-              unitReveal: () => exports.stealth.reveal(sourceUnit),
-
-              join: () => exports.join.combine(sourceUnit, targetUnit),
-
-              wait: () => exports.usable.setUnusable(model, sourceUnit),
-
-              produce: () => controller
-                .commandStack_sharedInvokement("buildUnit_invoked", e.source.x, e.source.y, e.action.selectedSubEntry),
-
-              fireSilo: () => exports.silo.fireSilo(sourceUnit, targetProperty, exports.position(actionData.targetX, actionData.targetY)),
-
-              supply: () => exports.supply.supplySurroundingUnits(model.map_data, actionData.source.unit),
-
-              moneyTransfer: () => exports.transfer.doMoneyTransfer(
-                model.player_data[model.round_turnOwner],
-                actionData.menuSelection,
-                null),
-
-              propertyTransfer: () => exports.transfer.doPropertyTransfer(
-                model.source.property,
-                model.player_data[actionData.menuSelection]),
-
-              endTurn: () => exports.turn.endTurn(),
-
-              // TODO how to prevent end of gameloop ?
-              toOptions: () => transition("OPTIONS")
-            }
-
-            const action = ACTIONS[actionKey]
-            exports.guard(action)
-
-          }
-
-          exports.client.jobs.add("inGameLoop", 100, gameloop)
-        },
-        onexit() {
-          exports.client.jobs.remove("inGameLoop")
+        postAction(transition, data, actionData) {
+          exports.actions.pushAction(world, {
+            key: actionData.action,
+            sx: actionData.source.x,
+            sy: actionData.source.y,
+            tx: actionData.target.x,
+            ty: actionData.target.y,
+            stx: actionData.targetselection.x,
+            sty: actionData.targetselection.y
+          })
         }
-      })
+      },
+      onenter() {
+
+        // TODO ???
+        const world = null
+
+        exports.client.jobs.add("inGameLoop", 100, delta => exports.actions.handleNextCommand(world))
+      },
+      onexit: () => exports.client.jobs.remove("inGameLoop")
+    })
+  }
+}
+
+exports.VERSION = "0.3.6 (INTERNAL)"
+
+/**
+  @return Promise(-, error-message)
+ */
+exports.initialize = () => new Promise((resolve, reject) => {
+
+  exports.client.init()
+  exports.client.debug("game:version:" + exports.VERSION)
+  exports.client.debug("game:debug:on")
+  exports.client.debug("game:startup")
+  exports.client.debug("game:init:screens")
+  exports.screen.init()
+  exports.screen.open("LOAD")
+
+  resolve()
+})
+
+exports.gameFactory = () => {
+
+  let world = {}
+
+  return {
+    getWorld() {
+
     }
   }
+}
 
-  exports.VERSION = "0.3.6 (INTERNAL)"
-
-  /**
-    @return Promise(-, error-message)
-   */
-  exports.initialize = () => new Promise((resolve, reject) => {
-
-    exports.client.init()
-    exports.client.debug("game:version:" + exports.VERSION)
-    exports.client.debug("game:debug:on")
-    exports.client.debug("game:startup")
-    exports.client.debug("game:init:screens")
-    exports.screen.init()
-    exports.screen.open("LOAD")
-
-    resolve()
-  })
-
-  return (() => {
-
-    let world
-
-    return {
-      getWorld() {
-
-      }
-    }
-  })()
+return exports.gameFactory()
 }
