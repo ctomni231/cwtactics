@@ -8,15 +8,23 @@
                                                        maximum-scale=1,
                                                        user-scalable=no" />
 
+    <script type='text/javascript' src='types.js'></script>
     <script type='text/javascript' src='game.js'></script>
     <script type='text/javascript' src='actions.js'></script>
     <script type='text/javascript' src='ai.js'></script>
     <script type='text/javascript' src='screens.js'></script>
+    <script type='text/javascript' src='client-api.js'></script>
     <script type='text/javascript' src='client.js'></script>
 
-    <script> window.addEventListener( 'load', () => {
+    <script>
 
-      }, false ); </script>
+      const gameCreateInstance = () => {
+
+      }
+
+
+      window.addEventListener( 'load', gameCreateInstance, false );
+    </script>
 
   </head>
 

@@ -3,15 +3,15 @@
   JSLIX HOME
 
  */
-(function(api) {
+const gameCreateClient = function () {
 
-  api.init = () => {
-    
-    // debug output
-    api.debug = msg => console.log("CWT::" + msg)
+  const client = Object.create(gameClient)
 
-    // inject error debug out
-    window.onerror = err => api.debug(err.message || err)
-  }
+  // debug output
+  client.debug = msg => console.log("CWT::" + msg)
 
-})(cwt.client)
+  // inject error debug out
+  window.onerror = err => gameClient.debug(err.message || err)
+
+  return client
+}

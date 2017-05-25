@@ -1,4 +1,4 @@
-const gameClientInterface = (() => {
+const gameClient = (() => {
 
   const noop = () => undefined
   const notImplemented = () => console.error("niy")
