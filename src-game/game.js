@@ -36,200 +36,31 @@ const createCwtGameInstance = () => {
     .reduce((result, value) => result.concat(value), [])
 
   const condition = value => ({
-    case(predicate, supplier) {
+    case (predicate, supplier) {
       return !!predicate(value) ? conditionSolved(supplier(value)) : condition(value)
     },
-    default(newValue) {
+    default (newValue) {
       return newValue
     }
   })
 
   const conditionSolved = value => ({
-    case() {
+    case () {
       return conditionSolved(value)
     },
-    default() {
+    default () {
       return value
     }
   })
+
+  const rotateList = (list, n) => list.slice(n, list.length).concat(list.slice(0, n))
 
   const $ = createCoreModule()
   const exports = {}
 
   const niyError = () => console.error("niy")
 
-  /**
-    Client API interface.
-  */
-  exports.client = {
-
-    /**
-      Pushes an information into the debug channel
-     */
-    debug: exports.noop,
-
-    /**
-      Restarts the whole game.
-    */
-    restart: niyError,
-
-    /**
-      @todo client has to overwrite this
-      @return Promise(void, error-message)
-    */
-    init: niyError,
-
-    audio: {
-
-      /**
-        @parameter volume {integer} new volume of the channel (values: 0..100)
-        @return {integer} new sfx channel volume
-      */
-      setSfxVolume: niyError,
-
-      /**
-        @return {integer} sfx channel volume
-      */
-      getSfxVolume: niyError,
-
-      /**
-        @parameter volume {integer} new volume of the channel (values: 0..100)
-        @return {integer} new music channel volume
-      */
-      setMusicVolume: niyError,
-
-      /**
-        @return {integer} music channel volume
-      */
-      getMusicVolume: niyError
-
-    },
-
-    /**
-      @return {object{x: integer, y: integer}}
-     */
-    getCursor: niyError,
-
-    /**
-      @todo client has to overwrite this
-      @param key
-      @param translated key or ???key??? if key cannot be
-             translated into a human readable language
-    */
-    translated: niyError,
-
-    jobs: {
-
-      /**
-        Calls the given job after the given time in
-        milliseconds over and over again until jobs.remove is called.
-
-        @todo client has to overwrite this
-        @param key
-        @param time {integer} in ms
-        @param job {function}
-      */
-      add: niyError,
-
-      /**
-        Removes the given job from the job queue.
-
-        @todo client has to overwrite this
-        @param key
-      */
-      remove: niyError
-    },
-
-    /**
-      Shows a notification message to the user. This may not
-      requests any interaction from the user and fades out after
-      time.
-
-      @todo client has to overwrite this
-      @param time {int} in milliseconds
-      @param msg {string}
-    */
-    showNotification: niyError,
-
-    events: {
-
-      /**
-        Will be called when a screen will be opened.
-
-        @todo client has to overwrite this
-        @param key {string} key of the screen
-        @param layout {???} layout data of the screen
-      */
-      onScreenOpened: $.noop,
-
-      /**
-        @param weather {string}
-       */
-      onWeatherChanged: $.noop,
-
-      /**
-        @param type {string}
-        @param x {integer}
-        @param y {integer}
-       */
-      onUnitCreated: $.noop
-    },
-
-    /**
-      network package contains the network access
-    */
-    net: {
-
-      /**
-        @todo client has to overwrite this
-        @param key {string}
-        @param data {?}
-      */
-      shareCommand: niyError,
-
-      /**
-        @todo client has to overwrite this
-        @return {boolean} true if the game round is a network
-                game instance, false otherwise
-       */
-      isActive: niyError,
-
-      /**
-        @todo client has to overwrite this
-        @return {boolean} true when the game client is the host
-                instance in a game instance, false otherwise
-       */
-      isHost: niyError
-    },
-
-    /**
-      storage object holds functions to store and load persistent data
-    */
-    storage: {
-
-      /**
-        @todo client has to overwrite this
-        @param key {string} key of the entry
-        @return Promise(T, error-message)
-      */
-      load: niyError,
-
-      /**
-        save:: (string, A) -> Promise(A, string)
-
-        takes a key and a value. saves the value with the unique identifier
-        key and returns a promise which resolves with the saved value, or
-        rejects with an error message.
-      */
-      save: niyError,
-
-      /**
-        @todo client has to overwrite this
-        @return Promise(void, error-message)
-      */
-      clean: niyError
-    }
-  }
+  exports.VERSION = "0.3.6 (INTERNAL)"
 
   exports.model = {
 
@@ -338,9 +169,13 @@ const createCwtGameInstance = () => {
         },
         rules: {
 
+          turnTime: integer(0, Number.POSITIVE_INFINITY),
+
           capturePerStep: integer(1, 1000),
 
           capturePoints: integer(1, 1000),
+
+          unitMobilizable: isBoolean,
 
           funds: integer(0, 999999),
 
@@ -407,6 +242,11 @@ const createCwtGameInstance = () => {
           leftTurnTime: integer(0, Number.POSITIVE_INFINITY)
         },
         usables: [isBoolean],
+        effects: [{
+          event: isString,
+          restriction: maybe(isString),
+          effect: isString
+        }],
         async: {
           events: [{
             leftTicks: integer(0, 99),
@@ -427,9 +267,7 @@ const createCwtGameInstance = () => {
       })
     },
 
-    isValidModel(data) {
 
-    },
 
     // TODO needed ?
     isValidPosition(e, t) {
@@ -714,31 +552,32 @@ const createCwtGameInstance = () => {
     }
   }
 
-  exports.commands = {
+  /**
+    returns true if the buffer contains at least one command,
+    false otherwise
+   */
+  const hasCommands: buffer => buffer.length > 0
 
-    /**
-      returns true if the buffer contains at least one command,
-      false otherwise
-     */
-    hasItems: buffer => buffer.length > 0,
+  /**
+    pushes a command into the buffer
+   */
+  const pushCommand: (buffer, command) => {
+    const MAX_SIZE = 200
 
-    post: (buffer, command) => {
-      const MAX_SIZE = 200
-
-      // TODO check format
-      guard(buffer.length < MAX_SIZE)
-      buffer.push(command)
-      return buffer
-    },
-
-    /**
-
-      */
-    getNext: buffer => {
-      guard(exports.commands.hasItems(buffer))
-      return buffer.shift()
-    }
+    // TODO check format
+    guard(buffer.length < MAX_SIZE)
+    buffer.push(command)
+    return buffer
   }
+
+  /**
+
+    */
+  const getNextCommand: buffer => {
+    guard(exports.commands.hasItems(buffer))
+    return buffer.shift()
+  }
+
 
   exports.transfer = {
 
@@ -753,7 +592,7 @@ const createCwtGameInstance = () => {
       @return true when the player can transfer money, false otherwise
      */
     canTransferMoney: (sourcePlayer) =>
-      player.gold >= $.head(exports.transfer.getMoneyTransferPackages()),
+      player.gold >= exports.transfer.getMoneyTransferPackages()[0],
 
     doMoneyTransfer(sourcePlayer, amount, targetPlayer) {
       sourcePlayer.gold -= amount
@@ -877,6 +716,12 @@ const createCwtGameInstance = () => {
     }
   }
 
+  const limits = {
+    resetTurnTimer(model, cfg) {
+      model.leftTurnTime = or(cfg.turnTime, Number.POSITIVE_INFINITY)
+    }
+  }
+
   exports.turn = {
 
     /**
@@ -899,43 +744,23 @@ const createCwtGameInstance = () => {
      */
     endTurn: (turn, players) => {
 
-      const currentOwner = model.round_turnOwner
-      let nextOwner = currentOwner
+      const currentOwner = turn.owner
+      const currentOwnerIndex = players.indexOf(currentOwner)
+      const restPlayers = rotateList(players.filter(p => p != currentOwner), currentOwnerIndex).filter(p => p.team != -1)
 
-      do {
-        nextOwner = nextOwner < 3 ? nextOwner + 1 : 0
+      guard(restPlayers.length > 0)
 
-        // break out when we find a suitable player
-        if (players[nextOwner].team != -1) break;
-
-      } while (currentOwner != nextOwner)
-
-      guard(currentOwner != nextOwner)
-
-      const dayChanged = nextOwner < currentOwner
+      const nextOwner = restPlayers[0]
+      const nextOwnerIndex = players.indexOf(nextOwner)
+      const dayChanged = nextOwnerIndex < currentOwnerIndex
 
       turn.day = turn.day + (dayChanged ? 1 : 0)
+      turn.owner = nextOwner
 
       return dayChanged
     },
 
-    yield(map, player) {
-
-      const mayNeutralizePlayerObject = ownable => {
-        if (!!ownable) ownable.owner = ownable.owner === player ? null : ownable.owner
-      }
-
-      map.forEach(column =>
-        column.forEach(tile => {
-          mayNeutralizePlayerObject(tile.unit)
-          mayNeutralizePlayerObject(tile.property)
-        }))
-
-      player.team = -1
-
-      //TODO
-      api.turn.endTurn()
-    }
+    yield: player => player.team = -1
   }
 
   exports.co = {
@@ -1845,917 +1670,65 @@ const createCwtGameInstance = () => {
     })
   }
 
-  exports.ai = {
+  exports.screen = {
 
-    enabled: false,
+    define(data) {
+      let screens = {}
+      exports.guard(exports.isUndefined(screens[data.id]))
+    },
 
-    isActiveForPlayer: exports.noop,
+    doAction(name, ...args) {
 
-    activateForPlayer: exports.noop,
+    },
 
-    about: () => "DumbBoy 0.0.1",
+    open(screenName) {
+      exports.client.debug("game:open-screen:" + screenName)
 
-    init() {
-      exports.ai.enabled = true
-      exports.ai.about = exports.always("ai-dumbBoy 0.0.1")
+      // TODO
+      let activeScreen
+      let screens = {}
+      let changeEvent = exports.eventBus()
+
+      exports.guard(screenName != activeScreen)
+
+      activeScreen = screenName
+
+      const screen = screens[screenName]
+
+      // notify client about the new screen
+      // TODO refill layout data
+      exports.client.onScreenOpened(screenName, screen.layout)
+
+      screen.onenter(exports.screen.open, screen.data)
     }
   }
 
   /**
-    game logic mediator service which coordinates the
-    access of actions into the different logic modules.
+    @return Promise(-, error-message)
    */
-  exports.actions = {
+  exports.initialize = () => new Promise((resolve, reject) => {
 
-      /*====================================================*/
+    exports.client.init()
+    exports.client.debug("game:version:" + exports.VERSION)
+    exports.client.debug("game:debug:on")
+    exports.client.debug("game:startup")
+    exports.client.debug("game:init:screens")
+    exports.screen.init()
+    exports.screen.open("LOAD")
 
-      const getPropertyActions = (transition, data, actionData) => {
-        const property = actionData.source.property
-        const sourceUnit = actionData.source.unit
+    resolve()
+  })
 
-        if (!sourceUnit) return {}
-        if (!property) return {}
+  exports.gameFactory = () => {
 
-        return {
-          produce: exports.production.isFactory(property) &&
-            exports.production.canProduce(model, property),
+    let world = {}
 
-          propertyTransfer: exports.transfer.canDoPropertyTransfer(property)
-        }
-      }
-
-      const getUnitActions = (transition, data, unitActionData) => {
-        const actionData = unitActionData.actionData
-        const moveData = unitActionData.moveData
-        const sourceUnit = actionData.source.unit
-
-        if (!sourceUnit) return {}
-
-        const targetUnit = actionData.target.unit
-        const targetProperty = actionData.target.property
-        const unitAtTarget = !!targetUnit
-        const propertyAtTarget = !!targetProperty
-        const canAct = exports.usable.isUsable(sourceUnit)
-
-        if (!canAct) return {}
-
-        return {
-
-          attack:
-            // TODO
-            exports.every(exports.isTruthy, [
-                  model.round_day < controller.configValue("daysOfPeace"), !model.battle_isIndirectUnit(e.source.unitId) || exports.notEqual(-1, e.movePath.data[0]),
-                  model.battle_calculateTargets(e.source.unitId, e.target.x, e.target.y)
-                ]),
-          exports.battle.calculateTargets().length > 0,
-
-          fireLaser: exports.specialProperties.isLaser(sourceUnit),
-
-          fireSilo: propertyAtTarget &&
-            exports.specialProperties.isSilo(targetProperty) &&
-            exports.specialProperties.isSiloFireableBy(sourceUnit, targetProperty),
-
-          unitHide: exports.stealth.isStealthUnit(sourceUnit) &&
-            exports.stealth.canHide(sourceUnit),
-
-          unitReveal: exports.stealth.isStealthUnit(sourceUnit) &&
-            exports.stealth.canReveal(sourceUnit),
-
-          join: unitAtTarget &&
-            exports.join.canJoin(model.unit_data[actionData.source.unitId], model.unit_data[actionData.target.unitId]),
-
-          supply:
-            !unitAtTarget &&
-            supply.isSupplier(sourceUnit) &&
-            supply.canSupplyAtPositon(
-              model.map_data,
-              sourceUnit, {
-                x: actionData.target.x,
-                y: actionData.target.y
-              }),
-
-          explode:
-            !unitAtTarget &&
-            exports.explode.canExplode(sourceUnit),
-
-          wait: !unitAtTarget
-        }
-      }
-
-      const getSubMenu = (transition, data, actionData) => {
-        if (actionData.action === "produce") {
-          const ownerGold =
-            return model.data_unitSheets.some(sheet => )
-          var n = model.property_data[e];
-          assert(model.player_isValidPid(n.owner));
-          for (var a = model.player_data[n.owner].gold, r = model.data_unitTypes, l = n.type.builds, i = 0, d = r.length; d > i; i++) {
-            var s = r[i],
-              c = model.data_unitSheets[s]; - 1 !== l.indexOf(c.movetype) && (c.cost <= a || o) && t.addEntry(s, c.cost <= a)
-          }
-        } else if (["propertyTransfer", "unitTransfer"].includes(actionData.action)) {
-          return exports.transfer.getTransferTargetPlayers(
-            model.player_data,
-            model.player_data[actionData.source.property.owner])
-        }
-        return []
-      }
-
-      // TODO exports.battle.calculateTargets().length > 0
-      const getTargetSelection = (transition, data, actionData) => ({
-        needed: actionData.action === "fireSilo",
-        freestyle: true,
-        targets: actionData.action === "fireSilo" ? null : []
-      })
-
-      const getMapActions = (transition, data, actionData) => ({
-        activateCoPower: exports.co.isCoPActivatable(model, model.round_turnOwner),
-        activateSuperCoPower: exports.co.isSCoPActivatable(model, model.round_turnOwner),
-        moneyTransfer: exports.transfer.canTransferMoney(model.turn.owner),
-        toOptions: true,
-        endTurn: true
-      })
-
-      const nx = actionData.get("x")
-      const ny = actionData.get("y")
-
-      $.guard(model.map_isValidPosition(nx, ny))
-
-      const noPositionSelected = pos => pos.x == -1 && pos.y == -1
-
-      const position = Switch()
-        .Case(noPositionSelected(data.uiData.source), data.uiData.source)
-        .Case(noPositionSelected(data.uiData.target), data.uiData.target)
-        .Default(data.uiData.targetselection)
-
-      $.guard(noPositionSelected(position))
-      position.x = nx
-      position.y = ny
-
-      return Switch(position)
-        .Case(pos => pos === data.uiData.source, {
-          // TODO move
-          move: {
-            map: []
-          }
-        })
-        .Case(pos => pos === data.uiData.target, {
-          // TODO set move path if unit exists
-        })
-        .Default({
-
-        })
-    },
-
-    clickAction(transition, data, actionData) {
-      const action = actionData.get("actionKey")
-      cwt.guard(!!action) // TODO check key
-
-      cwt.guard(!data.uiData.action.key || !data.uiData.action.subKey)
-
-      const targetProperty = !data.uiData.action.key ? "subKey" : "key"
-      data.uiData.action[targetProperty] = action
-
-      return {
+    return {
+      getWorld() {
 
       }
-    },
-
-    /*====================================================*/
-
-    pushAction: (world, actionData) => {
-      // TODO
-      exports.client.debug("push command into buffer", actionData)
-      world.commands.push(JSON.stringify({
-        key: actionData.key,
-        data: actionData
-      }))
-    },
-
-    handleEndTurn: (world, action) => {
-
-      exports.client.debug("player " + world.turn.owner.id + " ends it turn now")
-
-      const dayChanged = exports.turn.endTurn(world)
-
-      if (dayChanged) {
-
-        exports.client.debug("day changed, now it's day " + exports.turn.day)
-
-        const nextAsyncCommands = exports.async.tick(world.async)
-
-        if (nextAsyncCommands.length > 0) {
-          exports.client.debug("found async commands which has to be invoked")
-
-          nextAsyncCommands.forEach(command => {
-            exports.client.debug("evaluate async command", command)
-            // TODO
-          })
-        }
-      }
-
-      exports.client.debug("set turn owner")
-      world.turn.owner = turnOwner
-
-      exports.client.debug("reset turn timer")
-      world.turn.limits.leftTurnTime = 0
-
-      exports.client.debug("player " + turnOwner.id + " starts it turn now")
-
-      exports.client.debug("calculating fog map")
-      exports.fog.recalculate(world.map, world.turn.owner, world.turn.owner.visionMap)
-
-      const turnOwnerProperties = world.properties.filter(prop => prop.owner == player)
-
-      // TODO config
-      export.client.debug("raising funds from properties")
-      turnOwnerProperties.forEach(exports.supply.raiseFunds)
-
-      export.client.debug("check supply units for automatical supply")
-      world
-        .units
-        .filter(exports.supply.isSupplier)
-        .filter(exports.supply.canSupplyNeighbours.bind(null, world.map))
-        .map(unit => {
-          exports.client.debug("unit " + unit.id + " is going to supply neighbours")
-          return unit
-        })
-        .forEach(exports.supply.supplyNeighbours)
-
-      // TODO repair
-
-      exports.client.debug("going to drain fuel on turnowner units")
-      world.units
-        .filter(ownable => ownable.owner == turnOwner)
-        // TODO
-        .map(tap(exports.supply.drainFuel))
-        .filter(unit => unit.fuel <= 0)
-        .forEach(..destory..)
-
-      exports.client.debug("put units into usable list")
-      world.usables = world.units
-        .filter(ownable => ownables.owner == world.turn.owner)
-        .map(unit => unit.id)
-    },
-
-    handleAttack: niyError,
-    handleFireLaser: niyError,
-    handleUnitHide: niyError,
-    handleUnitReveal: niyError,
-    handleJoin: niyError,
-    handleWait: niyError,
-    handleProduce: niyError,
-    handleFireSilo: niyError,
-    handleSupply: niyError,
-    handleMoneyTransfer: niyError,
-    handlePropertyTransfer: niyError,
-
-    handleNextCommand(world) {
-      const commands = world.commands
-
-      if (exports.commands.hasItems(commands)) {
-        exports.client.debug("no commands in buffer, skip command handling")
-        return
-      }
-      exports.client.debug("command in buffer, handle it")
-
-      const commandData = exports.commands.getNext(commands)
-      let action = exports.action_objects[command.key]
-      if (exports.isFalsy(action)) return ["invalid-action"]
-
-      const actionKey = commandData.key
-      const actionData = {
-        source: exports.model.position(commandData.sx, commandData.sy),
-        // TODO
-        sourceUnit: null,
-        sourceProperty: null,
-        target: exports.model.position(commandData.tx, commandData.ty),
-        // TODO
-        targetUnit: null,
-        targetProperty: null,
-        targetselection: exports.model.position(commandData.stx, commandData.sty)
-      }
-
-      const actionIdentifier = [
-            "handle",
-            actionKey.substring(0, 1).toUpperCase(),
-            actionKey.substring(1)
-      ].join("")
-
-      const action = exports.actions[actionIdentifier]
-      exports.guard(action)
-
-      action(world, actionData)
-    }
-}
-
-exports.screen = {
-
-  define(data) {
-    let screens = {}
-    exports.guard(exports.isUndefined(screens[data.id]))
-  },
-
-  doAction(name, ...args) {
-
-  },
-
-  open(screenName) {
-    exports.client.debug("game:open-screen:" + screenName)
-
-    // TODO
-    let activeScreen
-    let screens = {}
-    let changeEvent = exports.eventBus()
-
-    exports.guard(screenName != activeScreen)
-
-    activeScreen = screenName
-
-    const screen = screens[screenName]
-
-    // notify client about the new screen
-    // TODO refill layout data
-    exports.client.onScreenOpened(screenName, screen.layout)
-
-    screen.onenter(exports.screen.open, screen.data)
-  },
-
-  init() {
-
-    // some helpers =)
-    const element = type => content => [type, content]
-    const box = content => element("box")
-    const header = value => element("header")
-    const text = value => element("text")
-    const whenDefined = (property, content) => ["if:exists", property, content]
-
-    exports.screen.define({
-      id: "ERROR",
-      layout: [
-          box([
-
-            header("$header"),
-
-            text("$message"),
-            whenDefined("$location", [
-              text(exports.client.translated("source")),
-              text("$location")
-            ]),
-
-            ["spacer"],
-            ["button", exports.client.translated("restart"), "restart"]
-          ])
-        ],
-      data: {
-        header: "",
-        message: "",
-        location: ""
-      },
-      action: {
-        restart: () => exports.client.restart()
-      },
-      onenter(transition, data, eventData) {
-        data.header = cwt.getOr(eventData.header, "")
-        data.message = cwt.getOr(eventData.message, "")
-        data.location = cwt.getOr(eventData.location, "")
-      }
-    })
-
-    exports.screen.define({
-      id: "NONE",
-      layout: [
-          ["background-color", "black"]
-        ],
-      onenter: transition => transition("LOAD")
-    })
-
-    exports.screen.define({
-      id: "LOAD",
-      layout: [
-          ["text", "$loadingText"],
-          ["loading-bar", "$loadingPercent"]
-        ],
-      data: {
-        loadingText: "",
-        loadingPercent: 0
-      },
-      onenter(transition, data) {
-        exports.client
-          .load({
-            // TODO
-            location: "",
-            onLoadItem: (item) => data.loadingText = exports.localization.text("LOAD") + " " + item,
-            // TODO
-            onFinishedItem: (item) => data.loadingPercent += 1
-          })
-          .then(data => transition("START"))
-          .catch(err => transition("ERROR"))
-      }
-    })
-
-    exports.screen.define({
-      id: "START",
-      layout: [
-          ["text", "$activeTooltip"],
-          ["button", "$next"]
-        ],
-      data: {
-        activeTooltip: "",
-        next: exports.client.translated("next")
-      },
-      onenter(transition, data) {
-        exports.client.jobs.add("start:tooltip:update", 5000, () =>
-          data.activeTooltip = exports.client.translated("tooltip." + parseInt(Math.random() * 10, 10) + 1))
-      },
-      actions: {
-        next: (transition, data) => {
-          exports.client.jobs.remove("start:tooltip:update")
-          transition("MAIN")
-        }
-      }
-    })
-
-    exports.screen.define({
-      id: "MAIN",
-      layout: [
-          ["button-group", [
-            ["button", "$versus"],
-            ["button", "$options"]
-          ], "vertical"],
-          ["small-text", "$about", "bottom-right"]
-        ],
-      data: {
-        versus: exports.client.translated("menu.versus"),
-        options: exports.client.translated("menu.options"),
-        about: "CustomWars-Tactics " + exports.VERSION
-      },
-      actions: {
-        versus: (transition, data) => transition("VERSUS"),
-        options: (transition, data) => transition("OPTIONS")
-      }
-    })
-
-    exports.screen.define({
-      id: "OPTIONS",
-      layout: [
-          ["button-group-vertical", [
-
-            ["text", "$sfxVolumeLabel"],
-            ["button-group-horizontal", [
-              ["button", "$decreaseSFX"],
-              ["text", "$sfxVolume"],
-              ["button", "$increaseSFX"]
-            ]],
-
-            ["text", "$musicVolumeLabel"],
-            ["button-group-horizontal", [
-              ["button", "$decreaseMusic"],
-              ["text", "$musicVolume"],
-              ["button", "$increaseMusic"]
-            ]],
-
-            ["button", "$wipeData"],
-            ["button", "$goBack"]
-          ]]
-        ],
-      data: {
-        sfxVolume: 0,
-        musicVolume: 0,
-        sfxVolumeLabel: exports.client.translated("options.sfx"),
-        musicVolumeLabel: exports.client.translated("options.music"),
-        decreaseSFX: exports.client.translated("options.sfx.decrease"),
-        increaseSFX: exports.client.translated("options.sfx.increase"),
-        decreaseMusic: exports.client.translated("options.music.decrease"),
-        increaseMusic: exports.client.translated("options.music.increase"),
-        wipeData: exports.client.translated("options.music.wipeData"),
-        goBack: exports.client.translated("options.music.goBack")
-      },
-      actions: {
-        decreaseSFX: (transition, data) => data.sfxVolume = exports.client.setSfxVolume(data.sfxVolume - 1),
-        increaseSFX: (transition, data) => data.sfxVolume = exports.client.setSfxVolume(data.sfxVolume + 1),
-        decreaseMusic: (transition, data) => data.musicVolume = exports.client.setMusicVolume(data.musicVolume - 1),
-        increaseMusic: (transition, data) => data.musicVolume = exports.client.setMusicVolume(data.musicVolume + 1),
-        wipeData: () => exports.client.storage.clear().then( /* TODO */ ),
-        goBack: (transition, data) => transition("MAIN")
-      },
-      onenter(transition, data) {
-        data.sfxVolume = exports.client.getSfxVolume()
-        data.musicVolume = exports.client.getMusicVolume()
-      }
-    })
-
-    exports.screen.define({
-      id: "MAP_SELECT",
-      layout: [
-          ["box", [
-            ["text", exports.client.translated("map")],
-            ["text", "$mapName"],
-            ["button", exports.client.translated("previous"), "previousMap"],
-            ["button", exports.client.translated("next"), "nextMap"]
-          ]],
-          ["button", exports.client.translated("start"), "start"]
-        ],
-      data: {
-        maps: [],
-        mapIndex: 0,
-        mapName: ""
-      },
-      actions: {
-
-        nextMap(transition, data) {
-          data.mapIndex = data.mapIndex + 1 < data.map.length ? data.mapIndex + 1 : 0
-        },
-
-        previousMap(transition, data) {
-          data.mapIndex = data.mapIndex + 1 < data.map.length ? data.mapIndex - 1 : data.map.length - 1
-        },
-
-        start(transition, data) {
-          transition("PLAYER_SETUP")
-        }
-      },
-      onenter() {
-        data.maps = []
-      }
-    })
-
-    exports.screen.define({
-      id: "PLAYER_SETUP",
-      layout: [
-          ["box", [
-
-            ["text", exports.client.translated("player.type")],
-            ["text", data => data[0].type],
-            ["button", exports.client.translated("previous"), "prevTypeP1"],
-            ["button", exports.client.translated("next"), "nextTypeP1"],
-
-            ["text", exports.client.translated("player.type")],
-            ["text", data => data[0].team],
-            ["button", exports.client.translated("previous"), "prevTeamP1"],
-            ["button", exports.client.translated("next"), "nextTeamP1"]
-          ]]
-        ],
-      data: $.Stream.range(1, 4).map(id => ({
-        type: 0,
-        team: id
-      })),
-      actions: {
-        // TODO this is just too  UGLY !
-        prevTeamP1: (transition, data) => data.nth(0).team = 0,
-        prevTeamP2: (transition, data) => null,
-        prevTeamP3: (transition, data) => null,
-        prevTeamP4: (transition, data) => null,
-        nextTeamP1: (transition, data) => null,
-        nextTeamP2: (transition, data) => null,
-        nextTeamP3: (transition, data) => null,
-        nextTeamP4: (transition, data) => null,
-        prevTypeP1: (transition, data) => null,
-        prevTypeP2: (transition, data) => null,
-        prevTypeP3: (transition, data) => null,
-        prevTypeP4: (transition, data) => null,
-        nextTypeP1: (transition, data) => null,
-        nextTypeP2: (transition, data) => null,
-        nextTypeP3: (transition, data) => null,
-        nextTypeP4: (transition, data) => null
-      },
-      onexit(transition, data) {
-        // TODO transfer data into model
-      }
-    })
-
-    exports.screen.define({
-      id: "INGAME",
-      layout: [
-          ["canvas"],
-          ["box", [
-            ["row", [
-              ["text", "???TileOrPropertyName???"]
-            ]]
-            ["is:given", "$tileUnit", [
-              ["row", [
-                ["text", "???UnitName???"]
-              ]]
-              ["row", [
-                ["symbol", "HP"],
-                ["symbol", "$tileHP"]
-              ]]
-            ]]
-          ]]
-        ],
-      data: {
-        tileUnit: null,
-        tileHP: 0,
-        uiData: {
-          source: exports.model.position(-1, -1),
-          target: exports.model.position(-1, -1),
-          targetselection: exports.model.position(-1, -1),
-          move: {
-            way: []
-          },
-          action: {
-            key: "",
-            subKey: ""
-          }
-        }
-      },
-      actions: {
-
-        placeCursor(transition, data, actionData) {
-
-          const getWay = (way, map, pos, target, points) => {
-            let queue = [{
-              way: [],
-              pos,
-              points,
-              distance: Math.abs(target.x - pos.x) + Math.abs(target.y - pos.y)
-              }]
-
-            while (queue.length > 0) {
-              const entity = queue.pop()
-
-              const nextEntities = [
-                  exports.model.position(entity.pos.x - 1, entity.pos.y),
-                  exports.model.position(entity.pos.x + 1, entity.pos.y),
-                  exports.model.position(entity.pos.x, entity.pos.y - 1),
-                  exports.model.position(entity.pos.x, entity.pos.y + 1)
-                ]
-
-              nextEntities.forEach(pos =>
-                Just(pos)
-                .filter(pos => model.map_isValidPosition(pos.x, pos.y))
-                .filter(pos => entity.points - movetype.costs[model.map_data[pos.y][pos.y].type.ID] >= 0)
-                .ifPresent(pos => queue.push({
-                  pos,
-                  points: entity.points - movetype.costs[model.map_data[pos.y][pos.y].type.ID],
-                  distance: Math.abs(target.x - pos.x) + Math.abs(target.y - pos.y)
-                })))
-
-              const targetEntity = queue.find(entity => entity.pos.x === target.x && entity.pos.y === target.y)
-
-              if (targetEntity) {
-                return targetEntity.way
-              }
-
-              queue.sort((a, b) => a.distance < b.distance ? -1 : +1)
-            }
-
-            return []
-          }
-
-          const nx = actionData.get("x")
-          const ny = actionData.get("y")
-
-          cwt.guard(model.map_isValidPosition(nx, ny))
-
-          if (!data.uiData.source.unit) {
-            return []
-          }
-
-          const sx = data.uiData.source.x
-          const sy = data.uiData.source.y
-
-          const moveTargetX = data.uiData.move.way
-            .reduce(code =>
-              code == "L" ? -1 :
-              code == "R" ? +1 : 0, sx)
-
-          const moveTargetY = data.uiData.move.way
-            .reduce(code =>
-              code == "U" ? -1 :
-              code == "D" ? +1 : 0, sy)
-
-          const distance = Math.abs(moveTargetX - sx) + Math.abs(moveTargetY - sy)
-
-          if (distance == 1) {
-
-            const dir = exports.cond([
-                [sx < moveTargetX, "L"],
-                [sx > moveTargetX, "R"],
-                [sy < moveTargetY, "U"],
-                [sy > moveTargetY, "D"]
-              ])
-
-            exports.guard(dir)
-            data.uiData.move.way.push(dir)
-
-            // TODO out of range
-
-          } else {
-
-            // TODO
-            data.uiData.move.way = getWay(model.map_data, data.uiData.source, position(nx, ny), 5)
-          }
-
-          return data.uiData.move.way
-        },
-
-        clickCursor(transition, data, actionData) {
-
-          const getPropertyActions = (transition, data, actionData) => {
-            const property = actionData.source.property
-            const sourceUnit = actionData.source.unit
-
-            if (!sourceUnit) return {}
-            if (!property) return {}
-
-            return {
-              produce: exports.production.isFactory(property) &&
-                exports.production.canProduce(model, property),
-
-              propertyTransfer: exports.transfer.canDoPropertyTransfer(property)
-            }
-          }
-
-          const getUnitActions = (transition, data, unitActionData) => {
-            const actionData = unitActionData.actionData
-            const moveData = unitActionData.moveData
-            const sourceUnit = actionData.source.unit
-
-            if (!sourceUnit) return {}
-
-            const targetUnit = actionData.target.unit
-            const targetProperty = actionData.target.property
-            const unitAtTarget = !!targetUnit
-            const propertyAtTarget = !!targetProperty
-            const canAct = exports.usable.isUsable(sourceUnit)
-
-            if (!canAct) return {}
-
-            return {
-
-              attack:
-                // TODO
-                exports.every(exports.isTruthy, [
-                  model.round_day < controller.configValue("daysOfPeace"), !model.battle_isIndirectUnit(e.source.unitId) || exports.notEqual(-1, e.movePath.data[0]),
-                  model.battle_calculateTargets(e.source.unitId, e.target.x, e.target.y)
-                ]),
-              exports.battle.calculateTargets().length > 0,
-
-              fireLaser: exports.specialProperties.isLaser(sourceUnit),
-
-              fireSilo: propertyAtTarget &&
-                exports.specialProperties.isSilo(targetProperty) &&
-                exports.specialProperties.isSiloFireableBy(sourceUnit, targetProperty),
-
-              unitHide: exports.stealth.isStealthUnit(sourceUnit) &&
-                exports.stealth.canHide(sourceUnit),
-
-              unitReveal: exports.stealth.isStealthUnit(sourceUnit) &&
-                exports.stealth.canReveal(sourceUnit),
-
-              join: unitAtTarget &&
-                exports.join.canJoin(model.unit_data[actionData.source.unitId], model.unit_data[actionData.target.unitId]),
-
-              supply:
-                !unitAtTarget &&
-                supply.isSupplier(sourceUnit) &&
-                supply.canSupplyAtPositon(
-                  model.map_data,
-                  sourceUnit, {
-                    x: actionData.target.x,
-                    y: actionData.target.y
-                  }),
-
-              explode:
-                !unitAtTarget &&
-                exports.explode.canExplode(sourceUnit),
-
-              wait: !unitAtTarget
-            }
-          }
-
-          const getSubMenu = (transition, data, actionData) => {
-            if (actionData.action === "produce") {
-              const ownerGold =
-                return model.data_unitSheets.some(sheet => )
-              var n = model.property_data[e];
-              assert(model.player_isValidPid(n.owner));
-              for (var a = model.player_data[n.owner].gold, r = model.data_unitTypes, l = n.type.builds, i = 0, d = r.length; d > i; i++) {
-                var s = r[i],
-                  c = model.data_unitSheets[s]; - 1 !== l.indexOf(c.movetype) && (c.cost <= a || o) && t.addEntry(s, c.cost <= a)
-              }
-            } else if (["propertyTransfer", "unitTransfer"].includes(actionData.action)) {
-              return exports.transfer.getTransferTargetPlayers(
-                model.player_data,
-                model.player_data[actionData.source.property.owner])
-            }
-            return []
-          }
-
-          // TODO exports.battle.calculateTargets().length > 0
-          const getTargetSelection = (transition, data, actionData) => ({
-            needed: actionData.action === "fireSilo",
-            freestyle: true,
-            targets: actionData.action === "fireSilo" ? null : []
-          })
-
-          const getMapActions = (transition, data, actionData) => ({
-            activateCoPower: exports.co.isCoPActivatable(model, model.round_turnOwner),
-            activateSuperCoPower: exports.co.isSCoPActivatable(model, model.round_turnOwner),
-            moneyTransfer: exports.transfer.canTransferMoney(model.turn.owner),
-            toOptions: true,
-            endTurn: true
-          })
-
-          const nx = actionData.get("x")
-          const ny = actionData.get("y")
-
-          $.guard(model.map_isValidPosition(nx, ny))
-
-          const noPositionSelected = pos => pos.x == -1 && pos.y == -1
-
-          const position = Switch()
-            .Case(noPositionSelected(data.uiData.source), data.uiData.source)
-            .Case(noPositionSelected(data.uiData.target), data.uiData.target)
-            .Default(data.uiData.targetselection)
-
-          $.guard(noPositionSelected(position))
-          position.x = nx
-          position.y = ny
-
-          return Switch(position)
-            .Case(pos => pos === data.uiData.source, {
-              // TODO move
-              move: {
-                map: []
-              }
-            })
-            .Case(pos => pos === data.uiData.target, {
-              // TODO set move path if unit exists
-            })
-            .Default({
-
-            })
-        },
-
-        clickAction(transition, data, actionData) {
-          const action = actionData.get("actionKey")
-          cwt.guard(!!action) // TODO check key
-
-          cwt.guard(!data.uiData.action.key || !data.uiData.action.subKey)
-
-          const targetProperty = !data.uiData.action.key ? "subKey" : "key"
-          data.uiData.action[targetProperty] = action
-
-          return {
-
-          }
-        },
-
-        deselect(transition, data, actionData) {},
-
-        postAction(transition, data, actionData) {
-          exports.actions.pushAction(world, {
-            key: actionData.action,
-            sx: actionData.source.x,
-            sy: actionData.source.y,
-            tx: actionData.target.x,
-            ty: actionData.target.y,
-            stx: actionData.targetselection.x,
-            sty: actionData.targetselection.y
-          })
-        }
-      },
-      onenter() {
-
-        // TODO ???
-        const world = null
-
-        exports.client.jobs.add("inGameLoop", 100, delta => exports.actions.handleNextCommand(world))
-      },
-      onexit: () => exports.client.jobs.remove("inGameLoop")
-    })
-  }
-}
-
-exports.VERSION = "0.3.6 (INTERNAL)"
-
-/**
-  @return Promise(-, error-message)
- */
-exports.initialize = () => new Promise((resolve, reject) => {
-
-  exports.client.init()
-  exports.client.debug("game:version:" + exports.VERSION)
-  exports.client.debug("game:debug:on")
-  exports.client.debug("game:startup")
-  exports.client.debug("game:init:screens")
-  exports.screen.init()
-  exports.screen.open("LOAD")
-
-  resolve()
-})
-
-exports.gameFactory = () => {
-
-  let world = {}
-
-  return {
-    getWorld() {
-
     }
   }
-}
 
-return exports.gameFactory()
+  return exports.gameFactory()
 }
