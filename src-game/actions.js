@@ -1,3 +1,8 @@
+/**
+
+ This module handles the command evaluation.
+
+ */
 const gameCreateActionHandler = world => {
 
 

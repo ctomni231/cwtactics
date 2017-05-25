@@ -1,19 +1,14 @@
-const gameCreateAiHandler = world => {
+const gameCreateAiHandler = (world, logic, client, player) => {
 
+  const handleTick = () => {
 
-  const ai = {
+    // TODO maybe analyze the enemy movements here ?
 
-    enabled: false,
-
-    isActiveForPlayer: exports.noop,
-
-    activateForPlayer: exports.noop,
-
-    about: () => "DumbBoy 0.0.1",
-
-    init() {
-      exports.ai.enabled = true
-      exports.ai.about = exports.always("ai-dumbBoy 0.0.1")
+    if (world.turn.owner == player) {
+      client.debug("ai: ending turn")
+      logic.endTurn()
     }
   }
+
+  client.jobs.add("tick", 500, handleTick)
 }

@@ -1,4 +1,6 @@
-const gameCreateLogicHandler = function(client){
+// encapsulates the given world and client for
+// the returned game logic handler
+const gameCreateLogicHandler = function (world, client) {
 
   const guard = (expr, msg) => {
     if (!expr) {
@@ -18,12 +20,6 @@ const gameCreateLogicHandler = function(client){
 
   const guardType = type => value => guard(createValidator(type)(value), "type missmatch")
 
-  /**
-    @param {object<sring, (predicate(A)|spec)>} spec
-    @param {string} namespace will be printed in front of the properties
-                    which will be returned
-    @return {array<string>} list of invalid properties
-   */
   const createValidator = (spec, namespace = "") => (value, root = value) =>
     Object
     .keys(spec)
@@ -37,7 +33,7 @@ const gameCreateLogicHandler = function(client){
         default:
           return namespace + key + "(illegal)"
       }
-    })
+    }) +
     .filter(v => !!v)
     .reduce((result, value) => result.concat(value), [])
 
@@ -85,6 +81,9 @@ const gameCreateLogicHandler = function(client){
 
     return result
   }
+
+  // returns true when the tile contains a unit, false otherwise
+  const containsUnit = tile => !!tile.unit
 
   const toGameData = (data) => {
     const gamedata = {
@@ -327,37 +326,25 @@ const gameCreateLogicHandler = function(client){
     model.mode = "no-co"
   }
 
-  /**
-    returns true if the buffer contains at least one command,
-    false otherwise
-   */
-  const hasCommands: buffer => buffer.length > 0
+  // returns true when the buffer contains at least one command, false otherwise
+  const hasCommands = () => world.buffer.length > 0
 
-  /**
-    pushes a command into the buffer
-   */
-  const pushCommand: (buffer, command) => {
+  // pushes a command into the buffer
+  const pushCommand = command => {
     const MAX_SIZE = 200
 
     // TODO check format
     guard(buffer.length < MAX_SIZE)
-    buffer.push(command)
-    return buffer
+    world.buffer.push(command)
+    return world.buffer
   }
 
-  /**
-
-    */
-  const popCommand: buffer => {
-    guard(exports.commands.hasItems(buffer))
-    return buffer.shift()
+  // pops a command from the buffer and returns it
+  const popCommand = () => {
+    guard(hasCommands())
+    return world.buffer.shift()
   }
 
-
-  /**
-     @param player {PlayerType}
-     @return a list of values which are transferable by the given player
-   */
   const getMoneyTransferPackages = player => [
     1000,
     2500,
@@ -367,9 +354,6 @@ const gameCreateLogicHandler = function(client){
     50000
   ].filter(x => x <= player.gold)
 
-  /**
-    @return true when the player can transfer money, false otherwise
-   */
   const canTransferMoney = (sourcePlayer) =>
     player.gold >= exports.transfer.getMoneyTransferPackages()[0]
 
@@ -381,67 +365,34 @@ const gameCreateLogicHandler = function(client){
 
   const canDoPropertyTransfer = (property) => !property.type.notTransferable
 
-  /**
-    @param property {PropertyType}
-    @param targetPlayer {PlayerType}
-   */
   const doPropertyTransfer = (property, targetPlayer) => property.owner = targetPlayer
 
-  /**
-    @return true when the unit can be transfered, else false
-   */
   const canTransferUnit = unit => !exports.transport.hasLoads(unit)
 
-  /**
-    @param unit {UnitType} unit that will be transfered
-    @param targetPlayer {PlayerType} new owner of the unit
-  */
-  const transferUnit = (unit, targetPlayer) => {
-    // TODO this does not work because there is no effect here
-    // exports.model.sliceRange(unit.owner.visionMap, unit.type.vision, unit.position).forEach()
-    exports.model.mapTable(vision => vision - 1, unit.type.vision, unit.owner.visionMap, unit.position)
-    exports.model.mapTable(vision => vision + 1, unit.type.vision, targetPlayer.visionMap, unit.position)
+  const transferUnit = (map, unit, targetPlayer) => {
+    const tile = map[unit.position.x][unit.position.y]
+
+    modifyVision(tile, -unit.type.vision, unit.owner)
+    modifyVision(tile, +unit.type.vision, targetPlayer)
     unit.owner = targetPlayer
   }
 
-  /**
-    @param players {[PlayerType]} all known players
-    @param player {PlayerType}
-    @returns a list of players which are suitable as transfer target for the
-             given player
-   */
   const getTransferTargetPlayers = (players, player) => players
     .filter(p => p.team != -1)
     .filter(p => p != player)
 
-
   const isSupplier = (unit) => !!unit.type.supply
 
-  /**
-    @return a list of units which can be supplied by the given unit
-            at a given position
-   */
   const getSupplyTargets = (map, unit, position = unit.position) => exports.model
     .sliceRange(map, 1, position)
     .filter(tile => !!tile.unit)
     .map(tile => tile.unit)
     .filter(tileUnit => tileUnit.owner === unit.owner)
 
-  /**
-    @return true if the given unit can supply surrounding units at
-    a given position
-   */
   const canSupplyNeighbours(map, unit, position = unit.position) => supply
     .getSupplyTargets(map, unit, unit.position)
     .length > 0
 
-  /**
-    Refills every unit of the same owner in the surrounding tiles
-    to the given supply unit.
-    
-    @param {Map} map
-    @param {Unit} unit
-   */
   const supplyNeighbours(map, unit) => supply
     .getSupplyTargets(map, unit, unit.position)
     .forEach(supply.refillSupplies)
@@ -451,16 +402,6 @@ const gameCreateLogicHandler = function(client){
     unit.fuel = unit.type.maxFuel
   }
 
-  /**
-    Heals an unit and may pays all heal points over 99 to the
-    units owner.
-
-    @param unit {Unit}
-    @param amount {integer 1 <-> 99} amount that will be healed
-    @return maximum of 0 and unit.hp + amount - 99
-
-    @TODO outsource additional hp as gold
-   */
   const refillHP = (unit, amount) => {
     guard(amount > 0 && amount <= 99)
     const aboveMaxHP = Math.max(0, unit.hp + amount - 99)
@@ -478,10 +419,6 @@ const gameCreateLogicHandler = function(client){
       .defaultDo(0, fuelDrain => unit.fuel = unit.fuel - fuelDrain)
   }
 
-  /**
-    @effect
-    @return list of events which have to be executed now
-   */
   const tickAsyncEvents = model => {
     const events = model.events
     events.forEach(el => el.leftTicks--)
@@ -493,10 +430,6 @@ const gameCreateLogicHandler = function(client){
     model.leftTurnTime = or(cfg.turnTime, Number.POSITIVE_INFINITY)
   }
 
-  /**
-
-    @return {string} (nothing|end-turn|end-game)
-   */
   const tickTurnTime = (model, time) => {
     model.leftTurnTime = Math.max(0, model.leftTurnTime - time)
     model.leftGameTime = Math.max(0, model.leftGameTime - time)
@@ -507,10 +440,6 @@ const gameCreateLogicHandler = function(client){
       .default("nothing")
   }
 
-  /**
-
-    @return {boolean} true if the day changed, false otherwise
-   */
   const endTurn = (turn, players) => {
 
     const currentOwner = turn.owner
@@ -588,29 +517,16 @@ const gameCreateLogicHandler = function(client){
 
   const canReveal = unit => !!unit.hidden
 
-  /**
-    hides the unit on the map and all units from the enemy teams
-    which can see the underlying tile can no longer see the unit,
-    except they standing in one of the surrounding tiles.
-   */
   const hide = (unit) => {
     exports.guard(exports.stealth.canHide(unit))
     unit.stealth.hidden = true
   }
 
-  /**
-    reveals the unit on the map and all units which can see the
-    underlying tile can see the given unit too.
-   */
   const reveal = (unit) => {
     exports.guard(exports.stealth.canReveal(unit))
     unit.hidden = false
   }
 
-  /**
-    @return {boolean} true if source and target can join together,
-                      false otherwise
-   */
   const canJoin = (sourceUnit, targetUnit) => [
         sourceUnit.owner == targetUnit.owner,
         sourceUnit.type == targetUnit.type,
@@ -634,12 +550,37 @@ const gameCreateLogicHandler = function(client){
     targetUnit.owner.gold = targetUnit.owner.gold + (sourceUnit.type.cost * 0.1)
   }
 
+  // returns true when the current active day is in peace phase, false otherwise
+  const inPeacePhase = (cfg, turn) => turn.day < cfg.daysOfPeace
 
-  const isPeacePhaseActive(model) => model.turn.day < model.cfg.daysOfPeace
+  // returns true if the given unit has a primary weapon, false otherwise
+  const hasMainWeapon = unit => !!unit.type.attack.primary
 
-  /**
-    @return {array<Unit>}
-   */
+  // returns true if the given unit has a secondary weapon, false otherwise
+  const hasSecondaryWeapon = unit => !!unit.type.attack.secondary
+
+  // returns 'direct' if the unit attacks only surrounding units, 'indirect' when
+  // the unit has an attack range of 2 or greater, 'ballistic' when it's minimum
+  // attack range is 1 and maximum range 2 or greater, if nothing matches then
+  // 'nothing' will be returned
+  const getUnitFireType = unit => condition()
+    .case(() => !hasMainWeapon(unit) && !hasSecondaryWeapon(unit), "nothing")
+    .case(() => unit.type.attack.range.max > 1 && unit.type.attack.range.min == 1, () => "ballistic")
+    .case(() => unit.type.attack.range.max > 1 && unit.type.attack.range.min > 1, "indirect")
+    .default("direct")
+
+  // returns true when the unit is a ballistic unit, false otherwise
+  const isBallisticUnit = unit => getUnitFireType(unit) == "ballistic"
+
+  // returns true when the unit is a indirect unit, false otherwise
+  const isIndirectUnit = unit => getUnitFireType(unit) == "indirect"
+
+  // returns true when the unit is a direct unit, false otherwise
+  const isDirectUnit = unit => getUnitFireType(unit) == "direct"
+
+  // returns true when the unit is a peaceful unit, false otherwise
+  const isPeacefulUnit = unit => getUnitFireType(unit) == "nothing"
+
   const getTargets = (model, unit, position = unit.position) => {
     const minRange = unit.type.attack.range.min
     const maxRange = unit.type.attack.range.max
@@ -655,42 +596,7 @@ const gameCreateLogicHandler = function(client){
       .filter(unit => unit.owner.team != team)
   }
 
-  const hasMainWeapon = (e) => {
-    var t = e.attack;
-    return "undefined" != typeof t && "undefined" != typeof t.main_wp
-  }
-
-  const hasSecondaryWeapon = (e) => {
-    var t = e.attack;
-    return "undefined" != typeof t && "undefined" != typeof t.sec_wp
-  }
-
-  const getUnitFireType = (e) => {
-    if (!model.battle_hasMainWeapon(e) && !model.battle_hasSecondaryWeapon(e)) return model.battle_FIRETYPES.NONE;
-    if ("undefined" != typeof e.attack.minrange) {
-      var t = e.attack.minrange;
-      return 1 === t ? model.battle_FIRETYPES.BALLISTIC : model.battle_FIRETYPES.INDIRECT
-    }
-    return model.battle_FIRETYPES.DIRECT
-  }
-
-  const isIndirectUnit = (e) => {
-    return assert(model.unit_isValidUnitId(e)), model.battle_getUnitFireType(model.unit_data[e].type) === model.battle_FIRETYPES.INDIRECT
-  }
-
-  const isBallisticUnit = (e) => {
-    return assert(model.unit_isValidUnitId(e)), model.battle_getUnitFireType(model.unit_data[e].type) === model.battle_FIRETYPES.BALLISTIC
-  }
-
-  const canUseMainWeapon = (e, t) => {
-    var o, n = e.type.attack,
-      a = t.type.ID;
-    return e.ammo > 0 && void 0 !== n.main_wp && (o = n.main_wp[a], "undefined" != typeof o) ? !0 : !1
-  }
-
-  const hasTargets = (e, t, o) => {
-    return model.battle_calculateTargets(e, t, o)
-  }
+  const hasTargets = (model, unit, position) => getTargets(model, unit, position).length > 0
 
   const getBaseDamageAgainst = (e, t, o) => {
     var n = e.type.attack;
@@ -762,68 +668,29 @@ const gameCreateLogicHandler = function(client){
       f = model.battle_canUseMainWeapon(r, a), d = model.battle_getBattleDamageAgainst(r, a, n, f, !0), -1 !== d && (model.events.damageUnit(e, d), p -= model.unit_convertHealthToPoints(a), f && r.ammo--, p = parseInt(.1 * p * s.cost, 10), model.events.co_modifyPowerLevel(u, parseInt(.5 * p, 10)), model.events.co_modifyPowerLevel(m, p)))
   }
 
-  /**
-    @returns true if the unit can explode, false otherwise
-   */
-  const isSuicideUnit = (unit) => !!unit.type.suicide
+  // returns true when the unit is a suicide unit, false otherwise
+  const isSuicideUnit = unit => !!unit.type.suicide
 
-  /**
-    @param unit that will explode
-   */
-  const selfDestruct = (unit) => {
-    controller.commandStack_sharedInvokement("unit_destroySilently", e.source.unitId)
-    controller.commandStack_sharedInvokement("explode_invoked", e.target.x, e.target
-      .y, e.source.unit.type.suicide.range, model.unit_convertPointsToHealth(e
-        .source.unit.type.suicide.damage), e.source.unit.owner)
+  // damages all surrounding units at the position of the exploding unit
+  // and destroys the unit itself
+  const selfDestruct = (world, unit) => {
+    guard(isSuicideUnit(unit))
+    sliceRange(world.map, unit.type.suicide.damage, unit.position)
+      .filter(containsUnit)
+      .forEach(tile => damageUnit(tile.unit, unit.type.suicide.damage))
+    destroyUnit(unit)
   }
 
-  const modifyVision = (tile, fogModel) => {
-    if (-1 !== o && controller.configValue("fogEnabled")) {
-      assert(model.map_isValidPosition(e, t)), assert(util.isInt(n) && n >= 0), controller.prepareTags(e, t), n > 0 && (n = controller.scriptedValue(o, "vision", n));
-      var r = model.fog_visibleClientPids[o],
-        l = model.fog_visibleTurnOwnerPids[o];
-      if (r || l)
-        if (0 === n) r && (model.fog_clientData[e][t] += a), l && (model.fog_turnOwnerData[e][t] += a);
-        else {
-          var i, d, s = model.map_height,
-            c = model.map_width,
-            m = t - n,
-            u = t + n;
-          for (0 > m && (m = 0), u >= s && (u = s - 1); u >= m; m++) {
-            var _ = Math.abs(m - t);
-            for (i = e - n + _, d = e + n - _, 0 > i && (i = 0), d >= c && (d = c - 1); d >= i; i++) model.map_data[i][m].blocksVision && model.map_getDistance(e, t, i, m) > 1 || (r && (model.fog_clientData[i][m] += a), l && (model.fog_turnOwnerData[i][m] += a))
-          }
-        }
-    }
+  const modifyVision = (position, range, by, fogModel) => sliceRange(fogModel, range, position).map(x => x + by)
+
+  const calculateVision = (map, owner) => {
+    fogModel.map(col => col.map(x => 0))
+    map.reduce((arr, col) => col.forEach(tile => {
+        if (!!tile.property && tile.property.owner == owner) arr.push(tile.property)
+        if (!!tile.unit && tile.unit.owner == owner) arr.push(tile.unit)
+      }), [])
+      .forEach(visioner => modifyVision(visioner.position, visioner.type.vision, owner.visionMap, +1))
   }
-
-  const recalculate = (map, owner, fogModel) => {
-    var e, t, o = model.map_width,
-      n = model.map_height,
-      a = 1 === controller.configValue("fogEnabled");
-    for (e = 0; o > e; e++)
-      for (t = 0; n > t; t++) a ? (model.fog_clientData[e][t] = 0, model.fog_turnOwnerData[e][t] = 0) : (model.fog_clientData[e][t] = 1, model.fog_turnOwnerData[e][t] = 1);
-    if (a) {
-      var r;
-      for (e = 0; o > e; e++)
-        for (t = 0; n > t; t++) {
-          var l = model.unit_posData[e][t];
-          null !== l && (r = l.type.vision, 0 > r && (r = 0), model.events.modifyVisionAt(e, t, l.owner, r, 1));
-          var i = model.property_posMap[e][t];
-          null !== i && (r = i.type.vision, 0 > r && (r = 0), model.events.modifyVisionAt(e, t, i.owner, r, 1))
-        }
-    }
-
-    var t = model.player_data[e].team;
-    model.client_instances[e] && (model.client_lastPid = e);
-    for (var o = model.client_lastPid, n = 0, a = 4; a > n; n++) model.fog_visibleClientPids[
-      n] = !1, model.fog_visibleTurnOwnerPids[n] = !1, -1 !== model.player_data[
-      n].team && (model.player_data[n].team === o && (model.fog_visibleClientPids[
-      n] = !0), model.player_data[n].team === t && (model.fog_visibleTurnOwnerPids[
-      n] = !0));
-    model.events.recalculateFogMap()
-  }
-
 
   const isCannon = cannon => "CANNON_UNIT_INV" === cannon.type.ID
 
@@ -1041,7 +908,7 @@ const gameCreateLogicHandler = function(client){
   const isFactory = (property) => !!property.type.builds
 
   const canProduce = (model, property) => {
-    exports.guard(exports.production.isFactory(property))
+    guard(isFactory(property))
     return model.manpower_data[property.owner] > 0 &&
       model.unit_data.filter(unit => unit.owner === property.owner).length < 50
   }
@@ -1080,11 +947,14 @@ const gameCreateLogicHandler = function(client){
     exports.client.events.onUnitCreated(type.ID, factory.x, factory.y)
   }
 
-  const isUsable = (model, unit) => model.actions_leftActors[unit.id - unit.owner * 50]
+  // returns true if the unit is usable, false otherwise
+  const isUsable = unit => world.usables.includes(unit)
 
-  const setUsable = (model, unit) => model.actions_leftActors[unit.id - unit.owner * 50] = true
+  // sets the given unit as usable in the given usability model
+  const setUsable = unit => world.usables.push(unit)
 
-  const setUnusable = (model, unit) => model.actions_leftActors[unit.id - unit.owner * 50] = false
+  // sets the given unit as unusable in the given usability model
+  const setUnusable = unit => world.usables.splice(usables.indexOf(unit), 1)
 
   const canBeCapturedBy = (model, property, unit) => {
     if (model.player_data[unit.owner].team == model.player_data[property.owner].team) {
@@ -1130,9 +1000,6 @@ const gameCreateLogicHandler = function(client){
     }
   }
 
-  /**
-    @effect
-  */
   const setActiveWeather = (weatherModel, newType) => {
     const randomInteger = (from, to) => from + Math.trunc(Math.random() * (to - from))
 
@@ -1141,9 +1008,6 @@ const gameCreateLogicHandler = function(client){
     exports.client.events.onWeatherChanged(newType.id)
   }
 
-  /**
-
-  */
   const pickRandomWeather = (weatherModel) => {
     var e, t;
     if (assert(controller.isHost()), null !== model.weather_data && model.weather_data === model.data_defaultWeatherSheet) {
@@ -1156,10 +1020,7 @@ const gameCreateLogicHandler = function(client){
       model.events.dayEvent(t, "weather_calculateNext")
   }
 
-
-  const getMovemap = () => {
-
-  }
+  const getMovemap = (map, unit) => {}
 
   const getMoveway = (map, unit, source, target) => {
 
@@ -1177,25 +1038,19 @@ const gameCreateLogicHandler = function(client){
 
   }
 
-  /**
-
-    @return {
-      trapped: true if the move was trapped by other units
-      x: x coordinate of the unit after move
-      y: y coordinate of the unit after move
-    }
-   */
   const move = (map, unit, way) => {
 
   }
 
   return {
+    containsUnit,
+    setUnusable,
+    setUsable,
+    isUsable,
+    isSuicideUnit,
+    selfDestruct,
     hasCommands,
-    popCommand,
     pushCommand,
-    tickAsyncEvents,
-    resetTurnTimer,
-    move,
-    getFuelCostss
+    popCommand
   }
 }

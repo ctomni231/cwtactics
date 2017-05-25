@@ -104,6 +104,14 @@ const gameModelTypes = () => {
     coPower: [isEffectType]
   }
 
+  const GameTypes = {
+    units: [isUnitType],
+    tiles: [isTileType],
+    weathers: [isWeatherType],
+    movetypes: [isMoveType],
+    commanders: [isCommanderType]
+  }
+
   const isProperty = {
     owner: (value, _, root) => root.players.includes(value),
     capturePoints: integer(0, 20)
@@ -153,7 +161,7 @@ const gameModelTypes = () => {
     }
   }
 
-  const isGameConfiguration = {
+  const GameConfiguration = {
 
     turnTime: integer(0, Number.POSITIVE_INFINITY),
 
@@ -178,14 +186,8 @@ const gameModelTypes = () => {
   }
 
   const isGameWorld = {
-    types: {
-      units: [isUnitType],
-      tiles: [isTileType],
-      weathers: [isWeatherType],
-      movetypes: [isMoveType],
-      commanders: [isCommanderType]
-    },
-    rules: isGameConfiguration,
+    types: GameTypes,
+    rules: GameConfiguration,
     map: isGameMap,
     players: [isPlayer],
     turn: {
