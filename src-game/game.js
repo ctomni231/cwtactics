@@ -1000,6 +1000,7 @@ const gameCreateLogicHandler = function (world, client) {
     }
   }
 
+  // TODO
   const setActiveWeather = (weatherModel, newType) => {
     const randomInteger = (from, to) => from + Math.trunc(Math.random() * (to - from))
 
@@ -1008,16 +1009,12 @@ const gameCreateLogicHandler = function (world, client) {
     exports.client.events.onWeatherChanged(newType.id)
   }
 
+  // TODO
   const pickRandomWeather = (weatherModel) => {
-    var e, t;
-    if (assert(controller.isHost()), null !== model.weather_data && model.weather_data === model.data_defaultWeatherSheet) {
-      var o = model.data_nonDefaultWeatherTypes;
-      e = o[parseInt(Math.random() * o.length, 10)].ID, t = 1
-    } else e = model.data_defaultWeatherSheet.ID,
-      t = controller.configValue("weatherMinDays") +
-      parseInt(controller.configValue("weatherRandomDays") * Math.random(), 10);
-    controller.commandStack_sharedInvokement("weather_change", e),
-      model.events.dayEvent(t, "weather_calculateNext")
+    const weathers = model.types.weathers.filter(type => type.id != weatherModel.active.id)
+    const nextWeather = weathers[Math.trunc(Math.random() * weathers.length)]
+    const nextDuration = nextWeather.duration.min + Math.trunc(Math.random() * nextWeather.duration.max)
+    setActiveWeather(weatherModel, nextWeather)
   }
 
   const getMovemap = (map, unit) => {}

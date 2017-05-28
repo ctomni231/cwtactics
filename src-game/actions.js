@@ -5,6 +5,29 @@
  */
 const gameCreateActionHandler = world => {
 
+  // example: [0,0,1,1,-1,-1,11,56]
+  const CommandDataType = {
+
+    // source x
+    "0": integer(),
+    // source y
+    "1": integer(),
+
+    // target x
+    "2": integer(),
+    // target y
+    "3": integer(),
+
+    // action x
+    "4": integer(),
+    // action y
+    "5": integer(),
+
+    // random seed 1
+    "6": integer(0, 100),
+    // random seed 2
+    "6": integer(0, 100)
+  }
 
   /**
     game logic mediator service which coordinates the
@@ -47,11 +70,11 @@ const gameCreateActionHandler = world => {
         return {
 
           attack:
-            // TODO
+          // TODO
             exports.every(exports.isTruthy, [
-                  model.round_day < controller.configValue("daysOfPeace"), !model.battle_isIndirectUnit(e.source.unitId) || exports.notEqual(-1, e.movePath.data[0]),
-                  model.battle_calculateTargets(e.source.unitId, e.target.x, e.target.y)
-                ]),
+            model.round_day < controller.configValue("daysOfPeace"), !model.battle_isIndirectUnit(e.source.unitId) || exports.notEqual(-1, e.movePath.data[0]),
+            model.battle_calculateTargets(e.source.unitId, e.target.x, e.target.y)
+          ]),
           exports.battle.calculateTargets().length > 0,
 
           fireLaser: exports.specialProperties.isLaser(sourceUnit),
@@ -193,7 +216,7 @@ const gameCreateActionHandler = world => {
 
           nextAsyncCommands.forEach(command => {
             exports.client.debug("evaluate async command", command)
-            // TODO
+              // TODO
           })
         }
       }
@@ -289,9 +312,9 @@ const gameCreateActionHandler = world => {
       }
 
       const actionIdentifier = [
-            "handle",
-            actionKey.substring(0, 1).toUpperCase(),
-            actionKey.substring(1)
+        "handle",
+        actionKey.substring(0, 1).toUpperCase(),
+        actionKey.substring(1)
       ].join("")
 
       const action = exports.actions[actionIdentifier]
