@@ -681,7 +681,8 @@ const gameCreateLogicHandler = function (world, client) {
     destroyUnit(unit)
   }
 
-  const modifyVision = (position, range, by, fogModel) => sliceRange(fogModel, range, position).map(x => x + by)
+  const modifyVision = (position, range, by, fogModel) =>
+    sliceRange(fogModel, range, position).map(x => x + by)
 
   const calculateVision = (map, owner) => {
     fogModel.map(col => col.map(x => 0))
