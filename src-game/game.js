@@ -1,6 +1,36 @@
 // encapsulates the given world and client for
 // the returned game logic handler
-const gameCreateLogicHandler = function (world, client) {
+
+const gameLogic = {}
+
+gameLogic.emptyList = Object.freeze([])
+
+const gameCreateLogicHandler = function(world, client) {
+
+
+  // ==================== TODO ====================
+  //
+  //  - use id numbers instead of instances in the logic functions
+  //  - remove world and client from factory function
+  //  - remove factory function
+  //  - side effect free ?
+  //
+  // ideas from skirmish wars
+  //  - damage system
+  //    - full/reduced strength
+  //    - different HP system
+  //    - unit classes
+  //    - damage against classes
+  //    - attack/defense dice roll
+  //  - non-animated unit symbols
+  //
+  // ==============================================
+
+  const emptyList = gameLogic.emptyList
+
+  // generates a random integer in a given intervall
+  const randomInteger = (from, to) => from + Math.trunc(Math.random() * (to -
+    from))
 
   const guard = (expr, msg) => {
     if (!expr) {
@@ -18,7 +48,8 @@ const gameCreateLogicHandler = function (world, client) {
     }
   }
 
-  const guardType = type => value => guard(createValidator(type)(value), "type missmatch")
+  const guardType = type => value => guard(createValidator(type)(value),
+    "type missmatch")
 
   const createValidator = (spec, namespace = "") => (value, root = value) =>
     Object
@@ -26,20 +57,23 @@ const gameCreateLogicHandler = function (world, client) {
     .map(key => {
       switch (typeof spec[key]) {
         case "function":
-          return !spec[key](value[key], value, root) ? namespace + key : null
+          return !spec[key](value[key], value, root) ? namespace + key :
+            null
         case "object":
           // TODO array support
-          return createValidator(spec[key], namespace + key + ".")(value[key], root)
+          return createValidator(spec[key], namespace + key + ".")(value[
+            key], root)
         default:
           return namespace + key + "(illegal)"
       }
-    }) +
+    })
     .filter(v => !!v)
     .reduce((result, value) => result.concat(value), [])
 
   const condition = value => ({
     case (predicate, supplier) {
-      return !!predicate(value) ? conditionSolved(supplier(value)) : condition(value)
+      return !!predicate(value) ? conditionSolved(supplier(value)) :
+        condition(value)
     },
     default (newValue) {
       return newValue
@@ -55,7 +89,8 @@ const gameCreateLogicHandler = function (world, client) {
     }
   })
 
-  const rotateList = (list, n) => list.slice(n, list.length).concat(list.slice(0, n))
+  const rotateList = (list, n) => list.slice(n, list.length).concat(list.slice(
+    0, n))
 
   const position = (x, y) => {
     x,
@@ -63,6 +98,8 @@ const gameCreateLogicHandler = function (world, client) {
   }
 
   const sliceRange = (map, range, position) => {
+    if (range == 0) return emptyList
+
     const result = []
 
     const leftX = Math.max(0, position.x - range)
@@ -72,7 +109,8 @@ const gameCreateLogicHandler = function (world, client) {
 
     for (let x = leftX; x <= rightX; x++) {
       for (let y = leftY; y <= rightY; y++) {
-        const actualRange = Math.abs(position.x - x) + Math.abs(position.y - y)
+        const actualRange = Math.abs(position.x - x) + Math.abs(position.y -
+          y)
         if (actualRange <= range) {
           result.push(map[x][y])
         }
@@ -96,7 +134,7 @@ const gameCreateLogicHandler = function (world, client) {
         vision: 1,
         fuel: 0,
         ammo: 0
-        }, {
+      }, {
         ID: "LASER_UNIT_INV",
         cost: 0,
         range: 0,
@@ -104,7 +142,7 @@ const gameCreateLogicHandler = function (world, client) {
         vision: 1,
         fuel: 0,
         ammo: 0
-        }]),
+      }]),
 
       tiles: data.tiles.concat([{
         ID: "PROP_INV",
@@ -112,14 +150,14 @@ const gameCreateLogicHandler = function (world, client) {
         vision: 0,
         capturePoints: 1,
         blocker: !0
-        }]),
+      }]),
 
       movetypes: data.movetypes.concat([{
         ID: "NO_MOVE",
         costs: {
           "*": -1
         }
-        }]),
+      }]),
 
       cos: data.cos.map($.identity),
 
@@ -130,16 +168,20 @@ const gameCreateLogicHandler = function (world, client) {
     return gamedata
   }
 
-  const convertWorldToMap = (model) => {
+  const convertWorldToMap = (world) => {
     let data = {}
 
-    data.actr = exports.compose(
-      exports.partial(exports.filter, exports.partial(exports.greaterThan, -1)),
-      exports.partial(exports.map, (actable, index) => actable ? index : -1))(model.actions_leftActors)
+    data.active = data.actives
+      .map((value, index) => !!value ? index : -1)
+      .filter(value => value >= 0)
+
+
 
     data.cfg = model.cfg_configuration
-    data.co = exports.map((data, index) => exports.equal(-1, model.player_data[n].team) ?
-      0 : [data.power, data.timesUsed, data.level, data.coA, data.coB], model.co_data
+    data.co = exports.map((data, index) => exports.equal(-1, model.player_data[
+        n].team) ?
+      0 : [data.power, data.timesUsed, data.level, data.coA, data.coB],
+      model.co_data
     )
     data.mp = exports.map(exports.identity, model.manpower_data)
     data.mpw = model.map_width
@@ -152,27 +194,34 @@ const gameCreateLogicHandler = function (world, client) {
 
     data.prps = exports.map(
       (p, index) => [index, p.x, p.y, p.type.ID, p.capturePoints, p.owner],
-      exports.filter(p => exports.notEqual(p.owner), model.property_data))
+      exports.filter(p => exports.notEqual(p.owner), model.property_data)
+    )
 
     data.units = exports.map(
-      (u, index) => [model.unit_data.indexOf(u), u.type.ID, u.x, u.y, u.hp, u.ammo,
-          u.fuel, u.loadedIn, u.owner
-        ],
+      (u, index) => [model.unit_data.indexOf(u), u.type.ID, u.x, u.y, u.hp,
+        u.ammo,
+        u.fuel, u.loadedIn, u.owner
+      ],
       exports.filter(u => exports.notEqual(u.owner), model.unit_data))
 
     // reduce all tiles to a list of distinct id values
     data.typeMap = exports.reduce(
       (ids, col) => exports.reduce(
-        (ids, cell) => exports.includes(cell.type.ID, ids) && ids.push(cell.type.ID),
+        (ids, cell) => exports.includes(cell.type.ID, ids) && ids.push(
+          cell.type.ID),
         ids, col), [], model.map_data)
 
     // we turn all tiles into the index of their id in the type map
-    data.map = exports.map(exports.map(cell => data.typeMap.indexOf(cell.type.ID)), model
+    data.map = exports.map(exports.map(cell => data.typeMap.indexOf(cell.type
+        .ID)), model
       .map_data)
 
-    data.dyet = exports.filter(exports.notEqual(-1), exports.map(exports.identity, model.dayTick_dataTime))
-    data.dyee = exports.filter(exports.isTruthy, exports.map(exports.identity, model.dayTick_dataEvent))
-    data.dyea = exports.filter(exports.isTruthy, exports.map(exports.identity, model.dayTick_dataArgs))
+    data.dyet = exports.filter(exports.notEqual(-1), exports.map(exports.identity,
+      model.dayTick_dataTime))
+    data.dyee = exports.filter(exports.isTruthy, exports.map(exports.identity,
+      model.dayTick_dataEvent))
+    data.dyea = exports.filter(exports.isTruthy, exports.map(exports.identity,
+      model.dayTick_dataArgs))
 
     // e.actr = exports.compose(filter(exports.greaterThan(-1)), exports.map((actable, index) => actable ? index : -1))(model.actions_leftActors)
 
@@ -183,27 +232,37 @@ const gameCreateLogicHandler = function (world, client) {
 
     const model = {}
 
-    exports.guard(exports.every(v => exports.isInteger(v) && exports.isBetween(0, 49), e.actr))
+    exports.guard(exports.every(v => exports.isInteger(v) && exports.isBetween(
+      0, 49), e.actr))
 
-    model.actions_leftActors = exports.map(exports.always(false), exports.range(1, 50))
+    model.actions_leftActors = exports.map(exports.always(false), exports.range(
+      1, 50))
     exports.forEach(i => model.actions_leftActors[i] = true, e.actr)
 
 
     // PREPARE
 
     // controller.buildRoundConfig
-    for (var t = controller.configBoundaries_, o = Object.keys(t), n = 0, a = o.length; a > n; n++) {
+    for (var t = controller.configBoundaries_, o = Object.keys(t), n = 0, a =
+        o.length; a > n; n++) {
       var r, l = o[n];
-      e && e.hasOwnProperty(l) ? (r = e[l], r < t[l].min && assert(!1, l, "is greater than it's minimum value"), r > t[l].max && assert(!1, l, "is greater than it's maximum value"), t[l].hasOwnProperty("step") && 0 !== r % t[l].step && assert(!1, l, "is does not fits one of it's possible values")) : r = t[l].defaultValue, model.cfg_configuration[l] = r
+      e && e.hasOwnProperty(l) ? (r = e[l], r < t[l].min && assert(!1, l,
+          "is greater than it's minimum value"), r > t[l].max && assert(!
+          1, l, "is greater than it's maximum value"), t[l].hasOwnProperty(
+          "step") && 0 !== r % t[l].step && assert(!1, l,
+          "is does not fits one of it's possible values")) : r = t[l].defaultValue,
+        model.cfg_configuration[l] = r
     }
 
 
     model.client_lastPid = -1
 
     var e, t, o;
-    for (t = 0, o = 4; o > t; t++) e = model.co_data[t], e.power = 0, e.timesUsed = 0, e.level = -1, e.coA = null, e.coB = null
+    for (t = 0, o = 4; o > t; t++) e = model.co_data[t], e.power = 0, e.timesUsed =
+      0, e.level = -1, e.coA = null, e.coB = null
 
-    model.dayTick_dataTime.resetValues(), model.dayTick_dataEvent.resetValues(), model.dayTick_dataArgs.resetValues()
+    model.dayTick_dataTime.resetValues(), model.dayTick_dataEvent.resetValues(),
+      model.dayTick_dataArgs.resetValues()
 
     model.manpower_data.resetValues()
 
@@ -219,31 +278,55 @@ const gameCreateLogicHandler = function (world, client) {
 
     assert(util.intRange(e.player, 2, 4));
     var t, o, n;
-    for (o = 0, n = 4; n > o; o++) t = model.player_data[o], t.name = null, t.gold = 0, t.team = o <= e.player - 1 ? o : -2
+    for (o = 0, n = 4; n > o; o++) t = model.player_data[o], t.name = null,
+      t.gold = 0, t.team = o <= e.player - 1 ? o : -2
 
-    for (var t, o, n = 0, a = model.property_data.length; a > n; n++) model.property_data[n].owner = -1, model.property_data[n].type = null;
-    for (var n = 0, a = e.prps.length; a > n; n++) o = e.prps[n], assert(util.intRange(o[0], 0, 299)), assert(util.intRange(o[1], 0, 99)), assert(util.intRange(o[2], 0, 99)), assert(util.isString(o[3]) && !util.isUndefined(model.data_tileSheets[o[3]].capturePoints) || "undefined" != typeof model.data_tileSheets[o[3]].cannon || "undefined" != typeof model.data_tileSheets[o[3]].laser || "undefined" != typeof model.data_tileSheets[o[3]].rocketsilo), assert(util.intRange(o[4], 1, model.data_tileSheets[o[3]].capturePoints) || util.intRange(o[4], -99, -1) || "undefined" != typeof model.data_tileSheets[o[3]].rocketsilo), assert(util.intRange(o[5], -1, 3)), t = model.property_data[o[0]], t.type = model.data_tileSheets[o[3]], t.capturePoints = 20, t.owner = o[5], t.x = o[1], t.y = o[2], model.property_posMap[o[1]][o[2]] = t
+    for (var t, o, n = 0, a = model.property_data.length; a > n; n++) model
+      .property_data[n].owner = -1, model.property_data[n].type = null;
+    for (var n = 0, a = e.prps.length; a > n; n++) o = e.prps[n], assert(
+        util.intRange(o[0], 0, 299)), assert(util.intRange(o[1], 0, 99)),
+      assert(util.intRange(o[2], 0, 99)), assert(util.isString(o[3]) && !
+        util.isUndefined(model.data_tileSheets[o[3]].capturePoints) ||
+        "undefined" != typeof model.data_tileSheets[o[3]].cannon ||
+        "undefined" != typeof model.data_tileSheets[o[3]].laser ||
+        "undefined" != typeof model.data_tileSheets[o[3]].rocketsilo),
+      assert(util.intRange(o[4], 1, model.data_tileSheets[o[3]].capturePoints) ||
+        util.intRange(o[4], -99, -1) || "undefined" != typeof model.data_tileSheets[
+          o[3]].rocketsilo), assert(util.intRange(o[5], -1, 3)), t = model.property_data[
+        o[0]], t.type = model.data_tileSheets[o[3]], t.capturePoints = 20,
+      t.owner = o[5], t.x = o[1], t.y = o[2], model.property_posMap[o[1]][o[
+        2]] = t
 
     model.round_turnOwner = -1, model.round_day = 0
 
-    assert(util.intRange(e.trOw, 0, 999999)), assert(util.intRange(e.day, 0, 999999)), model.round_turnOwner = e.trOw, model.round_day = e.day
+    assert(util.intRange(e.trOw, 0, 999999)), assert(util.intRange(e.day, 0,
+      999999)), model.round_turnOwner = e.trOw, model.round_day = e.day
 
     model.rule_map.resetValues()
 
-    assert(util.isInt(e.gmTm) && e.gmTm >= 0), assert(util.isInt(e.tnTm) && e.tnTm >= 0), model.timer_gameTimeElapsed = e.gmTm, model.timer_turnTimeElapsed = e.tnTm
+    assert(util.isInt(e.gmTm) && e.gmTm >= 0), assert(util.isInt(e.tnTm) &&
+        e.tnTm >= 0), model.timer_gameTimeElapsed = e.gmTm, model.timer_turnTimeElapsed =
+      e.tnTm
 
-    for (var t = 0, o = model.unit_data.length; o > t; t++) model.unit_data[t].owner = -1;
+    for (var t = 0, o = model.unit_data.length; o > t; t++) model.unit_data[
+      t].owner = -1;
     model.unit_posData.resetValues();
     var n;
     if (e.units) {
       assert(Array.isArray(e.units));
       for (var t = 0, o = e.units.length; o > t; t++) {
-        n = e.units[t], assert(util.isInt(n[0])), assert("string" == typeof n[1]), assert(model.data_unitSheets.hasOwnProperty(n[1]));
+        n = e.units[t], assert(util.isInt(n[0])), assert("string" == typeof n[
+          1]), assert(model.data_unitSheets.hasOwnProperty(n[1]));
         var a = model.data_unitSheets[n[1]];
-        assert(model.map_isValidPosition(n[2], n[3])), assert(util.intRange(n[4], 1, 99)), assert(util.intRange(n[5], 0, a.ammo)), assert(util.intRange(n[6], 0, a.fuel)), assert(util.isInt(n[7])), assert(util.intRange(n[8], -1, 3));
+        assert(model.map_isValidPosition(n[2], n[3])), assert(util.intRange(
+            n[4], 1, 99)), assert(util.intRange(n[5], 0, a.ammo)), assert(
+            util.intRange(n[6], 0, a.fuel)), assert(util.isInt(n[7])),
+          assert(util.intRange(n[8], -1, 3));
         var r = n[0],
           l = model.unit_data[r];
-        l.type = a, l.x = n[2], l.y = n[3], l.hp = n[4], l.ammo = n[5], l.fuel = n[6], l.loadedIn = n[7], l.owner = n[8], model.unit_posData[n[2]][n[3]] = l
+        l.type = a, l.x = n[2], l.y = n[3], l.hp = n[4], l.ammo = n[5], l.fuel =
+          n[6], l.loadedIn = n[7], l.owner = n[8], model.unit_posData[n[2]]
+          [n[3]] = l
       }
 
       // CONTAINS LOW_AMMO,LOW_FUEL,HAS_LOADS,CAPTURES,VISIBLE
@@ -253,30 +336,49 @@ const gameCreateLogicHandler = function (world, client) {
 
     // TODO uuuuugh
 
-    for (var t = Object.keys(e.cfg), o = t.length; o--;) assert(util.isInt(e.cfg[t[o]]));
+    for (var t = Object.keys(e.cfg), o = t.length; o--;) assert(util.isInt(
+      e.cfg[t[o]]));
     controller.buildRoundConfig(e.cfg)
 
     var t, o, n, a;
-    for (assert(Array.isArray(e.co) && 4 === e.co.length), n = 0, a = 4; a > n; n++) t = e.co[n], t > 0 && (assert(util.intRange(t[0], 0, 999999)), assert(util.intRange(t[1], 0, 999999)), assert(util.intRange(t[2], model.co_MODES.NONE, model.co_MODES.AWDR)), assert(util.isString(t[3]) && model.data_coSheets.hasOwnProperty(t[3])), assert(util.isString(t[4]) && model.data_coSheets.hasOwnProperty(t[4])), o = model.co_data[n], o.power = t[0], o.timesUsed = t[1], o.level = t[2], o.coA = t[3] ? model.data_coSheets[t[3]] : null, o.coB = t[4] ? model.data_coSheets[t[4]] : null)
+    for (assert(Array.isArray(e.co) && 4 === e.co.length), n = 0, a = 4; a >
+      n; n++) t = e.co[n], t > 0 && (assert(util.intRange(t[0], 0, 999999)),
+      assert(util.intRange(t[1], 0, 999999)), assert(util.intRange(t[2],
+        model.co_MODES.NONE, model.co_MODES.AWDR)), assert(util.isString(
+        t[3]) && model.data_coSheets.hasOwnProperty(t[3])), assert(util.isString(
+        t[4]) && model.data_coSheets.hasOwnProperty(t[4])), o = model.co_data[
+        n], o.power = t[0], o.timesUsed = t[1], o.level = t[2], o.coA = t[
+        3] ? model.data_coSheets[t[3]] : null, o.coB = t[4] ? model.data_coSheets[
+        t[4]] : null)
 
     var t = 0,
       o = e.dyev.length;
-    for (assert(e.dyea.length === 2 * o); o > t; t++) assertInt(e.dyev[t]), assertStr(e.dyee[t]), assert(e.dyev[t] > 0), model.dayTick_dataTime[t] = e.dyev[t], model.dayTick_dataEvent[t] = e.dyee[t], model.dayTick_dataArgs[2 * t] = e.dyea[2 * t], model.dayTick_dataArgs[2 * t + 1] = e.dyea[2 * t + 1]
+    for (assert(e.dyea.length === 2 * o); o > t; t++) assertInt(e.dyev[t]),
+      assertStr(e.dyee[t]), assert(e.dyev[t] > 0), model.dayTick_dataTime[t] =
+      e.dyev[t], model.dayTick_dataEvent[t] = e.dyee[t], model.dayTick_dataArgs[
+        2 * t] = e.dyea[2 * t], model.dayTick_dataArgs[2 * t + 1] = e.dyea[
+        2 * t + 1]
 
     assert(Array.isArray(e.manpower));
     var t = e.manpower.length - 1;
-    do assert(util.isInt(e.manpower[t]) && e.manpower[t] >= 0), t--; while (t >= 0);
+    do assert(util.isInt(e.manpower[t]) && e.manpower[t] >= 0), t--; while (
+      t >= 0);
     model.manpower_data.grabValues(e.manpower)
 
     var t, o, n, a;
-    for (n = 0, a = e.players.length; a > n; n++) t = e.players[n], assert(util.intRange(t[0], 0, 3)), assert(util.isString(t[1])), assert(util.intRange(t[2], 0, 999999)), assert(util.intRange(t[3], 0, 3)), o = model.player_data[t[0]], o.name = t[1], o.gold = t[2], o.team = t[3]
+    for (n = 0, a = e.players.length; a > n; n++) t = e.players[n], assert(
+        util.intRange(t[0], 0, 3)), assert(util.isString(t[1])), assert(
+        util.intRange(t[2], 0, 999999)), assert(util.intRange(t[3], 0, 3)),
+      o = model.player_data[t[0]], o.name = t[1], o.gold = t[2], o.team = t[
+        3]
 
     for (var t, o = 0, n = e.prps.length; n > o; o++) {
       var a = e.prps[o];
       t = model.property_data[a[0]], t.capturePoints = a[4]
     }
 
-    assert(model.data_weatherSheets.hasOwnProperty(e.wth)), model.weather_data = model.data_weatherSheets[e.wth]
+    assert(model.data_weatherSheets.hasOwnProperty(e.wth)), model.weather_data =
+      model.data_weatherSheets[e.wth]
 
     // =======================================================
     // TODO
@@ -284,10 +386,10 @@ const gameCreateLogicHandler = function (world, client) {
     model.properties = $.range(1, 300).map(id => ({
       id,
       capturePoints: 20,
-      owner: -1,
-      x: 0,
-      y: 0,
-      type: null
+        owner: -1,
+        x: 0,
+        y: 0,
+        type: null
     }))
 
     model.cos = {
@@ -313,35 +415,35 @@ const gameCreateLogicHandler = function (world, client) {
       .map(id => ({
         id,
         hp: 99,
-        x: 0,
-        y: 0,
-        ammo: 0,
-        fuel: 0,
-        loadedIn: -1,
-        type: null,
-        hidden: !1,
-        owner: -1
+          x: 0,
+          y: 0,
+          ammo: 0,
+          fuel: 0,
+          loadedIn: -1,
+          type: null,
+          hidden: !1,
+          owner: -1
       }))
 
     model.mode = "no-co"
   }
 
   // returns true when the buffer contains at least one command, false otherwise
-  const hasCommands = () => world.buffer.length > 0
+  const hasCommands = (buffer) => buffer.length > 0
 
   // pushes a command into the buffer
-  const pushCommand = command => {
+  const pushCommand = (buffer, command) => {
     const MAX_SIZE = 200
 
-    // TODO check format
-    guard(buffer.length < MAX_SIZE)
-    world.buffer.push(command)
-    return world.buffer
+    guard(_.size(buffer) < MAX_SIZE)
+    return _.concat(buffer, command)
   }
 
   // pops a command from the buffer and returns it
-  const popCommand = () => {
-    guard(hasCommands())
+  const popCommand = (buffer) => {
+    guard(hasCommands(buffer))
+    const next = _.first(buffer)
+    const withoutNext = _.initial(buffer)
     return world.buffer.shift()
   }
 
@@ -354,8 +456,8 @@ const gameCreateLogicHandler = function (world, client) {
     50000
   ].filter(x => x <= player.gold)
 
-  const canTransferMoney = (sourcePlayer) =>
-    player.gold >= exports.transfer.getMoneyTransferPackages()[0]
+  const canTransferMoney = (player) => getMoneyTransferPackages(player).length >
+    0
 
   const doMoneyTransfer = (sourcePlayer, amount, targetPlayer) => {
     sourcePlayer.gold -= amount
@@ -365,7 +467,8 @@ const gameCreateLogicHandler = function (world, client) {
 
   const canDoPropertyTransfer = (property) => !property.type.notTransferable
 
-  const doPropertyTransfer = (property, targetPlayer) => property.owner = targetPlayer
+  const doPropertyTransfer = (property, targetPlayer) => property.owner =
+    targetPlayer
 
   const canTransferUnit = unit => !exports.transport.hasLoads(unit)
 
@@ -440,15 +543,17 @@ const gameCreateLogicHandler = function (world, client) {
       .default("nothing")
   }
 
-  const endTurn = (turn, players) => {
+  const doPickNextTurnowner = () => {
 
-    const currentOwner = turn.owner
+    const currentOwner = world.turn.owner
     const currentOwnerIndex = players.indexOf(currentOwner)
-    const restPlayers = rotateList(players.filter(p => p != currentOwner), currentOwnerIndex).filter(p => p.team != -1)
-
-    guard(restPlayers.length > 0)
-
+    const playersWithoutTurnOwner = rotateList(world.players.filter(p => p !=
+      currentOwner), currentOwnerIndex)
+    const restPlayers = filter(p => p.team != -1)
     const nextOwner = restPlayers[0]
+
+    guard(!!nextOwner)
+
     const nextOwnerIndex = players.indexOf(nextOwner)
     const dayChanged = nextOwnerIndex < currentOwnerIndex
 
@@ -465,7 +570,8 @@ const gameCreateLogicHandler = function (world, client) {
     const INCREASE_PER_USE = 1800
     const MAXIMUM_INCREASES = 10
 
-    const timesUsed = Math.max(model.co_data[playerId].timesPowerUsed, MAXIMUM_INCREASES)
+    const timesUsed = Math.max(model.co_data[playerId].timesPowerUsed,
+      MAXIMUM_INCREASES)
     return STAR_COST + timesUsed * INCREASE_PER_USE
   }
 
@@ -487,8 +593,9 @@ const gameCreateLogicHandler = function (world, client) {
     // TODO
   }
 
-  const isPowerActivatable = (model, power, playerId) => {
-    if ([model.co_MODES.AW1, model.co_MODES.AW2, model.co_MODES.AWDS].includes(model.co_activeMode)) {
+  const isPowerActivatable = (power, model, playerId) => {
+    if ([model.co_MODES.AW1, model.co_MODES.AW2, model.co_MODES.AWDS].includes(
+        model.co_activeMode)) {
       return false
     }
 
@@ -504,12 +611,13 @@ const gameCreateLogicHandler = function (world, client) {
     const starsNeeded = stars[power]
     cwt.guard(!!stars)
 
-    return coData.power >= exports.co.getCostOfOnePowerStar(playerId) * starsNeeded
+    return coData.power >= exports.co.getCostOfOnePowerStar(playerId) *
+      starsNeeded
   }
 
-  const isCoPActivatable = (model, playerId) => exports.co.isPowerActivatable(model, "cop", playerId)
+  const isCoPActivatable = isPowerActivatable.bind(null, "cop")
 
-  const isSCoPActivatable = (model, playerId) => exports.co.isPowerActivatable(model, "scop", playerId)
+  const isSCoPActivatable = isPowerActivatable.bind(null, "scop")
 
   const isStealthUnit = unit => !!unit.type.stealth
 
@@ -528,13 +636,13 @@ const gameCreateLogicHandler = function (world, client) {
   }
 
   const canJoin = (sourceUnit, targetUnit) => [
-        sourceUnit.owner == targetUnit.owner,
-        sourceUnit.type == targetUnit.type,
-        // TODO move this to the actions mediator
-        !exports.transport.isTransporter(sourceUnit),
-        !exports.transport.hasLoads(targetUnit),
-        targetUnit.hp < 90
-      ].every(x => !!x)
+    sourceUnit.owner == targetUnit.owner,
+    sourceUnit.type == targetUnit.type,
+    // TODO move this to the actions mediator
+    !exports.transport.isTransporter(sourceUnit), !exports.transport.hasLoads(
+      targetUnit),
+    targetUnit.hp < 90
+  ].every(x => !!x)
 
   const joinUnits = (sourceUnit, targetUnit) => {
     exports.guard(exports.join.canJoin(sourceUnit, targetUnit))
@@ -542,12 +650,15 @@ const gameCreateLogicHandler = function (world, client) {
     const aboveFullHp = Math.max(0, sourceUnit.hp + targetUnit.hp - 99)
 
     targetUnit.hp = Math.min(targetUnit.hp + sourceUnit.hp, 99)
-    targetUnit.fuel = Math.min(targetUnit.fuel + sourceUnit.fuel, targetUnit.type.fuel)
-    targetUnit.ammo = Math.min(targetUnit.ammo + sourceUnit.ammo, targetUnit.type.ammo)
+    targetUnit.fuel = Math.min(targetUnit.fuel + sourceUnit.fuel,
+      targetUnit.type.fuel)
+    targetUnit.ammo = Math.min(targetUnit.ammo + sourceUnit.ammo,
+      targetUnit.type.ammo)
     sourceUnit.owner = null
 
     // TODO ?
-    targetUnit.owner.gold = targetUnit.owner.gold + (sourceUnit.type.cost * 0.1)
+    targetUnit.owner.gold = targetUnit.owner.gold + (sourceUnit.type.cost *
+      0.1)
   }
 
   // returns true when the current active day is in peace phase, false otherwise
@@ -565,8 +676,10 @@ const gameCreateLogicHandler = function (world, client) {
   // 'nothing' will be returned
   const getUnitFireType = unit => condition()
     .case(() => !hasMainWeapon(unit) && !hasSecondaryWeapon(unit), "nothing")
-    .case(() => unit.type.attack.range.max > 1 && unit.type.attack.range.min == 1, () => "ballistic")
-    .case(() => unit.type.attack.range.max > 1 && unit.type.attack.range.min > 1, "indirect")
+    .case(() => unit.type.attack.range.max > 1 && unit.type.attack.range.min ==
+      1, () => "ballistic")
+    .case(() => unit.type.attack.range.max > 1 && unit.type.attack.range.min >
+      1, "indirect")
     .default("direct")
 
   // returns true when the unit is a ballistic unit, false otherwise
@@ -581,43 +694,51 @@ const gameCreateLogicHandler = function (world, client) {
   // returns true when the unit is a peaceful unit, false otherwise
   const isPeacefulUnit = unit => getUnitFireType(unit) == "nothing"
 
-  const getTargets = (model, unit, position = unit.position) => {
+  const getTargets = (unit, position = unit.position) => {
     const minRange = unit.type.attack.range.min
     const maxRange = unit.type.attack.range.max
     const team = unit.owner.team
     const visionMap = unit.owner.visionMap
 
-    return exports.model
-      .sliceRange(model.map, maxRange, position)
+    return sliceRange(world.map, maxRange, position)
       .map(tile => tile.unit)
       .filter(u => !!u)
       .filter(unit => visionMap[unit.position.x][unit.position.y] > 0)
-      .filter(unit => exports.model.distance(position, unit.position) >= minRange)
+      .filter(unit => exports.model.distance(position, unit.position) >=
+        minRange)
       .filter(unit => unit.owner.team != team)
   }
 
-  const hasTargets = (model, unit, position) => getTargets(model, unit, position).length > 0
+  const hasTargets = (model, unit, position) => getTargets(model, unit,
+    position).length > 0
 
   const getBaseDamageAgainst = (e, t, o) => {
     var n = e.type.attack;
     if (!n) return -1;
     var a, r = t.type.ID;
-    return "undefined" == typeof o && (o = !0), o && e.ammo > 0 && void 0 !== n.main_wp && (a = n.main_wp[r], "undefined" != typeof a) ? a : void 0 !== n.sec_wp && (a = n.sec_wp[r], "undefined" != typeof a) ? a : -1
+    return "undefined" == typeof o && (o = !0), o && e.ammo > 0 && void 0 !==
+      n.main_wp && (a = n.main_wp[r], "undefined" != typeof a) ? a : void 0 !==
+      n.sec_wp && (a = n.sec_wp[r], "undefined" != typeof a) ? a : -1
   }
 
   const getBattleDamageAgainst = (e, t, o, n, a) => {
-    "undefined" == typeof a && (a = !1), assert(util.intRange(o, 0, 100)), assert(util.isBoolean(n)), assert(util.isBoolean(a));
+    "undefined" == typeof a && (a = !1), assert(util.intRange(o, 0, 100)),
+      assert(util.isBoolean(n)), assert(util.isBoolean(a));
     var r = model.battle_getBaseDamageAgainst(e, t, n);
     if (-1 === r) return -1;
     var l = model.unit_convertHealthToPoints(e),
       i = model.unit_convertHealthToPoints(t);
     controller.prepareTags(e.x, e.y);
-    var d = parseInt(o / 100 * controller.scriptedValue(e.owner, "luck", 10), 10),
+    var d = parseInt(o / 100 * controller.scriptedValue(e.owner, "luck", 10),
+        10),
       s = controller.scriptedValue(e.owner, "att", 100);
-    a && (s += controller.scriptedValue(t.owner, "counteratt", 0)), controller.prepareTags(t.x, t.y);
+    a && (s += controller.scriptedValue(t.owner, "counteratt", 0)),
+      controller.prepareTags(t.x, t.y);
     var c = controller.scriptedValue(t.owner, "def", 100),
       m = model.map_data[t.x][t.y].defense,
-      u = parseInt(controller.scriptedValue(t.owner, "terrainDefense", m) * controller.scriptedValue(t.owner, "terrainDefenseModifier", 100) / 100, 10),
+      u = parseInt(controller.scriptedValue(t.owner, "terrainDefense", m) *
+        controller.scriptedValue(t.owner, "terrainDefenseModifier", 100) /
+        100, 10),
       _ = (r * s / 100 + d) * (l / 10) * ((200 - (c + u * i)) / 100);
     return _ = parseInt(_, 10)
   }
@@ -651,7 +772,8 @@ const gameCreateLogicHandler = function (world, client) {
     var a = model.unit_data[e],
       r = model.unit_data[t],
       l = model.battle_isIndirectUnit(e);
-    if (!l && 1 === controller.scriptedValue(r.owner, "firstCounter", 0) && !model.battle_isIndirectUnit(t)) {
+    if (!l && 1 === controller.scriptedValue(r.owner, "firstCounter", 0) &&
+      !model.battle_isIndirectUnit(t)) {
       var i = r;
       r = a, a = i
     }
@@ -662,10 +784,17 @@ const gameCreateLogicHandler = function (world, client) {
       _ = model.unit_convertHealthToPoints(r),
       p = model.unit_convertHealthToPoints(a),
       f = model.battle_canUseMainWeapon(a, r);
-    d = model.battle_getBattleDamageAgainst(a, r, o, f, !1) - 1 !== d && (model.events.damageUnit(t, d), _ -= model.unit_convertHealthToPoints(r) f && a.ammo--
-      _ = parseInt(.1 * _ * c.cost, 10) model.events.co_modifyPowerLevel(m, parseInt(.5 * _, 10)) model.events.co_modifyPowerLevel(u, _))
+    d = model.battle_getBattleDamageAgainst(a, r, o, f, !1) - 1 !== d && (
+      model.events.damageUnit(t, d), _ -= model.unit_convertHealthToPoints(
+        r) f && a.ammo--
+      _ = parseInt(.1 * _ * c.cost, 10) model.events.co_modifyPowerLevel(
+        m, parseInt(.5 * _, 10)) model.events.co_modifyPowerLevel(u, _))
     r.hp > 0 && !model.battle_isIndirectUnit(t) && (
-      f = model.battle_canUseMainWeapon(r, a), d = model.battle_getBattleDamageAgainst(r, a, n, f, !0), -1 !== d && (model.events.damageUnit(e, d), p -= model.unit_convertHealthToPoints(a), f && r.ammo--, p = parseInt(.1 * p * s.cost, 10), model.events.co_modifyPowerLevel(u, parseInt(.5 * p, 10)), model.events.co_modifyPowerLevel(m, p)))
+      f = model.battle_canUseMainWeapon(r, a), d = model.battle_getBattleDamageAgainst(
+        r, a, n, f, !0), -1 !== d && (model.events.damageUnit(e, d), p -=
+        model.unit_convertHealthToPoints(a), f && r.ammo--, p = parseInt(
+          .1 * p * s.cost, 10), model.events.co_modifyPowerLevel(u,
+          parseInt(.5 * p, 10)), model.events.co_modifyPowerLevel(m, p)))
   }
 
   // returns true when the unit is a suicide unit, false otherwise
@@ -687,10 +816,12 @@ const gameCreateLogicHandler = function (world, client) {
   const calculateVision = (map, owner) => {
     fogModel.map(col => col.map(x => 0))
     map.reduce((arr, col) => col.forEach(tile => {
-        if (!!tile.property && tile.property.owner == owner) arr.push(tile.property)
+        if (!!tile.property && tile.property.owner == owner) arr.push(
+          tile.property)
         if (!!tile.unit && tile.unit.owner == owner) arr.push(tile.unit)
       }), [])
-      .forEach(visioner => modifyVision(visioner.position, visioner.type.vision, owner.visionMap, +1))
+      .forEach(visioner => modifyVision(visioner.position, visioner.type.vision,
+        owner.visionMap, +1))
   }
 
   const isCannon = cannon => "CANNON_UNIT_INV" === cannon.type.ID
@@ -710,7 +841,8 @@ const gameCreateLogicHandler = function (world, client) {
   const fireCannon = (cannon) => {
     // TODO
     const unit = model.unit_posData[e.targetselection.x][e.targetselection.y]
-    const cannonType = model.bombs_grabPropTypeFromPos(e.target.x, e.target.y)
+    const cannonType = model.bombs_grabPropTypeFromPos(e.target.x, e.target
+      .y)
 
     model.events.damageUnit(
       model.unit_extractId(unit),
@@ -730,7 +862,9 @@ const gameCreateLogicHandler = function (world, client) {
       for (t = 0, ye = model.map_height; ye > t; t++)
         if (n === e || a === t) {
           var l = model.unit_posData[e][t];
-          l && l.owner !== r && model.events.damageUnit(model.unit_extractId(l), model.unit_convertPointsToHealth(o.type.laser.damage), 9)
+          l && l.owner !== r && model.events.damageUnit(model.unit_extractId(
+              l), model.unit_convertPointsToHealth(o.type.laser.damage),
+            9)
         }
   }
 
@@ -738,9 +872,12 @@ const gameCreateLogicHandler = function (world, client) {
     assert(model.player_isValidPid(e));
     for (var m = model.player_data[e].team, u = i, _ = !1; d >= l; l++)
       for (i = u; i >= s; i--)
-        if (model.map_isValidPosition(l, i) && !(Math.abs(l - o) + Math.abs(i - n) > c || Math.abs(l - a) + Math.abs(i - r) > c || model.fog_turnOwnerData[l][i] <= 0)) {
+        if (model.map_isValidPosition(l, i) && !(Math.abs(l - o) + Math.abs(
+            i - n) > c || Math.abs(l - a) + Math.abs(i - r) > c || model.fog_turnOwnerData[
+            l][i] <= 0)) {
           var p = model.unit_posData[l][i];
-          p && p.owner !== e && model.player_data[p.owner].team !== m && (t.setValueAt(l, i, 1), _ = !0)
+          p && p.owner !== e && model.player_data[p.owner].team !== m && (t
+            .setValueAt(l, i, 1), _ = !0)
         }
     return _
   }
@@ -748,33 +885,42 @@ const gameCreateLogicHandler = function (world, client) {
   const markCannonTargets = (e, t) => {
     var o, n = model.unit_data[e],
       a = model.property_posMap[n.x][n.y],
-      r = "PROP_INV" !== a.type.ID ? a.type : model.bombs_grabPropTypeFromPos(n.x, n.y);
+      r = "PROP_INV" !== a.type.ID ? a.type : model.bombs_grabPropTypeFromPos(
+        n.x, n.y);
     assert(r.cannon), t.setCenter(n.x, n.y, -1);
     var l = r.cannon.range;
     switch (r.cannon.direction) {
       case "N":
-        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x, n.y - l - 1, n.x - n + 1, n.y - 1, n.x + n - 1, n.y - l, l);
+        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x, n
+          .y - l - 1, n.x - n + 1, n.y - 1, n.x + n - 1, n.y - l, l);
         break;
       case "E":
-        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x + l + 1, n.y, n.x + 1, n.y + l - 1, n.x + l, n.y - l + 1, l);
+        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x +
+          l + 1, n.y, n.x + 1, n.y + l - 1, n.x + l, n.y - l + 1, l);
         break;
       case "W":
-        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x - l - 1, n.y, n.x - l, n.y + l - 1, n.x - 1, n.y - l + 1, l);
+        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x -
+          l - 1, n.y, n.x - l, n.y + l - 1, n.x - 1, n.y - l + 1, l);
         break;
       case "S":
-        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x, n.y + l + 1, n.x - l + 1, n.y + l, n.x + l - 1, n.y + 1, l)
+        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x, n
+          .y + l + 1, n.x - l + 1, n.y + l, n.x + l - 1, n.y + 1, l)
     }
     return o
   }
 
   const grabPropTypeFromPos = (e, t) => {
     for (;;) {
-      if (!(t + 1 < model.map_height && model.property_posMap[e][t + 1] && "PROP_INV" === model.property_posMap[e][t + 1].type.ID)) break;
+      if (!(t + 1 < model.map_height && model.property_posMap[e][t + 1] &&
+          "PROP_INV" === model.property_posMap[e][t + 1].type.ID)) break;
       t++
     }
-    if ("PROP_INV" !== model.property_posMap[e][t].type.ID) return model.property_posMap[e][t].type;
+    if ("PROP_INV" !== model.property_posMap[e][t].type.ID) return model.property_posMap[
+      e][t].type;
     for (;;) {
-      if (e + 1 < model.map_width && model.property_posMap[e + 1][t] && "PROP_INV" !== model.property_posMap[e + 1][t].type.ID) return model.property_posMap[e + 1][t].type;
+      if (e + 1 < model.map_width && model.property_posMap[e + 1][t] &&
+        "PROP_INV" !== model.property_posMap[e + 1][t].type.ID) return model
+        .property_posMap[e + 1][t].type;
       break
     }
     assert(!1)
@@ -827,12 +973,14 @@ const gameCreateLogicHandler = function (world, client) {
 
   const canLoad = (transporter, load) => {
     return !$.Stream([
-        exports.greaterThan(model.unit_data[e].type.maxloads, 0),
-        exports.notEqual(e.source.unitId, e.target.unitId),
-        exports.notEqual(sourceUnit.loadedIn, e.target.unitId),
-        exports.notEqual(targetUnit.loadedIn + 1 + targetUnit.type.maxloads, 0),
-        exports.notEqual(exports.includes(sourceUnit.type.movetype, targetUnit.type.canload))
-      ]).includes(false)
+      exports.greaterThan(model.unit_data[e].type.maxloads, 0),
+      exports.notEqual(e.source.unitId, e.target.unitId),
+      exports.notEqual(sourceUnit.loadedIn, e.target.unitId),
+      exports.notEqual(targetUnit.loadedIn + 1 + targetUnit.type.maxloads,
+        0),
+      exports.notEqual(exports.includes(sourceUnit.type.movetype,
+        targetUnit.type.canload))
+    ]).includes(false)
   }
 
   const load = (transporter, load) => {
@@ -847,8 +995,10 @@ const gameCreateLogicHandler = function (world, client) {
     var n, a = model.unit_data[e],
       r = a.owner;
 
-    if (!model.transport_isTransportUnit(e) || !model.transport_hasLoads(e)) return !1;
-    for (var l = model.unit_firstUnitId(r), i = model.unit_lastUnitId(r); i >= l; l++)
+    if (!model.transport_isTransportUnit(e) || !model.transport_hasLoads(e))
+      return !1;
+    for (var l = model.unit_firstUnitId(r), i = model.unit_lastUnitId(r); i >=
+      l; l++)
       if (n = model.unit_data[l], -1 !== n.owner && n.loadedIn === e) {
         var d = model.data_movetypeSheets[n.type.movetype];
         if (model.move_canTypeMoveTo(d, t - 1, o)) return;
@@ -867,16 +1017,20 @@ const gameCreateLogicHandler = function (world, client) {
       let o = data.target.y
     let n = data.menu
 
-    for (var a, r = model.unit_data[e], l = r.owner, i = model.unit_firstUnitId(l), d = model.unit_lastUnitId(l); d >= i; i++)
+    for (var a, r = model.unit_data[e], l = r.owner, i = model.unit_firstUnitId(
+        l), d = model.unit_lastUnitId(l); d >= i; i++)
       if (a = model.unit_data[i], -1 !== a.owner && a.loadedIn === e) {
         var s = model.data_movetypeSheets[a.type.movetype];
-        (model.move_canTypeMoveTo(s, t - 1, o) || model.move_canTypeMoveTo(s, t + 1, o) || model.move_canTypeMoveTo(s, t, o - 1) || model.move_canTypeMoveTo(s, t, o + 1)) && n.addEntry(i, !0)
+        (model.move_canTypeMoveTo(s, t - 1, o) || model.move_canTypeMoveTo(
+          s, t + 1, o) || model.move_canTypeMoveTo(s, t, o - 1) || model.move_canTypeMoveTo(
+          s, t, o + 1)) && n.addEntry(i, !0)
       }
   }
 
   const getUnloadTargets = (transporter) => {
     // TODO
-    var r = model.data_movetypeSheets[model.unit_data[e.action.selectedSubEntry].type.movetype];
+    var r = model.data_movetypeSheets[model.unit_data[e.action.selectedSubEntry]
+      .type.movetype];
     let t = e.target.x
     let o = e.target.y
 
@@ -900,10 +1054,18 @@ const gameCreateLogicHandler = function (world, client) {
     let n = e.action.selectedSubEntry
     let a = e.targetselection.x
     let r = e.targetselection.y
-    if (assert(model.unit_data[n].loadedIn === e), -1 === a || -1 === r || model.unit_posData[a][r]) return controller.stateMachine.data.breakMultiStep = !0, void 0;
+    if (assert(model.unit_data[n].loadedIn === e), -1 === a || -1 === r ||
+      model.unit_posData[a][r]) return controller.stateMachine.data.breakMultiStep = !
+      0, void 0;
     model.unit_data[n].loadedIn = -1, model.unit_data[e].loadedIn++;
     var l;
-    t > a ? l = model.move_MOVE_CODES.LEFT : a > t ? l = model.move_MOVE_CODES.RIGHT : o > r ? l = model.move_MOVE_CODES.UP : r > o && (l = model.move_MOVE_CODES.DOWN), controller.commandStack_localInvokement("move_clearWayCache"), controller.commandStack_localInvokement("move_appendToWayCache", l), controller.commandStack_localInvokement("move_moveByCache", n, t, o, 1), controller.commandStack_localInvokement("wait_invoked", n)
+    t > a ? l = model.move_MOVE_CODES.LEFT : a > t ? l = model.move_MOVE_CODES
+      .RIGHT : o > r ? l = model.move_MOVE_CODES.UP : r > o && (l = model.move_MOVE_CODES
+        .DOWN), controller.commandStack_localInvokement(
+        "move_clearWayCache"), controller.commandStack_localInvokement(
+        "move_appendToWayCache", l), controller.commandStack_localInvokement(
+        "move_moveByCache", n, t, o, 1), controller.commandStack_localInvokement(
+        "wait_invoked", n)
   }
 
   const isFactory = (property) => !!property.type.builds
@@ -911,12 +1073,15 @@ const gameCreateLogicHandler = function (world, client) {
   const canProduce = (model, property) => {
     guard(isFactory(property))
     return model.manpower_data[property.owner] > 0 &&
-      model.unit_data.filter(unit => unit.owner === property.owner).length < 50
+      model.unit_data.filter(unit => unit.owner === property.owner).length <
+      50
   }
 
-  const getProducableTypes = (model, property) => model
-    .data_unitSheets
-    .filter(sheet => property.type.builds.includes(sheet.movetype))
+  // returns a list of types which can be produced by the given factory
+  const getProducableTypes = (factory) => world
+    .types
+    .units
+    .filter(sheet => factory.type.builds.includes(sheet.movetype))
     .filter(sheet => sheet.cost <= model.player_data[property.owner].gold)
     .map(sheet => sheet.ID)
 
@@ -943,7 +1108,8 @@ const gameCreateLogicHandler = function (world, client) {
     var n = model.property_posMap[e][t],
       a = model.data_unitSheets[o].cost,
       r = model.player_data[n.owner];
-    r.gold -= a, assert(r.gold >= 0), model.events.createUnit(model.unit_getFreeSlot(n.owner), n.owner, e, t, o)
+    r.gold -= a, assert(r.gold >= 0), model.events.createUnit(model.unit_getFreeSlot(
+      n.owner), n.owner, e, t, o)
 
     exports.client.events.onUnitCreated(type.ID, factory.x, factory.y)
   }
@@ -952,73 +1118,90 @@ const gameCreateLogicHandler = function (world, client) {
   const isUsable = unit => world.usables.includes(unit)
 
   // sets the given unit as usable in the given usability model
-  const setUsable = unit => world.usables.push(unit)
+  const doMarkUsable = unit => world.usables.push(unit)
 
   // sets the given unit as unusable in the given usability model
-  const setUnusable = unit => world.usables.splice(usables.indexOf(unit), 1)
+  const doMarkUnusable = unit => world.usables = world.usables.filter(u => u !=
+    unit)
 
-  const canBeCapturedBy = (model, property, unit) => {
-    if (model.player_data[unit.owner].team == model.player_data[property.owner].team) {
-      return false
-    }
-    return property.type.capturePoints > 0 && unit.type.captures > 0
-  }
+  // returns true if the property can be captured by the unit
+  const canBeCapturedBy = (property, unit) =>
+    isUsable(unit) &&
+    unit.type.capturer &&
+    unit.owner.team != property.owner.team
 
-  const capture = (property, unit) => {
-    cwt.guard(exports.capture.canBeCapturedBy(property, unit))
+  // let unit captures property which results in lowered property
+  // points. all properties and units of the property owner will
+  // be cleared when the points falls down to zero and the property
+  // is critical. otherwise only the property owner changes to
+  // the capturers owner.
+  const doCapture = (property, unit) => {
+    guard(canBeCapturedBy(property, unit))
 
-    // TODO
-    assert(model.property_isValidPropId(e)), assert(model.unit_isValidUnitId(t));
-    var o = model.unit_data[e.source.unitId],
-      n = model.property_data[e.target.propertyId],
-      a = parseInt(o.hp / 10, 10) + 1;
+    const capturedPoints = Math.trunc(world.cfg.capturePerStep / 100 * (
+      unit.hp + 1))
+    const pointsLeft = property.points - capturedPoints
+    const newOwner = pointsLeft < 0
+    const newPoints = newOwner ? world.cfg.capturePoints : pointsLeft
+    const afterCaptureType = property.type.transformation.afterCaptured
+    const isCriticalLoss = newOwner && property.type.isCriticalProperty
+    const newType = newOwner && !!afterCaptureType ? afterCaptureType :
+      property.type
+    const belongsToPropertyOwner = ownable => property.owner == ownable.owner
 
-    if (a = parseInt(a * controller.scriptedValue(o.owner, "captureRate", 100) / 100, 10), n.capturePoints -= a, n.capturePoints <= 0) {
-      var r = n.x,
-        l = n.y;
-      if (model.events.modifyVisionAt(r, l, n.type.vision, 1), n.type.looseAfterCaptured === !0) {
-        var i = n.owner;
+    modifyVision(unit.position, newOwner ? 1 : 0, property.type.vision,
+      property.owner.visionMap)
+    modifyVision(unit.position, newOwner ? 1 : 0, newType.vision, unit.owner
+      .visionMap)
 
-        // e === i
-        assert(model.property_isValidPropId(e));
-        var t, o;
-        for (t = model.unit_firstUnitId(e), o = model.unit_lastUnitId(e); o > t; t++) - 1 !== model.unit_data[t].owner && model.events.destroyUnit(t);
-        for (t = 0, o = model.property_data.length; o > t; t++) {
-          var n = model.property_data[t];
-          if (n.owner === e) {
-            n.owner = -1;
-            var a = n.type.changeAfterCaptured;
-            a && model.events.property_changeType(t, a)
-          }
-        }
-        model.player_data[e].team = -1, model.player_areEnemyTeamsLeft() || controller.commandStack_localInvokement("player_noTeamsAreLeft")
+    world.units
+      .filter(() => isCriticalLoss)
+      .filter(belongsToPropertyOwner)
+      .map(unit => destroyUnit(unit))
 
-      }
-      var d = n.type.changeAfterCaptured;
-      "undefined" != typeof d && model.events.property_changeType(e, d), n.capturePoints = 20, n.owner = o.owner;
-      var s = controller.configValue("captureLimit");
-      0 !== s && model.countProperties() >= s && controller.update_endGameRound()
-    }
+    world.properties
+      .filter(() => isCriticalLoss)
+      .filter(belongsToPropertyOwner)
+      .filter(p => p != property)
+      .map(property => property.owner = null)
+
+    property.points = newPoints
+    property.owner = newOwner ? unit.owner : property.owner
+    property.type = newType
   }
 
   // TODO
-  const setActiveWeather = (weatherModel, newType) => {
-    const randomInteger = (from, to) => from + Math.trunc(Math.random() * (to - from))
-
-    weatherModel.active = newType
-    weatherModel.leftDays = randomInteger(newType.duration.min, newType.duration.max)
+  const doUpdateWeather = (newType, seed) => {
+    world.weather.active = newType
+    world.weather.leftDays = randomInteger(newType.duration.min, newType.duration
+      .max)
     exports.client.events.onWeatherChanged(newType.id)
   }
 
   // TODO
-  const pickRandomWeather = (weatherModel) => {
-    const weathers = model.types.weathers.filter(type => type.id != weatherModel.active.id)
+  const pickRandomWeather = () => {
+    const weatherModel = world.weather
+    const weathers = model.types.weathers.filter(type => type.id !=
+      weatherModel.active.id)
     const nextWeather = weathers[Math.trunc(Math.random() * weathers.length)]
-    const nextDuration = nextWeather.duration.min + Math.trunc(Math.random() * nextWeather.duration.max)
+    const nextDuration = nextWeather.duration.min + Math.trunc(Math.random() *
+      nextWeather.duration.max)
     setActiveWeather(weatherModel, nextWeather)
   }
 
-  const getMovemap = (map, unit) => {}
+  const getMovemap = (map, unitId) => {
+    let movetargets = []
+
+    // TODO
+
+    return {
+      x: -1,
+      y: -1,
+      data: [
+        []
+      ]
+    }
+  }
 
   const getMoveway = (map, unit, source, target) => {
 
@@ -1027,7 +1210,9 @@ const gameCreateLogicHandler = function (world, client) {
   const getCostsToMoveOn = (unit, tile) => {
     assert(model.map_isValidPosition(t, o));
     var n, a;
-    return a = model.property_posMap[t][o], n = a ? a.type.blocker ? -1 : e.costs[a.type.ID] : e.costs[model.map_data[t][o].ID], "number" == typeof n ? n : (n = e.costs["*"], "number" == typeof n ? n : -1)
+    return a = model.property_posMap[t][o], n = a ? a.type.blocker ? -1 : e
+      .costs[a.type.ID] : e.costs[model.map_data[t][o].ID], "number" ==
+      typeof n ? n : (n = e.costs["*"], "number" == typeof n ? n : -1)
   }
 
   const canMoveOntoTile = (unit, tile) => getCostsToMoveOn(unit, tile) > 0
@@ -1040,15 +1225,5 @@ const gameCreateLogicHandler = function (world, client) {
 
   }
 
-  return {
-    containsUnit,
-    setUnusable,
-    setUsable,
-    isUsable,
-    isSuicideUnit,
-    selfDestruct,
-    hasCommands,
-    pushCommand,
-    popCommand
-  }
+  return {}
 }

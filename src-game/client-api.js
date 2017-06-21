@@ -90,8 +90,14 @@ const gameClient = (() => {
       @todo client has to overwrite this
       @param time {int} in milliseconds
       @param msg {string}
+      @deprecated
     */
     showNotification: notImplemented,
+
+    notification: {
+
+      showInfo: notImplemented
+    },
 
     events: {
 

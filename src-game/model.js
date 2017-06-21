@@ -76,6 +76,10 @@ const gameModelTypes = () => {
     defense: positiveInteger(6),
     blocksVision: isBoolean,
     notTransferable: isBoolean,
+    isCriticalProperty: isBoolean,
+    transformation: {
+      afterCaptured: isID("T")
+    },
     vision: isIntBetween(0, 15),
     funds: isIntBetween(1, 99999),
     repairs: map(T, integer(1, 9)),
@@ -114,7 +118,7 @@ const gameModelTypes = () => {
 
   const isProperty = {
     owner: (value, _, root) => root.players.includes(value),
-    capturePoints: integer(0, 20)
+    points: integer(0, 20)
   }
 
   const isUnit = {
@@ -196,7 +200,7 @@ const gameModelTypes = () => {
       leftGameTime: integer(0, Number.POSITIVE_INFINITY),
       leftTurnTime: integer(0, Number.POSITIVE_INFINITY)
     },
-    usables: [isBoolean],
+    actives: [isBoolean],
     effects: [{
       event: isString,
       restriction: maybe(isString),

@@ -1,10 +1,4 @@
-const gameAction = ({
-  predicate, effect
-}) => ({
-
-})
-
-const gameCreateActionHandler = world => {
+const gameCreateActionHandler = (world, eventEmitter) => {
 
   // example: [0,0,1,1,-1,-1,11,56]
   const CommandDataType = {
@@ -336,5 +330,4 @@ const gameCreateActionHandler = world => {
 
       action(world, actionData)
     }
-}
 }

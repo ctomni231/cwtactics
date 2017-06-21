@@ -1,4 +1,6 @@
 const gameCreateAiHandler = (world, logic, client, player) => {
+  
+  const state = {}
 
   const handleTick = () => {
 
