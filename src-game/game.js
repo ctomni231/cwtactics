@@ -29,8 +29,14 @@ const gameCreateLogicHandler = function(world, client) {
   const emptyList = gameLogic.emptyList
 
   // generates a random integer in a given intervall
-  const randomInteger = (from, to) => from + Math.trunc(Math.random() * (to -
-    from))
+  const randomInteger = (from, to) => from + Math.trunc(Math.random() * (to - from))
+  
+  const compose = (...fns) => value => fns.reduce((result, f) => f(result), value)
+  const fork = (...fns) => value => fns.map(f => f(value))
+  const join = f => values => f(values)
+  
+  const flow = fork(doubleIt, inc, dec, square)
+  join(console.log)(flow(2)) 
 
   const guard = (expr, msg) => {
     if (!expr) {
@@ -480,9 +486,21 @@ const gameCreateLogicHandler = function(world, client) {
     unit.owner = targetPlayer
   }
 
+  function getTransferTargetPlayers(players, player) {
+    return players.filter(and(not(player), pipe(prop("team"), not(-1)))
+  }
+  
+  const hasTeam = (object) => object.team != -1
+  
+  function getTransferTargetPlayers(players, player) {
+    return players.filter(hasTeam).filter(not(player))
+  }
+
   const getTransferTargetPlayers = (players, player) => players
     .filter(p => p.team != -1)
     .filter(p => p != player)
+    
+  const getTransferTargetPlayers = (players, player) => players.filter(hasTeam).filter(not(player))
 
   const isSupplier = (unit) => !!unit.type.supply
 
