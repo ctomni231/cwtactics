@@ -31,6 +31,8 @@ Logic.falsy = a => !a
 
 // A, A => A - either first A or second one when the first one is falsy   
 Logic.either = (a, b) => !!a ? a : b
+
+Logic.notEquals = (a,b) => a != b
   
 const Maths = {}
   
@@ -282,6 +284,51 @@ Game.captureProperty = (property, unit) => {
   property.type = newType
 }
 
+Game.isFactory = (property) => !!property.type.builds
+
+Game.canProduce = (model, factory) => {
+  const owner = factory.owner
+  const hasManpower = owner.manpower > 0
+  const notOccupied = !factory.tile.unit
+  
+  return hasManpower && notOccupied
+}
+
+// returns a list of types which can be produced by the given factory
+Game.getProducableTypes = (types, factory) => {
+  const buildable = factory.type.builds
+  const owner = factory.owner
+  
+  return types
+    .units
+    .filter(sheet => buildable.includes(sheet.movetype))
+    .filter(sheet => sheet.cost <= owner.gold)
+    .map(sheet => sheet.ID)
+}
+
+const produce = (units, factory, type) => {
+
+  // TODO change usable system
+
+  const newUnit = units.find(u => !u.owner)
+  const owner = factory.owner
+  const newGold = owner.gold - type.cost
+  const newManpower = owner.manpower - 1
+
+  newUnit.hp = 99
+  newUnit.owner = owner
+  newUnit.type = type
+  newUnit.ammo = type.ammo
+  newUnit.fuel = type.fuel
+  newUnit.loadedIn = -1
+  newUnit.x = factory.x
+  newUnit.y = factory.y
+ 
+  owner.manpower = newManpower
+  owner.gold = newGold
+}
+
+
 // 
 // design decision - all sequences are fail fast, they check the input data
 //                   and will throw error as soon illegal data will be detected
@@ -303,7 +350,15 @@ Sequences.attack = (world, attackerID, defenderID) => {
   ...
 }
 
-Sequences.produce = () => null
+Sequences.produce = (world, factoryID, type) => {
+  const factory = world.properties[factoryID]
+  const owner = factory.owner 
+  const ownerUnitCount = world.units.filter(x => x.owner === owner).length
+  
+  Guard(ownerUnitCount < 50)
+  
+  ...
+}
 
 Sequences.drainAll = (world) => {
   
@@ -378,7 +433,7 @@ Sequences.join = (world, unitA, unitB) => {
   Guard(Game.joinable(unitA, unitB))
   Guard(Game.isTransporter(unitA))
   Guard(Game.hasLoadedUnits(unitB))
-  Guard(unitA != unitB)
+  Guard(Logic.notEquals(unitA, unitB))
   
   Game.joinUnits(unitA, unitB)
   
@@ -1236,52 +1291,7 @@ const gameCreateLogicHandler = function(world, client) {
         "wait_invoked", n)
   }
 
-  const isFactory = (property) => !!property.type.builds
-
-  const canProduce = (model, property) => {
-    guard(isFactory(property))
-    return model.manpower_data[property.owner] > 0 &&
-      model.unit_data.filter(unit => unit.owner === property.owner).length <
-      50
-  }
-
-  // returns a list of types which can be produced by the given factory
-  const getProducableTypes = (factory) => world
-    .types
-    .units
-    .filter(sheet => factory.type.builds.includes(sheet.movetype))
-    .filter(sheet => sheet.cost <= model.player_data[property.owner].gold)
-    .map(sheet => sheet.ID)
-
-  const produce = (units, factory, type) => {
-    $.guard(exports.factory.canProduce( ? ? ? , factory))
-
-    // TODO change usable system
-
-    const newUnit = units.find(u => !u.owner)
-    $.guard(!!newUnit)
-
-    newUnit.hp = 99
-    newUnit.owner = factory.owner
-    newUnit.type = type
-    newUnit.ammo = type.ammo
-    newUnit.fuel = type.fuel
-    newUnit.loadedIn = -1
-    newUnit.x = factory.x
-    newUnit.y = factory.y
-
-    // TODO model.manpower_data[model.property_posMap[e][t].owner]--
-
-    // TODO
-    var n = model.property_posMap[e][t],
-      a = model.data_unitSheets[o].cost,
-      r = model.player_data[n.owner];
-    r.gold -= a, assert(r.gold >= 0), model.events.createUnit(model.unit_getFreeSlot(
-      n.owner), n.owner, e, t, o)
-
-    exports.client.events.onUnitCreated(type.ID, factory.x, factory.y)
-  }
-
+  
   // returns true if the unit is usable, false otherwise
   const isUsable = unit => world.usables.includes(unit)
 
