@@ -151,10 +151,10 @@ Game.drainFuel = unit => {
   return unit
 }
 
-Game.joinable = (sourceUnit, targetUnit, maxHp) => 
+Game.joinable = (sourceUnit, targetUnit, maxHP) => 
   sourceUnit.owner == targetUnit.owner &&
   sourceUnit.type == targetUnit.type &&
-  targetUnit.hp < 90
+  targetUnit.hp < maxHP
 
 Game.joinUnits = (sourceUnit, targetUnit, maxHP) => {
   Guard(Game.canJoin(sourceUnit, targetUnit))
@@ -170,6 +170,7 @@ Game.joinUnits = (sourceUnit, targetUnit, maxHP) => {
   targetUnit.owner.gold = targetUnit.owner.gold + (sourceUnit.type.cost * 0.1)
 }
 
+// Unit => Boolean - returns true when the unit is a stealth unit, otherwise false
 Game.isStealth = unit => !!unit.type.stealth
 
 Game.isHidden = unit => !!unit.hidden
@@ -182,6 +183,104 @@ Game.hide = (unit) => unit.stealth.hidden = true
 
 Game.reveal = (unit) => unit.hidden = false
 
+// returns true when the current active day is in peace phase, false otherwise
+Game.inPeacePhase = (cfg, turn) => turn.day < cfg.daysOfPeace
+
+// returns true if the given unit has a primary weapon, false otherwise
+Game.hasMainWeapon = unit => !!unit.type.attack.primary
+
+// returns true if the given unit has a secondary weapon, false otherwise
+Game.hasSecondaryWeapon = unit => !!unit.type.attack.secondary
+
+// returns 'direct' if the unit attacks only surrounding units, 'indirect' when
+// the unit has an attack range of 2 or greater, 'ballistic' when it's minimum
+// attack range is 1 and maximum range 2 or greater, if nothing matches then
+// 'nothing' will be returned
+Game.getFireType = unit => {
+  const hasMainWp = Game.hasMainWeapon(unit)
+  const hasSecondaryWp = Game.hasSecondaryWeapon(unit)
+  const hasWeapon = !!hasMainWp && !!hasSecondaryWp
+  const longMaxRange = hasWeapon ? unit.type.attack.range.max > 1 : false
+  const longMinRange = hasWeapon ? unit.type.attack.range.min > 1 : false
+
+  if (!hasWeapon) return "nothing"
+  if (longMaxRange) return longMinRange ? "indirect" : "ballistic"
+  return "direct"
+}
+
+// returns true when the unit is a ballistic unit, false otherwise
+Game.isBallisticUnit = unit => Game.getFireType(unit) == "ballistic"
+
+// returns true when the unit is a indirect unit, false otherwise
+Game.isIndirectUnit = unit => Game.getFireType(unit) == "indirect"
+
+// returns true when the unit is a direct unit, false otherwise
+Game.isDirectUnit = unit => Game.getFireType(unit) == "direct"
+
+// returns true when the unit is a peaceful unit, false otherwise
+Game.isPeacefulUnit = unit => Game.getFireType(unit) == "nothing"
+
+Game.destroyUnit = unit => unit.owner = null
+
+Game.damageUnit = (unit, amount, minRest = 0) => {
+  unit.hp = Math.max(minRest, unit.hp - amount)
+  if (unit.hp == 0) {
+    Game.destroyUnit(unit)
+  }
+}
+
+// returns true when the unit is a suicide unit, false otherwise
+Game.isSuicideUnit = unit => !!unit.type.suicide
+
+// damages all surrounding units at the position of the exploding unit
+// and destroys the unit itself
+Game.selfDestruct = (world, unit) => {
+  const range = Game.sliceRangeFromMap(world.map, unit.type.suicide.damage, unit.position)
+  const containsUnit = tile => !!tile.unit
+  const unitsInRange = range.filter(containsUnit)
+  const handler = tile => Game.damageUnit(tile.unit, unit.type.suicide.damage)
+  
+  unitsInRange.forEach(handler)
+  Game.destroyUnit(unit)
+}
+
+// returns true if the property can be captured by the unit
+Game.canBeCapturedBy = (property, unit) => 
+  !!unit.type.capturer && unit.owner.team != property.owner.team
+
+// let unit captures property which results in lowered property
+// points. all properties and units of the property owner will
+// be cleared when the points falls down to zero and the property
+// is critical. otherwise only the property owner changes to
+// the capturers owner.
+Game.captureProperty = (property, unit) => {
+  const capturedPoints = Math.trunc(world.cfg.capturePerStep / 100 * (unit.hp + 1))
+  const pointsLeft = property.points - capturedPoints
+  const newOwner = pointsLeft < 0
+  const newPoints = newOwner ? world.cfg.capturePoints : pointsLeft
+  const afterCaptureType = property.type.transformation.afterCaptured
+  const isCriticalLoss = newOwner && property.type.isCriticalProperty
+  const newType = newOwner && !!afterCaptureType ? afterCaptureType : property.type
+  const belongsToPropertyOwner = ownable => property.owner == ownable.owner
+
+  modifyVision(unit.position, newOwner ? 1 : 0, property.type.vision, property.owner.visionMap)
+  modifyVision(unit.position, newOwner ? 1 : 0, newType.vision, unit.owner.visionMap)
+  
+  if (isCriticalLoss){
+    world.units
+      .filter(belongsToPropertyOwner)
+      .forEach(Game.destroyUnit)
+  
+    world.properties
+      .filter(belongsToPropertyOwner)
+      .filter(p => p != property)
+      .forEach(property => property.owner = null)
+  }
+
+  property.points = newPoints
+  property.owner = newOwner ? unit.owner : property.owner
+  property.type = newType
+}
 
 // 
 // design decision - all sequences are fail fast, they check the input data
@@ -192,7 +291,17 @@ const Sequences = {}
 // attacks one unit with a unit. may introduces a counter attack when the attacker
 // attacks directly and the defender has the ability to attack the attacker.
 // furthermore this sequence will increase the power level of both unit owners.
-Sequences.attack = () => null
+Sequences.attack = (world, attackerID, defenderID) => {
+  const attacker = world.units[attackerID]
+  const defender = world.units[defenderID]
+  
+  Guard(!!attacker)
+  Guard(!!defender)
+  Guard(attacker != defender)
+  Guard(!Game.isPeacefulUnit(attacker))
+  
+  ...
+}
 
 Sequences.produce = () => null
 
@@ -242,7 +351,18 @@ Sequences.reveal = () => {
   Guard(!Game.isHidden(unit))
 }
 
-Sequences.capture = () => null
+Sequences.capture = (world, capturerID) => {
+  const capturer = world.units[capturerID]
+  Guard(!!capturer)
+  
+  const position = capturer.position
+  const property = world.map[position.x, position.y].property
+  Guard(!!property)
+
+  Guard(Game.canBeCapturedBy(property, capturer))
+  
+  Game.captureProperty(property, capturer)
+}
 
 Sequences.launchSilo = () => null
 
@@ -258,6 +378,7 @@ Sequences.join = (world, unitA, unitB) => {
   Guard(Game.joinable(unitA, unitB))
   Guard(Game.isTransporter(unitA))
   Guard(Game.hasLoadedUnits(unitB))
+  Guard(unitA != unitB)
   
   Game.joinUnits(unitA, unitB)
   
@@ -766,38 +887,7 @@ const gameCreateLogicHandler = function(world, client) {
   
   
 
-  // returns true when the current active day is in peace phase, false otherwise
-  const inPeacePhase = (cfg, turn) => turn.day < cfg.daysOfPeace
-
-  // returns true if the given unit has a primary weapon, false otherwise
-  const hasMainWeapon = unit => !!unit.type.attack.primary
-
-  // returns true if the given unit has a secondary weapon, false otherwise
-  const hasSecondaryWeapon = unit => !!unit.type.attack.secondary
-
-  // returns 'direct' if the unit attacks only surrounding units, 'indirect' when
-  // the unit has an attack range of 2 or greater, 'ballistic' when it's minimum
-  // attack range is 1 and maximum range 2 or greater, if nothing matches then
-  // 'nothing' will be returned
-  const getUnitFireType = unit => condition()
-    .case(() => !hasMainWeapon(unit) && !hasSecondaryWeapon(unit), "nothing")
-    .case(() => unit.type.attack.range.max > 1 && unit.type.attack.range.min ==
-      1, () => "ballistic")
-    .case(() => unit.type.attack.range.max > 1 && unit.type.attack.range.min >
-      1, "indirect")
-    .default("direct")
-
-  // returns true when the unit is a ballistic unit, false otherwise
-  const isBallisticUnit = unit => getUnitFireType(unit) == "ballistic"
-
-  // returns true when the unit is a indirect unit, false otherwise
-  const isIndirectUnit = unit => getUnitFireType(unit) == "indirect"
-
-  // returns true when the unit is a direct unit, false otherwise
-  const isDirectUnit = unit => getUnitFireType(unit) == "direct"
-
-  // returns true when the unit is a peaceful unit, false otherwise
-  const isPeacefulUnit = unit => getUnitFireType(unit) == "nothing"
+  
 
   const getTargets = (unit, position = unit.position) => {
     const minRange = unit.type.attack.range.min
@@ -848,18 +938,6 @@ const gameCreateLogicHandler = function(world, client) {
     return _ = parseInt(_, 10)
   }
 
-  const destroyUnit = (unit) => {
-    // TODO neutral player
-    unit.owner = null
-  }
-
-  const damageUnit = (unit, amount, minRest = 0) => {
-    unit.hp = Math.max(minRest, unit.hp - amount)
-    if (unit.hp == 0) {
-      api.battle.destroyUnit(unit)
-    }
-  }
-
   const attack = (map, attacker, defender, attackerLuck, defenderLuck) => {
 
     exports.guard(model.unit_isValidUnitId(e.source.unitId))
@@ -898,18 +976,7 @@ const gameCreateLogicHandler = function(world, client) {
           parseInt(.5 * p, 10)), model.events.co_modifyPowerLevel(m, p)))
   }
 
-  // returns true when the unit is a suicide unit, false otherwise
-  const isSuicideUnit = unit => !!unit.type.suicide
-
-  // damages all surrounding units at the position of the exploding unit
-  // and destroys the unit itself
-  const selfDestruct = (world, unit) => {
-    guard(isSuicideUnit(unit))
-    sliceRange(world.map, unit.type.suicide.damage, unit.position)
-      .filter(containsUnit)
-      .forEach(tile => damageUnit(tile.unit, unit.type.suicide.damage))
-    destroyUnit(unit)
-  }
+ 
 
   const modifyVision = (position, range, by, fogModel) =>
     sliceRange(fogModel, range, position).map(x => x + by)
@@ -1224,52 +1291,6 @@ const gameCreateLogicHandler = function(world, client) {
   // sets the given unit as unusable in the given usability model
   const doMarkUnusable = unit => world.usables = world.usables.filter(u => u !=
     unit)
-
-  // returns true if the property can be captured by the unit
-  const canBeCapturedBy = (property, unit) =>
-    isUsable(unit) &&
-    unit.type.capturer &&
-    unit.owner.team != property.owner.team
-
-  // let unit captures property which results in lowered property
-  // points. all properties and units of the property owner will
-  // be cleared when the points falls down to zero and the property
-  // is critical. otherwise only the property owner changes to
-  // the capturers owner.
-  const doCapture = (property, unit) => {
-    guard(canBeCapturedBy(property, unit))
-
-    const capturedPoints = Math.trunc(world.cfg.capturePerStep / 100 * (
-      unit.hp + 1))
-    const pointsLeft = property.points - capturedPoints
-    const newOwner = pointsLeft < 0
-    const newPoints = newOwner ? world.cfg.capturePoints : pointsLeft
-    const afterCaptureType = property.type.transformation.afterCaptured
-    const isCriticalLoss = newOwner && property.type.isCriticalProperty
-    const newType = newOwner && !!afterCaptureType ? afterCaptureType :
-      property.type
-    const belongsToPropertyOwner = ownable => property.owner == ownable.owner
-
-    modifyVision(unit.position, newOwner ? 1 : 0, property.type.vision,
-      property.owner.visionMap)
-    modifyVision(unit.position, newOwner ? 1 : 0, newType.vision, unit.owner
-      .visionMap)
-
-    world.units
-      .filter(() => isCriticalLoss)
-      .filter(belongsToPropertyOwner)
-      .map(unit => destroyUnit(unit))
-
-    world.properties
-      .filter(() => isCriticalLoss)
-      .filter(belongsToPropertyOwner)
-      .filter(p => p != property)
-      .map(property => property.owner = null)
-
-    property.points = newPoints
-    property.owner = newOwner ? unit.owner : property.owner
-    property.type = newType
-  }
 
   // TODO
   const doUpdateWeather = (newType, seed) => {
