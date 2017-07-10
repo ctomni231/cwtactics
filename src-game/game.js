@@ -1,58 +1,293 @@
 // encapsulates the given world and client for
 // the returned game logic handler
 
+const Guard = (expr, msg) => {
+  if (!expr) {
+    try {
+      throw new Error()
+    } catch (e) {
+      const stack = e.stack
+      if (!msg) {
+        const lines = typeof stack == "string" ? stack.split("\n") : []
+        const lastFunction = lines.length >= 3 ? lines[2] : "unknown"
+        msg = "GuardFailed(" + lastFunction + ")"
+      }
+      throw new Error(msg)
+    }
+  }
+}
+
+const Lists = {}
+
+Lists.notEmpty = list => list.length > 0
+
+const Logic = {}
+
+// A => Boolean - returns true if a is truthy (object, non-empty list, true, ...) or else false
+Logic.truthy = a => !!a
+
+// A => Boolean - (complement of Logic.truthy)
+Logic.falsy = a => !a
+
+// A, A => A - either first A or second one when the first one is falsy   
+Logic.either = (a, b) => !!a ? a : b
+  
+const Maths = {}
+  
+// Int, Int => Int - random integer between the two numbers, returns 0 
+// if second number is smaller than the first one
+Maths.rndInt = (from, to) => to > from ? from + Math.trunc(Math.random() * (to - from)) : 
+
+Maths.isInt = i => typeof i === "number" && Math.trunc(i) === i
+
+Maths.between = (from, to, value) => from <= value && value <= to
+
+//
+//
+// design decision - game logic is designed by it's contract and will not check 
+//                   incoming data. this means Game stuff may not be accessable by
+//                   user interaction layers directly. there should be a fail-fast 
+//                   or fail-safe layer between both to handle input data
+//
+const Game = {}
+
+Game.UnitType = {
+
+}
+
+// Actor? => Boolean - returns true when the given object is an actor object, else false
+Game.ActorType = {
+  position: {
+    x: Maths.beetween.partial(0, 100),
+    y: Maths.beetween.partial(0, 100)
+  },
+  unit: Game.UnitType
+}
+
+// Unit => Boolean - returns true when the unit is a supplier, else false
+Game.isSupplier = (unit) => Logic.truthy(unit.type.supply)
+
+Game.sliceRangeFromMap = (map, range, position) => {
+  if (range == 0) return []
+
+  const result = []
+
+  const leftX = Math.max(0, position.x - range)
+  const leftY = Math.max(0, position.y - range)
+  const rightX = Math.max(map.length - 1, position.x + range)
+  const rightY = Math.max(map[0].length - 1, position.y + range)
+
+  for (let x = leftX; x <= rightX; x++) {
+    for (let y = leftY; y <= rightY; y++) {
+      const actualRange = Math.abs(position.x - x) + Math.abs(position.y - y)
+      if (actualRange <= range) {
+        result.push(map[x][y])
+      }
+    }
+  }
+
+  return result
+}
+
+// Map, Actor => [Unit] - returns a list of units which can be supplied
+// by the given unit at a given position
+Game.getSupplyTargets = (map, actor) => { 
+  const belongsToUnitOwner = tile => !!tile.unit && tile.unit.owner == actor.unit.owner
+  const area = Game.getTilesInRange(map, 1, actor.position)
+  const tilesWithOwnUnits = area.filter(belongsToUnitOwner)
+  
+  return tilesWithOwnUnits 
+}
+  
+// Map, Actor => Boolean - returns true if the unit can supply its neighbours
+Game.canSupplyNeighbours = (map, actor) => Lists.notEmpty(Game.getSupplyTargets(map,actor))
+
+// Unit => Unit - takes the unit, refills all of its ammo and fuel and returns it
+Game.refillSupplies = (unit) => {
+  unit.ammo = unit.type.maxAmmo
+  unit.fuel = unit.type.maxFuel
+  
+  return unit
+}
+
+// Unit => Unit - takes the unit and supplies all of its neighbours and returns
+// the unit
+Game.supplyNeighbours = (map, actor) => {
+  const targets = Game.getSupplyTargets(map, actor.unit, actor.position)
+  const handler = Game.refillSupplies
+  
+  targets.forEach(handler)
+  return actor
+} 
+
+// Unit, Int(1-99) => Int - refills the hp of an unit by amount and returns 
+// the overfilled amount. when the refill would overfill and unit, then 
+// the gap between max hp and the old hp plus amount will be added in 
+// relation to the unit price to the units owner gold depot.
+Game.refillHP = (unit, amount) => {  
+  const aboveMaxHP = Math.max(0, unit.hp + amount - 99)
+  const newhp = Math.min(99, unit.hp + amount)
+  const overfillRefunds = Math.trunc(aboveMaxHP * unit.type.cost / 100)
+    
+  unit.owner.gold += overfillRefunds
+  unit.hp = newhp
+    
+  return aboveMaxHP
+}
+
+// Property, Int => Property - takes the property and increases the gold depot of its
+//                             owner and returns 
+Game.raiseFunds = (property, amount) => property.owner.gold += amount
+  
+// Unit => Unit - drains the fuel of the unit, may drains more fuel when the 
+// unit is in hidden status.
+Game.drainFuel = unit => {
+  const hidden = unit.hidden
+  const drainDaily = Logic.either(unit.type.dailyFuelDrain, 0)
+  const drainDailyHidden = Logic.either(unit.type.dailyFuelDrainHidden, 0)
+  const drain = hidden ? Math.max(drainDaily, drainDailyHidden) : drainDaily
+    
+  unit.fuel = unit.fuel - drain
+  return unit
+}
+
+Game.joinable = (sourceUnit, targetUnit, maxHp) => 
+  sourceUnit.owner == targetUnit.owner &&
+  sourceUnit.type == targetUnit.type &&
+  targetUnit.hp < 90
+
+Game.joinUnits = (sourceUnit, targetUnit, maxHP) => {
+  Guard(Game.canJoin(sourceUnit, targetUnit))
+
+  const aboveFullHp = Math.max(0, sourceUnit.hp + targetUnit.hp - 99)
+
+  targetUnit.hp = Math.min(targetUnit.hp + sourceUnit.hp, 99)
+  targetUnit.fuel = Math.min(targetUnit.fuel + sourceUnit.fuel, targetUnit.type.fuel)
+  targetUnit.ammo = Math.min(targetUnit.ammo + sourceUnit.ammo, targetUnit.type.ammo)
+  sourceUnit.owner = null
+
+  // TODO ?
+  targetUnit.owner.gold = targetUnit.owner.gold + (sourceUnit.type.cost * 0.1)
+}
+
+Game.isStealth = unit => !!unit.type.stealth
+
+Game.isHidden = unit => !!unit.hidden
+
+Game.canHide = unit => !unit.hidden
+
+Game.canReveal = unit => !!unit.hidden
+
+Game.hide = (unit) => unit.stealth.hidden = true
+
+Game.reveal = (unit) => unit.hidden = false
+
+
+// 
+// design decision - all sequences are fail fast, they check the input data
+//                   and will throw error as soon illegal data will be detected
+//
+const Sequences = {}
+
+// attacks one unit with a unit. may introduces a counter attack when the attacker
+// attacks directly and the defender has the ability to attack the attacker.
+// furthermore this sequence will increase the power level of both unit owners.
+Sequences.attack = () => null
+
+Sequences.produce = () => null
+
+Sequences.drainAll = (world) => {
+  
+}
+
+Sequences.supplyAll = (world) => {}
+
+Sequences.repairAll = (world) => {
+  const turnOwner = world.turn.owner
+  const belongsToTurnOwner = tile => !!tile.unit && tile.unit.owner == turnOwner
+  const standsOnAlliedProperty = tile => !!tile.property && tile.property.owner == turnOwner
+  const predicate = tile => belongsToTurnOwner(tile) && standsOnAlliedProperty(tile)
+  const tiles = world.units.filter(predicate)
+  const repairAmount = world.config.propertyRepairAmount
+  const handler = tile => Game.refillHp(tile.unit, repairAmount)
+  
+  Guard(repairAmount)
+  
+  tiles.forEach(handler)
+} 
+
+Sequences.supply = () => null
+
+Sequences.hide = (world, unitID) => {
+  const unit = world.units[unitID]
+  
+  Guard(unit)
+  Guard(Game.isStealth(unit))
+  Guard(!Game.isHidden(unit))
+  
+  Game.hide(unit)
+  
+  Guard(Game.isHidden(unit))
+}
+
+Sequences.reveal = () => {
+  const unit = world.units[unitID]
+  
+  Guard(unit)
+  Guard(Game.isStealth(unit))
+  Guard(Game.isHidden(unit))
+  
+  Game.reveal(unit)
+  
+  Guard(!Game.isHidden(unit))
+}
+
+Sequences.capture = () => null
+
+Sequences.launchSilo = () => null
+
+Sequences.load = () => null
+
+Sequences.unload = () => null
+
+Sequences.saveGame = () => null
+
+Sequences.loadGame = () => null
+
+Sequences.join = (world, unitA, unitB) => {
+  Guard(Game.joinable(unitA, unitB))
+  Guard(Game.isTransporter(unitA))
+  Guard(Game.hasLoadedUnits(unitB))
+  
+  Game.joinUnits(unitA, unitB)
+  
+  Guard(Logic.falsy(unitA.owner))
+}
+
+Sequences.getAvailableSequences = (world, actor) => {
+  const sequences = []
+  
+  
+  
+  return sequences
+}
+
+
+
+
+
+
+// =======================================================================
+// =======================================================================
+// =======================================================================
+
+
 const gameLogic = {}
 
 gameLogic.emptyList = Object.freeze([])
 
 const gameCreateLogicHandler = function(world, client) {
-
-
-  // ==================== TODO ====================
-  //
-  //  - use id numbers instead of instances in the logic functions
-  //  - remove world and client from factory function
-  //  - remove factory function
-  //  - side effect free ?
-  //
-  // ideas from skirmish wars
-  //  - damage system
-  //    - full/reduced strength
-  //    - different HP system
-  //    - unit classes
-  //    - damage against classes
-  //    - attack/defense dice roll
-  //  - non-animated unit symbols
-  //
-  // ==============================================
-
-  const emptyList = gameLogic.emptyList
-
-  // generates a random integer in a given intervall
-  const randomInteger = (from, to) => from + Math.trunc(Math.random() * (to - from))
-  
-  const compose = (...fns) => value => fns.reduce((result, f) => f(result), value)
-  const fork = (...fns) => value => fns.map(f => f(value))
-  const join = f => values => f(values)
-  
-  const flow = fork(doubleIt, inc, dec, square)
-  join(console.log)(flow(2)) 
-
-  const guard = (expr, msg) => {
-    if (!expr) {
-      try {
-        throw new Error()
-      } catch (e) {
-        const stack = e.stack
-        if (!msg) {
-          const lines = typeof stack == "string" ? stack.split("\n") : []
-          const lastFunction = lines.length >= 3 ? lines[2] : "unknown"
-          msg = "GuardFailed(" + lastFunction + ")"
-        }
-        throw new Error(msg)
-      }
-    }
-  }
+ 
 
   const guardType = type => value => guard(createValidator(type)(value),
     "type missmatch")
@@ -101,29 +336,6 @@ const gameCreateLogicHandler = function(world, client) {
   const position = (x, y) => {
     x,
     y
-  }
-
-  const sliceRange = (map, range, position) => {
-    if (range == 0) return emptyList
-
-    const result = []
-
-    const leftX = Math.max(0, position.x - range)
-    const leftY = Math.max(0, position.y - range)
-    const rightX = Math.max(map.length - 1, position.x + range)
-    const rightY = Math.max(map[0].length - 1, position.y + range)
-
-    for (let x = leftX; x <= rightX; x++) {
-      for (let y = leftY; y <= rightY; y++) {
-        const actualRange = Math.abs(position.x - x) + Math.abs(position.y -
-          y)
-        if (actualRange <= range) {
-          result.push(map[x][y])
-        }
-      }
-    }
-
-    return result
   }
 
   // returns true when the tile contains a unit, false otherwise
@@ -453,93 +665,7 @@ const gameCreateLogicHandler = function(world, client) {
     return world.buffer.shift()
   }
 
-  const getMoneyTransferPackages = player => [
-    1000,
-    2500,
-    5000,
-    10000,
-    25000,
-    50000
-  ].filter(x => x <= player.gold)
-
-  const canTransferMoney = (player) => getMoneyTransferPackages(player).length >
-    0
-
-  const doMoneyTransfer = (sourcePlayer, amount, targetPlayer) => {
-    sourcePlayer.gold -= amount
-    targetPlayer.gold += amount
-    guard(sourcePlayer.gold >= 0)
-  }
-
-  const canDoPropertyTransfer = (property) => !property.type.notTransferable
-
-  const doPropertyTransfer = (property, targetPlayer) => property.owner =
-    targetPlayer
-
-  const canTransferUnit = unit => !exports.transport.hasLoads(unit)
-
-  const transferUnit = (map, unit, targetPlayer) => {
-    const tile = map[unit.position.x][unit.position.y]
-
-    modifyVision(tile, -unit.type.vision, unit.owner)
-    modifyVision(tile, +unit.type.vision, targetPlayer)
-    unit.owner = targetPlayer
-  }
-
-  function getTransferTargetPlayers(players, player) {
-    return players.filter(and(not(player), pipe(prop("team"), not(-1)))
-  }
-  
-  const hasTeam = (object) => object.team != -1
-  
-  function getTransferTargetPlayers(players, player) {
-    return players.filter(hasTeam).filter(not(player))
-  }
-
-  const getTransferTargetPlayers = (players, player) => players
-    .filter(p => p.team != -1)
-    .filter(p => p != player)
-    
-  const getTransferTargetPlayers = (players, player) => players.filter(hasTeam).filter(not(player))
-
-  const isSupplier = (unit) => !!unit.type.supply
-
-  const getSupplyTargets = (map, unit, position = unit.position) => exports.model
-    .sliceRange(map, 1, position)
-    .filter(tile => !!tile.unit)
-    .map(tile => tile.unit)
-    .filter(tileUnit => tileUnit.owner === unit.owner)
-
-  const canSupplyNeighbours(map, unit, position = unit.position) => supply
-    .getSupplyTargets(map, unit, unit.position)
-    .length > 0
-
-  const supplyNeighbours(map, unit) => supply
-    .getSupplyTargets(map, unit, unit.position)
-    .forEach(supply.refillSupplies)
-
-  const refillSupplies = (unit) => {
-    unit.ammo = unit.type.maxAmmo
-    unit.fuel = unit.type.maxFuel
-  }
-
-  const refillHP = (unit, amount) => {
-    guard(amount > 0 && amount <= 99)
-    const aboveMaxHP = Math.max(0, unit.hp + amount - 99)
-    unit.owner.gold += parseInt(aboveMaxHP * unit.type.cost / 100, 10)
-    unit.hp = Math.min(99, unit.hp + amount)
-    return aboveMaxHP
-  }
-
-  const raiseFunds = (property) => property.gold += 1000
-
-  const drainFuel = unit => {
-    return condition()
-      .case(unit.hidden && unit.type.dailyFuelDrainHidden > 0, unit.type.dailyFuelDrainHidden)
-      .case(unit.type.dailyFuelDrain > 0, unit.type.dailyFuelDrain)
-      .defaultDo(0, fuelDrain => unit.fuel = unit.fuel - fuelDrain)
-  }
-
+             
   const tickAsyncEvents = model => {
     const events = model.events
     events.forEach(el => el.leftTicks--)
@@ -547,7 +673,7 @@ const gameCreateLogicHandler = function(world, client) {
     return events.filter(el => el.leftTicks == 0)
   }
 
-  const resetTurnTime(model, cfg) {
+  const resetTurnTime = (model, cfg) => {
     model.leftTurnTime = or(cfg.turnTime, Number.POSITIVE_INFINITY)
   }
 
@@ -637,47 +763,8 @@ const gameCreateLogicHandler = function(world, client) {
 
   const isSCoPActivatable = isPowerActivatable.bind(null, "scop")
 
-  const isStealthUnit = unit => !!unit.type.stealth
-
-  const canHide = unit => !unit.hidden
-
-  const canReveal = unit => !!unit.hidden
-
-  const hide = (unit) => {
-    exports.guard(exports.stealth.canHide(unit))
-    unit.stealth.hidden = true
-  }
-
-  const reveal = (unit) => {
-    exports.guard(exports.stealth.canReveal(unit))
-    unit.hidden = false
-  }
-
-  const canJoin = (sourceUnit, targetUnit) => [
-    sourceUnit.owner == targetUnit.owner,
-    sourceUnit.type == targetUnit.type,
-    // TODO move this to the actions mediator
-    !exports.transport.isTransporter(sourceUnit), !exports.transport.hasLoads(
-      targetUnit),
-    targetUnit.hp < 90
-  ].every(x => !!x)
-
-  const joinUnits = (sourceUnit, targetUnit) => {
-    exports.guard(exports.join.canJoin(sourceUnit, targetUnit))
-
-    const aboveFullHp = Math.max(0, sourceUnit.hp + targetUnit.hp - 99)
-
-    targetUnit.hp = Math.min(targetUnit.hp + sourceUnit.hp, 99)
-    targetUnit.fuel = Math.min(targetUnit.fuel + sourceUnit.fuel,
-      targetUnit.type.fuel)
-    targetUnit.ammo = Math.min(targetUnit.ammo + sourceUnit.ammo,
-      targetUnit.type.ammo)
-    sourceUnit.owner = null
-
-    // TODO ?
-    targetUnit.owner.gold = targetUnit.owner.gold + (sourceUnit.type.cost *
-      0.1)
-  }
+  
+  
 
   // returns true when the current active day is in peace phase, false otherwise
   const inPeacePhase = (cfg, turn) => turn.day < cfg.daysOfPeace
@@ -777,10 +864,6 @@ const gameCreateLogicHandler = function(world, client) {
 
     exports.guard(model.unit_isValidUnitId(e.source.unitId))
     exports.guard(model.unit_isValidUnitId(e.targetselection.unitId))
-
-    // TODO share via event -> build into action data model
-    const attackerLuck = Math.round(100 * Math.random())
-    const defenderLuck = Math.round(100 * Math.random())
 
     exports.guard(exports.isInteger(attackerLuck))
     exports.guard(exports.isBetween(0, 100, attackerLuck))
