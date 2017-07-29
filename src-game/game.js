@@ -17,9 +17,30 @@ const Guard = (expr, msg) => {
   }
 }
 
+const isValidType = (spec, namespace = "") => (value, root = value) =>
+  Object
+  .keys(spec)
+  .map(key => {
+    switch (typeof spec[key]) {
+      case "function":
+        return !spec[key](value[key], value, root) ? namespace + key : null
+      case "object":
+        // TODO array support
+        return createValidator(spec[key], namespace + key + ".")(value[key], root)
+      default:
+        return namespace + key + "(illegal)"
+    }
+  })
+  .filter(v => !!v)
+  .reduce((result, value) => result.concat(value), [])
+
+// =============================================================================
+
 const Lists = {}
 
 Lists.notEmpty = list => list.length > 0
+
+// =============================================================================
 
 const Logic = {}
 
@@ -32,8 +53,17 @@ Logic.falsy = a => !a
 // A, A => A - either first A or second one when the first one is falsy   
 Logic.either = (a, b) => !!a ? a : b
 
+// A* => A || undefined
+Logic.or = (...a) => a.reduce((result, current) => !result ? current : result, undefined)
+
+// Any, Any => Boolean - returns true when a is not b
 Logic.notEquals = (a,b) => a != b
+
+// Boolean => Boolean 
+Logic.complement = (a) => !a
   
+// =============================================================================
+
 const Maths = {}
   
 // Int, Int => Int - random integer between the two numbers, returns 0 
@@ -43,6 +73,8 @@ Maths.rndInt = (from, to) => to > from ? from + Math.trunc(Math.random() * (to -
 Maths.isInt = i => typeof i === "number" && Math.trunc(i) === i
 
 Maths.between = (from, to, value) => from <= value && value <= to
+
+// =============================================================================
 
 //
 //
@@ -153,14 +185,30 @@ Game.drainFuel = unit => {
   return unit
 }
 
+// Turn, [Player] => Boolean - sets the next turn owner and returns true when
+//                             when the day changes, otherwise false
+Game.setNextTurnowner = (turn, players) => {
+  const currentOwner = world.turn.owner
+  const currentOwnerIndex = players.indexOf(currentOwner)
+  const playersWithoutTurnOwner = rotateList(world.players.filter(p => p !=
+    currentOwner), currentOwnerIndex)
+  const restPlayers = filter(p => p.team != -1)
+  const nextOwner = restPlayers[0]
+  const nextOwnerIndex = players.indexOf(nextOwner)
+  const dayChanged = nextOwnerIndex < currentOwnerIndex
+
+  turn.day = turn.day + (dayChanged ? 1 : 0)
+  turn.owner = nextOwner
+
+  return dayChanged
+}
+
 Game.joinable = (sourceUnit, targetUnit, maxHP) => 
   sourceUnit.owner == targetUnit.owner &&
   sourceUnit.type == targetUnit.type &&
   targetUnit.hp < maxHP
 
 Game.joinUnits = (sourceUnit, targetUnit, maxHP) => {
-  Guard(Game.canJoin(sourceUnit, targetUnit))
-
   const aboveFullHp = Math.max(0, sourceUnit.hp + targetUnit.hp - 99)
 
   targetUnit.hp = Math.min(targetUnit.hp + sourceUnit.hp, 99)
@@ -175,11 +223,14 @@ Game.joinUnits = (sourceUnit, targetUnit, maxHP) => {
 // Unit => Boolean - returns true when the unit is a stealth unit, otherwise false
 Game.isStealth = unit => !!unit.type.stealth
 
+// Unit => Boolean - returns true when the unit is hidden, otherwise false
 Game.isHidden = unit => !!unit.hidden
 
+// Unit => Boolean - returns true when the unit can hide, otherwise false
 Game.canHide = unit => !unit.hidden
 
-Game.canReveal = unit => !!unit.hidden
+// Unit => Boolean - returns true when the unit can reveal, otherwise true
+Game.canReveal = unit => Logical.complement(Game.canHide(unit))
 
 Game.hide = (unit) => unit.stealth.hidden = true
 
@@ -306,7 +357,7 @@ Game.getProducableTypes = (types, factory) => {
     .map(sheet => sheet.ID)
 }
 
-const produce = (units, factory, type) => {
+Game.produce = (units, factory, type) => {
 
   // TODO change usable system
 
@@ -323,11 +374,361 @@ const produce = (units, factory, type) => {
   newUnit.loadedIn = -1
   newUnit.x = factory.x
   newUnit.y = factory.y
+  newUnit.exp = 0
+  newUnit.rank = 0
  
   owner.manpower = newManpower
   owner.gold = newGold
 }
 
+Game.isSilo = (property) => !!property.type.rocketsilo
+
+// Unit, Property -> Boolean - returns true when the unit can 
+//                             launch the silo rocket 
+//
+Game.isSiloFireableBy = (unit, property) => {
+  return property.type.rocketsilo.fireable.includes(unit.type.ID)
+}
+
+// Map, Position, Position => Void - fires a rocket from the first position
+//                                   to the second position. damages all units
+//                                   in range at the second position, but always
+//                                   leaves 1HP rest
+Game.fireSilo = (map, siloPos, targetPos) => {
+  const silo = map[siloPos.x][siloPos.y].property
+  const range = silo.type.rocketsilo.range
+  const damage = silo.type.rocketsilo.damage
+  const tilesInRange = Game.sliceRangeFromMap(map, range, targetPos)
+  const isOccupiedTile = t => !!t.unit
+  const lensUnit = t => t.unit
+  const unitsInRange = tilesInRange.filter(isOccupiedTile).map(lensUnit)
+  
+  unitsInRange.forEach(u => Game.damageUnit(u, damage, 9))
+}
+
+Game.emptifySilo = (types, silo) => {
+  // TODO
+  silo.type = types.find(t => t.id === "PSLE")
+}
+
+Game.refillSilo = (types, silo) => {
+  // TODO
+  silo.type = types.find(t => t.id === "PSLO")
+}
+
+// returns true if the unit is usable, false otherwise
+Game.isUsable = (usables, unit) => usables.includes(unit.id)
+
+// sets the given unit as usable in the given usability model
+Game.markUsable = (usables, unit) => usables.push(unit.id)
+
+// sets the given unit as unusable in the given usability model
+Game.markUnusable = (usables, unit) => usables.splice(usables.indexOf(unit.id), 1)
+
+// Player => Integer - returns the costs of one commander power star
+Game.getCostOfOnePowerStar = (player) => {
+  const STAR_COST = 9000
+  const INCREASE_PER_USE = 1800
+  const MAXIMUM_INCREASES = 10
+  const timesUsed = Math.max(player.co.timesPowerUsed, MAXIMUM_INCREASES)
+  
+  return STAR_COST + timesUsed * INCREASE_PER_USE
+}
+
+// String, Player => Boolean - returns true when the player can activate the power 
+//                             with its power depot
+Game.isPowerActivatable = (power, player) => {
+  const starsNeeded = player.co.type.stars[power]
+  const powerNeeded = Game.getCostOfOnePowerStar(playerId) * starsNeeded
+  
+  return player.co.power >= powerNeeded 
+}
+
+// String, Player => Void
+//
+Game.activatePower = (power, player) => {
+  player.co.power = 0
+  player.co.level = powerLevel
+  player.co.timesUsed++ 
+}
+
+// Player => {normal:Boolean,super:Boolean}
+//
+Game.getActivatablePowers = (player) => ({
+  normal: Game.isPowerActivatable("cop", player),
+  super: Game.isPowerActivatable("cop", player)
+})
+
+// $: Int, Position, Int, [[Int]] => Void
+//
+// modifies the vision values in a fog model by the modifier
+//
+Game.modifyVision = (by, position, range, fogModel) => {
+  sliceRange(fogModel, range, position).map(x => Math.max(0, x + by))
+}
+
+Game.putVision = Game.modifyVision.bind(null, 1)
+
+Game.popVision = Game.modifyVision.bind(null, -1)
+
+Game.buildVision = (map, owner) => {
+  const fog = owner.vision
+  const belongsToOwner = x => !!x && x.owner == owner
+  const isOwnUnit = t => belongsToOwner(t.unit)
+  const isOwnProp = t => belongsToOwner(t.property) 
+  const extractOwnUnit = col => col.filter(isOwnUnit).map(x => x.unit)
+  const extractOwnProperties = col => col.filter(isOwnProp).map(x => x.property)
+  const ownerUnits = map.reduce((arr, col) => arr.concat(extractOwnUnits(col)), [])
+  const ownerProps = map.reduce((arr, col) => arr.concat(extractOwnProperties(col)), [])
+  const changes = ownerUnits.concat(ownerProps).map(v => [v.position, v.type.vision])
+  
+  fog.forEach(col => col.map(_ => 0))
+  changes.forEach(vdata => Game.putVision(vdata[0], vdata[1], fog))
+}
+
+Game.getMovemap = (map, unit, position = unit.position) => {
+  const CHECK_RANGE = 15
+  const toCheckData = (x,y,value) => ({ x , y , value })
+  const movePoints = Math.min(unit.fuel, unit.type.moverange)
+  const sideLength = CHECK_RANGE * 2 + 1
+  
+  let toBeChecked = []
+  let movetargets = []
+  
+  const targetsX = Math.max(0, x - CHECK_RANGE)
+  const targetsY = Math.max(0, y - CHECK_RANGE)
+  const targetsRX = Math.min(targetsX + sideLength, map.length)
+  const targetsRY = Math.min(targetsY + sideLength, map[0].length)
+  
+  for (let x = 0; x < sideLength; x++) {
+    let arr = []
+    for (let y = 0; y < sideLength; y++) {
+      arr.push(-1)
+    }
+    movetargets.push(arr)
+  }
+    
+  toBeChecked.push(toCheckData(position.x, position.y, movePoints))
+  
+  const isBetween = (left, right, value) => value >= left && value <= right
+  
+  const checkTile = (data) => {
+    const x = data.x
+    const y = data.y 
+    const relativeX = x - targetsX
+    const relativeY = y - targetsY
+    const validPos = isBetween(targetsX, targetsRX, x) && isBetween(targetsY, targetsRY, y)
+    const tile = validPos ? map[x][y] : null
+    const currentValue = movetargets[relativeX][relativeY]
+    const movecosts = Game.getCostsToMoveOn(unit, map[x][y])
+    const leftMovePoints = data.value - movecosts
+    const newIsBetter = leftExists.value < leftMovePoints
+    
+    if (newIsBetter) { 
+      const newData = { x, y, value: leftMovePoints }
+     
+      toBeChecked.push(newData)
+      movetargets[relativeX][relativeY] = value
+    }
+  } 
+  
+  while(toBeChecked.length > 0) {
+    const positionToBeChecked = toBeChecked.pop()
+    const x = positionToBeChecked.x
+    const y = positionToBeChecked.y
+    checkTile(x - 1, y)
+    checkTile(x + 1, y)
+    checkTile(x, y - 1)
+    checkTile(x, y + 1)
+  }
+    
+  return {
+    topLeft: position,
+    size: Game.toPosition(MAX_SIDE_LEN, MAX_SIDE_LEN),
+    data: movetargets
+  }
+}
+
+Game.getMoveway = (map, unit, source, target) => {
+  const moveData = Game.getMovemap(map, unit, source)
+  const moveMap = moveData.data
+  
+  const getHeuristic = (data, target) => Math.abs(data.x - target.x) + Math.abs(data.y - target.y)
+  
+  const toData = (position, way, points, heuristic) => ({ position, way, points, heuristic })
+  
+  const paths = [ toData(source) ]
+  
+  const checkTile = (oldData, dir) => {
+    const x = oldData.x + (dir == "L" ? -1 : (dir == "R" ? +1 : 0))
+    const y = oldData.y + (dir == "U" ? -1 : (dir == "D" ? +1 : 0))
+    
+    if (x < moveData.topLeft.x 
+     || y < moveData.topLeft.y 
+     || x > moveData.topLeft.x + moveData.size.x 
+     || y > moveData.topLeft.y + moveData.size.y ) {
+      return 
+    }
+    
+    const costs = moveMap[x - moveData.topLeft.x][y - moveData.topLeft.y]
+    const newPoints = oldData.points - costs
+    
+    if (newPoints < 0) {
+      return 
+    }
+    
+    const newWay = oldData.way.map(x => x)
+    newWay.push(dir)
+    
+    const newData = toData(toPosition(x,y), newWay, newPoints, 0)
+    const heuristic = getHeuristic(newData, target)
+    newData.heuristic = heuristic
+    
+    paths.push(newData)
+  } 
+  
+  while(paths.length > 0) {
+    
+    const entity = paths.reduce((best, current) => 
+      !best || current.heuristic < best.heuristic ? current : best, null)
+    
+    const index = paths.indexOf(entity)
+    
+    checkTile(x - 1, y)
+    checkTile(x + 1, y)
+    checkTile(x, y - 1)
+    checkTile(x, y + 1)
+    
+    paths.splice(index, 1)
+    
+    const matchData = paths.find(d => d.position.x == target.x && d.position.y == target.y)
+    
+    if (!!matchData) {
+      return matchData.way
+    }
+  }
+  
+  return null
+}
+
+Game.getCostsToMoveOn = (unit, tile) => {
+  const blocker = tile.type.moveBlocker
+  if(!!blocker){
+    return -1
+  }
+  
+  const costMap = unit.type.movetype.costs
+  const directCosts = Logic.or(costMap[tile.type.id], -1)
+  const movetypeCosts = Logic.or(costMap[unit.type.movetype.id], -1)
+  const wildcardCosts = Logic.or(costMap["*"], -1)
+  const moveCosts = Logic.or(directCosts, movetypeCosts, wildcardCosts, -1)
+  
+  return moveCosts
+}
+
+Game.canMoveOntoTile = (unit, tile) => getCostsToMoveOn(unit, tile) > 0
+
+Game.getFuelCosts = (map, unit, way) => {
+  const dirToX = (dir) => dir == "L" ? -1 : ( dir == "R" ? +1 : 0)
+  const dirToY = (dir) => dir == "U" ? -1 : ( dir == "D" ? +1 : 0)
+  const addDirection = (dir, pos) => Game.toPosition(dirToX(dir, pos.x), dirToY(dir, pos.y))
+  
+  const positions = way.reduce((r, dir) => r.concat(addDirection(dir, Lists.empty(r) ? unit.position : Lists.last(r))))
+  const accumulator = (c, pos) => c + Game.getCostsToMoveOn(unit, map[pos.x][pos.y])
+  const consumption = positions.reduce(accumulator, 0)
+  
+  return consumption
+}
+
+Game.move = (map, unit, way) => {
+  const dirToX = (dir) => dir == "L" ? -1 : ( dir == "R" ? +1 : 0)
+  const dirToY = (dir) => dir == "U" ? -1 : ( dir == "D" ? +1 : 0)
+  const addDirection = (dir, pos) => Game.toPosition(dirToX(dir, pos.x), dirToY(dir, pos.y))
+  
+  const fuelConsumption = Game.getFuelCosts(map, unit, way)
+  const newFuel = unit.fuel - fuelConsumption
+  const newPos = way.reduce((pos, dir) => addDirection(dir, pos),  unit.position)
+  
+  unit.position = newPos
+  unit.fuel = newFuel
+}
+
+// [TansportModel], Unit => TransportModel?
+//
+Game.getTransporterModel = (loadModel, unit) => loadModel.find(m => m.transporter == unit)
+
+// [TansportModel], Unit => Boolean
+//
+Game.isTransporter = (loadModel, unit) => !!Game.getTransporterModel(loadModel, unit)
+
+// [TansportModel], Unit => Boolean
+//
+Game.hasLoads = (loadModel, unit) => {
+  const model = Game.getTransporterModel(loadModel, unit)
+  const hasModel = !!model
+  
+  return hasModel ? model.loads.length > 0 : false
+}
+
+Game.canLoad = (transporters, transporter, load) => {
+  const model = Game.getTransporterModel(transporters, transporter)
+  const fullyLoaded = model.loads.length == transporter.type.maxLoads
+  const alreadyLoaded = model.loads.includes(load)
+  const loadableType = transporter.type.canload.includes(transporter.type.movetype.id)
+  
+  return !fullyLoaded && !alreadyLoaded && loadableType
+}
+
+Game.loadUnit = (transporters, transporter, load) => {
+  const model = Game.getTransporterModel(transporters, transporter)
+  const loadPosition = Game.toPosition(-1, -1)
+  
+  model.loads.push(load)
+  load.position = loadPosition
+}
+
+Game.getLoads = (transport) => transport.loads.splice(0) 
+
+Game.getUnloadTargets = (transport, position = transport.unit.position) => {
+  const loads = transport.loads
+  const targets = loads.map(l => {
+    const neighbours = Game.sliceRangeFromMap(map, 1, position)
+    const movableNb = neighbours.filter(t => Game.canMoveOntoTile(transport, t))
+    
+    return movableNb
+  })
+  const targetList = targets.reduce((r, item) => r.concat(item), [])
+  
+  return targetList
+}
+
+const unload = (transport, load, direction) => {
+  const dirToX = (dir) => dir == "L" ? -1 : ( dir == "R" ? +1 : 0)
+  const dirToY = (dir) => dir == "U" ? -1 : ( dir == "D" ? +1 : 0)
+  const addDirection = (dir, pos) => Game.toPosition(dirToX(dir, pos.x), dirToY(dir, pos.y))
+  
+  const newLoads = transport.loads.filter(u => u != load)
+  const newPosition = addDirection(direction, transport.position)
+   
+  load.position = newPosition
+  transport.loads = newLoads
+}
+
+// =============================================================================
+
+// Unit => Actor
+const toUnitActor = unit => ({
+  position: unit.position,
+  unit,
+  property: null
+})
+
+// Property => Actor
+const toPropertyActor = property => ({
+  position: property.position,
+  property,
+  unit: null
+})
 
 // 
 // design decision - all sequences are fail fast, they check the input data
@@ -347,7 +748,7 @@ Sequences.attack = (world, attackerID, defenderID) => {
   Guard(attacker != defender)
   Guard(!Game.isPeacefulUnit(attacker))
   
-  ...
+  // TODO 
 }
 
 Sequences.produce = (world, factoryID, type) => {
@@ -357,14 +758,26 @@ Sequences.produce = (world, factoryID, type) => {
   
   Guard(ownerUnitCount < 50)
   
-  ...
-}
-
-Sequences.drainAll = (world) => {
+  const produced = Game.produce(world.units, factory, type)
   
+  Guard(!!produced)
 }
 
-Sequences.supplyAll = (world) => {}
+Sequences.drainAll = (world, playerID) => {
+  const owner = world.player[playerID]
+  const ownerUnits = world.units.filter(u => u.owner == owner)
+  
+  ownerUnits.forEach(Game.drainFuel)
+}
+
+Sequences.supplyAll = (world) => {
+  const turnOwner = world.turn.owner
+  const toUnits = world.units.filter(u => u.owner == turnOwner)
+  const toSuppliers = toUnits.filter(Game.isSupplier)
+  const toSuppliersWithTargets = toSuppliers.filter(u => Game.canSupplyNeighbours(world.map, toUnitActor(u)))
+  
+  toSuppliersWithTargets.forEach(u => Game.supplyNeighbours(world.map, toUnitActor(u)))
+}
 
 Sequences.repairAll = (world) => {
   const turnOwner = world.turn.owner
@@ -380,7 +793,33 @@ Sequences.repairAll = (world) => {
   tiles.forEach(handler)
 } 
 
-Sequences.supply = () => null
+Sequences.nextTurn = (world) => {
+  Game.pickNextTurnowner(world.turn, world.players)
+  
+  // TODO: necessary? should not when every player has its vision model
+  world.players.forEach(p => Game.buildVision(world.map, p))
+  
+  Sequences.supplyAll(world, world.turn.owner.id)
+  Sequences.repairAll(world, world.turn.owner.id)
+  Sequences.drainAll(world, world.turn.owner.id)
+  
+  const turnOnwerUnits = world.units.filter(u => u.owner == world.turn.owner)
+  
+  world.turn.acitvatableUnits = []
+  turnOnwerUnits.forEach(u => Game.markUsable(world.turn.acitvatableUnits, u))
+}
+
+Sequences.supply = (world, supplierID) => {
+  const supplier = world.units[supplierID]
+  Guard(!!supplier)
+  
+  const actor = toUnitActor(supplier)
+  
+  Guard(Game.canSupplyNeighbours(world.map, actor))
+  
+  Game.supplyNeighbours(world.map, actor)
+  Game.markUnusable(world.usables, supplier)
+}
 
 Sequences.hide = (world, unitID) => {
   const unit = world.units[unitID]
@@ -419,7 +858,12 @@ Sequences.capture = (world, capturerID) => {
   Game.captureProperty(property, capturer)
 }
 
-Sequences.launchSilo = () => null
+Sequences.launchSilo = (world, siloID, targetPos) => {
+  const silo = world.properties[siloID]
+  const siloPos = silo.position
+  
+  Game.fireSilo(world.map, siloPos, targetPos)
+}
 
 Sequences.load = () => null
 
@@ -427,7 +871,8 @@ Sequences.unload = () => null
 
 Sequences.saveGame = () => null
 
-Sequences.loadGame = () => null
+Sequences.loadGame = () => {
+}
 
 Sequences.join = (world, unitA, unitB) => {
   Guard(Game.joinable(unitA, unitB))
@@ -440,12 +885,71 @@ Sequences.join = (world, unitA, unitB) => {
   Guard(Logic.falsy(unitA.owner))
 }
 
-Sequences.getAvailableSequences = (world, actor) => {
-  const sequences = []
+Sequences.activatePower = (world, power) => {
+  const player = world.turn.owner
+
+  Guard(Game.isPowerActivatable(power, player))
   
+  Game.activatePower(power, player)
   
+  Guard(player.co.power == power)
+}
+
+// =============================================================================
+
+// the event dispatcher controlls the available sequences for a player instance
+// and controls incoming events. modifies the game world.
+//
+// design decision - only validates the action data, world will be dispatched to 
+//                   sequences
+//
+const EventDispatcher = {}
+
+// action data type that contains information which will be shared 
+// amoung the game clients to modify the world state
+//
+EventDispatcher.ActionData = {
+  key: enum(Object.keys(Sequences)),
+  args: [Maths.isInt]
+}
+
+EventDispatcher.availableSequences = (world, actor) => {
+  const sequences = {}
+  
+  sequences.supply = false
+  sequences.produce = !!actor.unit && Game.canSupplyNeighbours(world.map, actor)
+  sequences.attack = false
+  sequences.launchSilo = false
+  sequences.reveal = false
+  sequences.hide = false
+  sequences.load = false
+  sequences.unload = false
+  sequences.join = false
+  sequences.nextTurn = !actor.unit && !actor.property
+  sequences.wait = !!actor.unit
   
   return sequences
+}
+
+EventDispatcher.dispatchSequence = (data) => {
+  try {
+    Guard("valid action object", validate(EventDispatcher.ActionData, data))
+    
+    const key = data.key
+    
+    Guard("action is usable", !!EventDispatcher.availableSequences()[key])
+    
+    const action = Sequences[key]
+    const args = data.args
+    
+    Guard(!!action)
+    
+    action(...args)
+    return undefined
+    
+  } catch (e) {
+    return "action invocation exception ("+ e.message +")
+  }
 }
 
 
@@ -457,370 +961,6 @@ Sequences.getAvailableSequences = (world, actor) => {
 // =======================================================================
 // =======================================================================
 
-
-const gameLogic = {}
-
-gameLogic.emptyList = Object.freeze([])
-
-const gameCreateLogicHandler = function(world, client) {
- 
-
-  const guardType = type => value => guard(createValidator(type)(value),
-    "type missmatch")
-
-  const createValidator = (spec, namespace = "") => (value, root = value) =>
-    Object
-    .keys(spec)
-    .map(key => {
-      switch (typeof spec[key]) {
-        case "function":
-          return !spec[key](value[key], value, root) ? namespace + key :
-            null
-        case "object":
-          // TODO array support
-          return createValidator(spec[key], namespace + key + ".")(value[
-            key], root)
-        default:
-          return namespace + key + "(illegal)"
-      }
-    })
-    .filter(v => !!v)
-    .reduce((result, value) => result.concat(value), [])
-
-  const condition = value => ({
-    case (predicate, supplier) {
-      return !!predicate(value) ? conditionSolved(supplier(value)) :
-        condition(value)
-    },
-    default (newValue) {
-      return newValue
-    }
-  })
-
-  const conditionSolved = value => ({
-    case () {
-      return conditionSolved(value)
-    },
-    default () {
-      return value
-    }
-  })
-
-  const rotateList = (list, n) => list.slice(n, list.length).concat(list.slice(
-    0, n))
-
-  const position = (x, y) => {
-    x,
-    y
-  }
-
-  // returns true when the tile contains a unit, false otherwise
-  const containsUnit = tile => !!tile.unit
-
-  const toGameData = (data) => {
-    const gamedata = {
-
-      units: data.units.concat([{
-        ID: "CANNON_UNIT_INV",
-        cost: 0,
-        range: 0,
-        movetype: "NO_MOVE",
-        vision: 1,
-        fuel: 0,
-        ammo: 0
-      }, {
-        ID: "LASER_UNIT_INV",
-        cost: 0,
-        range: 0,
-        movetype: "NO_MOVE",
-        vision: 1,
-        fuel: 0,
-        ammo: 0
-      }]),
-
-      tiles: data.tiles.concat([{
-        ID: "PROP_INV",
-        defense: 0,
-        vision: 0,
-        capturePoints: 1,
-        blocker: !0
-      }]),
-
-      movetypes: data.movetypes.concat([{
-        ID: "NO_MOVE",
-        costs: {
-          "*": -1
-        }
-      }]),
-
-      cos: data.cos.map($.identity),
-
-      weathers: data.weathers.map($.identity)
-    }
-
-    $.guard(exports.model.isValidGameData(gamedata))
-    return gamedata
-  }
-
-  const convertWorldToMap = (world) => {
-    let data = {}
-
-    data.active = data.actives
-      .map((value, index) => !!value ? index : -1)
-      .filter(value => value >= 0)
-
-
-
-    data.cfg = model.cfg_configuration
-    data.co = exports.map((data, index) => exports.equal(-1, model.player_data[
-        n].team) ?
-      0 : [data.power, data.timesUsed, data.level, data.coA, data.coB],
-      model.co_data
-    )
-    data.mp = exports.map(exports.identity, model.manpower_data)
-    data.mpw = model.map_width
-    data.mph = model.map_heigh
-    data.gmTm = model.timer_gameTimeElapsed
-    data.tnTm = model.timer_turnTimeElapsed
-    data.trOw = model.round_turnOwner
-    data.day = model.round_day
-    data.wth = model.weather_data.ID
-
-    data.prps = exports.map(
-      (p, index) => [index, p.x, p.y, p.type.ID, p.capturePoints, p.owner],
-      exports.filter(p => exports.notEqual(p.owner), model.property_data)
-    )
-
-    data.units = exports.map(
-      (u, index) => [model.unit_data.indexOf(u), u.type.ID, u.x, u.y, u.hp,
-        u.ammo,
-        u.fuel, u.loadedIn, u.owner
-      ],
-      exports.filter(u => exports.notEqual(u.owner), model.unit_data))
-
-    // reduce all tiles to a list of distinct id values
-    data.typeMap = exports.reduce(
-      (ids, col) => exports.reduce(
-        (ids, cell) => exports.includes(cell.type.ID, ids) && ids.push(
-          cell.type.ID),
-        ids, col), [], model.map_data)
-
-    // we turn all tiles into the index of their id in the type map
-    data.map = exports.map(exports.map(cell => data.typeMap.indexOf(cell.type
-        .ID)), model
-      .map_data)
-
-    data.dyet = exports.filter(exports.notEqual(-1), exports.map(exports.identity,
-      model.dayTick_dataTime))
-    data.dyee = exports.filter(exports.isTruthy, exports.map(exports.identity,
-      model.dayTick_dataEvent))
-    data.dyea = exports.filter(exports.isTruthy, exports.map(exports.identity,
-      model.dayTick_dataArgs))
-
-    // e.actr = exports.compose(filter(exports.greaterThan(-1)), exports.map((actable, index) => actable ? index : -1))(model.actions_leftActors)
-
-    return JSON.stringify(data)
-  }
-
-  const convertMapToWorld = (worldShape, data) => {
-
-    const model = {}
-
-    exports.guard(exports.every(v => exports.isInteger(v) && exports.isBetween(
-      0, 49), e.actr))
-
-    model.actions_leftActors = exports.map(exports.always(false), exports.range(
-      1, 50))
-    exports.forEach(i => model.actions_leftActors[i] = true, e.actr)
-
-
-    // PREPARE
-
-    // controller.buildRoundConfig
-    for (var t = controller.configBoundaries_, o = Object.keys(t), n = 0, a =
-        o.length; a > n; n++) {
-      var r, l = o[n];
-      e && e.hasOwnProperty(l) ? (r = e[l], r < t[l].min && assert(!1, l,
-          "is greater than it's minimum value"), r > t[l].max && assert(!
-          1, l, "is greater than it's maximum value"), t[l].hasOwnProperty(
-          "step") && 0 !== r % t[l].step && assert(!1, l,
-          "is does not fits one of it's possible values")) : r = t[l].defaultValue,
-        model.cfg_configuration[l] = r
-    }
-
-
-    model.client_lastPid = -1
-
-    var e, t, o;
-    for (t = 0, o = 4; o > t; t++) e = model.co_data[t], e.power = 0, e.timesUsed =
-      0, e.level = -1, e.coA = null, e.coB = null
-
-    model.dayTick_dataTime.resetValues(), model.dayTick_dataEvent.resetValues(),
-      model.dayTick_dataArgs.resetValues()
-
-    model.manpower_data.resetValues()
-
-
-    model.map_width = e.mpw
-    model.map_height = e.mph;
-    for (var t = 0, o = model.map_width; o > t; t++)
-      for (var n = 0, a = model.map_height; a > n; n++) {
-        model.unit_posData[t][n] = null
-        model.property_posMap[t][n] = null
-        model.map_data[t][n] = model.data_tileSheets[e.typeMap[e.map[t][n]]]
-      }
-
-    assert(util.intRange(e.player, 2, 4));
-    var t, o, n;
-    for (o = 0, n = 4; n > o; o++) t = model.player_data[o], t.name = null,
-      t.gold = 0, t.team = o <= e.player - 1 ? o : -2
-
-    for (var t, o, n = 0, a = model.property_data.length; a > n; n++) model
-      .property_data[n].owner = -1, model.property_data[n].type = null;
-    for (var n = 0, a = e.prps.length; a > n; n++) o = e.prps[n], assert(
-        util.intRange(o[0], 0, 299)), assert(util.intRange(o[1], 0, 99)),
-      assert(util.intRange(o[2], 0, 99)), assert(util.isString(o[3]) && !
-        util.isUndefined(model.data_tileSheets[o[3]].capturePoints) ||
-        "undefined" != typeof model.data_tileSheets[o[3]].cannon ||
-        "undefined" != typeof model.data_tileSheets[o[3]].laser ||
-        "undefined" != typeof model.data_tileSheets[o[3]].rocketsilo),
-      assert(util.intRange(o[4], 1, model.data_tileSheets[o[3]].capturePoints) ||
-        util.intRange(o[4], -99, -1) || "undefined" != typeof model.data_tileSheets[
-          o[3]].rocketsilo), assert(util.intRange(o[5], -1, 3)), t = model.property_data[
-        o[0]], t.type = model.data_tileSheets[o[3]], t.capturePoints = 20,
-      t.owner = o[5], t.x = o[1], t.y = o[2], model.property_posMap[o[1]][o[
-        2]] = t
-
-    model.round_turnOwner = -1, model.round_day = 0
-
-    assert(util.intRange(e.trOw, 0, 999999)), assert(util.intRange(e.day, 0,
-      999999)), model.round_turnOwner = e.trOw, model.round_day = e.day
-
-    model.rule_map.resetValues()
-
-    assert(util.isInt(e.gmTm) && e.gmTm >= 0), assert(util.isInt(e.tnTm) &&
-        e.tnTm >= 0), model.timer_gameTimeElapsed = e.gmTm, model.timer_turnTimeElapsed =
-      e.tnTm
-
-    for (var t = 0, o = model.unit_data.length; o > t; t++) model.unit_data[
-      t].owner = -1;
-    model.unit_posData.resetValues();
-    var n;
-    if (e.units) {
-      assert(Array.isArray(e.units));
-      for (var t = 0, o = e.units.length; o > t; t++) {
-        n = e.units[t], assert(util.isInt(n[0])), assert("string" == typeof n[
-          1]), assert(model.data_unitSheets.hasOwnProperty(n[1]));
-        var a = model.data_unitSheets[n[1]];
-        assert(model.map_isValidPosition(n[2], n[3])), assert(util.intRange(
-            n[4], 1, 99)), assert(util.intRange(n[5], 0, a.ammo)), assert(
-            util.intRange(n[6], 0, a.fuel)), assert(util.isInt(n[7])),
-          assert(util.intRange(n[8], -1, 3));
-        var r = n[0],
-          l = model.unit_data[r];
-        l.type = a, l.x = n[2], l.y = n[3], l.hp = n[4], l.ammo = n[5], l.fuel =
-          n[6], l.loadedIn = n[7], l.owner = n[8], model.unit_posData[n[2]]
-          [n[3]] = l
-      }
-
-      // CONTAINS LOW_AMMO,LOW_FUEL,HAS_LOADS,CAPTURES,VISIBLE
-      mode.unit_data.forEach(unit => unit.traits = new Set())
-    }
-    model.weather_data = model.data_defaultWeatherSheet
-
-    // TODO uuuuugh
-
-    for (var t = Object.keys(e.cfg), o = t.length; o--;) assert(util.isInt(
-      e.cfg[t[o]]));
-    controller.buildRoundConfig(e.cfg)
-
-    var t, o, n, a;
-    for (assert(Array.isArray(e.co) && 4 === e.co.length), n = 0, a = 4; a >
-      n; n++) t = e.co[n], t > 0 && (assert(util.intRange(t[0], 0, 999999)),
-      assert(util.intRange(t[1], 0, 999999)), assert(util.intRange(t[2],
-        model.co_MODES.NONE, model.co_MODES.AWDR)), assert(util.isString(
-        t[3]) && model.data_coSheets.hasOwnProperty(t[3])), assert(util.isString(
-        t[4]) && model.data_coSheets.hasOwnProperty(t[4])), o = model.co_data[
-        n], o.power = t[0], o.timesUsed = t[1], o.level = t[2], o.coA = t[
-        3] ? model.data_coSheets[t[3]] : null, o.coB = t[4] ? model.data_coSheets[
-        t[4]] : null)
-
-    var t = 0,
-      o = e.dyev.length;
-    for (assert(e.dyea.length === 2 * o); o > t; t++) assertInt(e.dyev[t]),
-      assertStr(e.dyee[t]), assert(e.dyev[t] > 0), model.dayTick_dataTime[t] =
-      e.dyev[t], model.dayTick_dataEvent[t] = e.dyee[t], model.dayTick_dataArgs[
-        2 * t] = e.dyea[2 * t], model.dayTick_dataArgs[2 * t + 1] = e.dyea[
-        2 * t + 1]
-
-    assert(Array.isArray(e.manpower));
-    var t = e.manpower.length - 1;
-    do assert(util.isInt(e.manpower[t]) && e.manpower[t] >= 0), t--; while (
-      t >= 0);
-    model.manpower_data.grabValues(e.manpower)
-
-    var t, o, n, a;
-    for (n = 0, a = e.players.length; a > n; n++) t = e.players[n], assert(
-        util.intRange(t[0], 0, 3)), assert(util.isString(t[1])), assert(
-        util.intRange(t[2], 0, 999999)), assert(util.intRange(t[3], 0, 3)),
-      o = model.player_data[t[0]], o.name = t[1], o.gold = t[2], o.team = t[
-        3]
-
-    for (var t, o = 0, n = e.prps.length; n > o; o++) {
-      var a = e.prps[o];
-      t = model.property_data[a[0]], t.capturePoints = a[4]
-    }
-
-    assert(model.data_weatherSheets.hasOwnProperty(e.wth)), model.weather_data =
-      model.data_weatherSheets[e.wth]
-
-    // =======================================================
-    // TODO
-
-    model.properties = $.range(1, 300).map(id => ({
-      id,
-      capturePoints: 20,
-        owner: -1,
-        x: 0,
-        y: 0,
-        type: null
-    }))
-
-    model.cos = {
-      data: $.range(1, 4).map(any => ({
-        timesUsed: 0,
-        power: 0,
-        level: 0,
-        coA: null,
-        coB: null
-      }))
-    }
-
-    model.players = $
-      .range(1, 4)
-      .map(any => ({
-        gold: 0,
-        team: -1,
-        name: null
-      }))
-
-    model.units = $
-      .range(1, 200)
-      .map(id => ({
-        id,
-        hp: 99,
-          x: 0,
-          y: 0,
-          ammo: 0,
-          fuel: 0,
-          loadedIn: -1,
-          type: null,
-          hidden: !1,
-          owner: -1
-      }))
-
-    model.mode = "no-co"
-  }
 
   // returns true when the buffer contains at least one command, false otherwise
   const hasCommands = (buffer) => buffer.length > 0
@@ -863,87 +1003,8 @@ const gameCreateLogicHandler = function(world, client) {
       .default("nothing")
   }
 
-  const doPickNextTurnowner = () => {
-
-    const currentOwner = world.turn.owner
-    const currentOwnerIndex = players.indexOf(currentOwner)
-    const playersWithoutTurnOwner = rotateList(world.players.filter(p => p !=
-      currentOwner), currentOwnerIndex)
-    const restPlayers = filter(p => p.team != -1)
-    const nextOwner = restPlayers[0]
-
-    guard(!!nextOwner)
-
-    const nextOwnerIndex = players.indexOf(nextOwner)
-    const dayChanged = nextOwnerIndex < currentOwnerIndex
-
-    turn.day = turn.day + (dayChanged ? 1 : 0)
-    turn.owner = nextOwner
-
-    return dayChanged
-  }
-
-  const deactivatePlayer = player => player.team = -1
-
-  const getCostOfOnePowerStar = (playerId) => {
-    const STAR_COST = 9000
-    const INCREASE_PER_USE = 1800
-    const MAXIMUM_INCREASES = 10
-
-    const timesUsed = Math.max(model.co_data[playerId].timesPowerUsed,
-      MAXIMUM_INCREASES)
-    return STAR_COST + timesUsed * INCREASE_PER_USE
-  }
-
-  const activatePower = (model, power, playerId) => {
-    const powerLevel = model.co_POWER_LEVEL[power.toUpperCase()]
-    exports.guard(powerLevel)
-
-    const coData = model.co_data[playerId]
-    coData.power = 0
-    coData.level = powerLevel
-    coData.timesUsed++
-  }
-
-  const activateCoPower = (model, playerId) => {
-    // TODO
-  }
-
-  const activateSuperCoPower = (model, playerId) => {
-    // TODO
-  }
-
-  const isPowerActivatable = (power, model, playerId) => {
-    if ([model.co_MODES.AW1, model.co_MODES.AW2, model.co_MODES.AWDS].includes(
-        model.co_activeMode)) {
-      return false
-    }
-
-    const coData = model.co_data[playerId]
-
-    if (!coData.coA) return false
-
-    const stars = {
-      cop: "coStars",
-      scop: "scoStars"
-    }
-
-    const starsNeeded = stars[power]
-    cwt.guard(!!stars)
-
-    return coData.power >= exports.co.getCostOfOnePowerStar(playerId) *
-      starsNeeded
-  }
-
-  const isCoPActivatable = isPowerActivatable.bind(null, "cop")
-
-  const isSCoPActivatable = isPowerActivatable.bind(null, "scop")
-
   
-  
-
-  
-
+ 
   const getTargets = (unit, position = unit.position) => {
     const minRange = unit.type.attack.range.min
     const maxRange = unit.type.attack.range.max
@@ -1030,278 +1091,8 @@ const gameCreateLogicHandler = function(world, client) {
           .1 * p * s.cost, 10), model.events.co_modifyPowerLevel(u,
           parseInt(.5 * p, 10)), model.events.co_modifyPowerLevel(m, p)))
   }
-
- 
-
-  const modifyVision = (position, range, by, fogModel) =>
-    sliceRange(fogModel, range, position).map(x => x + by)
-
-  const calculateVision = (map, owner) => {
-    fogModel.map(col => col.map(x => 0))
-    map.reduce((arr, col) => col.forEach(tile => {
-        if (!!tile.property && tile.property.owner == owner) arr.push(
-          tile.property)
-        if (!!tile.unit && tile.unit.owner == owner) arr.push(tile.unit)
-      }), [])
-      .forEach(visioner => modifyVision(visioner.position, visioner.type.vision,
-        owner.visionMap, +1))
-  }
-
-  const isCannon = cannon => "CANNON_UNIT_INV" === cannon.type.ID
-
-  const canFireCannon = (cannon) => {
-    cwt.guard(exports.specialProperties.isCannon(cannon))
-
-    // TODO
-    return model.bombs_markCannonTargets(e, t)
-  }
-
-  const getCannonTargets = (map, cannon) => {
-
-    return []
-  }
-
-  const fireCannon = (cannon) => {
-    // TODO
-    const unit = model.unit_posData[e.targetselection.x][e.targetselection.y]
-    const cannonType = model.bombs_grabPropTypeFromPos(e.target.x, e.target
-      .y)
-
-    model.events.damageUnit(
-      model.unit_extractId(unit),
-      model.unit_convertPointsToHealth(cannonType.cannon.damage), 9)
-  }
-
-  const isLaser = e => "LASER_UNIT_INV" === model.unit_data[e].type.ID
-
-  const fireLaser = (laser) => {
-    // TODO
-    var o = model.property_posMap[e][t];
-    assert(o);
-    var n = e,
-      a = t,
-      r = o.owner;
-    for (e = 0, xe = model.map_width; xe > e; e++)
-      for (t = 0, ye = model.map_height; ye > t; t++)
-        if (n === e || a === t) {
-          var l = model.unit_posData[e][t];
-          l && l.owner !== r && model.events.damageUnit(model.unit_extractId(
-              l), model.unit_convertPointsToHealth(o.type.laser.damage),
-            9)
-        }
-  }
-
-  const tryToMarkCannonTargets = (e, t, o, n, a, r, l, i, d, s, c) => {
-    assert(model.player_isValidPid(e));
-    for (var m = model.player_data[e].team, u = i, _ = !1; d >= l; l++)
-      for (i = u; i >= s; i--)
-        if (model.map_isValidPosition(l, i) && !(Math.abs(l - o) + Math.abs(
-            i - n) > c || Math.abs(l - a) + Math.abs(i - r) > c || model.fog_turnOwnerData[
-            l][i] <= 0)) {
-          var p = model.unit_posData[l][i];
-          p && p.owner !== e && model.player_data[p.owner].team !== m && (t
-            .setValueAt(l, i, 1), _ = !0)
-        }
-    return _
-  }
-
-  const markCannonTargets = (e, t) => {
-    var o, n = model.unit_data[e],
-      a = model.property_posMap[n.x][n.y],
-      r = "PROP_INV" !== a.type.ID ? a.type : model.bombs_grabPropTypeFromPos(
-        n.x, n.y);
-    assert(r.cannon), t.setCenter(n.x, n.y, -1);
-    var l = r.cannon.range;
-    switch (r.cannon.direction) {
-      case "N":
-        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x, n
-          .y - l - 1, n.x - n + 1, n.y - 1, n.x + n - 1, n.y - l, l);
-        break;
-      case "E":
-        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x +
-          l + 1, n.y, n.x + 1, n.y + l - 1, n.x + l, n.y - l + 1, l);
-        break;
-      case "W":
-        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x -
-          l - 1, n.y, n.x - l, n.y + l - 1, n.x - 1, n.y - l + 1, l);
-        break;
-      case "S":
-        o = model.bombs_tryToMarkCannonTargets(n.owner, t, n.x, n.y, n.x, n
-          .y + l + 1, n.x - l + 1, n.y + l, n.x + l - 1, n.y + 1, l)
-    }
-    return o
-  }
-
-  const grabPropTypeFromPos = (e, t) => {
-    for (;;) {
-      if (!(t + 1 < model.map_height && model.property_posMap[e][t + 1] &&
-          "PROP_INV" === model.property_posMap[e][t + 1].type.ID)) break;
-      t++
-    }
-    if ("PROP_INV" !== model.property_posMap[e][t].type.ID) return model.property_posMap[
-      e][t].type;
-    for (;;) {
-      if (e + 1 < model.map_width && model.property_posMap[e + 1][t] &&
-        "PROP_INV" !== model.property_posMap[e + 1][t].type.ID) return model
-        .property_posMap[e + 1][t].type;
-      break
-    }
-    assert(!1)
-  }
-
-  const isSilo = (property) => !!property.type.rocketsilo
-
-  const isSiloFireableBy = (unit, property) => {
-    exports.guard(exports.specialProperties.isSilo(property))
-    return property.type.rocketsilo.fireable.includes(unit.type.ID)
-  }
-
-  const fireSilo = (launchingUnit, silo, targetPosition) => {
-    // TODO
-    let x = e.target.x
-    let y = e.target.y
-    let tx = e.targetselection.x
-    let ty = e.targetselection.y
-    let r = model.property_posMap[x][y]
-    let l = model.property_extractId(r)
-    let i = r.type
-    let d = i.rocketsilo.range
-    let s = model.unit_convertPointsToHealth(i.rocketsilo.damage)
-
-    // TODO
-    model.events.property_changeType(l, model.data_tileSheets[i.changeTo])
-    model.events.rocketFly(e, t, tx, ty)
-    model.events.explode_invoked(tx, ty, d, s, e.source.unit.owner)
-    model.events.dayEvent(5, "property_changeTypeById", l, model.data_propertyTypes
-      .indexOf(i))
-  }
-
-  const emptifySilo = (types, silo) => {
-    // TODO
-    silo.type = types.find(t => t.id === "PSLE")
-  }
-
-  const refillSilo = (types, silo) => {
-    // TODO
-    silo.type = types.find(t => t.id === "PSLO")
-  }
-
-  const isTransporter = (unit) => {
-    //TODO
-  }
-
-  const hasLoads = (unit) => {
-    //TODO
-  }
-
-  const canLoad = (transporter, load) => {
-    return !$.Stream([
-      exports.greaterThan(model.unit_data[e].type.maxloads, 0),
-      exports.notEqual(e.source.unitId, e.target.unitId),
-      exports.notEqual(sourceUnit.loadedIn, e.target.unitId),
-      exports.notEqual(targetUnit.loadedIn + 1 + targetUnit.type.maxloads,
-        0),
-      exports.notEqual(exports.includes(sourceUnit.type.movetype,
-        targetUnit.type.canload))
-    ]).includes(false)
-  }
-
-  const load = (transporter, load) => {
-    load.loadedIn = transporter.id
-    transporter.loadedIn -= 1
-  }
-
-  const canUnload = (transporter, load, direction) => {
-    let e = data.source.unitId
-    let t = data.target.x
-    let o = data.target.y
-    var n, a = model.unit_data[e],
-      r = a.owner;
-
-    if (!model.transport_isTransportUnit(e) || !model.transport_hasLoads(e))
-      return !1;
-    for (var l = model.unit_firstUnitId(r), i = model.unit_lastUnitId(r); i >=
-      l; l++)
-      if (n = model.unit_data[l], -1 !== n.owner && n.loadedIn === e) {
-        var d = model.data_movetypeSheets[n.type.movetype];
-        if (model.move_canTypeMoveTo(d, t - 1, o)) return;
-        if (model.move_canTypeMoveTo(d, t + 1, o)) return;
-        if (model.move_canTypeMoveTo(d, t, o - 1)) return;
-        if (model.move_canTypeMoveTo(d, t, o + 1)) return
-      }
-    return !1
-  }
-
-  const getSuitableUnloads = (transporter) => {
-    // TODO
-
-    let e = data.source.unitId
-    let t = data.target.x,
-      let o = data.target.y
-    let n = data.menu
-
-    for (var a, r = model.unit_data[e], l = r.owner, i = model.unit_firstUnitId(
-        l), d = model.unit_lastUnitId(l); d >= i; i++)
-      if (a = model.unit_data[i], -1 !== a.owner && a.loadedIn === e) {
-        var s = model.data_movetypeSheets[a.type.movetype];
-        (model.move_canTypeMoveTo(s, t - 1, o) || model.move_canTypeMoveTo(
-          s, t + 1, o) || model.move_canTypeMoveTo(s, t, o - 1) || model.move_canTypeMoveTo(
-          s, t, o + 1)) && n.addEntry(i, !0)
-      }
-  }
-
-  const getUnloadTargets = (transporter) => {
-    // TODO
-    var r = model.data_movetypeSheets[model.unit_data[e.action.selectedSubEntry]
-      .type.movetype];
-    let t = e.target.x
-    let o = e.target.y
-
-    model.move_canTypeMoveTo(r, t - 1, o) &&
-      a.setValueAt(t - 1, o, 1)
-
-    model.move_canTypeMoveTo(r, t + 1, o) &&
-      a.setValueAt(t + 1, o, 1)
-
-    model.move_canTypeMoveTo(r, t, o - 1) &&
-      a.setValueAt(t, o - 1, 1)
-
-    model.move_canTypeMoveTo(r, t, o + 1) &&
-      a.setValueAt(t, o + 1, 1)
-  }
-
-  const unload = (transporter, load, direction) => {
-    let e = e.source.unitId
-    let t = e.target.x
-    let o = e.target.y
-    let n = e.action.selectedSubEntry
-    let a = e.targetselection.x
-    let r = e.targetselection.y
-    if (assert(model.unit_data[n].loadedIn === e), -1 === a || -1 === r ||
-      model.unit_posData[a][r]) return controller.stateMachine.data.breakMultiStep = !
-      0, void 0;
-    model.unit_data[n].loadedIn = -1, model.unit_data[e].loadedIn++;
-    var l;
-    t > a ? l = model.move_MOVE_CODES.LEFT : a > t ? l = model.move_MOVE_CODES
-      .RIGHT : o > r ? l = model.move_MOVE_CODES.UP : r > o && (l = model.move_MOVE_CODES
-        .DOWN), controller.commandStack_localInvokement(
-        "move_clearWayCache"), controller.commandStack_localInvokement(
-        "move_appendToWayCache", l), controller.commandStack_localInvokement(
-        "move_moveByCache", n, t, o, 1), controller.commandStack_localInvokement(
-        "wait_invoked", n)
-  }
-
   
-  // returns true if the unit is usable, false otherwise
-  const isUsable = unit => world.usables.includes(unit)
-
-  // sets the given unit as usable in the given usability model
-  const doMarkUsable = unit => world.usables.push(unit)
-
-  // sets the given unit as unusable in the given usability model
-  const doMarkUnusable = unit => world.usables = world.usables.filter(u => u !=
-    unit)
-
+  
   // TODO
   const doUpdateWeather = (newType, seed) => {
     world.weather.active = newType
@@ -1309,6 +1100,8 @@ const gameCreateLogicHandler = function(world, client) {
       .max)
     exports.client.events.onWeatherChanged(newType.id)
   }
+  
+  
 
   // TODO
   const pickRandomWeather = () => {
@@ -1321,41 +1114,6 @@ const gameCreateLogicHandler = function(world, client) {
     setActiveWeather(weatherModel, nextWeather)
   }
 
-  const getMovemap = (map, unitId) => {
-    let movetargets = []
-
-    // TODO
-
-    return {
-      x: -1,
-      y: -1,
-      data: [
-        []
-      ]
-    }
-  }
-
-  const getMoveway = (map, unit, source, target) => {
-
-  }
-
-  const getCostsToMoveOn = (unit, tile) => {
-    assert(model.map_isValidPosition(t, o));
-    var n, a;
-    return a = model.property_posMap[t][o], n = a ? a.type.blocker ? -1 : e
-      .costs[a.type.ID] : e.costs[model.map_data[t][o].ID], "number" ==
-      typeof n ? n : (n = e.costs["*"], "number" == typeof n ? n : -1)
-  }
-
-  const canMoveOntoTile = (unit, tile) => getCostsToMoveOn(unit, tile) > 0
-
-  const getFuelCosts = (map, unit, way) => {
-
-  }
-
-  const move = (map, unit, way) => {
-
-  }
-
   return {}
 }
+
