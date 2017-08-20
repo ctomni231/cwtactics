@@ -16,4 +16,12 @@ As a token of appreciation for reaching 25,000 page views. Here is a dump of all
 Lord Spyro
 -----------
 
-A long time fan and contributor to the series. Devoted to writing a campiagn and to preserving as much of the Advance Wars lore as he can. This is the collection of items he has pulled for the Custom Wars Tactics team.
+A long time fan and contributor to the series. Devoted to writing a campaign and to preserving as much of the Advance Wars lore as he can. This is the collection of items he has pulled for the Custom Wars Tactics team.
+
+------------------------------------
+Advance Wars By Web - Map Extractor
+------------------------------------
+
+For the 50,000 mark, this section will hold a java program for extraction of AWBW maps from the
+server. This should allow normal users to collect the maps in a format that will be useable to
+CWT in the future.
