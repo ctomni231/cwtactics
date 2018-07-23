@@ -30,6 +30,21 @@ http://awbw.amarriner.com/prevmaps.php?maps_id=48058
 You type the map ID "48058" or a range of ID's and the program will
 save them in a Text format within the folder.
 
+Key
+----
+
+'.' => plains
+'@' => forest
+'^' => mountain
+'%' => reef
+'~' => river
+'=' => road
+'<' => shoal(beach)
+',' => sea
+'[' => bridge
+'?' => Pipe
+'0' => Null (represents properties)
+
 License
 --------
 
