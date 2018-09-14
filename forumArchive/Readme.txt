@@ -25,3 +25,11 @@ Advance Wars By Web - Map Extractor
 For the 50,000 mark, this section will hold a java program for extraction of AWBW maps from the
 server. This should allow normal users to collect the maps in a format that will be useable to
 CWT in the future.
+
+-------------
+Wars Central
+-------------
+
+For the 100,000 mark, this section will hold some images from Wars Central for hosting. This
+was brought by CarrionTrooper who posted the images they had on Reddit! The community will
+now have access to this information.
