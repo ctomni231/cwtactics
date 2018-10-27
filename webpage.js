@@ -13,7 +13,7 @@ return e.modal=!0,e.autoOpen=!1,e.closeOnEscape=!1,e.resizable=!1,e.draggable=!0
 s=''
 var d=new Date()
 if(d==9){s='cwSpooky'}else if(d==11){s='cwHoliday'}else{s='cwAdvance'}
-t="<p class='cwtHeaderImage'>",t+="<img src='images"/,t+=s,t+=".png' />",t+="</p>",$(cwt.ContentPanel.SECTION_NAME).append(t),t="<table class='prictureAndNewsTable' ><tbody><tr>",t+="<td><img class='currentVersionImage' src='"+n.img+"'></td>",t+="<td class='newsBlock' ><img class='currentNewsWaitingImage' src='images/wait.gif'/></td>",t+="</tr></tbody></table>",$(cwt.ContentPanel.SECTION_NAME).append(t),$(cwt.ContentPanel.SECTION_NAME).append("<p class='uibuttonHolder'><a target='_blank' href='"+n.link+"' class='uibutton'>Play v. "+n.version+"</a></p>"),t="<div class='currentVersionText'>"
+t="<p class='cwtHeaderImage'>",t+="<img src='images/",t+=s,t+=".png' />",t+="</p>",$(cwt.ContentPanel.SECTION_NAME).append(t),t="<table class='prictureAndNewsTable' ><tbody><tr>",t+="<td><img class='currentVersionImage' src='"+n.img+"'></td>",t+="<td class='newsBlock' ><img class='currentNewsWaitingImage' src='images/wait.gif'/></td>",t+="</tr></tbody></table>",$(cwt.ContentPanel.SECTION_NAME).append(t),$(cwt.ContentPanel.SECTION_NAME).append("<p class='uibuttonHolder'><a target='_blank' href='"+n.link+"' class='uibutton'>Play v. "+n.version+"</a></p>"),t="<div class='currentVersionText'>"
 for(var e=0;e<n.text.length;e++)t+="<p>"+n.text[e]+"</p>"
 t+="</div>",$(cwt.ContentPanel.SECTION_NAME).append(t),$(cwt.ContentPanel.SECTION_NAME).append("<p class='currentVersionChangelogHeader'>Changelog</p>"),t="<table class='currentVersionChangelog'><tbody>"
 for(var e=0;e<n.log.NEW.length;e++)t+="<tr><td class='new'>NEW: </td><td>"+n.log.NEW[e]+"</td></tr>"
