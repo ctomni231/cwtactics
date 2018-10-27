@@ -12,7 +12,7 @@ return e.modal=!0,e.autoOpen=!1,e.closeOnEscape=!1,e.resizable=!1,e.draggable=!0
 1==n.isDialog?(t.href="#",t.onclick=function(){return cwt.EventHandler.fireEvent("openDialog",[n.link]),!1}):(t.href=n.link,1!=n.sameWindow&&(t.target="_blank")),t.title=n.label,t.innerHTML=n.label,$(cwt.NavBarLink.SECTION_NAME).append(t)},t.click=function(){$(this.ref).click()}},{}),stjs.ns("cwt"),cwt.ContentPanel=function(n){this.buildElement(n)},stjs.extend(cwt.ContentPanel,null,[],function(n,t){n.SECTION_NAME="#content",n.BLOGGER_GRAB_URL="https://www.googleapis.com/blogger/v3/blogs/8771777547738195480/posts?fetchBodies=false&fetchImages=false&maxResults=4&key=AIzaSyBeLzkUGTUFQ0z5yEGeuF4c0d0i5Vhgc1Y",t.buildElement=function(n){var t
 s=''
 var d=new Date()
-if(d==9){s='cwSpooky'}else if(d==11){s='cwHoliday'}else{s='cwAdvance'}
+if(d.getMonth()==9){s='cwSpooky'}else if(d.getMonth()==11){s='cwHoliday'}else{s='cwAdvance'}
 t="<p class='cwtHeaderImage'>",t+="<img src='images/",t+=s,t+=".png' />",t+="</p>",$(cwt.ContentPanel.SECTION_NAME).append(t),t="<table class='prictureAndNewsTable' ><tbody><tr>",t+="<td><img class='currentVersionImage' src='"+n.img+"'></td>",t+="<td class='newsBlock' ><img class='currentNewsWaitingImage' src='images/wait.gif'/></td>",t+="</tr></tbody></table>",$(cwt.ContentPanel.SECTION_NAME).append(t),$(cwt.ContentPanel.SECTION_NAME).append("<p class='uibuttonHolder'><a target='_blank' href='"+n.link+"' class='uibutton'>Play v. "+n.version+"</a></p>"),t="<div class='currentVersionText'>"
 for(var e=0;e<n.text.length;e++)t+="<p>"+n.text[e]+"</p>"
 t+="</div>",$(cwt.ContentPanel.SECTION_NAME).append(t),$(cwt.ContentPanel.SECTION_NAME).append("<p class='currentVersionChangelogHeader'>Changelog</p>"),t="<table class='currentVersionChangelog'><tbody>"
