@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html manifest="cache.manifest" >
+
+  <head>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport"                     content="width=device-width,
+                                                       initial-scale=1.0,
+                                                       maximum-scale=1,
+                                                       user-scalable=no" />
+  </head>
+
+  <body oncontextmenu="return false;" >
+    <div style="
+           position: absolute;
+           bottom: 10px;
+           right: 10px;
+           left: 10px;
+           height: 33%;
+           z-index: 9999;
+           border: 1px solid red; 
+           padding: 2px 6px;
+           border-radius: 2px;
+           textAlign: left;
+           background-color: white;
+           color: red !important;
+           font-weight: bold;
+           font-size: 10pt;
+           font-family: monospace;
+           opacity: 0.7;
+           box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.5)" >
+             
+      <div id="consoleOut" 
+           style="height: 100%;  overflow-y: auto;" />     
+    </div>
+    
+    <script>
+      window.onerror = function (error, msg, loc) {
+        alert(error, msg, loc)  
+      }
+    </script>
+       
+    <script type='text/javascript' src='require.js'></script>
+	
+	<script>
+      require('./starter').boot()
+    </script>
+
+  </body>
+</html>
