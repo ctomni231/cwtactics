@@ -14,7 +14,7 @@ exports.stopLoop = function () {
     logError("could not stop game loop, because no loop is running")
     return
   }
-  clearTimeout(this.intervalId)
+  clearTimeout(loopId)
   loopId = -1
 }
   
@@ -27,7 +27,7 @@ exports.startLoop = function (loop) {
     
     loop(delta)
     
-    setTimeout(evaluateLoopAndTriggerNext, Math.max(0, delta + loopTime))
+    loopId = setTimeout(evaluateLoopAndTriggerNext, Math.max(0, delta + loopTime))
     time = now
   }
   
