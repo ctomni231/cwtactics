@@ -1,34 +1,20 @@
-const statemachine = require("./statemachine")
+import * as gamestate from "./state"
 
-const updateTraits = [
-  statemachine
+// traits
+import * as input from "input"
+import * as statemachine from "statemachine"
+import * as screen from "screen"
+
+var traits = [
+  input,
+  statemachine,
+  screen
 ]
 
-const renderTraits = [
-]
-
-function checkTraits () {
-  if (updateTraits.filter(trait => !trait.update).length > 0){
-    throw new Error("update trait must have an update function")
-  }
-  if (renderTraits.filter(trait => !trait.render).length > 0){
-    throw new Error("render trait must have a render function")
-  }
-}
-
-exports.boot = function () {
-  checkTraits()
-}
-
-exports.loop = function () {
-  logInfo("evaluate game turn") 
+export function loop (delta) {
+  gamestate.loop.delta = delta
   
-  for (var ui = 0; ui < updateTraits.length; ui++){
-    updateTraits[ui].update()
+  for (var i = 0; i < traits.length; i++){
+    traits[i].update()
   }
-  
-  for (var ri = 0; ui < renderTraits.length; ri++){
-    renderTraits[ri].render(null, null)
-  }
-  
 }

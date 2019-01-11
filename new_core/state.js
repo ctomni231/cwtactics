@@ -1,6 +1,12 @@
-exports.state = {
-  current: null,
+export const state = {
+  current: "INITIAL",
   next: null
 }
 
-exports.version = null
+export const input = {}
+
+export const loop = {
+  delta: 0
+}
+
+export const version = ""

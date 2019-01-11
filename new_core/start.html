@@ -10,9 +10,10 @@
   </head>
 
   <body oncontextmenu="return false;" >
+            
     <div style="
            position: absolute;
-           bottom: 10px;
+           top: 10px;
            right: 10px;
            left: 10px;
            height: 33%;
@@ -32,17 +33,25 @@
       <div id="consoleOut" 
            style="height: 100%;  overflow-y: auto;" />     
     </div>
-    
+    <canvas id="gamecanvas"
+            style="
+              position: absolute;
+			  top: 300px;
+              left: 10px;
+              width: 320px;
+              height: 240px;
+              z-index: 1;
+            " />
     <script>
       window.onerror = function (error, msg, loc) {
         alert(error, msg, loc)  
       }
     </script>
-       
-    <script type='text/javascript' src='require.js'></script>
-	
+
 	<script>
-      require('./starter').boot()
+      import { boot } from "starter"
+
+	  boot()
     </script>
 
   </body>

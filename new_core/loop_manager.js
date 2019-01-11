@@ -21,13 +21,15 @@ exports.stopLoop = function () {
 exports.startLoop = function (loop) {
   var time = new Date().getTime()
    
+  logInfo("starting game loop with interval " + loopTime + "ms") 
+   
   const evaluateLoopAndTriggerNext = function () {
     const now = new Date().getTime()
     const delta = now - time
     
     loop(delta)
     
-    loopId = setTimeout(evaluateLoopAndTriggerNext, Math.max(0, delta + loopTime))
+    loopId = setTimeout(evaluateLoopAndTriggerNext, Math.max(0, loopTime - delta))
     time = now
   }
   

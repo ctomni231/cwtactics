@@ -21,7 +21,7 @@ var dropinRequire = function( moduleId, root ) {
 	if( req.status != 200 ) {
 		throw new Error(req);
 	}
-
+dropinRequire.logMessageIntoDOM("CORE", "blue", modulePath + " --- " + root)
 	var txt	= [
 		dropinRequire.prefix,
 		req.responseText,

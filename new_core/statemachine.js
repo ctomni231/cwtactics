@@ -10,3 +10,5 @@ exports.update = function () {
     gamedata.state.next = null
   }
 }
+
+exports.draw = function(canvas, ctx) {}
