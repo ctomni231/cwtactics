@@ -1,6 +1,6 @@
-import { startLoop } from "./loop_manager"
-import { loop } from "./gameloop"
+import { startLoop } from "./loop_manager.js"
+import { loop } from "./gameloop.js"
 
 export function boot () {
-  loopManager.startLoop(loop)
+  startLoop(loop)
 }

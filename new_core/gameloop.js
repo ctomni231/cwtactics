@@ -1,9 +1,9 @@
-import * as gamestate from "./state"
+import * as gamestate from "./state.js"
 
 // traits
-import * as input from "input"
-import * as statemachine from "statemachine"
-import * as screen from "screen"
+import * as input from "./input.js"
+import * as statemachine from "./statemachine.js"
+import * as screen from "./screen.js"
 
 var traits = [
   input,

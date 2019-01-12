@@ -1,6 +1,5 @@
-import * as tween from "../tween"
-import * as gamestate from "../state"
-import { info } from "../log" 
+import * as tween from "../tween.js"
+import * as gamestate from "../state.js"
 
 var colorTween = null
 var red = 0
@@ -29,8 +28,6 @@ export function update () {
     })
   }
   
-  info("rd:" + red + " v:" + colorTween.red.value + " cpms:" + colorTween.red.changePerMs + " t:" + colorTween.red.target + " delta:" + delta)
-    
   tween.updateTween(colorTween, delta)
   
   red = parseInt(colorTween.red.value, 10)

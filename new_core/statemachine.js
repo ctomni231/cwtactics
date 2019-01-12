@@ -1,14 +1,10 @@
-const gamedata = require("./state")
+import * as gamedata from "./state.js"
 
-exports.update = function () {
+export function update () {
   const nextState = gamedata.state.next
   
   if (nextState !== null){
-    logInfo("change game state to " + nextState)
-    
     gamedata.state.current = nextState
     gamedata.state.next = null
   }
 }
-
-exports.draw = function(canvas, ctx) {}

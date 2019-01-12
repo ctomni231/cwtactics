@@ -11,47 +11,17 @@
 
   <body oncontextmenu="return false;" >
             
-    <div style="
-           position: absolute;
-           top: 10px;
-           right: 10px;
-           left: 10px;
-           height: 33%;
-           z-index: 9999;
-           border: 1px solid red; 
-           padding: 2px 6px;
-           border-radius: 2px;
-           textAlign: left;
-           background-color: white;
-           color: red !important;
-           font-weight: bold;
-           font-size: 10pt;
-           font-family: monospace;
-           opacity: 0.7;
-           box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.5)" >
-             
-      <div id="consoleOut" 
-           style="height: 100%;  overflow-y: auto;" />     
-    </div>
     <canvas id="gamecanvas"
             style="
-              position: absolute;
-			  top: 300px;
-              left: 10px;
               width: 320px;
               height: 240px;
               z-index: 1;
             " />
-    <script>
-      window.onerror = function (error, msg, loc) {
-        alert(error, msg, loc)  
-      }
-    </script>
 
-	<script>
-      import { boot } from "starter"
+  	<script type="module">
+      import { boot } from "./starter.js"
 
-	  boot()
+  	  boot()
     </script>
 
   </body>
