@@ -108,6 +108,79 @@ List of pretty much every sprite you'd ever need for reference.
 ***
 
 # Custom Wars Tactics - Clear(C) Tileset
+
+# Terrain Types
+
+* [x] *PLIN* = Plain
+* [x] *FRST* = Forest
+* [x] *MNTN* = Mountain
+* [x] *RIVR* = River
+* [x] *ROAD* = Road
+* [x] *BRDG* = Bridge
+* [x] *REEF* = Reef
+* [ ] *WTLD* = Wasteland
+* [x] *RUIN* = Ruins
+* [x] *SHOA* = Shoals
+* [x] *SEAS* = Seas
+* [x] *METR* = Meteor
+* [ ] *PLZM* = Plasma
+* [ ] *PLZP* = Plazma Pipe
+* [ ] *PZPS* = Plazma Pipeseam
+* [x] *PIPE* = Pipe
+* [ ] *PIPR* = Piperail
+* [ ] *SWMP* = Swamp
+* [ ] *MIST* = Mist
+* [ ] *RSEA* = Rough Seas
+* [ ] *FIRE* = Fire
+* [ ] *NULL* = Null
+
+## Property Types
+
+* [x] *HQTR* = Headquarters [All Factions]
+* [x] *CITY* = City
+* [x] *BASE* = Factory
+* [x] *APRT* = Airport
+* [x] *PORT* = Seaport
+* [x] *CMTR* = Communication-Tower
+* [x] *SILO* = Missile Silo
+* [x] *PLTF* = Missile Silo Platform
+* [x] *RDAR* = Radar
+* [x] *TAPT* = Temporary Airport
+* [x] *TSPT* = Temporary Seaport
+* [x] *RUBL* = Rubble
+* [x] *PIPS* = Pipeseam
+* [ ] *STRH* = Stronghold
+* [x] *LABS* = Lab
+* [ ] *QURY* = Query
+* [ ] *ORIG* = Oil Rig
+* [x] *WALL* = Wall
+
+## Inventions
+
+* [x] *BHMC* = Black Hole Mini-Cannon [4-Dir]
+* [ ] *BHCN* = Black Hole Cannon [North]-(3x3 Tiles)
+* [x] *BHCN* = Black Hole Cannon [South]-(3x3 Tiles)
+* [ ] *BHCN* = Black Hole Cannon [East]-(3x3 Tiles)
+* [ ] *BHCN* = Black Hole Cannon [West]-(3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [North]-(3x3 Tiles)
+* [x] *BHDR* = Black Hole Death Ray [South]-(3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [East]-(3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [West]-(3x3 Tiles)
+* [x] *BHFR* = Black Hole Fortress (4x4 Tiles)
+* [x] *BHFT* = Black Hole Factory [South]-(3x3 Tiles)
+* [x] *BHLZ* = Black Hole Lazer
+* [x] *BHMS* = Black Hole Missile (4x4 Tiles)
+* [x] *BRBL* = Big Rubble (3x3 Tiles)
+* [x] *SRBL* = Small Rubble
+* [ ] *VCNO* = Volcano
+* [ ] *BCRY* = Black Hole Crystal
+* [ ] *BOBL* = Black Hole Obelisk (3x3 Tiles)
+* [ ] *BARK* = Black Hole Ark (3x3 Tiles)
+* [ ] *TGUN* = IDS Talon Gun (3x3 Tiles)
+* [ ] *DTGN* = IDS Talon Gun Rubble (3x3 Tiles)
+
+***
+
 # Custom Wars Tactics - Rain(R) Tileset - RGBA Tint (0, 127, 127, 62)
 
 ## Terrain Types
@@ -373,6 +446,80 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *BHDR* = Black Hole Death Ray (3x3 Tiles)
 * [ ] *BHFR* = Black Hole Fortress (4x4 Tiles)
 * [ ] *BHFT* = Black Hole Factory (3x3 Tiles)
+* [ ] *BHLZ* = Black Hole Lazer
+* [ ] *BHMS* = Black Hole Missile (4x4 Tiles)
+* [ ] *BRBL* = Big Rubble (3x3 Tiles)
+* [ ] *SRBL* = Small Rubble
+* [ ] *VCNO* = Volcano
+* [ ] *BCRY* = Black Hole Crystal
+* [ ] *BOBL* = Black Hole Obelisk (3x3 Tiles)
+* [ ] *BARK* = Black Hole Ark (3x3 Tiles)
+* [ ] *TGUN* = IDS Talon Gun (3x3 Tiles)
+* [ ] *DTGN* = IDS Talon Gun Rubble (3x3 Tiles)
+
+***
+
+# Custom Wars Tactics - Fire(F) Tileset
+
+# Terrain Types
+
+* [ ] *PLIN* = Plain
+* [ ] *FRST* = Forest
+* [ ] *MNTN* = Mountain
+* [ ] *RIVR* = River
+* [ ] *ROAD* = Road
+* [ ] *BRDG* = Bridge
+* [ ] *REEF* = Reef
+* [ ] *WTLD* = Wasteland
+* [ ] *RUIN* = Ruins
+* [ ] *SHOA* = Shoals
+* [ ] *SEAS* = Seas
+* [ ] *METR* = Meteor
+* [ ] *PLZM* = Plasma
+* [ ] *PLZP* = Plazma Pipe
+* [ ] *PZPS* = Plazma Pipeseam
+* [ ] *PIPE* = Pipe
+* [ ] *PIPR* = Piperail
+* [ ] *SWMP* = Swamp
+* [ ] *MIST* = Mist
+* [ ] *RSEA* = Rough Seas
+* [ ] *FIRE* = Fire
+* [ ] *NULL* = Null
+
+## Property Types
+
+* [ ] *HQTR* = Headquarters [All Factions]
+* [ ] *CITY* = City
+* [ ] *BASE* = Factory
+* [ ] *APRT* = Airport
+* [ ] *PORT* = Seaport
+* [ ] *CMTR* = Communication-Tower
+* [ ] *SILO* = Missile Silo
+* [ ] *PLTF* = Missile Silo Platform
+* [ ] *RDAR* = Radar
+* [ ] *TAPT* = Temporary Airport
+* [ ] *TSPT* = Temporary Seaport
+* [ ] *RUBL* = Rubble
+* [ ] *PIPS* = Pipeseam
+* [ ] *STRH* = Stronghold
+* [ ] *LABS* = Lab
+* [ ] *QURY* = Query
+* [ ] *ORIG* = Oil Rig
+* [ ] *WALL* = Wall
+
+## Inventions
+
+* [ ] *BHMC* = Black Hole Mini-Cannon [4-Dir]
+* [ ] *BHCN* = Black Hole Cannon [North]-(3x3 Tiles)
+* [ ] *BHCN* = Black Hole Cannon [South]-(3x3 Tiles)
+* [ ] *BHCN* = Black Hole Cannon [East]-(3x3 Tiles)
+* [ ] *BHCN* = Black Hole Cannon [West]-(3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [North]-(3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [South]-(3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [East]-(3x3 Tiles)
+* [ ] *BHDR* = Black Hole Death Ray [West]-(3x3 Tiles)
+* [ ] *BHFR* = Black Hole Fortress (4x4 Tiles)
+* [ ] *BHFT* = Black Hole Factory [South]-(3x3 Tiles)
 * [ ] *BHLZ* = Black Hole Lazer
 * [ ] *BHMS* = Black Hole Missile (4x4 Tiles)
 * [ ] *BRBL* = Big Rubble (3x3 Tiles)
