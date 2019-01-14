@@ -20,8 +20,24 @@
 
   	<script type="module">
       import { boot } from "./starter.js"
+      import * as performance from "./performance.js"
 
   	  boot()
+
+      // JUST SOME TEST STUFF UNTIL THE TEST MODULE EXISTS
+
+      setInterval(() => {
+        console.log(
+          "GameLoop performance avg:", performance.getMeasureData("gameloop-update").averageDuration, "ms")
+      }, 1000)
+
+      performance.startMeasure("test")
+      setInterval(() => {
+        performance.stopMeasure("test")
+        performance.startMeasure("test")
+        console.log(
+          "Test performance avg:", performance.getMeasureData("test").averageDuration, "ms")
+      }, 5000)
     </script>
 
   </body>

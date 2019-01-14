@@ -3,10 +3,14 @@ export const state = {
   next: null
 }
 
-export const input = {}
+export const input = {
+  keyboardMapping: {
+
+  }
+}
 
 export const loop = {
   delta: 0
 }
 
-export const version = ""
+export const version = "0.1 Alpha"
