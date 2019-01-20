@@ -1,5 +1,5 @@
 export const state = {
-  current: "INITIAL",
+  current: null,
   next: null
 }
 
