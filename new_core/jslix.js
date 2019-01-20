@@ -1,11 +1,11 @@
-/* 
+/*
  * JSlix Image Engine
  *
  */
 
  // Let's define all the constants of jslix under one function
 const jslix = {
-	
+
 	// ImageLibrary Stuff
 	view: undefined,
 	lx: 0,
@@ -65,7 +65,25 @@ const jslix = {
 // This starts ImageLibrary
 // -----------------------------------------
 
-// Adds a Color map (an array of recolors using UnitBaseColors.png example) for recoloring 
+export function quickImage(text){
+	//This grabs an image and temporarily stores it in memory
+	let imgStorage = document.getElementById("image");
+	if(imgStorage == null){
+		imgStorage = document.createElement("img");
+		document.body.appendChild(imgStorage);
+	}
+	imgStorage.setAttribute("id", "image");
+	// This pretty much makes sure that a valid value is entering for numbers
+	imgStorage.setAttribute("src", isNaN(text)
+									? text : (text >= 0 && text < jslix.intArray.length)
+									? getImg(jslix.intArray[text]).src : getImg(text).toDataURL());
+	//imgStorage.setAttribute("onload", "storeImage()");
+	//imgStorage.setAttribute("onerror", "imgError(this)");
+	imgStorage.setAttribute("style", "display:none");
+	imgStorage.onload = function(){storeImage()}
+}
+
+// Adds a Color map (an array of recolors using UnitBaseColors.png example) for recoloring
 export function addColorMap(text){
 	jslix.colormap = 1;
 	addImage(text);
@@ -74,12 +92,12 @@ export function addColorMap(text){
 // Adds a flat colored box to the list of images
 // Not all too useful yet, until extra functionality is added in
 export function addColorBox(red, green, blue, alpha, sizex, sizey){
-	
+
 	//Simple error checking for the colors
 	const boxColors = new Uint8Array([red, green, blue, alpha]);
 	sizex = (sizex < 1) ? 1 : sizex;
 	sizey = (sizey < 1) ? 1 : sizey;
-		
+
 	let imgcanvas = document.getElementById("store");
 	if(imgcanvas == null){
 		imgcanvas = document.createElement("canvas");
@@ -90,14 +108,14 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 	imgcanvas.setAttribute("height", sizey);
 	imgcanvas.setAttribute("style", "display:none");
 	const ctx = imgcanvas.getContext("2d");
-	const imgData = ctx.createImageData(sizex, sizey);	
+	const imgData = ctx.createImageData(sizex, sizey);
 	for (var i = 0; i < imgData.data.length; i += 4){
 		imgData.data[i+0] = boxColors[0];
 		imgData.data[i+1] = boxColors[1];
 		imgData.data[i+2] = boxColors[2];
 		imgData.data[i+3] = boxColors[3];
 	}
-	
+
 	ctx.putImageData(imgData,0,0);
 
 	addImage(imgcanvas.toDataURL());
@@ -113,11 +131,15 @@ export function addDomImage(name, text){
 	}
 	imgStorage.setAttribute("id", "cwt-"+name);
 	// This pretty much makes sure that a valid value is entering for numbers
-	imgStorage.setAttribute("src", isNaN(text) 
-			? text : (text >= 0 && text < intArray.length) 
+	imgStorage.setAttribute("src", isNaN(text)
+			? text : (text >= 0 && text < intArray.length)
 			? getImg(intArray[text]).src : getImg(text).toDataURL());
-	//imgStorage.setAttribute("onerror", "jslix.imgError(this)");
+	//imgStorage.setAttribute("onerror", "imgError(this)");
 	imgStorage.setAttribute("style", "display:none");
+	imgStorage.onerror = function(){
+		  imgError(this);
+	};
+
 }
 
 // This function will draw a slide image stored in the DOM
@@ -138,9 +160,9 @@ export function addImage(text){
 		jslix.imgQueue.push(text);
 		return;
 	}
-	
+
 	jslix.busy = 1;
-	
+
 	//Add manipulations
 	jslix.mapArray.push(jslix.colormap);
 	jslix.colormap = 0;
@@ -162,7 +184,7 @@ export function addImage(text){
 	jslix.drop = [];
 	jslix.cutArray.push(jslix.cut);
 	jslix.cut = [];
-	
+
 	//This grabs an image and temporarily stores it in memory
 	let imgStorage = document.getElementById("image");
 	if(imgStorage == null){
@@ -171,16 +193,22 @@ export function addImage(text){
 	}
 	imgStorage.setAttribute("id", "image");
 	// This pretty much makes sure that a valid value is entering for numbers
-	imgStorage.setAttribute("src", isNaN(text) 
-									? text : (text >= 0 && text < jslix.intArray.length) 
+	imgStorage.setAttribute("src", isNaN(text)
+									? text : (text >= 0 && text < jslix.intArray.length)
 									? getImg(jslix.intArray[text]).src : getImg(text).toDataURL());
-	imgStorage.setAttribute("onload", "storeImage()");
-	//imgStorage.setAttribute("onerror", "jslix.imgError(this)");
+	//imgStorage.setAttribute("onload", "storeImage()");
+	//imgStorage.setAttribute("onerror", "imgError(this)");
 	imgStorage.setAttribute("style", "display:none");
+	imgStorage.onload = function(){
+			storeImage()
+	};
+	imgStorage.onerror = function(){
+		  imgError(this);
+	};
 }
 
 // This function is literally a callback function to actually store the image
-function storeImage(){
+export function storeImage(){
 
 	let i, j;
 	let imgStorage = document.getElementById("image");
@@ -189,7 +217,7 @@ function storeImage(){
 		document.body.appendChild(imgStorage);
 	}
 	imgStorage.setAttribute("id", "image");
-	
+
 	//This sets up any rotation effects we have
 	let dimSwitch = jslix.rotateArray.shift();
 	//This sets up any cut actions we have
@@ -209,7 +237,7 @@ function storeImage(){
 	}
 	canvas.setAttribute("id", "store");
 	canvas.setAttribute("style", "display:none");
-	
+
 	if(tmpCut.length > 0){
 		if(dimSwitch === 0){
 			canvas.setAttribute("width", tmpCut[2]);
@@ -227,9 +255,9 @@ function storeImage(){
 			canvas.setAttribute("width", imgStorage.height);
 		}
 	}
-	
+
 	console.log("("+canvas.width+","+canvas.height+")");
-	
+
 	let ctx = canvas.getContext("2d");
 	if(tmpCut.length > 0){
 		if(dimSwitch === 0){
@@ -257,7 +285,7 @@ function storeImage(){
 	let tmpBlend = jslix.blendArray.shift();
 	let tmpShift = jslix.shiftArray.shift();
 	let tmpDrop = jslix.dropArray.shift();
-	
+
 	//Do a bunch of manipulation checks before drawing out the image
 	if(jslix.flipXArray.shift() == 1)
 		data = flipX(data, imgWidth, imgHeight);
@@ -288,7 +316,7 @@ function storeImage(){
 	}
 	if(jslix.invertArray.shift() == 1)
 		data = invertColors(data);
-	
+
 	// This allows Safari to reenact onload functionality
 	if(imgStorage){
 		imgStorage.parentNode.removeChild(imgStorage);
@@ -302,7 +330,7 @@ function storeImage(){
 		queueNext();
 		return;
 	}
-	
+
 	for(i = 0; i < jslix.viewArray.length; i++){
 		// This check makes sure all images are unique
 		if(imgWidth != jslix.locxArray[i] || imgHeight != jslix.locyArray[i])
@@ -320,7 +348,7 @@ function storeImage(){
 			}
 		}
 	}
-	
+
 	jslix.intArray.push(jslix.viewArray.length);
 	//This pushes the images into an array
 	jslix.viewArray.push(data);
@@ -402,7 +430,7 @@ export function addPixelDrop(imgIndex, posx, posy, opacity){
 	let temp = [imgIndex, posx, posy, opacity];
 	jslix.drop.push(temp);
 }
-	
+
 // This inverts all the colors of an image
 export function invertColors(data){
 	let temp = new Uint8Array(data);
@@ -415,7 +443,7 @@ export function invertColors(data){
 	}
 	return temp;
 }
-	
+
 // Works with canvas Image to flip image horizontally
 export function flipX(data, sx, sy){
   let temp = new Uint8Array(data);
@@ -478,7 +506,7 @@ export function slitIntX(data, sx, sy, px, py, rp){
   return temp;
 }
 
-// This function is for changing colors for a data map 
+// This function is for changing colors for a data map
 export function changeMapColor(data, mapIndex, columnIndex){
 	let temp = new Uint8Array(data);
 	if(mapIndex >= 0 && mapIndex < jslix.imgMap.length){
@@ -504,7 +532,7 @@ export function changeMapColor(data, mapIndex, columnIndex){
 }
 
 // This function is for blending colors within a color map
-export function changeBlendColor(data, color, opacity){	
+export function changeBlendColor(data, color, opacity){
 	let temp = new Uint8Array(data);
 	if(opacity >= 0 && opacity < 300){
 		for (let i = 0; i < temp.length; i+=4){
@@ -543,7 +571,7 @@ export function dropPixels(data, sx, sy, imgID, px, py, opacity){
 					temp[(i+j*sx)*4] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4] - temp[(i+j*sx)*4])*(opacity / 100);
 					temp[(i+j*sx)*4+1] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+1] - temp[(i+j*sx)*4+1])*(opacity / 100);
 					temp[(i+j*sx)*4+2] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+2] - temp[(i+j*sx)*4+2])*(opacity / 100);
-					temp[(i+j*sx)*4+3] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);			
+					temp[(i+j*sx)*4+3] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);
 				}
 			}
 		}
@@ -627,9 +655,11 @@ export function getImg(num){
 }
 
 export function loadImage(num){
-	let tempImg = new Image();
+	var tempImg = new Image();
 	tempImg.onload = function(){
-		jslix.imgArray[num].src = this.src;
+		if(this.src !== undefined){
+			jslix.imgArray[num].src = this.src;
+		}
 		if(this.height == jslix.locyArray[num] && this.width == jslix.locxArray[num]){
 			jslix.imgReady[num] = num;
 		}
