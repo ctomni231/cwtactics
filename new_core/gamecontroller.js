@@ -1,4 +1,4 @@
-import * as gamestate from "./state.js"
+import { loop, state }from "./state.js"
 import * as performance from "./performance.js"
 
 // traits
@@ -14,8 +14,14 @@ const traits = [
   screen
 ]
 
-export function loop (delta) {
-  gamestate.loop.delta = delta
+export function bootGame () {
+  traits.forEach(trait => {
+    if (trait.setup) trait.setup()
+  })
+}
+
+export function updateGame (delta) {
+  loop.delta = delta
   
   performance.startMeasure(GAMELOOP_MEASURE_ID)
 

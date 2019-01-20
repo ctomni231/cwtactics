@@ -8,6 +8,12 @@ const SCREENS = {
   INITIAL: INITIAL
 }
 
+export function setup () {
+  Object.values(SCREENS).forEach(screen => {
+    if (screen.setup) screen.setup()
+  })
+}
+
 export function update () {
   SCREENS[state.current].update()  
   SCREENS[state.current].render(canvas, ctx)
