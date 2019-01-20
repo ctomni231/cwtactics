@@ -1,32 +1,36 @@
-import * as gamedata from "./state.js"
+import { state } from "./state.js"
 import { moduleTest } from "./test.js"
 
+export function setup () {
+  state.current = "INITIAL"
+}
+
 export function update () {
-  const nextState = gamedata.state.next
+  const nextState = state.next
   
   if (nextState !== null){
-    gamedata.state.current = nextState
-    gamedata.state.next = null
+    state.current = nextState
+    state.next = null
   }
 }
 
 moduleTest("statemachine", (testCase) => {
 
   testCase("should change state when next state is set", (assertThat) => {
-    gamedata.state.current = "A"
-    gamedata.state.next = "B"
+    state.current = "A"
+    state.next = "B"
 
     update()
 
-    assertThat(gamedata.state.current).is("B")
+    assertThat(state.current).is("B")
   })
 
   testCase("should not change state when no next state is set", (assertThat) => {
-    gamedata.state.current = "A"
-    gamedata.state.next = null
+    state.current = "A"
+    state.next = null
 
     update()
 
-    assertThat(gamedata.state.current).is("A")
+    assertThat(state.current).is("A")
   })
 })
