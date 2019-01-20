@@ -65,22 +65,20 @@ const jslix = {
 // This starts ImageLibrary
 // -----------------------------------------
 
+// The fastest way to get an image onscreen for testing
 export function quickImage(text){
 	//This grabs an image and temporarily stores it in memory
-	let imgStorage = document.getElementById("image");
+	let imgStorage = document.getElementById("quick");
 	if(imgStorage == null){
 		imgStorage = document.createElement("img");
 		document.body.appendChild(imgStorage);
 	}
-	imgStorage.setAttribute("id", "image");
+	imgStorage.setAttribute("id", "quick");
 	// This pretty much makes sure that a valid value is entering for numbers
-	imgStorage.setAttribute("src", isNaN(text)
-									? text : (text >= 0 && text < jslix.intArray.length)
-									? getImg(jslix.intArray[text]).src : getImg(text).toDataURL());
-	//imgStorage.setAttribute("onload", "storeImage()");
-	//imgStorage.setAttribute("onerror", "imgError(this)");
+	imgStorage.setAttribute("src", text)
 	imgStorage.setAttribute("style", "display:none");
-	imgStorage.onload = function(){storeImage()}
+
+	return imgStorage
 }
 
 // Adds a Color map (an array of recolors using UnitBaseColors.png example) for recoloring
@@ -594,9 +592,9 @@ export function canvasImg(num){
 		}
 	}else{
 		jslix.view = null;
-		if(jslix.lx !== 10 || jslix.ly !== 10){
-			jslix.lx = 10;
-			jslix.ly = 10;
+		if(jslix.lx !== 1 || jslix.ly !== 1){
+			jslix.lx = 1;
+			jslix.ly = 1;
 			change = 1;
 		}
 	}
@@ -618,12 +616,13 @@ export function canvasImg(num){
 		jslix.imgctx.clearRect(0, 0, jslix.lx, jslix.ly);
 	}
 
+	// This is the color for an errored image
 	if(jslix.view == null){
 		for (i = 0; i < jslix.imgsData.data.length; i += 4){
 			jslix.imgsData.data[i+0]=255;//255
 			jslix.imgsData.data[i+1]=0;//255
 			jslix.imgsData.data[i+2]=0;//255
-			jslix.imgsData.data[i+3]=100;//0
+			jslix.imgsData.data[i+3]=25;//0
 		}
 	}else{
 		for (i = 0; i < jslix.imgsData.data.length; i+=8){
@@ -657,9 +656,12 @@ export function getImg(num){
 export function loadImage(num){
 	var tempImg = new Image();
 	tempImg.onload = function(){
-		if(this.src !== undefined){
-			jslix.imgArray[num].src = this.src;
-		}
+		// Catches those pasky errors
+		if(this.src === undefined || jslix.imgArray[num] === undefined)
+			return
+
+		jslix.imgArray[num].src = this.src;
+
 		if(this.height == jslix.locyArray[num] && this.width == jslix.locxArray[num]){
 			jslix.imgReady[num] = num;
 		}
