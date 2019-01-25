@@ -1,0 +1,8 @@
+{
+  "up":"up",
+  "down":"down",
+  "left":"left",
+  "right":"right",
+  "select":"shift",
+  "cancel":"cancel"
+}

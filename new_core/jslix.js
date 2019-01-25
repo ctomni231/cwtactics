@@ -67,18 +67,9 @@ const jslix = {
 
 // The fastest way to get an image onscreen for testing
 export function quickImage(text){
-	//This grabs an image and temporarily stores it in memory
-	let imgStorage = document.getElementById("quick");
-	if(imgStorage == null){
-		imgStorage = document.createElement("img");
-		document.body.appendChild(imgStorage);
-	}
-	imgStorage.setAttribute("id", "quick");
-	// This pretty much makes sure that a valid value is entering for numbers
-	imgStorage.setAttribute("src", text)
-	imgStorage.setAttribute("style", "display:none");
 
-	return imgStorage
+	// For quick testing
+	return addDomImage('quick', text)
 }
 
 // Adds a Color map (an array of recolors using UnitBaseColors.png example) for recoloring
@@ -138,6 +129,7 @@ export function addDomImage(name, text){
 		  imgError(this);
 	};
 
+	return imgStorage
 }
 
 // This function will draw a slide image stored in the DOM
@@ -198,10 +190,10 @@ export function addImage(text){
 	//imgStorage.setAttribute("onerror", "imgError(this)");
 	imgStorage.setAttribute("style", "display:none");
 	imgStorage.onload = function(){
-			storeImage()
+		 storeImage()
 	};
 	imgStorage.onerror = function(){
-		  imgError(this);
+		 imgError(this);
 	};
 }
 
