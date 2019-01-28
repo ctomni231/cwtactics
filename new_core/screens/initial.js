@@ -34,7 +34,9 @@ export function update () {
     })
   }
 
-  tween.updateTween(colorTween, delta)
+  if (!gamestate.input.status.CANCEL) {
+    tween.updateTween(colorTween, delta)
+  }
 
   red = parseInt(colorTween.red.value, 10)
   green = parseInt(colorTween.green.value, 10)

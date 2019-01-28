@@ -4,8 +4,20 @@ export const state = {
 }
 
 export const input = {
-  keyboardMapping: {
+  status: {},
+  mapping: {
+    keyboard: {
+      "ArrowRight": "RIGHT",
+      "ArrowLeft": "LEFT",
+      "ArrowUp": "UP",
+      "ArrowDown": "DOWN",
 
+      "Space": "ACTION",
+      "ControlLeft": "CANCEL",
+
+      "KeyN": "ACTION",
+      "KeyM": "CANCEL",
+    }
   }
 }
 

@@ -18,13 +18,16 @@ export function executeModuleTests () {
     
     console.log("[TEST] start module test " + moduleName)
     
-    moduleTests[moduleName].forEach(test => {
+    moduleTests[moduleName].testCases.forEach(test => {
       const errorPool = []
 
       console.log("[TEST][" + moduleName + "] execute test case " + test.name)
+
+      moduleTests[moduleName].beforeEach()
       test.func(assertThat.bind(null, errorPool))
 
       console.log("[TEST][" + moduleName + "]", errorPool.length === 0 ? "PASSED" : "FAILED")
+      
       errorPool.forEach(err => console.log(" =>", err))
     })
 
@@ -39,13 +42,20 @@ export function moduleTest (moduleName, moduleTestFunction) {
   }
 
   const testCases = []
+  let beforeEach = () => {}
 
-  moduleTests[moduleName] = testCases
+  moduleTests[moduleName] = { testCases , beforeEach }
 
-  moduleTestFunction((testCaseName, testFunction) => {
+  const defineTestCase = (testCaseName, testFunction) => {
     testCases.push({
       name: testCaseName,
       func: testFunction
     })
-  })
+  }
+
+  const defineBeforeEach = (beforeEachFunction) => {
+    beforeEach = beforeEachFunction
+  }
+
+  moduleTestFunction(defineTestCase, defineBeforeEach)
 }

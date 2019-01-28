@@ -18,6 +18,9 @@
               z-index: 1;
             " />
 
+    <script type="module" src="./statemachine.test.js" ></script>
+    <script type="module" src="./input.test.js" ></script>
+
   	<script type="module">
       import { boot } from "./starter.js"
       import * as performance from "./performance.js"
@@ -39,6 +42,5 @@
           "Test performance avg:", performance.getMeasureData("test").averageDuration, "ms")
       }, 5000)
     </script>
-
   </body>
 </html>
