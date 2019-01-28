@@ -1,6 +1,8 @@
 /* Json File Library
  *
  * A library for handling files with helper function for JSON type files
+ *
+ * Future: A deletion function if necessary
  */
 
 const json = {
@@ -22,17 +24,8 @@ export function addFile(fileurl) {
 
 	// This will get the right object for XMLHttpRequest
 	if(window.XMLHttpRequest){
-		alert("Gets here")
+
 		json.request = new XMLHttpRequest();
-	}else if(window.ActiveXObject){
-		json.request = newActiveXObject("Msxml2.XMLHTTP");
-		if(!json.request)
-			json.request = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-
-	if(json.request){
-
-
 		// Specify the function that will handle the HTTP response
 		json.request.onreadystatechange = function(){
 			storeFile(this)
@@ -56,11 +49,10 @@ export function getJson(id) {
 	return JSON.parse(getFile(id));
 }
 
-export function storeFile(request) {
+function storeFile(request) {
 	if(request.readyState == 4){
       if(request.status == 200 || request.status == 304){
 				let data = request.responseText;
-				alert(JSON.parse(data).up);
         json.data.push(data);
       }
 	}
@@ -71,24 +63,3 @@ export function storeFile(request) {
 		addFile(json.queue.shift());
 	}
 }
-
-//export function quickGet(text){
-//	var blah, xmlhttp = new XMLHttpRequest();
-//	xmlhttp.onreadystatechange = function() {
-//	  if (this.readyState == 4 && this.status == 200) {
-//	    alert(JSON.parse(this.responseText).select);
-//	  }
-//	};
-//	xmlhttp.open("GET", text, true);
-//	xmlhttp.send();
-//}
-
-//var xmlhttp = new XMLHttpRequest();
-//xmlhttp.onreadystatechange = function() {
-//  if (this.readyState == 4 && this.status == 200) {
-//    var myObj = JSON.parse(this.responseText);
-//    document.getElementById("demo").innerHTML = myObj.name;
-//  }
-//};
-//xmlhttp.open("GET", "json_demo.txt", true);
-//xmlhttp.send();

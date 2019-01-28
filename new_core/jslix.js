@@ -1,6 +1,9 @@
 /*
  * JSlix Image Engine
  *
+ * Future: A deletion function if necesssary
+ * Cleanup: May have some unused variables
+ * Future: Might need to modularize this a bit
  */
 
  // Let's define all the constants of jslix under one function

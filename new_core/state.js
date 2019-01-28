@@ -1,6 +1,9 @@
 export const state = {
   current: null,
-  next: null
+  next: null,
+
+  // Expanding state to include the fps counter
+  fps: true
 }
 
 export const input = {
