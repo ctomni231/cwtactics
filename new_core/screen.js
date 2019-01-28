@@ -1,5 +1,6 @@
-import * as INITIAL from "./screens/initial.js" 
+import * as INITIAL from "./screens/initial.js"
 import { state } from "./state.js"
+import * as fps from "./performance.js"
 
 const canvas = document.querySelector("#gamecanvas")
 const ctx = canvas.getContext("2d")
@@ -15,6 +16,12 @@ export function setup () {
 }
 
 export function update () {
-  SCREENS[state.current].update()  
+  SCREENS[state.current].update()
   SCREENS[state.current].render(canvas, ctx)
+
+  // This will ensure fps stays on top
+  if(state.fps == true){
+    fps.display(ctx, 4, 10, false)
+  }
+
 }

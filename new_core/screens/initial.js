@@ -1,8 +1,6 @@
 import * as tween from "../tween.js"
 import * as gamestate from "../state.js"
 import * as jslix from "../jslix.js"
-import * as file from "../filelib.js"
-import * as fps from "../fps.js"
 
 var colorTween = null
 var red = 0
@@ -10,15 +8,12 @@ var green = 0
 var blue = 0
 
 export function setup() {
-  // Sets up JSLix
-  //jslix.addColorMap("../image/UnitBaseColors.png")
-  //jslix.addColorChange(0, 3)
-  //jslix.addImage("../image/cwt_tileset/units/CWT_AAIR.png")
+  // To turn off the fps counter
+  //gamestate.state.fps = false
 
+  // Adds a title image to the title screen
   jslix.addImage("../image/mobile/cwttitle.png")
 
-  // This is to load the Json file
-  //json.addFile("./json/options.json")
 }
 
 export function update () {
@@ -51,11 +46,6 @@ export function update () {
   green = parseInt(colorTween.green.value, 10)
   blue = parseInt(colorTween.blue.value, 10)
 
-  // This is to finish testing the dynamic Json functionality
-  /*if(json.getFile(0) !== undefined){
-    alert(json.getJson(0).select)
-  }//*/
-
 }
 
 export function render (canvas, ctx) {
@@ -70,5 +60,4 @@ export function render (canvas, ctx) {
 	ctx.drawImage(jslix.getImg(0), 90, 120, 200, 20)
   //ctx.drawImage(jslix.quickImage("../image/mobile/cwttitle.png"), 10, 120, 200, 20)
 
-  fps.display(ctx, 4, 10)
 }
