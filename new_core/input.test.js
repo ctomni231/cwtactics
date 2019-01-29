@@ -1,5 +1,6 @@
 import { moduleTest } from "./test.js"
-import { input as inputData } from "./state.js"
+import { input } from "./state.js"
+import { mapping } from "./config/input.js"
 import { update } from "./input.js"
 
 function fakeKeyDown(key) {
@@ -13,28 +14,28 @@ function fakeKeyUp(key) {
 moduleTest("input", (testCase, beforeEach) => {
 
   testCase("should not transfer key state before next update", (assertThat) => {
-    inputData.mapping.keyboard.A = "ACTION"
-    inputData.status.ACTION = false
+    mapping.keyboard.A = "ACTION"
+    input.ACTION = false
 
     fakeKeyDown("A")
 
-    assertThat(inputData.status.ACTION).is(false)
+    assertThat(input.ACTION).is(false)
   })
 
   testCase("should register key click", (assertThat) => {
-    inputData.mapping.keyboard.A = "ACTION"
-    inputData.status.ACTION = false
+    mapping.keyboard.A = "ACTION"
+    input.ACTION = false
 
     fakeKeyDown("A")
 
     update()
 
-    assertThat(inputData.status.ACTION).is(true)
+    assertThat(input.ACTION).is(true)
   })
 
   testCase("should deregister key click", (assertThat) => {
-    inputData.mapping.keyboard.A = "ACTION"
-    inputData.status.ACTION = false
+    mapping.keyboard.A = "ACTION"
+    input.ACTION = false
 
     fakeKeyDown("A")
 
@@ -44,38 +45,38 @@ moduleTest("input", (testCase, beforeEach) => {
 
     update()
 
-    assertThat(inputData.status.ACTION).is(false)
+    assertThat(input.ACTION).is(false)
   })
 
   testCase("should ignore repeated clicks", (assertThat) => {
-    inputData.mapping.keyboard.A = "ACTION"
-    inputData.status.ACTION = false
+    mapping.keyboard.A = "ACTION"
+    input.ACTION = false
 
     fakeKeyDown("A")
     fakeKeyDown("A")
 
     update()
 
-    assertThat(inputData.status.ACTION).is(true)
+    assertThat(input.ACTION).is(true)
   })
 
   testCase("should not toggle the action when two keys trigger the action", (assertThat) => {
-    inputData.mapping.keyboard.A = "ACTION"
-    inputData.mapping.keyboard.B = "ACTION"
-    inputData.status.ACTION = false
+    mapping.keyboard.A = "ACTION"
+    mapping.keyboard.B = "ACTION"
+    input.ACTION = false
 
     fakeKeyDown("A")
     fakeKeyDown("B")
 
     update()
 
-    assertThat(inputData.status.ACTION).is(true)
+    assertThat(input.ACTION).is(true)
   })
 
   testCase("should not release action when still one key triggers the action", (assertThat) => {
-    inputData.mapping.keyboard.A = "ACTION"
-    inputData.mapping.keyboard.B = "ACTION"
-    inputData.status.ACTION = false
+    mapping.keyboard.A = "ACTION"
+    mapping.keyboard.B = "ACTION"
+    input.ACTION = false
 
     fakeKeyDown("A")
     fakeKeyDown("B")
@@ -86,11 +87,11 @@ moduleTest("input", (testCase, beforeEach) => {
     
     update()
 
-    assertThat(inputData.status.ACTION).is(true)
+    assertThat(input.ACTION).is(true)
   })
 
   beforeEach(() => {
-    delete inputData.mapping.keyboard.A
-    delete inputData.mapping.keyboard.B
+    delete mapping.keyboard.A
+    delete mapping.keyboard.B
   })
 })
