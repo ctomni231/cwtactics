@@ -2,8 +2,6 @@ import * as state from "./state.js"
 
 const measures = state.performance
 
-window.perf = state.performance
-
 export function startMeasure (measureId) {
   if (!measures[measureId]) {
     measures[measureId] = {
