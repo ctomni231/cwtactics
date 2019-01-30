@@ -1,8 +1,7 @@
-import { input as inputData } from "./state.js"
+import { mapping } from "./config/input.js"
+import { input as actionStatusMap } from "./state.js"
 
 const actionStatusCounterMap = {}
-const actionStatusMap = inputData.status
-const keyMapping = inputData.mapping.keyboard
 
 function evaluateKeyEvent(keyStatusModifier, event) {
   const eventKey = event.code
@@ -11,7 +10,7 @@ function evaluateKeyEvent(keyStatusModifier, event) {
     return
   }
 
-  const eventAction = keyMapping[eventKey]
+  const eventAction = mapping.keyboard[eventKey]
 
   if (!eventAction) {
     return

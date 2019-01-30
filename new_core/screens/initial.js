@@ -1,5 +1,5 @@
 import * as tween from "../tween.js"
-import * as gamestate from "../state.js"
+import { loop, state, input } from "../state.js"
 import * as jslix from "../jslix.js"
 
 var colorTween = null
@@ -8,16 +8,11 @@ var green = 0
 var blue = 0
 
 export function setup() {
-  // To turn off the fps counter
-  //gamestate.state.fps = false
-
-  // Adds a title image to the title screen
   jslix.addImage("../image/mobile/cwttitle.png")
-
 }
 
 export function update () {
-  const delta = gamestate.loop.delta
+  const delta = loop.delta
 
   if (!colorTween || colorTween.duration.value == colorTween.duration.target) {
     const newRed = parseInt(Math.random() * 256, 10)
@@ -38,13 +33,17 @@ export function update () {
     })
   }
 
-  if (!gamestate.input.status.CANCEL) {
+  if (!input.CANCEL) {
     tween.updateTween(colorTween, delta)
   }
 
   red = parseInt(colorTween.red.value, 10)
   green = parseInt(colorTween.green.value, 10)
   blue = parseInt(colorTween.blue.value, 10)
+
+  if (input.ACTION) {
+    state.next = "INGAME"
+  }
 
 }
 
