@@ -1,8 +1,6 @@
 /* Json File Library
  *
  * A library for handling files with helper function for JSON type files
- *
- * Future: A deletion function if necessary
  */
 
 const json = {
@@ -47,6 +45,10 @@ export function getJson(id) {
 	if(getFile(id) === undefined)
 		return undefined
 	return JSON.parse(getFile(id));
+}
+
+export function removeAllFiles(){
+	json.data = [];
 }
 
 function storeFile(request) {
