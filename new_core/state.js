@@ -1,3 +1,18 @@
+import {
+  MAX_MAP_HEIGHT,
+  MAX_MAP_WIDTH
+} from "./config/constants.js"
+
+function createArray(numberOfEntries, defaultValueSupplier) {
+  const array = []
+
+  for (let i = numberOfEntries - 1; i >= 0; i--) {
+    array.push(defaultValueSupplier(i))
+  }
+
+  return array
+}
+
 export const state = {
   current: null,
   next: null,
@@ -6,23 +21,16 @@ export const state = {
   fps: true
 }
 
-export const input = {
-  status: {},
-  mapping: {
-    keyboard: {
-      "ArrowRight": "RIGHT",
-      "ArrowLeft": "LEFT",
-      "ArrowUp": "UP",
-      "ArrowDown": "DOWN",
-
-      "Space": "ACTION",
-      "ControlLeft": "CANCEL",
-
-      "KeyN": "ACTION",
-      "KeyM": "CANCEL",
-    }
-  }
+export const map = {
+  width: 0,
+  height: 0,
+  tiles: createArray(MAX_MAP_WIDTH, (columnId) =>
+    createArray(MAX_MAP_HEIGHT, (rowId) => ({
+      type: null
+    })))
 }
+
+export const input = {}
 
 export const loop = {
   delta: 0
