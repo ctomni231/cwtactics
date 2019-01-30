@@ -1,17 +1,8 @@
-const measures = {}
+import * as state from "./state.js"
 
-// Merging fps.js with performance.js
-const time = {
+const measures = state.performance
 
-  jfps: 0,
-  tfps: 0,
-  count: 0,
-  frame: 0,
-
-  nowTime: 0,
-  lastTime: 0,
-  diffTime: 0
-}
+window.perf = state.performance
 
 export function startMeasure (measureId) {
   if (!measures[measureId]) {
@@ -19,7 +10,8 @@ export function startMeasure (measureId) {
       numberOfIterations: 0,
       lastDuration: 0,
       averageDuration: 0,
-      lastTimestamp: -1
+      lastTimestamp: -1,
+      fps: 0
     }
   }
 
@@ -45,7 +37,9 @@ export function stopMeasure (measureId) {
   const sumOfAllPreviousDurations = measureData.averageDuration * measureData.numberOfIterations
   const sumOfAllDurations = sumOfAllPreviousDurations + duration
   const newAvarageDuration = parseInt(sumOfAllDurations / (measureData.numberOfIterations + 1), 10)
+  const fps = parseInt(1000 / (duration || 1), 10)
 
+  measureData.fps = fps
   measureData.numberOfIterations++
   measureData.averageDuration = newAvarageDuration
   measureData.lastDuration = duration
@@ -60,31 +54,4 @@ export function getMeasureData (measureId) {
   }
 
   return measureData
-}
-
-// default lx=4, ly=10
-export function display(ctx, lx, ly, bg) {
-  time.nowTime = new Date().getTime();
-  time.diffTime = time.nowTime - time.lastTime;
-  time.tfps = parseInt(1000 / (time.diffTime || 1), 10);
-  time.frame += time.diffTime;
-  time.count++;
-  if(time.frame > 1000){
-     time.frame -= 1000;
-     if(time.frame > 1000){
-       time.frame = 0
-     }
-     time.jfps = time.count;
-     time.count = 0;
-  }
-
-  if(bg == true){
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillRect(0, 0, 100, 10);
-  }
-  ctx.fillStyle = '#000000';
-  ctx.font = 'bold 10px sans-serif';
-  ctx.fillText('FPS: ' + time.jfps + ' [' + time.tfps + ']', lx, ly);
-
-  time.lastTime = time.nowTime;
 }

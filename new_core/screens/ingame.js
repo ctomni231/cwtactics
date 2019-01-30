@@ -1,7 +1,7 @@
+import { TILE_SIDE_LENGTH } from "../config/constants.js"
 import { input, state, map } from "../state.js"
 import * as jslix from "../jslix.js"
 
-const TILE_SIDE_LENGTH = 16
 const animate = {
   step: 0
 }
@@ -11,8 +11,8 @@ export function setup () {
 
   jslix.addImage("../image/cwt_tileset/units/CWT_INFT.png")
 
-  map.width = 5
-  map.height = 5
+  map.width = 10
+  map.height = 10
 }
 
 export function update () {
