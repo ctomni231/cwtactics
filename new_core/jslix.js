@@ -1,8 +1,6 @@
 /*
  * JSlix Image Engine
  *
- * Future: A deletion function if necesssary
- * Cleanup: May have some unused variables
  * Future: Might need to modularize this a bit
  */
 
@@ -31,14 +29,6 @@ const jslix = {
 	imgctx: undefined,
 	imgsData: undefined,
 
-	//animation stuff
-	step: 0,
-
-	intArray: [],
-	mxArray: [],
-	myArray: [],
-	aniArray: [],
-
 	// Manipulation
 	colormap: 0,
 	Xflip: 0,
@@ -52,6 +42,7 @@ const jslix = {
 	cut: [],
 
 	// Manipulation Array
+	intArray: [],
 	mapArray: [],
 	flipXArray: [],
 	flipYArray: [],
@@ -124,9 +115,8 @@ export function addDomImage(name, text){
 	imgStorage.setAttribute("id", "cwt-"+name);
 	// This pretty much makes sure that a valid value is entering for numbers
 	imgStorage.setAttribute("src", isNaN(text)
-			? text : (text >= 0 && text < intArray.length)
-			? getImg(intArray[text]).src : getImg(text).toDataURL());
-	//imgStorage.setAttribute("onerror", "imgError(this)");
+	  ? text : (text >= 0 && text < intArray.length)
+	  ? getImg(intArray[text]).src : getImg(text).toDataURL());
 	imgStorage.setAttribute("style", "display:none");
 	imgStorage.onerror = function(){
 		  imgError(this);
@@ -187,10 +177,8 @@ export function addImage(text){
 	imgStorage.setAttribute("id", "image");
 	// This pretty much makes sure that a valid value is entering for numbers
 	imgStorage.setAttribute("src", isNaN(text)
-									? text : (text >= 0 && text < jslix.intArray.length)
-									? getImg(jslix.intArray[text]).src : getImg(text).toDataURL());
-	//imgStorage.setAttribute("onload", "storeImage()");
-	//imgStorage.setAttribute("onerror", "imgError(this)");
+	  ? text : (text >= 0 && text < jslix.intArray.length)
+		? getImg(jslix.intArray[text]).src : getImg(text).toDataURL());
 	imgStorage.setAttribute("style", "display:none");
 	imgStorage.onload = function(){
 		 storeImage()
@@ -291,7 +279,7 @@ export function storeImage(){
 	}
 	if(tmpBlend.length != 0){
 		for(i = 0; i < tmpBlend.length; i++){
-			data = changeBlendColor(data, tmpBlend[i][0], tmpBlend[i][1]);
+			data = changeBlendColor(data, tmpBlend[i][0], tmpBlend[i][1], tmpBlend[i][2]);
 		}
 	}
 	if(tmpDrop.length != 0){
@@ -389,12 +377,13 @@ export function addColorChange(mapIndex, colorIndex){
 }
 // This function adds a color blend to the image
 // rgba int[0-255] = the color to blend to
-// opacity int[0-100] = How much effect the blend has regular colors (rgb only)
-//         int[100-200] = How much effect the blend has just alpha (a only)
-//         int[200-300] = How much effect the blend has all colors (rgba)
-export function addBlendChange(red, green, blue, alpha, opacity){
+// opacity int[0-100] = How much effect the blend has
+// opt int[0] = RGB only
+//     int[1] = ALPHA only
+//     int[2] = RGBA only
+export function addBlendChange(red, green, blue, alpha, opacity, opt){
 	let blendColors = new Uint8Array([red, green, blue, alpha]);
-	let temp = [blendColors, opacity];
+	let temp = [blendColors, opacity, opt];
 	jslix.blend.push(temp);
 }
 
@@ -525,24 +514,21 @@ export function changeMapColor(data, mapIndex, columnIndex){
 }
 
 // This function is for blending colors within a color map
-export function changeBlendColor(data, color, opacity){
+export function changeBlendColor(data, color, opacity, opt){
 	let temp = new Uint8Array(data);
-	if(opacity >= 0 && opacity < 300){
+	if(opacity >= 0 && opacity <= 100){
 		for (let i = 0; i < temp.length; i+=4){
 			// Skip out alpha recoloring
 			if(temp[i+3] === 0){
 				continue;
-			}else if(opacity > 200){
-				temp[i] += (color[0] - temp[i])*((opacity-200) / 100);
-				temp[i+1] += (color[1] - temp[i+1])*((opacity-200) / 100);
-				temp[i+2] += (color[2] - temp[i+2])*((opacity-200) / 100);
-				temp[i+3] += (color[3] - temp[i+3])*((opacity-200)/ 100);
-			}else if(opacity > 100){
-				temp[i+3] += (color[3] - temp[i+3])*((opacity-100)/ 100);
-			}else{
+			}
+			if(opt != 1){
 				temp[i] += (color[0] - temp[i])*(opacity / 100);
 				temp[i+1] += (color[1] - temp[i+1])*(opacity / 100);
 				temp[i+2] += (color[2] - temp[i+2])*(opacity / 100);
+			}
+			if(opt != 0){
+				temp[i+3] += (color[3] - temp[i+3])*(opacity / 100);
 			}
 		}
 	}
@@ -636,6 +622,32 @@ export function canvasImg(num){
 	jslix.imgctx.putImageData(jslix.imgsData,0,0);
 
 	return jslix.imgcanvas;
+}
+
+// CLears all images from the lineup
+export function removeAllImages(){
+	jslix.intArray = [];
+	jslix.viewArray = [];
+	jslix.viewArray = [];
+	jslix.locxArray = [];
+	jslix.locyArray = [];
+	jslix.imgArray = [];
+	jslix.imgReady = [];
+}
+
+// Clears a single DOM image from the body
+export function removeDOMImage(name){
+	let imgStorage = document.getElementById("cwt-"+name);
+	if(imgStorage != null){
+		document.body.removeChild(imgStorage)
+	}
+}
+
+// CLears the colormap images
+export function removeAllMaps(){
+	jslix.mapArray = [];
+	jslix.mapX = []
+	jslix.mapY = [];
 }
 
 // The getImage stuff - to get rid of the slow time of Internet Explorer

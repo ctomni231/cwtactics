@@ -8,6 +8,7 @@ var green = 0
 var blue = 0
 
 export function setup() {
+  jslix.addColorMap("../image/UnitBaseColors.png")
   jslix.addImage("../image/mobile/cwttitle.png")
 }
 
