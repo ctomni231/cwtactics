@@ -86,7 +86,7 @@ export function render(canvas, ctx) {
     ctx.fillStyle = "black";
     ctx.font = "bold 10px sans-serif";
     
-    ctx.globalAlpha = 0.5
+    ctx.globalAlpha = 0.8
 
     ctx.fillText("DEBUG PAGE - " + debugSheet.name, SHIFT_LEFT, SHIFT_TOP);
 
@@ -108,10 +108,7 @@ export function render(canvas, ctx) {
         const xValue = xKey + COLUMN_WIDTH
         const y = SHIFT_TOP + ROW_HEIGHT + (ROW_HEIGHT * (rowId))
 
-        ctx.fillStyle = "black";
         ctx.fillText(key, xKey, y)
-
-        ctx.fillStyle = "blue";
         ctx.fillText(value, xValue, y)
       }
     }

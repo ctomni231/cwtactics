@@ -37,23 +37,11 @@ export function render (canvas, ctx) {
     for (let rowId = 0; rowId < map.height; rowId++) {
       const tile = column[rowId]
 
-      ctx.fillRect(
-        TILE_SIDE_LENGTH + (columnId * TILE_SIDE_LENGTH),
-        TILE_SIDE_LENGTH + (rowId * TILE_SIDE_LENGTH),
-        TILE_SIDE_LENGTH,
-        TILE_SIDE_LENGTH)
-
       ctx.drawImage(jslix.getImg(1),
         TILE_SIDE_LENGTH + (columnId * TILE_SIDE_LENGTH),
         TILE_SIDE_LENGTH*0 + (rowId * TILE_SIDE_LENGTH),
         TILE_SIDE_LENGTH,
         TILE_SIDE_LENGTH*2)
-
-      ctx.strokeRect(
-        TILE_SIDE_LENGTH + (columnId * TILE_SIDE_LENGTH),
-        TILE_SIDE_LENGTH + (rowId * TILE_SIDE_LENGTH),
-        TILE_SIDE_LENGTH,
-        TILE_SIDE_LENGTH)
 
       ctx.drawImage(jslix.getImg(2),
         animate.step*32, 0, 32, 32,
