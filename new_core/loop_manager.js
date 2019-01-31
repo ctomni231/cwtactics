@@ -1,5 +1,7 @@
-var loopId = -1
-var loopTime = 16
+import * as performance from "./performance.js"
+
+let loopId = -1
+let loopTime = 16
 
 export function setIntervalTime (value) {
   if (value <= 0) {
@@ -21,9 +23,11 @@ export function stopLoop () {
 export function startLoop (loop) {
   var time = new Date().getTime()
    
-  console.log("starting game loop with interval " + loopTime + "ms") 
-   
   const evaluateLoopAndTriggerNext = function () {
+  
+    performance.stopMeasure("gameloop")
+    performance.startMeasure("gameloop")
+    
     const now = new Date().getTime()
     const delta = now - time
     
@@ -33,5 +37,6 @@ export function startLoop (loop) {
     time = now
   }
   
+  performance.startMeasure("gameloop")
   evaluateLoopAndTriggerNext()
 }

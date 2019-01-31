@@ -6,6 +6,13 @@ export const mapping = {
     "ArrowUp": "UP",
     "ArrowDown": "DOWN",
 
+    "KeyD": "RIGHT",
+    "KeyA": "LEFT",
+    "KeyW": "UP",
+    "KeyS": "DOWN",
+    "KeyQ": "DEBUG_A",
+    "KeyE": "DEBUG_B",
+
     "Space": "ACTION",
     "ControlLeft": "CANCEL",
 

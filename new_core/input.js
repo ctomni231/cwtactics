@@ -52,6 +52,8 @@ export function setup () {
 }
 
 export function update() {  
+  updateActionStatus("DEBUG_A", actionStatusCounterMap["DEBUG_A"] > 0)
+  updateActionStatus("DEBUG_B", actionStatusCounterMap["DEBUG_B"] > 0)
   updateActionStatus("DOWN", actionStatusCounterMap["DOWN"] > 0)
   updateActionStatus("UP", actionStatusCounterMap["UP"] > 0)
   updateActionStatus("RIGHT", actionStatusCounterMap["RIGHT"] > 0)
