@@ -1,5 +1,5 @@
 import { TILE_SIDE_LENGTH } from "../config/constants.js"
-import { input, state, map } from "../state.js"
+import { input, state, map, cursor } from "../state.js"
 import * as jslix from "../jslix.js"
 
 const animate = {
@@ -26,9 +26,27 @@ export function update () {
     state.next = "INITIAL"
   }
 
+  if (input.LEFT ) cursor.map.x = Math.max(cursor.map.x - 1, 0)
+  if (input.RIGHT) cursor.map.x = Math.min(cursor.map.x + 1, map.width - 1)
+  if (input.UP   ) cursor.map.y = Math.max(cursor.map.y - 1, 0)
+  if (input.DOWN ) cursor.map.y = Math.min(cursor.map.y + 1, map.height - 1) 
+
   animate.step++
   if( animate.step == 3)
     animate.step = 0
+}
+
+function renderCursor(ctx) {
+  ctx.strokeStyle = "black"
+  ctx.strokeRect(
+    TILE_SIDE_LENGTH * cursor.map.x, 
+    TILE_SIDE_LENGTH * cursor.map.y, 
+    TILE_SIDE_LENGTH, TILE_SIDE_LENGTH)
+}
+
+function renderTestUnits(ctx) {
+  ctx.drawImage(jslix.getImg(2), animate.step*32, 0, 32, 32, 100, 100, 32, 32)
+  ctx.drawImage(jslix.getImg(3), animate.step*32, 0, 32, 32, 50, 50, 32, 32)
 }
 
 export function render (canvas, ctx) {
@@ -44,18 +62,12 @@ export function render (canvas, ctx) {
       const tile = column[rowId]
 
       ctx.drawImage(jslix.getImg(1),
-        TILE_SIDE_LENGTH + (columnId * TILE_SIDE_LENGTH),
-        TILE_SIDE_LENGTH*0 + (rowId * TILE_SIDE_LENGTH),
-        TILE_SIDE_LENGTH,
-        TILE_SIDE_LENGTH*2)
-
-      ctx.drawImage(jslix.getImg(2),
-        animate.step*32, 0, 32, 32,
-        100, 100, 32, 32)
-
-      ctx.drawImage(jslix.getImg(3),
-        animate.step*32, 0, 32, 32,
-        50, 50, 32, 32)
+        (columnId * TILE_SIDE_LENGTH),
+        -TILE_SIDE_LENGTH + (rowId * TILE_SIDE_LENGTH),
+        TILE_SIDE_LENGTH, TILE_SIDE_LENGTH*2)
     }
   }
+
+  renderTestUnits(ctx)
+  renderCursor(ctx)
 }
