@@ -9,7 +9,13 @@ const animate = {
 export function setup () {
   jslix.addImage("../image/cwt_tileset/terrain(C)/CWT_PLIN.png")
 
+  jslix.addColorMap("../image/UnitBaseColors.png")
+  jslix.addFlipX()
+  jslix.addColorChange(0, 5)
   jslix.addImage("../image/cwt_tileset/units/CWT_INFT.png")
+
+  jslix.addColorChange(0, 8)
+  jslix.addImage("../image/cwt_tileset/units/CWT_MECH.png")
 
   map.width = 10
   map.height = 10
@@ -47,6 +53,9 @@ export function render (canvas, ctx) {
         animate.step*32, 0, 32, 32,
         100, 100, 32, 32)
 
+      ctx.drawImage(jslix.getImg(3),
+        animate.step*32, 0, 32, 32,
+        50, 50, 32, 32)
     }
   }
 }

@@ -1,6 +1,7 @@
 import * as tween from "../tween.js"
 import { loop, state, input } from "../state.js"
 import * as jslix from "../jslix.js"
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../config/constants.js"
 
 var colorTween = null
 var red = 0
@@ -8,7 +9,6 @@ var green = 0
 var blue = 0
 
 export function setup() {
-  jslix.addColorMap("../image/UnitBaseColors.png")
   jslix.addImage("../image/mobile/cwttitle.png")
 }
 
@@ -57,7 +57,7 @@ export function render (canvas, ctx) {
   ctx.fillRect(0,0,canvas.width,canvas.height)
 
   // This draws the image onto the screen
-	ctx.drawImage(jslix.getImg(0), 90, 120, 200, 20)
+	ctx.drawImage(jslix.getImg(0), SCREEN_WIDTH - 210, SCREEN_HEIGHT - 30, 200, 20)
   //ctx.drawImage(jslix.quickImage("../image/mobile/cwttitle.png"), 10, 120, 200, 20)
 
 }

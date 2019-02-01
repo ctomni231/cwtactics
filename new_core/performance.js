@@ -9,7 +9,11 @@ export function startMeasure (measureId) {
       lastDuration: 0,
       averageDuration: 0,
       lastTimestamp: -1,
-      fps: 0
+      count: 0,
+      frame: 0,
+
+      tfps: 0,
+      jfps: 0
     }
   }
 
@@ -35,9 +39,17 @@ export function stopMeasure (measureId) {
   const sumOfAllPreviousDurations = measureData.averageDuration * measureData.numberOfIterations
   const sumOfAllDurations = sumOfAllPreviousDurations + duration
   const newAvarageDuration = parseInt(sumOfAllDurations / (measureData.numberOfIterations + 1), 10)
-  const fps = parseInt(1000 / (duration || 1), 10)
+  const tfps = parseInt(1000 / (duration || 1), 10)
 
-  measureData.fps = fps
+  measureData.frame += duration
+  measureData.count++
+  while(measureData.frame > 1000){
+    measureData.frame -= 1000
+    measureData.jfps = measureData.count;
+    measureData.count = 0;
+  }
+
+  measureData.tfps = tfps
   measureData.numberOfIterations++
   measureData.averageDuration = newAvarageDuration
   measureData.lastDuration = duration
