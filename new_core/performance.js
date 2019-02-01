@@ -42,11 +42,10 @@ export function stopMeasure (measureId) {
   const tfps = parseInt(1000 / (duration || 1), 10)
 
   measureData.frame += duration
-  measureData.count++
   while(measureData.frame > 1000){
     measureData.frame -= 1000
-    measureData.jfps = measureData.count;
-    measureData.count = 0;
+    measureData.jfps = measureData.numberOfIterations - measureData.count;
+    measureData.count = measureData.numberOfIterations;
   }
 
   measureData.tfps = tfps

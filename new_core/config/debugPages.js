@@ -2,8 +2,8 @@ export const MAIN_INFO = {
   name: "Performance",
   data: {
     row1: {
-      col1: [ "TFPS", "performance.gameloop.tfps" ],
-      col2: [ "JFPS", "performance.gameloop.jfps"]
+      col1: [ "FPS", "performance.gameloop.jfps" ],
+      col2: [ "FPT", "performance.gameloop.tfps"]
     },
     row2: {
       col1: [ "Loop", "" ],
