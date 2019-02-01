@@ -137,15 +137,6 @@ export function getDomImage(name){
 // This function adds an image from text.
 export function addImage(text){
 
-	//This will combine both queue and addImage.
-	//This function has to be first
-	if(jslix.busy == 1){
-		jslix.imgQueue.push(text);
-		return;
-	}
-
-	jslix.busy = 1;
-
 	//Add manipulations
 	jslix.mapArray.push(jslix.colormap);
 	jslix.colormap = 0;
@@ -167,6 +158,15 @@ export function addImage(text){
 	jslix.drop = [];
 	jslix.cutArray.push(jslix.cut);
 	jslix.cut = [];
+
+	//This will combine both queue and addImage.
+	//This function has to be here to keep data integrity
+	if(jslix.busy == 1){
+		jslix.imgQueue.push(text);
+		return;
+	}
+
+	jslix.busy = 1;
 
 	//This grabs an image and temporarily stores it in memory
 	let imgStorage = document.getElementById("image");
@@ -191,8 +191,7 @@ export function addImage(text){
 // This function is literally a callback function to actually store the image
 export function storeImage(){
 
-	let i, j;
-	let imgStorage = document.getElementById("image");
+	let i, j, imgStorage = document.getElementById("image");
 	if(imgStorage == null){
 		imgStorage = document.createElement("img");
 		document.body.appendChild(imgStorage);
