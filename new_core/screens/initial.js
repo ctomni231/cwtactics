@@ -35,7 +35,7 @@ export function update () {
   }
 
   if (!input.CANCEL) {
-    tween.updateTween(colorTween, delta)
+    tween.updateTween(colorTween, false, delta)
   }
 
   red = parseInt(colorTween.red.value, 10)

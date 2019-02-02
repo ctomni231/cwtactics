@@ -20,3 +20,11 @@ export function zipLists(listA, listB, combiner) {
 
   return array
 }
+
+export function iterateMatrix(width, height, handler) {
+  for (let indexWidth = 0; indexWidth < width; indexWidth++) {
+    for (let indexHeight = 0; indexHeight < height; indexHeight++) {
+      handler(indexWidth, indexHeight)
+    }
+  }
+}

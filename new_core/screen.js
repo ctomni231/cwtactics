@@ -1,8 +1,13 @@
+import { 
+  SCREEN_WIDTH, 
+  SCREEN_HEIGHT,
+  SCREEN_SCALE_FACTOR
+} from "./config/constants.js"
+
 import * as INITIAL from "./screens/initial.js"
 import * as INGAME from "./screens/ingame.js"
 
 import * as performance from "./performance.js"
-import { SCREEN_WIDTH, SCREEN_HEIGHT } from "./config/constants.js"
 import { state } from "./state.js"
 import { update as updateDebug, render as renderDebug } from "./debug.js"
 
@@ -12,10 +17,10 @@ const ctx = canvas.getContext("2d")
 const SCREENS = { INITIAL, INGAME }
 
 function setupCanvas () {
-  canvas.style.width = SCREEN_WIDTH
-  canvas.style.height = SCREEN_HEIGHT
   canvas.width = SCREEN_WIDTH
   canvas.height = SCREEN_HEIGHT
+  canvas.style.width = `${SCREEN_WIDTH * SCREEN_SCALE_FACTOR}px` 
+  canvas.style.height = `${SCREEN_HEIGHT * SCREEN_SCALE_FACTOR}px` 
 }
 
 function setupScreens () {
