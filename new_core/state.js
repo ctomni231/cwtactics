@@ -11,6 +11,11 @@ export const state = {
   fps: true
 }
 
+export const cursor = { 
+  map:    { x: 0, y: 0 },
+  screen: { x: 0, y: 0 }
+}
+
 export const map = {
   width: 0,
   height: 0,
