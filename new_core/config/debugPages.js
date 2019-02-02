@@ -2,21 +2,29 @@ export const MAIN_INFO = {
   name: "Performance",
   data: {
     row1: {
-      col1: [ "FPS", "performance.gameloop.jfps" ],
-      col2: [ "FPT", "performance.gameloop.tfps"]
+      col1: [ "FPS", "performance.gameloop.fps" ]
     },
-    row2: {
-      col1: [ "Loop", "" ],
+    row3: {
+      col1: [ "-- Tick --", "" ],
+    },
+    row4: {
+      col1: [ "Unstable", "performance.gameloop.unstable" ],
       col2: [ "Avg Time", "performance.gameloop.averageDuration" ],
       col3: [ "Last Time", "performance.gameloop.lastDuration" ]
     },
-    row3: {
-      col1: [ "Update", "" ],
+    row6: {
+      col1: [ "-- Update --", "" ],
+    },
+    row7: {
+      col1: [ "Unstable", "performance.screen_update.unstable" ],
       col2: [ "Avg Time", "performance.screen_update.averageDuration" ],
       col3: [ "Last Time", "performance.screen_update.lastDuration" ]
     },
-    row4: {
-      col1: [ "Render", "" ],
+    row9: {
+      col1: [ "-- Render --", "" ],
+    },
+    row10: {
+      col1: [ "Unstable", "performance.screen_render.unstable" ],
       col2: [ "Avg Time", "performance.screen_render.averageDuration" ],
       col3: [ "Last Time", "performance.screen_render.lastDuration" ]
     }
