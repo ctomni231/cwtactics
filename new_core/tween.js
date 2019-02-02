@@ -24,6 +24,7 @@ export function prepareTween (tween, startData) {
     property.diff = Math.abs(startData[key] - property.target)
     property.changePerMs = property.diff / tween.duration.target
     property.value = startData[key]
+    property.source = startData[key]
     
     if (property.value > property.target) {
       property.changePerMs = -property.changePerMs
@@ -35,7 +36,7 @@ export function prepareTween (tween, startData) {
   tween.duration.value = 0
 }
 
-export function updateTween (tween, delta) {
+export function updateTween (tween, looped, delta) {
   var keys = Object.keys(tween)
   
   for(var i = 0; i < keys.length; i++) {
@@ -47,6 +48,11 @@ export function updateTween (tween, delta) {
     if ((property.changePerMs > 0 && property.value > property.target) || 
         (property.changePerMs < 0 && property.value < property.target)) {
       property.value = property.target
+    }
+
+
+    if (looped && property.value === property.target) {
+      property.value = property.source
     }
   }
 }

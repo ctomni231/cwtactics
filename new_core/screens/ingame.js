@@ -1,9 +1,36 @@
 import { TILE_SIDE_LENGTH } from "../config/constants.js"
-import { input, state, map, cursor } from "../state.js"
+import { input, state, map, units, cursor, loop } from "../state.js"
+import { iterateMatrix } from "../utils.js"
 import * as jslix from "../jslix.js"
+import { createTween, prepareTween, updateTween } from "../tween.js"
 
-const animate = {
-  step: 0
+const animationData = createTween({
+  step: 3,
+  duration: 500
+})
+
+const tempIdMap = {
+  "CWT_PLIN": 1,
+  "CWT_INFT": 2, 
+  "CWT_MECH": 3
+}
+
+function setupTestMap () {
+  map.width = 25
+  map.height = 20
+
+  iterateMatrix(map.width, map.height, (x, y) => {
+    map.tiles[x][y].typeId = "CWT_PLIN"
+  })
+
+  units[0].ownerId = 0
+  units[0].typeId = "CWT_INFT"
+
+  units[1].ownerId = 1
+  units[1].typeId = "CWT_MECH"
+
+  map.tiles[2][2].unitId = 0
+  map.tiles[5][5].unitId = 1
 }
 
 export function setup () {
@@ -17,8 +44,9 @@ export function setup () {
   jslix.addColorChange(0, 8)
   jslix.addImage("../image/cwt_tileset/units/CWT_MECH.png")
 
-  map.width = 10
-  map.height = 10
+  prepareTween(animationData, { step: 0 })
+
+  setupTestMap()
 }
 
 export function update () {
@@ -31,9 +59,7 @@ export function update () {
   if (input.UP   ) cursor.map.y = Math.max(cursor.map.y - 1, 0)
   if (input.DOWN ) cursor.map.y = Math.min(cursor.map.y + 1, map.height - 1) 
 
-  animate.step++
-  if( animate.step == 3)
-    animate.step = 0
+  updateTween(animationData, true, loop.delta)
 }
 
 function renderCursor(ctx) {
@@ -44,9 +70,47 @@ function renderCursor(ctx) {
     TILE_SIDE_LENGTH, TILE_SIDE_LENGTH)
 }
 
-function renderTestUnits(ctx) {
-  ctx.drawImage(jslix.getImg(2), animate.step*32, 0, 32, 32, 100, 100, 32, 32)
-  ctx.drawImage(jslix.getImg(3), animate.step*32, 0, 32, 32, 50, 50, 32, 32)
+function renderTiles (ctx) {
+ for (let columnId = 0; columnId < map.width; columnId++) {
+    const column = map.tiles[columnId]
+
+    for (let rowId = 0; rowId < map.height; rowId++) {
+      const tile = column[rowId]
+      const screenX = columnId * TILE_SIDE_LENGTH
+      const screenY = -TILE_SIDE_LENGTH + (rowId * TILE_SIDE_LENGTH)
+      const tileImageId = tempIdMap[tile.typeId]
+
+      ctx.drawImage(
+        jslix.getImg(tileImageId),
+        screenX, screenY,
+        TILE_SIDE_LENGTH, TILE_SIDE_LENGTH * 2)
+    }
+  }
+}
+
+function renderUnits (ctx) {
+  const unitAnimationStep = parseInt(animationData.step.value, 10)
+
+  for (let columnId = 0; columnId < map.width; columnId++) {
+    const column = map.tiles[columnId]
+
+    for (let rowId = 0; rowId < map.height; rowId++) {
+      const tile = column[rowId]
+      const screenX = columnId * TILE_SIDE_LENGTH
+      const screenY = -TILE_SIDE_LENGTH + (rowId * TILE_SIDE_LENGTH)
+
+      if (tile.unitId >= 0) {
+        const unitImageId = tempIdMap[units[tile.unitId].typeId]
+        
+        ctx.drawImage(
+          jslix.getImg(unitImageId),
+          unitAnimationStep * TILE_SIDE_LENGTH * 2, 0,
+          TILE_SIDE_LENGTH * 2, TILE_SIDE_LENGTH * 2,
+          screenX, screenY,
+          TILE_SIDE_LENGTH * 2, TILE_SIDE_LENGTH * 2)
+      }
+    }
+  }
 }
 
 export function render (canvas, ctx) {
@@ -55,19 +119,7 @@ export function render (canvas, ctx) {
   ctx.fillStyle = "lightgrey"
   ctx.strokeStyle = "black"
 
-  for (let columnId = 0; columnId < map.width; columnId++) {
-    const column = map.tiles[columnId]
-
-    for (let rowId = 0; rowId < map.height; rowId++) {
-      const tile = column[rowId]
-
-      ctx.drawImage(jslix.getImg(1),
-        (columnId * TILE_SIDE_LENGTH),
-        -TILE_SIDE_LENGTH + (rowId * TILE_SIDE_LENGTH),
-        TILE_SIDE_LENGTH, TILE_SIDE_LENGTH*2)
-    }
-  }
-
-  renderTestUnits(ctx)
+  renderTiles(ctx)
+  renderUnits(ctx)
   renderCursor(ctx)
 }
