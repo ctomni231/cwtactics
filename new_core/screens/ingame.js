@@ -7,7 +7,7 @@ import { createTween, prepareTween, updateTween } from "../tween.js"
 
 const animationData = createTween({
   step: 3,
-  duration: 500
+  duration: 750
 })
 
 const tempIdMap = {
