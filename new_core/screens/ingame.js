@@ -2,6 +2,7 @@ import { TILE_SIDE_LENGTH } from "../config/constants.js"
 import { input, state, map, units, cursor, loop } from "../state.js"
 import { iterateMatrix } from "../utils.js"
 import * as jslix from "../jslix.js"
+import * as cwtimg from "../cwtimg.js"
 import { createTween, prepareTween, updateTween } from "../tween.js"
 
 const animationData = createTween({
@@ -11,7 +12,7 @@ const animationData = createTween({
 
 const tempIdMap = {
   "CWT_PLIN": 1,
-  "CWT_INFT": 2, 
+  "CWT_INFT": 2,
   "CWT_MECH": 3
 }
 
@@ -36,13 +37,9 @@ function setupTestMap () {
 export function setup () {
   jslix.addImage("../image/cwt_tileset/terrain(C)/CWT_PLIN.png")
 
-  jslix.addColorMap("../image/UnitBaseColors.png")
-  jslix.addFlipX()
-  jslix.addColorChange(0, 5)
-  jslix.addImage("../image/cwt_tileset/units/CWT_INFT.png")
-
-  jslix.addColorChange(0, 8)
-  jslix.addImage("../image/cwt_tileset/units/CWT_MECH.png")
+  cwtimg.addColorMap("../image/UnitBaseColors.png")
+  cwtimg.addCWTImage("../image/cwt_tileset/units/CWT_INFT.png", 0, 3, 1)
+  cwtimg.addCWTImage("../image/cwt_tileset/units/CWT_MECH.png", 0, 8, 0)
 
   prepareTween(animationData, { step: 0 })
 
@@ -57,7 +54,7 @@ export function update () {
   if (input.LEFT ) cursor.map.x = Math.max(cursor.map.x - 1, 0)
   if (input.RIGHT) cursor.map.x = Math.min(cursor.map.x + 1, map.width - 1)
   if (input.UP   ) cursor.map.y = Math.max(cursor.map.y - 1, 0)
-  if (input.DOWN ) cursor.map.y = Math.min(cursor.map.y + 1, map.height - 1) 
+  if (input.DOWN ) cursor.map.y = Math.min(cursor.map.y + 1, map.height - 1)
 
   updateTween(animationData, true, loop.delta)
 }
@@ -65,8 +62,8 @@ export function update () {
 function renderCursor(ctx) {
   ctx.strokeStyle = "black"
   ctx.strokeRect(
-    TILE_SIDE_LENGTH * cursor.map.x, 
-    TILE_SIDE_LENGTH * cursor.map.y, 
+    TILE_SIDE_LENGTH * cursor.map.x,
+    TILE_SIDE_LENGTH * cursor.map.y,
     TILE_SIDE_LENGTH, TILE_SIDE_LENGTH)
 }
 
@@ -101,12 +98,12 @@ function renderUnits (ctx) {
 
       if (tile.unitId >= 0) {
         const unitImageId = tempIdMap[units[tile.unitId].typeId]
-        
+
         ctx.drawImage(
           jslix.getImg(unitImageId),
           unitAnimationStep * TILE_SIDE_LENGTH * 2, 0,
           TILE_SIDE_LENGTH * 2, TILE_SIDE_LENGTH * 2,
-          screenX, screenY,
+          screenX-(TILE_SIDE_LENGTH/2), screenY+(TILE_SIDE_LENGTH/2),
           TILE_SIDE_LENGTH * 2, TILE_SIDE_LENGTH * 2)
       }
     }

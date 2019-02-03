@@ -5,7 +5,7 @@ export const MAIN_INFO = {
       col1: [ "FPS", "performance.gameloop.fps" ]
     },
     row3: {
-      col1: [ "-- Tick --", "" ],
+      col1: [ "-- Tick (ms) --", "" ],
     },
     row4: {
       col1: [ "Unstable", "performance.gameloop.unstable" ],
@@ -13,7 +13,7 @@ export const MAIN_INFO = {
       col3: [ "current", "performance.gameloop.lastDuration" ]
     },
     row6: {
-      col1: [ "-- Update --", "" ],
+      col1: [ "-- Update (ms) --", "" ],
     },
     row7: {
       col1: [ "Unstable", "performance.screen_update.unstable" ],
@@ -21,7 +21,7 @@ export const MAIN_INFO = {
       col3: [ "current", "performance.screen_update.lastDuration" ]
     },
     row9: {
-      col1: [ "-- Render --", "" ],
+      col1: [ "-- Render (ms) --", "" ],
     },
     row10: {
       col1: [ "Unstable", "performance.screen_render.unstable" ],
