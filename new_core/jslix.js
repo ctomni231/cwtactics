@@ -35,11 +35,13 @@ const jslix = {
 	Yflip: 0,
 	rotate: 0,
 	invert: 0,
+	refText: "",
 	imgColor: [],
 	blend: [],
 	shift: [],
 	drop: [],
 	cut: [],
+	ref: [],
 
 	// Manipulation Array
 	intArray: [],
@@ -52,19 +54,18 @@ const jslix = {
 	shiftArray: [],
 	dropArray: [],
 	invertArray: [],
-	cutArray: []
+	cutArray: [],
+	refArray: []
 
 }
+
 // -----------------------------------------
 // This starts ImageLibrary
 // -----------------------------------------
 
-// The fastest way to get an image onscreen for testing
-export function quickImage(text){
-
-	// For quick testing
-	return addDomImage('quick', text)
-}
+// -----------------------------------------
+// Adder functions
+// -----------------------------------------
 
 // Adds a Color map (an array of recolors using UnitBaseColors.png example) for recoloring
 export function addColorMap(text){
@@ -104,36 +105,6 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 	addImage(imgcanvas.toDataURL());
 }
 
-// This adds a basic image to the DOM with the name specified
-// Note: this is not part of the manipulation pipeline
-export function addDomImage(name, text){
-	let imgStorage = document.getElementById("cwt-"+name);
-	if(imgStorage == null){
-		imgStorage = document.createElement("img");
-		document.body.appendChild(imgStorage);
-	}
-	imgStorage.setAttribute("id", "cwt-"+name);
-	// This pretty much makes sure that a valid value is entering for numbers
-	imgStorage.setAttribute("src", isNaN(text)
-	  ? text : (text >= 0 && text < intArray.length)
-	  ? getImg(intArray[text]).src : getImg(text).toDataURL());
-	imgStorage.setAttribute("style", "display:none");
-	imgStorage.onerror = function(){
-		  imgError(this);
-	};
-
-	return imgStorage
-}
-
-// This function will draw a slide image stored in the DOM
-export function getDomImage(name){
-	let imgStorage = document.getElementById("cwt-"+name);
-	if(imgStorage == null){
-		return canvasImg(-1).toDataURL();
-	}
-	return (imgStorage.src == null) ? canvasImg(-1).toDataURL() : imgStorage;
-}
-
 // This function adds an image from text.
 export function addImage(text){
 
@@ -158,6 +129,8 @@ export function addImage(text){
 	jslix.drop = [];
 	jslix.cutArray.push(jslix.cut);
 	jslix.cut = [];
+	jslix.ref.push((jslix.refText == "") ? text : jslix.refText);
+	jslix.refText = "";
 
 	//This will combine both queue and addImage.
 	//This function has to be here to keep data integrity
@@ -176,7 +149,7 @@ export function addImage(text){
 	}
 	imgStorage.setAttribute("id", "image");
 	// This pretty much makes sure that a valid value is entering for numbers
-	imgStorage.setAttribute("src", isNaN(text)
+	imgStorage.setAttribute("src", (typeof text !== "number")
 	  ? text : (text >= 0 && text < jslix.intArray.length)
 		? getImg(jslix.intArray[text]).src : getImg(text).toDataURL());
 	imgStorage.setAttribute("style", "display:none");
@@ -188,8 +161,185 @@ export function addImage(text){
 	};
 }
 
+// This adds a basic image to the DOM with the name specified
+// Note: this is not part of the manipulation pipeline
+export function addDomImage(name, text){
+	let imgStorage = document.getElementById("cwt-"+name);
+	if(imgStorage == null){
+		imgStorage = document.createElement("img");
+		document.body.appendChild(imgStorage);
+	}
+	imgStorage.setAttribute("id", "cwt-"+name);
+	// This pretty much makes sure that a valid value is entering for numbers
+	imgStorage.setAttribute("src", (typeof text !== "number")
+	  ? text : (text >= 0 && text < intArray.length)
+	  ? getImg(intArray[text]).src : getImg(text).toDataURL());
+	imgStorage.setAttribute("style", "display:none");
+	imgStorage.onerror = function(){
+		  imgError(this);
+	};
+
+	return imgStorage
+}
+
+// This adds a reference to a image (doesn't need to be created)
+export function addReference(name, imgIndex){
+	let temp = [name, imgIndex];
+	jslix.refArray.push(temp);
+}
+
+// Add Attributes
+// -----------------------------------
+
+// This function makes an image flip by its X-axis
+export function addFlipX(){
+	jslix.Xflip = 1;
+}
+// This function makes an image flip by its Y-axis
+export function addFlipY(){
+	jslix.Yflip = 1;
+}
+// This function rotates an image 90 degrees
+export function addRotate90(){
+	jslix.rotate = 1;
+}
+// This function inverts the colors of an image
+export function addInvert(){
+	jslix.invert = 1;
+}
+// Adds a single cut to an image (will overwrite previous)
+// Note: Cut function ignores rotations, cuts exactly where you ask
+export function addCut(locx, locy, sizex, sizey){
+	jslix.cut = [locx, locy, sizex, sizey];
+}
+// This changes the image reference  to the name specified (before addImage)
+export function changeReference(name){
+	jslix.refText = ((typeof name === 'string') ? name : "");
+}
+// This function adds a color change to the image
+export function addColorChange(mapIndex, colorIndex){
+	let temp = [mapIndex, colorIndex];
+	jslix.imgColor.push(temp);
+}
+// This function adds a color blend to the image
+// rgba int[0-255] = the color to blend to
+// opacity int[0-100] = How much effect the blend has
+// opt int[0] = RGB only
+//     int[1] = ALPHA only
+//     int[2] = RGBA only
+export function addBlendChange(red, green, blue, alpha, opacity, opt){
+	let blendColors = new Uint8Array([red, green, blue, alpha]);
+	let temp = [blendColors, opacity, opt];
+	jslix.blend.push(temp);
+}
+
+// This gets the pixels to shift along the x-axis
+// posx - How many pixels it shifts by
+// posy - The position of the first shift
+// repeat - positive numbers will repeat a shift every # row (where # is repeat)
+//          zero and negative numbers will create a shift once at that location
+export function addPixelXShift(posx, posy, repeat){
+	let temp = [0, posx, posy, repeat];
+	jslix.shift.push(temp);
+}
+
+// This gets the pixels to shift along the x-axis
+// posx - How many pixels it shifts by
+// posy - The position of the first shift
+// repeat - positive numbers will repeat a shift every # row (where # is repeat)
+//          zero and negative numbers will create a shift once at that location
+export function addPixelYShift(posx, posy, repeat){
+	let temp = [1, posx, posy, repeat];
+	jslix.shift.push(temp);
+}
+
+// This adds a image drop to the current image
+export function addPixelDrop(imgIndex, posx, posy, opacity){
+	let temp = [imgIndex, posx, posy, opacity];
+	jslix.drop.push(temp);
+}
+
+// -----------------------------------------
+// Getter functions
+// -----------------------------------------
+
+// The fastest way to get an image onscreen for testing
+export function getQuickImage(text){
+
+	// For quick testing
+	return addDomImage('quick', text)
+}
+
+// This function will draw a slide image stored in the DOM
+export function getDomImage(name){
+	let imgStorage = document.getElementById("cwt-"+name);
+	if(imgStorage == null){
+		return canvasImg(-1).toDataURL();
+	}
+	return (imgStorage.src == null) ? canvasImg(-1).toDataURL() : imgStorage;
+}
+
+// The getImage stuff - to get rid of the slow time of Internet Explorer
+export function getImg(num){
+	if(jslix.imgReady[num] != num){
+		addLoadEvent(loadImage(num));
+		return canvasImg(num);
+	}
+
+	return jslix.imgArray[num];
+}
+
+// This is the most flexible getImg functions
+export function getRefImg(ind){
+	return getImg((typeof ind === "string") ? getRef(ind) : ind)
+}
+
+// Gives you an index of a referenced image
+export function getRef(name){
+	for(let i = 0; i < jslix.refArray.length; i++){
+		if(jslix.refArray[i][0] == name)
+			return jslix.refArray[i][1];
+	}
+	return -1
+}
+
+// -------------------------------------------
+// Remove functions
+// -------------------------------------------
+
+// CLears all images from the lineup
+export function removeAllImages(){
+	jslix.intArray = [];
+	jslix.viewArray = [];
+	jslix.viewArray = [];
+	jslix.locxArray = [];
+	jslix.locyArray = [];
+	jslix.imgArray = [];
+	jslix.imgReady = [];
+	jslix.refArray = [];
+}
+
+// Clears a single DOM image from the body
+export function removeDOMImage(name){
+	let imgStorage = document.getElementById("cwt-"+name);
+	if(imgStorage != null){
+		document.body.removeChild(imgStorage)
+	}
+}
+
+// CLears the colormap images
+export function removeAllMaps(){
+	jslix.mapArray = [];
+	jslix.mapX = []
+	jslix.mapY = [];
+}
+
+// -----------------------------------------
+// Private functions
+// -----------------------------------------
+
 // This function is literally a callback function to actually store the image
-export function storeImage(){
+function storeImage(){
 
 	let i, j, imgStorage = document.getElementById("image");
 	if(imgStorage == null){
@@ -265,6 +415,7 @@ export function storeImage(){
 	let tmpBlend = jslix.blendArray.shift();
 	let tmpShift = jslix.shiftArray.shift();
 	let tmpDrop = jslix.dropArray.shift();
+	let tmpName = jslix.ref.shift();
 
 	//Do a bunch of manipulation checks before drawing out the image
 	if(jslix.flipXArray.shift() == 1)
@@ -311,6 +462,8 @@ export function storeImage(){
 		return;
 	}
 
+	addReference(tmpName, jslix.intArray.length);
+
 	for(i = 0; i < jslix.viewArray.length; i++){
 		// This check makes sure all images are unique
 		if(imgWidth != jslix.locxArray[i] || imgHeight != jslix.locyArray[i])
@@ -341,79 +494,15 @@ export function storeImage(){
 }
 
 // A wrapper function for drawing the next image since the calls are getting numerous
-export function queueNext(){
+function queueNext(){
 	jslix.busy = 0;
 	if(jslix.imgQueue.length > 0){
 		addImage(jslix.imgQueue.shift());
 	}
 }
 
-// This function makes an image flip by its X-axis
-export function addFlipX(){
-	jslix.Xflip = 1;
-}
-// This function makes an image flip by its Y-axis
-export function addFlipY(){
-	jslix.Yflip = 1;
-}
-// This function rotates an image 90 degrees
-export function addRotate90(){
-	jslix.rotate = 1;
-}
-// This function inverts the colors of an image
-export function addInvert(){
-	jslix.invert = 1;
-}
-// Adds a single cut to an image (will overwrite previous)
-// Note: Cut function ignores rotations, cuts exactly where you ask
-export function addCut(locx, locy, sizex, sizey){
-	jslix.cut = [locx, locy, sizex, sizey];
-}
-// This function adds a color change to the image
-export function addColorChange(mapIndex, colorIndex){
-	let temp = [mapIndex, colorIndex];
-	jslix.imgColor.push(temp);
-}
-// This function adds a color blend to the image
-// rgba int[0-255] = the color to blend to
-// opacity int[0-100] = How much effect the blend has
-// opt int[0] = RGB only
-//     int[1] = ALPHA only
-//     int[2] = RGBA only
-export function addBlendChange(red, green, blue, alpha, opacity, opt){
-	let blendColors = new Uint8Array([red, green, blue, alpha]);
-	let temp = [blendColors, opacity, opt];
-	jslix.blend.push(temp);
-}
-
-// This gets the pixels to shift along the x-axis
-// posx - How many pixels it shifts by
-// posy - The position of the first shift
-// repeat - positive numbers will repeat a shift every # row (where # is repeat)
-//          zero and negative numbers will create a shift once at that location
-export function addPixelXShift(posx, posy, repeat){
-	let temp = [0, posx, posy, repeat];
-	jslix.shift.push(temp);
-}
-
-// This gets the pixels to shift along the x-axis
-// posx - How many pixels it shifts by
-// posy - The position of the first shift
-// repeat - positive numbers will repeat a shift every # row (where # is repeat)
-//          zero and negative numbers will create a shift once at that location
-export function addPixelYShift(posx, posy, repeat){
-	let temp = [1, posx, posy, repeat];
-	jslix.shift.push(temp);
-}
-
-// This adds a image drop to the current image
-export function addPixelDrop(imgIndex, posx, posy, opacity){
-	let temp = [imgIndex, posx, posy, opacity];
-	jslix.drop.push(temp);
-}
-
 // This inverts all the colors of an image
-export function invertColors(data){
+function invertColors(data){
 	let temp = new Uint8Array(data);
 	for (let i = 0; i < temp.length; i+=4){
 		if(temp[i+3] !== 0){
@@ -426,7 +515,7 @@ export function invertColors(data){
 }
 
 // Works with canvas Image to flip image horizontally
-export function flipX(data, sx, sy){
+function flipX(data, sx, sy){
   let temp = new Uint8Array(data);
   for(let i = 0; i < sx; i++){
     for(let j = 0; j < sy; j++){
@@ -441,7 +530,7 @@ export function flipX(data, sx, sy){
 
 // Used to shift multiple pixels in a certain direction dependant on row.
 // rp = repeater
-export function slitIntY(data, sx, sy, px, py, rp){
+function slitIntY(data, sx, sy, px, py, rp){
   let temp = new Uint8Array(data);
   for(let i = 0; i < sx; i++){
     if(rp < 1 && i == px || rp > 0 && i >= px && (px-i)%rp == 0){
@@ -457,7 +546,7 @@ export function slitIntY(data, sx, sy, px, py, rp){
 }
 
 // Works with canvas Image to flip image vertically
-export function flipY(data, sx, sy){
+function flipY(data, sx, sy){
   let temp = new Uint8Array(data);
   for(let i = 0; i < sx; i++){
     for(let j = 0; j < sy; j++){
@@ -472,7 +561,7 @@ export function flipY(data, sx, sy){
 
 // Used to shift multiple pixels in a certain direction dependant on column.
 // rp = repeater
-export function slitIntX(data, sx, sy, px, py, rp){
+function slitIntX(data, sx, sy, px, py, rp){
   let temp = new Uint8Array(data);
   for(let i = 0; i < sx; i++){
       for(let j = 0; j < sy; j++){
@@ -488,7 +577,7 @@ export function slitIntX(data, sx, sy, px, py, rp){
 }
 
 // This function is for changing colors for a data map
-export function changeMapColor(data, mapIndex, columnIndex){
+function changeMapColor(data, mapIndex, columnIndex){
 	let temp = new Uint8Array(data);
 	if(mapIndex >= 0 && mapIndex < jslix.imgMap.length){
 		let colorData = new Uint8Array(jslix.imgMap[mapIndex]);
@@ -513,7 +602,7 @@ export function changeMapColor(data, mapIndex, columnIndex){
 }
 
 // This function is for blending colors within a color map
-export function changeBlendColor(data, color, opacity, opt){
+function changeBlendColor(data, color, opacity, opt){
 	let temp = new Uint8Array(data);
 	if(opacity >= 0 && opacity <= 100){
 		for (let i = 0; i < temp.length; i+=4){
@@ -536,7 +625,7 @@ export function changeBlendColor(data, color, opacity, opt){
 
 // This function was made to drop an already existing image over one you are creating
 // Uses for this are mostly for future proofing, but it may come in handy.
-export function dropPixels(data, sx, sy, imgID, px, py, opacity){
+function dropPixels(data, sx, sy, imgID, px, py, opacity){
 	let temp = new Uint8Array(data);
 	if(opacity >= 0 && opacity <= 100){
 		for(let i = 0; i < sx; i++){
@@ -623,43 +712,7 @@ export function canvasImg(num){
 	return jslix.imgcanvas;
 }
 
-// CLears all images from the lineup
-export function removeAllImages(){
-	jslix.intArray = [];
-	jslix.viewArray = [];
-	jslix.viewArray = [];
-	jslix.locxArray = [];
-	jslix.locyArray = [];
-	jslix.imgArray = [];
-	jslix.imgReady = [];
-}
-
-// Clears a single DOM image from the body
-export function removeDOMImage(name){
-	let imgStorage = document.getElementById("cwt-"+name);
-	if(imgStorage != null){
-		document.body.removeChild(imgStorage)
-	}
-}
-
-// CLears the colormap images
-export function removeAllMaps(){
-	jslix.mapArray = [];
-	jslix.mapX = []
-	jslix.mapY = [];
-}
-
-// The getImage stuff - to get rid of the slow time of Internet Explorer
-export function getImg(num){
-	if(jslix.imgReady[num] != num){
-		addLoadEvent(loadImage(num));
-		return canvasImg(num);
-	}
-
-	return jslix.imgArray[num];
-}
-
-export function loadImage(num){
+function loadImage(num){
 	var tempImg = new Image();
 	tempImg.onload = function(){
 		// Catches those pasky errors
@@ -676,14 +729,14 @@ export function loadImage(num){
 }
 
 // This function handles the onError call of a dead image
-export function imgError(deadImg){
+function imgError(deadImg){
 	deadImg.src = canvasImg(-1).toDataURL();
 	deadImg.onerror = "";
 	return true;
 }
 
 // Code by Simon Willison
-export function addLoadEvent(func) {
+function addLoadEvent(func) {
   let oldonload = window.onload;
   if (typeof window.onload != 'function') {
     window.onload = func;
