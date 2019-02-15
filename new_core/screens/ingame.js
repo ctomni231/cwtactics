@@ -4,6 +4,7 @@ import { iterateMatrix } from "../utils.js"
 import * as jslix from "../jslix.js"
 import * as cwtimg from "../cwtimg.js"
 import { createTween, prepareTween, updateTween } from "../tween.js"
+import * as tileInfo from "../traits/tileInfo.js" 
 
 const animationData = createTween({
   step: 3,
@@ -52,11 +53,16 @@ export function update () {
   }
 
   if (input.LEFT ) cursor.map.x = Math.max(cursor.map.x - 1, 0)
-  if (input.RIGHT) cursor.map.x = Math.min(cursor.map.x + 1, map.width - 1)
+  else if (input.RIGHT) cursor.map.x = Math.min(cursor.map.x + 1, map.width - 1)
+  
   if (input.UP   ) cursor.map.y = Math.max(cursor.map.y - 1, 0)
-  if (input.DOWN ) cursor.map.y = Math.min(cursor.map.y + 1, map.height - 1)
+  else if (input.DOWN ) cursor.map.y = Math.min(cursor.map.y + 1, map.height - 1)
+
+  cursor.screen.x = cursor.map.x
+  cursor.screen.y = cursor.map.y
 
   updateTween(animationData, true, loop.delta)
+  tileInfo.update()
 }
 
 function renderCursor(ctx) {
@@ -119,4 +125,5 @@ export function render (canvas, ctx) {
   renderTiles(ctx)
   renderUnits(ctx)
   renderCursor(ctx)
+  tileInfo.render(ctx)
 }
