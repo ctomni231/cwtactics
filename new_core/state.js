@@ -11,10 +11,7 @@ export const performance = {}
 
 export const state = {
   current: null,
-  next: null,
-
-  // Expanding state to include the fps counter
-  fps: true
+  next: null
 }
 
 export const cursor = { 
