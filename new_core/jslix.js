@@ -37,6 +37,7 @@ const jslix = {
 	invert: 0,
 	refText: "",
 	imgColor: [],
+	color: [],
 	blend: [],
 	shift: [],
 	drop: [],
@@ -50,6 +51,7 @@ const jslix = {
 	flipYArray: [],
 	rotateArray: [],
 	imgColorArray: [],
+	colorArray: [],
 	blendArray: [],
 	shiftArray: [],
 	dropArray: [],
@@ -105,7 +107,7 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 	addImage(imgcanvas.toDataURL());
 }
 
-// This function adds an image from text.
+// This function adds an image from text (a.k.a. filename or dataURL).
 export function addImage(text){
 
 	//Add manipulations
@@ -119,6 +121,8 @@ export function addImage(text){
 	jslix.rotate = 0;
 	jslix.invertArray.push(jslix.invert);
 	jslix.invert = 0;
+	jslix.colorArray.push(jslix.color);
+	jslix.color = [];
 	jslix.imgColorArray.push(jslix.imgColor);
 	jslix.imgColor = [];
 	jslix.blendArray.push(jslix.blend);
@@ -216,8 +220,19 @@ export function addCut(locx, locy, sizex, sizey){
 export function changeReference(name){
 	jslix.refText = ((typeof name === 'string') ? name : "");
 }
-// This function adds a color change to the image
-export function addColorChange(mapIndex, colorIndex){
+// This function changes the pixels 'from' one color 'to' the color inputted
+// opt int[0] = RGB only
+//     int[1] = ALPHA only
+//     int[2] = RGBA only
+export function addColorChange(fromRed, fromGreen, fromBlue, fromAlpha,
+									             toRed, toGreen, toBlue, toAlpha, opt){
+	let fromColor = new Uint8Array([fromRed, fromGreen, fromBlue, fromAlpha]);
+	let toColor = new Uint8Array([toRed, toGreen, toBlue, toAlpha]);
+	let temp = [fromColor, toColor, opt];
+	jslix.color.push(temp);
+}
+// This function adds a color map change to the image
+export function addColorMapChange(mapIndex, colorIndex){
 	let temp = [mapIndex, colorIndex];
 	jslix.imgColor.push(temp);
 }
@@ -411,7 +426,8 @@ function storeImage(){
 	let imgWidth = canvas.width;
 	let imgHeight = canvas.height;
 	let data = new Uint8Array(imgData.data);
-	let tmpColor = jslix.imgColorArray.shift();
+	let tmpColor = jslix.colorArray.shift();
+	let tmpColorMap = jslix.imgColorArray.shift();
 	let tmpBlend = jslix.blendArray.shift();
 	let tmpShift = jslix.shiftArray.shift();
 	let tmpDrop = jslix.dropArray.shift();
@@ -423,8 +439,13 @@ function storeImage(){
 	if(jslix.flipYArray.shift() == 1)
 		data = flipY(data, imgWidth, imgHeight);
 	if(tmpColor.length > 0){
-		for(i = 0; i < tmpColor.length; i++){
-			data = changeMapColor(data, tmpColor[i][0], tmpColor[i][1]);
+			for(i = 0; i < tmpColor.length; i++){
+				data = changeColor(data, tmpColor[i][0], tmpColor[i][1], tmpColor[i][2]);
+			}
+		}
+	if(tmpColorMap.length > 0){
+		for(i = 0; i < tmpColorMap.length; i++){
+			data = changeMapColor(data, tmpColorMap[i][0], tmpColorMap[i][1]);
 		}
 	}
 	if(tmpBlend.length != 0){
@@ -434,7 +455,7 @@ function storeImage(){
 	}
 	if(tmpDrop.length != 0){
 		for(i = 0; i < tmpDrop.length; i++){
-			data = dropPixels(data, imgWidth, imgHeight, tmpDrop[i][0], tmpDrop[i][1], tmpDrop[i][2], tmpDrop[i][3]);
+			data = dropPixels(data, imgWidth, imgHeight, jslix.intArray[tmpDrop[i][0]], tmpDrop[i][1], tmpDrop[i][2], tmpDrop[i][3]);
 		}
 	}
 	if(tmpShift.length != 0){
@@ -574,6 +595,28 @@ function slitIntX(data, sx, sy, px, py, rp){
       }
   }
   return temp;
+}
+
+// This function is for changing raw colors
+function changeColor(data, fromColor, toColor, opt){
+	let temp = new Uint8Array(data);
+	for (let i = 0; i < temp.length; i+=4){
+		//Skip out alpha recoloring
+		if(opt == 0 && temp[i+3] === 0)
+			continue;
+		if(opt != 1 &&
+			 (fromColor[0] == temp[i] || fromColor[0]-1 == temp[i]) &&
+			 (fromColor[1] == temp[i+1] || fromColor[1]+1 == temp[i+1]) &&
+		   (fromColor[2] == temp[i+2] || fromColor[2]+1 == temp[i+2])){
+			temp[i] = toColor[0];
+			temp[i+1] = toColor[1];
+			temp[i+2] = toColor[2];
+		}
+		if(opt != 0 && fromColor[3] == temp[i+3]){
+			temp[i+3] = toColor[3];
+		}
+	}
+	return temp;
 }
 
 // This function is for changing colors for a data map

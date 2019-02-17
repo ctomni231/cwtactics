@@ -9,6 +9,8 @@ var green = 0
 var blue = 0
 
 export function setup() {
+  jslix.addColorChange(0, 148, 255, 255, 235, 75, 4, 255, 0)
+  jslix.addColorChange(179, 1, 255, 255, 25, 25, 25, 255, 0)
   jslix.addImage("../image/mobile/cwttitle.png")
 }
 

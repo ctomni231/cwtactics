@@ -1,10 +1,9 @@
 import { TILE_SIDE_LENGTH } from "../config/constants.js"
 import { input, state, map, units, cursor, loop } from "../state.js"
 import { iterateMatrix } from "../utils.js"
-import * as jslix from "../jslix.js"
 import * as cwtimg from "../cwtimg.js"
 import { createTween, prepareTween, updateTween } from "../tween.js"
-import * as tileInfo from "../traits/tileInfo.js" 
+import * as tileInfo from "../traits/tileInfo.js"
 
 const animationData = createTween({
   step: 3,
@@ -36,7 +35,7 @@ function setupTestMap () {
 }
 
 export function setup () {
-  jslix.addImage("../image/cwt_tileset/terrain(C)/CWT_PLIN.png")
+  cwtimg.addImage("../image/cwt_tileset/terrain(C)/CWT_PLIN.png")
 
   cwtimg.addColorMap("../image/UnitBaseColors.png")
   cwtimg.addCWTImage("../image/cwt_tileset/units/CWT_INFT.png", 0, 3, 1)
@@ -54,7 +53,7 @@ export function update () {
 
   if (input.LEFT ) cursor.map.x = Math.max(cursor.map.x - 1, 0)
   else if (input.RIGHT) cursor.map.x = Math.min(cursor.map.x + 1, map.width - 1)
-  
+
   if (input.UP   ) cursor.map.y = Math.max(cursor.map.y - 1, 0)
   else if (input.DOWN ) cursor.map.y = Math.min(cursor.map.y + 1, map.height - 1)
 
@@ -84,7 +83,7 @@ function renderTiles (ctx) {
       const tileImageId = tempIdMap[tile.typeId]
 
       ctx.drawImage(
-        jslix.getImg(tileImageId),
+        cwtimg.getImg(tileImageId),
         screenX, screenY,
         TILE_SIDE_LENGTH, TILE_SIDE_LENGTH * 2)
     }
@@ -106,7 +105,7 @@ function renderUnits (ctx) {
         const unitImageId = tempIdMap[units[tile.unitId].typeId]
 
         ctx.drawImage(
-          jslix.getImg(unitImageId),
+          cwtimg.getImg(unitImageId),
           unitAnimationStep * TILE_SIDE_LENGTH * 2, 0,
           TILE_SIDE_LENGTH * 2, TILE_SIDE_LENGTH * 2,
           screenX-(TILE_SIDE_LENGTH/2), screenY+(TILE_SIDE_LENGTH/2),
