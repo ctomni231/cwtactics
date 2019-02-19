@@ -60,5 +60,4 @@ export function render (canvas, ctx) {
 
   // This draws the image onto the screen
 	ctx.drawImage(jslix.getRefImg("../image/mobile/cwttitle.png"), SCREEN_WIDTH - 210, SCREEN_HEIGHT - 30, 200, 20)
-
 }

@@ -29,6 +29,15 @@ const jslix = {
 	imgctx: undefined,
 	imgsData: undefined,
 
+	// Font Specific
+	fontName: "",
+	fontSize: 0,
+	fontText: "",
+	fontStroke: 0,
+	defName: "sans-serif",
+	defSize: 10,
+	defText: "ABCjgq|",
+
 	// Manipulation
 	colormap: 0,
 	Xflip: 0,
@@ -95,15 +104,52 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 	imgcanvas.setAttribute("style", "display:none");
 	const ctx = imgcanvas.getContext("2d");
 	const imgData = ctx.createImageData(sizex, sizey);
-	for (var i = 0; i < imgData.data.length; i += 4){
+	for (let i = 0; i < imgData.data.length; i += 4){
 		imgData.data[i+0] = boxColors[0];
 		imgData.data[i+1] = boxColors[1];
 		imgData.data[i+2] = boxColors[2];
 		imgData.data[i+3] = boxColors[3];
 	}
 
+	changeReference("colorbox_"+red+"_"+green+"_"+blue+"_"+alpha+"_"+sizex+"_"+sizey)
 	ctx.putImageData(imgData,0,0);
 
+	addImage(imgcanvas.toDataURL());
+}
+
+export function addFontImage(str){
+
+	let fontName = (jslix.fontName == "") ? jslix.defName : jslix.fontName;
+	let fontSize = (jslix.fontSize == 0) ? jslix.defSize : jslix.fontSize;
+	let fontText = (jslix.fontText == "") ? jslix.defText : jslix.fontText;
+
+	let imgcanvas = document.getElementById("font");
+	if(imgcanvas == null){
+		imgcanvas = document.createElement("canvas");
+		document.body.appendChild(imgcanvas);
+	}
+	imgcanvas.setAttribute("id", "font");
+
+  const ctx = imgcanvas.getContext("2d");
+	ctx.font = fontSize+"px "+fontName
+	let sizex = parseInt(""+ctx.measureText(str).width)+1;
+	let sizey = getFontHeight(fontName, fontSize, fontText);
+
+	imgcanvas.setAttribute("width", sizex);
+	imgcanvas.setAttribute("height", sizey);
+	imgcanvas.setAttribute("style", "display:none");
+
+	ctx.font = fontSize+"px "+fontName
+	//ctx.fillStyle = "white"
+	//ctx.fillRect(0, 0, sizex, sizey)
+	//ctx.fillStyle = "black"
+	if(jslix.fontStroke !== 0){
+		ctx.strokeText(str, 0, sizey);
+	}else{
+		ctx.fillText(str, 0, sizey);
+	}
+
+	changeReference("fonttext_"+str)
 	addImage(imgcanvas.toDataURL());
 }
 
@@ -268,10 +314,28 @@ export function addPixelYShift(posx, posy, repeat){
 	jslix.shift.push(temp);
 }
 
-// This adds a image drop to the current image
+// This adds a image drop to the current image, after manipulations
 export function addPixelDrop(imgIndex, posx, posy, opacity){
 	let temp = [imgIndex, posx, posy, opacity];
 	jslix.drop.push(temp);
+}
+
+// This changes the font family of font images
+export function changeFontFamily(fontFamily){
+	jslix.fontName = fontFamily
+}
+// This changes the font size for font images
+export function changeFontSize(fontSize){
+	jslix.fontSize = fontSize
+}
+// This changes the template which helps a font generate its height
+export function changeFontTemplateText(fontText){
+	jslix.fontText = fontText
+}
+// This changes if a text blurb will be written in a
+// stroke [num=1] or normal [num=0]
+export function changeFontStroke(num){
+	jslix.fontStroke = num
 }
 
 // -----------------------------------------
@@ -367,7 +431,7 @@ function storeImage(){
 	let dimSwitch = jslix.rotateArray.shift();
 	//This sets up any cut actions we have
 	let tmpCut = jslix.cutArray.shift();
-	//Error check all the cut values;
+	//Error check all the cut values
 	if(tmpCut.length > 0){
 		tmpCut[0] = (tmpCut[0] > imgStorage.width-1) ? imgStorage.width-1 : tmpCut[0];
 		tmpCut[1] = (tmpCut[1] > imgStorage.height-1) ? imgStorage.height-1 : tmpCut[1];
@@ -404,22 +468,19 @@ function storeImage(){
 	console.log("("+canvas.width+","+canvas.height+")");
 
 	let ctx = canvas.getContext("2d");
-	if(tmpCut.length > 0){
-		if(dimSwitch === 0){
+	if(dimSwitch === 0){
+		if(tmpCut.length > 0)
 			ctx.drawImage(imgStorage, tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3],
-				0, 0, tmpCut[2], tmpCut[3]);
-		}else{
-			ctx.rotate(90*Math.PI/180);
-			ctx.drawImage(imgStorage, tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3],
-				0, -tmpCut[3], tmpCut[2], tmpCut[3]);
-		}
-	}else{
-		if(dimSwitch === 0){
+				            0, 0, tmpCut[2], tmpCut[3]);
+		else
 			ctx.drawImage(imgStorage, 0, 0);
-		}else{
-			ctx.rotate(90*Math.PI/180);
+	}else{
+		ctx.rotate(90*Math.PI/180);
+		if(tmpCut.length > 0)
+			ctx.drawImage(imgStorage, tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3],
+				            0, -tmpCut[3], tmpCut[2], tmpCut[3]);
+		else
 			ctx.drawImage(imgStorage, 0, -imgStorage.height);
-		}
 	}
 
 	let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -438,12 +499,12 @@ function storeImage(){
 		data = flipX(data, imgWidth, imgHeight);
 	if(jslix.flipYArray.shift() == 1)
 		data = flipY(data, imgWidth, imgHeight);
-	if(tmpColor.length > 0){
+	if(tmpColor.length != 0){
 			for(i = 0; i < tmpColor.length; i++){
 				data = changeColor(data, tmpColor[i][0], tmpColor[i][1], tmpColor[i][2]);
 			}
 		}
-	if(tmpColorMap.length > 0){
+	if(tmpColorMap.length != 0){
 		for(i = 0; i < tmpColorMap.length; i++){
 			data = changeMapColor(data, tmpColorMap[i][0], tmpColorMap[i][1]);
 		}
@@ -451,11 +512,6 @@ function storeImage(){
 	if(tmpBlend.length != 0){
 		for(i = 0; i < tmpBlend.length; i++){
 			data = changeBlendColor(data, tmpBlend[i][0], tmpBlend[i][1], tmpBlend[i][2]);
-		}
-	}
-	if(tmpDrop.length != 0){
-		for(i = 0; i < tmpDrop.length; i++){
-			data = dropPixels(data, imgWidth, imgHeight, jslix.intArray[tmpDrop[i][0]], tmpDrop[i][1], tmpDrop[i][2], tmpDrop[i][3]);
 		}
 	}
 	if(tmpShift.length != 0){
@@ -468,6 +524,11 @@ function storeImage(){
 	}
 	if(jslix.invertArray.shift() == 1)
 		data = invertColors(data);
+	if(tmpDrop.length != 0){
+		for(i = 0; i < tmpDrop.length; i++){
+			data = dropPixels(data, imgWidth, imgHeight, jslix.intArray[tmpDrop[i][0]], tmpDrop[i][1], tmpDrop[i][2], tmpDrop[i][3]);
+		}
+	}
 
 	// This allows Safari to reenact onload functionality
 	if(imgStorage){
@@ -687,6 +748,73 @@ function dropPixels(data, sx, sy, imgID, px, py, opacity){
 		}
 	}
 	return temp;
+}
+
+//Font Specific function for getting the Font Size
+// Heavily adapted from Sinisa - Stack Overflow
+// fontFamily = The font family the font is in
+// fontSize = The font size in pixels
+// fontText = The font Text
+function getFontHeight(fontName, fontSize, fontText){
+	let text = document.createElement("span");
+	if(fontName != "")
+		text.style.fontFamily = fontName;
+	if(fontSize > 0)
+		text.style.fontSize = fontSize + "px";
+	text.innerHTML = ((fontText == "") ? "ABCjgq|" : fontText)
+
+	let block = document.createElement("div");
+	block.style.display = "inline-block";
+	block.style.width = "1px";
+	block.style.height = "0px";
+
+	let div = document.createElement("div");
+	div.appendChild(text);
+	div.appendChild(block);
+	//Test div must be visible for this to work
+	div.style.height = "0px";
+	div.style.overflow = "hidden";
+
+	// Attach to body (necessary for this to work)
+	document.body.appendChild(div);
+
+	block.style.verticalAlign = "bottom";
+
+  // Object Offset Function - Take 1
+	let currtop = 0;
+	let currleft = 0;
+	if(block.offsetParent){
+		do{
+			currleft += block.offsetLeft;
+			currtop += block.offsetTop;
+		}while(block = block.offsetParent);
+	}else{
+		currleft += block.offsetLeft;
+		currtop += block.offsetTop;
+	}
+	//Store bottom position
+	let bp = currtop;
+
+	// Object Offset Function - Take 2
+	currleft = 0;
+	currtop = 0;
+	if(text.offsetParent){
+		do{
+			currleft += text.offsetLeft;
+			currtop += text.offsetTop;
+		}while(text = text.offsetParent);
+	}else{
+		currleft += text.offsetLeft;
+		currtop += text.offsetTop;
+	}
+	// Store top position
+	let tp = currtop;
+
+	// Remove the div
+	document.body.removeChild(div);
+
+	// return the height
+	return (bp - tp);
 }
 
 //Canvas Image with a speed mechanic included

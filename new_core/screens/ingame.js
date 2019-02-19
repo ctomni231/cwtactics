@@ -1,7 +1,8 @@
-import { TILE_SIDE_LENGTH } from "../config/constants.js"
+import { SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIDE_LENGTH } from "../config/constants.js"
 import { input, state, map, units, cursor, loop } from "../state.js"
 import { iterateMatrix } from "../utils.js"
 import * as cwtimg from "../cwtimg.js"
+import * as jslix from "../jslix.js"
 import { createTween, prepareTween, updateTween } from "../tween.js"
 import * as tileInfo from "../traits/tileInfo.js"
 
@@ -40,6 +41,9 @@ export function setup () {
   cwtimg.addColorMap("../image/UnitBaseColors.png")
   cwtimg.addCWTImage("../image/cwt_tileset/units/CWT_INFT.png", 0, 3, 1)
   cwtimg.addCWTImage("../image/cwt_tileset/units/CWT_MECH.png", 0, 8, 0)
+
+  jslix.addColorChange(0, 0, 0, 255, 255, 0, 0, 255, 0)
+  jslix.addFontImage("Advance Wars")
 
   prepareTween(animationData, { step: 0 })
 
@@ -125,4 +129,6 @@ export function render (canvas, ctx) {
   renderUnits(ctx)
   renderCursor(ctx)
   tileInfo.render(ctx)
+
+  ctx.drawImage(jslix.getImg(4), SCREEN_WIDTH - 150, 0)
 }
