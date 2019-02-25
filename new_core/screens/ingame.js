@@ -43,7 +43,11 @@ export function setup () {
   cwtimg.addCWTImage("../image/cwt_tileset/units/CWT_MECH.png", 0, 8, 0)
 
   jslix.addColorChange(0, 0, 0, 255, 255, 0, 0, 255, 0)
-  jslix.addFontImage("Advance Wars")
+  jslix.addPixelDrop(0, 0, -20, 100, 0)
+  jslix.addPixelDrop(0, 0, 50, 50, 0)
+  jslix.addCutImageDrop(0, 0, 70, 0, 0, 50, 50)
+  //jslix.addFontImage("Advance Wars")
+  jslix.addColorBox(255,255,255,255,100,100)
 
   prepareTween(animationData, { step: 0 })
 
