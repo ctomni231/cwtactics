@@ -1,5 +1,5 @@
-import { 
-  SCREEN_WIDTH, 
+import {
+  SCREEN_WIDTH,
   SCREEN_HEIGHT,
   SCREEN_SCALE_FACTOR
 } from "./config/constants.js"
@@ -8,8 +8,15 @@ import * as INITIAL from "./screens/initial.js"
 import * as INGAME from "./screens/ingame.js"
 
 import * as performance from "./performance.js"
-import { state } from "./state.js"
-import { update as updateDebug, render as renderDebug } from "./debug.js"
+
+import {
+  state
+} from "./state.js"
+
+import {
+  update as updateDebug,
+  render as renderDebug
+} from "./debug.js"
 
 const canvas = document.querySelector("#gamecanvas")
 const ctx = canvas.getContext("2d")

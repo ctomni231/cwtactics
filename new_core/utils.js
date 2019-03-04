@@ -28,3 +28,7 @@ export function iterateMatrix(width, height, handler) {
     }
   }
 }
+
+export function numberOrBoundary(leftBoundary, rightBoundary, number) {
+  return (number < leftBoundary ? leftBoundary : (number > rightBoundary ? rightBoundary : number))
+}

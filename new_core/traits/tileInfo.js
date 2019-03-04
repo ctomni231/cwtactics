@@ -1,4 +1,4 @@
-import { cursor, map, units } from "../state.js"
+import { cursor, map, units, screen } from "../state.js"
 import { SCREEN_HEIGHT_IN_TILES, SCREEN_WIDTH_IN_TILES, SCREEN_HEIGHT, SCREEN_WIDTH } from "../config/constants.js"
 
 let positionData = ""
@@ -6,8 +6,8 @@ let tileData
 let unitData = ""
 
 export function update () {
-  const x = cursor.map.x
-  const y = cursor.map.y
+  const x = cursor.x
+  const y = cursor.y
   const tile = map.tiles[x][y]
   const unit = tile.unitId >= 0 ? units[tile.unitId] : null 
 
@@ -20,7 +20,7 @@ export function render (ctx) {
 
   const width = 100
   const height = 55
-  const sx = cursor.screen.x < (SCREEN_WIDTH_IN_TILES/2) ? SCREEN_WIDTH - width - 5 : 0
+  const sx = (cursor.x - screen.x) < (SCREEN_WIDTH_IN_TILES/2) ? SCREEN_WIDTH - width - 5 : 0
   const sy = SCREEN_HEIGHT - height - 5
   
   ctx.fillStyle = "black"
