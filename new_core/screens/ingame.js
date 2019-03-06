@@ -1,10 +1,40 @@
-import { TILE_SIDE_LENGTH } from "../config/constants.js"
-import { input, state, map, units, cursor, loop } from "../state.js"
-import { iterateMatrix } from "../utils.js"
+import {
+  TILE_SIDE_LENGTH
+} from "../config/constants.js"
+
+import {
+  input,
+  state,
+  map,
+  units,
+  cursor,
+  loop,
+  screen
+} from "../state.js"
+
+import {
+  iterateMatrix,
+  numberOrBoundary
+} from "../utils.js"
+
 import * as jslix from "../jslix.js"
 import * as cwtimg from "../cwtimg.js"
-import { createTween, prepareTween, updateTween } from "../tween.js"
-import * as tileInfo from "../traits/tileInfo.js" 
+
+import {
+  createTween,
+  prepareTween,
+  updateTween
+} from "../tween.js"
+
+import * as tileInfo from "../traits/tileInfo.js"
+
+import {
+  isInLowerBoundary,
+  isInUpperBoundary,
+  moveScreen,
+  BOUNDARY_X,
+  BOUNDARY_Y
+} from "../scrollable.js"
 
 const animationData = createTween({
   step: 3,
@@ -33,6 +63,9 @@ function setupTestMap () {
 
   map.tiles[2][2].unitId = 0
   map.tiles[5][5].unitId = 1
+
+  screen.maximumX = map.width - 1
+  screen.maximumY = map.height - 1
 }
 
 export function setup () {
@@ -52,14 +85,27 @@ export function update () {
     state.next = "INITIAL"
   }
 
-  if (input.LEFT ) cursor.map.x = Math.max(cursor.map.x - 1, 0)
-  else if (input.RIGHT) cursor.map.x = Math.min(cursor.map.x + 1, map.width - 1)
-  
-  if (input.UP   ) cursor.map.y = Math.max(cursor.map.y - 1, 0)
-  else if (input.DOWN ) cursor.map.y = Math.min(cursor.map.y + 1, map.height - 1)
+  const shiftX = (input.LEFT ? -1 : (input.RIGHT ? +1 : 0))
+  const shiftY = (input.UP ? -1 : (input.DOWN ? +1 : 0))
 
-  cursor.screen.x = cursor.map.x
-  cursor.screen.y = cursor.map.y
+  cursor.x = numberOrBoundary(0, map.width - 1, cursor.x + shiftX)
+  cursor.y = numberOrBoundary(0, map.height - 1, cursor.y + shiftY)
+
+  const shouldShiftScreenOnXAxis = 
+    (shiftX < 0 && isInLowerBoundary(3, BOUNDARY_X, cursor.x)) ||
+    (shiftX > 0 && isInUpperBoundary(3, BOUNDARY_X, cursor.x))
+
+  const shouldShiftScreenOnYAxis = 
+    (shiftY < 0 && isInLowerBoundary(3, BOUNDARY_Y, cursor.y)) ||
+    (shiftY > 0 && isInUpperBoundary(3, BOUNDARY_Y, cursor.y))
+
+  if (shouldShiftScreenOnXAxis) {
+    moveScreen(BOUNDARY_X, shiftX)
+  }
+
+  if (shouldShiftScreenOnYAxis) {
+    moveScreen(BOUNDARY_Y, shiftY)
+  }
 
   updateTween(animationData, true, loop.delta)
   tileInfo.update()
@@ -68,19 +114,25 @@ export function update () {
 function renderCursor(ctx) {
   ctx.strokeStyle = "black"
   ctx.strokeRect(
-    TILE_SIDE_LENGTH * cursor.map.x,
-    TILE_SIDE_LENGTH * cursor.map.y,
+    TILE_SIDE_LENGTH * (cursor.x - screen.x),
+    TILE_SIDE_LENGTH * (cursor.y - screen.y),
     TILE_SIDE_LENGTH, TILE_SIDE_LENGTH)
 }
 
 function renderTiles (ctx) {
- for (let columnId = 0; columnId < map.width; columnId++) {
+ for (let columnId = screen.x; 
+          columnId < (screen.x + screen.width); 
+          columnId++) {
+
     const column = map.tiles[columnId]
 
-    for (let rowId = 0; rowId < map.height; rowId++) {
+    for (let rowId = screen.y; 
+             rowId < (screen.y + screen.height); 
+             rowId++) {
+
       const tile = column[rowId]
-      const screenX = columnId * TILE_SIDE_LENGTH
-      const screenY = -TILE_SIDE_LENGTH + (rowId * TILE_SIDE_LENGTH)
+      const screenX = (columnId - screen.x) * TILE_SIDE_LENGTH
+      const screenY = -TILE_SIDE_LENGTH + ((rowId - screen.y) * TILE_SIDE_LENGTH)
       const tileImageId = tempIdMap[tile.typeId]
 
       ctx.drawImage(
@@ -94,13 +146,19 @@ function renderTiles (ctx) {
 function renderUnits (ctx) {
   const unitAnimationStep = parseInt(animationData.step.value, 10)
 
-  for (let columnId = 0; columnId < map.width; columnId++) {
+ for (let columnId = screen.x; 
+          columnId < (screen.x + screen.width); 
+          columnId++) {
+
     const column = map.tiles[columnId]
 
-    for (let rowId = 0; rowId < map.height; rowId++) {
+    for (let rowId = screen.y; 
+             rowId < (screen.y + screen.height); 
+             rowId++) {
+
       const tile = column[rowId]
-      const screenX = columnId * TILE_SIDE_LENGTH
-      const screenY = -TILE_SIDE_LENGTH + (rowId * TILE_SIDE_LENGTH)
+      const screenX = (columnId - screen.x) * TILE_SIDE_LENGTH
+      const screenY = -TILE_SIDE_LENGTH + ((rowId - screen.y) * TILE_SIDE_LENGTH)
 
       if (tile.unitId >= 0) {
         const unitImageId = tempIdMap[units[tile.unitId].typeId]

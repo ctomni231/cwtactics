@@ -2,7 +2,9 @@ import {
   MAX_MAP_HEIGHT, 
   MAX_MAP_WIDTH, 
   MAX_UNITS_PER_PLAYER,
-  MAX_PLAYERS
+  MAX_PLAYERS,
+  SCREEN_WIDTH_IN_TILES, 
+  SCREEN_HEIGHT_IN_TILES
 } from "./config/constants.js"
 
 import { createList } from "./utils.js"
@@ -15,8 +17,19 @@ export const state = {
 }
 
 export const cursor = { 
-  map:    { x: 0, y: 0 },
-  screen: { x: 0, y: 0 }
+  x: 0, 
+  y: 0
+}
+
+export const screen = {
+  x: 0,
+  y: 0,  
+  minimumX: 0,
+  minimumY: 0,
+  maximumX: 0,
+  maximumY: 0,
+  width: SCREEN_WIDTH_IN_TILES,
+  height: SCREEN_HEIGHT_IN_TILES
 }
 
 export const map = {
