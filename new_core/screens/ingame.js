@@ -43,11 +43,14 @@ export function setup () {
   cwtimg.addCWTImage("../image/cwt_tileset/units/CWT_MECH.png", 0, 8, 0)
 
   jslix.addColorChange(0, 0, 0, 255, 255, 0, 0, 255, 0)
+  jslix.addRotatePixels()
+  jslix.addFlipY()
+  jslix.addFontImage("Advance Wars")
+
   jslix.addPixelDrop(0, 0, -20, 100, 0)
   jslix.addPixelDrop(0, 0, 50, 50, 0)
-  jslix.addCutImageDrop(0, 0, 70, 0, 0, 50, 50)
-  //jslix.addFontImage("Advance Wars")
-  jslix.addColorBox(255,255,255,255,100,100)
+  jslix.addCutPixelDrop(0, 0, 70, 13, 0, 50, 50, 100, 0)
+  jslix.addColorBox(255,255,255,255,100,150)
 
   prepareTween(animationData, { step: 0 })
 
@@ -134,5 +137,7 @@ export function render (canvas, ctx) {
   renderCursor(ctx)
   tileInfo.render(ctx)
 
-  ctx.drawImage(jslix.getImg(4), SCREEN_WIDTH - 150, 0)
+  ctx.drawImage(jslix.getImg(4), 0, 0)
+
+  ctx.drawImage(jslix.getImg(5), 225, 0)
 }
