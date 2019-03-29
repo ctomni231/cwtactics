@@ -41,13 +41,18 @@ export const MAP_INFO = {
     },
     row2: {
       col1: [ "Cursor", "" ],
-      col2: [ "mapX", "cursor.map.x" ],
-      col3: [ "mapY", "cursor.map.y" ]
+      col2: [ "mapX", "cursor.x" ],
+      col3: [ "mapY", "cursor.y" ]
     },
     row3: {
+      col1: [ "Screen", "" ],
+      col2: [ "X", "screen.x" ],
+      col3: [ "Y", "screen.y" ]
+    },
+    row4: {
       col1: [ "", "" ],
-      col2: [ "screenX", "cursor.screen.x" ],
-      col3: [ "screenY", "cursor.screen.y" ]
+      col2: [ "width", "screen.width" ],
+      col3: [ "height", "screen.height" ]
     }
   }
 }
