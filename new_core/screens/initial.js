@@ -9,6 +9,8 @@ var green = 0
 var blue = 0
 
 export function setup() {
+  jslix.addColorChange(0, 148, 255, 255, 235, 75, 4, 255, 0)
+  jslix.addColorChange(179, 1, 255, 255, 25, 25, 25, 255, 0)
   jslix.addImage("../image/mobile/cwttitle.png")
 }
 
@@ -58,5 +60,4 @@ export function render (canvas, ctx) {
 
   // This draws the image onto the screen
 	ctx.drawImage(jslix.getRefImg("../image/mobile/cwttitle.png"), SCREEN_WIDTH - 210, SCREEN_HEIGHT - 30, 200, 20)
-
 }

@@ -6,6 +6,11 @@ import * as jslix from "./jslix.js"
  * Sits on top of JSlix, and adds helper functions for getting images
  */
 
+// Added a bypass for addImage in this function
+export function addImage(text){
+  jslix.addImage(text)
+}
+
 // Currently, best used for units, but will expand later
 export function addColorMap(filename){
   jslix.addColorMap(filename)
@@ -22,7 +27,7 @@ export function addCWTImage(filename, map, color, dir){
 
   if(map >= 0){
     imgName += "_"+map+"_"+color
-    jslix.addColorChange(map, color)
+    jslix.addColorMapChange(map, color)
   }
 
   if(dir > 0){
@@ -36,4 +41,9 @@ export function addCWTImage(filename, map, color, dir){
 
   return imgName
 
+}
+
+// Added a bypass for getting the image
+export function getImg(num){
+  return jslix.getImg(num)
 }

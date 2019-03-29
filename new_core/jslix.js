@@ -29,17 +29,30 @@ const jslix = {
 	imgctx: undefined,
 	imgsData: undefined,
 
+	// Font Specific
+	fontName: "",
+	fontSize: 0,
+	fontText: "",
+	fontStroke: 0,
+	defName: "sans-serif",
+	defSize: 10,
+	defText: "ABCjgq|",
+
 	// Manipulation
 	colormap: 0,
 	Xflip: 0,
 	Yflip: 0,
 	rotate: 0,
+	pixels: 0,
 	invert: 0,
 	refText: "",
 	imgColor: [],
+	color: [],
 	blend: [],
 	shift: [],
 	drop: [],
+	cutdrop: [],
+	imgdrop: [],
 	cut: [],
 	ref: [],
 
@@ -49,10 +62,14 @@ const jslix = {
 	flipXArray: [],
 	flipYArray: [],
 	rotateArray: [],
+	pixelArray: [],
 	imgColorArray: [],
+	colorArray: [],
 	blendArray: [],
 	shiftArray: [],
 	dropArray: [],
+	cutDropArray: [],
+	imgDropArray: [],
 	invertArray: [],
 	cutArray: [],
 	refArray: []
@@ -93,19 +110,53 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 	imgcanvas.setAttribute("style", "display:none");
 	const ctx = imgcanvas.getContext("2d");
 	const imgData = ctx.createImageData(sizex, sizey);
-	for (var i = 0; i < imgData.data.length; i += 4){
+	for (let i = 0; i < imgData.data.length; i += 4){
 		imgData.data[i+0] = boxColors[0];
 		imgData.data[i+1] = boxColors[1];
 		imgData.data[i+2] = boxColors[2];
 		imgData.data[i+3] = boxColors[3];
 	}
 
+	changeReference("colorbox_"+red+"_"+green+"_"+blue+"_"+alpha+"_"+sizex+"_"+sizey)
 	ctx.putImageData(imgData,0,0);
 
 	addImage(imgcanvas.toDataURL());
 }
 
-// This function adds an image from text.
+export function addFontImage(str){
+
+	let fontName = (jslix.fontName == "") ? jslix.defName : jslix.fontName;
+	let fontSize = (jslix.fontSize == 0) ? jslix.defSize : jslix.fontSize;
+	let fontText = (jslix.fontText == "") ? jslix.defText : jslix.fontText;
+
+	let imgcanvas = document.getElementById("font");
+	if(imgcanvas == null){
+		imgcanvas = document.createElement("canvas");
+		document.body.appendChild(imgcanvas);
+	}
+	imgcanvas.setAttribute("id", "font");
+
+  const ctx = imgcanvas.getContext("2d");
+	ctx.font = fontSize+"px "+fontName
+	let sizex = parseInt(""+ctx.measureText(str).width)+1;
+	let sizey = getFontHeight(fontName, fontSize, fontText);
+
+	imgcanvas.setAttribute("width", sizex);
+	imgcanvas.setAttribute("height", sizey);
+	imgcanvas.setAttribute("style", "display:none");
+
+	ctx.font = fontSize+"px "+fontName
+	if(jslix.fontStroke !== 0){
+		ctx.strokeText(str, 0, sizey);
+	}else{
+		ctx.fillText(str, 0, sizey);
+	}
+
+	changeReference("fonttext_"+str)
+	addImage(imgcanvas.toDataURL());
+}
+
+// This function adds an image from text (a.k.a. filename or dataURL).
 export function addImage(text){
 
 	//Add manipulations
@@ -117,8 +168,12 @@ export function addImage(text){
 	jslix.Yflip = 0;
 	jslix.rotateArray.push(jslix.rotate);
 	jslix.rotate = 0;
+	jslix.pixelArray.push(jslix.pixels);
+	jslix.pixels = 0;
 	jslix.invertArray.push(jslix.invert);
 	jslix.invert = 0;
+	jslix.colorArray.push(jslix.color);
+	jslix.color = [];
 	jslix.imgColorArray.push(jslix.imgColor);
 	jslix.imgColor = [];
 	jslix.blendArray.push(jslix.blend);
@@ -127,6 +182,10 @@ export function addImage(text){
 	jslix.shift = [];
 	jslix.dropArray.push(jslix.drop);
 	jslix.drop = [];
+	jslix.cutDropArray.push(jslix.cutdrop);
+	jslix.cutdrop = [];
+	jslix.imgDropArray.push(jslix.imgdrop);
+	jslix.imgdrop = [];
 	jslix.cutArray.push(jslix.cut);
 	jslix.cut = [];
 	jslix.ref.push((jslix.refText == "") ? text : jslix.refText);
@@ -203,6 +262,10 @@ export function addFlipY(){
 export function addRotate90(){
 	jslix.rotate = 1;
 }
+// This function rotates an image 90 degrees
+export function addRotatePixels(){
+	jslix.pixels = 1;
+}
 // This function inverts the colors of an image
 export function addInvert(){
 	jslix.invert = 1;
@@ -216,8 +279,19 @@ export function addCut(locx, locy, sizex, sizey){
 export function changeReference(name){
 	jslix.refText = ((typeof name === 'string') ? name : "");
 }
-// This function adds a color change to the image
-export function addColorChange(mapIndex, colorIndex){
+// This function changes the pixels 'from' one color 'to' the color inputted
+// opt int[0] = RGB only
+//     int[1] = ALPHA only
+//     int[2] = RGBA only
+export function addColorChange(fromRed, fromGreen, fromBlue, fromAlpha,
+									             toRed, toGreen, toBlue, toAlpha, opt){
+	let fromColor = new Uint8Array([fromRed, fromGreen, fromBlue, fromAlpha]);
+	let toColor = new Uint8Array([toRed, toGreen, toBlue, toAlpha]);
+	let temp = [fromColor, toColor, opt];
+	jslix.color.push(temp);
+}
+// This function adds a color map change to the image
+export function addColorMapChange(mapIndex, colorIndex){
 	let temp = [mapIndex, colorIndex];
 	jslix.imgColor.push(temp);
 }
@@ -244,8 +318,8 @@ export function addPixelXShift(posx, posy, repeat){
 }
 
 // This gets the pixels to shift along the x-axis
-// posx - How many pixels it shifts by
-// posy - The position of the first shift
+// posy - How many pixels it shifts by
+// posx - The position of the first shift
 // repeat - positive numbers will repeat a shift every # row (where # is repeat)
 //          zero and negative numbers will create a shift once at that location
 export function addPixelYShift(posx, posy, repeat){
@@ -253,10 +327,54 @@ export function addPixelYShift(posx, posy, repeat){
 	jslix.shift.push(temp);
 }
 
-// This adds a image drop to the current image
-export function addPixelDrop(imgIndex, posx, posy, opacity){
-	let temp = [imgIndex, posx, posy, opacity];
+// This adds an image to the current image, before manipulations (color off)
+export function addImageDrop(imgIndex, posx, posy){
+	addCutImageDrop(imgIndex, posx, posy, 0, 0, 0, 0);
+}
+
+// This adds a cut image to the current image, before manipulations (color off)
+export function addCutImageDrop(imgIndex, posx, posy, locx, locy, sizex, sizey){
+	let ind = imgIndex
+	if(imgIndex >= 0 && imgIndex < jslix.intArray.length)
+		ind = jslix.intArray[imgIndex]
+	let temp = [ind, posx, posy, locx, locy, sizex, sizey]
+	jslix.imgdrop.push(temp)
+}
+
+// This adds a image drop to the current image, after manipulations
+// opt int[0] = RGB only
+//     int[1] = ALPHA only
+//     int[2] = RGBA only
+export function addPixelDrop(imgIndex, posx, posy, opacity, opt){
+	let temp = [imgIndex, posx, posy, opacity, opt];
 	jslix.drop.push(temp);
+}
+
+// This adds a cut image drop to the current image, after manipulations
+// opt int[0] = RGB only
+//     int[1] = ALPHA only
+//     int[2] = RGBA only
+export function addCutPixelDrop(imgIndex, posx, posy, locx, locy, sizex, sizey, opacity, opt){
+	let temp = [imgIndex, posx, posy, locx, locy, sizex, sizey, opacity, opt];
+	jslix.cutdrop.push(temp);
+}
+
+// This changes the font family of font images
+export function changeFontFamily(fontFamily){
+	jslix.fontName = fontFamily
+}
+// This changes the font size for font images
+export function changeFontSize(fontSize){
+	jslix.fontSize = fontSize
+}
+// This changes the template which helps a font generate its height
+export function changeFontTemplateText(fontText){
+	jslix.fontText = fontText
+}
+// This changes if a text blurb will be written in a
+// stroke [num=1] or normal [num=0]
+export function changeFontStroke(num){
+	jslix.fontStroke = num
 }
 
 // -----------------------------------------
@@ -352,13 +470,15 @@ function storeImage(){
 	let dimSwitch = jslix.rotateArray.shift();
 	//This sets up any cut actions we have
 	let tmpCut = jslix.cutArray.shift();
-	//Error check all the cut values;
+	//Error check all the cut values
 	if(tmpCut.length > 0){
 		tmpCut[0] = (tmpCut[0] > imgStorage.width-1) ? imgStorage.width-1 : tmpCut[0];
 		tmpCut[1] = (tmpCut[1] > imgStorage.height-1) ? imgStorage.height-1 : tmpCut[1];
 		tmpCut[2] = (tmpCut[0] + tmpCut[2] > imgStorage.width) ? imgStorage.width - tmpCut[0] : tmpCut[2];
 		tmpCut[3] = (tmpCut[1] + tmpCut[3] > imgStorage.height) ? imgStorage.height - tmpCut[1] : tmpCut[3];
 	}
+	// This sets up images to drop
+	let tmpImg = jslix.imgDropArray.shift();
 
 	let canvas = document.getElementById("store");
 	if(canvas == null){
@@ -389,32 +509,34 @@ function storeImage(){
 	console.log("("+canvas.width+","+canvas.height+")");
 
 	let ctx = canvas.getContext("2d");
-	if(tmpCut.length > 0){
-		if(dimSwitch === 0){
+	if(dimSwitch === 0){
+		if(tmpCut.length > 0)
 			ctx.drawImage(imgStorage, tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3],
-				0, 0, tmpCut[2], tmpCut[3]);
-		}else{
-			ctx.rotate(90*Math.PI/180);
-			ctx.drawImage(imgStorage, tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3],
-				0, -tmpCut[3], tmpCut[2], tmpCut[3]);
-		}
-	}else{
-		if(dimSwitch === 0){
+				            0, 0, tmpCut[2], tmpCut[3]);
+		else
 			ctx.drawImage(imgStorage, 0, 0);
-		}else{
-			ctx.rotate(90*Math.PI/180);
+	}else{
+		ctx.rotate(90*Math.PI/180);
+		if(tmpCut.length > 0)
+			ctx.drawImage(imgStorage, tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3],
+				            0, -tmpCut[3], tmpCut[2], tmpCut[3]);
+		else
 			ctx.drawImage(imgStorage, 0, -imgStorage.height);
-		}
+	}
+	for(i = 0; i < tmpImg.length; i++){
+		dropImage(ctx, tmpImg[i], dimSwitch)
 	}
 
 	let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	let imgWidth = canvas.width;
 	let imgHeight = canvas.height;
 	let data = new Uint8Array(imgData.data);
-	let tmpColor = jslix.imgColorArray.shift();
+	let tmpColor = jslix.colorArray.shift();
+	let tmpColorMap = jslix.imgColorArray.shift();
 	let tmpBlend = jslix.blendArray.shift();
 	let tmpShift = jslix.shiftArray.shift();
 	let tmpDrop = jslix.dropArray.shift();
+	let tmpCutDrop = jslix.cutDropArray.shift();
 	let tmpName = jslix.ref.shift();
 
 	//Do a bunch of manipulation checks before drawing out the image
@@ -422,19 +544,25 @@ function storeImage(){
 		data = flipX(data, imgWidth, imgHeight);
 	if(jslix.flipYArray.shift() == 1)
 		data = flipY(data, imgWidth, imgHeight);
-	if(tmpColor.length > 0){
-		for(i = 0; i < tmpColor.length; i++){
-			data = changeMapColor(data, tmpColor[i][0], tmpColor[i][1]);
+	if(jslix.pixelArray.shift() == 1){
+		data = rotatePixels(data, imgWidth, imgHeight);
+		let tmp = imgWidth;
+		imgWidth = imgHeight;
+		imgHeight = tmp;
+	}
+	if(tmpColor.length != 0){
+			for(i = 0; i < tmpColor.length; i++){
+				data = changeColor(data, tmpColor[i][0], tmpColor[i][1], tmpColor[i][2]);
+			}
+		}
+	if(tmpColorMap.length != 0){
+		for(i = 0; i < tmpColorMap.length; i++){
+			data = changeMapColor(data, tmpColorMap[i][0], tmpColorMap[i][1]);
 		}
 	}
 	if(tmpBlend.length != 0){
 		for(i = 0; i < tmpBlend.length; i++){
 			data = changeBlendColor(data, tmpBlend[i][0], tmpBlend[i][1], tmpBlend[i][2]);
-		}
-	}
-	if(tmpDrop.length != 0){
-		for(i = 0; i < tmpDrop.length; i++){
-			data = dropPixels(data, imgWidth, imgHeight, tmpDrop[i][0], tmpDrop[i][1], tmpDrop[i][2], tmpDrop[i][3]);
 		}
 	}
 	if(tmpShift.length != 0){
@@ -447,6 +575,16 @@ function storeImage(){
 	}
 	if(jslix.invertArray.shift() == 1)
 		data = invertColors(data);
+	if(tmpDrop.length != 0){
+		for(i = 0; i < tmpDrop.length; i++){
+			data = dropPixels(data, imgWidth, imgHeight, jslix.intArray[tmpDrop[i][0]], tmpDrop[i][1], tmpDrop[i][2], tmpDrop[i][3], tmpDrop[i][4]);
+		}
+	}
+	if(tmpCutDrop.length != 0){
+		for(i = 0; i < tmpCutDrop.length; i++){
+			data = dropCutPixels(data, imgWidth, imgHeight, tmpCutDrop[i]);
+		}
+	}
 
 	// This allows Safari to reenact onload functionality
 	if(imgStorage){
@@ -576,6 +714,41 @@ function slitIntX(data, sx, sy, px, py, rp){
   return temp;
 }
 
+function rotatePixels(data, sx, sy){
+	let temp = new Uint8Array(data);
+	for(let i = 0; i < sy; i++){
+    for(let j = 0; j < sx; j++){
+      temp[(i+(j*sy))*4] = data[(j+(i*sx))*4];
+      temp[(i+(j*sy))*4+1] = data[(j+(i*sx))*4+1];
+      temp[(i+(j*sy))*4+2] = data[(j+(i*sx))*4+2];
+      temp[(i+(j*sy))*4+3] = data[(j+(i*sx))*4+3];
+    }
+  }
+  return temp;
+}
+
+// This function is for changing raw colors
+function changeColor(data, fromColor, toColor, opt){
+	let temp = new Uint8Array(data);
+	for (let i = 0; i < temp.length; i+=4){
+		//Skip out alpha recoloring
+		if(opt == 0 && temp[i+3] === 0)
+			continue;
+		if(opt != 1 &&
+			 (fromColor[0] == temp[i] || fromColor[0]-1 == temp[i]) &&
+			 (fromColor[1] == temp[i+1] || fromColor[1]+1 == temp[i+1]) &&
+		   (fromColor[2] == temp[i+2] || fromColor[2]+1 == temp[i+2])){
+			temp[i] = toColor[0];
+			temp[i+1] = toColor[1];
+			temp[i+2] = toColor[2];
+		}
+		if(opt != 0 && fromColor[3] == temp[i+3]){
+			temp[i+3] = toColor[3];
+		}
+	}
+	return temp;
+}
+
 // This function is for changing colors for a data map
 function changeMapColor(data, mapIndex, columnIndex){
 	let temp = new Uint8Array(data);
@@ -623,9 +796,33 @@ function changeBlendColor(data, color, opacity, opt){
 	return temp;
 }
 
+// This function drops an image on the location specified
+// img => [0]imgIndex, [1]posx, [2]posy, [3]locx, [4]locy, [5]sizex, [6]sizey
+// rot => rotation
+function dropImage(ctx, img, rot){
+	// The imgID can be negative to reference the textmap
+	if(rot === 0){
+		if(img[5] * img[6] > 0)
+			ctx.drawImage(jslix.imgArray[img[0]],
+				            img[3], img[4], img[5], img[6],
+				            img[1], img[2], img[5], img[6]);
+		else
+			ctx.drawImage(jslix.imgArray[img[0]], img[1], img[2]);
+	}else{
+		ctx.rotate(90*Math.PI/180);
+		if(img[5] * img[6] > 0)
+			ctx.drawImage(jslix.imgArray[img[0]],
+				            img[3], img[4], img[5], img[6],
+				            img[1], img[2]-img[5], img[5], img[6]);
+		else
+			ctx.drawImage(jslix.imgArray[img[0]],
+				img[1], img[2]-jslix.locyArray[img[0]]);
+	}
+}
+
 // This function was made to drop an already existing image over one you are creating
 // Uses for this are mostly for future proofing, but it may come in handy.
-function dropPixels(data, sx, sy, imgID, px, py, opacity){
+function dropPixels(data, sx, sy, imgID, px, py, opacity, opt){
 	let temp = new Uint8Array(data);
 	if(opacity >= 0 && opacity <= 100){
 		for(let i = 0; i < sx; i++){
@@ -633,17 +830,129 @@ function dropPixels(data, sx, sy, imgID, px, py, opacity){
 				// If I'm planning to loop through everything, I need a k!
 				if(i >= px && i < px+jslix.locxArray[imgID] && j >= py && j < py+jslix.locyArray[imgID]){
 					// Don't blend in transparent pixels
-					if(jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+3] === 0)
+					if(opt == 0 && jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+3] === 0)
 						continue;
-					temp[(i+j*sx)*4] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4] - temp[(i+j*sx)*4])*(opacity / 100);
-					temp[(i+j*sx)*4+1] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+1] - temp[(i+j*sx)*4+1])*(opacity / 100);
-					temp[(i+j*sx)*4+2] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+2] - temp[(i+j*sx)*4+2])*(opacity / 100);
-					temp[(i+j*sx)*4+3] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);
+					if(opt != 1){
+						temp[(i+j*sx)*4] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4] - temp[(i+j*sx)*4])*(opacity / 100);
+						temp[(i+j*sx)*4+1] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+1] - temp[(i+j*sx)*4+1])*(opacity / 100);
+						temp[(i+j*sx)*4+2] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+2] - temp[(i+j*sx)*4+2])*(opacity / 100);
+					}
+					if(opt != 0){
+						temp[(i+j*sx)*4+3] += (jslix.viewArray[imgID][((i-px)+(j-py)*jslix.locxArray[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);
+					}
 				}
 			}
 		}
 	}
 	return temp;
+}
+
+// need ilx, ily, isx, isy and handle cut Image position before dropping it
+// imgIndex, posx, posy, locx, locy, sizex, sizey, opacity, opt
+function dropCutPixels(data, sx, sy, idata){
+
+	//setup all the variables first
+	let imgID = jslix.intArray[idata[0]]
+	let px = idata[1]
+	let py = idata[2]
+	let ilx = idata[3]
+	let ily = idata[4]
+	let isx = idata[5]
+	let isy = idata[6]
+	let opacity = idata[7]
+	let opt = idata[8]
+
+	// Then do the original cut function
+	let temp = new Uint8Array(data);
+	if(opacity >= 0 && opacity <= 100){
+		for(let i = 0; i < sx; i++){
+			for(let j = 0; j < sy; j++){
+				// If I'm planning to loop through everything, I need a k!
+				if(i >= px && i < px+jslix.locxArray[imgID] && i < px+isx &&
+					 j >= py && j < py+jslix.locyArray[imgID] && j < py+isy){
+					// Don't blend in transparent pixels
+					if(opt == 0 && jslix.viewArray[imgID][((i-px+ilx)+(j-py-ily)*jslix.locxArray[imgID])*4+3] === 0)
+						continue;
+					if(opt != 1){
+						temp[(i+j*sx)*4] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py-ily)*jslix.locxArray[imgID])*4] - temp[(i+j*sx)*4])*(opacity / 100);
+						temp[(i+j*sx)*4+1] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py-ily)*jslix.locxArray[imgID])*4+1] - temp[(i+j*sx)*4+1])*(opacity / 100);
+						temp[(i+j*sx)*4+2] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py-ily)*jslix.locxArray[imgID])*4+2] - temp[(i+j*sx)*4+2])*(opacity / 100);
+					}
+					if(opt != 0){
+						temp[(i+j*sx)*4+3] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py-ily)*jslix.locxArray[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);
+					}
+				}
+			}
+		}
+	}
+	return temp;
+}
+
+//Font Specific function for getting the Font Size
+// Heavily adapted from Sinisa - Stack Overflow
+// fontFamily = The font family the font is in
+// fontSize = The font size in pixels
+// fontText = The font Text
+function getFontHeight(fontName, fontSize, fontText){
+	let text = document.createElement("span");
+	if(fontName != "")
+		text.style.fontFamily = fontName;
+	if(fontSize > 0)
+		text.style.fontSize = fontSize + "px";
+	text.innerHTML = ((fontText == "") ? "ABCjgq|" : fontText)
+
+	let block = document.createElement("div");
+	block.style.display = "inline-block";
+	block.style.width = "1px";
+	block.style.height = "0px";
+
+	let div = document.createElement("div");
+	div.appendChild(text);
+	div.appendChild(block);
+	//Test div must be visible for this to work
+	div.style.height = "0px";
+	div.style.overflow = "hidden";
+
+	// Attach to body (necessary for this to work)
+	document.body.appendChild(div);
+
+	block.style.verticalAlign = "bottom";
+
+  // Object Offset Function - Take 1
+	let currtop = 0;
+	let currleft = 0;
+	if(block.offsetParent){
+		do{
+			currleft += block.offsetLeft;
+			currtop += block.offsetTop;
+		}while(block = block.offsetParent);
+	}else{
+		currleft += block.offsetLeft;
+		currtop += block.offsetTop;
+	}
+	//Store bottom position
+	let bp = currtop;
+
+	// Object Offset Function - Take 2
+	currleft = 0;
+	currtop = 0;
+	if(text.offsetParent){
+		do{
+			currleft += text.offsetLeft;
+			currtop += text.offsetTop;
+		}while(text = text.offsetParent);
+	}else{
+		currleft += text.offsetLeft;
+		currtop += text.offsetTop;
+	}
+	// Store top position
+	let tp = currtop;
+
+	// Remove the div
+	document.body.removeChild(div);
+
+	// return the height
+	return (bp - tp);
 }
 
 //Canvas Image with a speed mechanic included

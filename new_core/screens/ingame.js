@@ -69,11 +69,21 @@ function setupTestMap () {
 }
 
 export function setup () {
-  jslix.addImage("../image/cwt_tileset/terrain(C)/CWT_PLIN.png")
+  cwtimg.addImage("../image/cwt_tileset/terrain(C)/CWT_PLIN.png")
 
   cwtimg.addColorMap("../image/UnitBaseColors.png")
   cwtimg.addCWTImage("../image/cwt_tileset/units/CWT_INFT.png", 0, 3, 1)
   cwtimg.addCWTImage("../image/cwt_tileset/units/CWT_MECH.png", 0, 8, 0)
+
+  jslix.addColorChange(0, 0, 0, 255, 255, 0, 0, 255, 0)
+  jslix.addRotatePixels()
+  jslix.addFlipY()
+  jslix.addFontImage("Advance Wars")
+
+  jslix.addPixelDrop(0, 0, -20, 100, 0)
+  jslix.addPixelDrop(0, 0, 50, 50, 0)
+  jslix.addCutPixelDrop(0, 0, 70, 13, 0, 50, 50, 100, 0)
+  jslix.addColorBox(255,255,255,255,100,150)
 
   prepareTween(animationData, { step: 0 })
 
@@ -136,7 +146,7 @@ function renderTiles (ctx) {
       const tileImageId = tempIdMap[tile.typeId]
 
       ctx.drawImage(
-        jslix.getImg(tileImageId),
+        cwtimg.getImg(tileImageId),
         screenX, screenY,
         TILE_SIDE_LENGTH, TILE_SIDE_LENGTH * 2)
     }
@@ -164,7 +174,7 @@ function renderUnits (ctx) {
         const unitImageId = tempIdMap[units[tile.unitId].typeId]
 
         ctx.drawImage(
-          jslix.getImg(unitImageId),
+          cwtimg.getImg(unitImageId),
           unitAnimationStep * TILE_SIDE_LENGTH * 2, 0,
           TILE_SIDE_LENGTH * 2, TILE_SIDE_LENGTH * 2,
           screenX-(TILE_SIDE_LENGTH/2), screenY+(TILE_SIDE_LENGTH/2),
@@ -184,4 +194,8 @@ export function render (canvas, ctx) {
   renderUnits(ctx)
   renderCursor(ctx)
   tileInfo.render(ctx)
+
+  ctx.drawImage(jslix.getImg(4), 0, 0)
+
+  ctx.drawImage(jslix.getImg(5), 225, 0)
 }
