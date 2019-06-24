@@ -85,6 +85,12 @@ export function setup () {
   jslix.addCutPixelDrop(0, 0, 70, 13, 0, 50, 50, 100, 0)
   jslix.addColorBox(255,255,255,255,100,150)
 
+  jslix.addTextInfo(6, 5, 0, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+  jslix.addTextMap("../image/menu/BasicAlpha.png")
+
+  jslix.addTextImage(0, "ADVANCE WARS")
+  //jslix.addTextImage(0, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
   prepareTween(animationData, { step: 0 })
 
   setupTestMap()
@@ -101,11 +107,11 @@ export function update () {
   cursor.x = numberOrBoundary(0, map.width - 1, cursor.x + shiftX)
   cursor.y = numberOrBoundary(0, map.height - 1, cursor.y + shiftY)
 
-  const shouldShiftScreenOnXAxis = 
+  const shouldShiftScreenOnXAxis =
     (shiftX < 0 && isInLowerBoundary(3, BOUNDARY_X, cursor.x)) ||
     (shiftX > 0 && isInUpperBoundary(3, BOUNDARY_X, cursor.x))
 
-  const shouldShiftScreenOnYAxis = 
+  const shouldShiftScreenOnYAxis =
     (shiftY < 0 && isInLowerBoundary(3, BOUNDARY_Y, cursor.y)) ||
     (shiftY > 0 && isInUpperBoundary(3, BOUNDARY_Y, cursor.y))
 
@@ -130,14 +136,14 @@ function renderCursor(ctx) {
 }
 
 function renderTiles (ctx) {
- for (let columnId = screen.x; 
-          columnId < (screen.x + screen.width); 
+ for (let columnId = screen.x;
+          columnId < (screen.x + screen.width);
           columnId++) {
 
     const column = map.tiles[columnId]
 
-    for (let rowId = screen.y; 
-             rowId < (screen.y + screen.height); 
+    for (let rowId = screen.y;
+             rowId < (screen.y + screen.height);
              rowId++) {
 
       const tile = column[rowId]
@@ -156,14 +162,14 @@ function renderTiles (ctx) {
 function renderUnits (ctx) {
   const unitAnimationStep = parseInt(animationData.step.value, 10)
 
- for (let columnId = screen.x; 
-          columnId < (screen.x + screen.width); 
+ for (let columnId = screen.x;
+          columnId < (screen.x + screen.width);
           columnId++) {
 
     const column = map.tiles[columnId]
 
-    for (let rowId = screen.y; 
-             rowId < (screen.y + screen.height); 
+    for (let rowId = screen.y;
+             rowId < (screen.y + screen.height);
              rowId++) {
 
       const tile = column[rowId]
@@ -198,4 +204,6 @@ export function render (canvas, ctx) {
   ctx.drawImage(jslix.getImg(4), 0, 0)
 
   ctx.drawImage(jslix.getImg(5), 225, 0)
+
+  ctx.drawImage(jslix.getImg(6), 100, 100)
 }
