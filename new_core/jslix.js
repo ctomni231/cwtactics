@@ -1,6 +1,12 @@
 /*
  * JSlix Image Engine
  *
+ * Currently:
+ * Font and Text - Need to work on \n paragraph functionality
+ * Font and Text - Need to notice captial and common letters in charts
+ * Font and text - After \n, need to create max width (by adding \n to text) when over a pixel width
+ * Font and text - After \n, Need to create max lines, which will cut paragraphs
+ *
  * Future: Might need to modularize this a bit
  */
 
@@ -147,7 +153,7 @@ export function addTextImage(index, str){
 	}
 
 	jslix.textdraw = [index, str]
-	addColorBox(0, 0, 0, 255, 100, 100)
+	addColorBox(0, 0, 0, 255, 1, 1)
 }
 
 export function addFontImage(str){

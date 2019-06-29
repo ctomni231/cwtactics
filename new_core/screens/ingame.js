@@ -86,8 +86,12 @@ export function setup () {
   jslix.addColorBox(255,255,255,255,100,150)
 
   jslix.addTextInfo(6, 5, 0, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-  jslix.addTextMap("../image/menu/BasicAlpha.png")
+  jslix.addTextMap("../image/menu/smallAlpha.png")
 
+  jslix.addRotatePixels()
+  jslix.addFlipY()
+  jslix.addColorChange(128, 128, 128, 255, 255, 0, 255, 255, 0)
+  jslix.addColorChange(160, 160, 160, 255, 255, 0, 255, 255, 0)
   jslix.addTextImage(0, "ADVANCE WARS")
   //jslix.addTextImage(0, "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
