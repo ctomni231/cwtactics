@@ -2,7 +2,7 @@ import * as fps from "./performance.js"
 import * as state from "./state.js"
 import { zipLists } from "./utils.js"
 
-import { MAIN_INFO, MAP_INFO } from "./config/debugPages.js"
+import { DEBUG_PAGES } from "./config/debugPages.js"
 
 const FLOW_RESET_TIME_IN_MS = 1000
 const SHIFT_LEFT = 10
@@ -17,8 +17,6 @@ const TOGGLE_DEBUG_FLOW = [
   "UP", "RIGHT", "DOWN", "LEFT", 
   "UP", "RIGHT", "DOWN", "LEFT"
 ]
-
-const DEBUG_PAGES = [ MAIN_INFO, MAP_INFO ]
 
 const debugActivationFlow = zipLists(TOGGLE_DEBUG_FLOW, ["", "-"], (id, modifier) => modifier + id)
 const loop = state.loop
@@ -84,11 +82,11 @@ export function render(canvas, ctx) {
     const debugSheet = DEBUG_PAGES[selectedDebugPage]
 
     ctx.fillStyle = "black";
-    ctx.font = "bold 10px sans-serif";
+    ctx.font = "8px monospace";
     
-    ctx.globalAlpha = 0.8
+    ctx.globalAlpha = 0.9
 
-    ctx.fillText("DEBUG PAGE - " + debugSheet.name, SHIFT_LEFT, SHIFT_TOP);
+    ctx.fillText("DEBUG - " + debugSheet.name, SHIFT_LEFT, SHIFT_TOP);
 
     for (let rowId = 1; rowId <= MAX_DATA_ROWS; rowId++) {
       const rowIdentifier = "row" + rowId
@@ -103,7 +101,7 @@ export function render(canvas, ctx) {
         const data = debugSheet.data[rowIdentifier][columnIdentifier]
         const key = data[0]
         const value = getDataFromState(data[1])
-
+   
         const xKey = SHIFT_LEFT + (2 * COLUMN_WIDTH * (columnId - 1))
         const xValue = xKey + COLUMN_WIDTH
         const y = SHIFT_TOP + ROW_HEIGHT + (ROW_HEIGHT * (rowId))

@@ -2,11 +2,13 @@ import { mapping } from "./config/input.js"
 import { input as actionStatusMap } from "./state.js"
 
 const actionStatusCounterMap = {}
+const keyStatusCounterMap = {}
 
 function evaluateKeyEvent(keyStatusModifier, event) {
   const eventKey = event.code
+  const newKeyStatus = keyStatusModifier === 1 ? true : false
 
-  if (event.repeat) {
+  if (keyStatusCounterMap[eventKey] === newKeyStatus) {
     return
   }
 
@@ -18,11 +20,12 @@ function evaluateKeyEvent(keyStatusModifier, event) {
 
   const currentCounter = actionStatusCounterMap[eventAction] || 0
   const newCounter = currentCounter + keyStatusModifier
-
+  
   if (newCounter < 0) {
     throw new Error("illegal state, action status counter is below 0")
   }
 
+  keyStatusCounterMap[eventKey] = newKeyStatus
   actionStatusCounterMap[eventAction] = newCounter
 
   event.preventDefault();
@@ -41,7 +44,7 @@ function updateActionStatus(keyId, counterStatus) {
 } 
 
 export function setup () {
-
+ 
   Object.keys(actionStatusCounterMap).forEach(key => actionStatusCounterMap[key] = 0)
 
   Object.keys(actionStatusCounterMap).forEach(key => {
