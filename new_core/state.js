@@ -18,7 +18,11 @@ export const state = {
 
 export const cursor = { 
   x: 0, 
-  y: 0
+  y: 0,
+  selected: {
+    unit: null,
+    property: null
+  }
 }
 
 export const screen = {

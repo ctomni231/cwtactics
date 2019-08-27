@@ -1,27 +1,4 @@
 export const DEBUG_PAGES = [
-	{
-	  name: "Performance",
-	  data: {
-	    row1: {
-	      col1: [ "FPS", "performance.gameloop.fps" ]
-	    },
-	    row2: {
-	      col1: [ "update game", ""],
-	      col2: [ "average", "performance.gameloop.averageDuration" ],
-	      col3: [ "last", "performance.gameloop.lastDuration" ]
-	    },
-	    row3: {
-	      col1: [ "update screen", ""],
-	      col2: [ "average", "performance.screen_update.averageDuration" ],
-	      col3: [ "last", "performance.screen_update.lastDuration" ]
-	    },
-	    row4: {
-	      col1: [ "render", ""],
-	      col2: [ "average", "performance.screen_render.averageDuration" ],
-	      col3: [ "last", "performance.screen_render.lastDuration" ]
-	    }
-	  }
-	},
 	
 	{
 	  name: "Map",
@@ -45,6 +22,32 @@ export const DEBUG_PAGES = [
 	      col1: [ "screen size", "" ],
 	      col2: [ "width", "screen.width" ],
 	      col3: [ "height", "screen.height" ]
+			},
+			row5: {
+				col2: [ "unit", "cursor.selected.unit.typeId"]
+			}
+		}
+	},
+	{
+	  name: "Performance",
+	  data: {
+	    row1: {
+	      col1: [ "FPS", "performance.gameloop.fps" ]
+	    },
+	    row2: {
+	      col1: [ "update game", ""],
+	      col2: [ "average", "performance.gameloop.averageDuration" ],
+	      col3: [ "last", "performance.gameloop.lastDuration" ]
+	    },
+	    row3: {
+	      col1: [ "update screen", ""],
+	      col2: [ "average", "performance.screen_update.averageDuration" ],
+	      col3: [ "last", "performance.screen_update.lastDuration" ]
+	    },
+	    row4: {
+	      col1: [ "render", ""],
+	      col2: [ "average", "performance.screen_render.averageDuration" ],
+	      col3: [ "last", "performance.screen_render.lastDuration" ]
 	    }
 	  }
 	},

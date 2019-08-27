@@ -101,7 +101,15 @@ export function setup () {
 }
 
 export function update () {
+  const somethingIsSelected = cursor.selected.unit || cursor.selected.property
+
   if (input.CANCEL) {
+    if (somethingIsSelected) {
+      cursor.selected.unit = null
+      cursor.selected.property = null
+      return
+    }
+
     state.next = "INITIAL"
   }
 
@@ -125,6 +133,16 @@ export function update () {
 
   if (shouldShiftScreenOnYAxis) {
     moveScreen(BOUNDARY_Y, shiftY)
+  }
+
+  if (!somethingIsSelected && input.ACTION) {
+    cursor.selected.unit = null
+    cursor.selected.property = null
+
+    const unitIdAtPosition = map.tiles[cursor.x][cursor.y].unitId;
+    if (unitIdAtPosition !== -1) {
+      cursor.selected.unit = units[unitIdAtPosition]
+    }
   }
 
   updateTween(animationData, true, loop.delta)
