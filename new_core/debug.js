@@ -1,6 +1,7 @@
 import * as fps from "./performance.js"
 import * as state from "./state.js"
 import { zipLists } from "./utils.js"
+import { updateTween, createTween, prepareTween } from "./tween.js"
 
 import { DEBUG_PAGES } from "./config/debugPages.js"
 
@@ -27,6 +28,8 @@ let debugPanelVisible = true
 let resetFlowTimer = FLOW_RESET_TIME_IN_MS
 let selectedDebugPage = 0
 
+const inputDelay = createTween({ step: 1, duration: 250 })
+
 function getDataFromState (key) {
   if (key === "") return key
     
@@ -40,14 +43,16 @@ function getDataFromState (key) {
 } 
 
 export function update() {
+  const isDebugControlTriggered = input.DEBUG_A || input.DEBUG_B
 
-  if (input.DEBUG_A) {
-    selectedDebugPage = Math.max(0, selectedDebugPage - 1)
-    return
-  }
+  updateTween(inputDelay, false, loop.delta)
 
-  if (input.DEBUG_B) {
-    selectedDebugPage = Math.min(DEBUG_PAGES.length - 1, selectedDebugPage + 1)
+  if (inputDelay.step.value === 1 && isDebugControlTriggered) {
+    selectedDebugPage = input.DEBUG_A 
+      ? Math.max(0, selectedDebugPage - 1)
+      : Math.min(DEBUG_PAGES.length - 1, selectedDebugPage + 1)
+
+    prepareTween(inputDelay, { step: 0 })
     return
   }
 
