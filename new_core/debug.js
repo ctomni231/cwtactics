@@ -37,7 +37,7 @@ function getDataFromState (key) {
   let data = state
   for (let index = 0; index < keyParts.length; index++) {
     data = data[keyParts[index]]
-    if (data === undefined) return "N/A"
+    if (data === undefined || data === null) return "N/A"
   }
   return data
 } 
