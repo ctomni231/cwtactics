@@ -41,6 +41,8 @@ const animationData = createTween({
   duration: 750
 })
 
+const inputDelay = createTween({ step: 1, duration: 80 })
+
 const tempIdMap = {
   "CWT_PLIN": 1,
   "CWT_INFT": 2,
@@ -113,6 +115,13 @@ export function update () {
     state.next = "INITIAL"
   }
 
+  updateTween(animationData, true, loop.delta)
+  updateTween(inputDelay, false, loop.delta)
+  
+  if (inputDelay.step.value < 1) {
+    return
+  }
+
   const shiftX = (input.LEFT ? -1 : (input.RIGHT ? +1 : 0))
   const shiftY = (input.UP ? -1 : (input.DOWN ? +1 : 0))
 
@@ -135,6 +144,7 @@ export function update () {
     moveScreen(BOUNDARY_Y, shiftY)
   }
 
+
   if (!somethingIsSelected && input.ACTION) {
     cursor.selected.unit = null
     cursor.selected.property = null
@@ -146,6 +156,11 @@ export function update () {
   }
 
   updateTween(animationData, true, loop.delta)
+
+  //if (shiftX || shiftY) {
+  //  prepareTween(inputDelay, { step: 0 })
+  //}
+
   tileInfo.update()
 }
 
