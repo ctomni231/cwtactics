@@ -7,6 +7,7 @@ Xenesis
 JakeSamiRulz
 Tapsi
 CesarRamsan
+MobiusReactor
  
 <ART>
 secv90
@@ -79,6 +80,23 @@ BiggaBertha
 Ohloh
 GoogleCode
 Github
+
+<SPRITERS RESOURCE>
+Amyd
+Arima
+AzRaezel
+CJ the Hedgehog
+Dan
+Dazz
+LINK1438
+Lunar Chris
+P-P
+Random Rebel Soldier
+Rogultgot
+Ryan914
+Trigononamous
+Zack
+
  
  
  
