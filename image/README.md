@@ -20,13 +20,17 @@ The new image convention allows for a lot more flexibility than its predecessor.
 
 `<Game Type>(<Weather Type>)_<Object Type>(<Connection Type>)_<Faction Type>-<Direction>$<8-Way Connection>`
 
+`<Game Type>(<Weather Type>)_<Object Type>(<Connection Type>)_<Faction Type>-<Direction>%<List Connection>_<List Connection>_...`
+
 *Game Type:* This is the abbreviation for the objects game origin.  
 *Weather Type*: This is the abbreviation for the objects weather type.  
 *Object Type*: This is the 4-letter abbreviation for the object.  
 *Connection Type*: This is the type of connection this tile connects with.  
 *Faction Type*: This is the abbreviation for the type of faction this object represents.  
 *Direction*: This is the abbreviation for the direction this object is facing.   
-*8-way Connection*: This orders the connections for N-S-W-E-NW-NE-SW-SE to show the best combination of connection for a certain tile.  
+*8-way Connection*: This orders the connections for N-S-W-E-NW-NE-SW-SE to show the best combination of connection for a certain tile.
+
+*List Connection*: Ox-1y0 - This uses a list to show how much (x,y) distance a tile must be away from another tile to form a connection.
 
 ### Folder Format
 
