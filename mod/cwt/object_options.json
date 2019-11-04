@@ -32,10 +32,10 @@
 	],
 	
 	"unit_status" : [
-		["W", "[W]ait(1)/Active(0)],
-		["H", "[H]idden(1)/Visible(0)],
-		["C", "[C]ommander(1)/Normal(0)],
-		["D", "[D]isabled(1)/Active(0)],
-		["T", "De[t]ected(1)/Visible(0)]
+		["W", "[W]ait(1)/Active(0)"],
+		["H", "[H]idden(1)/Visible(0)"],
+		["C", "[C]ommander(1)/Normal(0)"],
+		["D", "[D]isabled(1)/Active(0)"],
+		["T", "De[t]ected(1)/Visible(0)"]
 	]
 }
