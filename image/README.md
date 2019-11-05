@@ -14,7 +14,7 @@ The new image convention allows for a lot more flexibility than its predecessor.
 
 ## Format
 
-`AWDS(C)_PLIN(L)$~~~~~~~~`
+`AWDS(C)_PLIN$~~~~~~~~`
 
 `AWDS(C)_INFT_OS`
 
