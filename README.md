@@ -4,4 +4,4 @@
 
 ##### Information
 
-We've slimmed down the master branch for quick deployment. Please find the older code within the 'cwt-game' branch and the 'test' branch. The lastest information about our site and purpose can always be found on the [Custom Wars Tactics webpage.](http://ctomni231.github.io/cwtactics) Thank you!
+We've slimmed down the master branch for quick deployment. Please find the older code within the 'cwt-game' branch and the 'old-cwt' branch. The lastest information about our site and purpose can always be found on the [Custom Wars Tactics webpage.](http://ctomni231.github.io/cwtactics) Thank you!
