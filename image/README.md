@@ -73,7 +73,8 @@ This shows how objects are organized within the object files for units, terrain(
 * *R* = River/Shallow
 * *O* = Road/Bridge
 * *P* = Pipe/PipeSeam
-* *Z* = Meteor/Plazma
+* *Z* = Meteor/Plasma
+* *Y* = Sky
 * *D* = Destroyed
 
 ## Tileset Types
@@ -155,15 +156,16 @@ This shows how objects are organized within the object files for units, terrain(
 * *SHOA* = Shoals
 * *SEAS* = Seas
 * *METR* = Meteor
-* *PLZM* = Plasma
-* *PLZP* = Plazma Pipe
-* *PZPS* = Plazma Pipeseam
+* *PLSM* = Plasma
+* *PLSP* = Plasma Pipe
+* *PSPS* = Plasma Pipeseam
 * *PIPE* = Pipe
 * *PIPR* = Piperail
 * *SWMP* = Swamp
 * *MIST* = Mist
 * *RSEA* = Rough Seas
 * *FIRE* = Fire
+* *LAVA* = Meteor Lava
 * *NULL* = Null
 
 ## Property Types
