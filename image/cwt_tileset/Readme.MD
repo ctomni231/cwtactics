@@ -123,15 +123,16 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *SHOA* = Shoals
 * [x] *SEAS* = Seas
 * [x] *METR* = Meteor
-* [ ] *PLZM* = Plasma
-* [ ] *PLZP* = Plazma Pipe
-* [ ] *PZPS* = Plazma Pipeseam
+* [ ] *PLSM* = Plasma
+* [ ] *PLSP* = Plasma Pipe
+* [ ] *PSPS* = Plasma Pipeseam
 * [x] *PIPE* = Pipe
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
+* [ ] *LAVA* = Meteor Lava
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -197,15 +198,16 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *SHOA* = Shoals
 * [x] *SEAS* = Seas
 * [x] *METR* = Meteor
-* [ ] *PLZM* = Plasma
-* [ ] *PLZP* = Plazma Pipe
-* [ ] *PZPS* = Plazma Pipeseam
+* [ ] *PLSM* = Plasma
+* [ ] *PLSP* = Plasma Pipe
+* [ ] *PSPS* = Plasma Pipeseam
 * [x] *PIPE* = Pipe
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
+* [ ] *LAVA* = Meteor Lava
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -271,15 +273,16 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *SHOA* = Shoals
 * [x] *SEAS* = Seas
 * [x] *METR* = Meteor
-* [ ] *PLZM* = Plasma
-* [ ] *PLZP* = Plazma Pipe
-* [ ] *PZPS* = Plazma Pipeseam
+* [ ] *PLSM* = Plasma
+* [ ] *PLSP* = Plasma Pipe
+* [ ] *PSPS* = Plasma Pipeseam
 * [x] *PIPE* = Pipe
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
+* [ ] *LAVA* = Meteor Lava
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -339,15 +342,16 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *SHOA* = Shoals
 * [ ] *SEAS* = Seas
 * [ ] *METR* = Meteor
-* [ ] *PLZM* = Plasma
-* [ ] *PLZP* = Plazma Pipe
-* [ ] *PZPS* = Plazma Pipeseam
+* [ ] *PLSM* = Plasma
+* [ ] *PLSP* = Plasma Pipe
+* [ ] *PSPS* = Plasma Pipeseam
 * [ ] *PIPE* = Pipe
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
+* [ ] *LAVA* = Meteor Lava
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -407,15 +411,16 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *SHOA* = Shoals
 * [ ] *SEAS* = Seas
 * [ ] *METR* = Meteor
-* [ ] *PLZM* = Plasma
-* [ ] *PLZP* = Plazma Pipe
-* [ ] *PZPS* = Plazma Pipeseam
+* [ ] *PLSM* = Plasma
+* [ ] *PLSP* = Plasma Pipe
+* [ ] *PSPS* = Plasma Pipeseam
 * [ ] *PIPE* = Pipe
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
+* [ ] *LAVA* = Meteor Lava
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -475,15 +480,16 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *SHOA* = Shoals
 * [ ] *SEAS* = Seas
 * [ ] *METR* = Meteor
-* [ ] *PLZM* = Plasma
-* [ ] *PLZP* = Plazma Pipe
-* [ ] *PZPS* = Plazma Pipeseam
+* [ ] *PLSM* = Plasma
+* [ ] *PLSP* = Plasma Pipe
+* [ ] *PSPS* = Plasma Pipeseam
 * [ ] *PIPE* = Pipe
 * [ ] *PIPR* = Piperail
 * [ ] *SWMP* = Swamp
 * [ ] *MIST* = Mist
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
+* [ ] *LAVA* = Meteor Lava
 * [ ] *NULL* = Null
 
 ## Property Types
