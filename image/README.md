@@ -166,6 +166,7 @@ This shows how objects are organized within the object files for units, terrain(
 * *RSEA* = Rough Seas
 * *FIRE* = Fire
 * *LAVA* = Meteor Lava
+* *SKYS* = Sky
 * *NULL* = Null
 
 ## Property Types
