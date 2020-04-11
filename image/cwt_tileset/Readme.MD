@@ -133,6 +133,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
+* [ ] *SKYS* = Sky
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -208,6 +209,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
+* [ ] *SKYS* = Sky
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -283,6 +285,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
+* [ ] *SKYS* = Sky
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -352,6 +355,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
+* [ ] *SKYS* = Sky
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -421,6 +425,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
+* [ ] *SKYS* = Sky
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -490,6 +495,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *RSEA* = Rough Seas
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
+* [ ] *SKYS* = Sky
 * [ ] *NULL* = Null
 
 ## Property Types
