@@ -5,7 +5,7 @@
 	
 	"terr_status" : [
 		["B", "[B]locked(1)/Free(0)"]
-		["F", "[F]ire(1)/Active(0)"]
+		["F", "[F]ire(1)/Normal(0)"]
 	],
 	
 	
@@ -24,18 +24,14 @@
 		["F",  99, "Fuel/Rations", "# of fuel before a unit can no longer move"],
 		["R",   0, "Rank", "The rank of this unit (I, II, V, A)"],
 		["B",  -1, "Building Materials", "# of materials a unit has for building"],
-		["E",   0, "Experience", "Just in case, holds unit experience"],
-		
-		["M",  -1, "Movement", "Movement Range of this unit"],
-		["V",   2, "Vision", "Vision Radius of the unit in FOW"],
-		["Z",  -1, "CO Zone", "CO Zone Range of the unit"]
+		["E",   0, "Experience", "Just in case, holds unit experience"]
 	],
 	
 	"unit_status" : [
-		["W", "[W]ait(1)/Active(0)],
-		["H", "[H]idden(1)/Visible(0)],
-		["C", "[C]ommander(1)/Normal(0)],
-		["D", "[D]isabled(1)/Active(0)],
-		["T", "De[t]ected(1)/Visible(0)]
+		["W", "[W]ait(1)/Active(0)"],
+		["H", "[H]idden(1)/Visible(0)"],
+		["C", "[C]ommander(1)/Normal(0)"],
+		["D", "[D]isabled(1)/Active(0)"],
+		["T", "De[t]ected(1)/Undetected(0)"]
 	]
 }
