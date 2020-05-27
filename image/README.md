@@ -67,6 +67,7 @@ This shows how objects are organized within the object files for units, terrain(
 ## Cursor and Terrain Connection Image Abbreviations
 
 * *~* = Land/Neutral/Wildcard
+* *L* = Plain
 * *W* = Wall
 * *S* = Sea/Ocean
 * *B* = Shoal/Beach
