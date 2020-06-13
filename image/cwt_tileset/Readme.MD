@@ -9,8 +9,16 @@ This is the main sprite folder for dealing with the in-game sprites using the ne
 
 ## Sprite Compilation (Useful for animations)
 
-- [Starter Sprites](http://awcomics.wikia.com/wiki/Starter_Sprites) - 
+- [Starter Sprites](http://awcomics.wikia.com/wiki/Starter_Sprites) -
 List of pretty much every sprite you'd ever need for reference.
+
+## Animation Timings
+
+* SEAS - [12, 15, 15, 12, 12, 15, 15, 12],
+* RIVR - [14, 14, 14, 14, 14, 14, 14, 14],
+* PROPS - [16, 16, 16, 16],
+* UNITS - [8, 17, 8, 17]
+Seas, rivers, buildings and units respectively
 
 # Custom Wars Tactics - Units
 
@@ -48,7 +56,7 @@ List of pretty much every sprite you'd ever need for reference.
 
 * [x] *TCTR* = Transport-Helicopter
 * [x] *BCTR* = Battle-Helicopter
-* [x] *FGTR* = Jet Fighter 
+* [x] *FGTR* = Jet Fighter
 * [x] *BMBR* = Bomber
 * [x] *BKBM* = Black Nuclear-Bomb
 * [x] *STLH* = Stealth
@@ -134,6 +142,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
 * [ ] *SKYS* = Sky
+* [ ] *SBRG* = Suspension Bridge
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -155,6 +164,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *LABS* = Lab
 * [ ] *QURY* = Query
 * [ ] *ORIG* = Oil Rig
+* [ ] *PSTN* = Pipestation
 * [x] *WALL* = Wall
 
 ## Inventions
@@ -210,6 +220,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
 * [ ] *SKYS* = Sky
+* [ ] *SBRG* = Suspension Bridge
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -231,6 +242,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *LABS* = Lab
 * [ ] *QURY* = Query
 * [ ] *ORIG* = Oil Rig
+* [ ] *PSTN* = Pipestation
 * [x] *WALL* = Wall
 
 ## Inventions
@@ -286,6 +298,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
 * [ ] *SKYS* = Sky
+* [ ] *SBRG* = Suspension Bridge
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -307,6 +320,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [x] *LABS* = Lab
 * [ ] *QURY* = Query
 * [ ] *ORIG* = Oil Rig
+* [ ] *PSTN* = Pipestation
 * [ ] *WALL* = Wall
 
 ## Inventions
@@ -356,6 +370,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
 * [ ] *SKYS* = Sky
+* [ ] *SBRG* = Suspension Bridge
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -377,6 +392,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *LABS* = Lab
 * [ ] *QURY* = Query
 * [ ] *ORIG* = Oil Rig
+* [ ] *PSTN* = Pipestation
 * [ ] *WALL* = Wall
 
 ## Inventions
@@ -426,6 +442,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
 * [ ] *SKYS* = Sky
+* [ ] *SBRG* = Suspension Bridge
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -447,6 +464,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *LABS* = Lab
 * [ ] *QURY* = Query
 * [ ] *ORIG* = Oil Rig
+* [ ] *PSTN* = Pipestation
 * [ ] *WALL* = Wall
 
 ## Inventions
@@ -496,6 +514,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *FIRE* = Fire
 * [ ] *LAVA* = Meteor Lava
 * [ ] *SKYS* = Sky
+* [ ] *SBRG* = Suspension Bridge
 * [ ] *NULL* = Null
 
 ## Property Types
@@ -517,6 +536,7 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *LABS* = Lab
 * [ ] *QURY* = Query
 * [ ] *ORIG* = Oil Rig
+* [ ] *PSTN* = Pipestation
 * [ ] *WALL* = Wall
 
 ## Inventions
@@ -542,4 +562,3 @@ List of pretty much every sprite you'd ever need for reference.
 * [ ] *BARK* = Black Hole Ark (3x3 Tiles)
 * [ ] *TGUN* = IDS Talon Gun (3x3 Tiles)
 * [ ] *DTGN* = IDS Talon Gun Rubble (3x3 Tiles)
-

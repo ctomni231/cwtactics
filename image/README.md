@@ -74,7 +74,8 @@ This shows how objects are organized within the object files for units, terrain(
 * *R* = River/Shallow
 * *O* = Road/Bridge
 * *P* = Pipe/PipeSeam
-* *Z* = Meteor/Plasma
+* *A* = Meteor
+* *Z* = Plasma
 * *Y* = Sky
 * *D* = Destroyed
 
@@ -168,6 +169,7 @@ This shows how objects are organized within the object files for units, terrain(
 * *FIRE* = Fire
 * *LAVA* = Meteor Lava
 * *SKYS* = Sky
+* *SBRG* = Suspension Bridge
 * *NULL* = Null
 
 ## Property Types
@@ -189,6 +191,7 @@ This shows how objects are organized within the object files for units, terrain(
 * *LABS* = Lab
 * *QURY* = Query
 * *ORIG* = Oil Rig
+* *PSTN* = Pipestation
 * *WALL* = Wall
 
 ## Inventions
@@ -209,7 +212,7 @@ This shows how objects are organized within the object files for units, terrain(
 * *TGUN* = IDS Talon Gun (3x3 Tiles)
 * *DTGN* = IDS Talon Gun Rubble (3x3 Tiles)
 
-## Army Factions
+## Army Colors
 
 * *GD* = Gray Diamond (Neutral/Freelance)
 * *OS* = Orange Star [Default]
