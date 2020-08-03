@@ -4,7 +4,7 @@
   	"link":"http://ctomni231.github.io/cwtactics/0_3_5/game/game.html",
     "title":"Play Online Game Now" },
 
-  { "id":"dialogYoutube",
+  { "id":"linkYoutube",
   	"label": "Youtube",
   	"link":"https://www.youtube.com/watch?v=Sk3DbeT4Lu0&list=PLUzRa1AxH5WW0xqlJ9y_SaxfKhwchF1R8",
     "title":"Watch various official CWT videos" },
