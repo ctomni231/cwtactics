@@ -27,7 +27,7 @@ The new image convention allows for a lot more flexibility than its predecessor.
 *Object Type*: This is the 4-letter abbreviation for the object.  
 *Connection Type*: This is the type of connection this tile connects with.  
 *Faction Type*: This is the abbreviation for the type of faction this object represents.  
-*Direction*: This is the abbreviation for the direction this object is facing.   
+*Direction*: This is the abbreviation for the direction this object is facing (N-S-W-E-U-D).  
 *8-way Connection*: This orders the connections for N-S-W-E-NW-NE-SW-SE to show the best combination of connection for a certain tile.
 
 *List Connection*: Ox-1y0 - This uses a list to show how much (x,y) distance a tile must be away from another tile to form a connection.
@@ -68,14 +68,14 @@ This shows how objects are organized within the object files for units, terrain(
 
 * *~* = Land/Neutral/Wildcard
 * *L* = Plain
+* *M* = Mountain
 * *W* = Wall
 * *S* = Sea/Ocean
 * *B* = Shoal/Beach
 * *R* = River/Shallow
 * *O* = Road/Bridge
 * *P* = Pipe/PipeSeam
-* *A* = Meteor
-* *Z* = Plasma
+* *Z* = Meteor/Plasma
 * *Y* = Sky
 * *D* = Destroyed
 
@@ -87,6 +87,10 @@ This shows how objects are organized within the object files for units, terrain(
 * *AWDR* = Advance Wars Days of Ruin/Dark Conflict
 * *CW* = Custom Wars (Original)
 * *CWT* = Custom Wars Tactics [Default]
+
+## Weapon Types
+
+* *MGUN* = Machine Gun
 
 ## Unit Types - Direct Land
 
@@ -119,7 +123,7 @@ This shows how objects are organized within the object files for units, terrain(
 
 * *TCTR* = Transport-Helicopter
 * *BCTR* = Battle-Helicopter
-* *FGTR* = Jet Fighter 
+* *FGTR* = Jet Fighter
 * *BMBR* = Bomber
 * *BKBM* = Black Nuclear-Bomb
 * *STLH* = Stealth
@@ -212,7 +216,7 @@ This shows how objects are organized within the object files for units, terrain(
 * *TGUN* = IDS Talon Gun (3x3 Tiles)
 * *DTGN* = IDS Talon Gun Rubble (3x3 Tiles)
 
-## Army Colors
+## Army Factions
 
 * *GD* = Gray Diamond (Neutral/Freelance)
 * *OS* = Orange Star [Default]
@@ -290,7 +294,7 @@ These are groups that make it easier affect many unit statistics at once. This w
 
 * *TCTR* = Transport-Helicopter
 * *BCTR* = Battle-Helicopter
-* *FGTR* = Jet Fighter 
+* *FGTR* = Jet Fighter
 * *BMBR* = Bomber
 * *BKBM* = Black Nuclear-Bomb
 * *STLH* = Stealth
@@ -319,7 +323,7 @@ These are groups that make it easier affect many unit statistics at once. This w
 * *FLRE* = Flare
 * *TCTR* = Transport-Helicopter
 * *BCTR* = Battle-Helicopter
-* *FGTR* = Jet Fighter 
+* *FGTR* = Jet Fighter
 * *BMBR* = Bomber
 * *BKBM* = Black Nuclear-Bomb
 * *STLH* = Stealth
@@ -382,7 +386,7 @@ These are groups that make it easier affect many unit statistics at once. This w
 
 * *TCTR* = Transport-Helicopter
 * *BCTR* = Battle-Helicopter
-* *FGTR* = Jet Fighter 
+* *FGTR* = Jet Fighter
 * *BMBR* = Bomber
 * *BKBM* = Black Nuclear-Bomb
 * *STLH* = Stealth
@@ -422,7 +426,7 @@ These are groups that make it easier affect many unit statistics at once. This w
 
 ### @ARH - Air High Flight Unit Group - Movement Type Special
 
-* *FGTR* = Jet Fighter 
+* *FGTR* = Jet Fighter
 * *BMBR* = Bomber
 * *BKBM* = Black Nuclear-Bomb
 * *STLH* = Stealth
@@ -498,7 +502,7 @@ These are groups that make it easier affect many unit statistics at once. This w
 
 ### @PLN - Airplane Unit Group - Unit Type
 
-* *FGTR* = Jet Fighter 
+* *FGTR* = Jet Fighter
 * *BMBR* = Bomber
 * *STLH* = Stealth
 * *SEAP* = Seaplane
@@ -533,7 +537,7 @@ These are groups that make it easier affect many unit statistics at once. This w
 * *ACAR* = Aircraft-Carrier
 * *GNBT* = Gunboat
 * *DSYR* = Destroyer
- 
+
 ***
 
 # File Organization (Deprecated)
