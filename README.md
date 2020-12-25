@@ -2,11 +2,9 @@
 
 # Custom Wars Tactics
 
-## [Visit CWT Webpage](http://ctomni231.github.io/cwtactics)
-
-## [CWT Blog - Latest Information](http://cwtactics.blogspot.com/)
-
-## [Play Latest Version Online - Version 0.35.1](http://ctomni231.github.io/cwtactics/0_3_5/game/game.html)
+* [Visit CWT Webpage](http://ctomni231.github.io/cwtactics)
+* [CWT Blog - Latest Information](http://cwtactics.blogspot.com/)
+* [Play Latest Version Online - Version 0.35.1](http://ctomni231.github.io/cwtactics/0_3_5/game/game.html)
 
 ## Information - As of Dec-2020
 
