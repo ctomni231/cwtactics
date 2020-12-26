@@ -19,7 +19,7 @@ import java.awt.Color;
  *
  * A remix of ImageSorter, ImgLibrary helps with organizing and sectioning
  * images. It performs recolors, resizes images, stores images, and sets
- * optional references for images. Combines TextImg, PixtureMap, and Img 
+ * optional references for images. Combines TextImg, PixtureMap, and Img
  * into one big huge verbose package
  *
  * @author Carr, Crecen
@@ -31,13 +31,17 @@ import java.awt.Color;
 // I also have to change it so it can deal with GIF images. Hopefully
 // not slowing this entire class down to a crawl when doing it
 
-// Pieces of the Animated GIF are in ImgHolder and ImgLoader 
-// Don't forget to take out slick while this is being done 
+// Pieces of the Animated GIF are in ImgHolder and ImgLoader
+// Don't forget to take out slick while this is being done
+
+// We are going to need to add TextImgLibrary things in here as well
+
+// We are also going to need the dreaded draw functions
 
 public class ImgLibrary extends Component{
-    
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// Image Library Stuff
 	/** Helps with loading images */
     protected ImgLoader il;
@@ -67,7 +71,7 @@ public class ImgLibrary extends Component{
     private ImgHolder tempImg;
     /** Holds which scaling algorithm to use **/
     private int imgscale;
-    
+
     // PixtureMap stuff
     /** The default font type */
     public final String FONT = "DIALOG";
@@ -85,7 +89,7 @@ public class ImgLibrary extends Component{
     private int[][] editgrid;
     /** The current opacity of an update */
     private double editOpacity;
-    
+
     // Text Image Library Stuff
     /** Capital Letters Position */
     private final int ASCII_CAP = 65;
@@ -117,14 +121,14 @@ public class ImgLibrary extends Component{
         rotNine = false;
         tempImg = new ImgHolder();
         imgscale = Image.SCALE_AREA_AVERAGING;
-        
+
         // PixtureMap
         editOpacity = 1.0;
         createImage(1, 1);
         editSizeX = 1;
         editSizeY = 1;
         transparent = Color.BLACK;
-        
+
         // TextImgLibrary
         bimg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     }
@@ -242,7 +246,7 @@ public class ImgLibrary extends Component{
     public void setPixelIgnore(Color ignoreColor){
         if(ignoreColor != null)  colorBlend.add(ignoreColor.getRGB());
     }
-    
+
     /**
      * Sets the image scale to a particular scale
      * @param scale The scale algorithm to use
@@ -250,10 +254,10 @@ public class ImgLibrary extends Component{
     public void setScale(int scale) {
     	imgscale = scale;
     }
-    
+
     /**
      * Set the scaling quality of the image [* => Default choice]
-     * @param value 0-Default, 1-fast, 2-Replicate, 3-ScaleAreaAveraging*, 4-Smooth 
+     * @param value 0-Default, 1-fast, 2-Replicate, 3-ScaleAreaAveraging*, 4-Smooth
      */
     public void setQuality(int value) {
     	if(value <= 0) {
@@ -650,6 +654,143 @@ public class ImgLibrary extends Component{
     }
 
     //-----------------
+    //DRAW FUNCTIONS
+    //-----------------
+
+    //public abstract boolean drawImage(Image img, int x, int y, ImageObserver observer)
+    //public abstract boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer)
+    //public abstract boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer)
+    //public abstract boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer)
+    //public abstract boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver observer)
+    //public abstract boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer)
+
+    /**
+     * This function places an image on a destination screen. Used
+     * primarily for drawing items to the screen quickly.
+     * @param g The Java2D Graphics Object
+     * @param index The index of the image in ImgLibrary
+     * @param dlx The destination (screen) x-axis location of the image
+     * @param dly The destination (screen) y-axis location of the image
+     * @param dthis The Component to draw the image to
+     */
+    public void placeImg(Graphics2D g, int index, int dlx, int dly,
+                        Component dthis){
+        g.drawImage(getImage(index), dlx, dly, dthis);
+    }
+
+    /**
+     * This function draws the image on a destination screen. Used
+     * for drawing items to the screen and allowing for scaling of the
+     * destination image on the fly
+     * @param g The Java2D Graphics Object
+     * @param index The index of the image in ImgLibrary
+     * @param dlx The destination (screen) x-axis position of the image
+     * @param dly The destination (screen) y-axis position of the image
+     * @param dsx The destination (screen) horizontal width of the image
+     * @param dsy The destination (screen) vertical height of the image
+     * @param dthis The Component to draw the image to
+     */
+    public void drawImg(Graphics2D g, int index, int dlx, int dly,
+                                      int dsx, int dsy, Component dthis){
+
+    }
+
+    /**
+     * This function is used for placing one shifted image on the
+     * destination screen. Used for making a picture that will slide out
+     * of view, or could also be used for screen shakes.
+     *
+     * If slx and sly are both zero, you'll return a normal image placed
+     * like the function placeImg
+     *
+     * @param g The Java2D Graphics Object
+     * @param index The index of the image in ImgLibrary
+     * @param slx The source (picture) x-axis cut position of the image
+     * @param sly The source (picture) y-axis cut position of the image
+     * @param dlx The destination (screen) x-axis position of the image
+     * @param dly The destination (screen) y-axis position of the image
+     * @param dthis The Component to draw the image to
+     */
+    public void placeCropImg(Graphics2D g, int index, int slx, int sly,
+                                           int dlx, int dly, Component dthis){
+
+    }
+
+    /**
+     * This function is used for drawing one shifted image on the
+     * destination screen. Used for making a picture that will slide out
+     * of view, or could also be used for screen shakes. This function
+     * will allow for scaling of the destination image
+     *
+     * If slx and sly are both zero, you'll return a normal image drawn
+     * like the function drawImg
+     *
+     * @param g The Java2D Graphics Object
+     * @param index The index of the image in ImgLibrary
+     * @param slx The source (picture) x-axis cut position of the image
+     * @param sly The source (picture) y-axis cut position of the image
+     * @param dlx The destination (screen) x-axis position of the image
+     * @param dly The destination (screen) y-axis position of the image
+     * @param dsx The destination (screen) horizontal width of the image
+     * @param dsy The destination (screen) vertical height of the image
+     * @param dthis The Component to draw the image to
+     */
+    public void drawCropImg(Graphics2D g, int index, int slx, int sly, int dlx,
+                                int dly, int dsx, int dsy, Component dthis){
+
+    }
+
+    /**
+     * This function is used to place a cut image from the source picture
+     * directly on the destination screen. This can be used for sprite sheets
+     * as the default will make the size of the source and the destination
+     * images the same so the image will not scale when drawn
+     *
+     * If slx and sly are both zero, ssx is the original source image width,
+     * and ssy is the original image height, you'll return a normal image
+     * placed like the function placeImg
+     *
+     * @param g The Java2D Graphics Object
+     * @param index The index of the image in ImgLibrary
+     * @param slx The source (picture) x-axis cut position of the image
+     * @param sly The source (picture) y-axis cut position of the image
+     * @param ssx The source (picture) x-axis width slice of the image
+     * @param ssy The source (picture) y-axis height slice of the image
+     * @param dlx The destination (screen) x-axis position of the image
+     * @param dly The destination (screen) y-axis position of the image
+     * @param dthis The Component to draw the image to
+     */
+    public void placeCutImg(Graphics2D g, int index, int slx, int sly, int ssx,
+                                int ssy, int dlx, int dly, Component dthis){
+
+    }
+
+    /**
+     * This function is used to draw a cut image from the source picture
+     * directly on the destination screen. Unlike the function above, this
+     * allows you to scale the picture before it arrives at the destination
+     *
+     * If slx and sly are both zero, ssx is the original source image width,
+     * and ssy is the original image height, you'll return a normal image
+     * drawn like the function drawImg
+     *
+     * @param g The Java2D Graphics Object
+     * @param slx The source (picture) x-axis cut position of the image
+     * @param sly The source (picture) y-axis cut position of the image
+     * @param ssx The source (picture) x-axis width slice of the image
+     * @param ssy The source (picture) y-axis height slice of the image
+     * @param dlx The destination (screen) x-axis position of the image
+     * @param dly The destination (screen) y-axis position of the image
+     * @param dsx The destination (screen) horizontal width of the image
+     * @param dsy The destination (screen) vertical height of the image
+     * @param dthis The Component to draw the image to
+     */
+    public void drawCutImg(Graphics2D g, int index, int slx, int sly, int ssx,
+                int ssy, int dlx, int dly, int dsx, int dsy, Component dthis){
+
+    }
+
+    //-----------------
     //PRIVATE FUNCTIONS
     //-----------------
 
@@ -695,7 +836,7 @@ public class ImgLibrary extends Component{
                 rotNine = false;
             }
             tempImg.image = createImage(new MemoryImageSource(heldImg.origx,
-                    heldImg.origy, tempImg.pixels, 0, heldImg.origx));           
+                    heldImg.origy, tempImg.pixels, 0, heldImg.origx));
         }
         if (sizex*sizey < 1){
             heldImg.image = tempImg.image;
@@ -716,11 +857,11 @@ public class ImgLibrary extends Component{
         sizey = 0;
         return heldImg;
     }
-    
+
     // -----------------
     // PixtureMap stuff
     // -----------------
-    
+
     /**
      * This function creates the buffered image to be used with the grid
      * @param sizex The width of the buffered image
@@ -770,7 +911,7 @@ public class ImgLibrary extends Component{
     public void setImageToGrid(int index, int locx, int locy){
         int[] tempGrid = new int[getPixels(index).length];
         System.arraycopy(getPixels(index), 0, tempGrid, 0, tempGrid.length);
-        
+
         for(int i = 0; i < editSizeX; i++){
             for(int j = 0; j < editSizeY; j++){
                 if(((tempGrid[i+j*editSizeX] >> 24) & 0xff) < 200)
@@ -1080,11 +1221,11 @@ public class ImgLibrary extends Component{
         for(int i = 0; i < editSizeX; i++)
             editgrid[i][row] = temp[i];
     }
-    
+
     // ----------------------
     // TextImgLibrary Stuff
     // ----------------------
-    
+
     //-------
     //GETTERS
     //-------
@@ -1157,7 +1298,7 @@ public class ImgLibrary extends Component{
             return false;
 
         // ImageLibrary within ImageLibrary - is this legal?
-        // If not, we'll have to slice this pie another way 
+        // If not, we'll have to slice this pie another way
         ImgLibrary temp = new ImgLibrary();
         temp.addImage(img);
         double psx = img.getWidth(temp);
@@ -1183,7 +1324,7 @@ public class ImgLibrary extends Component{
      */
     public boolean addAllCapitalLetters(Image img, String ref,
             int slicex, int slicey, int start){
-        return addSlicedText(img, ref, slicex, slicey, start, 
+        return addSlicedText(img, ref, slicex, slicey, start,
                 ASCII_CAP, 26);
     }
 
@@ -1202,7 +1343,7 @@ public class ImgLibrary extends Component{
      */
     public boolean addAllLowerCaseLetters(Image img, String ref,
             int slicex, int slicey, int start){
-        return addSlicedText(img, ref, slicex, slicey, start, 
+        return addSlicedText(img, ref, slicex, slicey, start,
                 ASCII_LOW, 26);
     }
 
@@ -1221,7 +1362,7 @@ public class ImgLibrary extends Component{
      */
     public boolean addAllNumbers(Image img, String ref,
             int slicex, int slicey, int start){
-        return addSlicedText(img, ref, slicex, slicey, start, 
+        return addSlicedText(img, ref, slicex, slicey, start,
                 ASCII_NUMBER, 10);
     }
 
@@ -1268,7 +1409,7 @@ public class ImgLibrary extends Component{
         int scrollX = 0;
         //If no spacing can be found, it quits out.
         if(tsx == 0) return letterMax;
-                    
+
         //Sets up the PixtureMap
         prepareTextImage(word, locx, locy, limit, ref);
 
@@ -1425,7 +1566,7 @@ public class ImgLibrary extends Component{
             else if(psizey < getY(""+word.charAt(i)+""))
                 psizey = getY(""+word.charAt(i)+"");
         }
-        bimg = new BufferedImage((limit > 0) ? limit : 
+        bimg = new BufferedImage((limit > 0) ? limit :
             (locx+(psizex*letterMax) > 0) ? locx+(psizex*letterMax) : 1,
                 locy+psizey, BufferedImage.TYPE_INT_ARGB);
         g = bimg.createGraphics();

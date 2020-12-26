@@ -10,9 +10,10 @@
 
 We are going through heavy development changes with the slimmed down master branch. From this point forward the online client (JavaScript) and the desktop client (Java) will be built at the same time to guarantee that both versions will play the exact same. The game itself had to be brought back to a pre-alpha state in order to accommodate this change. For information about the state of development, check out the [CWT Blog](http://cwtactics.blogspot.com/) for the latest news.
 
-Please find older versions of the code within the 'cwt-game' branch and the 'old-cwt' branch. General information about our site and purpose can always be found on the [Custom Wars Tactics webpage.](http://ctomni231.github.io/cwtactics).
+Please find older versions of the code within the 'cwt-game' branch and the 'old-cwt' branch. General information about our site and purpose can always be found on the [Custom Wars Tactics webpage](http://ctomni231.github.io/cwtactics).
 
 Thank you!
 
-JakeSamiRulz
-CWT Team Lead
+**JakeSamiRulz**
+
+Custom Wars Tactics - Team Lead

@@ -11,6 +11,16 @@
  */
 
  // Let's define all the constants of jslix under one function
+
+ // We are also going to need the dreaded draw functions
+ // Place Image (x,y)
+ // Draw Image (x,y,sx,sy)
+ // Place Crop Image (cx, cy, x, y)
+ // Draw Crop Image (cx, cy, x, y, sx, sy)
+ // Place Cut Image (cx, cy, csx, csy, x, y) csx=sx;csy=sy;
+ // Draw Cut Image (cx, cy, csx, csy, x, y, sx, sy)
+ // Defaults = x,y,cx,cy=0; csx,sx=imgWidth; csy,cy=imgHeight
+
 export const jslix = {
 
 	// ImageLibrary Stuff
@@ -483,6 +493,44 @@ export function getRef(name){
 			return jslix.refArray[i][1];
 	}
 	return -1
+}
+
+// -------------------------------------------
+// Draw Functions
+// -------------------------------------------
+
+//void ctx.drawImage(image, dx, dy);
+//void ctx.drawImage(image, dx, dy, dWidth, dHeight);
+//void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+// This function places an image on a destination screen
+export function placeImg(ctx, num, dlx, dly){
+	ctx.drawImage(getImg(num), dlx, dly);
+}
+
+// This function draws the image on a destination screen
+export function drawImg(ctx, num, dlx, dly, dsx, dsy){
+
+}
+
+// This function is used for placing a shifted image on the destination screen
+export function placeCropImg(ctx, num, slx, sly, dlx, dly){
+
+}
+
+// This function is used for drawing a shifted image on the destination screen
+export function drawCropImg(ctx, num, slx, sly, dlx, dly, dsx, dsy){
+
+}
+
+// This function is used to place a cut image on the destination screen
+export function placeCutImg(ctx, num, slx, sly, ssx, ssy, dlx, dly){
+
+}
+
+// This function is used to draw a cut image on the destination screen
+export function drawCutImg(ctx, num, slx, sly, ssx, ssy, dlx, dly, dsx, dsy){
+
 }
 
 // -------------------------------------------
