@@ -1,4 +1,4 @@
-package com.jslix.tools;
+package com.jslix.io;
 
 import java.io.File;
 import java.io.FileWriter;

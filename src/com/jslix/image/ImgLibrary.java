@@ -1,4 +1,4 @@
-package com.jslix.tools;
+package com.jslix.image;
 
 import java.awt.Component;
 import java.awt.Font;

@@ -1,4 +1,4 @@
-package com.jslix.tools;
+package com.jslix.image;
 
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -11,6 +11,8 @@ import java.awt.image.PixelGrabber;
 import java.net.URL;
 import java.security.AccessControlException;
 import javax.swing.ImageIcon;
+
+import com.jslix.io.FileFind;
 
 /**
  * ImgLoader.java

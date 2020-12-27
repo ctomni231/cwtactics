@@ -1,4 +1,4 @@
-package com.jslix.tools;
+package com.jslix.image;
 
 import java.awt.Color;
 import java.util.ArrayList;

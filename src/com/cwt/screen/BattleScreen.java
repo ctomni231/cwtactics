@@ -6,7 +6,7 @@ import java.awt.Component;
 import java.awt.Graphics2D;
 
 import com.jslix.Screen;
-import com.jslix.tools.ImgLibrary;
+import com.jslix.image.ImgLibrary;
 
 public class BattleScreen extends Screen {
 
