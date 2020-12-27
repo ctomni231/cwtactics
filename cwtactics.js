@@ -7,6 +7,9 @@ import * as inputscr from "./engine/js/input.js"
 
 // These represent the screens
 import * as battle from "./cwbattle.js"
+import * as testbed from "./testbed.js"
+
+// This is starter.js for CWTactics
 
 export function boot() {
 
@@ -18,7 +21,8 @@ export function boot() {
   screenlib.addTrait(debugscr)
 
   // Let's test some screens
-  screenlib.addTrait(battle)
+  //screenlib.addTrait(battle)
+  screenlib.addTrait(testbed)
 
   screenlib.run()
 

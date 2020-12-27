@@ -40,19 +40,19 @@ Java2D gives a lot of weird options, like allowing you to determine the backgrou
 
 ## Testing Grounds
 
-- [ ] Make a Testing file [Java]
-- [ ] Make a Testing file [JavaScript]
+- [x] Make a Testing file [Java]
+- [x] Make a Testing file [JavaScript]
 
 ### Draw functions
 
-- [ ] Verify the placeImg functionality is working [Java]
+- [x] Verify the placeImg functionality is working [Java]
 - [ ] Verify the drawImg functionality is working [Java]
 - [ ] Verify the placeCropImg functionality is working [Java]
 - [ ] Verify the drawCropImg functionality is working [Java]
 - [ ] Verify the placeCutImg functionality is working [Java]
 - [ ] Verify the drawCutImg functionality is working [Java]
 
-- [ ] Verify the placeImg functionality is working [JavaScript]
+- [x] Verify the placeImg functionality is working [JavaScript]
 - [ ] Verify the drawImg functionality is working [JavaScript]
 - [ ] Verify the placeCropImg functionality is working [JavaScript]
 - [ ] Verify the drawCropImg functionality is working [JavaScript]

@@ -1,6 +1,7 @@
 package com.cwt;
 
 import com.cwt.screen.BattleScreen;
+import com.cwt.screen.TestBed;
 import com.jslix.JSlix;
 
 public class CWTactics extends JSlix {
@@ -30,7 +31,8 @@ public class CWTactics extends JSlix {
 	 */
 	public CWTactics(int width, int height) {
 		super(width, height);
-		addScreen(new BattleScreen());
+		//addScreen(new BattleScreen());
+		addScreen(new TestBed());
 	}
 	
 }
