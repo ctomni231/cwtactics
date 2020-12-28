@@ -1,7 +1,7 @@
 {
 
   "CUSTOM WARS TACTICS CREDITS": {
-
+	
     "FORUM HOSTING - LEAD": [
       "Xenesis"
     ],
@@ -326,14 +326,12 @@
     },
 
     "SPECIAL THANKS": {
-      "NINTENDO":"",
-      "INTELLIGENT SYSTEMS": [
+      "NINTENDO|INTELLIGENT SYSTEMS": [
         "For making Advance Wars.",
         "Buy their games.",
         "They deserve it."
       ],
-      "SILIFI OF DEATH":"",
-      "XENESIS": ["For saving the project."],
+      "SILIFI OF DEATH|XENESIS": ["For saving the project."],
       "XENESIS": ["Creating the forums."],
       "KOSHEH": [
         "For creating the CW Mainpage,",
@@ -343,8 +341,7 @@
         "For starting a forum after",
         "getting kicked out of AWN"
       ],
-      "Merloc":"",
-      "Sturm=Best": ["For starting Custom Wars"],
+      "Merloc|Sturm=Best": ["For starting Custom Wars"],
       "AND YOU": [
         "For continuous playtesting",
         "and contributing to CW and",
