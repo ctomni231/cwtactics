@@ -481,6 +481,24 @@ export function getImg(num){
 	return jslix.imgArray[num];
 }
 
+// Gets the x-axis width of an image
+export function getX(num){
+	if(jslix.imgReady[num] != num){
+		addLoadEvent(loadImage(num));
+		return 1;
+	}
+	return jslix.locxArray[num];
+}
+
+// Gets the y-axis height of an image
+export function getY(num){
+	if(jslix.imgReady[num] != num){
+		addLoadEvent(loadImage(num));
+		return 1;
+	}
+	return jslix.locyArray[num];
+}
+
 // This is the most flexible getImg functions
 export function getRefImg(ind){
 	return getImg((typeof ind === "string") ? getRef(ind) : ind)
@@ -510,27 +528,76 @@ export function placeImg(ctx, num, dlx, dly){
 
 // This function draws the image on a destination screen
 export function drawImg(ctx, num, dlx, dly, dsx, dsy){
+	if(dsx < 0 || dsy < 0){
 
+		// Get the adjustments
+		dlx = (dsx < 0) ? dlx-dsx : dlx;
+		dly = (dsy < 0) ? dly-dsy : dly;
+		// Move the canvas to the location
+		ctx.translate(dlx, dly);
+    // scale by the width or the height depending on the one needed
+    ctx.scale((dsx<0)?-1:1, (dsy<0)?-1:1);
+    // Draw the Img: no need for x,y since we've already translated
+		ctx.drawImage(getImg(num), 0, 0, dsx*((dsx<0)?-1:1), dsy*((dsy<0)?-1:1));
+    // always clean up -- reset transformations to default
+    ctx.setTransform(1,0,0,1,0,0);
+
+	}else
+		ctx.drawImage(getImg(num), dlx, dly, dsx, dsy);
 }
 
 // This function is used for placing a shifted image on the destination screen
-export function placeCropImg(ctx, num, slx, sly, dlx, dly){
-
+export function placeCropImg(ctx, num, dlx, dly, slx, sly){
+	ctx.drawImage(getImg(num), slx, sly, jslix.locxArray[num], jslix.locyArray[num],
+	                       dlx, dly, jslix.locxArray[num], jslix.locyArray[num]);
 }
 
 // This function is used for drawing a shifted image on the destination screen
-export function drawCropImg(ctx, num, slx, sly, dlx, dly, dsx, dsy){
+export function drawCropImg(ctx, num, dlx, dly, dsx, dsy, slx, sly){
+	if(dsx < 0 || dsy < 0){
 
+		// Get the adjustments
+		dlx = (dsx < 0) ? dlx-dsx : dlx;
+		dly = (dsy < 0) ? dly-dsy : dly;
+		// Move the canvas to the location
+		ctx.translate(dlx, dly);
+    // scale by the width or the height depending on the one needed
+    ctx.scale((dsx<0)?-1:1, (dsy<0)?-1:1);
+    // Draw the Img: no need for x,y since we've already translated
+		ctx.drawImage(getImg(num), slx, sly, jslix.locxArray[num],
+		  jslix.locyArray[num], 0, 0, dsx*((dsx<0)?-1:1), dsy*((dsy < 0)?-1:1));
+    // always clean up -- reset transformations to default
+    ctx.setTransform(1,0,0,1,0,0);
+
+	}else
+		ctx.drawImage(getImg(num), slx, sly, jslix.locxArray[num],
+		                     jslix.locyArray[num], dlx, dly, dsx, dsy);
 }
 
 // This function is used to place a cut image on the destination screen
-export function placeCutImg(ctx, num, slx, sly, ssx, ssy, dlx, dly){
-
+export function placeCutImg(ctx, num, dlx, dly, slx, sly, ssx, ssy){
+	ctx.drawImage(getImg(num), slx, sly, ssx, ssy, dlx, dly, ssx, ssy);
 }
 
 // This function is used to draw a cut image on the destination screen
-export function drawCutImg(ctx, num, slx, sly, ssx, ssy, dlx, dly, dsx, dsy){
+export function drawCutImg(ctx, num, dlx, dly, dsx, dsy, slx, sly, ssx, ssy){
+	if(dsx < 0 || dsy < 0){
 
+		// Get the adjustments
+		dlx = (dsx < 0) ? dlx-dsx : dlx;
+		dly = (dsy < 0) ? dly-dsy : dly;
+		// Move the canvas to the location
+		ctx.translate(dlx, dly);
+    // scale by the width or the height depending on the one needed
+    ctx.scale((dsx<0)?-1:1, (dsy<0)?-1:1);
+    // Draw the Img: no need for x,y since we've already translated
+		ctx.drawImage(getImg(num), slx, sly, ssx, ssy,
+		                     0, 0, dsx*((dsx<0)?-1:1), dsy*((dsy < 0)?-1:1));
+    // always clean up -- reset transformations to default
+    ctx.setTransform(1,0,0,1,0,0);
+
+	}else
+		ctx.drawImage(getImg(num), slx, sly, ssx, ssy, dlx, dly, dsx, dsy);
 }
 
 // -------------------------------------------

@@ -28,17 +28,30 @@ Java2D gives a lot of weird options, like allowing you to determine the backgrou
 
 ### Draw
 
-- function placeImg(ctx, num, dlx, dly)
-- function drawImg(ctx, num, dlx, dly, dsx, dsy)
-- function placeCropImg(ctx, num, slx, sly, dlx, dly)
-- function drawCropImg(ctx, num, slx, sly, dlx, dly, dsx, dsy)
-- function placeCutImg(ctx, num, slx, sly, ssx, ssy, dlx, dly)
-- function drawCutImg(ctx, num, slx, sly, ssx, ssy, dlx, dly, dsx, dsy)
+- [x] function placeImg(ctx, num, dlx, dly)
+- [x] function drawImg(ctx, num, dlx, dly, dsx, dsy)
+- [x] function placeCropImg(ctx, num, dlx, dly, slx, sly)
+- [x] function drawCropImg(ctx, num, dlx, dly, dsx, dsy, slx, sly)
+- [x] function placeCutImg(ctx, num, dlx, dly, slx, sly, ssx, ssy)
+- [x] function drawCutImg(ctx, num, dlx, dly, dsx, dsy, slx, sly, ssx, ssy)
+
+### Picture Text
+
+- [ ] function getTextImage()
+- [ ] function setLetters()
+- [ ] function setWords()
+- [ ] function setParagraphLine()
+- [ ] function setParagraph()
+
+## Testing Grounds
 
 - ImgLibrary (starts at line 656) [Java]
 - JSlix (starts at line 498) [JavaScript]
 
-## Testing Grounds
+There are actually differences in how the draw functions work (typical!). For instance, if you place a negative value in Java's destination width or height, it'll draw a flipped image in that direction. But in JavaScript, it'll move the image to the desired location. To deal with this, I'll have all the functionality match the Java way of doing things, with a 
+splash of making sure the positioning is direct.
+
+### Testing Files
 
 - [x] Make a Testing file [Java]
 - [x] Make a Testing file [JavaScript]
@@ -46,25 +59,25 @@ Java2D gives a lot of weird options, like allowing you to determine the backgrou
 ### Draw functions
 
 - [x] Verify the placeImg functionality is working [Java]
-- [ ] Verify the drawImg functionality is working [Java]
-- [ ] Verify the placeCropImg functionality is working [Java]
-- [ ] Verify the drawCropImg functionality is working [Java]
-- [ ] Verify the placeCutImg functionality is working [Java]
-- [ ] Verify the drawCutImg functionality is working [Java]
+- [x] Verify the drawImg functionality is working [Java]
+- [x] Verify the placeCropImg functionality is working [Java]
+- [x] Verify the drawCropImg functionality is working [Java]
+- [x] Verify the placeCutImg functionality is working [Java]
+- [x] Verify the drawCutImg functionality is working [Java]
 
 - [x] Verify the placeImg functionality is working [JavaScript]
-- [ ] Verify the drawImg functionality is working [JavaScript]
-- [ ] Verify the placeCropImg functionality is working [JavaScript]
-- [ ] Verify the drawCropImg functionality is working [JavaScript]
-- [ ] Verify the placeCutImg functionality is working [JavaScript]
-- [ ] Verify the drawCutImg functionality is working [JavaScript]
+- [x] Verify the drawImg functionality is working [JavaScript]
+- [x] Verify the placeCropImg functionality is working [JavaScript]
+- [x] Verify the drawCropImg functionality is working [JavaScript]
+- [x] Verify the placeCutImg functionality is working [JavaScript]
+- [x] Verify the drawCutImg functionality is working [JavaScript]
 
 ### Text Library Functions
 
 The Java version actually sets a limit in pixels of how far something should go before it can't go anymore. Something that we should most likely emulate in the JavaScript version of the code
 
 - [ ] Verify the getTextImage functionality is working [Java]
-- [ ] Verify the setString functionality is working [Java]
+- [ ] Verify the setLetters functionality is working [Java]
 - [ ] Verify the setWords functionality is working [Java]
 - [ ] Verify the setParagraphLine functionality is working [Java]
 - [ ] Verify the setParagraph functionality is working [Java]

@@ -692,7 +692,9 @@ public class ImgLibrary extends Component{
      */
     public void drawImg(Graphics2D g, int index, int dlx, int dly,
                                       int dsx, int dsy, Component dthis){
-
+    	dlx = (dsx < 0) ? dlx-dsx : dlx;
+    	dly = (dsy < 0) ? dly-dsy : dly;
+    	g.drawImage(getImage(index), dlx, dly, dsx, dsy, dthis);
     }
 
     /**
@@ -705,14 +707,16 @@ public class ImgLibrary extends Component{
      *
      * @param g The Java2D Graphics Object
      * @param index The index of the image in ImgLibrary
-     * @param slx The source (picture) x-axis cut position of the image
-     * @param sly The source (picture) y-axis cut position of the image
      * @param dlx The destination (screen) x-axis position of the image
      * @param dly The destination (screen) y-axis position of the image
+     * @param slx The source (picture) x-axis cut position of the image
+     * @param sly The source (picture) y-axis cut position of the image
      * @param dthis The Component to draw the image to
      */
-    public void placeCropImg(Graphics2D g, int index, int slx, int sly,
-                                           int dlx, int dly, Component dthis){
+    public void placeCropImg(Graphics2D g, int index, int dlx, int dly,
+                                           int slx, int sly, Component dthis){
+    	g.drawImage(getImage(index), dlx, dly, dlx+getX(index), dly+getY(index), 
+    			                     slx, sly, slx+getX(index), sly+getY(index), dthis);
 
     }
 
@@ -727,17 +731,20 @@ public class ImgLibrary extends Component{
      *
      * @param g The Java2D Graphics Object
      * @param index The index of the image in ImgLibrary
-     * @param slx The source (picture) x-axis cut position of the image
-     * @param sly The source (picture) y-axis cut position of the image
      * @param dlx The destination (screen) x-axis position of the image
      * @param dly The destination (screen) y-axis position of the image
      * @param dsx The destination (screen) horizontal width of the image
      * @param dsy The destination (screen) vertical height of the image
+     * @param slx The source (picture) x-axis cut position of the image
+     * @param sly The source (picture) y-axis cut position of the image
      * @param dthis The Component to draw the image to
      */
-    public void drawCropImg(Graphics2D g, int index, int slx, int sly, int dlx,
-                                int dly, int dsx, int dsy, Component dthis){
-
+    public void drawCropImg(Graphics2D g, int index, int dlx, int dly, 
+    		    int dsx, int dsy, int slx, int sly, Component dthis){
+    	dlx = (dsx < 0) ? dlx-dsx : dlx;
+    	dly = (dsy < 0) ? dly-dsy : dly;
+    	g.drawImage(getImage(index), dlx, dly, dlx+dsx, dly+dsy, 
+                slx, sly, slx+getX(index), sly+getY(index), dthis);
     }
 
     /**
@@ -752,17 +759,18 @@ public class ImgLibrary extends Component{
      *
      * @param g The Java2D Graphics Object
      * @param index The index of the image in ImgLibrary
+     * @param dlx The destination (screen) x-axis position of the image
+     * @param dly The destination (screen) y-axis position of the image
      * @param slx The source (picture) x-axis cut position of the image
      * @param sly The source (picture) y-axis cut position of the image
      * @param ssx The source (picture) x-axis width slice of the image
      * @param ssy The source (picture) y-axis height slice of the image
-     * @param dlx The destination (screen) x-axis position of the image
-     * @param dly The destination (screen) y-axis position of the image
      * @param dthis The Component to draw the image to
      */
-    public void placeCutImg(Graphics2D g, int index, int slx, int sly, int ssx,
-                                int ssy, int dlx, int dly, Component dthis){
-
+    public void placeCutImg(Graphics2D g, int index, int dlx, int dly, 
+    		int slx, int sly, int ssx, int ssy, Component dthis){
+    	g.drawImage(getImage(index), dlx, dly, dlx+ssx, dly+ssy, 
+                slx, sly, slx+ssx, sly+ssy, dthis);
     }
 
     /**
@@ -775,19 +783,22 @@ public class ImgLibrary extends Component{
      * drawn like the function drawImg
      *
      * @param g The Java2D Graphics Object
-     * @param slx The source (picture) x-axis cut position of the image
-     * @param sly The source (picture) y-axis cut position of the image
-     * @param ssx The source (picture) x-axis width slice of the image
-     * @param ssy The source (picture) y-axis height slice of the image
      * @param dlx The destination (screen) x-axis position of the image
      * @param dly The destination (screen) y-axis position of the image
      * @param dsx The destination (screen) horizontal width of the image
      * @param dsy The destination (screen) vertical height of the image
+     * @param slx The source (picture) x-axis cut position of the image
+     * @param sly The source (picture) y-axis cut position of the image
+     * @param ssx The source (picture) x-axis width slice of the image
+     * @param ssy The source (picture) y-axis height slice of the image
      * @param dthis The Component to draw the image to
      */
-    public void drawCutImg(Graphics2D g, int index, int slx, int sly, int ssx,
-                int ssy, int dlx, int dly, int dsx, int dsy, Component dthis){
-
+    public void drawCutImg(Graphics2D g, int index, int dlx, int dly, int dsx,
+    		int dsy, int slx, int sly, int ssx, int ssy, Component dthis){
+    	dlx = (dsx < 0) ? dlx-dsx : dlx;
+    	dly = (dsy < 0) ? dly-dsy : dly;
+    	g.drawImage(getImage(index), dlx, dly, dlx+dsx, dly+dsy, 
+                slx, sly, slx+ssx, sly+ssy, dthis);
     }
 
     //-----------------
@@ -1382,9 +1393,9 @@ public class ImgLibrary extends Component{
      * X-direction (Numbers below 1: no x-limits)
      * @return returns the letter it stopped at
      */
-    public int setString(String word, String ref,
+    public int setLetters(String word, String ref,
             int locx, int locy, int limit){
-        return setString(word, ref, locx, locy, 0, limit);
+        return setLetters(word, ref, locx, locy, 0, limit);
     }
 
     /**
@@ -1399,7 +1410,7 @@ public class ImgLibrary extends Component{
      * X-direction (Numbers below 1: no x-limits)
      * @return returns the letter it stopped at
      */
-    public int setString(String word, String ref,
+    public int setLetters(String word, String ref,
             int locx, int locy, int start, int limit){
         if(start > 0 && start < word.length())
             word = word.substring(start);
@@ -1431,7 +1442,7 @@ public class ImgLibrary extends Component{
 
     /**
      * Uses letters from the ImgLibrary dictionary to form words. Difference
-     * from setString() is that words are only cut off at white spaces and
+     * from setLetters() is that words are only cut off at white spaces and
      * dashes. This function starts at the beginning of the word string.
      * @param word The word to draw
      * @param ref The reference text to the letter image
@@ -1449,7 +1460,7 @@ public class ImgLibrary extends Component{
 
     /**
      * Uses letters from the ImgLibrary to form words. Difference from
-     * setString() is that words are only cut off at white spaces and dashes.
+     * setLetters() is that words are only cut off at white spaces and dashes.
      * @param word The word to draw
      * @param ref The reference text to the letter image
      * @param locx Starting x-location of the word in the image
@@ -1574,7 +1585,7 @@ public class ImgLibrary extends Component{
 
     /**
      * Uses letters from the ImgLibrary to form words. Difference from
-     * setString() is that words are only cut off at white spaces and dashes.
+     * setLetters() is that words are only cut off at white spaces and dashes.
      * @param word The word to draw
      * @param ref The reference text to the letter image
      * @param locx Starting x-location of the word in the image
