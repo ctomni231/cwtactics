@@ -2,6 +2,7 @@ package com.cwt.screen;
 
 import java.awt.Component;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -33,9 +34,13 @@ public class TestBed extends Screen {
 		imgLib.addImage("image/background/AW2Sturm.png");
 		imgLib.addImage("image/menu/BasicAlpha.png");
 		
-		parser.outputAll("credits.json");
+		//parser.outputAll("credits.json");
 		
-		parser.getJSONMap("credits.json");
+		ArrayList<LinkedList> cool = parser.generateList(parser.getJSONMap("credits.json"));
+		
+		for(int i = 0; i < cool.size(); i++) {
+			System.out.println(cool.get(i).toString());
+		}
 		
 		//String[] cool = {"CUSTOM WARS TACTICS CREDITS", "HOSTING"};
 		//try {

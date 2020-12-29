@@ -9,8 +9,8 @@ A slight detour since JavaScript pretty much has JSON nailed down tightly. Addin
 
 ### JavaScript
 
-- [ ] A function that'll get all the elements of JSON into an array (have no idea how this'll be formed yet)
+- [x] A function that'll get all the elements of JSON into an array
 
 ### Java
 
-- [ ] A function that'll get all the elements of JSON into an array (have no idea how this'll be formed yet)
+- [x] A function that'll get all the elements of JSON into an array

@@ -33,6 +33,8 @@ public class JSONLibrary {
 	private ContainerFactory factory;
 	/** This stores the last map object worked on */
 	private Map stored;
+	/** This stores the generated list for future use*/
+	private ArrayList<LinkedList> listdata;
 	
 	/**
 	 * This initializes the JsonLibrary
@@ -40,6 +42,7 @@ public class JSONLibrary {
 	public JSONLibrary() {
 		finder = new FileFind();
 		parser = new JSONParser();
+		listdata = new ArrayList();
 		factory = new ContainerFactory() {
 	         @Override
 	         public Map createObjectContainer() {
@@ -87,33 +90,55 @@ public class JSONLibrary {
 	}
 	
 	/**
-	 * Write in an array to get an Object representing the key, or a list of
-	 * keys for a HashMap
+	 * Write in an array to get an Object representing the key
 	 * java.lang.String For strings
 	 * java.util.LinkedList For Arrays
 	 * @param keyList The list of keys to reach a JSON file
+	 * @param getkeys If true, will get a list of keys (Set) for a HashMap object instead of value
 	 * @return An Object representing the key, or a list of keys for a HashMap
 	 */
-	public Object get( String[] keyList) {
-		return get(keyList, stored);
+	public Object get( String[] keyList, boolean getkeys) {
+		return get(keyList, stored, getkeys);
 	}
 	
 	/**
-	 * Write in an array to get an Object representing the key, or a list of 
-	 * keys for a HashMap
-	 * java.lang.String For strings
-	 * java.util.LinkedList For Arrays
+	 * Write in an array to get an Object representing the key. Use getType() 
+	 * to determine the type of data
 	 * @param keyList The list of keys to reach a JSON file
 	 * @param map The map to use for searching
+	 * @param getkeys If true, will get a list of keys (Set) for a HashMap object instead of value
 	 * @return An Object representing the key, or a list of keys for a HashMap
 	 */
-	public Object get( String[] keyList, Map map) {
+	public Object get( String[] keyList, Map map, boolean getkeys) {
 		
 		// Why is Java so... verbose?
 		ArrayList<String> cool = new ArrayList<String>();
 		for(String key : keyList)
 			cool.add(key);
-		return getData(cool, map);
+		return getData(cool, map, getkeys);
+	}
+	
+	/**
+	 * Used for getting the type of data being returned from this path. Use with 
+	 * get() to determine what type of object is being dealt with
+	 * @param keyList The list of keys to reach a JSON file
+	 * @param map The map to use for searching
+	 * @return An Object representing the key, or a list of keys for a HashMap
+	 */
+	public String getType( String[] keyList, Map map) {
+		return get(keyList, map, false).getClass().getName();
+	}
+	
+	/**
+	 * Used to generate a single flat array from a JSON file. Useful if you 
+	 * want to view everything at once including the types
+	 * @param map The JSON Map to view
+	 * @return An array of Objects containing the data
+	 */
+	public ArrayList<LinkedList> generateList(Map map) {
+		listdata = new ArrayList();
+		map.forEach((k,v) -> getList(k, v, 0));
+		return listdata;
 	}
 	
 	//--------------------------
@@ -186,8 +211,7 @@ public class JSONLibrary {
      * @param filename The JSON file path and name
      */
 	public void outputAllFromRaw() {
-		Map map = stored;
-		map.forEach((k,v) -> output(k,v,""));
+		outputAll(stored);
 	}
     
     /**
@@ -195,8 +219,7 @@ public class JSONLibrary {
      * @param filename The JSON file path and name
      */
     public void outputAllFromRaw(String data) {
-    	Map map = (Map)getJSONMapFromRaw(data);
-		map.forEach((k,v) -> output(k,v,""));
+    	outputAll((Map)getJSONMapFromRaw(data));
     }
     
     /**
@@ -204,7 +227,14 @@ public class JSONLibrary {
      * @param filename The JSON file path and name
      */
     public void outputAll(String filename) {
-		Map map = (Map)getJSONMap(filename);
+    	outputAll((Map)getJSONMap(filename));
+	}
+    
+    /**
+     * Used for printing out all data from stored JSON. Human readable
+     * @param filename The JSON file path and name
+     */
+	public void outputAll(Map map) {
 		map.forEach((k,v) -> output(k,v,""));
 	}
     
@@ -225,7 +255,7 @@ public class JSONLibrary {
 			System.out.println(prefix + "<Key :> " + key + " <" + value.getClass().getName() + " Value :> " + value );
 	}
     
-    private Object getData(ArrayList<String> keylist, Object value) {
+    private Object getData(ArrayList<String> keylist, Object value, boolean keys) {
     	
     	// Is a map to start out with
     	if(value.getClass().getName() == "java.util.LinkedHashMap") {
@@ -233,17 +263,37 @@ public class JSONLibrary {
         	
         	// If it is empty, you are probably looking for keys instead
         	if(keylist.isEmpty())
-        		return temp.keySet();
+        		return (keys) ? temp.keySet() : value;
         	
         	// If not, pop one off the Array of keys
         	String tstr = keylist.remove(0);
         	Object data = temp.get(tstr);
         	
         	// If it is another map, do a recursion until we find the key
-        	return getData(keylist, data);
+        	return getData(keylist, data, keys);
     	}else
     		return value;
     	
+    }
+    
+    private void getList(Object key, Object value, int level) {
+    	if(value.getClass().getName() == "java.util.LinkedHashMap") {
+			Map temp = (Map)value;
+			LinkedList templist = new LinkedList();
+			templist.add(key);
+			templist.add(level);
+			templist.add(value.getClass().getName());
+			templist.add(temp.keySet());
+			listdata.add(templist);
+			temp.forEach((k,v) -> getList(k, v, level+1));
+		}else{
+			LinkedList templist = new LinkedList();
+			templist.add(key);
+			templist.add(level);
+			templist.add(value.getClass().getName());
+			templist.add(value);
+			listdata.add(templist);
+		}
     }
 
 }

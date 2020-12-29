@@ -850,9 +850,8 @@ function storeImage(){
 // A wrapper function for drawing the next image since the calls are getting numerous
 function queueNext(){
 	jslix.busy = 0;
-	if(jslix.imgQueue.length > 0){
+	if(jslix.imgQueue.length > 0)
 		addImage(jslix.imgQueue.shift());
-	}
 }
 
 // A function for getting the length and width of a text string
