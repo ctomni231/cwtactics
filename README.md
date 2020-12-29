@@ -1,4 +1,4 @@
-![Custom Wars Tactics](http://i1264.photobucket.com/albums/jj496/CustomWarTactics/cwtactics.png)
+![Custom Wars Tactics](https://i.imgur.com/dfAqrqs.png)
 
 # Custom Wars Tactics
 
