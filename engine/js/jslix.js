@@ -7,19 +7,8 @@
  * Font and text - After \n, need to create max width (by adding \n to text) when over a pixel width
  * Font and text - After \n, Need to create max lines, which will cut paragraphs
  *
- * Future: Might need to modularize this a bit
+ * Future: Might need to modularize this a bit (Deprecated)
  */
-
- // Let's define all the constants of jslix under one function
-
- // We are also going to need the dreaded draw functions
- // Place Image (x,y)
- // Draw Image (x,y,sx,sy)
- // Place Crop Image (cx, cy, x, y)
- // Draw Crop Image (cx, cy, x, y, sx, sy)
- // Place Cut Image (cx, cy, csx, csy, x, y) csx=sx;csy=sy;
- // Draw Cut Image (cx, cy, csx, csy, x, y, sx, sy)
- // Defaults = x,y,cx,cy=0; csx,sx=imgWidth; csy,cy=imgHeight
 
 export const jslix = {
 
@@ -42,6 +31,8 @@ export const jslix = {
 	textX: [],
 	textY: [],
 	textInfo: [],
+	textImgArray: [],
+	textImgReady: [],
 	busy: 0,
 
 	// Drastically decrease copy times
@@ -131,12 +122,12 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 	sizex = (sizex < 1) ? 1 : sizex;
 	sizey = (sizey < 1) ? 1 : sizey;
 
-	let imgcanvas = document.getElementById("store");
+	let imgcanvas = document.getElementById("cwtj-store");
 	if(imgcanvas == null){
 		imgcanvas = document.createElement("canvas");
 		document.body.appendChild(imgcanvas);
 	}
-	imgcanvas.setAttribute("id", "store");
+	imgcanvas.setAttribute("id", "cwtj-store");
 	imgcanvas.setAttribute("width", sizex);
 	imgcanvas.setAttribute("height", sizey);
 	imgcanvas.setAttribute("style", "display:none");
@@ -155,6 +146,7 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 	addImage(imgcanvas.toDataURL());
 }
 
+// This is the problem, we have to make the text image beforehand
 export function addTextImage(index, str){
 
 	if(index < 0){
@@ -162,8 +154,72 @@ export function addTextImage(index, str){
 		return;
 	}
 
-	jslix.textdraw = [index, str]
-	addColorBox(0, 0, 0, 255, 1, 1)
+	var textdim = getTextDim(index, str);
+
+	if( textdim[0] == 0 ){
+		console.log("Do it the color way");
+
+		jslix.textdraw = [index, str]
+		addColorBox(0, 0, 0, 255, 1, 1)
+
+	}else{
+		console.log("Do it the canvas way");
+
+		let imgcanvas = document.getElementById("cwtj-font");
+		if(imgcanvas == null){
+			imgcanvas = document.createElement("canvas");
+			document.body.appendChild(imgcanvas);
+		}
+		imgcanvas.setAttribute("id", "cwtj-font");
+
+	  const ctx = imgcanvas.getContext("2d");
+		let sizex = textdim[0];
+		let sizey = textdim[1];
+
+		imgcanvas.setAttribute("width", sizex);
+		imgcanvas.setAttribute("height", sizey);
+		imgcanvas.setAttribute("style", "display:none");
+
+		let letdim = getLetterDim(index);
+
+		// Pulls relevant information from the textInfo class
+		let i, j, k = index;
+		let tmpInfo = jslix.textInfo[index];
+
+		for(i = 0; i < str.length; i++){
+
+			for(j = 0; j < tmpInfo.length; j++){
+
+				let chart = tmpInfo[j][7];
+				let tmplps = chart.indexOf(str.charAt(i));
+
+				if(tmplps >= 0){
+
+					console.log("Canvas: Gets here in the tmplps")
+
+					let tmppx = tmpInfo[j][0]
+					let tmppy = tmpInfo[j][1]
+					let tmpsx = (tmpInfo[j][2] < 1) ? jslix.textX[index] : tmpInfo[j][2];
+					let tmpsy = (tmpInfo[j][3] < 1) ? jslix.textY[index] : tmpInfo[j][3];
+					let tmpslx = (tmpInfo[j][4] < 1) ? 1 : tmpInfo[j][4];
+					let tmpsly = (tmpInfo[j][5] < 1) ? 1 : tmpInfo[j][5];
+					let start = (tmpInfo[j][6] < 0) ? 0 : tmpInfo[j][6];
+
+					let letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
+					let letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
+
+					let posx = tmplps % tmpslx
+					let posy = Math.floor(tmplps / tmpslx)
+
+					console.log(getTextImg(index));
+
+					console.log("Canvas: Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
+					placeCutTextImg(ctx, index, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy);
+				}
+			}
+		}
+		addImage(imgcanvas.toDataURL());
+	}
 }
 
 export function addFontImage(str){
@@ -172,12 +228,12 @@ export function addFontImage(str){
 	let fontSize = (jslix.fontSize == 0) ? jslix.defSize : jslix.fontSize;
 	let fontText = (jslix.fontText == "") ? jslix.defText : jslix.fontText;
 
-	let imgcanvas = document.getElementById("font");
+	let imgcanvas = document.getElementById("cwtj-font");
 	if(imgcanvas == null){
 		imgcanvas = document.createElement("canvas");
 		document.body.appendChild(imgcanvas);
 	}
-	imgcanvas.setAttribute("id", "font");
+	imgcanvas.setAttribute("id", "cwtj-font");
 
   const ctx = imgcanvas.getContext("2d");
 	ctx.font = fontSize+"px "+fontName
@@ -188,12 +244,11 @@ export function addFontImage(str){
 	imgcanvas.setAttribute("height", sizey);
 	imgcanvas.setAttribute("style", "display:none");
 
-	ctx.font = fontSize+"px "+fontName
-	if(jslix.fontStroke !== 0){
-		ctx.strokeText(str, 0, sizey);
-	}else{
+	ctx.font = fontSize+"px "+fontName;
+	if(jslix.fontStroke === 0)
 		ctx.fillText(str, 0, sizey);
-	}
+	else
+		ctx.strokeText(str, 0, sizey);
 
 	changeReference("fonttext_"+str)
 	addImage(imgcanvas.toDataURL());
@@ -250,12 +305,12 @@ export function addImage(text){
 	jslix.busy = 1;
 
 	//This grabs an image and temporarily stores it in memory
-	let imgStorage = document.getElementById("image");
+	let imgStorage = document.getElementById("cwtj-image");
 	if(imgStorage == null){
 		imgStorage = document.createElement("img");
 		document.body.appendChild(imgStorage);
 	}
-	imgStorage.setAttribute("id", "image");
+	imgStorage.setAttribute("id", "cwtj-image");
 	// This pretty much makes sure that a valid value is entering for numbers
 	imgStorage.setAttribute("src", (typeof text !== "number")
 	  ? text : (text >= 0 && text < jslix.intArray.length)
@@ -269,15 +324,25 @@ export function addImage(text){
 	};
 }
 
-// This adds a basic image to the DOM with the name specified
-// Note: this is not part of the manipulation pipeline
-export function addDomImage(name, text){
-	let imgStorage = document.getElementById("cwt-"+name);
+// This adds a reference to a image (doesn't need to be created)
+export function addReference(name, imgIndex){
+	let temp = [name, imgIndex];
+	jslix.refArray.push(temp);
+}
+
+// Create Attributes
+// -----------------------------------
+
+// Make objects that aren't part of the manipulation pipeline
+
+// This creates a basic image to the DOM with the name specified
+export function createDomImage(name, text){
+	let imgStorage = document.getElementById("cwti-"+name);
 	if(imgStorage == null){
 		imgStorage = document.createElement("img");
 		document.body.appendChild(imgStorage);
 	}
-	imgStorage.setAttribute("id", "cwt-"+name);
+	imgStorage.setAttribute("id", "cwti-"+name);
 	// This pretty much makes sure that a valid value is entering for numbers
 	imgStorage.setAttribute("src", (typeof text !== "number")
 	  ? text : (text >= 0 && text < jslix.intArray.length)
@@ -290,10 +355,20 @@ export function addDomImage(name, text){
 	return imgStorage
 }
 
-// This adds a reference to a image (doesn't need to be created)
-export function addReference(name, imgIndex){
-	let temp = [name, imgIndex];
-	jslix.refArray.push(temp);
+// This creates a basic canvas to the DOM for drawing purposes
+// Gives back the canvas for drawing
+export function createDomCanvas(name, sizex, sizey){
+	let imgcanvas = document.getElementById("cwtc-"+name);
+	if(imgcanvas == null){
+		imgcanvas = document.createElement("canvas");
+		document.body.appendChild(imgcanvas);
+	}
+	imgcanvas.setAttribute("id", "cwtc-"+name);
+	imgcanvas.setAttribute("width", sizex);
+	imgcanvas.setAttribute("height", sizey);
+	imgcanvas.setAttribute("style", "display:none");
+
+	return imgcanvas;
 }
 
 // Add Attributes
@@ -409,17 +484,17 @@ export function addCutPixelDrop(imgIndex, posx, posy, locx, locy, sizex, sizey, 
 }
 
 // This adds information for a specific textmap, you can use multiple for one image
+// index = Which textmap this refers to (-1: next possible textmap)
 // slicex = The number of horizontal slices to give an image
 // slicey = The number of vertical slices to giv an image
 // start = Where in the grid to start from left-to-right up-to-down
 // chart = A string containing the characters for the image
 // caseSensitive = Whether the chart is case sensitive
-export function addTextInfo(slicex, slicey, start, chart){
-	addAllTextInfo(-1, 0, 0, 0, 0, slicex, slicey, start, chart)
+export function addTextInfo(index, slicex, slicey, start, chart){
+	addAllTextInfo(index, 0, 0, 0, 0, slicex, slicey, start, chart)
 }
 
 // This adds information for a specific textmap, you can use multiple for one image
-// index = Which textmap this refers to (-1: Default - next possible textmap)
 // posx = the x-axis location where you want the slices to start
 // posy = the y-axis location where you want the slices to start
 // sizex = the x-axis total length of all slices
@@ -459,16 +534,29 @@ export function changeFontStroke(num){
 export function getQuickImage(text){
 
 	// For quick testing
-	return addDomImage('quick', text)
+	return createDomImage('quick', text)
 }
 
 // This function will draw a slide image stored in the DOM
 export function getDomImage(name){
-	let imgStorage = document.getElementById("cwt-"+name);
+	let imgStorage = document.getElementById("cwti-"+name);
 	if(imgStorage == null){
 		return canvasImg(-1).toDataURL();
 	}
 	return (imgStorage.src == null) ? canvasImg(-1).toDataURL() : imgStorage;
+}
+
+// This creates a basic canvas to the DOM for drawing purposes
+// Gives you an image that you can use
+export function getDomCanvasImg(name){
+	let imgcanvas = document.getElementById("cwtc-"+name);
+	if(imgcanvas == null){
+		imgcanvas = document.createElement("canvas");
+		document.body.appendChild(imgcanvas);
+	}
+	imgcanvas.setAttribute("id", "cwtc-"+name);
+
+	return imgcanvas.toDataURL();
 }
 
 // The getImage stuff - to get rid of the slow time of Internet Explorer
@@ -479,6 +567,14 @@ export function getImg(num){
 	}
 
 	return jslix.imgArray[num];
+}
+
+function getTextImg(num){
+	if(jslix.textImgReady[num] != num){
+		addLoadEvent(loadTextImage(num));
+		return canvasImg(-num-10);
+	}
+	return jslix.textImgArray[num];
 }
 
 // Gets the x-axis width of an image
@@ -600,6 +696,11 @@ export function drawCutImg(ctx, num, dlx, dly, dsx, dsy, slx, sly, ssx, ssy){
 		ctx.drawImage(getImg(num), slx, sly, ssx, ssy, dlx, dly, dsx, dsy);
 }
 
+// This function is used to place a text cut image on a destination canvas
+export function placeCutTextImg(ctx, num, dlx, dly, slx, sly, ssx, ssy){
+	ctx.drawImage(getTextImg(num), slx, sly, ssx, ssy, dlx, dly, ssx, ssy);
+}
+
 // -------------------------------------------
 // Remove functions
 // -------------------------------------------
@@ -618,10 +719,16 @@ export function removeAllImages(){
 
 // Clears a single DOM image from the body
 export function removeDOMImage(name){
-	let imgStorage = document.getElementById("cwt-"+name);
-	if(imgStorage != null){
-		document.body.removeChild(imgStorage)
-	}
+	let imgStorage = document.getElementById("cwti-"+name);
+	if(imgStorage != null)
+		document.body.removeChild(imgStorage);
+}
+
+// Clears a single DOM image from the body
+export function removeDOMCanvas(name){
+	let imgCanvas = document.getElementById("cwtc-"+name);
+	if(imgCanvas != null)
+		document.body.removeChild(imgCanvas);
 }
 
 // CLears the colormap images
@@ -632,227 +739,8 @@ export function removeAllMaps(){
 }
 
 // -----------------------------------------
-// Private functions
+// Text Manipulation Functions
 // -----------------------------------------
-
-// This function is literally a callback function to actually store the image
-function storeImage(){
-
-	let i, j, imgStorage = document.getElementById("image");
-	if(imgStorage == null){
-		imgStorage = document.createElement("img");
-		document.body.appendChild(imgStorage);
-	}
-	imgStorage.setAttribute("id", "image");
-
-	//This sets up any rotation effects we have
-	let dimSwitch = jslix.rotateArray.shift();
-	//This sets up any cut actions we have
-	let tmpCut = jslix.cutArray.shift();
-	// Deals with drawing text correctly on the screen
-	let tmpText = jslix.textDrawArray.shift();
-
-	// If we are doing a text cut, better check that first
-	if(tmpText.length > 0){
-		console.log("Drawing Text: "+tmpText[1])
-		let textdim = getTextDim(tmpText[0], tmpText[1])
-		if(tmpCut.length > 0){
-			tmpCut[0] = (tmpCut[0] > textdim[0]-1) ? textdim[0]-1 : tmpCut[0];
-			tmpCut[1] = (tmpCut[1] > textdim[1]-1) ? textdim[1]-1 : tmpCut[1];
-			tmpCut[2] = (tmpCut[0] + tmpCut[2] > textdim[0]) ? textdim[0] - tmpCut[0] : tmpCut[2];
-			tmpCut[3] = (tmpCut[1] + tmpCut[3] > textdim[1]) ? textdim[1] - tmpCut[1] : tmpCut[3];
-		}else{
-			tmpCut = [0, 0, textdim[0], textdim[1]]
-		}
-	}
-	//Error check all the cut values
-	else if(tmpCut.length > 0){
-		tmpCut[0] = (tmpCut[0] > imgStorage.width-1) ? imgStorage.width-1 : tmpCut[0];
-		tmpCut[1] = (tmpCut[1] > imgStorage.height-1) ? imgStorage.height-1 : tmpCut[1];
-		tmpCut[2] = (tmpCut[0] + tmpCut[2] > imgStorage.width) ? imgStorage.width - tmpCut[0] : tmpCut[2];
-		tmpCut[3] = (tmpCut[1] + tmpCut[3] > imgStorage.height) ? imgStorage.height - tmpCut[1] : tmpCut[3];
-	}
-
-	// This sets up images to drop
-	let tmpImg = jslix.imgDropArray.shift();
-
-	let canvas = document.getElementById("store");
-	if(canvas == null){
-		canvas = document.createElement("canvas");
-		document.body.appendChild(canvas);
-	}
-	canvas.setAttribute("id", "store");
-	canvas.setAttribute("style", "display:none");
-
-	if(tmpCut.length > 0){
-		if(dimSwitch === 0){
-			canvas.setAttribute("width", tmpCut[2]);
-			canvas.setAttribute("height", tmpCut[3]);
-		}else{
-			canvas.setAttribute("height", tmpCut[2]);
-			canvas.setAttribute("width", tmpCut[3]);
-		}
-	}else{
-		if(dimSwitch === 0){
-			canvas.setAttribute("width", imgStorage.width);
-			canvas.setAttribute("height", imgStorage.height);
-		}else{
-			canvas.setAttribute("height", imgStorage.width);
-			canvas.setAttribute("width", imgStorage.height);
-		}
-	}
-
-	console.log("("+canvas.width+","+canvas.height+")");
-
-	let ctx = canvas.getContext("2d");
-	if(dimSwitch === 0){
-		if(tmpCut.length > 0)
-			ctx.drawImage(imgStorage, tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3],
-				            0, 0, tmpCut[2], tmpCut[3]);
-		else
-			ctx.drawImage(imgStorage, 0, 0);
-	}else{
-		ctx.rotate(90*Math.PI/180);
-		if(tmpCut.length > 0)
-			ctx.drawImage(imgStorage, tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3],
-				            0, -tmpCut[3], tmpCut[2], tmpCut[3]);
-		else
-			ctx.drawImage(imgStorage, 0, -imgStorage.height);
-	}
-	for(i = 0; i < tmpImg.length; i++){
-		dropImage(ctx, tmpImg[i], dimSwitch)
-	}
-
-	// This allows Safari to reenact onload functionality
-	if(imgStorage){
-		imgStorage.parentNode.removeChild(imgStorage);
-	}
-
-	let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-	let imgWidth = canvas.width;
-	let imgHeight = canvas.height;
-	let data = new Uint8Array(imgData.data);
-	let tmpColor = jslix.colorArray.shift();
-	let tmpColorMap = jslix.imgColorArray.shift();
-	let tmpBlend = jslix.blendArray.shift();
-	let tmpShift = jslix.shiftArray.shift();
-	let tmpDrop = jslix.dropArray.shift();
-	let tmpCutDrop = jslix.cutDropArray.shift();
-	let tmpName = jslix.ref.shift();
-	let tmpInfo = jslix.infoArray.shift();
-
-	//Do a bunch of manipulation checks before drawing out the image
-	if(tmpText.length > 0){
-		console.log("Gets to trying to draw text")
-		data = drawLetters(data, imgWidth, imgHeight, tmpText, tmpCut);
-	}
-	if(tmpCutDrop.length != 0){
-		for(i = 0; i < tmpCutDrop.length; i++){
-			data = dropCutPixels(data, imgWidth, imgHeight, tmpCutDrop[i]);
-		}
-	}
-	if(jslix.flipXArray.shift() == 1)
-		data = flipX(data, imgWidth, imgHeight);
-	if(jslix.flipYArray.shift() == 1)
-		data = flipY(data, imgWidth, imgHeight);
-	if(jslix.pixelArray.shift() == 1){
-		data = rotatePixels(data, imgWidth, imgHeight);
-		let tmp = imgWidth;
-		imgWidth = imgHeight;
-		imgHeight = tmp;
-	}
-	if(tmpColor.length != 0){
-			for(i = 0; i < tmpColor.length; i++){
-				data = changeColor(data, tmpColor[i][0], tmpColor[i][1], tmpColor[i][2]);
-			}
-		}
-	if(tmpColorMap.length != 0){
-		for(i = 0; i < tmpColorMap.length; i++){
-			data = changeMapColor(data, tmpColorMap[i][0], tmpColorMap[i][1]);
-		}
-	}
-	if(tmpBlend.length != 0){
-		for(i = 0; i < tmpBlend.length; i++){
-			data = changeBlendColor(data, tmpBlend[i][0], tmpBlend[i][1], tmpBlend[i][2]);
-		}
-	}
-	if(tmpShift.length != 0){
-		for(i = 0; i < tmpShift.length; i++){
-			if(tmpShift[i][0] == 0)
-				data = slitIntX(data, imgWidth, imgHeight, tmpShift[i][1], tmpShift[i][2], tmpShift[i][3]);
-			else
-				data = slitIntY(data, imgWidth, imgHeight, tmpShift[i][1], tmpShift[i][2], tmpShift[i][3]);
-		}
-	}
-	if(jslix.invertArray.shift() == 1)
-		data = invertColors(data);
-	if(tmpDrop.length != 0){
-		for(i = 0; i < tmpDrop.length; i++){
-			data = dropPixels(data, imgWidth, imgHeight, jslix.intArray[tmpDrop[i][0]], tmpDrop[i][1], tmpDrop[i][2], tmpDrop[i][3], tmpDrop[i][4]);
-		}
-	}
-
-	// This allows Safari to reenact onload functionality
-	//if(imgStorage){
-	//	imgStorage.parentNode.removeChild(imgStorage);
-	//}
-
-	// Used to store things on the textmap (Have to do it after manipulations)
-	if(jslix.textArray.shift() == 1){
-		jslix.textImg.push(data);
-		jslix.textX.push(imgWidth);
-		jslix.textY.push(imgHeight);
-		jslix.textInfo.push(tmpInfo);
-		queueNext();
-		return;
-	}
-
-	// Used to store things on the colormap (Have to do it after manipulations)
-	if(jslix.mapArray.shift() == 1){
-		jslix.imgMap.push(data);
-		jslix.mapX.push(imgWidth);
-		jslix.mapY.push(imgHeight);
-		queueNext();
-		return;
-	}
-
-	addReference(tmpName, jslix.intArray.length);
-
-	for(i = 0; i < jslix.viewArray.length; i++){
-		// This check makes sure all images are unique
-		if(imgWidth != jslix.locxArray[i] || imgHeight != jslix.locyArray[i])
-			continue;
-		if(data.length === jslix.viewArray[i].length){
-			for(j = 0; j < jslix.viewArray[i].length; j++){
-				if(data[j] != jslix.viewArray[i][j]){
-					break;
-				}
-			}
-			if(j == jslix.viewArray[i].length){
-				jslix.intArray.push(i);
-				queueNext();
-				return;
-			}
-		}
-	}
-
-	jslix.intArray.push(jslix.viewArray.length);
-	//This pushes the images into an array
-	jslix.viewArray.push(data);
-	jslix.locxArray.push(imgWidth);
-	jslix.locyArray.push(imgHeight);
-	jslix.imgArray.push(new Image());
-	jslix.imgReady.push(-1);
-
-	queueNext();
-}
-
-// A wrapper function for drawing the next image since the calls are getting numerous
-function queueNext(){
-	jslix.busy = 0;
-	if(jslix.imgQueue.length > 0)
-		addImage(jslix.imgQueue.shift());
-}
 
 // A function for getting the length and width of a text string
 // This will get more complicated once we add newlines
@@ -930,6 +818,232 @@ function drawLetters(data, sx, sy, txtArray, cutArray){
 	}
 
 	return data
+}
+
+// -----------------------------------------
+// Private functions
+// -----------------------------------------
+
+// This function is literally a callback function to actually store the image
+function storeImage(){
+
+	let i, j, imgStorage = document.getElementById("cwtj-image");
+	if(imgStorage == null){
+		imgStorage = document.createElement("img");
+		document.body.appendChild(imgStorage);
+	}
+	imgStorage.setAttribute("id", "cwtj-image");
+
+	//This sets up any rotation effects we have
+	let dimSwitch = jslix.rotateArray.shift();
+	//This sets up any cut actions we have
+	let tmpCut = jslix.cutArray.shift();
+	/*// Deals with drawing text correctly on the screen
+	let tmpText = jslix.textDrawArray.shift();
+
+	// If we are doing a text cut, better check that first
+	if(tmpText.length > 0){
+		console.log("Drawing Text: "+tmpText[1])
+		let textdim = getTextDim(tmpText[0], tmpText[1])
+		if(tmpCut.length > 0){
+			tmpCut[0] = (tmpCut[0] > textdim[0]-1) ? textdim[0]-1 : tmpCut[0];
+			tmpCut[1] = (tmpCut[1] > textdim[1]-1) ? textdim[1]-1 : tmpCut[1];
+			tmpCut[2] = (tmpCut[0] + tmpCut[2] > textdim[0]) ? textdim[0] - tmpCut[0] : tmpCut[2];
+			tmpCut[3] = (tmpCut[1] + tmpCut[3] > textdim[1]) ? textdim[1] - tmpCut[1] : tmpCut[3];
+		}else{
+			tmpCut = [0, 0, textdim[0], textdim[1]]
+		}
+	}//
+	//Error check all the cut values
+	else if(tmpCut.length > 0){ // Original line*/
+	if(tmpCut.length > 0){ // New line
+		tmpCut[0] = (tmpCut[0] > imgStorage.width-1) ? imgStorage.width-1 : tmpCut[0];
+		tmpCut[1] = (tmpCut[1] > imgStorage.height-1) ? imgStorage.height-1 : tmpCut[1];
+		tmpCut[2] = (tmpCut[0] + tmpCut[2] > imgStorage.width) ? imgStorage.width - tmpCut[0] : tmpCut[2];
+		tmpCut[3] = (tmpCut[1] + tmpCut[3] > imgStorage.height) ? imgStorage.height - tmpCut[1] : tmpCut[3];
+	}
+
+	// This sets up images to drop
+	let tmpImg = jslix.imgDropArray.shift();
+
+	let canvas = document.getElementById("cwtj-store");
+	if(canvas == null){
+		canvas = document.createElement("canvas");
+		document.body.appendChild(canvas);
+	}
+	canvas.setAttribute("id", "cwtj-store");
+	canvas.setAttribute("style", "display:none");
+
+	if(tmpCut.length > 0){
+		if(dimSwitch === 0){
+			canvas.setAttribute("width", tmpCut[2]);
+			canvas.setAttribute("height", tmpCut[3]);
+		}else{
+			canvas.setAttribute("height", tmpCut[2]);
+			canvas.setAttribute("width", tmpCut[3]);
+		}
+	}else{
+		if(dimSwitch === 0){
+			canvas.setAttribute("width", imgStorage.width);
+			canvas.setAttribute("height", imgStorage.height);
+		}else{
+			canvas.setAttribute("height", imgStorage.width);
+			canvas.setAttribute("width", imgStorage.height);
+		}
+	}
+
+	console.log("("+canvas.width+","+canvas.height+")");
+
+	let ctx = canvas.getContext("2d");
+	if(dimSwitch === 0){
+		if(tmpCut.length > 0)
+			ctx.drawImage(imgStorage, tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3],
+				            0, 0, tmpCut[2], tmpCut[3]);
+		else
+			ctx.drawImage(imgStorage, 0, 0);
+	}else{
+		ctx.rotate(90*Math.PI/180);
+		if(tmpCut.length > 0)
+			ctx.drawImage(imgStorage, tmpCut[0], tmpCut[1], tmpCut[2], tmpCut[3],
+				            0, -tmpCut[3], tmpCut[2], tmpCut[3]);
+		else
+			ctx.drawImage(imgStorage, 0, -imgStorage.height);
+	}
+	for(i = 0; i < tmpImg.length; i++){
+		dropImage(ctx, tmpImg[i], dimSwitch)
+	}
+
+	// This allows Safari to reenact onload functionality
+	if(imgStorage){
+		imgStorage.parentNode.removeChild(imgStorage);
+	}
+
+	let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	let imgWidth = canvas.width;
+	let imgHeight = canvas.height;
+	let data = new Uint8Array(imgData.data);
+	let tmpColor = jslix.colorArray.shift();
+	let tmpColorMap = jslix.imgColorArray.shift();
+	let tmpBlend = jslix.blendArray.shift();
+	let tmpShift = jslix.shiftArray.shift();
+	let tmpDrop = jslix.dropArray.shift();
+	let tmpCutDrop = jslix.cutDropArray.shift();
+	let tmpName = jslix.ref.shift();
+	let tmpInfo = jslix.infoArray.shift();
+
+	/*//Do a bunch of manipulation checks before drawing out the image
+	if(tmpText.length > 0){
+		console.log("Gets to trying to draw text")
+		data = drawLetters(data, imgWidth, imgHeight, tmpText, tmpCut);
+	}//*/
+	if(tmpCutDrop.length != 0){
+		for(i = 0; i < tmpCutDrop.length; i++){
+			data = dropCutPixels(data, imgWidth, imgHeight, tmpCutDrop[i]);
+		}
+	}
+	if(jslix.flipXArray.shift() == 1)
+		data = flipX(data, imgWidth, imgHeight);
+	if(jslix.flipYArray.shift() == 1)
+		data = flipY(data, imgWidth, imgHeight);
+	if(jslix.pixelArray.shift() == 1){
+		data = rotatePixels(data, imgWidth, imgHeight);
+		let tmp = imgWidth;
+		imgWidth = imgHeight;
+		imgHeight = tmp;
+	}
+	if(tmpColor.length != 0){
+			for(i = 0; i < tmpColor.length; i++){
+				data = changeColor(data, tmpColor[i][0], tmpColor[i][1], tmpColor[i][2]);
+			}
+		}
+	if(tmpColorMap.length != 0){
+		for(i = 0; i < tmpColorMap.length; i++){
+			data = changeMapColor(data, tmpColorMap[i][0], tmpColorMap[i][1]);
+		}
+	}
+	if(tmpBlend.length != 0){
+		for(i = 0; i < tmpBlend.length; i++){
+			data = changeBlendColor(data, tmpBlend[i][0], tmpBlend[i][1], tmpBlend[i][2]);
+		}
+	}
+	if(tmpShift.length != 0){
+		for(i = 0; i < tmpShift.length; i++){
+			if(tmpShift[i][0] == 0)
+				data = slitIntX(data, imgWidth, imgHeight, tmpShift[i][1], tmpShift[i][2], tmpShift[i][3]);
+			else
+				data = slitIntY(data, imgWidth, imgHeight, tmpShift[i][1], tmpShift[i][2], tmpShift[i][3]);
+		}
+	}
+	if(jslix.invertArray.shift() == 1)
+		data = invertColors(data);
+	if(tmpDrop.length != 0){
+		for(i = 0; i < tmpDrop.length; i++){
+			data = dropPixels(data, imgWidth, imgHeight, jslix.intArray[tmpDrop[i][0]], tmpDrop[i][1], tmpDrop[i][2], tmpDrop[i][3], tmpDrop[i][4]);
+		}
+	}
+
+	// This allows Safari to reenact onload functionality
+	//if(imgStorage){
+	//	imgStorage.parentNode.removeChild(imgStorage);
+	//}
+
+	// Used to store things on the textmap (Have to do it after manipulations)
+	if(jslix.textArray.shift() == 1){
+		jslix.textImg.push(data);
+		jslix.textX.push(imgWidth);
+		jslix.textY.push(imgHeight);
+		jslix.textImgArray.push(new Image());
+		jslix.textImgReady.push(-1);
+		jslix.textInfo.push(tmpInfo);
+		queueNext();
+		return;
+	}
+
+	// Used to store things on the colormap (Have to do it after manipulations)
+	if(jslix.mapArray.shift() == 1){
+		jslix.imgMap.push(data);
+		jslix.mapX.push(imgWidth);
+		jslix.mapY.push(imgHeight);
+		queueNext();
+		return;
+	}
+
+	addReference(tmpName, jslix.intArray.length);
+
+	for(i = 0; i < jslix.viewArray.length; i++){
+		// This check makes sure all images are unique
+		if(imgWidth != jslix.locxArray[i] || imgHeight != jslix.locyArray[i])
+			continue;
+		if(data.length === jslix.viewArray[i].length){
+			for(j = 0; j < jslix.viewArray[i].length; j++){
+				if(data[j] != jslix.viewArray[i][j]){
+					break;
+				}
+			}
+			if(j == jslix.viewArray[i].length){
+				jslix.intArray.push(i);
+				queueNext();
+				return;
+			}
+		}
+	}
+
+	jslix.intArray.push(jslix.viewArray.length);
+	//This pushes the images into an array
+	jslix.viewArray.push(data);
+	jslix.locxArray.push(imgWidth);
+	jslix.locyArray.push(imgHeight);
+	jslix.imgArray.push(new Image());
+	jslix.imgReady.push(-1);
+
+	queueNext();
+}
+
+// A wrapper function for drawing the next image since the calls are getting numerous
+function queueNext(){
+	jslix.busy = 0;
+	if(jslix.imgQueue.length > 0)
+		addImage(jslix.imgQueue.shift());
 }
 
 // This inverts all the colors of an image
@@ -1283,13 +1397,33 @@ export function canvasImg(num){
 
 	let i, change = 0;
 
-	if(num >= 0 && num < jslix.viewArray.length){
-		jslix.view = jslix.viewArray[num];
+	if(num >= 0 && num < jslix.viewArray.length || num < -10){
+		if(num >= 0){
+			jslix.view = jslix.viewArray[num];
 
-		if(jslix.lx !== jslix.locxArray[num] || jslix.ly !== jslix.locyArray[num]){
-			jslix.lx = jslix.locxArray[num];
-			jslix.ly = jslix.locyArray[num];
-			change = 1;
+			if(jslix.lx !== jslix.locxArray[num] || jslix.ly !== jslix.locyArray[num]){
+				jslix.lx = jslix.locxArray[num];
+				jslix.ly = jslix.locyArray[num];
+				change = 1;
+			}
+		}else{
+			num = -num-10
+			if(num >= 0 && num < jslix.textImg.length){
+				jslix.view = jslix.textImg[num];
+
+				if(jslix.lx !== jslix.textX[num] || jslix.ly !== jslix.textY[num]){
+					jslix.lx = jslix.textX[num];
+					jslix.ly = jslix.textY[num];
+					change = 1;
+				}
+			}else{
+				jslix.view = null;
+				if(jslix.lx !== 1 || jslix.ly !== 1){
+					jslix.lx = 1;
+					jslix.ly = 1;
+					change = 1;
+				}
+			}
 		}
 	}else{
 		jslix.view = null;
@@ -1302,12 +1436,12 @@ export function canvasImg(num){
 
 	//This makes a canvas storage module for the image
 	if(change == 1){
-		jslix.imgcanvas = document.getElementById("store");
+		jslix.imgcanvas = document.getElementById("cwtj-store");
 		if(jslix.imgcanvas == null){
 			jslix.imgcanvas = document.createElement("canvas");
 			document.body.appendChild(jslix.imgcanvas);
 		}
-		jslix.imgcanvas.setAttribute("id", "store");
+		jslix.imgcanvas.setAttribute("id", "cwtj-store");
 		jslix.imgcanvas.setAttribute("width", jslix.lx);
 		jslix.imgcanvas.setAttribute("height", jslix.ly);
 		jslix.imgcanvas.setAttribute("style", "display:none");
@@ -1358,6 +1492,22 @@ function loadImage(num){
 		}
 	};
 	tempImg.src = canvasImg(num).toDataURL();
+}
+
+function loadTextImage(num){
+	var tempImg = new Image();
+	tempImg.onload = function(){
+		// Catches those pasky errors
+		if(this.src === undefined || jslix.textImgArray[num] === undefined)
+			return
+
+		jslix.textImgArray[num].src = this.src;
+
+		if(this.height == jslix.textX[num] && this.width == jslix.textY[num]){
+			jslix.textImgReady[num] = num;
+		}
+	};
+	tempImg.src = canvasImg(-num-10).toDataURL();
 }
 
 // This function handles the onError call of a dead image
