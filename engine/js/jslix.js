@@ -10,6 +10,14 @@
  * Future: Might need to modularize this a bit (Deprecated)
  */
 
+ /*
+
+	TextImgLibrary will no longer use a map, but instead use normal images to
+	draw the text onto the canvas and save the text. The issue is there is far
+	to much manipulations to do it any other way. But it will be easier to
+	target letters and reduce the overall code with this change.
+ */
+
 export const jslix = {
 
 	// ImageLibrary Stuff
@@ -27,12 +35,7 @@ export const jslix = {
 	imgMap: [],
 	mapX: [],
 	mapY: [],
-	textImg: [],
-	textX: [],
-	textY: [],
-	textInfo: [],
-	textImgArray: [],
-	textImgReady: [],
+	textInfo: {},
 	busy: 0,
 
 	// Drastically decrease copy times
@@ -65,7 +68,7 @@ export const jslix = {
 	drop: [],
 	cutdrop: [],
 	imgdrop: [],
-	info: [],
+	//info: [],
 	cut: [],
 	ref: [],
 	textdraw: [],
@@ -108,10 +111,10 @@ export function addColorMap(text){
 }
 
 // Adds a Text map for writing picture text to the screenX
-export function addTextMap(text){
-	jslix.textmap = 1;
-	addImage(text);
-}
+//export function addTextMap(text){
+//	jslix.textmap = 1;
+//	addImage(text);
+//}
 
 // Adds a flat colored box to the list of images
 // Not all too useful yet, until extra functionality is added in
@@ -149,7 +152,7 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 // This is the problem, we have to make the text image beforehand
 export function addTextImage(index, str){
 
-	if(index < 0){
+	if(index < 0){// || index >= jslix.intArray.length){
 		addFontImage(str);
 		return;
 	}
@@ -157,13 +160,13 @@ export function addTextImage(index, str){
 	var textdim = getTextDim(index, str);
 
 	if( textdim[0] == 0 ){
-		console.log("Do it the color way");
+		console.log("Do it the color way: "+str);
 
 		jslix.textdraw = [index, str]
-		addColorBox(0, 0, 0, 255, 1, 1)
+		addColorBox(0, 0, 0, 255, textdim[0], textdim[1])
 
 	}else{
-		console.log("Do it the canvas way");
+		console.log("Do it the canvas way: "+str);
 
 		let imgcanvas = document.getElementById("cwtj-font");
 		if(imgcanvas == null){
@@ -186,24 +189,23 @@ export function addTextImage(index, str){
 		let i, j, k = index;
 		let tmpInfo = jslix.textInfo[index];
 
-		for(i = 0; i < str.length; i++){
+		if(tmpInfo !== undefined){
+			for(i = 0; i < str.length; i++){
 
-			for(j = 0; j < tmpInfo.length; j++){
-
-				let chart = tmpInfo[j][7];
+				let chart = tmpInfo[7];
 				let tmplps = chart.indexOf(str.charAt(i));
 
 				if(tmplps >= 0){
 
 					console.log("Canvas: Gets here in the tmplps")
 
-					let tmppx = tmpInfo[j][0]
-					let tmppy = tmpInfo[j][1]
-					let tmpsx = (tmpInfo[j][2] < 1) ? jslix.textX[index] : tmpInfo[j][2];
-					let tmpsy = (tmpInfo[j][3] < 1) ? jslix.textY[index] : tmpInfo[j][3];
-					let tmpslx = (tmpInfo[j][4] < 1) ? 1 : tmpInfo[j][4];
-					let tmpsly = (tmpInfo[j][5] < 1) ? 1 : tmpInfo[j][5];
-					let start = (tmpInfo[j][6] < 0) ? 0 : tmpInfo[j][6];
+					let tmppx = tmpInfo[0]
+					let tmppy = tmpInfo[1]
+					let tmpsx = (tmpInfo[2] < 1) ? jslix.locxArray[index] : tmpInfo[2];
+					let tmpsy = (tmpInfo[3] < 1) ? jslix.locyArray[index] : tmpInfo[3];
+					let tmpslx = (tmpInfo[4] < 1) ? 1 : tmpInfo[4];
+					let tmpsly = (tmpInfo[5] < 1) ? 1 : tmpInfo[5];
+					let start = (tmpInfo[6] < 0) ? 0 : tmpInfo[6];
 
 					let letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
 					let letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
@@ -211,10 +213,8 @@ export function addTextImage(index, str){
 					let posx = tmplps % tmpslx
 					let posy = Math.floor(tmplps / tmpslx)
 
-					console.log(getTextImg(index));
-
 					console.log("Canvas: Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
-					placeCutTextImg(ctx, index, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy);
+					placeCutImg(ctx, index, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy);
 				}
 			}
 		}
@@ -286,8 +286,8 @@ export function addImage(text){
 	jslix.cutdrop = [];
 	jslix.imgDropArray.push(jslix.imgdrop);
 	jslix.imgdrop = [];
-	jslix.infoArray.push(jslix.info);
-	jslix.info = [];
+	//jslix.infoArray.push(jslix.info);
+	//jslix.info = [];
 	jslix.textDrawArray.push(jslix.textdraw);
 	jslix.textdraw = [];
 	jslix.cutArray.push(jslix.cut);
@@ -500,12 +500,7 @@ export function addTextInfo(index, slicex, slicey, start, chart){
 // sizex = the x-axis total length of all slices
 // sizey = the y-axis total length of all slices
 export function addAllTextInfo(index, posx, posy, sizex, sizey, slicex, slicey, start, chart){
-	let temp = [posx, posy, sizex, sizey, slicex, slicey, start, chart];
-	if (index >= 0 && index < jslix.textInfo.length){
-		jslix.textInfo[index].append(temp);
-	}else{
-		jslix.info.push(temp);
-	}
+	jslix.textInfo[index] = [posx, posy, sizex, sizey, slicex, slicey, start, chart];
 }
 
 // This changes the font family of font images
@@ -561,24 +556,19 @@ export function getDomCanvasImg(name){
 
 // The getImage stuff - to get rid of the slow time of Internet Explorer
 export function getImg(num){
+	if(num >= 0 && num < jslix.intArray.length)
+		num = jslix.intArray[num];
 	if(jslix.imgReady[num] != num){
 		addLoadEvent(loadImage(num));
 		return canvasImg(num);
 	}
-
 	return jslix.imgArray[num];
-}
-
-function getTextImg(num){
-	if(jslix.textImgReady[num] != num){
-		addLoadEvent(loadTextImage(num));
-		return canvasImg(-num-10);
-	}
-	return jslix.textImgArray[num];
 }
 
 // Gets the x-axis width of an image
 export function getX(num){
+	if(num >= 0 && num < jslix.intArray.length)
+		num = jslix.intArray[num];
 	if(jslix.imgReady[num] != num){
 		addLoadEvent(loadImage(num));
 		return 1;
@@ -588,6 +578,8 @@ export function getX(num){
 
 // Gets the y-axis height of an image
 export function getY(num){
+	if(num >= 0 && num < jslix.intArray.length)
+		num = jslix.intArray[num];
 	if(jslix.imgReady[num] != num){
 		addLoadEvent(loadImage(num));
 		return 1;
@@ -644,8 +636,8 @@ export function drawImg(ctx, num, dlx, dly, dsx, dsy){
 
 // This function is used for placing a shifted image on the destination screen
 export function placeCropImg(ctx, num, dlx, dly, slx, sly){
-	ctx.drawImage(getImg(num), slx, sly, jslix.locxArray[num], jslix.locyArray[num],
-	                       dlx, dly, jslix.locxArray[num], jslix.locyArray[num]);
+	ctx.drawImage(getImg(num), slx, sly, getX(num), getY(num),
+	                       dlx, dly, getX(num), getY(num));
 }
 
 // This function is used for drawing a shifted image on the destination screen
@@ -660,14 +652,14 @@ export function drawCropImg(ctx, num, dlx, dly, dsx, dsy, slx, sly){
     // scale by the width or the height depending on the one needed
     ctx.scale((dsx<0)?-1:1, (dsy<0)?-1:1);
     // Draw the Img: no need for x,y since we've already translated
-		ctx.drawImage(getImg(num), slx, sly, jslix.locxArray[num],
-		  jslix.locyArray[num], 0, 0, dsx*((dsx<0)?-1:1), dsy*((dsy < 0)?-1:1));
+		ctx.drawImage(getImg(num), slx, sly, getX(num), getY(num),
+		              0, 0, dsx*((dsx<0)?-1:1), dsy*((dsy < 0)?-1:1));
     // always clean up -- reset transformations to default
     ctx.setTransform(1,0,0,1,0,0);
 
 	}else
-		ctx.drawImage(getImg(num), slx, sly, jslix.locxArray[num],
-		                     jslix.locyArray[num], dlx, dly, dsx, dsy);
+		ctx.drawImage(getImg(num), slx, sly, getX(num), getY(num),
+		                           dlx, dly, dsx, dsy);
 }
 
 // This function is used to place a cut image on the destination screen
@@ -696,9 +688,9 @@ export function drawCutImg(ctx, num, dlx, dly, dsx, dsy, slx, sly, ssx, ssy){
 		ctx.drawImage(getImg(num), slx, sly, ssx, ssy, dlx, dly, dsx, dsy);
 }
 
-// This function is used to place a text cut image on a destination canvas
+// This function is used to place a cut image on the destination screen
 export function placeCutTextImg(ctx, num, dlx, dly, slx, sly, ssx, ssy){
-	ctx.drawImage(getTextImg(num), slx, sly, ssx, ssy, dlx, dly, ssx, ssy);
+	ctx.drawImage(getImg(num), slx, sly, ssx, ssy, dlx, dly, ssx, ssy);
 }
 
 // -------------------------------------------
@@ -753,18 +745,20 @@ function getTextDim(index, str){
 // A function for getting the length and width of a letter in a textMap
 function getLetterDim(index){
 
-	if(index < 0 || index >= jslix.textImg.length){
-		return [0, 0]
-	}
-
 	// Let's get the relevant Text Array
 	let tmpInfo = jslix.textInfo[index]
 
+	if(index < 0 || index >= jslix.intArray.length)
+		return [0, 0];
+
+	// Sets the index straight
+	index = jslix.intArray[index];
+
 	// Let's then get the size of the letter in the array
-	let tmpsx = (tmpInfo[0][2] < 1) ? jslix.textX[index] : tmpInfo[0][2];
-	let tmpsy = (tmpInfo[0][3] < 1) ? jslix.textY[index] : tmpInfo[0][3];
-	let tmpslx = (tmpInfo[0][4] < 1) ? 1 : tmpInfo[0][4];
-	let tmpsly = (tmpInfo[0][5] < 1) ? 1 : tmpInfo[0][5];
+	let tmpsx = (tmpInfo[2] < 1) ? jslix.locxArray[index] : tmpInfo[2];
+	let tmpsy = (tmpInfo[3] < 1) ? jslix.locyArray[index] : tmpInfo[3];
+	let tmpslx = (tmpInfo[4] < 1) ? 1 : tmpInfo[4];
+	let tmpsly = (tmpInfo[5] < 1) ? 1 : tmpInfo[5];
 
 	// Let's get the length and width of a letter first
 	let letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
@@ -783,26 +777,26 @@ function drawLetters(data, sx, sy, txtArray, cutArray){
 	let tmpInfo = jslix.textInfo[index];
 	let str = txtArray[1];
 
-	// You don't get just one, you get a bunch of them
-	let tmpInd = -index-1;
+	console.log(tmpInfo)
 
-	for(i = 0; i < str.length; i++){
+	if(tmpInfo !== undefined){
 
-		for(j = 0; j < tmpInfo.length; j++){
-			let chart = tmpInfo[j][7];
+		for(i = 0; i < str.length; i++){
+
+			let chart = tmpInfo[7];
 			let tmplps = chart.indexOf(str.charAt(i));
 
 			if(tmplps >= 0){
 
 				console.log("Gets here in the tmplps")
 
-				let tmppx = tmpInfo[j][0]
-				let tmppy = tmpInfo[j][1]
-				let tmpsx = (tmpInfo[j][2] < 1) ? jslix.textX[index] : tmpInfo[j][2];
-				let tmpsy = (tmpInfo[j][3] < 1) ? jslix.textY[index] : tmpInfo[j][3];
-				let tmpslx = (tmpInfo[j][4] < 1) ? 1 : tmpInfo[j][4];
-				let tmpsly = (tmpInfo[j][5] < 1) ? 1 : tmpInfo[j][5];
-				let start = (tmpInfo[j][6] < 0) ? 0 : tmpInfo[j][6];
+				let tmppx = tmpInfo[0]
+				let tmppy = tmpInfo[1]
+				let tmpsx = (tmpInfo[2] < 1) ? jslix.locxArray[index] : tmpInfo[2];
+				let tmpsy = (tmpInfo[3] < 1) ? jslix.locyArray[index] : tmpInfo[3];
+				let tmpslx = (tmpInfo[4] < 1) ? 1 : tmpInfo[4];
+				let tmpsly = (tmpInfo[5] < 1) ? 1 : tmpInfo[5];
+				let start = (tmpInfo[6] < 0) ? 0 : tmpInfo[6];
 
 				let letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
 				let letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
@@ -811,7 +805,8 @@ function drawLetters(data, sx, sy, txtArray, cutArray){
 				let posy = Math.floor(tmplps / tmpslx)
 
 				console.log("Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
-				let tmpArray = [tmpInd, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy, 100, 2];
+				let tmpArray = [index, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy, 100, 2];
+				console.log(tmpArray)
 				data = dropCutPixels(data, sx, sy, tmpArray);
 			}
 		}
@@ -838,7 +833,7 @@ function storeImage(){
 	let dimSwitch = jslix.rotateArray.shift();
 	//This sets up any cut actions we have
 	let tmpCut = jslix.cutArray.shift();
-	/*// Deals with drawing text correctly on the screen
+	// Deals with drawing text correctly on the screen
 	let tmpText = jslix.textDrawArray.shift();
 
 	// If we are doing a text cut, better check that first
@@ -856,7 +851,7 @@ function storeImage(){
 	}//
 	//Error check all the cut values
 	else if(tmpCut.length > 0){ // Original line*/
-	if(tmpCut.length > 0){ // New line
+	//if(tmpCut.length > 0){ // New line
 		tmpCut[0] = (tmpCut[0] > imgStorage.width-1) ? imgStorage.width-1 : tmpCut[0];
 		tmpCut[1] = (tmpCut[1] > imgStorage.height-1) ? imgStorage.height-1 : tmpCut[1];
 		tmpCut[2] = (tmpCut[0] + tmpCut[2] > imgStorage.width) ? imgStorage.width - tmpCut[0] : tmpCut[2];
@@ -913,6 +908,45 @@ function storeImage(){
 		dropImage(ctx, tmpImg[i], dimSwitch)
 	}
 
+	/*if(tmpText.length > 0){
+
+		let index = tmpText[0]
+		let str = tmpText[1]
+
+		// Pulls relevant information from the textInfo class
+		let tmpInfo = jslix.textInfo[index];
+
+		if(tmpInfo !== undefined){
+			for(i = 0; i < str.length; i++){
+
+				let chart = tmpInfo[7];
+				let tmplps = chart.indexOf(str.charAt(i));
+
+				if(tmplps >= 0){
+
+					console.log("Canvas: Gets here in the tmplps")
+
+					let tmppx = tmpInfo[0]
+					let tmppy = tmpInfo[1]
+					let tmpsx = (tmpInfo[2] < 1) ? jslix.locxArray[index] : tmpInfo[2];
+					let tmpsy = (tmpInfo[3] < 1) ? jslix.locyArray[index] : tmpInfo[3];
+					let tmpslx = (tmpInfo[4] < 1) ? 1 : tmpInfo[4];
+					let tmpsly = (tmpInfo[5] < 1) ? 1 : tmpInfo[5];
+					let start = (tmpInfo[6] < 0) ? 0 : tmpInfo[6];
+
+					let letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
+					let letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
+
+					let posx = tmplps % tmpslx
+					let posy = Math.floor(tmplps / tmpslx)
+
+					console.log("Canvas: Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
+					placeCutTextImg(ctx, index, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy);
+				}
+			}
+		}
+	}//*/
+
 	// This allows Safari to reenact onload functionality
 	if(imgStorage){
 		imgStorage.parentNode.removeChild(imgStorage);
@@ -929,9 +963,9 @@ function storeImage(){
 	let tmpDrop = jslix.dropArray.shift();
 	let tmpCutDrop = jslix.cutDropArray.shift();
 	let tmpName = jslix.ref.shift();
-	let tmpInfo = jslix.infoArray.shift();
+	//let tmpInfo = jslix.infoArray.shift();
 
-	/*//Do a bunch of manipulation checks before drawing out the image
+	//Do a bunch of manipulation checks before drawing out the image
 	if(tmpText.length > 0){
 		console.log("Gets to trying to draw text")
 		data = drawLetters(data, imgWidth, imgHeight, tmpText, tmpCut);
@@ -988,16 +1022,14 @@ function storeImage(){
 	//}
 
 	// Used to store things on the textmap (Have to do it after manipulations)
-	if(jslix.textArray.shift() == 1){
-		jslix.textImg.push(data);
-		jslix.textX.push(imgWidth);
-		jslix.textY.push(imgHeight);
-		jslix.textImgArray.push(new Image());
-		jslix.textImgReady.push(-1);
-		jslix.textInfo.push(tmpInfo);
-		queueNext();
-		return;
-	}
+	//if(jslix.textArray.shift() == 1){
+	//	jslix.textImg.push(data);
+	//	jslix.textX.push(imgWidth);
+	//	jslix.textY.push(imgHeight);
+	//	jslix.textInfo.push(tmpInfo);
+	//	queueNext();
+	//	return;
+	//}
 
 	// Used to store things on the colormap (Have to do it after manipulations)
 	if(jslix.mapArray.shift() == 1){
@@ -1035,7 +1067,6 @@ function storeImage(){
 	jslix.locyArray.push(imgHeight);
 	jslix.imgArray.push(new Image());
 	jslix.imgReady.push(-1);
-
 	queueNext();
 }
 
@@ -1258,11 +1289,8 @@ function dropPixels(data, sx, sy, imgID, px, py, opacity, opt){
 // imgIndex, posx, posy, locx, locy, sizex, sizey, opacity, opt
 function dropCutPixels(data, sx, sy, idata){
 
-	// This controls whether this is a textImage
-	let textImage = (idata[0] < 0)
-
 	//setup all the variables first
-	let imgID = textImage ? (idata[0]*-1)-1 : jslix.intArray[idata[0]];
+	let imgID = jslix.intArray[idata[0]];
 	let px = idata[1]
 	let py = idata[2]
 	let ilx = idata[3]
@@ -1277,51 +1305,28 @@ function dropCutPixels(data, sx, sy, idata){
 	// Then do the original cut function
 	let temp = new Uint8Array(data);
 
-	if(textImage){
-		if(opacity >= 0 && opacity <= 100){
-			for(let i = 0; i < sx; i++){
-				for(let j = 0; j < sy; j++){
-					// If I'm planning to loop through everything, I need a k!
-					if(i >= px && i < px+jslix.textX[imgID] && i < px+isx &&
-						 j >= py && j < py+jslix.textY[imgID] && j < py+isy){
-						// Don't blend in transparent pixels
-						if(opt == 0 && jslix.textImg[imgID][((i-px+ilx)+(j-py-ily)*jslix.textX[imgID])*4+3] === 0)
-							continue;
-						if(opt != 1){
-							temp[(i+j*sx)*4] += (jslix.textImg[imgID][((i-px+ilx)+(j-py+ily)*jslix.textX[imgID])*4] - temp[(i+j*sx)*4])*(opacity / 100);
-							temp[(i+j*sx)*4+1] += (jslix.textImg[imgID][((i-px+ilx)+(j-py+ily)*jslix.textX[imgID])*4+1] - temp[(i+j*sx)*4+1])*(opacity / 100);
-							temp[(i+j*sx)*4+2] += (jslix.textImg[imgID][((i-px+ilx)+(j-py+ily)*jslix.textX[imgID])*4+2] - temp[(i+j*sx)*4+2])*(opacity / 100);
-						}
-						if(opt != 0){
-							temp[(i+j*sx)*4+3] += (jslix.textImg[imgID][((i-px+ilx)+(j-py+ily)*jslix.textX[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);
-						}
+	if(opacity >= 0 && opacity <= 100){
+		for(let i = 0; i < sx; i++){
+			for(let j = 0; j < sy; j++){
+				// If I'm planning to loop through everything, I need a k!
+				if(i >= px && i < px+jslix.locxArray[imgID] && i < px+isx &&
+					 j >= py && j < py+jslix.locyArray[imgID] && j < py+isy){
+					// Don't blend in transparent pixels
+					if(opt == 0 && jslix.viewArray[imgID][((i-px+ilx)+(j-py+ily)*jslix.locxArray[imgID])*4+3] === 0)
+						continue;
+					if(opt != 1){
+						temp[(i+j*sx)*4] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py+ily)*jslix.locxArray[imgID])*4] - temp[(i+j*sx)*4])*(opacity / 100);
+						temp[(i+j*sx)*4+1] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py+ily)*jslix.locxArray[imgID])*4+1] - temp[(i+j*sx)*4+1])*(opacity / 100);
+						temp[(i+j*sx)*4+2] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py+ily)*jslix.locxArray[imgID])*4+2] - temp[(i+j*sx)*4+2])*(opacity / 100);
 					}
-				}
-			}
-		}
-	}else{
-		if(opacity >= 0 && opacity <= 100){
-			for(let i = 0; i < sx; i++){
-				for(let j = 0; j < sy; j++){
-					// If I'm planning to loop through everything, I need a k!
-					if(i >= px && i < px+jslix.locxArray[imgID] && i < px+isx &&
-						 j >= py && j < py+jslix.locyArray[imgID] && j < py+isy){
-						// Don't blend in transparent pixels
-						if(opt == 0 && jslix.viewArray[imgID][((i-px+ilx)+(j-py+ily)*jslix.locxArray[imgID])*4+3] === 0)
-							continue;
-						if(opt != 1){
-							temp[(i+j*sx)*4] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py+ily)*jslix.locxArray[imgID])*4] - temp[(i+j*sx)*4])*(opacity / 100);
-							temp[(i+j*sx)*4+1] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py+ily)*jslix.locxArray[imgID])*4+1] - temp[(i+j*sx)*4+1])*(opacity / 100);
-							temp[(i+j*sx)*4+2] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py+ily)*jslix.locxArray[imgID])*4+2] - temp[(i+j*sx)*4+2])*(opacity / 100);
-						}
-						if(opt != 0){
-							temp[(i+j*sx)*4+3] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py-ily)*jslix.locxArray[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);
-						}
+					if(opt != 0){
+						temp[(i+j*sx)*4+3] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py-ily)*jslix.locxArray[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);
 					}
 				}
 			}
 		}
 	}
+
 	return temp;
 }
 
@@ -1397,34 +1402,15 @@ export function canvasImg(num){
 
 	let i, change = 0;
 
-	if(num >= 0 && num < jslix.viewArray.length || num < -10){
-		if(num >= 0){
-			jslix.view = jslix.viewArray[num];
+	if(num >= 0 && num < jslix.viewArray.length){
+		jslix.view = jslix.viewArray[num];
 
-			if(jslix.lx !== jslix.locxArray[num] || jslix.ly !== jslix.locyArray[num]){
-				jslix.lx = jslix.locxArray[num];
-				jslix.ly = jslix.locyArray[num];
-				change = 1;
-			}
-		}else{
-			num = -num-10
-			if(num >= 0 && num < jslix.textImg.length){
-				jslix.view = jslix.textImg[num];
-
-				if(jslix.lx !== jslix.textX[num] || jslix.ly !== jslix.textY[num]){
-					jslix.lx = jslix.textX[num];
-					jslix.ly = jslix.textY[num];
-					change = 1;
-				}
-			}else{
-				jslix.view = null;
-				if(jslix.lx !== 1 || jslix.ly !== 1){
-					jslix.lx = 1;
-					jslix.ly = 1;
-					change = 1;
-				}
-			}
+		if(jslix.lx !== jslix.locxArray[num] || jslix.ly !== jslix.locyArray[num]){
+			jslix.lx = jslix.locxArray[num];
+			jslix.ly = jslix.locyArray[num];
+			change = 1;
 		}
+
 	}else{
 		jslix.view = null;
 		if(jslix.lx !== 1 || jslix.ly !== 1){
@@ -1492,22 +1478,6 @@ function loadImage(num){
 		}
 	};
 	tempImg.src = canvasImg(num).toDataURL();
-}
-
-function loadTextImage(num){
-	var tempImg = new Image();
-	tempImg.onload = function(){
-		// Catches those pasky errors
-		if(this.src === undefined || jslix.textImgArray[num] === undefined)
-			return
-
-		jslix.textImgArray[num].src = this.src;
-
-		if(this.height == jslix.textX[num] && this.width == jslix.textY[num]){
-			jslix.textImgReady[num] = num;
-		}
-	};
-	tempImg.src = canvasImg(-num-10).toDataURL();
 }
 
 // This function handles the onError call of a dead image

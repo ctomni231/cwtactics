@@ -5,6 +5,8 @@ Most of the work for getting this to function will occur here. To make sure I ge
 
 New_core will get deleted from the repository once the functionality of the new stuff surpasses the functionality of new_core. This will make sure we are moving forward in a good fashion
 
+Text Image Library is a huge pain in the neck. The time needed to actually draw everything takes time to do making the whole process tedious. Even with all the improvements, it just takes time to draw text into an image and store the image. The way I built the Java version of this thing is also very inefficient, however I'm certain I'll be able to get something off the ground for this in the near future. JavaScript end is working on the fly (which is a lot more important) but lost the ability to be pre-loaded. There is probably some trade off I can do to make both possible. The Java version needs to be redone before I even attempt messing with doing words, paragraphs and sentences. If I was doing all fonts, this would be a done deal already, but the measure of a great product to me is going above and beyond getting the little things to work. I'm devoted to that end completely. 
+
 ## Useful Functions
 
 ### JavaScript

@@ -7,17 +7,17 @@ var print = true;
 var objt;
 
 export function init(){
+  jslix.addImage("./image/menu/BasicAlpha.png");
   jslix.addImage("./cwtargetapp.png");
   jslix.addImage("./image/background/AW2Sturm.png");
-  jslix.addImage("./image/menu/BasicAlpha.png");
+
 
   ajax.request("./credits.json");
 
   jslix.addTextInfo(0, 6, 5, 0, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-  jslix.addTextMap("./image/menu/BasicAlpha.png")
 
-  jslix.addTextImage(-1, "INCREDIBLE");
-
+  // No longer works well while pre-loading (missing letters)
+  //jslix.addTextImage(0, "INCREDIBLE");
 }
 
 export function update(){
@@ -27,7 +27,11 @@ export function update(){
     console.log(ajax.generateList(objt));
     var text = Object.keys(objt)[0];
     console.log(text);
-    jslix.addTextImage(-1, text);
+
+    // Works really well on the fly loading
+    jslix.addTextImage(0, "INCREDIBLE");
+    jslix.addTextImage(0, text);
+
     print = false;
   }
 }
@@ -35,6 +39,7 @@ export function update(){
 export function render(canvas, ctx){
   ctx.drawImage(jslix.getImg(3), 10, 110);
   ctx.drawImage(jslix.getImg(4), 10, 120);
+  //ctx.drawImage(jslix.getTextImg(0), 100, 120);
   //ctx.drawImage(jslix.getImg(0), 10, 10);
   //jslix.placeImg(ctx, 0, 20, 20);
   //jslix.drawImg(ctx, 0, 30, 30, -jslix.getX(0), -jslix.getY(0));

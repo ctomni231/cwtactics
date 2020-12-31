@@ -44,7 +44,10 @@ public class TestBed extends Screen {
 			System.out.println(cool.get(i).toString());
 		}
 		
-		imgLib.setLetters((String)cool.get(0).get(0), "Basic", 0, 0, -1);
+		imgLib.setLetters("INCREDIBLE", "Basic", 0, 0, -1);
+		imgLib.addImage(imgLib.getTextImage());
+		//imgLib.setLetters((String)cool.get(0).get(0), "Basic", 0, 0, -1);
+		//imgLib.addImage(imgLib.getTextImage());	
 	}
 
 	@Override
@@ -63,6 +66,7 @@ public class TestBed extends Screen {
 		//imgLib.drawCutImg(g, 2, 70, 70, -imgLib.getX(0), -imgLib.getY(0), 15, 0, 15, 17, dthis);
 		
 		g.drawImage(imgLib.getTextImage(), 10, 10, dthis);
+		//g.drawImage(imgLib.getImage(4), 10, 10, dthis);
 	}
 
 }
