@@ -91,18 +91,10 @@ public class ImgLibrary extends Component{
     private double editOpacity;
 
     // Text Image Library Stuff
-    /** Capital Letters Position */
-    private final int ASCII_CAP = 65;
-    /** Lower case Letters Position */
-    private final int ASCII_LOW = 97;
-    /** Numbers start position */
-    private final int ASCII_NUMBER = 48;
     /** Contains all the letters for the combine image */
     public final String ASCII_COMBINE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,'-=_";
     /** Holds the textual slicing info for an stored image */
     private HashMap<Integer, String[]> textInfo;
-    /** This helps store an textImage */
-    BufferedImage bimg;
 
     /**
      * This class holds a library of images for both Slick2D and Java2D
@@ -134,7 +126,6 @@ public class ImgLibrary extends Component{
         transparent = Color.BLACK;
 
         // TextImgLibrary
-        bimg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         textInfo = new HashMap<Integer, String[]>();
     }
 
@@ -1023,6 +1014,7 @@ public class ImgLibrary extends Component{
      * @param text The String text to add to the editing grid
      * @param locx The x-axis location of the item in the editing grid
      * @param locy The y-axis location of the item in the editing grid
+     * @param color The java2D color of the text
      */
     public void addTextToGridImage(String text, int locx, int locy, Color color){
         mergeGridToImage();
@@ -1300,7 +1292,57 @@ public class ImgLibrary extends Component{
     }
     
     public void addTextImage(int index, String str) {
-    	addImage(getTextPicture(str));
+    	
+    	// Make sure you setup the image before trying to do text
+    	if(index < 0 || textInfo.get(index) == null) {
+    		addImage(getTextPicture(str));
+    		if(index >= 0)
+    			System.out.println("addTextImage: Image Text Information"+
+    								" Is Not Set");
+    	}
+    	
+    	// Everything is the canvas way here
+    	int[] textdim = getTextDim(index, str);
+    	
+    	// Out with the old and in with the new
+    	createImg(1,1);
+        createImg(textdim[0], textdim[0]);
+        
+        // Get the relevant text array
+    	String[] tmpInfo = textInfo.get(index);
+    	
+    	int[] intInfo = new int[7];
+    	
+    	for(int i = 0; i < intInfo.length; i++)
+    		intInfo[i] = Integer.valueOf(tmpInfo[i]);
+    	
+    	for(int i = 0; i < str.length(); i++) {
+    		
+    		String chart = tmpInfo[7];
+    		int tmplps = chart.indexOf(str.charAt(i));
+    		
+    		if(tmplps >= 0) {
+    			
+    			// Let's then get the size of the letter in the array
+    			int tmppx = intInfo[0];
+    	 		int tmppy = intInfo[1];
+    	    	int tmpsx = (intInfo[2] < 1) ? getX(index)-tmppx : intInfo[2];
+    	    	int tmpsy = (intInfo[3] < 1) ? getY(index)-tmppy : intInfo[3];
+    	    	int tmpslx = (intInfo[4] < 1) ? 1 : intInfo[4];
+    	    	int tmpsly = (intInfo[5] < 1) ? 1 : intInfo[5];
+
+    	    	// Let's get the length and width of a letter first
+    	    	int letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
+    	    	int letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
+    	    	
+    	    	int posx = tmplps % tmpslx;
+    	 		int posy = (int) Math.floor(tmplps / tmpslx);
+    	 		
+    	 		System.out.println("Canvas - Letter: "+str.charAt(i)+" ("+posx+","+posy+")");
+    	 		placeCutImg(g, index, tmppx+(i*letsx), tmppy, posx*letsx, posy*letsy, letsx, letsy, this);
+    		}
+    	}
+    	addImage(pimg);    	
     }
     
     /**

@@ -5,7 +5,7 @@ Most of the work for getting this to function will occur here. To make sure I ge
 
 New_core will get deleted from the repository once the functionality of the new stuff surpasses the functionality of new_core. This will make sure we are moving forward in a good fashion
 
-Text Image Library is a huge pain in the neck. The time needed to actually draw everything takes time to do making the whole process tedious. Even with all the improvements, it just takes time to draw text into an image and store the image. The way I built the Java version of this thing is also very inefficient, however I'm certain I'll be able to get something off the ground for this in the near future. JavaScript end is working on the fly (which is a lot more important) but lost the ability to be pre-loaded. There is probably some trade off I can do to make both possible. The Java version needs to be redone before I even attempt messing with doing words, paragraphs and sentences. If I was doing all fonts, this would be a done deal already, but the measure of a great product to me is going above and beyond getting the little things to work. I'm devoted to that end completely. 
+Text Image Library is a huge pain in the neck. The time needed to actually draw everything takes time to do making the whole process tedious. Even with all the improvements, it just takes time to draw text into an image and store the image. The way I built the Java version of this thing is also very inefficient, however I'm certain I'll be able to get something off the ground for this in the near future. JavaScript end is working on the fly (which is a lot more important) but lost the ability to be pre-loaded. There is probably some trade off I can do to make both possible. The Java version needs to be redone before I even attempt messing with doing words, paragraphs and sentences. If I was doing all fonts, this would be a done deal already, but the measure of a great product to me is going above and beyond getting the little things to work. I'm devoted to that end completely.
 
 ## Useful Functions
 
@@ -39,8 +39,8 @@ Java2D gives a lot of weird options, like allowing you to determine the backgrou
 
 ### Picture Text
 
-- [ ] function getTextImage()
-- [ ] function setLetters()
+- [ ] function addTextInfo()
+- [ ] function addTextImage()
 - [ ] function setWords()
 - [ ] function setParagraphLine()
 - [ ] function setParagraph()
@@ -50,8 +50,7 @@ Java2D gives a lot of weird options, like allowing you to determine the backgrou
 - ImgLibrary (starts at line 656) [Java]
 - JSlix (starts at line 498) [JavaScript]
 
-There are actually differences in how the draw functions work (typical!). For instance, if you place a negative value in Java's destination width or height, it'll draw a flipped image in that direction. But in JavaScript, it'll move the image to the desired location. To deal with this, I'll have all the functionality match the Java way of doing things, with a 
-splash of making sure the positioning is direct.
+There are actually differences in how the draw functions work (typical!). For instance, if you place a negative value in Java's destination width or height, it'll draw a flipped image in that direction. But in JavaScript, it'll move the image to the desired location. To deal with this, I'll have all the functionality match the Java way of doing things, with a splash of making sure the positioning is direct.
 
 ### Testing Files
 
@@ -78,16 +77,18 @@ splash of making sure the positioning is direct.
 
 The Java version actually sets a limit in pixels of how far something should go before it can't go anymore. Something that we should most likely emulate in the JavaScript version of the code
 
-- [ ] Verify the getTextImage functionality is working [Java]
-- [ ] Verify the setLetters functionality is working [Java]
+- [x] Verify the addTextInfo functionality is working [Java]
+- [x] Verify the addTextImage functionality is working [Java]
 - [ ] Verify the setWords functionality is working [Java]
 - [ ] Verify the setParagraphLine functionality is working [Java]
 - [ ] Verify the setParagraph functionality is working [Java]
 
 The JavaScript version works way differently, first creating an image and pushing it into the main pipeline of images, and then displaying the image as a normal image. I suppose that is okay, but there is a lot more tracking that'll have to take place.
 
-- [ ] Verify the addTextImage functionality is working [JavaScript]
-- [ ] Verify the setLetters functionality is working [JavaScript]
+- [x] Verify the addTextInfo functionality is working [JavaScript]
+- [x] Verify the addTextImage functionality is working [JavaScript]
 - [ ] Create the setWords functionality is added [JavaScript]
 - [ ] Create the setParagraphLine functionality is added [JavaScript]
 - [ ] Create the setParagraph functionality is added [JavaScript]
+
+So far, really good progress to start the new year. Both versions work the exact same, and the way to draw text is infinitely less clunky than the old way of doing TextImgLibrary. Once all the spacing functionality is in, this will be the defacto JSlix class for all kinds of images.

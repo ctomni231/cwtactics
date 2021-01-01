@@ -10,14 +10,6 @@
  * Future: Might need to modularize this a bit (Deprecated)
  */
 
- /*
-
-	TextImgLibrary will no longer use a map, but instead use normal images to
-	draw the text onto the canvas and save the text. The issue is there is far
-	to much manipulations to do it any other way. But it will be easier to
-	target letters and reduce the overall code with this change.
- */
-
 export const jslix = {
 
 	// ImageLibrary Stuff
@@ -149,21 +141,17 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 export function addTextImage(index, str){
 
 	// If you send in a dud image, give them a font
-	if(index < 0){
+	if(index < 0 || jslix.textInfo[index] === undefined){
 		addFontImage(str);
+		// If the image hasn't been setup for text, give the message
+		if(index >= 0)
+			console.log("addTextImage: Image Text Information Paramenters Is Not Set")
 		return;
 	}
 
 	var textdim = getTextDim(index, str);
 
-	// If the image hasn't been setup for text, give the
-	if (jslix.textInfo[index] === undefined){
-		console.log("addTextImage: Image Text Information Paramenters Is Not Set")
-		addFontImage(str);
-		return;
-	}
-
-	else if( textdim[0] == 0 ){
+	if( textdim[0] == 0 ){
 		console.log("Do it the color way: "+str);
 
 		jslix.textdraw = [index, str]
@@ -188,36 +176,32 @@ export function addTextImage(index, str){
 		imgcanvas.setAttribute("height", sizey);
 		imgcanvas.setAttribute("style", "display:none");
 
-		let letdim = getLetterDim(index);
-
 		// Pulls relevant information from the textInfo class
 		let tmpInfo = jslix.textInfo[index];
 
-		if(tmpInfo !== undefined){
-			for(let i = 0; i < str.length; i++){
+		for(let i = 0; i < str.length; i++){
 
-				let chart = tmpInfo[7];
-				let tmplps = chart.indexOf(str.charAt(i));
+			let chart = tmpInfo[7];
+			let tmplps = chart.indexOf(str.charAt(i));
 
-				if(tmplps >= 0){
+			if(tmplps >= 0){
 
-					let tmppx = tmpInfo[0]
-					let tmppy = tmpInfo[1]
-					let tmpsx = (tmpInfo[2] < 1) ? jslix.locxArray[index] : tmpInfo[2];
-					let tmpsy = (tmpInfo[3] < 1) ? jslix.locyArray[index] : tmpInfo[3];
-					let tmpslx = (tmpInfo[4] < 1) ? 1 : tmpInfo[4];
-					let tmpsly = (tmpInfo[5] < 1) ? 1 : tmpInfo[5];
-					let start = (tmpInfo[6] < 0) ? 0 : tmpInfo[6];
+				let tmppx = tmpInfo[0]
+				let tmppy = tmpInfo[1]
+				let tmpsx = (tmpInfo[2] < 1) ? jslix.locxArray[index]-tmppx : tmpInfo[2];
+				let tmpsy = (tmpInfo[3] < 1) ? jslix.locyArray[index]-tmppy : tmpInfo[3];
+				let tmpslx = (tmpInfo[4] < 1) ? 1 : tmpInfo[4];
+				let tmpsly = (tmpInfo[5] < 1) ? 1 : tmpInfo[5];
+				let start = (tmpInfo[6] < 0) ? 0 : tmpInfo[6];
 
-					let letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
-					let letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
+				let letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
+				let letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
 
-					let posx = tmplps % tmpslx
-					let posy = Math.floor(tmplps / tmpslx)
+				let posx = tmplps % tmpslx
+				let posy = Math.floor(tmplps / tmpslx)
 
-					console.log("Canvas - Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
-					placeCutImg(ctx, index, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy);
-				}
+				console.log("Canvas - Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
+				placeCutImg(ctx, index, tmppx+(i*letsx), tmppy, posx*letsx, posy*letsy, letsx, letsy);
 			}
 		}
 		addImage(imgcanvas.toDataURL());
@@ -787,8 +771,8 @@ function drawLetters(data, sx, sy, txtArray, cutArray){
 
 				let tmppx = tmpInfo[0]
 				let tmppy = tmpInfo[1]
-				let tmpsx = (tmpInfo[2] < 1) ? jslix.locxArray[index] : tmpInfo[2];
-				let tmpsy = (tmpInfo[3] < 1) ? jslix.locyArray[index] : tmpInfo[3];
+				let tmpsx = (tmpInfo[2] < 1) ? jslix.locxArray[index]-tmppx : tmpInfo[2];
+				let tmpsy = (tmpInfo[3] < 1) ? jslix.locyArray[index]-tmppy : tmpInfo[3];
 				let tmpslx = (tmpInfo[4] < 1) ? 1 : tmpInfo[4];
 				let tmpsly = (tmpInfo[5] < 1) ? 1 : tmpInfo[5];
 				let start = (tmpInfo[6] < 0) ? 0 : tmpInfo[6];
@@ -800,7 +784,7 @@ function drawLetters(data, sx, sy, txtArray, cutArray){
 				let posy = Math.floor(tmplps / tmpslx)
 
 				console.log("Draw - Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
-				let tmpArray = [index, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy, 100, 2];
+				let tmpArray = [index, tmppx+(i*letsx), tmppy, posx*letsx, posy*letsy, letsx, letsy, 100, 2];
 				data = dropCutPixels(data, sx, sy, tmpArray);
 			}
 		}
