@@ -97,6 +97,10 @@ public class ImgLibrary extends Component{
     private final int ASCII_LOW = 97;
     /** Numbers start position */
     private final int ASCII_NUMBER = 48;
+    /** Contains all the letters for the combine image */
+    public final String ASCII_COMBINE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,'-=_";
+    /** Holds the textual slicing info for an stored image */
+    private HashMap<Integer, String[]> textInfo;
     /** This helps store an textImage */
     BufferedImage bimg;
 
@@ -131,6 +135,7 @@ public class ImgLibrary extends Component{
 
         // TextImgLibrary
         bimg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        textInfo = new HashMap<Integer, String[]>();
     }
 
     //-------
@@ -1019,12 +1024,12 @@ public class ImgLibrary extends Component{
      * @param locx The x-axis location of the item in the editing grid
      * @param locy The y-axis location of the item in the editing grid
      */
-    public void addTextToGridImage(String text, int locx, int locy){
+    public void addTextToGridImage(String text, int locx, int locy, Color color){
         mergeGridToImage();
         if(editOpacity < 1)
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
                 (float)editOpacity));
-        g.setColor(Color.WHITE);
+        g.setColor(color);
         g.drawString(text, locx, locy);
         if(editOpacity < 1)
             g.setComposite(AlphaComposite.SrcOver);
@@ -1038,34 +1043,57 @@ public class ImgLibrary extends Component{
         mergeGridToImage();
         return pimg;
     }
-
+    
     /**
      * This function creates an exact image enclosing the java2D font text
-     * within it
+     * within it. Font is a default DIALOG font. Color is GRAY.
+     * @param text The string to turn into an image
+     * @return A java2D image representing the font text
+     */
+    public Image getTextPicture(String text){
+        return getTextPicture(text, FONT, Color.GRAY);
+    }
+    
+    /**
+     * This function creates an exact image enclosing the java2D font text
+     * within it. Color is GRAY.
      * @param text The string to turn into an image
      * @param font The font-type-size to use with this image
      * @return A java2D image representing the font text
      */
     public Image getTextPicture(String text, String font){
+        return getTextPicture(text, font, Color.GRAY);
+    }
+    
+    /**
+     * This function creates an exact image enclosing the java2D font text
+     * within it. Font is a default DIALOG font.
+     * @param text The string to turn into an image
+     * @param color The java.awt color to use with this font
+     * @return A java2D image representing the font text
+     */
+    public Image getTextPicture(String text, Color color){
+        return getTextPicture(text, FONT, color);
+    }
+    
+    /**
+     * This function creates an exact image enclosing the java2D font text
+     * within it
+     * @param text The string to turn into an image
+     * @param font The font-type-size to use with this image
+     * @param color The java.awt color to use with this font
+     * @return A java2D image representing the font text
+     */
+    public Image getTextPicture(String text, String font, Color color){
         createImg(1,1);
         g.setFont(Font.decode(font));
         int width = g.getFontMetrics().stringWidth(text);
         int descent = g.getFontMetrics().getDescent();
         int height = g.getFontMetrics().getHeight()+descent;
         createImg(width, height);
-        addTextToGridImage(text, 0, height-descent);
+        addTextToGridImage(text, 0, height-descent, color);
         return getGridImage();
-    }
-
-    /**
-     * This function creates an exact image enclosing the java2D font text
-     * within it
-     * @param text The string to turn into an image
-     * @return A java2D image representing the font text
-     */
-    public Image getTextPicture(String text){
-        return getTextPicture(text, FONT);
-    }
+    } 
 
     /**
      * This function moves pixels left/right
@@ -1237,6 +1265,93 @@ public class ImgLibrary extends Component{
     // TextImgLibrary Stuff
     // ----------------------
 
+    /* Going to change the TextLibrary to the JavaScript way */
+    
+    /**
+     * This adds textual split information for a specific image
+     * @param index  Which image this refers to
+     * @param slicex The number of horizontal slices to give an image
+     * @param slicey The number of vertical slices to give an image
+     * @param start Where in the grid to start from left-to-right up-to-down
+     * @param chart A string containing the characters for the image
+     */
+    public void addTextInfo(int index, int slicex, int slicey, 
+    		                int start, String chart) {
+    	addTextInfo(index, 0, 0, 0, 0, slicex, slicey, start, chart);
+    }
+    
+    /**
+     * This adds textual split information for a specific image
+     * @param index  Which image this refers to
+     * @param posx The x-axis location where you want the slices to start
+     * @param posy The y-axis location where you want the slices to start
+     * @param sizex The x-axis total length of all slices
+     * @param sizey The y-axis total length of all slices
+     * @param slicex The number of horizontal slices to give an image
+     * @param slicey The number of vertical slices to give an image
+     * @param start Where in the grid to start from left-to-right up-to-down
+     * @param chart A string containing the characters for the image
+     */
+    public void addTextInfo(int index, int posx, int posy, int sizex,
+    		int sizey, int slicex, int slicey, int start, String chart) {
+    	String[] temp = new String[] {""+posx, ""+posy, ""+sizex, ""+sizey,
+    			""+slicex, ""+slicey, ""+start, chart};
+    	textInfo.put(index, temp);
+    }
+    
+    public void addTextImage(int index, String str) {
+    	addImage(getTextPicture(str));
+    }
+    
+    /**
+     * A function for getting the length and width of a text string. Will need
+     * a bit more functionality for newlines
+     * @param index The ImgLibrary index of the image
+     * @param str The string to get the dimensions of
+     * @return An array representing the width and length of a string [x, y]
+     */
+    public int[] getTextDim(int index, String str) {
+    	int[] dim = getLetterDim(index);
+    	return new int[] {dim[0]*str.length(), dim[1]};
+    }
+    
+    /**
+     *  A function for getting the length and width of a letter in a textMap
+     * @param index The ImgLibrary index of the image
+     * @return An array representing the width and length of a letter [x, y]
+     */
+    public int[] getLetterDim(int index) {
+    	
+    	// If the index doesn't exist, return a fake dimension
+    	if (index < 0) 
+    		return new int[] {0, 0};
+    	
+    	// Get the relevant text array
+    	String[] tmpInfo = textInfo.get(index);
+    	
+    	if (tmpInfo == null)
+    		return new int[] {0, 0};
+    	
+    	int[] intInfo = new int[6];
+    	
+    	for(int i = 0; i < intInfo.length; i++)
+    		intInfo[i] = Integer.valueOf(tmpInfo[i]);
+    	
+    	// Let's then get the size of the letter in the array
+    	int tmpsx = (intInfo[2] < 1) ? getX(index) : intInfo[2];
+    	int tmpsy = (intInfo[3] < 1) ? getY(index) : intInfo[3];
+    	int tmpslx = (intInfo[4] < 1) ? 1 : intInfo[4];
+    	int tmpsly = (intInfo[5] < 1) ? 1 : intInfo[5];
+
+    	// Let's get the length and width of a letter first
+    	int letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
+    	int letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
+
+    	System.out.println("Letter Dimensions: ("+letsx+","+letsy+")");
+    	
+    	return new int[] {letsx, letsy};
+    }
+    
     //-------
     //GETTERS
     //-------
@@ -1245,9 +1360,9 @@ public class ImgLibrary extends Component{
      * This gets the created text as a java2D image
      * @return The java2D image representation of the text
      */
-    public Image getTextImage(){
+    /*public Image getTextImage(){
         return bimg;
-    }
+    }//*/
 
     //------
     //ADDERS
@@ -1260,9 +1375,9 @@ public class ImgLibrary extends Component{
      * @param img The current image to place into the ImgLibrary
      * @return Whether inputting the image was successful
      */
-    public boolean addLetter(char letter, Image img){
+    /*public boolean addLetter(char letter, Image img){
         return addImage(""+letter+"", img);
-    }
+    }//*/
 
     /**
      * This adds a letter image to the internal ImgLibrary of this class.
@@ -1274,7 +1389,7 @@ public class ImgLibrary extends Component{
      * @param ref The name of the reference prefix
      * @return Whether inputting the image was successful
      */
-    public boolean addLetter(char letter, Image img, String ref){
+    /*public boolean addLetter(char letter, Image img, String ref){
         if(img == null)
             return false;
         if(ref.equals(""))
@@ -1284,7 +1399,7 @@ public class ImgLibrary extends Component{
         if(getIndex(""+letter+"") == -1)
             addReference(""+letter+"", length()-1);
         return true;
-    }
+    }//*/
 
     /**
      * This adds a letter image to the internal ImgLibrary of this class
@@ -1302,7 +1417,7 @@ public class ImgLibrary extends Component{
      * order starting at 0.
      * @return Whether inputting the image was successful
      */
-    public boolean addLetter(char letter, Image img, String ref,
+    /*public boolean addLetter(char letter, Image img, String ref,
             int slicex, int slicey, int start){
         if(slicex*slicey == 0 || start >= slicex*slicey ||
                 start < 0 || img == null)
@@ -1318,7 +1433,7 @@ public class ImgLibrary extends Component{
         double sy = (psy > 0) ? psy / (double)slicey : 1;
         return addLetter(letter, temp.getImage(0, (start%slicex)*(int)sx,
                       (start/slicex)*(int)sy, (int)sx, (int)sy), ref);
-    }
+    }//*/
 
     /**
      * This function adds all the capital letters to the internal ImgLibrary.
@@ -1333,11 +1448,11 @@ public class ImgLibrary extends Component{
      * order starting at 0.
      * @return Whether inputting the images was successful
      */
-    public boolean addAllCapitalLetters(Image img, String ref,
+    /*public boolean addAllCapitalLetters(Image img, String ref,
             int slicex, int slicey, int start){
         return addSlicedText(img, ref, slicex, slicey, start,
                 ASCII_CAP, 26);
-    }
+    }//*/
 
     /**
      * This function adds all the lower case letters to the internal
@@ -1352,11 +1467,11 @@ public class ImgLibrary extends Component{
      * order starting at 0.
      * @return Whether inputting the images was successful
      */
-    public boolean addAllLowerCaseLetters(Image img, String ref,
+    /*public boolean addAllLowerCaseLetters(Image img, String ref,
             int slicex, int slicey, int start){
         return addSlicedText(img, ref, slicex, slicey, start,
                 ASCII_LOW, 26);
-    }
+    }//*/
 
     /**
      * This function adds all the numbers to the internal ImgLibrary.
@@ -1371,11 +1486,11 @@ public class ImgLibrary extends Component{
      * order starting at 0.
      * @return Whether inputting the images was successful
      */
-    public boolean addAllNumbers(Image img, String ref,
+    /*public boolean addAllNumbers(Image img, String ref,
             int slicex, int slicey, int start){
         return addSlicedText(img, ref, slicex, slicey, start,
                 ASCII_NUMBER, 10);
-    }
+    }//*/
 
     //-------
     //SETTERS
@@ -1393,10 +1508,10 @@ public class ImgLibrary extends Component{
      * X-direction (Numbers below 1: no x-limits)
      * @return returns the letter it stopped at
      */
-    public int setLetters(String word, String ref,
+    /*public int setLetters(String word, String ref,
             int locx, int locy, int limit){
         return setLetters(word, ref, locx, locy, 0, limit);
-    }
+    }//*/
 
     /**
      * Uses letters from the ImgLibrary to form letters. This
@@ -1410,7 +1525,7 @@ public class ImgLibrary extends Component{
      * X-direction (Numbers below 1: no x-limits)
      * @return returns the letter it stopped at
      */
-    public int setLetters(String word, String ref,
+    /*public int setLetters(String word, String ref,
             int locx, int locy, int start, int limit){
         if(start > 0 && start < word.length())
             word = word.substring(start);
@@ -1438,7 +1553,7 @@ public class ImgLibrary extends Component{
                 scrollX += tsx;
         }
         return letterMax;
-    }
+    }//*/
 
     /**
      * Uses letters from the ImgLibrary dictionary to form words. Difference
@@ -1453,10 +1568,10 @@ public class ImgLibrary extends Component{
      * X-direction (Numbers below 1: no x-limits)
      * @return returns the letter it stopped at.
      */
-    public int setWords(String word, String ref,
+    /*public int setWords(String word, String ref,
             int locx, int locy, int limit){
         return setWords(word, ref, locx, locy, 0, limit, true);
-    }
+    }//*/
 
     /**
      * Uses letters from the ImgLibrary to form words. Difference from
@@ -1470,10 +1585,10 @@ public class ImgLibrary extends Component{
      * X-direction (Numbers below 1: no x-limits)
      * @return returns the letter it stopped at.
      */
-    public int setWords(String word, String ref,
+    /*public int setWords(String word, String ref,
             int locx, int locy, int start, int limit){
         return setWords(word, ref, locx, locy, start, limit, true);
-    }
+    }//*/
 
     /**
      * Uses letters from the ImgLibrary to form mini paragraphs.
@@ -1487,10 +1602,10 @@ public class ImgLibrary extends Component{
      * @param limit The number of pixels text is allowed to go in the
      * X-direction (Numbers below 1: no x-limits)
      */
-    public void setParagraphLine(int linenumber, String word,
+    /*public void setParagraphLine(int linenumber, String word,
             String ref, int locx, int locy, int limit){
         setParagraphLine(linenumber, word, ref, locx, locy, limit, true);
-    }
+    }//*/
 
     /**
      * Uses letters from the ImgLibrary to form paragraphs.
@@ -1504,7 +1619,7 @@ public class ImgLibrary extends Component{
      * @param startline The line of the paragraph to start at
      * @param endline The line of the paragraph to end at
      */
-    public void setParagraph(String word, String ref, int locx, int locy,
+    /*public void setParagraph(String word, String ref, int locx, int locy,
             int limit, int spacingy, int startline, int endline){
         if(startline < 0)
             startline = 0;
@@ -1522,7 +1637,7 @@ public class ImgLibrary extends Component{
             setParagraphLine(i, word, ref,
                     locx, (locy+(i*scrollY)), limit, false);
 
-    }
+    }//*/
 
     //-------
     //PRIVATE
@@ -1540,7 +1655,7 @@ public class ImgLibrary extends Component{
      * @param ASCII_limit The amount of ASCII characters in the list
      * @return Whether all characters were added to the list
      */
-    private boolean addSlicedText(Image img, String ref,
+    /*private boolean addSlicedText(Image img, String ref,
             int slicex, int slicey, int start, int ASCII_start,
             int ASCII_limit){
         for(int i = 0; i < ASCII_limit; i++){
@@ -1549,7 +1664,7 @@ public class ImgLibrary extends Component{
                 return false;
         }
         return true;
-    }
+    }//*/
 
     /**
      * This function sets up the Buffered Image used for changing a String
@@ -1561,7 +1676,7 @@ public class ImgLibrary extends Component{
      * @param limit The number of pixels text is allowed to go in the
      * X-direction (Numbers below 1: no x-limits)
      */
-    private void prepareTextImage(String word, int locx,
+    /*private void prepareTextImage(String word, int locx,
             int locy, int limit, String ref){
         //Obtains a size for the PixtureMap and stores it
         int psizex = 1;
@@ -1581,7 +1696,7 @@ public class ImgLibrary extends Component{
             (locx+(psizex*letterMax) > 0) ? locx+(psizex*letterMax) : 1,
                 locy+psizey, BufferedImage.TYPE_INT_ARGB);
         g = bimg.createGraphics();
-    }
+    }//*/
 
     /**
      * Uses letters from the ImgLibrary to form words. Difference from
@@ -1596,7 +1711,7 @@ public class ImgLibrary extends Component{
      * @param map Whether it is drawing to the image(T) or not(F)
      * @return returns the letter it stopped at.
      */
-    private int setWords(String word, String ref,
+    /*private int setWords(String word, String ref,
             int locx, int locy, int start, int limit, boolean map){
         if(start > 0 && start < word.length())
             word = word.substring(start);
@@ -1642,7 +1757,7 @@ public class ImgLibrary extends Component{
         }
 
         return letterMax;
-    }
+    }//*/
 
     /**
      * Uses letters from the ImgLibrary to form mini paragraphs.
@@ -1657,7 +1772,7 @@ public class ImgLibrary extends Component{
      * X-direction (Numbers below 1: no x-limits)
      * @param map Whether it is drawing to the image(T) or not(F)
      */
-    private void setParagraphLine(int linenumber, String word,
+    /*private void setParagraphLine(int linenumber, String word,
             String ref, int locx, int locy, int limit, boolean map){
         int letterMax = word.length();
         int start = 0;
@@ -1677,7 +1792,7 @@ public class ImgLibrary extends Component{
                 return;
             position++;
         }while(start != -1);
-    }
+    }//*/
 
     /**
      * This gets the default spacing for the y-axis for paragraphs using
@@ -1686,7 +1801,7 @@ public class ImgLibrary extends Component{
      * @param ref The reference text to the letter image
      * @return The amount of spacing for this image
      */
-    private int getDefaultSpacing(String ref, String word){
+    /*private int getDefaultSpacing(String ref, String word){
         int tsy = 0;
         for(int i = 0; i < word.length(); i++){
             if(getY(ref+"_"+word.charAt(i)) > tsy)
@@ -1695,7 +1810,7 @@ public class ImgLibrary extends Component{
                 tsy = getY(""+word.charAt(i)+"");
         }
         return tsy;
-    }
+    }//*/
 
     /**
      * This gets the default spacing for the x-axis for words using
@@ -1703,7 +1818,7 @@ public class ImgLibrary extends Component{
      * @param ref The reference text to the letter image
      * @return The amount of spacing for these words
      */
-    private int getDefaultSpacing(String ref){
+    /*private int getDefaultSpacing(String ref){
         int tsx = 0;
         //Tries to get default spacing for the letters
         if(getX(ref+"_ ") != 0)
@@ -1717,7 +1832,7 @@ public class ImgLibrary extends Component{
         else
             tsx = getX(0);
         return tsx;
-    }
+    }//*/
 
     /**
      * This function draws a letter to the image map
@@ -1728,10 +1843,10 @@ public class ImgLibrary extends Component{
      * @param draw Whether to draw this image to the BufferedImage
      * @return The width of this particular item
      */
-    private int drawLetter(Graphics2D g, String ref,
+    /*private int drawLetter(Graphics2D g, String ref,
             int locx, int locy, boolean draw){
         if(draw)
             g.drawImage(getImage(getIndex(ref)), locx, locy, this);
         return getX(ref);
-    }
+    }//*/
 }

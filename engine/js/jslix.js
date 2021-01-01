@@ -52,6 +52,9 @@ export const jslix = {
 	defSize: 10,
 	defText: "ABCjgq|",
 
+	// Text specific
+	ASCII_COMBINE: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,'-=_",
+
 	// Manipulation
 	colormap: 0,
 	textmap: 0,
@@ -68,7 +71,6 @@ export const jslix = {
 	drop: [],
 	cutdrop: [],
 	imgdrop: [],
-	//info: [],
 	cut: [],
 	ref: [],
 	textdraw: [],
@@ -110,12 +112,6 @@ export function addColorMap(text){
 	addImage(text);
 }
 
-// Adds a Text map for writing picture text to the screenX
-//export function addTextMap(text){
-//	jslix.textmap = 1;
-//	addImage(text);
-//}
-
 // Adds a flat colored box to the list of images
 // Not all too useful yet, until extra functionality is added in
 export function addColorBox(red, green, blue, alpha, sizex, sizey){
@@ -152,20 +148,29 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 // This is the problem, we have to make the text image beforehand
 export function addTextImage(index, str){
 
-	if(index < 0){// || index >= jslix.intArray.length){
+	// If you send in a dud image, give them a font
+	if(index < 0){
 		addFontImage(str);
 		return;
 	}
 
 	var textdim = getTextDim(index, str);
 
-	if( textdim[0] == 0 ){
+	// If the image hasn't been setup for text, give the
+	if (jslix.textInfo[index] === undefined){
+		console.log("addTextImage: Image Text Information Paramenters Is Not Set")
+		addFontImage(str);
+		return;
+	}
+
+	else if( textdim[0] == 0 ){
 		console.log("Do it the color way: "+str);
 
 		jslix.textdraw = [index, str]
-		addColorBox(0, 0, 0, 255, textdim[0], textdim[1])
+		addColorBox(0, 0, 0, 255, 1, 1)
+	}
 
-	}else{
+	else{
 		console.log("Do it the canvas way: "+str);
 
 		let imgcanvas = document.getElementById("cwtj-font");
@@ -186,18 +191,15 @@ export function addTextImage(index, str){
 		let letdim = getLetterDim(index);
 
 		// Pulls relevant information from the textInfo class
-		let i, j, k = index;
 		let tmpInfo = jslix.textInfo[index];
 
 		if(tmpInfo !== undefined){
-			for(i = 0; i < str.length; i++){
+			for(let i = 0; i < str.length; i++){
 
 				let chart = tmpInfo[7];
 				let tmplps = chart.indexOf(str.charAt(i));
 
 				if(tmplps >= 0){
-
-					console.log("Canvas: Gets here in the tmplps")
 
 					let tmppx = tmpInfo[0]
 					let tmppy = tmpInfo[1]
@@ -213,7 +215,7 @@ export function addTextImage(index, str){
 					let posx = tmplps % tmpslx
 					let posy = Math.floor(tmplps / tmpslx)
 
-					console.log("Canvas: Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
+					console.log("Canvas - Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
 					placeCutImg(ctx, index, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy);
 				}
 			}
@@ -286,8 +288,6 @@ export function addImage(text){
 	jslix.cutdrop = [];
 	jslix.imgDropArray.push(jslix.imgdrop);
 	jslix.imgdrop = [];
-	//jslix.infoArray.push(jslix.info);
-	//jslix.info = [];
 	jslix.textDrawArray.push(jslix.textdraw);
 	jslix.textdraw = [];
 	jslix.cutArray.push(jslix.cut);
@@ -483,8 +483,8 @@ export function addCutPixelDrop(imgIndex, posx, posy, locx, locy, sizex, sizey, 
 	jslix.cutdrop.push(temp);
 }
 
-// This adds information for a specific textmap, you can use multiple for one image
-// index = Which textmap this refers to (-1: next possible textmap)
+// This adds textual split information for a specific image
+// index = Which image this refers to
 // slicex = The number of horizontal slices to give an image
 // slicey = The number of vertical slices to giv an image
 // start = Where in the grid to start from left-to-right up-to-down
@@ -494,7 +494,7 @@ export function addTextInfo(index, slicex, slicey, start, chart){
 	addAllTextInfo(index, 0, 0, 0, 0, slicex, slicey, start, chart)
 }
 
-// This adds information for a specific textmap, you can use multiple for one image
+// This adds textual split information for a specific image
 // posx = the x-axis location where you want the slices to start
 // posy = the y-axis location where you want the slices to start
 // sizex = the x-axis total length of all slices
@@ -688,10 +688,6 @@ export function drawCutImg(ctx, num, dlx, dly, dsx, dsy, slx, sly, ssx, ssy){
 		ctx.drawImage(getImg(num), slx, sly, ssx, ssy, dlx, dly, dsx, dsy);
 }
 
-// This function is used to place a cut image on the destination screen
-export function placeCutTextImg(ctx, num, dlx, dly, slx, sly, ssx, ssy){
-	ctx.drawImage(getImg(num), slx, sly, ssx, ssy, dlx, dly, ssx, ssy);
-}
 
 // -------------------------------------------
 // Remove functions
@@ -742,17 +738,20 @@ function getTextDim(index, str){
 	return [dim[0]*str.length, dim[1]]
 }
 
-// A function for getting the length and width of a letter in a textMap
+// A function for getting the length and width of a letter in an image
 function getLetterDim(index){
 
-	// Let's get the relevant Text Array
-	let tmpInfo = jslix.textInfo[index]
-
-	if(index < 0 || index >= jslix.intArray.length)
+	if(index < 0)
 		return [0, 0];
 
 	// Sets the index straight
 	index = jslix.intArray[index];
+
+	// Let's get the relevant Text Array
+	let tmpInfo = jslix.textInfo[index]
+
+	if(tmpInfo === undefined)
+		return [0, 0];
 
 	// Let's then get the size of the letter in the array
 	let tmpsx = (tmpInfo[2] < 1) ? jslix.locxArray[index] : tmpInfo[2];
@@ -773,22 +772,18 @@ function getLetterDim(index){
 function drawLetters(data, sx, sy, txtArray, cutArray){
 
 	// Pulls relevant information from the textInfo class
-	let i, j, k, index = txtArray[0];
+	let index = txtArray[0];
 	let tmpInfo = jslix.textInfo[index];
 	let str = txtArray[1];
 
-	console.log(tmpInfo)
-
 	if(tmpInfo !== undefined){
 
-		for(i = 0; i < str.length; i++){
+		for(let i = 0; i < str.length; i++){
 
 			let chart = tmpInfo[7];
 			let tmplps = chart.indexOf(str.charAt(i));
 
 			if(tmplps >= 0){
-
-				console.log("Gets here in the tmplps")
 
 				let tmppx = tmpInfo[0]
 				let tmppy = tmpInfo[1]
@@ -804,9 +799,8 @@ function drawLetters(data, sx, sy, txtArray, cutArray){
 				let posx = tmplps % tmpslx
 				let posy = Math.floor(tmplps / tmpslx)
 
-				console.log("Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
+				console.log("Draw - Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
 				let tmpArray = [index, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy, 100, 2];
-				console.log(tmpArray)
 				data = dropCutPixels(data, sx, sy, tmpArray);
 			}
 		}
@@ -823,6 +817,7 @@ function drawLetters(data, sx, sy, txtArray, cutArray){
 function storeImage(){
 
 	let i, j, imgStorage = document.getElementById("cwtj-image");
+	let suffix = "store";
 	if(imgStorage == null){
 		imgStorage = document.createElement("img");
 		document.body.appendChild(imgStorage);
@@ -838,6 +833,7 @@ function storeImage(){
 
 	// If we are doing a text cut, better check that first
 	if(tmpText.length > 0){
+		suffix = "font";
 		console.log("Drawing Text: "+tmpText[1])
 		let textdim = getTextDim(tmpText[0], tmpText[1])
 		if(tmpCut.length > 0){
@@ -861,12 +857,12 @@ function storeImage(){
 	// This sets up images to drop
 	let tmpImg = jslix.imgDropArray.shift();
 
-	let canvas = document.getElementById("cwtj-store");
+	let canvas = document.getElementById("cwtj-"+suffix);
 	if(canvas == null){
 		canvas = document.createElement("canvas");
 		document.body.appendChild(canvas);
 	}
-	canvas.setAttribute("id", "cwtj-store");
+	canvas.setAttribute("id", "cwtj-"+suffix);
 	canvas.setAttribute("style", "display:none");
 
 	if(tmpCut.length > 0){
@@ -907,45 +903,6 @@ function storeImage(){
 	for(i = 0; i < tmpImg.length; i++){
 		dropImage(ctx, tmpImg[i], dimSwitch)
 	}
-
-	/*if(tmpText.length > 0){
-
-		let index = tmpText[0]
-		let str = tmpText[1]
-
-		// Pulls relevant information from the textInfo class
-		let tmpInfo = jslix.textInfo[index];
-
-		if(tmpInfo !== undefined){
-			for(i = 0; i < str.length; i++){
-
-				let chart = tmpInfo[7];
-				let tmplps = chart.indexOf(str.charAt(i));
-
-				if(tmplps >= 0){
-
-					console.log("Canvas: Gets here in the tmplps")
-
-					let tmppx = tmpInfo[0]
-					let tmppy = tmpInfo[1]
-					let tmpsx = (tmpInfo[2] < 1) ? jslix.locxArray[index] : tmpInfo[2];
-					let tmpsy = (tmpInfo[3] < 1) ? jslix.locyArray[index] : tmpInfo[3];
-					let tmpslx = (tmpInfo[4] < 1) ? 1 : tmpInfo[4];
-					let tmpsly = (tmpInfo[5] < 1) ? 1 : tmpInfo[5];
-					let start = (tmpInfo[6] < 0) ? 0 : tmpInfo[6];
-
-					let letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
-					let letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
-
-					let posx = tmplps % tmpslx
-					let posy = Math.floor(tmplps / tmpslx)
-
-					console.log("Canvas: Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
-					placeCutTextImg(ctx, index, i*letsx, 0, posx*letsx, posy*letsy, letsx, letsy);
-				}
-			}
-		}
-	}//*/
 
 	// This allows Safari to reenact onload functionality
 	if(imgStorage){
@@ -1019,16 +976,6 @@ function storeImage(){
 	// This allows Safari to reenact onload functionality
 	//if(imgStorage){
 	//	imgStorage.parentNode.removeChild(imgStorage);
-	//}
-
-	// Used to store things on the textmap (Have to do it after manipulations)
-	//if(jslix.textArray.shift() == 1){
-	//	jslix.textImg.push(data);
-	//	jslix.textX.push(imgWidth);
-	//	jslix.textY.push(imgHeight);
-	//	jslix.textInfo.push(tmpInfo);
-	//	queueNext();
-	//	return;
 	//}
 
 	// Used to store things on the colormap (Have to do it after manipulations)
@@ -1320,7 +1267,7 @@ function dropCutPixels(data, sx, sy, idata){
 						temp[(i+j*sx)*4+2] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py+ily)*jslix.locxArray[imgID])*4+2] - temp[(i+j*sx)*4+2])*(opacity / 100);
 					}
 					if(opt != 0){
-						temp[(i+j*sx)*4+3] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py-ily)*jslix.locxArray[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);
+						temp[(i+j*sx)*4+3] += (jslix.viewArray[imgID][((i-px+ilx)+(j-py+ily)*jslix.locxArray[imgID])*4+3] - temp[(i+j*sx)*4+3])*(opacity / 100);
 					}
 				}
 			}

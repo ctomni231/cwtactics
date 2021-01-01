@@ -1,5 +1,6 @@
 package com.cwt.screen;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -33,8 +34,9 @@ public class TestBed extends Screen {
 	public void init() {
 		imgLib.addImage("cwtargetapp.png");
 		imgLib.addImage("image/background/AW2Sturm.png");
-		imgLib.addImage("image/menu/BasicAlpha.png");
-		imgLib.addAllCapitalLetters(imgLib.getImage(2), "Basic", 6, 5, 0);
+		imgLib.addImage("image/menu/BasicCombine.png");
+		imgLib.addTextInfo(2, 9, 5, 0, imgLib.ASCII_COMBINE);
+		//imgLib.addAllCapitalLetters(imgLib.getImage(2), "Basic", 6, 5, 0);
 		
 		
 		// Before we do anything else, let's load up that string
@@ -44,10 +46,14 @@ public class TestBed extends Screen {
 			System.out.println(cool.get(i).toString());
 		}
 		
-		imgLib.setLetters("INCREDIBLE", "Basic", 0, 0, -1);
-		imgLib.addImage(imgLib.getTextImage());
-		//imgLib.setLetters((String)cool.get(0).get(0), "Basic", 0, 0, -1);
-		//imgLib.addImage(imgLib.getTextImage());	
+		int[] temp = imgLib.getTextDim(2, "INCREDIBLE");
+		System.out.println("("+temp[0]+","+temp[1]+")");
+		
+		imgLib.addTextImage(2, (String)cool.get(0).get(0));
+		imgLib.addTextImage(2, "INCREDIBLE");
+		
+		//imgLib.setLetters("INCREDIBLE", "Basic", 0, 0, -1);
+		//imgLib.addImage(imgLib.getTextImage());
 	}
 
 	@Override
@@ -65,8 +71,9 @@ public class TestBed extends Screen {
 		//imgLib.placeCutImg(g, 1, 60, 60, 0, 0, imgLib.getX(0), imgLib.getY(0), dthis);
 		//imgLib.drawCutImg(g, 2, 70, 70, -imgLib.getX(0), -imgLib.getY(0), 15, 0, 15, 17, dthis);
 		
-		g.drawImage(imgLib.getTextImage(), 10, 10, dthis);
-		//g.drawImage(imgLib.getImage(4), 10, 10, dthis);
+		
+		g.drawImage(imgLib.getImage(3), 10, 10, dthis);
+		g.drawImage(imgLib.getImage(4), 10, 30, dthis);
 	}
 
 }
