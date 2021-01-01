@@ -39,8 +39,9 @@ Java2D gives a lot of weird options, like allowing you to determine the backgrou
 
 ### Picture Text
 
-- [ ] function addTextInfo()
-- [ ] function addTextImage()
+- [x] function addTextInfo()
+- [x] function addTextImage()
+- [ ] function setLetters()
 - [ ] function setWords()
 - [ ] function setParagraphLine()
 - [ ] function setParagraph()
@@ -79,6 +80,7 @@ The Java version actually sets a limit in pixels of how far something should go 
 
 - [x] Verify the addTextInfo functionality is working [Java]
 - [x] Verify the addTextImage functionality is working [Java]
+- [ ] Verify the setLetters functionality is working [Java]
 - [ ] Verify the setWords functionality is working [Java]
 - [ ] Verify the setParagraphLine functionality is working [Java]
 - [ ] Verify the setParagraph functionality is working [Java]
@@ -87,6 +89,7 @@ The JavaScript version works way differently, first creating an image and pushin
 
 - [x] Verify the addTextInfo functionality is working [JavaScript]
 - [x] Verify the addTextImage functionality is working [JavaScript]
+- [ ] Create the setLetters functionality is working [JavaScript]
 - [ ] Create the setWords functionality is added [JavaScript]
 - [ ] Create the setParagraphLine functionality is added [JavaScript]
 - [ ] Create the setParagraph functionality is added [JavaScript]

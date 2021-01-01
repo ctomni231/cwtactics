@@ -48,15 +48,11 @@ public class TestBed extends Screen {
 			System.out.println(cool.get(i).toString());
 		}
 		
-		int[] temp = imgLib.getTextDim(2, "INCREDIBLE");
+		String incr = "INCREDIBLE 01234";
+		int[] temp = imgLib.getTextDim(2, incr);
 		System.out.println("("+temp[0]+","+temp[1]+")");
 		
-		imgLib.addTextImage(2, "INCREDIBLE 01234");
-		
-		
-		
-		//imgLib.setLetters("INCREDIBLE", "Basic", 0, 0, -1);
-		//imgLib.addImage(imgLib.getTextImage());
+		imgLib.addLetterImage(2, incr, 40);
 	}
 
 	@Override
@@ -72,16 +68,16 @@ public class TestBed extends Screen {
 
 	@Override
 	public void render(Graphics2D g, Component dthis) {
-		g.drawImage(imgLib.getImage(0), 10, 110, dthis);
-		imgLib.placeImg(g, 0, 20, 120, dthis);
-		imgLib.drawImg(g, 0, 30, 130, -imgLib.getX(0), -imgLib.getY(0), dthis);
-		imgLib.placeCropImg(g, 0, 40, 140, 100, -20, dthis);
-		imgLib.drawCropImg(g, 0, 50, 150, -imgLib.getX(0), -imgLib.getY(0), -100, 20, dthis);
-		imgLib.placeCutImg(g, 1, 60, 160, 0, 0, imgLib.getX(0), imgLib.getY(0), dthis);
-		imgLib.drawCutImg(g, 2, 70, 170, -imgLib.getX(0), -imgLib.getY(0), 15, 0, 15, 17, dthis);
+		//g.drawImage(imgLib.getImage(0), 10, 110, dthis);
+		//imgLib.placeImg(g, 0, 20, 120, dthis);
+		//imgLib.drawImg(g, 0, 30, 130, -imgLib.getX(0), -imgLib.getY(0), dthis);
+		//imgLib.placeCropImg(g, 0, 40, 140, 100, -20, dthis);
+		//imgLib.drawCropImg(g, 0, 50, 150, -imgLib.getX(0), -imgLib.getY(0), -100, 20, dthis);
+		//imgLib.placeCutImg(g, 1, 60, 160, 0, 0, imgLib.getX(0), imgLib.getY(0), dthis);
+		//imgLib.drawCutImg(g, 2, 70, 170, -imgLib.getX(0), -imgLib.getY(0), 15, 0, 15, 17, dthis);
 		
-		g.drawImage(imgLib.getImage(3), 10, 10, dthis);
-		g.drawImage(imgLib.getImage(4), 10, 30, dthis);
+		g.drawImage(imgLib.getImage(3), 10, 30, dthis);
+		g.drawImage(imgLib.getImage(4), 10, 10, dthis);
 	}
 
 }

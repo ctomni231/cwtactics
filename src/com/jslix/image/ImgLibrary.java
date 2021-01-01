@@ -1291,14 +1291,42 @@ public class ImgLibrary extends Component{
     	textInfo.put(index, temp);
     }
     
+    public void addLetterImage(int index, String str, int limit) {
+    	
+    	int[] letdim = getLetterDim(index);
+    	int count = 1;
+
+    	if(letdim[0] > 0 && letdim[1] > 0){
+    		// Make sure limit is always valid
+    		if(limit < 0)
+    			limit = str.length()*letdim[0];
+
+    		String newstr = "";
+    		int max = 0;
+
+    		for(int i = 0; i < str.length(); i++){
+    			max += 1;
+    			newstr += str.charAt(i);
+    			if(str.charAt(i) == '\n' || max*letdim[0] > limit){
+    				count += 1;
+    				max = 0;
+    				if(str.charAt(i) != '\n')
+    					newstr += '\n';
+    			}
+    		}
+    		str = newstr;
+    	}
+    	
+    	addTextImage(index, str);
+    }
+    
     public void addTextImage(int index, String str) {
     	
     	// Make sure you setup the image before trying to do text
     	if(index < 0 || textInfo.get(index) == null) {
     		addImage(getTextPicture(str));
     		if(index >= 0)
-    			System.out.println("addTextImage: Image Text Information"+
-    								" Is Not Set");
+    			System.out.println("addTextImage: Image Text Information Is Not Set");
     	}
     	
     	// Everything is the canvas way here
@@ -1310,6 +1338,8 @@ public class ImgLibrary extends Component{
         
         // Get the relevant text array
     	String[] tmpInfo = textInfo.get(index);
+    	int drop = 0;
+    	int back = 0;
     	
     	int[] intInfo = new int[7];
     	
@@ -1319,6 +1349,14 @@ public class ImgLibrary extends Component{
     	for(int i = 0; i < str.length(); i++) {
     		
     		String chart = tmpInfo[7];
+    		
+    		// If we have an enter, time for manipulation
+    		if(str.charAt(i) == '\n') {
+    			drop += 1;
+    			back = i+1;
+    			continue;
+    		}
+    		
     		int tmplps = chart.indexOf(str.charAt(i));
     		
     		if(tmplps >= 0) {
@@ -1336,10 +1374,10 @@ public class ImgLibrary extends Component{
     	    	int letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
     	    	
     	    	int posx = tmplps % tmpslx;
-    	 		int posy = (int) Math.floor(tmplps / tmpslx);
+    	 		int posy = (int)Math.floor(tmplps / tmpslx);
     	 		
     	 		System.out.println("Canvas - Letter: "+str.charAt(i)+" ("+posx+","+posy+")");
-    	 		placeCutImg(g, index, tmppx+(i*letsx), tmppy, posx*letsx, posy*letsy, letsx, letsy, this);
+    	 		placeCutImg(g, index, tmppx+((i-back)*letsx), tmppy+(drop*(letsy+1)), posx*letsx, posy*letsy, letsx, letsy, this);
     		}
     	}
     	addImage(pimg);    	
@@ -1354,7 +1392,20 @@ public class ImgLibrary extends Component{
      */
     public int[] getTextDim(int index, String str) {
     	int[] dim = getLetterDim(index);
-    	return new int[] {dim[0]*str.length(), dim[1]};
+    	
+    	int drop = 1;
+    	int max = 0;
+    	for(int i = 0; i < str.length(); i++){
+    		if(str.charAt(i) == '\n') {
+    			drop += 1;
+    			if(i - max >= max)
+    				max = i-max;
+    		}
+    	}
+    	if(max == 0)
+    		max = str.length();
+    	
+    	return new int[] {dim[0]*max, (dim[1]+1)*drop};
     }
     
     /**

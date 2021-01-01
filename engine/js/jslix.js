@@ -150,6 +150,7 @@ export function addTextImage(index, str){
 	}
 
 	var textdim = getTextDim(index, str);
+	console.log("Str: "+str)
 
 	if( textdim[0] == 0 ){
 		console.log("Do it the color way: "+str);
@@ -178,10 +179,20 @@ export function addTextImage(index, str){
 
 		// Pulls relevant information from the textInfo class
 		let tmpInfo = jslix.textInfo[index];
+		let drop = 0;
+    let back = 0;
 
 		for(let i = 0; i < str.length; i++){
 
 			let chart = tmpInfo[7];
+
+			// If we have an enter, time for manipulation
+    	if(str.charAt(i) == '\n') {
+    		drop += 1;
+    		back = i+1;
+    		continue;
+    	}
+
 			let tmplps = chart.indexOf(str.charAt(i));
 
 			if(tmplps >= 0){
@@ -201,7 +212,7 @@ export function addTextImage(index, str){
 				let posy = Math.floor(tmplps / tmpslx)
 
 				console.log("Canvas - Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
-				placeCutImg(ctx, index, tmppx+(i*letsx), tmppy, posx*letsx, posy*letsy, letsx, letsy);
+				placeCutImg(ctx, index, tmppx+((i-back)*letsx), tmppy+(drop*(letsy+1)), posx*letsx, posy*letsy, letsx, letsy);
 			}
 		}
 		addImage(imgcanvas.toDataURL());
@@ -312,6 +323,41 @@ export function addImage(text){
 export function addReference(name, imgIndex){
 	let temp = [name, imgIndex];
 	jslix.refArray.push(temp);
+}
+
+// Text Library Suite of functionality
+
+// This works like addTextImage, but adds a limit to how far one
+// can move along the x-axis
+export function addLetterImage(index, str, limit){
+
+	console.log(textdim);
+	console.log(letdim);
+	let count = 1;
+
+	if(letdim[0] > 0 && letdim[1] > 0){
+		// Make sure limit is always valid
+		if(limit < 0)
+			limit = str.length*letdim[0];
+
+		let newstr = "";
+		let max = 0;
+
+		for(let i = 0; i < str.length; i++){
+			max += 1;
+			newstr += str[i];
+			if(str.charAt(i) === '\n' || max*letdim[0] > limit){
+				count += 1
+				max = 0
+				if(str.charAt(i) !== '\n')
+					newstr += '\n';
+			}
+		}
+		str = newstr;
+	}else{
+		// Push a flag that'll cause this to happen in the draw step
+	}
+	addTextImage(index, str);
 }
 
 // Create Attributes
@@ -719,7 +765,19 @@ export function removeAllMaps(){
 function getTextDim(index, str){
 	let dim = getLetterDim(index)
 
-	return [dim[0]*str.length, dim[1]]
+	let drop = 1;
+	let max = 0;
+	for(let i = 0; i < str.length; i++){
+		if(str.charAt(i) == '\n'){
+			drop += 1;
+			if(i - max >= max)
+				max = i-max;
+		}
+	}
+	if(max == 0)
+		max = str.length;
+
+	return [dim[0]*max, (dim[1]+1)*drop]
 }
 
 // A function for getting the length and width of a letter in an image
@@ -752,19 +810,29 @@ function getLetterDim(index){
 	return [letsx, letsy]
 }
 
-// A function for drawing out the string
+// A function for plotting out the string onto a Canvas using pixels
 function drawLetters(data, sx, sy, txtArray, cutArray){
 
 	// Pulls relevant information from the textInfo class
 	let index = txtArray[0];
 	let tmpInfo = jslix.textInfo[index];
 	let str = txtArray[1];
+	let drop = 0;
+  let back = 0;
 
 	if(tmpInfo !== undefined){
 
 		for(let i = 0; i < str.length; i++){
 
 			let chart = tmpInfo[7];
+
+			// If we have an enter, time for manipulation
+    		if(str.charAt(i) == '\n') {
+    			drop += 1;
+    			back = i+1;
+    			continue;
+    		}
+
 			let tmplps = chart.indexOf(str.charAt(i));
 
 			if(tmplps >= 0){
@@ -784,7 +852,8 @@ function drawLetters(data, sx, sy, txtArray, cutArray){
 				let posy = Math.floor(tmplps / tmpslx)
 
 				console.log("Draw - Letter: "+str.charAt(i)+" ("+posx+","+posy+")")
-				let tmpArray = [index, tmppx+(i*letsx), tmppy, posx*letsx, posy*letsy, letsx, letsy, 100, 2];
+				let tmpArray = [index, tmppx+((i-back)*letsx), tmppy+(drop*(letsy+1)),
+					              posx*letsx, posy*letsy, letsx, letsy, 100, 2];
 				data = dropCutPixels(data, sx, sy, tmpArray);
 			}
 		}

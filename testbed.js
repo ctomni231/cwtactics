@@ -29,7 +29,7 @@ export function update(){
     console.log(text);
 
     // Works really well on the fly loading
-    //jslix.addTextImage(2, "INCREDIBLE 01234");
+    //jslix.addLetterImage(2, "INCREDIBLE 01234", 40);
     jslix.addTextImage(2, text);
 
     print = false;
@@ -37,14 +37,14 @@ export function update(){
 }
 
 export function render(canvas, ctx){
-  ctx.drawImage(jslix.getImg(3), 10, 50);
-  ctx.drawImage(jslix.getImg(4), 10, 70);
-  
-  ctx.drawImage(jslix.getImg(0), 10, 110);
-  jslix.placeImg(ctx, 0, 20, 120);
-  jslix.drawImg(ctx, 0, 30, 130, -jslix.getX(0), -jslix.getY(0));
-  jslix.placeCropImg(ctx, 0, 40, 140, 100, -20);
-  jslix.drawCropImg(ctx, 0, 50, 150, -jslix.getX(0), -jslix.getY(0), -100, 20);
-  jslix.placeCutImg(ctx, 1, 60, 160, 0, 0, jslix.getX(0), jslix.getY(0));
-  jslix.drawCutImg(ctx, 2, 70, 170, jslix.getX(0), -jslix.getY(0), 0, 0, 15, 17);
+  ctx.drawImage(jslix.getImg(3), 10, 70);
+  ctx.drawImage(jslix.getImg(4), 10, 50);
+
+  //ctx.drawImage(jslix.getImg(0), 10, 110);
+  //jslix.placeImg(ctx, 0, 20, 120);
+  //jslix.drawImg(ctx, 0, 30, 130, -jslix.getX(0), -jslix.getY(0));
+  //jslix.placeCropImg(ctx, 0, 40, 140, 100, -20);
+  //jslix.drawCropImg(ctx, 0, 50, 150, -jslix.getX(0), -jslix.getY(0), -100, 20);
+  //jslix.placeCutImg(ctx, 1, 60, 160, 0, 0, jslix.getX(0), jslix.getY(0));
+  //jslix.drawCutImg(ctx, 2, 70, 170, jslix.getX(0), -jslix.getY(0), 0, 0, 15, 17);
 }
