@@ -2,9 +2,6 @@
  * JSlix Image Engine
  *
  * Currently:
- * Font and Text - Need to work on \n paragraph functionality
- * Font and Text - Need to notice captial and common letters in charts
- * Font and text - After \n, need to create max width (by adding \n to text) when over a pixel width
  * Font and text - After \n, Need to create max lines, which will cut paragraphs
  *
  * Future: Might need to modularize this a bit (Deprecated)
@@ -638,10 +635,6 @@ export function getRef(name){
 // Draw Functions
 // -------------------------------------------
 
-//void ctx.drawImage(image, dx, dy);
-//void ctx.drawImage(image, dx, dy, dWidth, dHeight);
-//void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
-
 // This function places an image on a destination screen
 export function placeImg(ctx, num, dlx, dly){
 	ctx.drawImage(getImg(num), dlx, dly);
@@ -720,7 +713,6 @@ export function drawCutImg(ctx, num, dlx, dly, dsx, dsy, slx, sly, ssx, ssy){
 	}else
 		ctx.drawImage(getImg(num), slx, sly, ssx, ssy, dlx, dly, dsx, dsy);
 }
-
 
 // -------------------------------------------
 // Remove functions
@@ -1050,9 +1042,8 @@ function storeImage(){
 	}
 
 	// This allows Safari to reenact onload functionality
-	if(imgStorage){
+	if(imgStorage)
 		imgStorage.parentNode.removeChild(imgStorage);
-	}
 
 	let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	let imgWidth = canvas.width;
@@ -1119,9 +1110,8 @@ function storeImage(){
 	}
 
 	// This allows Safari to reenact onload functionality
-	//if(imgStorage){
+	//if(imgStorage)
 	//	imgStorage.parentNode.removeChild(imgStorage);
-	//}
 
 	// Used to store things on the colormap (Have to do it after manipulations)
 	if(jslix.mapArray.shift() == 1){

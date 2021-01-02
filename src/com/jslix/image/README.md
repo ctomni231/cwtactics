@@ -41,10 +41,10 @@ Java2D gives a lot of weird options, like allowing you to determine the backgrou
 
 - [x] function addTextInfo()
 - [x] function addTextImage()
-- [ ] function addLetterImage()
-- [ ] function addWordImage()
-- [ ] function addParagraphLineImage()
-- [ ] function addParagraphImage()
+- [x] function addLetterImage()
+- [x] function addWordImage()
+- [x] function addTextLineImage()
+- [x] function addParagraphImage()
 
 ## Testing Grounds
 
