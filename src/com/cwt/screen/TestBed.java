@@ -48,11 +48,12 @@ public class TestBed extends Screen {
 		//	System.out.println(cool.get(i).toString());
 		//}
 		
-		//String incr = "INCREDIBLE 01234";
-		//int[] temp = imgLib.getTextDim(2, incr);
-		//System.out.println("("+temp[0]+","+temp[1]+")");
+		String incr = "INCREDIBLE 01234";
 		
-		imgLib.addLetterImage(2, "INCREDIBLE 01234", 10);
+		int[] temp = imgLib.getTextDim(2, incr);
+		System.out.println("("+temp[0]+","+temp[1]+")");
+		
+		imgLib.addLetterImage(2, incr, 10);
 		//imgLib.addTextImage(2, "I DONT KNOW");
 		//imgLib.addTextImage(-1, (String)cool.get(0).get(0));
 	}
@@ -61,7 +62,7 @@ public class TestBed extends Screen {
 	public void update(int timePassed) {
 		
 		if(onthefly) {
-			imgLib.addTextImage(2, (String)cool.get(0).get(0));
+			imgLib.addWordImage(2, (String)cool.get(0).get(0), 2, 120);
 			onthefly = false;
 		}
 		

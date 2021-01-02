@@ -1295,6 +1295,18 @@ public class ImgLibrary extends Component{
     	addTextImage(index, str, -1, -limit);
     }
     
+    public void addParagraphImage(int index, String str, int limit) {
+    	addTextImage(index, str, -1, limit);
+    }
+    
+    public void addWordImage(int index, String str, int row, int limit) {
+    	addTextImage(index, str, row, limit);
+    }
+    
+    public void addTextLineImage(int index, String str, int row, int limit) {
+    	addTextImage(index, str, row, limit);
+    }
+    
     public void addTextImage(int index, String str) {
     	addTextImage(index, str, -1, 0);
     }
@@ -1375,7 +1387,6 @@ public class ImgLibrary extends Component{
     	int[] textdim = getTextDim(index, str);
     	str = normalizeStr(index, str, row, limit);
     	
-    	
     	// Out with the old and in with the new
     	createImg(1,1);
         createImg(textdim[0], textdim[1]);
@@ -1393,7 +1404,6 @@ public class ImgLibrary extends Component{
     	for(int i = 0; i < str.length(); i++) {
     		
     		String chart = tmpInfo[7];
-    		System.out.println("Previous - Letter: "+str.charAt(i));
     		
     		// If we have an enter, time for manipulation
     		if(str.charAt(i) == '\n') {
@@ -1425,22 +1435,19 @@ public class ImgLibrary extends Component{
     	 		placeCutImg(g, index, tmppx+((i-back)*letsx), tmppy+(drop*(letsy+1)), posx*letsx, posy*letsy, letsx, letsy, this);
     		}
     	}
-    	System.out.println(str);
-    	int len = length();
-    	//addImage(getGridImage());
     	addImage(pimg);
     }
     
     private String normalizeStr(int index, String str, int row, int limit) {
     	
-    	System.out.println("FINAL: " + index + " " + str + " " + row + " " + limit);
     	int[] letdim = getLetterDim(index);
     	String newstr = new String();
 
+    	// Makes sure our Letters actually have dimensions
     	if(letdim[0] > 0 && letdim[1] > 0){
     		
-    		boolean wordmode = (limit >= 0);
-    		int count = 1;
+    		// Sets to word mode if you write a positive limit
+    		boolean wordmode = (limit > 0);
     		
     		// Make sure limit is always valid
     		if(limit <= 0)
@@ -1448,15 +1455,54 @@ public class ImgLibrary extends Component{
 
     		int max = 0;
 
-    		for(int i = 0; i < str.length(); i++){
-    			max += 1;
-    			newstr += str.charAt(i);
-    			if(str.charAt(i) == '\n' || max*letdim[0] > limit){
-    				count += 1;
-    				max = 0;
-    				if(str.charAt(i) != '\n')
-    					newstr += '\n';
-    			}
+    		// This curates a string for Word mode
+    		if(wordmode) {
+    			int tracker = -1;
+    			String word = new String();
+    			for(int i = 0; i < str.length(); i++){
+        			max += 1;
+        			word += str.charAt(i);
+        			if(str.charAt(i) == ' ' || str.charAt(i) == '-') {
+        				tracker = i;
+        				newstr += word;
+        				word = "";
+        			}
+        			if(str.charAt(i) == '\n' || max*letdim[0] > limit){
+        				if(tracker >= 0 ) {
+        					if(str.charAt(i) != '\n')
+            					newstr += '\n';
+        					newstr += word;
+        					max = word.length();
+            				word = "";
+        				}else {
+        					newstr += word;
+        					word = "";
+        					max = 0;
+            				if(str.charAt(i) != '\n')
+            					newstr += '\n';
+        				}
+        			}
+        		}
+    			if(word.length() > 0)
+    				newstr += word;
+    		}
+    		// This curates a string for Letter Mode
+    		else {
+    			for(int i = 0; i < str.length(); i++){
+        			max += 1;
+        			newstr += str.charAt(i);
+        			if(str.charAt(i) == '\n' || max*letdim[0] > limit){
+        				max = 0;
+        				if(str.charAt(i) != '\n')
+        					newstr += '\n';
+        			}
+        		}
+    		}
+    		
+    		// If we have a row, the string is now that row (or blank)
+    		if(row >= 0) {
+    			String[] strArr = newstr.split("\n");
+    			newstr = (row < strArr.length) ? strArr[row].trim() : "";
     		}
     	}
     	

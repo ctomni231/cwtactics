@@ -146,7 +146,24 @@ export function addLetterImage(index, str, limit){
 	addTextImage(index, str, -1, -limit)
 }
 
-// This is the problem, we have to make the text image beforehand
+// A helper function for addTextImage turns words into paragraphs
+export function addParagraghImage(index, str, limit){
+	addTextImage(index, str, -1, limit)
+}
+
+// A helper function for getting words out of an image, use row to
+// target getting words out of a paragraph
+export function addWordImage(index, str, row, limit){
+	addTextImage(index, str, row, limit)
+}
+
+// A helper function for getting pieces of words out of a limited line
+export function addTextLineImage(index, str, row, limit){
+	addTextImage(index, str, row, -limit)
+}
+
+// Adds an image to the list made purely of text image characters you choose.
+// Also can be used for spritesheets, if savvy enough.
 // index - The image index to use (negative for font images)
 // str - The string to try and draw out
 // row (Opt) - used to pull a specific row from an image (negative for all)
@@ -200,7 +217,7 @@ export function addTextImage(index, str, row, limit){
 
 		// Pulls relevant information from the textInfo class
 		let tmpInfo = jslix.textInfo[index];
-		//str = normalizeStr([index, str, row, limit]);
+		str = normalizeStr([index, str, row, limit]);
 		let drop = 0;
     let back = 0;
 
@@ -811,8 +828,7 @@ function normalizeStr(txtArr){
 	if(letdim[0] > 0 && letdim[1] > 0){
 
 		// Set the mode (which determines \n spacing)
-		let wordmode = (lim >= 0);
-		let count = 1;
+		let wordmode = (lim > 0);
 
 		// Make sure limit is always valid
 		if(lim <= 0)
@@ -821,25 +837,64 @@ function normalizeStr(txtArr){
 		let newstr = "";
 		let max = 0;
 
-		// This is the lettermode stuff
-		for(let i = 0; i < str.length; i++){
-			max += 1;
-			newstr += str[i];
-			if(str.charAt(i) === '\n' || max*letdim[0] > lim){
-				count += 1
-				max = 0
-				if(str.charAt(i) !== '\n'){
-					if(i+1 < str.length){
-						if(str.charAt(i+1) === '\n')
-							continue
+		if(wordmode){
+			let tracker = -1;
+			let word = "";
+			for(let i = 0; i < str.length; i++){
+				max += 1;
+				word += str[i];
+				if(str.charAt(i) === ' ' || str.charAt(i) === '-') {
+					tracker = i;
+					newstr += word;
+					word = "";
+				}
+				if(str.charAt(i) === '\n' || max*letdim[0] > lim){
+					if(tracker >= 0){
+						if(str.charAt(i) !== '\n')
+							newstr += '\n';
+						newstr += word;
+						max = word.length;
+						word = "";
+					}else{
+						newstr += word;
+						word = "";
+						max = 0
+						if(str.charAt(i) !== '\n'){
+							if(i+1 < str.length){
+								if(str.charAt(i+1) === '\n')
+									continue
+							}
+							newstr += '\n';
+						}
 					}
-					newstr += '\n';
-				}	
+				}
+			}
+			if(word.length > 0)
+    		newstr += word;
+		}
+		// This is the lettermode stuff
+		else{
+			for(let i = 0; i < str.length; i++){
+				max += 1;
+				newstr += str[i];
+				if(str.charAt(i) === '\n' || max*letdim[0] > lim){
+					max = 0
+					if(str.charAt(i) !== '\n'){
+						if(i+1 < str.length){
+							if(str.charAt(i+1) === '\n')
+								continue
+						}
+						newstr += '\n';
+					}
+				}
 			}
 		}
 
-		// Something completely different for word mode
-
+		// If we have a row, the string is now that row (or blank)
+    if(row >= 0) {
+    	let strArr = newstr.split("\n");
+    	newstr = (row < strArr.length) ? strArr[row].trim() : "";
+    }
 		// Return to sender
 		str = newstr;
 	}

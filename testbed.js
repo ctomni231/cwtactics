@@ -17,7 +17,8 @@ export function init(){
   jslix.addTextInfo(2, 9, 5, 0, jslix.jslix.ASCII_COMBINE)
 
   // No longer works well while pre-loading (missing letters)
-  jslix.addLetterImage(2, "INCREDIBLE \n012\n34", 10);
+  let str = "INCREDIBLE \n012\n34";
+  jslix.addLetterImage(2, str, 10);
 }
 
 export function update(){
@@ -30,7 +31,7 @@ export function update(){
 
     // Works really well on the fly loading
     //jslix.addLetterImage(2, "INCREDIBLE\n012\n34");
-    jslix.addTextImage(2, text);
+    jslix.addWordImage(2, text, 2, 120);
 
     print = false;
   }
