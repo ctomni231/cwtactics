@@ -41,10 +41,10 @@ Java2D gives a lot of weird options, like allowing you to determine the backgrou
 
 - [x] function addTextInfo()
 - [x] function addTextImage()
-- [ ] function setLetters()
-- [ ] function setWords()
-- [ ] function setParagraphLine()
-- [ ] function setParagraph()
+- [ ] function addLetterImage()
+- [ ] function addWordImage()
+- [ ] function addParagraphLineImage()
+- [ ] function addParagraphImage()
 
 ## Testing Grounds
 
@@ -80,18 +80,18 @@ The Java version actually sets a limit in pixels of how far something should go 
 
 - [x] Verify the addTextInfo functionality is working [Java]
 - [x] Verify the addTextImage functionality is working [Java]
-- [ ] Verify the setLetters functionality is working [Java]
-- [ ] Verify the setWords functionality is working [Java]
-- [ ] Verify the setParagraphLine functionality is working [Java]
-- [ ] Verify the setParagraph functionality is working [Java]
+- [x] Verify the addLetterImage functionality is working [Java]
+- [ ] Verify the addWordImage functionality is working [Java]
+- [ ] Verify the addParagraphLineImage functionality is working [Java]
+- [ ] Verify the addParagraphImage functionality is working [Java]
 
 The JavaScript version works way differently, first creating an image and pushing it into the main pipeline of images, and then displaying the image as a normal image. I suppose that is okay, but there is a lot more tracking that'll have to take place.
 
 - [x] Verify the addTextInfo functionality is working [JavaScript]
 - [x] Verify the addTextImage functionality is working [JavaScript]
-- [ ] Create the setLetters functionality is working [JavaScript]
-- [ ] Create the setWords functionality is added [JavaScript]
-- [ ] Create the setParagraphLine functionality is added [JavaScript]
-- [ ] Create the setParagraph functionality is added [JavaScript]
+- [x] Create the addLetterImage functionality is working [JavaScript]
+- [ ] Create the addWordImage functionality is added [JavaScript]
+- [ ] Create the addParagraphLineImage functionality is added [JavaScript]
+- [ ] Create the addParagraphImage functionality is added [JavaScript]
 
 So far, really good progress to start the new year. Both versions work the exact same, and the way to draw text is infinitely less clunky than the old way of doing TextImgLibrary. Once all the spacing functionality is in, this will be the defacto JSlix class for all kinds of images.

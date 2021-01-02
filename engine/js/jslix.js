@@ -137,8 +137,24 @@ export function addColorBox(red, green, blue, alpha, sizex, sizey){
 	addImage(imgcanvas.toDataURL());
 }
 
+// Text Library Suite of functionality
+// ------------------------------------
+
+// A helper function for addTextImage adding a limit to how far one
+// can move along the x-axis
+export function addLetterImage(index, str, limit){
+	addTextImage(index, str, -1, -limit)
+}
+
 // This is the problem, we have to make the text image beforehand
-export function addTextImage(index, str){
+// index - The image index to use (negative for font images)
+// str - The string to try and draw out
+// row (Opt) - used to pull a specific row from an image (negative for all)
+// limit (Opt) - length of pixels to go before spacing the word (for best fit)
+// limit (negative) - for letter spacing
+// limit (zero) - the entire word
+// limit (positive) - for word spacing
+export function addTextImage(index, str, row, limit){
 
 	// If you send in a dud image, give them a font
 	if(index < 0 || jslix.textInfo[index] === undefined){
@@ -149,13 +165,18 @@ export function addTextImage(index, str){
 		return;
 	}
 
+	// Normalize the default values
+	row = (row === undefined) ? -1 : row;
+	limit = (limit === undefined) ? 0 : limit;
+
+	// Finish getting the dimensions
 	var textdim = getTextDim(index, str);
 	console.log("Str: "+str)
 
 	if( textdim[0] == 0 ){
 		console.log("Do it the color way: "+str);
 
-		jslix.textdraw = [index, str]
+		jslix.textdraw = [index, str, row, limit]
 		addColorBox(0, 0, 0, 255, 1, 1)
 	}
 
@@ -179,6 +200,7 @@ export function addTextImage(index, str){
 
 		// Pulls relevant information from the textInfo class
 		let tmpInfo = jslix.textInfo[index];
+		//str = normalizeStr([index, str, row, limit]);
 		let drop = 0;
     let back = 0;
 
@@ -325,41 +347,6 @@ export function addReference(name, imgIndex){
 	jslix.refArray.push(temp);
 }
 
-// Text Library Suite of functionality
-
-// This works like addTextImage, but adds a limit to how far one
-// can move along the x-axis
-export function addLetterImage(index, str, limit){
-
-	console.log(textdim);
-	console.log(letdim);
-	let count = 1;
-
-	if(letdim[0] > 0 && letdim[1] > 0){
-		// Make sure limit is always valid
-		if(limit < 0)
-			limit = str.length*letdim[0];
-
-		let newstr = "";
-		let max = 0;
-
-		for(let i = 0; i < str.length; i++){
-			max += 1;
-			newstr += str[i];
-			if(str.charAt(i) === '\n' || max*letdim[0] > limit){
-				count += 1
-				max = 0
-				if(str.charAt(i) !== '\n')
-					newstr += '\n';
-			}
-		}
-		str = newstr;
-	}else{
-		// Push a flag that'll cause this to happen in the draw step
-	}
-	addTextImage(index, str);
-}
-
 // Create Attributes
 // -----------------------------------
 
@@ -481,17 +468,17 @@ export function addPixelYShift(posx, posy, repeat){
 	jslix.shift.push(temp);
 }
 
-// This adds an image to the current image, before manipulations (color off)
-export function addImageDrop(imgIndex, posx, posy){
-	addCutImageDrop(imgIndex, posx, posy, 0, 0, 0, 0);
-}
-
 // This adds a cut image to the current image, before manipulations (color off)
-export function addCutImageDrop(imgIndex, posx, posy, locx, locy, sizex, sizey){
+// (Optional) locx, locy, sizex, sizey
+export function addImageDrop(imgIndex, posx, posy, locx, locy, sizex, sizey){
 	let ind = imgIndex
 	if(imgIndex >= 0 && imgIndex < jslix.intArray.length)
 		ind = jslix.intArray[imgIndex]
-	let temp = [ind, posx, posy, locx, locy, sizex, sizey]
+	let temp = [ind, posx, posy,
+		(locx === undefined) ? 0 : locx,
+		(locy === undefined) ? 0 : locy,
+		(sizex === undefined) ? 0 : sizex,
+		(sizey === undefined) ? 0 : sizey]
 	jslix.imgdrop.push(temp)
 }
 
@@ -517,20 +504,19 @@ export function addCutPixelDrop(imgIndex, posx, posy, locx, locy, sizex, sizey, 
 // index = Which image this refers to
 // slicex = The number of horizontal slices to give an image
 // slicey = The number of vertical slices to giv an image
-// start = Where in the grid to start from left-to-right up-to-down
-// chart = A string containing the characters for the image
-// caseSensitive = Whether the chart is case sensitive
-export function addTextInfo(index, slicex, slicey, start, chart){
-	addAllTextInfo(index, 0, 0, 0, 0, slicex, slicey, start, chart)
-}
-
-// This adds textual split information for a specific image
-// posx = the x-axis location where you want the slices to start
-// posy = the y-axis location where you want the slices to start
-// sizex = the x-axis total length of all slices
-// sizey = the y-axis total length of all slices
-export function addAllTextInfo(index, posx, posy, sizex, sizey, slicex, slicey, start, chart){
-	jslix.textInfo[index] = [posx, posy, sizex, sizey, slicex, slicey, start, chart];
+// start = Where in the grid to start from left-to-right up-to-down (Optional)
+// chart = A string containing the characters for the image (Optional)
+// posx = the x-axis location where you want the slices to start (Optional)
+// posy = the y-axis location where you want the slices to start (Optional)
+// sizex = the x-axis total length of all slices (Optional)
+// sizey = the y-axis total length of all slices (Optional)
+// caseSensitive = Whether the chart is case sensitive (Deprecated)
+export function addTextInfo(index, slicex, slicey, start, chart, posx, posy, sizex, sizey){
+	jslix.textInfo[index] = [(posx === undefined) ? 0 : posx,
+		(posy === undefined) ? 0 : posy, (sizex === undefined) ? 0 : sizex,
+		(sizey === undefined) ? 0 : sizey, slicex, slicey,
+		(start === undefined) ? 0 : start,
+		(chart === undefined) ? jslix.ASCII_COMBINE : chart];
 }
 
 // This changes the font family of font images
@@ -761,11 +747,11 @@ export function removeAllMaps(){
 // -----------------------------------------
 
 // A function for getting the length and width of a text string
-// This will get more complicated once we add newlines
-function getTextDim(index, str){
+// drop (opt) = Handles newlines, always maxed out defualt
+function getTextDim(index, str, drop){
 	let dim = getLetterDim(index)
 
-	let drop = 1;
+	drop = (drop === undefined) ? str.length : 1;
 	let max = 0;
 	for(let i = 0; i < str.length; i++){
 		if(str.charAt(i) == '\n'){
@@ -810,13 +796,64 @@ function getLetterDim(index){
 	return [letsx, letsy]
 }
 
+// txtArray = index, str, row, limit
+function normalizeStr(txtArr){
+
+	let ind = (txtArr[0] === undefined) ? -1 : txtArr[0];
+	let str = (txtArr[1] === undefined) ? "" : txtArr[1];
+	// If row is negative, you are getting the entire string
+	let row = (txtArr[2] === undefined) ? -1 : txtArr[2];
+	// Sets the limit for how much you can get
+	let lim = (txtArr[3] === undefined) ? 0 : txtArr[3];
+
+	let letdim = getLetterDim(ind);
+
+	if(letdim[0] > 0 && letdim[1] > 0){
+
+		// Set the mode (which determines \n spacing)
+		let wordmode = (lim >= 0);
+		let count = 1;
+
+		// Make sure limit is always valid
+		if(lim <= 0)
+			lim = (lim < 0) ? -lim : str.length*letdim[0];
+
+		let newstr = "";
+		let max = 0;
+
+		// This is the lettermode stuff
+		for(let i = 0; i < str.length; i++){
+			max += 1;
+			newstr += str[i];
+			if(str.charAt(i) === '\n' || max*letdim[0] > lim){
+				count += 1
+				max = 0
+				if(str.charAt(i) !== '\n'){
+					if(i+1 < str.length){
+						if(str.charAt(i+1) === '\n')
+							continue
+					}
+					newstr += '\n';
+				}	
+			}
+		}
+
+		// Something completely different for word mode
+
+		// Return to sender
+		str = newstr;
+	}
+	return str;
+}
+
 // A function for plotting out the string onto a Canvas using pixels
 function drawLetters(data, sx, sy, txtArray, cutArray){
 
 	// Pulls relevant information from the textInfo class
 	let index = txtArray[0];
 	let tmpInfo = jslix.textInfo[index];
-	let str = txtArray[1];
+	let str = normalizeStr(txtArray);
+	console.log(txtArray);
 	let drop = 0;
   let back = 0;
 

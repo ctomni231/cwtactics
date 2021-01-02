@@ -44,15 +44,17 @@ public class TestBed extends Screen {
 		// Before we do anything else, let's load up that string
 		cool = parser.generateList(parser.getJSONMap("credits.json"));
 		
-		for(int i = 0; i < cool.size(); i++) {
-			System.out.println(cool.get(i).toString());
-		}
+		//for(int i = 0; i < cool.size(); i++) {
+		//	System.out.println(cool.get(i).toString());
+		//}
 		
-		String incr = "INCREDIBLE 01234";
-		int[] temp = imgLib.getTextDim(2, incr);
-		System.out.println("("+temp[0]+","+temp[1]+")");
+		//String incr = "INCREDIBLE 01234";
+		//int[] temp = imgLib.getTextDim(2, incr);
+		//System.out.println("("+temp[0]+","+temp[1]+")");
 		
-		imgLib.addLetterImage(2, incr, 40);
+		imgLib.addLetterImage(2, "INCREDIBLE 01234", 10);
+		//imgLib.addTextImage(2, "I DONT KNOW");
+		//imgLib.addTextImage(-1, (String)cool.get(0).get(0));
 	}
 
 	@Override

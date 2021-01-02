@@ -1258,7 +1258,7 @@ public class ImgLibrary extends Component{
     // ----------------------
 
     /* Going to change the TextLibrary to the JavaScript way */
-    
+
     /**
      * This adds textual split information for a specific image
      * @param index  Which image this refers to
@@ -1292,95 +1292,11 @@ public class ImgLibrary extends Component{
     }
     
     public void addLetterImage(int index, String str, int limit) {
-    	
-    	int[] letdim = getLetterDim(index);
-    	int count = 1;
-
-    	if(letdim[0] > 0 && letdim[1] > 0){
-    		// Make sure limit is always valid
-    		if(limit < 0)
-    			limit = str.length()*letdim[0];
-
-    		String newstr = "";
-    		int max = 0;
-
-    		for(int i = 0; i < str.length(); i++){
-    			max += 1;
-    			newstr += str.charAt(i);
-    			if(str.charAt(i) == '\n' || max*letdim[0] > limit){
-    				count += 1;
-    				max = 0;
-    				if(str.charAt(i) != '\n')
-    					newstr += '\n';
-    			}
-    		}
-    		str = newstr;
-    	}
-    	
-    	addTextImage(index, str);
+    	addTextImage(index, str, -1, -limit);
     }
     
     public void addTextImage(int index, String str) {
-    	
-    	// Make sure you setup the image before trying to do text
-    	if(index < 0 || textInfo.get(index) == null) {
-    		addImage(getTextPicture(str));
-    		if(index >= 0)
-    			System.out.println("addTextImage: Image Text Information Is Not Set");
-    	}
-    	
-    	// Everything is the canvas way here
-    	int[] textdim = getTextDim(index, str);
-    	
-    	// Out with the old and in with the new
-    	createImg(1,1);
-        createImg(textdim[0], textdim[0]);
-        
-        // Get the relevant text array
-    	String[] tmpInfo = textInfo.get(index);
-    	int drop = 0;
-    	int back = 0;
-    	
-    	int[] intInfo = new int[7];
-    	
-    	for(int i = 0; i < intInfo.length; i++)
-    		intInfo[i] = Integer.valueOf(tmpInfo[i]);
-    	
-    	for(int i = 0; i < str.length(); i++) {
-    		
-    		String chart = tmpInfo[7];
-    		
-    		// If we have an enter, time for manipulation
-    		if(str.charAt(i) == '\n') {
-    			drop += 1;
-    			back = i+1;
-    			continue;
-    		}
-    		
-    		int tmplps = chart.indexOf(str.charAt(i));
-    		
-    		if(tmplps >= 0) {
-    			
-    			// Let's then get the size of the letter in the array
-    			int tmppx = intInfo[0];
-    	 		int tmppy = intInfo[1];
-    	    	int tmpsx = (intInfo[2] < 1) ? getX(index)-tmppx : intInfo[2];
-    	    	int tmpsy = (intInfo[3] < 1) ? getY(index)-tmppy : intInfo[3];
-    	    	int tmpslx = (intInfo[4] < 1) ? 1 : intInfo[4];
-    	    	int tmpsly = (intInfo[5] < 1) ? 1 : intInfo[5];
-
-    	    	// Let's get the length and width of a letter first
-    	    	int letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
-    	    	int letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
-    	    	
-    	    	int posx = tmplps % tmpslx;
-    	 		int posy = (int)Math.floor(tmplps / tmpslx);
-    	 		
-    	 		System.out.println("Canvas - Letter: "+str.charAt(i)+" ("+posx+","+posy+")");
-    	 		placeCutImg(g, index, tmppx+((i-back)*letsx), tmppy+(drop*(letsy+1)), posx*letsx, posy*letsy, letsx, letsy, this);
-    		}
-    	}
-    	addImage(pimg);    	
+    	addTextImage(index, str, -1, 0);
     }
     
     /**
@@ -1393,7 +1309,7 @@ public class ImgLibrary extends Component{
     public int[] getTextDim(int index, String str) {
     	int[] dim = getLetterDim(index);
     	
-    	int drop = 1;
+    	int drop = str.length();
     	int max = 0;
     	for(int i = 0; i < str.length(); i++){
     		if(str.charAt(i) == '\n') {
@@ -1443,6 +1359,109 @@ public class ImgLibrary extends Component{
     	System.out.println("Letter Dimensions: ("+letsx+","+letsy+")");
     	
     	return new int[] {letsx, letsy};
+    }
+    
+    private void addTextImage(int index, String str, int row, int limit) {
+    	
+    	// Make sure you setup the image before trying to do text
+    	if(index < 0 || textInfo.get(index) == null) {
+    		addImage(getTextPicture(str));
+    		if(index >= 0)
+    			System.out.println("addTextImage: Image Text Information Is Not Set");
+    		return;
+    	}
+    	
+    	// Everything is the canvas way here
+    	int[] textdim = getTextDim(index, str);
+    	str = normalizeStr(index, str, row, limit);
+    	
+    	
+    	// Out with the old and in with the new
+    	createImg(1,1);
+        createImg(textdim[0], textdim[1]);
+        
+        // Get the relevant text array
+    	String[] tmpInfo = textInfo.get(index);
+    	int drop = 0;
+    	int back = 0;
+    	
+    	int[] intInfo = new int[7];
+    	
+    	for(int i = 0; i < intInfo.length; i++)
+    		intInfo[i] = Integer.valueOf(tmpInfo[i]);
+    	
+    	for(int i = 0; i < str.length(); i++) {
+    		
+    		String chart = tmpInfo[7];
+    		System.out.println("Previous - Letter: "+str.charAt(i));
+    		
+    		// If we have an enter, time for manipulation
+    		if(str.charAt(i) == '\n') {
+    			drop += 1;
+    			back = i+1;
+    			continue;
+    		}
+    		
+    		int tmplps = chart.indexOf(str.charAt(i));
+    		
+    		if(tmplps >= 0) {
+    			
+    			// Let's then get the size of the letter in the array
+    			int tmppx = intInfo[0];
+    	 		int tmppy = intInfo[1];
+    	    	int tmpsx = (intInfo[2] < 1) ? getX(index)-tmppx : intInfo[2];
+    	    	int tmpsy = (intInfo[3] < 1) ? getY(index)-tmppy : intInfo[3];
+    	    	int tmpslx = (intInfo[4] < 1) ? 1 : intInfo[4];
+    	    	int tmpsly = (intInfo[5] < 1) ? 1 : intInfo[5];
+
+    	    	// Let's get the length and width of a letter first
+    	    	int letsx = ((tmpsx/tmpslx) > 0) ? tmpsx/tmpslx : tmpsx;
+    	    	int letsy = ((tmpsy/tmpsly) > 0) ? tmpsy/tmpsly : tmpsy;
+    	    	
+    	    	int posx = tmplps % tmpslx;
+    	 		int posy = (int)Math.floor(tmplps / tmpslx);
+    	 		
+    	 		System.out.println("Canvas - Letter: "+str.charAt(i)+" ("+posx+","+posy+")");
+    	 		placeCutImg(g, index, tmppx+((i-back)*letsx), tmppy+(drop*(letsy+1)), posx*letsx, posy*letsy, letsx, letsy, this);
+    		}
+    	}
+    	System.out.println(str);
+    	int len = length();
+    	//addImage(getGridImage());
+    	addImage(pimg);
+    }
+    
+    private String normalizeStr(int index, String str, int row, int limit) {
+    	
+    	System.out.println("FINAL: " + index + " " + str + " " + row + " " + limit);
+    	int[] letdim = getLetterDim(index);
+    	String newstr = new String();
+
+    	if(letdim[0] > 0 && letdim[1] > 0){
+    		
+    		boolean wordmode = (limit >= 0);
+    		int count = 1;
+    		
+    		// Make sure limit is always valid
+    		if(limit <= 0)
+    			limit = (limit < 0) ? -limit : str.length()*letdim[0];
+
+    		int max = 0;
+
+    		for(int i = 0; i < str.length(); i++){
+    			max += 1;
+    			newstr += str.charAt(i);
+    			if(str.charAt(i) == '\n' || max*letdim[0] > limit){
+    				count += 1;
+    				max = 0;
+    				if(str.charAt(i) != '\n')
+    					newstr += '\n';
+    			}
+    		}
+    	}
+    	
+    	return newstr;
+    	
     }
     
     //-------
