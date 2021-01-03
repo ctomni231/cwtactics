@@ -1,7 +1,7 @@
-import { input, state, loop, view } from "./engine/screenstate.js"
-import * as jslix from "./engine/js/jslix.js"
+import { input, state, loop, view } from "../engine/screenstate.js"
+import * as jslix from "../engine/js/jslix.js"
 
-export const name = "CWTBATTLE"
+export const name = "CWTTEST"
 
 let basize = 30
 let left = null

@@ -13,6 +13,7 @@ export const jslix = {
 	view: undefined,
 	lx: 0,
 	ly: 0,
+	count: 0,
 
 	//These are arrays that store multiple images
 	viewArray: [],
@@ -98,6 +99,7 @@ export const jslix = {
 // Adds a Color map (an array of recolors using UnitBaseColors.png example) for recoloring
 export function addColorMap(text){
 	jslix.colormap = 1;
+	jslix.count += 1;
 	addImage(text);
 }
 
@@ -629,6 +631,11 @@ export function getRef(name){
 			return jslix.refArray[i][1];
 	}
 	return -1
+}
+
+// Holds the length of the image array
+export function length(){
+	return jslix.intArray.length+jslix.imgQueue.length+jslix.busy-jslix.count;
 }
 
 // -------------------------------------------

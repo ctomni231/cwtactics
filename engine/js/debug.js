@@ -9,6 +9,18 @@ let count = 0
 let frame = 0
 let lastTime = new Date().getTime();
 
+let showfps = 1;
+let action = false;
+
+export function update(){
+  if (input.DEBUG_A) {
+    action = true
+  }else if(action){
+    action = false
+    showfps *= -1;
+  }
+}
+
 export function render(canvas, ctx){
   // Keeps track of the FPS
   let nowTime = new Date().getTime();
@@ -26,9 +38,11 @@ export function render(canvas, ctx){
   ctx.fillRect(0, 0, 100, 40);
   ctx.fillStyle = '#000000';
   ctx.font = 'bold 10px sans-serif';
-  ctx.fillText('FPS: ' + jfps + ' [' + tfps + ']', 4, 10);
-  ctx.fillText('SCR: (' + view.sizex + ',' + view.sizey + ')', 4, 20);
-  ctx.fillText('LOC: (' + input.MOUSEX + ',' + input.MOUSEY + ')', 4, 30);
+  if(showfps > 0){
+    ctx.fillText('FPS: ' + jfps + ' [' + tfps + ']', 4, 10);
+    ctx.fillText('SCR: (' + view.sizex + ',' + view.sizey + ')', 4, 20);
+    ctx.fillText('LOC: (' + input.MOUSEX + ',' + input.MOUSEY + ')', 4, 30);
+  }
 
   lastTime = nowTime;
 }

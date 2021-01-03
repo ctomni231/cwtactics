@@ -29,9 +29,8 @@ export const mapping = {
 
   "mouse": {
     0: "ACTION", // left-mouse
-    //1: This triggers middle mouse
+    1: "DEBUG_A", // middle mouse
     2: "CANCEL"  // right-mouse
-
   }
 }
 

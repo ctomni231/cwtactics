@@ -1,5 +1,5 @@
-import { input, state, loop, view } from "./engine/screenstate.js"
-import * as jslix from "./engine/js/jslix.js"
+import { input, state, loop, view } from "../engine/screenstate.js"
+import * as jslix from "../engine/js/jslix.js"
 
 export const name = "CWTBATTLE"
 
@@ -34,6 +34,8 @@ let rpixelColors = ['#F8C880', '#F89870', '#F85800', '#F82800', '#E00008', '#980
 
 
 export function init(){
+
+  jslix.removeAllImages()
 
   // Add the color map - colors of the HP Bar
   jslix.addColorMap("image/UnitBaseColors.png")

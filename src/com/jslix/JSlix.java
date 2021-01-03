@@ -232,8 +232,8 @@ MouseListener, MouseMotionListener, MouseWheelListener {
      */
     private void showRate(Graphics g2){
         if(showRate){
-            g2.setColor(Color.WHITE);
-            g2.drawString("FPS: "+getFPS(), 0, getSize().height);   
+            g2.setColor(Color.GRAY);
+            g2.drawString("FPS: "+getFPS(), 0, 10);   
         }
     }
     

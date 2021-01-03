@@ -1,6 +1,10 @@
-import { input, state, loop, view } from "./engine/screenstate.js"
-import * as jslix from "./engine/js/jslix.js"
-import * as ajax from "./engine/js/ajax.js"
+import { input, state, loop, view } from "../engine/screenstate.js"
+import * as jslix from "../engine/js/jslix.js"
+import * as ajax from "../engine/js/ajax.js"
+
+export const name = "TESTBED"
+let action = false
+let atrig = 0
 
 // Playground for testing out the features in the code
 var print = true;
@@ -10,6 +14,7 @@ export function init(){
   jslix.addImage("./cwtargetapp.png");
   jslix.addImage("./image/background/AW2Sturm.png");
   jslix.addImage("./image/menu/BasicCombine.png");
+  console.log("IMG AMOUNT "+jslix.length());
 
 
   ajax.request("./credits.json");
@@ -23,6 +28,15 @@ export function init(){
 
 export function update(){
 
+  // This handles the action presses
+  if (input.ACTION) {
+    action = true
+    atrig += 1;
+  }else if(action) {
+    action = false
+    atrig = 0;
+  }
+
   if(print && ajax.isRefReady("./credits.json")){
     objt = ajax.getRefJson("./credits.json")
     console.log(ajax.generateList(objt));
@@ -32,6 +46,8 @@ export function update(){
     // Works really well on the fly loading
     //jslix.addLetterImage(2, "INCREDIBLE\n012\n34");
     jslix.addWordImage(2, text, 2, 120);
+
+    console.log("IMG AMOUNT "+jslix.length());
 
     print = false;
   }
