@@ -9,7 +9,7 @@ import java.awt.Image;
  * ImgHolder.java
  *
  * A remix of ImageHolder. The ImgHolder helps store images in an
- * ImageLibrary. Stripped out the Slick stuff and added GIF stuff.
+ * ImageLibrary. Stripped out the Slick stuff.
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
@@ -20,10 +20,6 @@ public class ImgHolder {
 	
 	/** Stores a Java Image */
     public Image image;
-    /** From AnimatedGif - Stores a Image **/
-    public Image stored;
-    /** From AnimatedGif - Stores a Image for Display **/
-    public Image display;
     /** Stores a pixel representation of an image */
     public int[] pixels;
     /** Stores the current width of this image */
@@ -42,7 +38,6 @@ public class ImgHolder {
      */
     ImgHolder(){
         image = null;
-        display = null;
         pixels = null;
         sizex = 1;
         sizey = 1;
@@ -138,36 +133,4 @@ public class ImgHolder {
 
         return change;
     }
-    
-    /**
-     * This stores an image within the image and the display image. This is
-     * mainly for storing and handling GIF images within Image Holder 
-     * @param img The image to store
-     */
-    public void storeImage(Image img) {
-    	image = img;
-    	stored = img;
-    	display = img;
-    }
-    
-    /**
-	 * This function takes an image and resizes it to a new width and height
-	 * @param sizex The x-axis width
-	 * @param sizey The y-axis height
-	 */
-	public void resizeImg(int sizex, int sizey){
-		if(sizex < 1)
-			sizex = 1;
-		if(sizey < 1)
-			sizey = 1;
-		display = stored.getScaledInstance(sizex, sizey, Image.SCALE_DEFAULT);
-	}
-	
-	/**
-	 * This function gets the image. This can return null, so be careful.
-	 * @return The resized display image
-	 */
-	public Image getDisplay(){
-		return display;
-	}
 }

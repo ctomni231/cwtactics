@@ -19,8 +19,8 @@ import java.awt.Color;
  *
  * A remix of ImageSorter, ImgLibrary helps with organizing and sectioning
  * images. It performs recolors, resizes images, stores images, and sets
- * optional references for images. Combines TextImg, PixtureMap, and Img
- * into one big huge verbose package
+ * optional references for images. Combines TextImg, PixtureMap, Animated GIF, 
+ * and the original ImgLibrary into one big huge verbose package
  *
  * @author Carr, Crecen
  * @license Look into "LICENSE" file for further information
@@ -473,25 +473,13 @@ public class ImgLibrary extends Component{
     
     /**
      * This function returns an ImageIcon, allowing Java to be able to 
-     * handle Animated GIFs
+     * handle Animated GIFs. Not part of the regular image pipeline.
      * 
-     * @param index The index where this image is located
+     * @param filename The file location where the image is kept
      * @return An animated GIF image if true, a blue dot if false
      */
-    public Image getGIFImage(String ref){
-        return getGIFImage(getIndex(ref));
-    }
-    
-    /**
-     * This function returns an ImageIcon, allowing Java to be able to 
-     * handle Animated GIFs
-     * 
-     * @param index The index where this image is located
-     * @return An animated GIF image if true, a blue dot if false
-     */
-    public Image getGIFImage(int index) {
-    	return index >= 0 && index < sortedImg.length ?
-                sortedImg[index].getDisplay() : getColorBox(Color.BLUE,1,1);
+    public Image getGIFImage(String filename){
+        return il.getImageIcon(filename);
     }
 
      /**
