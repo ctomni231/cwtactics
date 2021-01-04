@@ -8,7 +8,7 @@ let canvas = document.querySelector("#gamecanvas")
 if(canvas === null)
   canvas = setSize(300, 300);
 
-const ctx = canvas.getContext("2d")
+let ctx = canvas.getContext("2d")
 
 // This stores the type of mode for the loop
 let intervalMode = false
@@ -141,7 +141,7 @@ export function run () {
       // This will update all the traits
       performance.startMeasure("screen_update")
       performance.update(delta)
-      for (let i = 0; i < traits.length; i++){
+      for (let i = traits.length-1; i >= 0; i--){
 
         // Validates if the screen has a name, it is the current screen
         if (traits[i].name){
@@ -160,7 +160,7 @@ export function run () {
       // Let's clear the canvas every time
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      for (let i = 0; i < traits.length; i++){
+      for (let i = traits.length-1; i >= 0; i--){
 
         // Validates if the screen has a name, it is the current screen
         if (traits[i].name){
@@ -168,8 +168,9 @@ export function run () {
             continue
         }
 
-        if (traits[i].render)
+        if (traits[i].render){
           traits[i].render(canvas, ctx)
+        }
       }
       performance.stopMeasure("screen_render")
 

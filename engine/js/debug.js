@@ -34,10 +34,23 @@ export function render(canvas, ctx){
 	   count = 0;
   }
 
-  ctx.fillStyle = '#FFFFFF';
-  ctx.fillRect(0, 0, 100, 40);
-  ctx.fillStyle = '#000000';
   ctx.font = 'bold 10px sans-serif';
+  ctx.fillStyle = '#FFFFFF';
+  if(showfps > 0){
+    ctx.fillText('FPS: ' + jfps + ' [' + tfps + ']', 3, 11);
+    ctx.fillText('SCR: (' + view.sizex + ',' + view.sizey + ')', 3, 21);
+    ctx.fillText('LOC: (' + input.MOUSEX + ',' + input.MOUSEY + ')', 3, 31);
+    ctx.fillText('FPS: ' + jfps + ' [' + tfps + ']', 5, 11);
+    ctx.fillText('SCR: (' + view.sizex + ',' + view.sizey + ')', 5, 21);
+    ctx.fillText('LOC: (' + input.MOUSEX + ',' + input.MOUSEY + ')', 5, 31);
+    ctx.fillText('FPS: ' + jfps + ' [' + tfps + ']', 3, 9);
+    ctx.fillText('SCR: (' + view.sizex + ',' + view.sizey + ')', 3, 19);
+    ctx.fillText('LOC: (' + input.MOUSEX + ',' + input.MOUSEY + ')', 3, 29);
+    ctx.fillText('FPS: ' + jfps + ' [' + tfps + ']', 5, 9);
+    ctx.fillText('SCR: (' + view.sizex + ',' + view.sizey + ')', 5, 19);
+    ctx.fillText('LOC: (' + input.MOUSEX + ',' + input.MOUSEY + ')', 5, 29);
+  }
+  ctx.fillStyle = '#000000';
   if(showfps > 0){
     ctx.fillText('FPS: ' + jfps + ' [' + tfps + ']', 4, 10);
     ctx.fillText('SCR: (' + view.sizex + ',' + view.sizey + ')', 4, 20);
