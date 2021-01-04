@@ -23,7 +23,7 @@ export function boot() {
 
   // Let's test some screens
   screenlib.addTrait(main)
-  //screenlib.addTrait(battle)
+  //screenlib.addTrait(testbed)
 
   screenlib.run()
 

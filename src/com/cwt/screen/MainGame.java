@@ -27,8 +27,8 @@ public class MainGame extends Screen {
 
 	@Override
 	public void render(Graphics2D g, Component dthis) {
-		g.drawImage(imgLib.getImage(0), 0, 0, scr_width, scr_height, dthis);
-		//g.drawImage(imgLib.getGIFImage("./image/background/AWDoRBattle.gif"), 0, 0, scr_width, scr_height, dthis);
+		g.drawImage(imgLib.getImage(0), 0, 0, scrx, scry, dthis);
+		//g.drawImage(imgLib.getGIFImage("./image/background/AWDoRBattle.gif"), 0, 0, scrx, scry, dthis);
 	}
 
 }

@@ -653,25 +653,18 @@ public class ImgLibrary extends Component{
     //DRAW FUNCTIONS
     //-----------------
 
-    //public abstract boolean drawImage(Image img, int x, int y, ImageObserver observer)
-    //public abstract boolean drawImage(Image img, int x, int y, int width, int height, ImageObserver observer)
-    //public abstract boolean drawImage(Image img, int x, int y, Color bgcolor, ImageObserver observer)
-    //public abstract boolean drawImage(Image img, int x, int y, int width, int height, Color bgcolor, ImageObserver observer)
-    //public abstract boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, ImageObserver observer)
-    //public abstract boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, Color bgcolor, ImageObserver observer)
-
     /**
      * This function places an image on a destination screen. Used
      * primarily for drawing items to the screen quickly.
      * @param g The Java2D Graphics Object
-     * @param index The index of the image in ImgLibrary
+     * @param img The Java2D image to draw to location
      * @param dlx The destination (screen) x-axis location of the image
      * @param dly The destination (screen) y-axis location of the image
      * @param dthis The Component to draw the image to
      */
-    public void placeImg(Graphics2D g, int index, int dlx, int dly,
+    public void placeImg(Graphics2D g, Image img, int dlx, int dly,
                         Component dthis){
-        g.drawImage(getImage(index), dlx, dly, dthis);
+        g.drawImage(img, dlx, dly, dthis);
     }
 
     /**
@@ -679,18 +672,18 @@ public class ImgLibrary extends Component{
      * for drawing items to the screen and allowing for scaling of the
      * destination image on the fly
      * @param g The Java2D Graphics Object
-     * @param index The index of the image in ImgLibrary
+     * @param img The Java2D image to draw to location
      * @param dlx The destination (screen) x-axis position of the image
      * @param dly The destination (screen) y-axis position of the image
      * @param dsx The destination (screen) horizontal width of the image
      * @param dsy The destination (screen) vertical height of the image
      * @param dthis The Component to draw the image to
      */
-    public void drawImg(Graphics2D g, int index, int dlx, int dly,
+    public void drawImg(Graphics2D g, Image img, int dlx, int dly,
                                       int dsx, int dsy, Component dthis){
     	dlx = (dsx < 0) ? dlx-dsx : dlx;
     	dly = (dsy < 0) ? dly-dsy : dly;
-    	g.drawImage(getImage(index), dlx, dly, dsx, dsy, dthis);
+    	g.drawImage(img, dlx, dly, dsx, dsy, dthis);
     }
 
     /**
@@ -702,17 +695,17 @@ public class ImgLibrary extends Component{
      * like the function placeImg
      *
      * @param g The Java2D Graphics Object
-     * @param index The index of the image in ImgLibrary
+     * @param img The Java2D image to draw to location
      * @param dlx The destination (screen) x-axis position of the image
      * @param dly The destination (screen) y-axis position of the image
      * @param slx The source (picture) x-axis cut position of the image
      * @param sly The source (picture) y-axis cut position of the image
      * @param dthis The Component to draw the image to
      */
-    public void placeCropImg(Graphics2D g, int index, int dlx, int dly,
+    public void placeCropImg(Graphics2D g, Image img, int dlx, int dly,
                                            int slx, int sly, Component dthis){
-    	g.drawImage(getImage(index), dlx, dly, dlx+getX(index), dly+getY(index), 
-    			                     slx, sly, slx+getX(index), sly+getY(index), dthis);
+    	g.drawImage(img, dlx, dly, dlx+img.getWidth(dthis), dly+img.getHeight(dthis), 
+    			         slx, sly, slx+img.getWidth(dthis), sly+img.getHeight(dthis), dthis);
 
     }
 
@@ -726,7 +719,7 @@ public class ImgLibrary extends Component{
      * like the function drawImg
      *
      * @param g The Java2D Graphics Object
-     * @param index The index of the image in ImgLibrary
+     * @param img The Java2D image to draw to location
      * @param dlx The destination (screen) x-axis position of the image
      * @param dly The destination (screen) y-axis position of the image
      * @param dsx The destination (screen) horizontal width of the image
@@ -735,12 +728,12 @@ public class ImgLibrary extends Component{
      * @param sly The source (picture) y-axis cut position of the image
      * @param dthis The Component to draw the image to
      */
-    public void drawCropImg(Graphics2D g, int index, int dlx, int dly, 
+    public void drawCropImg(Graphics2D g, Image img, int dlx, int dly, 
     		    int dsx, int dsy, int slx, int sly, Component dthis){
     	dlx = (dsx < 0) ? dlx-dsx : dlx;
     	dly = (dsy < 0) ? dly-dsy : dly;
-    	g.drawImage(getImage(index), dlx, dly, dlx+dsx, dly+dsy, 
-                slx, sly, slx+getX(index), sly+getY(index), dthis);
+    	g.drawImage(img, dlx, dly, dlx+dsx, dly+dsy, slx, sly, 
+    			slx+img.getWidth(dthis), sly+img.getHeight(dthis), dthis);
     }
 
     /**
@@ -754,7 +747,7 @@ public class ImgLibrary extends Component{
      * placed like the function placeImg
      *
      * @param g The Java2D Graphics Object
-     * @param index The index of the image in ImgLibrary
+     * @param img The Java2D image to draw to location
      * @param dlx The destination (screen) x-axis position of the image
      * @param dly The destination (screen) y-axis position of the image
      * @param slx The source (picture) x-axis cut position of the image
@@ -763,9 +756,9 @@ public class ImgLibrary extends Component{
      * @param ssy The source (picture) y-axis height slice of the image
      * @param dthis The Component to draw the image to
      */
-    public void placeCutImg(Graphics2D g, int index, int dlx, int dly, 
+    public void placeCutImg(Graphics2D g, Image img, int dlx, int dly, 
     		int slx, int sly, int ssx, int ssy, Component dthis){
-    	g.drawImage(getImage(index), dlx, dly, dlx+ssx, dly+ssy, 
+    	g.drawImage(img, dlx, dly, dlx+ssx, dly+ssy, 
                 slx, sly, slx+ssx, sly+ssy, dthis);
     }
 
@@ -779,6 +772,7 @@ public class ImgLibrary extends Component{
      * drawn like the function drawImg
      *
      * @param g The Java2D Graphics Object
+     * @param img The Java2D image to draw to location
      * @param dlx The destination (screen) x-axis position of the image
      * @param dly The destination (screen) y-axis position of the image
      * @param dsx The destination (screen) horizontal width of the image
@@ -789,11 +783,11 @@ public class ImgLibrary extends Component{
      * @param ssy The source (picture) y-axis height slice of the image
      * @param dthis The Component to draw the image to
      */
-    public void drawCutImg(Graphics2D g, int index, int dlx, int dly, int dsx,
+    public void drawCutImg(Graphics2D g, Image img, int dlx, int dly, int dsx,
     		int dsy, int slx, int sly, int ssx, int ssy, Component dthis){
     	dlx = (dsx < 0) ? dlx-dsx : dlx;
     	dly = (dsy < 0) ? dly-dsy : dly;
-    	g.drawImage(getImage(index), dlx, dly, dlx+dsx, dly+dsy, 
+    	g.drawImage(img, dlx, dly, dlx+dsx, dly+dsy, 
                 slx, sly, slx+ssx, sly+ssy, dthis);
     }
 
@@ -1494,7 +1488,7 @@ public class ImgLibrary extends Component{
     	 		int posy = (int)Math.floor(tmplps / tmpslx);
     	 		
     	 		System.out.println("Canvas - Letter: "+str.charAt(i)+" ("+posx+","+posy+")");
-    	 		placeCutImg(g, index, tmppx+((i-back)*letsx), tmppy+(drop*(letsy+1)), posx*letsx, posy*letsy, letsx, letsy, this);
+    	 		placeCutImg(g, getImage(index), tmppx+((i-back)*letsx), tmppy+(drop*(letsy+1)), posx*letsx, posy*letsy, letsx, letsy, this);
     		}
     	}
     	addImage(pimg);
@@ -1576,9 +1570,7 @@ public class ImgLibrary extends Component{
     			String[] strArr = newstr.split("\n");
     			newstr = (row < strArr.length) ? strArr[row].trim() : "";
     		}
-    	}
-    	
+    	}   	
     	return newstr;
-    	
     }
 }

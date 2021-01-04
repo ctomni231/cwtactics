@@ -30,11 +30,11 @@ public abstract class Screen {
     /**
      * Holds the width of the screen
      */
-    public int scr_width = 0;
+    public int scrx = 0;
     /**
      * Holds the height of the screen
      */
-    public int scr_height = 0;
+    public int scry = 0;
     /**
      * Holds the clicks of the mouse wheel
      */

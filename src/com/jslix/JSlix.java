@@ -216,8 +216,8 @@ MouseListener, MouseMotionListener, MouseWheelListener {
             tempScreen = ScreenLibrary.scrOrder.get(i);
             tempScreen.scr_mouseScroll = KeyPress.mouseScroll;
             tempScreen.scr_index = i;
-            tempScreen.scr_width = w;
-            tempScreen.scr_height = h;
+            tempScreen.scrx = w;
+            tempScreen.scry = h;
             tempScreen.scr_sysTime = getTime();
             if(i == 0)
                 tempScreen.update(-100);
