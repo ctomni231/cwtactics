@@ -40,7 +40,7 @@
 
   { "id":"linkContactUs",
   	"label": "Contact Us",
-  	"link":"http://battle.customwars.com/contact/index.php",
+  	"link":"http://groups.google.com/group/cwtactics",
     "title":"Contact us",
     "sameWindow":true }
 ]
