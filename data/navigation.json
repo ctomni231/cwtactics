@@ -1,6 +1,6 @@
 [
   { "id":"linkPlay",
-  	"label": "PLAY CWT!!!",
+  	"label": "<b>PLAY CWT!!!</b>",
   	"link":"http://ctomni231.github.io/cwtactics/0_3_5/game/game.html",
     "title":"Play Online Game Now" },
 
@@ -36,11 +36,5 @@
   	"label": "About Us",
   	"link":"about",
   	"isDialog":true,
-    "title":"" },
-
-  { "id":"linkContactUs",
-  	"label": "Contact Us",
-  	"link":"http://groups.google.com/group/cwtactics",
-    "title":"Contact us",
-    "sameWindow":true }
+    "title":"" }
 ]
