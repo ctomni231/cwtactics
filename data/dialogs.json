@@ -38,6 +38,15 @@
 			"<ul class='linkList'><li><a target='_blank' href='https://cwt.fandom.com/'>Custom Wars Tactics Wiki</a></li><li><a target='_blank' href='https://isndev.forumotion.co.uk/f8-custom-wars-tactics'>Advance Wars By Web</a></li><li><a target='_blank' href='http://forums.warsworldnews.com/viewtopic.php?f=37&t=13419'>Wars World News</a></li><li><a target='_blank' href='https://www.reddit.com//r/Advance_Wars/wiki/index'>Reddit!</a></li></ul>"
 		]
 	},
+	
+	{
+		"id": "blog",
+		"title":"CWT Blog Links",
+		"text": [
+			"Explore various links for easier viewing of the ever expanding Custom Wars Tactics weblog.",
+			"<ul class='linkList'><li><a target='_blank' href='http://cwtactics.blogspot.de/'>Custom Wars Tactics Main Blog</a></li><li><a target='_blank' href='https://cwtactics.blogspot.com/search/label/Dev-Diary'>CWT Development Diary</a></li><li><a target='_blank' href='https://cwtactics.blogspot.com/search/label/Totally%20Flaked'>Sarumarine&apos;s Totally Flaked!</a></li><li><a target='_blank' href='https://cwtactics.blogspot.com/search/label/Totally%20Lashed'>The Thunder&apos;s Totally Lashed!</a></li></ul>"
+		]
+	},
 
 	{
 		"id": "youtubeold",
