@@ -9,10 +9,11 @@
   	"link":"https://www.youtube.com/watch?v=Sk3DbeT4Lu0&list=PLUzRa1AxH5WW0xqlJ9y_SaxfKhwchF1R8",
     "title":"Watch various official CWT videos" },
 
-  { "id":"linkBlogger",
+  { "id":"dialogBlogger",
   	"label": "Blog",
-  	"link":"http://cwtactics.blogspot.de",
-    "title":"Grab important news from the blog" },
+  	"link":"blog",
+   	"isDialog":true,
+    "title":"" },
 
   { "id":"dialogForum",
   	"label": "Community",
