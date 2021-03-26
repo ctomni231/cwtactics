@@ -22,8 +22,8 @@ export function boot() {
   screenlib.addTrait(debugscr)
 
   // Let's test some screens
-  screenlib.addTrait(main)
-  //screenlib.addTrait(testbed)
+  //screenlib.addTrait(main)
+  screenlib.addTrait(testbed)
 
   screenlib.run()
 

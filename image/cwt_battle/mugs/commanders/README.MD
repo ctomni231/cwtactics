@@ -5,6 +5,7 @@
 * JakeSamiRulz
 * HombreRandom
 * Lord Spyro
+* DonkinDo
 
 # Custom Wars Tactics - Core Commanding Officers
 
@@ -47,7 +48,7 @@
 * [x] 0027 - Kindle
 * [x] 0028 - Von Bolt
 
-## Advance Wars Dark Conflict 
+## Advance Wars Dark Conflict
 
 * [ ] 0029 - Will
 * [ ] 0030 - Brenner
@@ -155,7 +156,7 @@ http://www.alexanderratta.com/artwork/advance-wars-frontier/cos/
 * [ ] 0250 - Sadie
 * [ ] 0251 - Condor
 * [ ] 0252 - Mepher
-* [ ] 0253 - Tact 
+* [ ] 0253 - Tact
 * [ ] 0254 - Racket
 * [ ] 0255 - Wendy
 * [ ] 0256 - Wolfe
@@ -226,7 +227,7 @@ These are default to the game, and only fill if a color isn't produced in a mod
 * [ ] AR - Acid Rain (Dark Green)
 * [ ] WN - White Nova (White/Peach)
 
-## Commander Wars - Armies 
+## Commander Wars - Armies
 
 * [ ] OS - Orange Star (Red)
 * [ ] BM - Blue Moon (Blue)
