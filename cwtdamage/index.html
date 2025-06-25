@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Custom Wars Tactics - Damage Formula</title>
+  </head>
+  <body>
+    <img src="cwTactics.png" alt="Custom Wars Tactics">
+    <script src="cwtdamageformula.js"></script>
+    <form id="cwform">
+      <table>
+        <tr>
+          <th></th>
+          <th>Hit Points</th>
+          <th>Terrain Stars</th>
+          <th>Base Damage</th>
+          <th>Attack Value</th>
+          <th>Defense Value</th>
+          <th>Minimum Luck</th>
+          <th>Maximum Luck</th>
+        </tr>
+        <tr>
+          <td>Attacker</td>
+          <td><input type="number" id="ahp" name="ahp" oninput="cool(this.value)" value="10"></td>
+          <td><input type="number" id="ats" name="ats" oninput="cool(this.value)" value="0"></td>
+          <td><input type="number" id="abd" name="abd" oninput="cool(this.value)" value="55"></td>
+          <td><input type="number" id="aav" name="aav" oninput="cool(this.value)" value="100"></td>
+          <td><input type="number" id="adv" name="adv" oninput="cool(this.value)" value="100"></td>
+          <td><input type="number" id="anl" name="anl" oninput="cool(this.value)" value="0"></td>
+          <td><input type="number" id="apl" name="apl" oninput="cool(this.value)" value="9"></td>
+        </tr>
+        <tr>
+          <td>Defender</td>
+          <td><input type="number" id="dhp" name="dhp" oninput="cool(this.value)" value="10"></td>
+          <td><input type="number" id="dts" name="dts" oninput="cool(this.value)" value="0"></td>
+          <td><input type="number" id="dbd" name="dbd" oninput="cool(this.value)" value="55"></td>
+          <td><input type="number" id="dav" name="dav" oninput="cool(this.value)" value="100"></td>
+          <td><input type="number" id="ddv" name="ddv" oninput="cool(this.value)" value="100"></td>
+          <td><input type="number" id="dnl" name="dnl" oninput="cool(this.value)" value="0"></td>
+          <td><input type="number" id="dpl" name="dpl" oninput="cool(this.value)" value="9"></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <th></th>
+          <th>Base</th>
+          <th>Min</th>
+          <th>Max</th>
+        <tr>
+        <tr>
+          <td>AW2 Attack Damage</td>
+          <td><p id="aw2dmgbase"></p></td>
+          <td><p id="aw2dmgmin"></p></td>
+          <td><p id="aw2dmgmax"></p></td>
+        </tr>
+        <tr>
+          <td>AW4 Attack Damage</td>
+          <td><p id="aw4dmgbase"></p></td>
+          <td><p id="aw4dmgmin"></p></td>
+          <td><p id="aw4dmgmax"></p></td>
+        </tr>
+        <tr>
+          <td>CWT Attack Damage</td>
+          <td><p id="cwtdmgbase"></p></td>
+          <td><p id="cwtdmgmin"></p></td>
+          <td><p id="cwtdmgmax"></p></td>
+        </tr>
+      </table>
+    </form>
+  </body>
+</html>
