@@ -6,7 +6,7 @@ import * as debugscr from "./engine/js/debug.js"
 import * as inputscr from "./engine/js/input.js"
 
 // These represent the screens
-import * as battle from "./cwtdemo.js"
+import * as cwtdemo from "./cwtdemo.js"
 
 export function boot() {
 
@@ -18,7 +18,7 @@ export function boot() {
   screenlib.addTrait(debugscr)
 
   // Let's test some screens
-  screenlib.addTrait(battle)
+  screenlib.addTrait(cwtdemo)
 
   screenlib.run()
 
