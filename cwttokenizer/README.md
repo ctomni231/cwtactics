@@ -113,8 +113,8 @@ All of these can be chained like the "Basic Tokens".
 
 This token will send the value on the left side of the token to the power of the right side of the token.
 
-* Value: "10 ^ 2" -> Result: "100"
-* Value: "3 ^ 2" -> Result: "9"
+* Value: "10 ** 2" -> Result: "100"
+* Value: "3 ** 2" -> Result: "9"
 
 ### '^' Power Token (alternate)
 
