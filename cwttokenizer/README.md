@@ -23,7 +23,7 @@ This math tokenizer was built from the ground up for Custom Wars Tactics. It has
 To use this program, follow [this link](https://ctomni231.github.io/cwtactics/cwttokenizer), then try typing out the following within the value field to see results
 
 * Value: "2 + 2" -> Result: 4
-* Value: "10 - (20 + 10)" -> Result: -20
+* Value: "10 - ( 20 + 10 )" -> Result: -20
 * Value: "2 ** 3" -> Result: 8
 
 # Math Tokens Key
@@ -87,7 +87,7 @@ You can also chain tokens (follows PEMDAS)
 Like in basic math equations, you can use parenthesis to create groups of token equations. This program will automatically close parenthesis if it reaches the end of the string.
 
 * Value: "10 / ( 5 / 2 )" -> Result: "4"
-* Value: "10 - (10 + 20)" -> Result: "-20"
+* Value: "10 - ( 10 + 20 )" -> Result: "-20"
 
 Parenthesis can be nested within each other for greater control over equations.
 
@@ -100,7 +100,7 @@ There is a hard limit of how many of these can be created per equation (limit 52
 These are used to end parenthesis groups. If the program reaches the end of a string, it will close any open parenthesis automatically. However, if you are OCD adjacent, you can use these to close them yourself at any time.
 
 * Value: "10 / ( 5 / 2 )" -> Result: "4"
-* Value: "10 - (10 + 20)" -> Result: "-20"
+* Value: "10 - ( 10 + 20 )" -> Result: "-20"
 * Value: "( 10 + ( 10 - 10 ) + 10 )" -> Result: "40"
 
 ## Advanced Token Group
