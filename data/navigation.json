@@ -18,23 +18,23 @@
   { "id":"dialogForum",
   	"label": "Community",
   	"link":"forum",
-	"isDialog":true,
+	  "isDialog":true,
     "title":"" },
-     
+
   { "id":"dialogDevelopmentLink",
   	"label": "Development",
   	"link":"development",
   	"isDialog":true,
     "title":"" },
-    
-  { "id":"dialogLegalsLink",
-  	"label": "Legals",
-  	"link":"legals",
+
+  { "id":"dialogToolsLink",
+  	"label": "Tools",
+  	"link":"tools",
   	"isDialog":true,
     "title":"" },
-    
+
   { "id":"dialogAboutUsLink",
-  	"label": "About Us",
+  	"label": "About",
   	"link":"about",
   	"isDialog":true,
     "title":"" }

@@ -1,29 +1,26 @@
 [
 	{
 		"id": "about",
-		"title":"About Us",
+		"title":"About Us / Legals",
 		"text": [
-			"Custom Wars Tactics is developed by <a id='mailToJSR' href='http://battle.customwars.com/contact/index.php'>ctomni231</a> and <a target='_blank' href='http://battle.customwars.com/contact/index.php'>BlackCat</a>",
-			"The game itself is free to use. You also allowed to build own clients on top of the CW:T engine as long you not violate its license. Further information are available in the file LICENSE.",
-			"DISCLAMER: This game engine is in no way affiliated with Nintendo or Intelligent Systems, but acts as an experiment to show the working capabilities of HTML 5, Java, and JavaScript."
-		]
-	},
-	
-	{
-		"id": "legals",
-		"title":"Legals",
-		"text": [
-			"<a href='http://jquery.com'>jQuery v1.7.1(MIT)</a> is heavily used for our web page.",
-			"<a href='http://jqueryui.com/'>jQuery-UI v1.7.1(MIT)</a> is heavily used for our web page.",
-			"<a href='momentjs.com'>Clear Sans (Apache License, Version 2.0)</a> is heavily used on our web page.",
-			"<a href='momentjs.com'>MomentJs 2.0.0 (MIT)</a> is used to format dates into a human read able format for our web page.",
-			"<a href='http://github.com/bgrins/javascript-astar'>Javascript-Astar (MIT)</a> is used to generate paths for unit movements.",
-			"Custom Wars Tactics (CWT) is in no way affiliated with Nintendo or Intelligent Systems.",
-			"Custom Wars Tactics is a non-profit endeavour created by fans. No financial gain is made from project efforts. No intent to infringe said copyrights or registered trademarks is made by contributors of CWT.",
+			"Custom Wars Tactics is developed by <a id='mailToJSR' href='https://github.com/ctomni231/cwtactics'>ctomni231</a> and <a target='_blank' href='https://github.com/ctomni231/cwtactics'>BlackCat</a>",
+			"The game itself is free to use. You also allowed to build own clients on top of the CW:T engine as long you not violate its license. Further information are available in the file <a target='_blank' href='https://github.com/ctomni231/cwtactics/blob/master/LICENSE'>LICENSE</a>.",
+			"<ul class='linkList'><li><a href='http://jquery.com'>jQuery v1.7.1(MIT)</a> is heavily used for our web page.</li><li><a href='http://jqueryui.com/'>jQuery-UI v1.7.1(MIT)</a> is heavily used for our web page.</li><li><a href='momentjs.com'>Clear Sans (Apache License, Version 2.0)</a> is heavily used on our web page.</li><li><a href='momentjs.com'>MomentJs 2.0.0 (MIT)</a> is used to format dates into a human read able format for our web page.</li><li><a href='http://github.com/bgrins/javascript-astar'>Javascript-Astar (MIT)</a> is used to generate paths for unit movements.</li></ul>",
+			"<code>DISCLAMER:</code> Custom Wars Tactics (CWT) is in no way affiliated with Nintendo or Intelligent Systems, but acts as an experiment to show the working capabilities of HTML 5, Java, and JavaScript.",
+			"Custom Wars Tactics (CWT) is a non-profit endeavour created by fans. No financial gain is made from project efforts. No intent to infringe said copyrights or registered trademarks is made by contributors of CWT.",
 			"Advance Wars is a trademark of Nintendo and Intelligent Systems. The copyrights of Advance Wars and all associated characters, names, art, and music thereof belong to Nintendo and Intelligent Systems. All registered trademarks and copyrights belong to Nintendo and Intelligent Systems."
 		]
 	},
-	
+
+	{
+		"id": "tools",
+		"title":"Tools",
+		"text": [
+			"Contains various tools created to support the Custom Wars Tactics engine.",
+			"<ul class='linkList'><li><a target='_blank' href='https://ctomni231.github.io/cwtactics/cwtdamage/'>Custom Wars Tactics - Damage Formula</a></li><li><a target='_blank' href='https://ctomni231.github.io/cwtactics/cwttokenizer/'>Custom Wars Tactics - Math Equation Tokenizer</a></li></ul>"
+		]
+	},
+
 	{
 		"id": "development",
 		"title":"Development Links",
@@ -41,7 +38,7 @@
 			"<ul class='linkList'><li><a target='_blank' href='https://cwt.fandom.com/'>Custom Wars Tactics Wiki</a></li><li><a target='_blank' href='https://isndev.forumotion.co.uk/f8-custom-wars-tactics'>Advance Wars By Web</a></li><li><a target='_blank' href='http://forums.warsworldnews.com/viewtopic.php?f=37&t=13419'>Wars World News</a></li><li><a target='_blank' href='https://www.reddit.com//r/Advance_Wars/wiki/index'>Reddit!</a></li></ul>"
 		]
 	},
-	
+
 	{
 		"id": "blog",
 		"title":"CWT Blog Links",
