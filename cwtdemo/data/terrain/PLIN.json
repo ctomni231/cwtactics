@@ -1,0 +1,39 @@
+{
+    "CWT": {
+
+        "type": "terrain",
+        "mod": [],
+
+        "color": "B6FF00",
+        "stars": 1,
+        "vision": [-1, -1],
+        "step": 1,
+
+        "hide": [],
+
+        "movecost": {
+            "INFT": 1,
+            "MECH": 1,
+            "TREA": 1,
+            "TIRE": 2,
+            "BIKE": 1,
+            "LAIR": 1,
+            "MAIR": 1,
+            "HAIR": 1,
+            "LNDR": -1,
+            "SEAS": -1,
+            "PIPE": -1,
+            "HOVR": 1,
+            "TEST": 1
+        }
+    },
+
+    "text": {
+        "CWT": {
+            "en": {
+                "name": "Plain",
+                "description": "A grass or desert tile that allows little hindered traversal for land units"
+            }
+        }
+    }
+}

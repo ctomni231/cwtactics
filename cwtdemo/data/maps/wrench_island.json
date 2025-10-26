@@ -1,0 +1,108 @@
+{
+    "AW1": {
+        "type": "map",
+        "mod": ["AW1", "AW2"],
+        "auth": ["Nintendo"],
+        "tags": [
+            "Small",
+            "Pre-Deployed",
+            "Base Light",
+            "Ground War"
+        ],
+        "folders": [
+            "Versus/Casual"
+        ],
+        "width": 22,
+        "height": 13,
+        "player": 2,
+        "rules": {
+            "tile": { "type": "C" }
+        },
+        "typemap": [
+            {"type": "SEAS"},
+            {"type": "REEF"},
+            {"type": "SHOA"},
+            {"type": "PLIN"},
+            {"type": "FRST"},
+            {"type": "MNTN"}
+        ],
+
+        "map": [
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+            [0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,1],
+            [0,0,2,3,3,2,0,0,0,0,0,0,0,0,0,0,2,3,3,2,0,0],
+            [0,2,3,3,3,3,2,0,0,0,0,0,1,0,0,2,3,3,3,3,2,0],
+            [0,3,3,4,3,3,3,2,2,2,2,2,2,2,2,3,3,3,4,3,3,0],
+            [0,0,0,0,3,3,4,5,4,4,4,4,4,4,5,4,3,3,0,0,0,0],
+            [0,0,1,0,3,3,3,5,4,3,4,4,3,4,5,3,3,3,0,1,0,0],
+            [0,0,0,0,4,3,3,5,4,4,4,4,4,4,5,3,3,4,0,0,0,0],
+            [0,3,3,4,3,3,3,2,2,2,2,2,2,2,2,3,3,3,4,3,3,0],
+            [0,2,3,3,3,3,2,0,0,0,0,0,0,0,0,2,3,3,3,3,2,0],
+            [0,0,2,3,3,2,0,0,0,0,0,0,1,0,0,0,2,3,3,2,0,0],
+            [0,1,0,0,0,0,1,0,0,1,0,1,0,0,0,1,0,0,0,0,0,0],
+            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        ],
+
+        "props": [
+            {"id": 0, "type": "CITY", "x": 1, "y": 4, "owner": 0},
+            {"id": 1, "type": "CITY", "x": 20, "y": 4, "owner": 1},
+            {"id": 2, "type": "CITY", "x": 4, "y": 5, "owner": 0},
+            {"id": 3, "type": "CITY", "x": 17, "y": 5, "owner": 1},
+            {"id": 4, "type": "CITY", "x": 5, "y": 6, "owner": 0},
+            {"id": 5, "type": "HQTR", "x": 9, "y": 6, "owner": 0},
+            {"id": 6, "type": "HQTR", "x": 12, "y": 6, "owner": 1},
+            {"id": 7, "type": "CITY", "x": 16, "y": 6, "owner": 1},
+            {"id": 8, "type": "CITY", "x": 6, "y": 7, "owner": 0},
+            {"id": 9, "type": "CITY", "x": 15, "y": 7, "owner": 1},
+            {"id": 10, "type": "CITY", "x": 1, "y": 8, "owner": 0},
+            {"id": 11, "type": "CITY", "x": 20, "y": 8, "owner": 1}
+        ],
+
+        "units": [
+            {"id": 0, "type": "LNDR", "x": 2, "y": 2, "owner": 0},
+            {"id": 1, "type": "TANK", "x": 3, "y": 2, "owner": 0},
+            {"id": 2, "type": "TANK", "x": 17, "y": 2, "owner": 1},
+            {"id": 3, "type": "MDTK", "x": 18, "y": 2, "owner": 1},
+            {"id": 4, "type": "LNDR", "x": 19, "y": 2, "owner": 1},
+            {"id": 5, "type": "INFT", "x": 1, "y": 3, "owner": 0},
+            {"id": 6, "type": "RCKT", "x": 4, "y": 3, "owner": 0},
+            {"id": 7, "type": "RCKT", "x": 17, "y": 3, "owner": 1},
+            {"id": 8, "type": "INFT", "x": 20, "y": 3, "owner": 1},
+            {"id": 9, "type": "INFT", "x": 1, "y": 4, "owner": 0},
+            {"id": 10, "type": "INFT", "x": 20, "y": 4, "owner": 1},
+            {"id": 11, "type": "BSHP", "x": 0, "y": 5, "owner": 0},
+            {"id": 12, "type": "BSHP", "x": 21, "y": 5, "owner": 1},
+            {"id": 13, "type": "SUBM", "x": 0, "y": 6, "owner": 0},
+            {"id": 14, "type": "SUBM", "x": 21, "y": 6, "owner": 1},
+            {"id": 15, "type": "CRUS", "x": 0, "y": 7, "owner": 0},
+            {"id": 16, "type": "CRUS", "x": 21, "y": 7, "owner": 1},
+            {"id": 17, "type": "MECH", "x": 1, "y": 8, "owner": 0},
+            {"id": 18, "type": "RECN", "x": 3, "y": 8, "owner": 0},
+            {"id": 19, "type": "RECN", "x": 18, "y": 8, "owner": 1},
+            {"id": 20, "type": "MECH", "x": 20, "y": 8, "owner": 1},
+            {"id": 21, "type": "MECH", "x": 1, "y": 9, "owner": 0},
+            {"id": 22, "type": "ARTY", "x": 4, "y": 9, "owner": 0},
+            {"id": 23, "type": "ARTY", "x": 17, "y": 9, "owner": 1},
+            {"id": 24, "type": "MECH", "x": 20, "y": 9, "owner": 1},
+            {"id": 25, "type": "LNDR", "x": 2, "y": 10, "owner": 0},
+            {"id": 26, "type": "MDTK", "x": 3, "y": 10, "owner": 0},
+            {"id": 27, "type": "TANK", "x": 4, "y": 10, "owner": 0},
+            {"id": 28, "type": "TANK", "x": 18, "y": 10, "owner": 1},
+            {"id": 29, "type": "LNDR", "x": 19, "y": 10, "owner": 1}
+        ]
+    },
+
+    "text": {
+        "CWT": {
+            "en": {
+                "name": "Wrench Island",
+                "description": "An original map from Advance Wars' Predeployed case. The units you get will depend on your CO. The ones here are from an Andy vs Andy battle."
+            },
+
+            "de": {
+                "name": "Inselwinden",
+                "description": "Eine Originalkarte aus dem Fall Predeployed von Advance Wars. Die Einheiten, die Sie erhalten, hängen von Ihrem CO ab. Die hier sind aus einem Kampf zwischen Andy und Andy."
+            }
+        }
+    }
+}

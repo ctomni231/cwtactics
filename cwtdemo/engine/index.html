@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html manifest="cache.manifest">
+
+  <head>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport"                     content="width=device-width,
+                                                       initial-scale=1.0,
+                                                       maximum-scale=1,
+                                                       user-scalable=no" />
+  </head>
+
+  <body oncontextmenu="return false;" >
+
+    <canvas id="gamecanvas" width="300" height="300" style="border: 1px solid #d3d3d3;"></canvas>
+
+    <script type="module" src="./screenlibrary.js"></script>
+    <script type="module">
+      import * as screenlib from "./screenlibrary.js"
+
+  	  screenlib.run()
+    </script>
+
+
+    <!-- <script type="module" src="./statemachine.test.js" ></script>
+    <script type="module" src="./input.test.js" ></script>
+
+    <script type="module">
+      import { boot } from "./starter.js"
+      import * as performance from "./performance.js"
+
+  	  boot()
+    </script> -->
+  </body>
+</html>

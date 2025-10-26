@@ -1,0 +1,158 @@
+{
+
+    "map": [
+        "unga_bunga.json",
+        "empty.json",
+        "wrench_island.json",
+        "cwttestnull.json"
+    ],
+
+    "maps": [
+        "unga_bunga.json"
+    ],
+
+    "terrain": [
+        "NULL.json",
+        "PLIN.json"
+    ],
+
+    "unit": [
+        "INFT.json"
+    ],
+
+    "game": [
+        "CWT",
+        "AW1",
+        "AW2",
+        "AW3",
+        "AWDS",
+        "AW4",
+        "AWDR",
+        "AWRC",
+        "AWBW",
+        "CW",
+        "COW",
+        "TW"
+    ],
+
+    "color": {
+        "CWT": {
+            "tile": [
+                {"move": "007F7F"},
+                {"fire": "FF0000"},
+                {"zone": "808080"}
+            ],
+
+            "team": [
+                {"GD": "908890"},
+                {"OS": "F00008"},
+                {"BM": "0098F8"},
+                {"GE": "00C010"},
+                {"YC": "D08000"},
+                {"BH": "6038A0"},
+                {"CR": "BA3C33"},
+                {"AV": "6D6D6D"},
+                {"SS": "B5783D"},
+                {"SF": "E47D10"},
+                {"IN": "7B8870"},
+                {"CS": "1B38B3"},
+                {"PC": "FF2AC6"},
+                {"TG": "14998D"},
+                {"IE": "C600FF"},
+                {"WN": "A9A9A9"},
+                {"CG": "FFB491"},
+                {"MO": "82237F"},
+                {"JA": "375124"},
+                {"RF": "C4443D"},
+                {"GS": "696B68"},
+                {"BD": "A1692B"},
+                {"AB": "E88613"},
+                {"JS": "8E9881"},
+                {"CI": "1B43BD"},
+                {"RC": "FF2FCA"},
+                {"SG": "3ACFC1"},
+                {"PL": "CE00FF"},
+                {"AR": "51690D"},
+                {"BQ": "DFBB9C"},
+                {"AA": "2AB6D9"},
+                {"NE": "574A4A"},
+                {"SC": "7492B2"},
+                {"UW": "AC5400"}
+            ],
+
+            "dflt": [
+                {"P0": "F7D7AF"},
+                {"P1": "FF9F2F"},
+                {"P2": "E74F17"},
+                {"P3": "BF3F57"},
+                {"U0": "F8C880"},
+                {"U1": "F89870"},
+                {"U2": "F85800"},
+                {"U3": "F82800"},
+                {"U4": "E00008"},
+                {"U5": "980038"},
+                {"W0": "D0B8A8"},
+                {"W1": "807878"},
+                {"W2": "585060"}
+            ]
+        }
+    },
+
+    "text": {
+        "CWT": {
+            "en": {
+                "game": [
+                    {"CWT": "Custom Wars Tactics"},
+                    {"AW1": "Advance Wars"},
+                    {"AW2": "Advance Wars 2: Black Hole Rising"},
+                    {"AW3": "Advance Wars 3: Dual Strike"},
+                    {"AWDS": "Advance Wars 3: Dual Strike"},
+                    {"AW4": "Advance Wars 4: Dark Conflict"},
+                    {"AWDR": "Advance Wars 4: Days of Ruin"},
+                    {"AWRC": "Advance Wars 1+2: Reboot Camp"},
+                    {"AWBW": "Advance Wars By Web"},
+                    {"CW": "Custom Wars"},
+                    {"COW": "Commander Wars"},
+                    {"TW": "Tiny Wars"}
+                ],
+
+                "team": [
+                    {"GD": "Gray Diamond"},
+                    {"OS": "Orange Star"},
+                    {"BM": "Blue Moon"},
+                    {"GE": "Green Earth"},
+                    {"YC": "Yellow Comet"},
+                    {"BH": "Black Hole"},
+                    {"CR": "Crimson Ray"},
+                    {"AV": "Arsenic Vortex"},
+                    {"SS": "Sepia Sun"},
+                    {"SF": "Scarlet Flare"},
+                    {"IN": "Ivory Nebula"},
+                    {"CS": "Cobalt Storm"},
+                    {"PC": "Pink Cosmos"},
+                    {"TG": "Teal Gravity"},
+                    {"IE": "Indigo Eclipse"},
+                    {"WN": "White Nova"},
+                    {"CG": "Cream Galaxy"},
+                    {"MO": "Magneta Orbit"},
+                    {"JA": "Jade Asteroid"},
+                    {"RF": "Red Fire"},
+                    {"GS": "Grey Sky"},
+                    {"BD": "Brown Desert"},
+                    {"AB": "Amber Blaze"},
+                    {"JS": "Jade Sun"},
+                    {"CI": "Cobalt Ice"},
+                    {"RC": "Rose Crater"},
+                    {"SG": "Sapphire Gemini"},
+                    {"PL": "Purple Lightning"},
+                    {"AR": "Acid Rain"},
+                    {"BQ": "Beige Quantum"},
+                    {"AA": "Azure Asteroid"},
+                    {"NE": "Noir Enigma"},
+                    {"SC": "Silver Climate"},
+                    {"UW": "Umber Waypoint"}
+                ]
+            }
+        }
+    }
+}

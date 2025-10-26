@@ -1,0 +1,39 @@
+{
+    "CWT": {
+
+        "type": "terrain",
+        "mod": ["AW1"],
+
+        "color": "808080",
+        "stars": 0,
+        "vision": [-1, -1],
+        "step": 0,
+
+        "hide": [],
+
+        "movecost": {
+            "INFT": 0,
+            "MECH": 0,
+            "TREA": 0,
+            "TIRE": 0,
+            "BIKE": 0,
+            "LAIR": 0,
+            "MAIR": 0,
+            "HAIR": 0,
+            "LNDR": 0,
+            "SEAS": 0,
+            "PIPE": -1,
+            "HOVR": 0,
+            "TEST": 0
+        }
+    },
+
+    "text": {
+        "CWT": {
+            "en": {
+                "name": "Null Void",
+                "description": "A dark teleport tile that has 0 movement cost [created in AWBW]"
+            }
+        }
+    }
+}

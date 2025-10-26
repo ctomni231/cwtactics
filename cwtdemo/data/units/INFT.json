@@ -1,0 +1,213 @@
+{
+    "CWT": {
+
+        "type": "unit",
+        "mod": [],
+        "auth": ["Nintendo"],
+
+        "core": "INFT",
+        "hitpoints": {
+            "#": 100,
+            "type": "N"
+        },
+        "starvalue": 20,
+        "material": 0,
+        "build": {
+            "cost": 1000,
+            "type": "LAND"
+        },
+        "move": {
+            "#": 3,
+            "type": "FOOT"
+        },
+        "vision": {
+            "range": [-1, 2],
+            "type": "N"
+        },
+        "fuel": {
+            "#": 99,
+            "daily": 0
+        },
+        "load": {
+            "#": 0,
+            "type": []
+        },
+
+        "weapons": [
+            {"id": "MGUN", "range": [-1, 1], "type": "D", "ammo": -1}
+        ],
+        "abilities": [
+            "CAPT"
+        ],
+        "tags": [
+            "DIR",
+            "LAND",
+            "FOOT",
+            "SOLD"
+        ],
+        "damage": {
+            "atktype": {"INFT": 100},
+            "atkbase": {
+                "INFT": [55],
+                "MECH": [45],
+                "BIKE": [45],
+                "RECN": [12],
+                "FTNK": [10],
+                "AAIR": [5],
+                "TANK": [5],
+                "MDTK": [1],
+                "NTNK": [1],
+                "WTNK": [1],
+                "TDYR": [30],
+                "ATNK": [30],
+                "ARTY": [15],
+                "RCKT": [25],
+                "MISS": [25],
+                "APCR": [10],
+                "PRNR": [5],
+                "BCTR": [7],
+                "TCTR": [30],
+                "OOZM": [20]
+            },
+            "deftype": {"INFT": 100},
+            "defbase": {
+                "INFT": [55],
+                "MECH": [-1, 65],
+                "BIKE": [65],
+                "RECN": [70],
+                "FTNK": [120],
+                "AAIR": [105],
+                "TANK": [-1, 75],
+                "MDTK": [-1, 105],
+                "NTNK": [-1, 125],
+                "WTNK": [-1, 135],
+                "TDYR": [75],
+                "ATNK": [75],
+                "ARTY": [90],
+                "RCKT": [95],
+                "PRNR": [95],
+                "BMBR": [110],
+                "STLH": [90],
+                "SEAP": [75],
+                "DUST": [55],
+                "BCTR": [-1, 75],
+                "BSHP": [95],
+                "DSYR": [75],
+                "GNBT": [80]
+            }
+        }
+    },
+
+    "AW4": {
+
+        "type": "unit",
+        "mod": [],
+        "auth": ["Nintendo"],
+
+        "core": "INFT",
+        "hitpoints": {
+            "#": 100,
+            "type": "N"
+        },
+        "starvalue": 20,
+        "material": 0,
+        "build": {
+            "cost": 1500,
+            "type": "LAND"
+        },
+        "move": {
+            "#": 3,
+            "type": "FOOT"
+        },
+        "vision": {
+            "range": [-1, 2],
+            "type": "N"
+        },
+        "fuel": {
+            "#": 99,
+            "daily": 0
+        },
+        "load": {
+            "#": 0,
+            "type": []
+        },
+
+        "tags": ["DIR", "LAND", "FOOT", "SOLD"],
+        "weapons": [
+            {"id": "MGUN", "range": [-1, 1], "type": "D", "ammo": -1}
+        ],
+        "abilities": [
+            "CAPT"
+        ],
+        "damage": {
+            "atktype": {"INFT": 100},
+            "atkbase": {
+                "INFT": [55],
+                "MECH": [45],
+                "BIKE": [45],
+                "RECN": [12],
+                "FTNK": [10],
+                "AAIR": [3],
+                "TANK": [5],
+                "MDTK": [5],
+                "NTNK": [1],
+                "WTNK": [1],
+                "TDYR": [30],
+                "ATNK": [30],
+                "ARTY": [10],
+                "RCKT": [20],
+                "MISS": [20],
+                "APCR": [14],
+                "PRNR": [5],
+                "BCTR": [8],
+                "TCTR": [30],
+                "OOZM": [20]
+            },
+            "deftype": {"INFT": 100},
+            "defbase": {
+                "INFT": [55],
+                "MECH": [-1, 65],
+                "BIKE": [65],
+                "RECN": [75],
+                "FTNK": [80],
+                "AAIR": [105],
+                "TANK": [-1, 75],
+                "MDTK": [-1, 90],
+                "NTNK": [-1, 95],
+                "WTNK": [-1, 105],
+                "TDYR": [75],
+                "ATNK": [75],
+                "ARTY": [90],
+                "RCKT": [95],
+                "PRNR": [95],
+                "BMBR": [115],
+                "STLH": [90],
+                "SEAP": [90],
+                "DUST": [55],
+                "BCTR": [-1, 75],
+                "BSHP": [75],
+                "DSYR": [75],
+                "GNBT": [80]
+            }
+        }
+    },
+
+    "text": {
+        "CWT": {
+            "en": {
+                "name": "Plain",
+                "description": "",
+                "weapon": [
+                    {"id": "MGUN", "name": "Machine Gun"}
+                ],
+                "abilities": [
+                    {
+                      "id": "CAPT",
+                      "name": "Capture",
+                      "description": "Captures Neutral or Enemy Properties 1 point by current HP"
+                    }
+                ]
+            }
+        }
+    }
+}
