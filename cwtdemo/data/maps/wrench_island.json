@@ -94,6 +94,7 @@
 
     "text": {
         "CWT": {
+            "mod": ["AW1", "AW2", "AW4"],
             "en": {
                 "name": "Wrench Island",
                 "description": "An original map from Advance Wars' Predeployed case. The units you get will depend on your CO. The ones here are from an Andy vs Andy battle."

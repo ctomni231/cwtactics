@@ -7,6 +7,7 @@ import * as jlib from "../engine/js/jsonlib.js"
 
  // We are going to make the text uin terrain organized the same best of Way
  // Then we are going to turn these data blocks into cards for use in the map
+ // I think we need a system like this for the maps
 
 export const name = "CWTMAPLIBRARY"
 
@@ -121,11 +122,18 @@ export const cwtunit = {
   text: {}
 }
 
-// This holds the terrain pack
+// This holds the various packs
 export const cwtpack = {
+
+  type: {},
+
+  mapdata: [],
+  mapdatadict: {},
+  maptext: [],
+  maptextdict: {},
+
   terrdata: [],
   terrdatadict: {},
-
   terrtext: [],
   terrtextdict: {}
 }
@@ -957,10 +965,405 @@ function organizeUnitData(){
 // PACK FUNCTIONS
 // -----------------------
 
+// COMBINED FUNCTIONS
+
+export function createPacks(type, modadd=[], fileadd=[], modsub=[], filesub=[], clear=true){
+
+  if ( typeof type === 'string' || type instanceof String ) {
+
+    // Make sure there is no funny business
+    if (type.length == 0)
+      return
+
+    let subind = 0
+    let typelen = 0
+    let mod = ""
+    let file = ""
+    let typetext = {}
+
+    // Only need to check the very first letter to verify it is a map
+    if (type[0].toLowerCase() == "m"){
+      type = "map"
+      typelen = getMapFileLength()
+      mod = cwtmap.mod
+      file = cwtmap.file
+      typetext = cwtmap.text
+    }
+    // And a terrain piece
+    else if (type[0].toLowerCase() == "t"){
+      type = "terrain"
+      typelen = getTerrainCodeLength()
+      mod = cwtterrain.mod
+      file = cwtterrain.file
+      typetext = cwtterrain.text
+    }
+    // And the unit piece
+    else if (type[0].toLowerCase() == "u"){
+      type = "unit"
+      typelen = getUnitCodeLength()
+      mod = cwtunit.mod
+      file = cwtunit.file
+      typetext = cwtunit.text
+    }
+
+    // Let's create the pack fields once getting past the initial checks
+    if (cwtpack.type[type] === undefined || clear)
+      cwtpack.type[type] = createPackFields()
+
+    // Create the packs in order
+    for (let i=0; i<typelen; i++) {
+
+      // USE THIS BY ITSELF TO TEST IF THIS IS WORKING
+      //createCard(i, type, mod[i], file[i], subind, modsub, filesub)
+
+      // This is the main event
+      if (modadd.length == 0 && fileadd.length == 0){
+        createCard(i, type, mod[i], file[i], subind, modsub, filesub)
+      }
+
+      else if (modadd.length == 0 || fileadd.length == 0) {
+        if (modadd.includes(mod[i]) || fileadd.includes(file[i])){
+          createCard(i, type, mod[i], file[i], subind, modsub, filesub)
+        } else {
+          subind++
+        }
+      }
+      else {
+        if (modadd.includes(mod[i]) && fileadd.includes(file[i])){
+          createCard(i, type, mod[i], file[i], subind, modsub, filesub)
+        } else {
+          subind++
+        }
+      }//*/
+    }
+
+    // Then alter the default stuff
+    if (modadd.length > 0){
+      let revmod = modadd.reverse()
+      // I have to use the dictionary items to determine the order of the singletons
+      for (let i=0; i<revmod.length; i++) {
+        for (let item in cwtpack.type[type].datadict){
+          if (item.includes(" ")){
+            let tmpsplit = item.split(" ")
+            if (tmpsplit.length === 2){
+              if(tmpsplit[0] === revmod[i])
+                cwtpack.type[type].datadict[tmpsplit[1]] = cwtpack.type[type].datadict[item]
+            }
+            //console.log(revmod[i], item)
+          }
+        }
+      }
+    }//*/
+
+    // --------------------------------------
+    // The text section
+    // --------------------------------------
+
+    // Let's make a default one with blank values
+    cwtpack.type[type].text = []
+
+    // We'll hard code specific types for these, to keep it under control
+    // Then we extract from each type of thing
+    for (let code in typetext){
+      for (let mod in typetext[code]){
+        for (let lang in typetext[code][mod]){
+          if (lang != "mod") {
+            for (let txttype in typetext[code][mod][lang]){
+              let tmpdict = {}
+              let tmpcode = (code.includes('.')) ? code.slice(0, code.lastIndexOf('.')) : code;
+              tmpdict["code"] = tmpcode
+              tmpdict["mod"] = mod
+              tmpdict["lang"] = lang
+              tmpdict["type"] = txttype
+              tmpdict["data"] = typetext[code][mod][lang][txttype]
+
+              let ind = cwtpack.type[type].text.length
+              cwtpack.type[type].text.push(tmpdict)
+
+              let codetype = [tmpcode,txttype].join(" ")
+              let langtype = [lang,codetype].join(" ")
+              let modtype = [mod,codetype].join(" ")
+              let modlangtype = [mod,lang,codetype].join(" ")
+
+              // If it doesn't exist in the dictionary, put it in there
+              if (cwtpack.type[type].textdict[codetype] === undefined)
+                cwtpack.type[type].textdict[codetype] = ind;
+              if (cwtpack.type[type].textdict[langtype] === undefined)
+                cwtpack.type[type].textdict[langtype] = ind;
+              if (cwtpack.type[type].textdict[modtype] === undefined)
+                cwtpack.type[type].textdict[modtype] = ind;
+              if (cwtpack.type[type].textdict[modlangtype] === undefined)
+                cwtpack.type[type].textdict[modlangtype] = ind;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+export function createPackFields() {
+  let tmpdict = {}
+
+  tmpdict["data"] = []
+  tmpdict["datadict"] = {}
+  tmpdict["text"] = []
+  tmpdict["textdict"] = {}
+
+  return tmpdict
+}
+
+export function createCard(ind, type, mod, file, subind, modsub, filesub){
+
+  let pack = {}
+
+  if (type == "map")
+    pack = packMapData(ind)
+  else if (type == "terrain")
+    pack = packTerrainData(ind)
+  else if (type == "unit")
+    pack = packUnitData(ind)
+  else
+    return
+
+  if (!(modsub.includes(mod) || filesub.includes(file))) {
+    cwtpack.type[type].data.push(pack)
+
+    // Make quick defaults to reduce mistakes
+    let modfile = mod.concat(" ", file)
+
+    // If it doesn't exist in the dictionary, put it in there
+    if (cwtpack.type[type].datadict[file] === undefined)
+      cwtpack.type[type].datadict[file] = ind-subind;
+    if (cwtpack.type[type].datadict[modfile] === undefined)
+      cwtpack.type[type].datadict[modfile] = ind-subind;
+  }
+}
+
+// DICTIONARY RETRIEVAL FUNCTIONS
+
+// Returns the dictionary data
+export function getPackDict(type) {
+  return cwtpack.type[type.toLowerCase()].datadict
+}
+
+// Returns the dictionary data
+export function getPackData(type) {
+  return cwtpack.type[type.toLowerCase()].data
+}
+
+// Returns the dictionary data
+export function getPackTextData(type) {
+  return cwtpack.type[type.toLowerCase()].text
+}
+
+// Returns the dictionary data
+export function getPackTextDict(type) {
+  return cwtpack.type[type.toLowerCase()].textdict
+}
+
+// Returns the dictionary data
+export function getAllPacks() {
+  return cwtpack
+}
+
+// CHECK LENGTH FUNCTIONS
+
+// Gets the amount of file data in the map list
+export function getMapFileLength() {
+  return isAllMapDataReady() ? cwtmap.file.length : 0;
+}
+
 // Gets the amount of code data in the terrain list
 export function getTerrainCodeLength() {
   return isAllTerrainDataReady() ? cwtterrain.code.length : 0;
 }
+
+// Gets the amount of code data in the unit list
+export function getUnitCodeLength() {
+  return isAllUnitDataReady() ? cwtunit.code.length : 0;
+}
+
+// PACK DATA FUNCTIONS
+
+// This stores the map pack data
+function packMapData(ind){
+  let tmpdict = {}
+
+  tmpdict["file"] = cwtmap.file[ind]
+  tmpdict["mod"] = cwtmap.mod[ind]
+  tmpdict["auth"] = cwtmap.auth[ind]
+
+  tmpdict["folders"] = cwtmap.folders[ind]
+  tmpdict["tags"] = cwtmap.tags[ind]
+  tmpdict["rules"] = cwtmap.rules[ind]
+
+  tmpdict["width"] = cwtmap.width[ind]
+  tmpdict["height"] = cwtmap.height[ind]
+  tmpdict["player"] = cwtmap.player[ind]
+
+  tmpdict["typeMap"] = cwtmap.typeMap[ind]
+  tmpdict["terrMap"] = cwtmap.terrMap[ind]
+  tmpdict["data"] = cwtmap.data[ind]
+
+  tmpdict["props"] = cwtmap.props[ind]
+  tmpdict["units"] = cwtmap.units[ind]
+
+  // We might have to make the text distinct as well
+  // tmpdict["text"] = cwtmap.text
+
+  return tmpdict
+}
+
+// This stores the terrain pack data
+function packTerrainData(ind){
+  let tmpdict = {}
+
+  tmpdict["file"] = cwtterrain.file[ind]
+  tmpdict["code"] = cwtterrain.code[ind]
+  tmpdict["mod"] = cwtterrain.mod[ind]
+  tmpdict["auth"] = cwtterrain.auth[ind]
+
+  tmpdict["color"] = cwtterrain.color[ind]
+  tmpdict["stars"] = cwtterrain.stars[ind]
+  tmpdict["vision"] = cwtterrain.vision[ind]
+  tmpdict["step"] = cwtterrain.step[ind]
+  tmpdict["hide"] = cwtterrain.hide[ind]
+
+  tmpdict["movecost"] = cwtterrain.movecost[ind]
+
+  // We might have to make the text distinct as well
+  // tmpdict["text"] = cwtterrain.text
+
+  return tmpdict
+}
+
+// This stores the terrain pack data
+function packUnitData(ind){
+  let tmpdict = {}
+
+  tmpdict["file"] = cwtunit.file[ind]
+  tmpdict["code"] = cwtunit.code[ind]
+  tmpdict["mod"] = cwtunit.mod[ind]
+  tmpdict["auth"] = cwtunit.auth[ind]
+
+  tmpdict["core"] = cwtunit.core[ind]
+  tmpdict["hitpoints"] = cwtunit.hitpoints[ind]
+  tmpdict["build"] = cwtunit.build[ind]
+  tmpdict["move"] = cwtunit.move[ind]
+  tmpdict["vision"] = cwtunit.vision[ind]
+  tmpdict["fuel"] = cwtunit.fuel[ind]
+  tmpdict["material"] = cwtunit.material[ind]
+  tmpdict["starvalue"] = cwtunit.starvalue[ind]
+
+  tmpdict["weapons"] = cwtunit.weapons[ind]
+  tmpdict["ability"] = cwtunit.ability[ind]
+  tmpdict["tags"] = cwtunit.tags[ind]
+  tmpdict["damage"] = cwtunit.damage[ind]
+  tmpdict["load"] = cwtunit.load[ind]
+
+  // We might have to make the text distinct as well
+  // tmpdict["text"] = cwtunit.text
+
+  return tmpdict
+}
+
+// MAP FUNCTIONS [TODO]
+
+// Creates all card packs with the file and mod parameters
+export function createMapPacks(modadd=[], fileadd=[], modsub=[], filesub=[], clear=true) {
+
+  // Start from scratch only if you are asked to do so
+  if (clear){
+    cwtpack.mapdata = []
+    cwtpack.mapdatadict = {}
+  }
+
+  let subind = 0
+
+  // Get the length of how many maps there are
+  let maplen = getMapFileLength();
+  console.log("MAPFILELENGTH", cwtmap.file)
+
+  // Create the packs in order
+  for (let i=0; i<maplen; i++) {
+    console.log("MAPNAME", cwtmap.file[i])
+    console.log("MODNAME", i, cwtmap.mod[i])
+
+    //createMapCard(i, modsub, filesub)
+
+    if (modadd.length == 0 && fileadd.length == 0){
+      createMapCard(i, subind, modsub, filesub)
+    }
+
+    else if (modadd.length == 0 || fileadd.length == 0) {
+      if (modadd.includes(cwtmap.mod[i]) || fileadd.includes(cwtmap.file[i])){
+        console.log("COMBINED", i, cwtmap.file[i], cwtmap.mod[i])
+        createMapCard(i, subind, modsub, filesub)
+      } else {
+        subind++
+      }
+    }
+    else {
+      if (modadd.includes(cwtmap.mod[i]) && fileadd.includes(cwtmap.file[i])){
+        createMapCard(i, subind, modsub, filesub)
+      } else {
+        subind++
+      }
+    }
+  }
+
+  // Then alter the default stuff
+  if (modadd.length > 0){
+    let revmod = modadd.reverse()
+    // I have to use the dictionary items to determine the order of the singletons
+    for (let i=0; i<revmod.length; i++) {
+      for (let item in cwtpack.mapdatadict){
+        if (item.includes(" ")){
+          let tmpsplit = item.split(" ")
+          if (tmpsplit.length === 2){
+            if(tmpsplit[0] === revmod[i])
+              cwtpack.mapdatadict[tmpsplit[1]] = cwtpack.mapdatadict[item]
+          }
+          //console.log(revmod[i], item)
+        }
+      }
+    }
+  }
+}
+
+// Returns the dictionary data
+export function getMapDict() {
+  return cwtpack.mapdatadict
+}
+
+// Returns the dictionary data
+export function getMapPackData() {
+  return cwtpack.mapdata
+}
+
+// This works with create Terrain Pack to make the cards themselves
+function createMapCard(ind, subind, modsub, filesub){
+  if (!(modsub.includes(cwtmap.mod[ind]) || filesub.includes(cwtmap.file[ind]))) {
+    cwtpack.mapdata.push(packMapData(ind))
+
+    // Make quick defaults to reduce mistakes
+    let file = cwtmap.file[ind]
+    let modfile = cwtmap.mod[ind].concat(" ", cwtmap.file[ind])
+
+    // If it doesn't exist in the dictionary, put it in there
+    if (cwtpack.mapdatadict[file] === undefined)
+      cwtpack.mapdatadict[file] = ind-subind;
+    if (cwtpack.mapdatadict[modfile] === undefined)
+      cwtpack.mapdatadict[modfile] = ind-subind;
+  }
+}
+
+
+
+// TERRAIN FUNCTIONS
+
+
 
 // Creates all card packs with the code and mod parameters
 export function createTerrainPacks(modadd=[], codeadd=[], modsub=[], codesub=[], clear=true) {
@@ -1033,28 +1436,7 @@ function createTerrainCard(ind, modsub, codesub){
   }
 }
 
-// This stores the terrain pack data
-function packTerrainData(ind){
-  let tmpdict = {}
 
-  tmpdict["file"] = cwtterrain.file[ind]
-  tmpdict["code"] = cwtterrain.code[ind]
-  tmpdict["mod"] = cwtterrain.mod[ind]
-  tmpdict["auth"] = cwtterrain.auth[ind]
-
-  tmpdict["color"] = cwtterrain.color[ind]
-  tmpdict["stars"] = cwtterrain.stars[ind]
-  tmpdict["vision"] = cwtterrain.vision[ind]
-  tmpdict["step"] = cwtterrain.step[ind]
-  tmpdict["hide"] = cwtterrain.hide[ind]
-
-  tmpdict["movecost"] = cwtterrain.movecost[ind]
-
-  // We might have to make the text distinct as well
-  // tmpdict["text"] = cwtterrain.text
-
-  return tmpdict
-}
 
 // Everything under is work in progress
 
@@ -1119,32 +1501,34 @@ export function packTerrainText(){
   for (let code in terrtext){
     for (let mod in terrtext[code]){
       for (let lang in terrtext[code][mod]){
-        for (let type in terrtext[code][mod][lang]){
-          let tmpdict = {}
-          let tmpcode = (code.includes('.')) ? code.slice(0, code.lastIndexOf('.')) : code;
-          tmpdict["code"] = tmpcode
-          tmpdict["mod"] = mod
-          tmpdict["lang"] = lang
-          tmpdict["type"] = type
-          tmpdict["data"] = terrtext[code][mod][lang][type]
+        if (lang != "mod") {
+          for (let type in terrtext[code][mod][lang]){
+            let tmpdict = {}
+            let tmpcode = (code.includes('.')) ? code.slice(0, code.lastIndexOf('.')) : code;
+            tmpdict["code"] = tmpcode
+            tmpdict["mod"] = mod
+            tmpdict["lang"] = lang
+            tmpdict["type"] = type
+            tmpdict["data"] = terrtext[code][mod][lang][type]
 
-          let ind = cwtpack.terrtext.length
-          cwtpack.terrtext.push(tmpdict)
+            let ind = cwtpack.terrtext.length
+            cwtpack.terrtext.push(tmpdict)
 
-          let codetype = [tmpcode,type].join(" ")
-          let langtype = [lang,codetype].join(" ")
-          let modtype = [mod,codetype].join(" ")
-          let modlangtype = [mod,lang,codetype].join(" ")
+            let codetype = [tmpcode,type].join(" ")
+            let langtype = [lang,codetype].join(" ")
+            let modtype = [mod,codetype].join(" ")
+            let modlangtype = [mod,lang,codetype].join(" ")
 
-          // If it doesn't exist in the dictionary, put it in there
-          if (cwtpack.terrtextdict[codetype] === undefined)
-            cwtpack.terrtextdict[codetype] = ind;
-          if (cwtpack.terrtextdict[langtype] === undefined)
-            cwtpack.terrtextdict[langtype] = ind;
-          if (cwtpack.terrtextdict[modtype] === undefined)
-            cwtpack.terrtextdict[modtype] = ind;
-          if (cwtpack.terrtextdict[modlangtype] === undefined)
-            cwtpack.terrtextdict[modlangtype] = ind;
+            // If it doesn't exist in the dictionary, put it in there
+            if (cwtpack.terrtextdict[codetype] === undefined)
+              cwtpack.terrtextdict[codetype] = ind;
+            if (cwtpack.terrtextdict[langtype] === undefined)
+              cwtpack.terrtextdict[langtype] = ind;
+            if (cwtpack.terrtextdict[modtype] === undefined)
+              cwtpack.terrtextdict[modtype] = ind;
+            if (cwtpack.terrtextdict[modlangtype] === undefined)
+              cwtpack.terrtextdict[modlangtype] = ind;
+          }
         }
       }
     }

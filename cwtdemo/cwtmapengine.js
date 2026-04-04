@@ -298,7 +298,7 @@ export function createFileMap(ind, game="CWT"){
     game = [game]
 
   // First, let's check if everything is loaded into the system
-  if (cwtmaplib.isAllMapDataReady()){
+  if (cwtmaplib.isAllMapDataReady() && cwtmaplib.isAllTerrainDataReady()){
 
     let data = cwtmaplib.getMapData(ind);
 
@@ -306,7 +306,7 @@ export function createFileMap(ind, game="CWT"){
     for (const x in data) {
       text += x + ", ";
     }
-    //console.log(text, data[game[0]]);
+    console.log(text, data[game[0]]);
 
     cwtmap.sizex = 1
     cwtmap.sizey = 1
@@ -314,6 +314,7 @@ export function createFileMap(ind, game="CWT"){
     // Let's see if we can create terrain packs
     cwtmaplib.createTerrainPacks(game)
     console.log("TERRDICT", cwtmaplib.getTerrainDict(), cwtmaplib.getTerrainPackData())
+
     cwtmaplib.packTerrainText()
     console.log("TERRTEXT", cwtmaplib.getTerrainTextData(), cwtmaplib.getTerrainTextDict())
 
@@ -322,6 +323,21 @@ export function createFileMap(ind, game="CWT"){
 
     console.log("NULL", cwtmaplib.getTerrainTextKey("NULL","name"))
     console.log("PLIN", cwtmaplib.getTerrainTextKey("PLIN","description"))
+
+    cwtmaplib.createMapPacks(game)
+    console.log("MAPDICT", cwtmaplib.getMapDict(), cwtmaplib.getMapPackData())
+
+    console.log("TEST1", data)
+
+    // Okay, first let's pull the typemap from the data
+    let typemap = data[game[0]]
+    console.log("THISTYPEMAP", typemap)
+
+    let item = ["MAP", "TERRAIN", "UNIT"]
+    for (let i=0;i<item.length;i++){
+      cwtmaplib.createPacks(item[i], game)
+      console.log("FINAL"+item[i]+"PACK", cwtmaplib.getPackDict(item[i]), cwtmaplib.getPackData(item[i]), cwtmaplib.getPackTextDict(item[i]), cwtmaplib.getPackTextData(item[i]))
+    }
   }
 }//*/
 

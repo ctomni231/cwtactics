@@ -30,6 +30,7 @@
 
     "text": {
         "CWT": {
+            "mod": ["AW1"],
             "en": {
                 "name": "Null Void",
                 "description": "A dark teleport tile that has 0 movement cost [created in AWBW]"
