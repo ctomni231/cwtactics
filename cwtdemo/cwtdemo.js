@@ -20,11 +20,11 @@ export function init(){
   cwtmap.init();
   //cwtmap.createMap(30, 20);
   //cwtmap.createNullBorderMap(30, 20);
-  //cwtmap.setMapPosition(50, 50);
+  cwtmap.setMapPosition(50, 50);
 
-  //cwtmap.createUnit(0, 0, 0, 10, 3, 0, 1, 0);
-  //cwtmap.createUnit(0, 6, 6, 10, 2, 1, 3, 1);
-  //cwtmap.createUnit(0, 10, 5, 10, 5, 0, 5, 2);
+  cwtmap.createUnit(0, 0, 0, 10, 3, 0, 1, 0);
+  cwtmap.createUnit(0, 6, 6, 10, 2, 1, 3, 1);
+  cwtmap.createUnit(0, 10, 5, 10, 5, 0, 5, 2);
 
   //let url = "yummy";
   //let urlFrag = "cool";
@@ -38,8 +38,12 @@ export function update(){
   cwtmap.update();
 
   if (!cwtmap.isMap()){
-    cwtmap.createFileMap("cwttestnull.json", ["AW1", "CWT"]);
-    cwtmap.createFileMap("cwttestnull.json", ["CWT", "AW1"]);
+    cwtmap.createFileMap("cwttestnull.json", []);
+    //cwtmap.createUnit(0, 0, 0, 10, 3, 0, 1, 0);
+    //cwtmap.createUnit(0, 6, 6, 10, 2, 1, 3, 1);
+    //cwtmap.createUnit(0, 10, 5, 10, 5, 0, 5, 2);
+    //cwtmap.createFileMap("cwttestnull.json", ["AW1", "CWT"]);
+    //cwtmap.createFileMap("cwttestnull.json", ["CWT", "AW1"]);
   }//*/
 }
 

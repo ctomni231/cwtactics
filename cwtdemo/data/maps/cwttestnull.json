@@ -7,8 +7,8 @@
         "height": 20,
         "player": 2,
         "typemap": [
-            {"type": "PLIN"},
-            {"type": "NULL"}
+            {"type": "NULL"},
+            {"type": "PLIN"}
         ],
 
         "map": [

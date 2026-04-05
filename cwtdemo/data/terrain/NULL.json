@@ -4,7 +4,7 @@
         "type": "terrain",
         "mod": ["AW1"],
 
-        "color": "808080",
+        "color": "#808080",
         "stars": 0,
         "vision": [-1, -1],
         "step": 0,

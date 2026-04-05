@@ -18,6 +18,12 @@ const mapfolder = "maps/"
 const terrfolder = "terrain/"
 const unitfolder = "units/"
 
+const libtypes = {
+  m: "map",
+  t: "terrain",
+  u: "unit"
+}
+
 // This gets the json map data
 export const cwtmapjson = {
   load: 0,
@@ -982,28 +988,30 @@ export function createPacks(type, modadd=[], fileadd=[], modsub=[], filesub=[], 
     let typetext = {}
 
     // Only need to check the very first letter to verify it is a map
-    if (type[0].toLowerCase() == "m"){
-      type = "map"
+    type = libtypes[type[0].toLowerCase()]
+    if (type == "map"){
       typelen = getMapFileLength()
       mod = cwtmap.mod
       file = cwtmap.file
       typetext = cwtmap.text
     }
     // And a terrain piece
-    else if (type[0].toLowerCase() == "t"){
-      type = "terrain"
+    else if (type == "terrain"){
       typelen = getTerrainCodeLength()
       mod = cwtterrain.mod
       file = cwtterrain.file
       typetext = cwtterrain.text
     }
     // And the unit piece
-    else if (type[0].toLowerCase() == "u"){
-      type = "unit"
+    else if (type = "unit"){
       typelen = getUnitCodeLength()
       mod = cwtunit.mod
       file = cwtunit.file
       typetext = cwtunit.text
+    }
+    // The piece doesn't exist
+    else {
+      return
     }
 
     // Let's create the pack fields once getting past the initial checks
@@ -1043,8 +1051,8 @@ export function createPacks(type, modadd=[], fileadd=[], modsub=[], filesub=[], 
       // I have to use the dictionary items to determine the order of the singletons
       for (let i=0; i<revmod.length; i++) {
         for (let item in cwtpack.type[type].datadict){
-          if (item.includes(" ")){
-            let tmpsplit = item.split(" ")
+          if (item.includes("|")){
+            let tmpsplit = item.split("|")
             if (tmpsplit.length === 2){
               if(tmpsplit[0] === revmod[i])
                 cwtpack.type[type].datadict[tmpsplit[1]] = cwtpack.type[type].datadict[item]
@@ -1064,36 +1072,48 @@ export function createPacks(type, modadd=[], fileadd=[], modsub=[], filesub=[], 
 
     // We'll hard code specific types for these, to keep it under control
     // Then we extract from each type of thing
+    let modlist = []
     for (let code in typetext){
       for (let mod in typetext[code]){
+        // Generate the modlist
+        modlist = [mod]
+        if (typetext[code][mod]["mod"]){
+          for (let i=0; i<typetext[code][mod]["mod"].length; i++){
+            modlist.push(typetext[code][mod]["mod"][i])
+            console.log("MODNAME", typetext[code][mod]["mod"][i])
+          }
+        }
+        // Basic programming
         for (let lang in typetext[code][mod]){
           if (lang != "mod") {
             for (let txttype in typetext[code][mod][lang]){
-              let tmpdict = {}
-              let tmpcode = (code.includes('.')) ? code.slice(0, code.lastIndexOf('.')) : code;
-              tmpdict["code"] = tmpcode
-              tmpdict["mod"] = mod
-              tmpdict["lang"] = lang
-              tmpdict["type"] = txttype
-              tmpdict["data"] = typetext[code][mod][lang][txttype]
+              for (let i=0; i<modlist.length; i++){
+                let tmpdict = {}
+                let tmpcode = (code.includes('.')) ? code.slice(0, code.lastIndexOf('.')) : code;
+                tmpdict["code"] = tmpcode
+                tmpdict["mod"] = modlist[i]
+                tmpdict["lang"] = lang
+                tmpdict["type"] = txttype
+                tmpdict["data"] = typetext[code][mod][lang][txttype]
 
-              let ind = cwtpack.type[type].text.length
-              cwtpack.type[type].text.push(tmpdict)
+                let ind = cwtpack.type[type].text.length
+                cwtpack.type[type].text.push(tmpdict)
 
-              let codetype = [tmpcode,txttype].join(" ")
-              let langtype = [lang,codetype].join(" ")
-              let modtype = [mod,codetype].join(" ")
-              let modlangtype = [mod,lang,codetype].join(" ")
+                let codetype = [tmpcode,txttype].join("|")
+                let langtype = [lang,codetype].join("|")
+                let modtype = [modlist[i],codetype].join("|")
+                let modlangtype = [modlist[i],lang,codetype].join("|")
 
-              // If it doesn't exist in the dictionary, put it in there
-              if (cwtpack.type[type].textdict[codetype] === undefined)
-                cwtpack.type[type].textdict[codetype] = ind;
-              if (cwtpack.type[type].textdict[langtype] === undefined)
-                cwtpack.type[type].textdict[langtype] = ind;
-              if (cwtpack.type[type].textdict[modtype] === undefined)
-                cwtpack.type[type].textdict[modtype] = ind;
-              if (cwtpack.type[type].textdict[modlangtype] === undefined)
-                cwtpack.type[type].textdict[modlangtype] = ind;
+                // If it doesn't exist in the dictionary, put it in there
+                if (cwtpack.type[type].textdict[codetype] === undefined)
+                  cwtpack.type[type].textdict[codetype] = ind;
+                if (cwtpack.type[type].textdict[langtype] === undefined)
+                  cwtpack.type[type].textdict[langtype] = ind;
+                if (cwtpack.type[type].textdict[modtype] === undefined)
+                  cwtpack.type[type].textdict[modtype] = ind;
+                if (cwtpack.type[type].textdict[modlangtype] === undefined)
+                  cwtpack.type[type].textdict[modlangtype] = ind;
+              }
             }
           }
         }
@@ -1117,6 +1137,7 @@ export function createCard(ind, type, mod, file, subind, modsub, filesub){
 
   let pack = {}
 
+  type = libtypes[type[0].toLowerCase()]
   if (type == "map")
     pack = packMapData(ind)
   else if (type == "terrain")
@@ -1130,7 +1151,7 @@ export function createCard(ind, type, mod, file, subind, modsub, filesub){
     cwtpack.type[type].data.push(pack)
 
     // Make quick defaults to reduce mistakes
-    let modfile = mod.concat(" ", file)
+    let modfile = mod.concat("|", file)
 
     // If it doesn't exist in the dictionary, put it in there
     if (cwtpack.type[type].datadict[file] === undefined)
@@ -1140,16 +1161,92 @@ export function createCard(ind, type, mod, file, subind, modsub, filesub){
   }
 }
 
-// DICTIONARY RETRIEVAL FUNCTIONS
+// CARD RETRIEVAL FUNCTIONS
 
-// Returns the dictionary data
-export function getPackDict(type) {
-  return cwtpack.type[type.toLowerCase()].datadict
+// For getting data from the cards
+export function getCardDataKey(type, code, mod="", strict=false) {
+
+  // Start out with an empty pack
+  let typepack = undefined;
+  let modcode = code
+
+  type = libtypes[type[0].toLowerCase()]
+  if (type === undefined)
+    return typepack
+
+  // Try to dind the ID first
+  if (mod === undefined || mod === "")
+    typepack = cwtpack.type[type].datadict[code]
+  else {
+    modcode = mod.concat("|", code)
+    typepack = cwtpack.type[type].datadict[modcode]
+    if (!strict && typepack === undefined)
+      typepack = cwtpack.type[type].datadict[code];
+  }
+
+  // Switch from the ID to the actual pack
+  if (typepack !== undefined)
+    typepack = cwtpack.type[type].data[typepack]
+
+  return typepack
 }
+
+export function getCardTextKey(type, code, txttype, lang="", mod="", strict=false) {
+
+  // Start out with an empty pack
+  let textpack = undefined
+
+  // [TODO] Might allow some edge cases with periods in files, but okay for now
+  code = (code.includes('.')) ? code.slice(0, code.lastIndexOf('.')) : code;
+  let codetype = [code,txttype].join("|")
+
+  type = libtypes[type[0].toLowerCase()]
+  if (type === undefined)
+    return typepack
+
+  console.log("TEXTKEYTEST", codetype, type)
+
+  // Try to find the ID first
+  if (mod === undefined || mod === "") {
+    if (lang === undefined || lang === "") {
+      textpack = cwtpack.type[type].textdict[codetype]
+    } else {
+      let langcode = [lang,codetype].join("|")
+      textpack = cwtpack.type[type].textdict[langcode]
+      if (!strict && textpack === undefined)
+        textpack = cwtpack.type[type].textdict[codetype];
+    }
+  } else {
+    let modcode = mod.concat("|", codetype)
+    if (lang === undefined || lang === "") {
+      textpack = cwtpack.type[type].textdict[modcode]
+      if (!strict && textpack === undefined)
+        textpack = cwtpack.type[type].textdict[codetype];
+    } else {
+      let langcode = [lang,modcode].join("|")
+      textpack = cwtpack.type[type].textdict[langcode]
+      if (!strict && textpack === undefined)
+        textpack = cwtpack.type[type].textdict[codetype];
+    }
+  }
+
+  // Switch from the ID to the actual pack
+  if (textpack !== undefined)
+    textpack = cwtpack.type[type].text[textpack]
+
+  return textpack
+}
+
+// DICTIONARY RETRIEVAL FUNCTIONS
 
 // Returns the dictionary data
 export function getPackData(type) {
   return cwtpack.type[type.toLowerCase()].data
+}
+
+// Returns the dictionary data
+export function getPackDict(type) {
+  return cwtpack.type[type.toLowerCase()].datadict
 }
 
 // Returns the dictionary data
@@ -1435,8 +1532,6 @@ function createTerrainCard(ind, modsub, codesub){
       cwtpack.terrdatadict[modcode] = ind;
   }
 }
-
-
 
 // Everything under is work in progress
 

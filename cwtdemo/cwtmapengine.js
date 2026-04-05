@@ -294,11 +294,13 @@ export function testMap(){
 export function createFileMap(ind, game="CWT"){
 
   // Let's just turn a string into a list
-  if ( typeof key === 'string')
+  if ( game === undefined )
+    game = []
+  else if ( typeof game === 'string')
     game = [game]
 
   // First, let's check if everything is loaded into the system
-  if (cwtmaplib.isAllMapDataReady() && cwtmaplib.isAllTerrainDataReady()){
+  if (cwtmaplib.isAllMapDataReady() && cwtmaplib.isAllTerrainDataReady() && cwtmaplib.isAllUnitDataReady()){
 
     let data = cwtmaplib.getMapData(ind);
 
@@ -337,6 +339,49 @@ export function createFileMap(ind, game="CWT"){
     for (let i=0;i<item.length;i++){
       cwtmaplib.createPacks(item[i], game)
       console.log("FINAL"+item[i]+"PACK", cwtmaplib.getPackDict(item[i]), cwtmaplib.getPackData(item[i]), cwtmaplib.getPackTextDict(item[i]), cwtmaplib.getPackTextData(item[i]))
+    }
+
+    let mapcard = cwtmaplib.getCardDataKey("map", ind)
+
+    console.log("FINALMAPCARD", mapcard)
+    console.log("FINALMAPTEXT - NAME", cwtmaplib.getCardTextKey("map", ind, "name"))
+    console.log("FINALMAPTEXT - DESC", cwtmaplib.getCardTextKey("map", ind, "description"))
+
+    // Let's get to business
+
+    // First let's get the map items in order
+    console.log("DISPTERRMAP", mapcard.terrMap)
+    console.log("DISPTERRDATA", mapcard.data)
+
+    // Then we use the map items to get the terrain needed
+    let terrcards = []
+    for (let i=0; i<mapcard.terrMap.length; i++){
+      terrcards.push(cwtmaplib.getCardDataKey("terrain", mapcard.terrMap[i]+".json"))
+      if (terrcards[i] !== undefined)
+        cwtcolor.terr[terrcards[i].code] = terrcards[i].color
+      console.log("DISP"+mapcard.terrMap[i], terrcards[i])
+    }
+
+    console.log("DISPTERRCOLOR", cwtcolor.terr)
+
+    // Let's start with getting the size of the map
+    let sizex = mapcard.width
+    let sizey = mapcard.height
+
+    cwtmap.sizex = (sizex > 0) ? sizex : 0;
+    cwtmap.sizey = (sizey > 0) ? sizey : 0;
+
+    //console.log("DISPTILE - 0,0", terrcards[mapcard.data[0][0][0]].code, mapcard.file, sizex, sizey)
+
+    // Create the map to the specifications
+    for(let i=0; i<cwtmap.sizey; i++){
+      for(let j=0; j<cwtmap.sizex; j++){
+        let tmpterrcard = terrcards[mapcard.data[0][i][j]]
+        if (tmpterrcard === undefined)
+          createTerrain("PLIN", j, i, 1);
+        else
+          createTerrain(tmpterrcard.code, j, i, tmpterrcard.movecost["TEST"]);
+      }
     }
   }
 }//*/
