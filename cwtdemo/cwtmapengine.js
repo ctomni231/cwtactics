@@ -31,6 +31,8 @@ export const cwtmap = {
 
   // In case we ever need different map types ;P
   boxmap: true,
+  boxpast: false,
+  boxchange: false,
   color: [],
 
   // The literal state of the map for controlling actions
@@ -173,6 +175,9 @@ export function update(){
   // Cursor is handled in its own function
   mapCursor()
 
+  // This just tracks if the map length dimensions change
+  mapChange()
+
   // State controller makes sure actions are contained
   if (cwtmap.state == 0)
     restState()
@@ -205,8 +210,23 @@ export function render(canvas, ctx){
     // Draw the text
     // drawTileText(ctx, cwtmap.sl);
 
-    // Draw a temporary dot
-    drawDotTemp(ctx);
+    // Draw a temporary dots for the four map corners
+    drawDotTemp(ctx); //[0, 0]
+
+    // This is for the remaining corners of the boxmap
+    if (cwtmap.boxmap){
+      drawDotTemp(ctx, cwtmap.posx+(cwtmap.boxSize[0]*cwtmap.sizex), cwtmap.posy); //[1, 0]
+      drawDotTemp(ctx, cwtmap.posx, cwtmap.posy+(cwtmap.boxSize[1]*cwtmap.sizey)); //[0, 1]
+      drawDotTemp(ctx, cwtmap.posx+(cwtmap.boxSize[0]*cwtmap.sizex), cwtmap.posy+(cwtmap.boxSize[1]*cwtmap.sizey)); //[1, 1]
+    }
+
+    // This is for the remaining corners of the hexmap
+    else {
+      drawDotTemp(ctx, cwtmap.posx+parseInt(65/64*cwtmap.hexSize[0]*cwtmap.sizex), cwtmap.posy); //[1, 0]
+      drawDotTemp(ctx, cwtmap.posx, cwtmap.posy+parseInt(97/128*cwtmap.hexSize[1]*cwtmap.sizey)); //[0, 1]
+      drawDotTemp(ctx, cwtmap.posx+parseInt(65/64*cwtmap.hexSize[0]*cwtmap.sizex), cwtmap.posy+parseInt(97/128*cwtmap.hexSize[1]*cwtmap.sizey)); //[1, 1]
+    }
+
 
     // Just to see a number
     //ctx.fillText(input.TOUCH, 100, 10);
@@ -282,9 +302,28 @@ export function setMapPosition(posx, posy){
   cwtmap.posy = posy;
 }
 
+// This function centers the map in the screen
+export function centerMapPosition(){
+
+  let adj = getFullSize()
+
+  //if (cwtmap.boxmap){
+  //    adjx = (cwtmap.boxPixels*cwtmap.sizex)
+  //    adjy = (cwtmap.boxPixels*cwtmap.sizey)
+  //}
+
+  cwtmap.posx = parseInt(view.sizex/2-adj[0]/2)
+  cwtmap.posy = parseInt(view.sizey/2-adj[1]/2)
+}
+
 // Tells you if we have a map in the system
 export function isMap() {
   return (cwtmap.sizex > 0 && cwtmap.sizey > 0)
+}
+
+// Tells you if the tilemap changed
+export function dimensionChange(){
+  return cwtmap.boxchange
 }
 
 export function testMap(){
@@ -1426,6 +1465,15 @@ function getPolySize(ngon){
   return [highx-lowx,highy-lowy]
 }
 
+// This is for getting the full size of a map after the polygons are made
+export function getFullSize(boxmap=cwtmap.boxmap){
+  if (boxmap && cwtmap.boxSize.length > 0)
+    return [cwtmap.boxSize[0]*cwtmap.sizex, cwtmap.boxSize[1]*cwtmap.sizey]
+  else if (!boxmap && cwtmap.hexSize.length > 0)
+    return [parseInt(65/64*cwtmap.hexSize[0]*cwtmap.sizex), parseInt(97/128*cwtmap.hexSize[1]*cwtmap.sizey)]
+  return [0, 0]
+}
+
 // --------------------------
 // VALID MOVE FUNCTIONS
 // --------------------------
@@ -1554,6 +1602,17 @@ function validMove(ind, tmpind, opt){
 // --------------------------
 // STATE FUNCTIONS
 // --------------------------
+
+function mapChange(){
+
+  // If we change from hex to box, or from box to hex, react to it
+  if (cwtmap.boxmap != cwtmap.boxpast){
+    cwtmap.boxpast = cwtmap.boxmap
+    cwtmap.boxchange = true
+  }
+  else if (cwtmap.boxchange)
+    cwtmap.boxchange = false
+}
 
 function mapCursor(){
 
@@ -1699,6 +1758,11 @@ function moveState(){
           cwtmap.state = 0;
         }
       }
+    }else if (input.CANCEL) {
+      cwtunit.seluid = -1;
+      clearMove();
+      clearPath();
+      cwtmap.state = 0;
     }
   }
 

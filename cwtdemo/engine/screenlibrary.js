@@ -105,13 +105,13 @@ window.onscroll = setWindowScroll
 
 // A function for dealing with setting the window size
 export function setWindowSize() {
-  change = 3
+  change = 2
   setCanvasSize()
 }
 
 // A function for dealing with scrolling of the window
 export function setWindowScroll(){
-  if(change > 1){
+  if(change > 0){
     setCanvasSize()
     change -= 1
   }

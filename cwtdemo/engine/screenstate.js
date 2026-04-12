@@ -15,18 +15,30 @@ export const loop = {
   delta: 0
 }
 
+// This holds the browser screen size and orientation
 export const view = {
+
+  // Base functionality
   sizex: 0,
   sizey: 0,
-  lscape: 0
+  lscape: 0,
+
+  // Screen size change functionality
+  pastx: 0,
+  pasty: 0,
+  change: 0,
+  changex: 0,
+  changey: 0
 }
 
 export const engversion = "0.1 Alpha"
 
 // This is the update function for gamecontroller.js
 export function update (delta) {
+
   // Forgot to put in this
   loop.delta = delta
+  updateScreen()
   updateState()
 }
 
@@ -37,6 +49,31 @@ export function updateState(){
   if (nextState !== null){
     state.current = nextState
     state.next = null
+  }
+}
+
+// This is for tracking if the view changed once per loop
+export function updateScreen(){
+
+  if (view.pastx != view.sizex || view.pasty != view.sizey){
+
+    // In case you want to track screen changes separately
+    view.changex = (view.pastx != view.sizex) ? 1 : 0;
+    view.changey = (view.pasty != view.sizey) ? 1 : 0;
+
+    // Set these to the new size
+    view.pastx = view.sizex
+    view.pasty = view.sizey
+
+    // Set change to true
+    view.change = 1
+  }
+
+  // Otherwise, everything is normal again
+  else {
+    view.changex = 0
+    view.changey = 0
+    view.change = 0
   }
 }
 

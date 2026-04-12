@@ -252,7 +252,7 @@ This token will equate if the value on the left side of the token is less than o
 * Value: "5 <= 4" -> Result: "0"
 * Value: "5 <= 5" -> Result: "1"
 
-### '>' Grater Than Comparator Token
+### '>' Greater Than Comparator Token
 
 This token will equate if the value on the left side of the token is less than the value on the right side of the token.
 

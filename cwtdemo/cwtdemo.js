@@ -8,6 +8,7 @@ import * as cwtmath from "./tools/math/cwtmathtoken.js"
  * Custom Wars Tactics - Game Demo
  */
 //let ans = 0;
+var test = 0;
 
 export const name = "CWTDEMO";
 
@@ -39,12 +40,22 @@ export function update(){
 
   if (!cwtmap.isMap()){
     cwtmap.createFileMap("cwttestnull.json", []);
+    cwtmap.centerMapPosition();
     //cwtmap.createUnit(0, 0, 0, 10, 3, 0, 1, 0);
     //cwtmap.createUnit(0, 6, 6, 10, 2, 1, 3, 1);
     //cwtmap.createUnit(0, 10, 5, 10, 5, 0, 5, 2);
     //cwtmap.createFileMap("cwttestnull.json", ["AW1", "CWT"]);
     //cwtmap.createFileMap("cwttestnull.json", ["CWT", "AW1"]);
   }//*/
+
+  else if (view.change || cwtmap.dimensionChange()){
+    cwtmap.centerMapPosition();
+    if (test == 0){
+      console.log("BOX", cwtmap.cwtmap.boxSize, "HEX", cwtmap.cwtmap.hexSize)
+      console.log("FULL", cwtmap.getFullSize(), "ISBOX", cwtmap.cwtmap.boxmap)
+    }
+  }
+
 }
 
 export function render(canvas, ctx){
